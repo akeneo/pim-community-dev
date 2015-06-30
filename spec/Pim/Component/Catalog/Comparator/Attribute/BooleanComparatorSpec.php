@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class BooleanComparatorSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(['pim_catalog_boolean']);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\ComparatorInterface');

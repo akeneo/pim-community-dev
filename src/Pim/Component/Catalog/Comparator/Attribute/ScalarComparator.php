@@ -13,18 +13,23 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
  */
 class ScalarComparator implements ComparatorInterface
 {
+    /** @var array */
+    protected $types;
+
+    /**
+     * @param array $types
+     */
+    public function __construct(array $types)
+    {
+        $this->types = $types;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports($type)
     {
-        return in_array($type, [
-            'pim_catalog_date',
-            'pim_catalog_identifier',
-            'pim_catalog_number',
-            'pim_catalog_text',
-            'pim_catalog_textarea'
-        ]);
+        return in_array($type, $this->types);
     }
 
     /**

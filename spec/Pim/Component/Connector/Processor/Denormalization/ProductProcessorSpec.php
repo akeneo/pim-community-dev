@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -25,7 +26,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         StepExecution $stepExecution,
-        ObjectDetacherInterface $productDetacher
+        ObjectDetacherInterface $productDetacher,
+        ProductFilterInterface $productFilter
     ) {
         $this->beConstructedWith(
             $arrayConverter,
@@ -33,7 +35,8 @@ class ProductProcessorSpec extends ObjectBehavior
             $productBuilder,
             $productUpdater,
             $productValidator,
-            $productDetacher
+            $productDetacher,
+            $productFilter
         );
         $this->setStepExecution($stepExecution);
     }
@@ -47,7 +50,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_has_extra_configuration()
     {
-        $this->getConfigurationFields()->shouldHaveCount(4);
+        $this->getConfigurationFields()->shouldHaveCount(5);
     }
 
     function it_updates_an_existing_product(
@@ -55,6 +58,103 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository,
         $productUpdater,
         $productValidator,
+        $productFilter,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $originalData = [
+            'sku' => 'tshirt',
+            'family' => 'TShirt',
+            'description-en_US-mobile' => 'My description',
+            'name-fr_FR' => 'T-shirt super beau',
+            'name-en_US' => 'My awesome T-shirt'
+        ];
+        $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'family' => 'Summer Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My very awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ]
+        ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'family' => 'Summer Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My very awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ]
+        ];
+
+        $dataToValue = $this->convertDataToValue($filteredData);
+        $productFilter->filter($product, $dataToValue)->willReturn($filteredData);
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $productValidator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $this
+            ->process($originalData)
+            ->shouldReturn($product);
+    }
+
+    function it_updates_an_existing_product_with_filtered_values(
+        $arrayConverter,
+        $productRepository,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList
     ) {
@@ -82,7 +182,7 @@ class ProductProcessorSpec extends ObjectBehavior
                 [
                     'locale' => 'fr_FR',
                     'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+                    'data' => 'Mon super beau t-shirt'
                 ],
                 [
                     'locale' => 'en_US',
@@ -94,7 +194,7 @@ class ProductProcessorSpec extends ObjectBehavior
                 [
                     'locale' => 'en_US',
                     'scope' =>  'mobile',
-                    'data' => 'My description'
+                    'data' => 'My awesome description'
                 ]
             ]
         ];
@@ -112,7 +212,7 @@ class ProductProcessorSpec extends ObjectBehavior
                 [
                     'locale' => 'fr_FR',
                     'scope' =>  null,
-                    'data' => 'T-shirt super beau'
+                    'data' => 'Mon super beau t-shirt'
                 ],
                 [
                     'locale' => 'en_US',
@@ -124,10 +224,15 @@ class ProductProcessorSpec extends ObjectBehavior
                 [
                     'locale' => 'en_US',
                     'scope' =>  'mobile',
-                    'data' => 'My description'
+                    'data' => 'My awesome description'
                 ]
             ]
         ];
+
+        $dataToValue = $this->convertDataToValue($filteredData);
+        unset($filteredData['family'], $filteredData['name'][1]);
+        $productFilter->filter($product, $dataToValue)->willReturn($filteredData);
+
         $productUpdater
             ->update($product, $filteredData)
             ->shouldBeCalled();
@@ -141,12 +246,109 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
+    function it_updates_an_existing_product_without_filtered_values(
+        $arrayConverter,
+        $productRepository,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $originalData = [
+            'sku' => 'tshirt',
+            'family' => 'TShirt',
+            'description-en_US-mobile' => 'My description',
+            'name-fr_FR' => 'T-shirt super beau',
+            'name-en_US' => 'My awesome T-shirt'
+        ];
+        $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'family' => 'Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ]
+        ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'family' => 'Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ]
+        ];
+
+        $productFilter->filter($product, [])->shouldNotBeCalled();
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $productValidator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $this->setEnabledComparison(false);
+        $this
+            ->process($originalData)
+            ->shouldReturn($product);
+    }
+
     function it_creates_a_product(
         $arrayConverter,
         $productRepository,
         $productBuilder,
         $productUpdater,
         $productValidator,
+        $productFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList
     ) {
@@ -221,6 +423,10 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        $dataToValue = $this->convertDataToValue($filteredData);
+        $productFilter->filter($product, $dataToValue)->willReturn($dataToValue);
+
         $productUpdater
             ->update($product, $filteredData)
             ->shouldBeCalled();
@@ -240,6 +446,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productBuilder,
         $productUpdater,
         $productDetacher,
+        $productFilter,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -313,6 +520,10 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        $dataToValue = $this->convertDataToValue($filteredData);
+        $productFilter->filter($product, $dataToValue)->willReturn($dataToValue);
+
         $productUpdater
             ->update($product, $filteredData)
             ->willThrow(new \InvalidArgumentException('family does not exists'));
@@ -334,8 +545,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productDetacher,
-        ProductInterface $product,
-        ConstraintViolationListInterface $violationList
+        $productFilter,
+        ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
@@ -408,6 +619,10 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        $dataToValue = $this->convertDataToValue($filteredData);
+        $productFilter->filter($product, $dataToValue)->willReturn($dataToValue);
+
         $productUpdater
             ->update($product, $filteredData)
             ->shouldBeCalled();
@@ -426,5 +641,108 @@ class ProductProcessorSpec extends ObjectBehavior
                 'process',
                 [$originalData]
             );
+    }
+
+    function it_skips_a_product_when_there_is_nothing_to_update(
+        $arrayConverter,
+        $productRepository,
+        $productBuilder,
+        $productUpdater,
+        $productFilter,
+        ProductInterface $product
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+
+        $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
+
+        $originalData = [
+            'sku' => 'tshirt',
+            'family' => 'TShirt',
+            'description-en_US-mobile' => 'My description',
+            'name-fr_FR' => 'T-shirt super beau',
+            'name-en_US' => 'My awesome T-shirt'
+        ];
+        $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'family' => 'Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'T-shirt super beau'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My description'
+                ]
+            ]
+        ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'family' => 'Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'T-shirt super beau'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My description'
+                ]
+            ]
+        ];
+
+        $dataToValue = $this->convertDataToValue($filteredData);
+        $productFilter->filter($product, $dataToValue)->willReturn([]);
+
+        $productUpdater
+            ->update($product, $filteredData)->shouldNotBeCalled();
+
+        $this
+            ->process($originalData)
+            ->shouldReturn(null);
+    }
+
+    function convertDataToValue($filteredData)
+    {
+        $dataToValue = $filteredData;
+        $dataToValue['name'][0]['value'] = $dataToValue['name'][0]['data'];
+        $dataToValue['name'][1]['value'] = $dataToValue['name'][1]['data'];
+        $dataToValue['description'][0]['value'] = $dataToValue['description'][0]['data'];
+
+        unset($dataToValue['name'][0]['data'], $dataToValue['name'][1]['data'], $dataToValue['description'][0]['data']);
+
+        return $dataToValue;
     }
 }

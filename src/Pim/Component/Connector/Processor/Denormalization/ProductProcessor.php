@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -50,6 +51,12 @@ class ProductProcessor extends AbstractProcessor
     /** @var string */
     protected $groupsColumn  = 'groups';
 
+    /** @var bool */
+    protected $enabledComparison = true;
+
+    /** @var ProductFilterInterface */
+    protected $productFilter;
+
     /**
      * @param StandardArrayConverterInterface       $arrayConverter array converter
      * @param IdentifiableObjectRepositoryInterface $repository     product repository
@@ -57,6 +64,7 @@ class ProductProcessor extends AbstractProcessor
      * @param ObjectUpdaterInterface                $updater        product updater
      * @param ValidatorInterface                    $validator      product validator
      * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
+     * @param ProductFilterInterface                $productFilter  product filter
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
@@ -64,15 +72,17 @@ class ProductProcessor extends AbstractProcessor
         ProductBuilderInterface $builder,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher
+        ObjectDetacherInterface $detacher,
+        ProductFilterInterface $productFilter
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter = $arrayConverter;
-        $this->builder = $builder;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->detacher = $detacher;
+        $this->arrayConverter  = $arrayConverter;
+        $this->builder         = $builder;
+        $this->updater         = $updater;
+        $this->validator       = $validator;
+        $this->detacher        = $detacher;
+        $this->productFilter   = $productFilter;
     }
 
     /**
@@ -86,6 +96,18 @@ class ProductProcessor extends AbstractProcessor
         $filteredItem  = $this->filterItemData($convertedItem);
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
+
+        if ($this->enabledComparison) {
+            $filteredItem = $this->filterIdenticalData($product, $filteredItem);
+
+            if (empty($filteredItem)) {
+                if ($this->stepExecution) {
+                    $this->stepExecution->incrementSummaryInfo('skip');
+                }
+
+                return null;
+            }
+        }
 
         try {
             $this->updateProduct($product, $filteredItem);
@@ -101,6 +123,19 @@ class ProductProcessor extends AbstractProcessor
         }
 
         return $product;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $filteredItem
+     *
+     * @return array
+     */
+    protected function filterIdenticalData(ProductInterface $product, array $filteredItem)
+    {
+        $filteredItem = $this->productFilter->filter($product, $this->convertDataToValue($filteredItem));
+
+        return $this->convertValueToData($filteredItem);
     }
 
     /**
@@ -184,6 +219,26 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
+     * Set whether or not the comparison between original values and imported values should be activated
+     *
+     * @param bool $enabledComparison
+     */
+    public function setEnabledComparison($enabledComparison)
+    {
+        $this->enabledComparison = $enabledComparison;
+    }
+
+    /**
+     * Whether or not the comparison between original values and imported values is activated
+     *
+     * @return bool
+     */
+    public function isEnabledComparison()
+    {
+        return $this->enabledComparison;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
@@ -212,6 +267,13 @@ class ProductProcessor extends AbstractProcessor
                 'options' => [
                     'label' => 'pim_connector.import.groupsColumn.label',
                     'help'  => 'pim_connector.import.groupsColumn.help'
+                ]
+            ],
+            'enabledComparison' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.import.enabledComparison.label',
+                    'help'  => 'pim_connector.import.enabledComparison.help'
                 ]
             ],
         ];
@@ -344,5 +406,57 @@ class ProductProcessor extends AbstractProcessor
     protected function getDefaultValues()
     {
         return ['enabled' => $this->enabled];
+    }
+
+    /**
+     * This is a temp method to convert "data" keys to "value" keys.
+     * This is an inconsistent between array converters & normalizers. Will be removed with PIM-4246
+     *
+     * @param array $items
+     *
+     * @return array
+     */
+    protected function convertDataToValue(array $items)
+    {
+        $data = $items;
+
+        foreach ($items as $code => $item) {
+            if (is_array($item)) {
+                foreach ($item as $index => $value) {
+                    if (is_array($value) && array_key_exists('data', $value)) {
+                        $data[$code][$index]['value'] = $value['data'];
+                        unset($data[$code][$index]['data']);
+                    }
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * This is a temp method to convert "value" keys to "data" keys.
+     * This is an inconsistent between array converters & normalizers. Will be removed with PIM-4246
+     *
+     * @param array $items
+     *
+     * @return array
+     */
+    protected function convertValueToData(array $items)
+    {
+        $data = $items;
+
+        foreach ($items as $code => $item) {
+            if (is_array($item)) {
+                foreach ($item as $index => $value) {
+                    if (is_array($value) && array_key_exists('value', $value)) {
+                        $data[$code][$index]['data'] = $value['value'];
+                        unset($data[$code][$index]['value']);
+                    }
+                }
+            }
+        }
+
+        return $data;
     }
 }

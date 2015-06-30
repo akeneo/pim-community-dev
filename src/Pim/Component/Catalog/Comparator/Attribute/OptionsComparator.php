@@ -13,12 +13,23 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
  */
 class OptionsComparator implements ComparatorInterface
 {
+    /** @var array */
+    protected $types;
+
+    /**
+     * @param array $types
+     */
+    public function __construct(array $types)
+    {
+        $this->types = $types;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports($type)
     {
-        return in_array($type, ['pim_catalog_multiselect', 'pim_reference_data_multiselect']);
+        return in_array($type, $this->types);
     }
 
     /**
@@ -32,21 +43,10 @@ class OptionsComparator implements ComparatorInterface
         sort($data['value']);
         sort($originals['value']);
 
-        $codes = [];
-        foreach ($data['value'] as $index => $attribute) {
-            if (!isset($originals['value'][$index]) || $attribute !== $originals['value'][$index]) {
-                $codes[] = $attribute;
-            }
-        }
-
-        if (empty($codes)) {
+        if ($data['value'] === $originals['value']) {
             return null;
         }
 
-        return [
-            'locale' => $data['locale'],
-            'scope'  => $data['scope'],
-            'value'  => $codes,
-        ];
+        return $data;
     }
 }

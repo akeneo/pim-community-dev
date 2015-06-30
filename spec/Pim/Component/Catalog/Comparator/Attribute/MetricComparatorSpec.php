@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class MetricComparatorSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(['pim_catalog_metric']);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\ComparatorInterface');

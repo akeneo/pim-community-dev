@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class MediaComparatorSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(['pim_catalog_file', 'pim_catalog_file']);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\ComparatorInterface');
@@ -14,7 +19,7 @@ class MediaComparatorSpec extends ObjectBehavior
     function it_supports_media_type()
     {
         $this->supports('pim_catalog_file')->shouldReturn(true);
-        $this->supports('pim_catalog_image')->shouldReturn(true);
+        $this->supports('pim_catalog_file')->shouldReturn(true);
         $this->supports('other')->shouldBe(false);
     }
 

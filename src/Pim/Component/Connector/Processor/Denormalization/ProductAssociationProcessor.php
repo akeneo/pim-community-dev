@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -29,24 +30,33 @@ class ProductAssociationProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var ProductFilterInterface */
+    protected $productAssocFilter;
+
+    /** @var bool */
+    protected $enabledComparison = true;
+
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter array converter
-     * @param IdentifiableObjectRepositoryInterface $repository     product repository
-     * @param ObjectUpdaterInterface                $updater        product updater
-     * @param ValidatorInterface                    $validator      validator of the object
+     * @param StandardArrayConverterInterface       $arrayConverter     array converter
+     * @param IdentifiableObjectRepositoryInterface $repository         product repository
+     * @param ObjectUpdaterInterface                $updater            product updater
+     * @param ValidatorInterface                    $validator          validator of the object
+     * @param ProductFilterInterface                $productAssocFilter product association filter
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ProductFilterInterface $productAssocFilter
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter = $arrayConverter;
-        $this->repository     = $repository;
-        $this->updater        = $updater;
-        $this->validator      = $validator;
+        $this->arrayConverter     = $arrayConverter;
+        $this->repository         = $repository;
+        $this->updater            = $updater;
+        $this->validator          = $validator;
+        $this->productAssocFilter = $productAssocFilter;
     }
 
     /**
@@ -61,6 +71,17 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         $convertedItem = $this->convertItemData($item);
+        if ($this->getConfiguration()['enabledComparison']) {
+            $convertedItem = $this->filterIdenticalData($product, $convertedItem);
+            if (empty($convertedItem)) {
+                if ($this->stepExecution) {
+                    $this->stepExecution->incrementSummaryInfo('skip');
+                }
+
+                return null;
+            }
+        }
+
         try {
             $this->updateProduct($product, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
@@ -73,6 +94,53 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         return $product;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return [
+            'enabledComparison' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.import.enabledComparison.label',
+                    'help'  => 'pim_connector.import.enabledComparison.help'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * Set whether or not the comparison between original values and imported values should be activated
+     *
+     * @param bool $enabledComparison
+     */
+    public function setEnabledComparison($enabledComparison)
+    {
+        $this->enabledComparison = $enabledComparison;
+    }
+
+    /**
+     * Whether or not the comparison between original values and imported values is activated
+     *
+     * @return bool
+     */
+    public function isEnabledComparison()
+    {
+        return $this->enabledComparison;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $convertedItem
+     *
+     * @return array
+     */
+    protected function filterIdenticalData(ProductInterface $product, array $convertedItem)
+    {
+        return $this->productAssocFilter->filter($product, $convertedItem);
     }
 
     /**

@@ -22,6 +22,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -2128,6 +2129,10 @@ class FixturesContext extends RawMinkContext
             ->getContainer()
             ->get('pim_installer.fixture_loader.configuration_registry')
             ->getProcessor($type, $format);
+
+        if ($processor instanceof ProductProcessor) {
+            $processor->setEnabledComparison(false);
+        }
 
         $entity = $processor->process($data);
 

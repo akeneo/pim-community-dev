@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class ScalarComparatorSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(['family', 'variant_group']);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\ComparatorInterface');

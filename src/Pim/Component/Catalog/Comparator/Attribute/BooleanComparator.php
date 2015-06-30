@@ -13,14 +13,23 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
  */
 class BooleanComparator implements ComparatorInterface
 {
+    /** @var array */
+    protected $types;
+
+    /**
+     * @param array $types
+     */
+    public function __construct(array $types)
+    {
+        $this->types = $types;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports($type)
     {
-        return in_array($type, [
-            'pim_catalog_boolean',
-        ]);
+        return in_array($type, $this->types);
     }
 
     /**
@@ -32,7 +41,7 @@ class BooleanComparator implements ComparatorInterface
         $originals = array_merge($default, $originals);
 
         $isNull = null === $originals['value'] && null === $data['value'];
-        $isEquals = (bool) $originals['value'] === (bool) $data['value'];
+        $isEquals = $originals['value'] === (bool) $data['value'];
 
         if ($isNull || $isEquals) {
             return null;
