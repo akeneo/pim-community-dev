@@ -90,5 +90,4 @@ class EnterpriseWebUser extends BaseWebUser
     {
         return parent::theLocaleSwitcherShouldContainTheFollowingItems($table, $page);
     }
-
 }
