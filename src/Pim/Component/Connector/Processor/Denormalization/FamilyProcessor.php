@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Builder\FamilyBuilderInterface;
+use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -28,26 +29,26 @@ class FamilyProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var FamilyBuilderInterface */
-    protected $familyBuilder;
+    /** @var FamilyFactory */
+    protected $familyFactory;
 
     /**
      * @param StandardArrayConverterInterface       $familyConverter
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param FamilyBuilderInterface                $familyBuilder
+     * @param FamilyFactory                         $familyFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         StandardArrayConverterInterface $familyConverter,
-        FamilyBuilderInterface $familyBuilder,
+        FamilyFactory $familyFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
         $this->arrayConverter = $familyConverter;
-        $this->familyBuilder  = $familyBuilder;
+        $this->familyFactory  = $familyFactory;
         $this->updater        = $updater;
         $this->validator      = $validator;
     }
@@ -93,7 +94,7 @@ class FamilyProcessor extends AbstractProcessor
     {
         $family = $this->findObject($this->repository, $convertedItem);
         if (null === $family) {
-            return $this->familyBuilder->createFamily(true);
+            return $this->familyFactory->createFamily();
         }
 
         return $family;

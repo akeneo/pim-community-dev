@@ -1,4 +1,5 @@
 parameters:
+    pim_catalog.factory.family.class:                Pim\Bundle\CatalogBundle\Factory\FamilyFactory
     pim_catalog.factory.attribute_requirement.class: Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory
     pim_catalog.factory.media.class:                 Pim\Bundle\CatalogBundle\Factory\MediaFactory
     pim_catalog.factory.metric.class:                Pim\Bundle\CatalogBundle\Factory\MetricFactory
@@ -8,6 +9,13 @@ parameters:
     pim_catalog.factory.association_type.class:      Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory
 
 services:
+    pim_catalog.factory.family:
+        class: %pim_catalog.factory.family.class%
+        arguments:
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.factory.attribute_requirement'
+            - '@pim_catalog.repository.attribute'
+
     pim_catalog.factory.attribute_requirement:
         class: %pim_catalog.factory.attribute_requirement.class%
 

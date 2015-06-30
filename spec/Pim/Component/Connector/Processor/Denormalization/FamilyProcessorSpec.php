@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\FamilyBuilder;
+use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
@@ -20,12 +20,12 @@ class FamilyProcessorSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $repository,
         StandardArrayConverterInterface $familyConverter,
-        FamilyBuilder $familyBuilder,
+        FamilyFactory $familyFactory,
         ObjectUpdaterInterface $familyUpdater,
         ValidatorInterface $validator,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($repository, $familyConverter, $familyBuilder, $familyUpdater, $validator);
+        $this->beConstructedWith($repository, $familyConverter, $familyFactory, $familyUpdater, $validator);
         $this->setStepExecution($stepExecution);
     }
 

@@ -97,6 +97,6 @@ services:
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_connector.array_converter.flat.family'
-            - '@pim_catalog.builder.family'
+            - '@pim_catalog.factory.family'
             - '@pim_catalog.updater.family'
             - '@pim_catalog.validator.product'

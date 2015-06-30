@@ -83,7 +83,7 @@ services:
         parent: pim_transform.transformer.entity
         arguments:
             - '@pim_transform.transformer.registry'
-            - '@pim_catalog.builder.family'
+            - '@pim_catalog.factory.family'
             - %pim_catalog.entity.attribute_requirement.class%
         tags:
             - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.family.class% }

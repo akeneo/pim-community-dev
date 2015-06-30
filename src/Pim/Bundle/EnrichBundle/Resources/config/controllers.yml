@@ -104,7 +104,7 @@ services:
         arguments:
             - '@pim_catalog.manager.family'
             - '@pim_catalog.manager.channel'
-            - '@pim_catalog.builder.family'
+            - '@pim_catalog.factory.family'
             - '@pim_enrich.form.handler.family'
             - '@pim_enrich.form.family'
             - '@pim_catalog.saver.family'

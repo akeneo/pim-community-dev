@@ -5,8 +5,11 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Builder\FamilyBuilderInterface;
+use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
+use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -25,20 +28,38 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     protected $familyRepository;
 
-    /** @var FamilyBuilderInterface */
-    protected $familyBuilder;
+    /** @var FamilyFactory */
+    protected $familyFactory;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var AttributeRequirementFactory */
+    protected $attrRequiFactory;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $familyRepository
-     * @param FamilyBuilderInterface                $familyBuilder
+     * @param FamilyFactory $familyFactory
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param AttributeRequirementFactory $attrRequiFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
-        FamilyBuilderInterface $familyBuilder
+        FamilyFactory $familyFactory,
+        AttributeRepositoryInterface $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        AttributeRequirementFactory $attrRequiFactory
     ) {
-        $this->accessor         = PropertyAccess::createPropertyAccessor();
-        $this->familyRepository = $familyRepository;
-        $this->familyBuilder    = $familyBuilder;
+        $this->accessor            = PropertyAccess::createPropertyAccessor();
+        $this->familyRepository    = $familyRepository;
+        $this->familyFactory       = $familyFactory;
+        $this->attributeRepository = $attributeRepository;
+        $this->channelRepository   = $channelRepository;
+        $this->attrRequiFactory    = $attrRequiFactory;
     }
 
     /**
@@ -70,15 +91,89 @@ class FamilyUpdater implements ObjectUpdaterInterface
     protected function setData(FamilyInterface $family, $field, $data)
     {
         if ('labels' === $field) {
-            $this->familyBuilder->setLabels($family, $data);
+            $this->setLabels($family, $data);
         } elseif ('requirements' === $field) {
-            $this->familyBuilder->setAttributeRequirements($family, $data);
+            $this->setAttributeRequirements($family, $data);
         } elseif ('attributes' === $field) {
-            $this->familyBuilder->addAttributes($family, $data);
+            $this->addAttributes($family, $data);
         } elseif ('attribute_as_label' === $field) {
-            $this->familyBuilder->setAttributeAsLabel($family, $data);
+            $this->setAttributeAsLabel($family, $data);
         } else {
             $this->accessor->setValue($family, $field, $data);
+        }
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param array           $data
+     */
+    protected function setLabels(FamilyInterface $family, array $data)
+    {
+        foreach ($data as $localeCode => $label) {
+            $family->setLocale($localeCode);
+            $translation = $family->getTranslation();
+            $translation->setLabel($label);
+        }
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param array           $data
+     */
+    protected function setAttributeRequirements(FamilyInterface $family, array $data)
+    {
+        $requirements = [];
+        foreach ($data as $channelCode => $attributeCodes) {
+            foreach ($attributeCodes as $attributeCode) {
+                if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode)) {
+                    if (null !== $channel = $this->channelRepository->findOneByIdentifier($channelCode)) {
+                        $requirements[] = $this->attrRequiFactory
+                            ->createAttributeRequirement($attribute, $channel, true);
+                    } else {
+                        throw new \InvalidArgumentException(
+                            sprintf('Channel with "%s" code does not exist', $channelCode)
+                        );
+                    }
+                } else {
+                    throw new \InvalidArgumentException(
+                        sprintf('Attribute with "%s" code does not exist', $attributeCode)
+                    );
+                }
+            }
+        }
+
+        $family->setAttributeRequirements($requirements);
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param array           $data
+     */
+    protected function addAttributes(FamilyInterface $family, array $data)
+    {
+        foreach ($data as $attributeCode) {
+            if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode)) {
+                $family->addAttribute($attribute);
+            } else {
+                throw new \InvalidArgumentException(
+                    sprintf('Attribute with "%s" code does not exist', $attributeCode)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param $data
+     */
+    protected function setAttributeAsLabel(FamilyInterface $family, $data)
+    {
+        if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($data)) {
+            $family->setAttributeAsLabel($attribute);
+        } else {
+            throw new \InvalidArgumentException(
+                sprintf('Attribute with "%s" code does not exist', $data)
+            );
         }
     }
 }
