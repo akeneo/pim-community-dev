@@ -8,4 +8,4 @@ services:
         factory_method: getRepository
         arguments: [%akeneo_file_storage.model.file.class%]
         tags:
-            - { name: 'pim_repository' }
+            - { name: 'akeneo_repository' }
