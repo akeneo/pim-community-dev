@@ -12,9 +12,12 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, ProductCategoryManager $manager)
-    {
-        $this->beConstructedWith($factory, $utility, $manager);
+    function let(
+        FormFactoryInterface $factory,
+        ProductFilterUtility $utility,
+        CategoryRepositoryInterface $categoryRepo
+    ) {
+        $this->beConstructedWith($factory, $utility, $categoryRepo);
     }
 
     function it_is_an_oro_number_filter()
@@ -22,21 +25,17 @@ class CategoryFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\NumberFilter');
     }
 
-    function it_applies_a_filter_on_all_products(
-        FilterDatasourceAdapterInterface $datasource,
-        $utility
-    ) {
+    function it_applies_a_filter_on_all_products(FilterDatasourceAdapterInterface $datasource)
+    {
         $this->apply($datasource, ['value' => ['categoryId' => -2]])->shouldReturn(true);
     }
 
     function it_applies_a_filter_by_unclassified_products(
-        FilterDatasourceAdapterInterface $datasource,
         $utility,
-        $manager,
+        FilterDatasourceAdapterInterface $datasource,
         CategoryRepositoryInterface $repo,
         CategoryInterface $tree
     ) {
-        $manager->getCategoryRepository()->willReturn($repo);
         $tree->getId()->willReturn(1);
         $repo->find(1)->willReturn($tree);
         $repo->getAllChildrenIds($tree)->willReturn([2, 3]);
