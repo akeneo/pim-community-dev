@@ -19,6 +19,8 @@ interface FileInterface
     public function getId();
 
     /**
+     * The key of the file can be either its pathname or a unique identifier.
+     *
      * @return string
      */
     public function getKey();
@@ -103,11 +105,15 @@ interface FileInterface
     public function setStorage($storage);
 
     /**
+     * TODO: drop it asap
+     *
      * @return UploadedFile
      */
     public function getUploadedFile();
 
     /**
+     * TODO: drop it asap
+     *
      * @param UploadedFile $uploadedFile
      *
      * @return FileInterface|null

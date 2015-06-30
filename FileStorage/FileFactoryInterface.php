@@ -14,9 +14,9 @@ use Akeneo\Component\FileStorage\Model\FileInterface;
 interface FileFactoryInterface
 {
     /**
-     * @param \SplFileInfo $rawFile
-     * @param array        $pathInfo
-     * @param string       $destFsAlias
+     * @param \SplFileInfo $rawFile     the raw file to create a File with
+     * @param array        $pathInfo    the path infos of the file returned by a PathGeneratorInterface
+     * @param string       $destFsAlias the filesystem alias where the file will be stored
      *
      * @return FileInterface
      */
