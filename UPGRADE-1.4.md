@@ -4,6 +4,83 @@
 
 > Please perform a backup of your codebase if you don't use any VCS.
 
+## UPGRADE OF DOCTRINE ORM FROM 2.4.7 TO 2.5.*
+
+### Dependencies
+
+We bumped the following dependencies:
++        "doctrine/cache": "1.4.0",
++        "doctrine/common": "2.5.0",
++        "doctrine/data-fixtures": "1.1.1",
++        "doctrine/doctrine-bundle": "1.4.0",
++        "doctrine/orm": "2.5.0",
++        "symfony/console": "~2.5.0", // notice, and we bumped again with the use of Symfony 2.7
+
+### isNull/isNotNull
+
+The main change is that we cannot rely on a simple join alias with isNull and isNotNull:
+    $qb
+        ->leftJoin('pa.products', 'products')
+        ->leftJoin('pa.groups', 'groups')
+        ->where(
+            $qb->expr()->orX(
+                $qb->expr()->isNotNull('products'), // we now need to use products.id 
+                $qb->expr()->isNotNull('groups') // we now need to use groups.id
+            )
+        );
+
+### Extra Details
+
+You can found more details of what have been fixed in the following PR https://github.com/akeneo/pim-community-dev/pull/2470
+
+## UPGRADE OF SYMFONY FROM 2.3.* TO 2.7.*
+
+### Dependencies [WIP]
+
+We bumped the following dependencies: [TODO]
+
+### Yaml Component
+
+Yaml::parse($path) now expects the file content, so we replace the uses by Yaml::parse(file_get_contents($path)). 
+
+### DependencyInjection Component [TODO]
+
+Change factory_service configuration, cf YamlFileLoader
+
+### OptionsResolver Component
+
+Replace deprecated uses of OptionsResolver::setOptional() by OptionsResolver::setDefined()
+
+Replace deprecated uses of OptionsResolver::setAllowedTypes(array) by calls with a single option OptionsResolver::setAllowedTypes($option, $type)  
+
+Replace uses of InvalidOptionsException by UndefinedOptionsException.
+
+### Security Component [TODO]
+
+Re-think the deprecated SecurityContextInterface topic which has been splitted in two interfaces AuthorizationCheckerInterface and TokenStorageInterface.
+
+We don't often use both interfaces in the same service.
+
+The use of SecurityFacade may be replaced by http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/security.html
+
+### Validator Component [TODO]
+
+For now, to be able to install the PIM,
+ - we introduce a %deprecated_validator_25.class% parameter to define the old validator class and use it in 'pim_validator'
+ - we hot fix the ProductImportValidator by injecting the 'pim_validator' inside
+
+The validation engine has been replaced, both options are:
+ - use the deprecated one (will be removed in 3.0)
+ - try to direct update our code to use the new one
+
+### Extra details
+
+For more details, please refer to official Symfony upgrade docs:
+  - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.4.md
+  - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.5.md
+  - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.6.md
+  - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.7.md
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.

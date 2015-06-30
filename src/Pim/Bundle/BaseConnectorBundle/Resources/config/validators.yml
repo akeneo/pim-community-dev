@@ -20,8 +20,8 @@ services:
 
     pim_base_connector.validator.product_import:
         class: %pim_base_connector.validator.product_import.class%
-        parent: pim_base_connector.validator.import
         arguments:
+            - '@pim_validator'
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
             - '@pim_catalog.manager.product'
 

@@ -59,15 +59,12 @@ class ProductSavingOptionsResolver implements SavingOptionsResolverInterface
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush', 'recalculate', 'schedule', 'flush_only_object']);
-        $resolver->setAllowedTypes(
-            [
-                'flush'             => 'bool',
-                'recalculate'       => 'bool',
-                'schedule'          => 'bool',
-                'flush_only_object' => 'bool'
-            ]
-        );
+        $resolver->setDefined(['flush', 'recalculate', 'schedule', 'flush_only_object']);
+
+        $resolver->setAllowedTypes('flush', 'bool');
+        $resolver->setAllowedTypes('recalculate', 'bool');
+        $resolver->setAllowedTypes('schedule', 'bool');
+        $resolver->setAllowedTypes('flush_only_object', 'bool');
 
         return $resolver;
     }

@@ -55,13 +55,9 @@ class CompletenessSavingOptionsResolver implements SavingOptionsResolverInterfac
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush', 'schedule']);
-        $resolver->setAllowedTypes(
-            [
-                'flush'    => 'bool',
-                'schedule' => 'bool'
-            ]
-        );
+        $resolver->setDefined(['flush', 'schedule']);
+        $resolver->setAllowedTypes('flush', 'bool');
+        $resolver->setAllowedTypes('schedule', 'bool');
 
         return $resolver;
     }

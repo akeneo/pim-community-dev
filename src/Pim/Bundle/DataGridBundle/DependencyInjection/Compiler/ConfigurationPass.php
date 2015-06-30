@@ -40,7 +40,7 @@ class ConfigurationPass implements CompilerPassInterface
             $files = $this->listDatagridFiles($container);
 
             foreach ($files as $file) {
-                $gridConfig = Yaml::parse($file->getPathName());
+                $gridConfig = Yaml::parse(file_get_contents($file->getPathName()));
                 if (isset($gridConfig[OroConfigurationPass::ROOT_PARAMETER]) &&
                     is_array($gridConfig[OroConfigurationPass::ROOT_PARAMETER])
                 ) {

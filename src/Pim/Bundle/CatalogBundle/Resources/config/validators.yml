@@ -1,4 +1,5 @@
 parameters:
+    deprecated_validator_25.class:                                   Symfony\Component\Validator\Validator
     pim_catalog.validator.helper.attribute.class:                    Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper
     pim_catalog.validator.constraint.valid_metric.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
     pim_catalog.validator.constraint.single_identifier.class:        Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttributeValidator
@@ -205,8 +206,9 @@ services:
             - [ 'addMetadataFactory', [ '@pim_catalog.validator.mapping.product_value_metadata_factory' ] ]
             - [ 'addMetadataFactory', [ '@validator.mapping.class_metadata_factory' ] ]
 
+    # TODO: we use the deprecated validator here
     pim_validator:
-        class: %validator.class%
+        class: %deprecated_validator_25.class%
         arguments:
             - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
             - '@validator.validator_factory'

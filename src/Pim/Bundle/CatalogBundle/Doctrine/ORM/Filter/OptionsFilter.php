@@ -149,6 +149,6 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
     protected function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['field']);
-        $resolver->setOptional(['locale', 'scope']);
+        $resolver->setDefined(['locale', 'scope']);
     }
 }

@@ -97,7 +97,7 @@ class AjaxEntityType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array('class'));
-        $resolver->setOptional(array('locale', 'url'));
+        $resolver->setDefined(array('locale', 'url'));
         $resolver->setDefaults(
             array(
                 'multiple'              => false,
