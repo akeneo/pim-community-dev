@@ -20,6 +20,7 @@ class ProductAssociationWriter extends BaseWriter
             foreach ($product->getAssociations() as $association) {
                 $count = count($association->getProducts()) + count($association->getGroups());
 
+                //TODO avoid implicit null ===
                 $action = $association->getId() ? 'update' : 'create';
 
                 for ($i = 0; $i < $count; $i++) {

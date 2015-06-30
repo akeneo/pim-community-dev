@@ -64,6 +64,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper
     ) {
+        //TODO align
         $this->attrFieldExtractor = $attrFieldExtractor;
         $this->converterRegistry = $converterRegistry;
         $this->assocColumnsResolver = $assocColumnsResolver;

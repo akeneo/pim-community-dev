@@ -21,7 +21,7 @@ class MediaComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return in_array($type, ['pim_catalog_file', 'pim_catalog_image']);
+        return in_array($type, ['pim_catalog_file', 'pim_catalog_image']);//TODO: we should use an instance variable for extensibility purpose
     }
 
     /**

@@ -19,7 +19,7 @@ class MultiSelectConverter extends AbstractValueConverter
      */
     public function __construct(FieldSplitter $fieldSplitter, array $supportedFieldType)
     {
-        parent::__construct($fieldSplitter);
+        parent::__construct($fieldSplitter);//TODO add a blank line after
         $this->supportedFieldType = $supportedFieldType;
     }
 
@@ -28,7 +28,7 @@ class MultiSelectConverter extends AbstractValueConverter
      */
     public function convert(array $attributeFieldInfo, $value)
     {
-        if ('' !== $value) {
+        if ('' !== $value) {//TODO use a ternary operand
             $value = $this->fieldSplitter->splitCollection($value);
         } else {
             $value = [];

@@ -289,6 +289,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
             } else {
                 foreach ($values as $newValue) {
                     $newKey = $code;
+                    //TODO: please add spaces arround points
                     $newKey .= isset($value['locale']) ? '-'.$value['locale'] : '';
                     $newKey .= isset($value['scope']) ? '-'.$value['scope'] : '';
                     foreach ($originalValues[$code] as $currentIndex => $currentValue) {

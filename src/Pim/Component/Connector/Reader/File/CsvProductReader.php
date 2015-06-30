@@ -100,7 +100,7 @@ class CsvProductReader extends CsvReader
             $value = trim($value);
 
             if (in_array($attributeCode, $this->getMediaAttributes()) && !empty($value)) {
-                $data[$code] = dirname($this->filePath) . '/' . $value;
+                $data[$code] = dirname($this->filePath) . '/' . $value;//TODO: use sprintf ?
             }
         }
 

@@ -18,7 +18,7 @@ class ScalarComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return in_array($type, [
+        return in_array($type, [//TODO: we should use a instance variable for extension purpose
             'pim_catalog_date',
             'pim_catalog_identifier',
             'pim_catalog_number',

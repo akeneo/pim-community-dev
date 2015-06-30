@@ -65,7 +65,7 @@ class CategoryStandardConverter implements StandardArrayConverterInterface
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
         } else {
-            switch ($field) {
+            switch ($field) {//TODO sitch does not seems necessary
                 case 'code':
                 case 'parent':
                     $convertedItem[$field] = (string) $data;

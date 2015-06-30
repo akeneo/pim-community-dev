@@ -114,7 +114,7 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
         if (false !== strpos($field, 'label-', 0)) {
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
-            $convertedItem['labels'][$labelLocale] = $data;
+            $convertedItem['labels'][$labelLocale] = $data;//TODO $localeLabel
         } else {
             switch ($field) {
                 case 'code':

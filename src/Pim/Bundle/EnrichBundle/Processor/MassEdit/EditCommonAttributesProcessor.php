@@ -46,7 +46,7 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
         JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         parent::__construct($jobConfigurationRepo);
-
+        //TODO: please align
         $this->propertySetter = $propertySetter;
         $this->validator           = $validator;
         $this->attributeRepository = $attributeRepository;

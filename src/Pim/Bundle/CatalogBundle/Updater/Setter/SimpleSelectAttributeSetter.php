@@ -125,7 +125,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
      * @return AttributeOptionInterface|null
      */
     protected function getOption(AttributeInterface $attribute, $optionCode)
-    {
+    {//TODO: please add spaces arround '.'
         $identifier = $attribute->getCode().'.'.$optionCode;
         $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
 

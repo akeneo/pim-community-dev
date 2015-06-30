@@ -79,6 +79,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     ) {
         parent::__construct($managerRegistry, $entityClass);
 
+        //TODO: please align
         $this->productBuilder    = $productBuilder;
         $this->attFieldExtractor  = $attFieldExtractor;
         $this->assocFieldResolver = $assocFieldResolver;

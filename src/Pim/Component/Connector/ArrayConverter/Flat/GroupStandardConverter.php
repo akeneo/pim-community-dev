@@ -76,7 +76,7 @@ class GroupStandardConverter implements StandardArrayConverterInterface
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
         } else {
-            switch ($field) {
+            switch ($field) {//TODO switch does not seems to be mandatory here :)
                 case 'code':
                 case 'type':
                     $convertedItem[$field] = $data;

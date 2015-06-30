@@ -18,7 +18,7 @@ class OptionsComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return in_array($type, ['pim_catalog_multiselect', 'pim_reference_data_multiselect']);
+        return in_array($type, ['pim_catalog_multiselect', 'pim_reference_data_multiselect']); //TODO: we should use a instance variable for extensibility purpose
     }
 
     /**

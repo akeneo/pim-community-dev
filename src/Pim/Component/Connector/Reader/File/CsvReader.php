@@ -228,6 +228,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
         $data = $this->csv->fgetcsv();
 
         if (false !== $data) {
+            //TODO: seems weird [null] === $data
             if ([null] === $data || null === $data) {
                 return null;
             }

@@ -19,7 +19,7 @@ class MediaConverter extends AbstractValueConverter
      */
     public function __construct(FieldSplitter $fieldSplitter, array $supportedFieldType)
     {
-        parent::__construct($fieldSplitter);
+        parent::__construct($fieldSplitter);//TODO add a blank line after
         $this->supportedFieldType = $supportedFieldType;
     }
 

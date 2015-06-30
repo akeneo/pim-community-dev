@@ -18,7 +18,7 @@ class BooleanComparator implements ComparatorInterface
      */
     public function supports($type)
     {
-        return in_array($type, [
+        return in_array($type, [//TODO: we should use an instance variable for extensibility purpose
             'pim_catalog_boolean',
         ]);
     }
