@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Product;
+namespace Pim\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;

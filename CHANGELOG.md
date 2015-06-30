@@ -131,6 +131,7 @@
 - Change `Pim\Bundle\CatalogBundle\Manager\CategoryManager`, updated method `getEntityRepository` to return return a `Pim\Component\Classification\Repository\CategoryRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\CategoryTreeController`, added `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` and `Pim\Component\Classification\Repository\CategoryRepositoryInterface` as last arguments
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController`, added `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` as last argument 
+- Move `Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter` to `Pim\Bundle\FilterBundle\Filter\CategoryFilter`
 
 # 1.3.16 (2015-06-08)
 
