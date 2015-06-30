@@ -46,7 +46,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pim_catalog.manager.product_category'
+            - '@pim_catalog.repository.category'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_category }
 
