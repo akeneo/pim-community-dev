@@ -2,11 +2,11 @@
 
 namespace spec\Akeneo\Component\FileStorage;
 
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use Prophecy\Argument;
 
 class FileMoverSpec extends ObjectBehavior

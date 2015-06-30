@@ -2,6 +2,7 @@
 
 namespace spec\Akeneo\Component\FileStorage\RawFile;
 
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\FileFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileStorage\PathGeneratorInterface;
@@ -10,9 +11,7 @@ use League\Flysystem\FileExistsException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use Prophecy\Argument;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 class RawFileStorerSpec extends ObjectBehavior
 {
