@@ -29,18 +29,14 @@ define(
             className: 'btn-group',
             submitTemplate: _.template(submitTemplate),
             modifiedByDraftTemplate: _.template(modifiedByDraftTemplate),
-            draft: undefined,
+            productId: null,
+            isOutdated: true,
             events: {
                 'click .submit-draft': 'submitDraft'
             },
-            initialize: function () {
-                this.draft = new Backbone.Model();
-
-                this.listenTo(this.draft, 'change', this.render);
-            },
             configure: function () {
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
-                this.listenTo(mediator, 'product:action:post_update', this.reloadProductDraft);
+                this.listenTo(mediator, 'product:action:pre_save', this.onProductPreSave);
 
                 this.stopListening(mediator, 'field:extension:add');
                 this.listenTo(mediator, 'field:extension:add', this.addExtension);
@@ -49,25 +45,48 @@ define(
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
             },
+            onProductPostFetch: function (event) {
+                this.productId = event.product.meta.id;
+                event.promises.push(this.loadProductDraft(event.product));
+            },
+            onProductPreSave: function() {
+                this.clearDraft();
+            },
             addExtension: function (event) {
                 var field = event.field;
-                if (this.isValueChanged(field)) {
-                    var $element = this.modifiedByDraftTemplate();
-                    field.addElement('label', 'modified_by_draft', $element);
-                }
+
+                event.promises.push(
+                    this.isValueChanged(field)
+                        .then(_.bind(function (isValueChanged) {
+                            if (isValueChanged) {
+                                var $element = this.modifiedByDraftTemplate();
+                                field.addElement('label', 'modified_by_draft', $element);
+                            }
+                        }, this))
+                );
 
                 return this;
             },
-            onProductPostFetch: function (event) {
-                event.promises.push(this.loadProductDraft(event.product));
+            getDraft: function () {
+                return FetcherRegistry.getFetcher('product-draft')
+                    .fetchForProduct(this.productId)
+                    .then(_.bind(function (draft) {
+                        if (this.isOutdated) {
+                            this.render();
+                        }
+
+                        return draft;
+                    }, this));
+            },
+            clearDraft: function() {
+                this.isOutdated = true;
+                return FetcherRegistry.getFetcher('product-draft')
+                    .clear(this.productId);
             },
             loadProductDraft: function (productData) {
-                return FetcherRegistry.getFetcher('product-draft')
-                    .fetchForProduct(productData.meta.id)
-                    .then(_.bind(function (daftData) {
-                        this.updateProductDraft(daftData);
-                        var changes = this.draft.get('changes');
-
+                return this.getDraft()
+                    .then(_.bind(function (draft) {
+                        var changes = draft.changes;
                         if (changes && changes.values) {
                             productData.values = _.extend(
                                 productData.values || {},
@@ -76,59 +95,57 @@ define(
                         }
                     }, this));
             },
-            reloadProductDraft: function (productData) {
-                var fetcher = FetcherRegistry.getFetcher('product-draft');
-                fetcher.clear(productData.meta.id);
-                fetcher
-                    .fetchForProduct(productData.meta.id)
-                    .then(_.bind(function (daftData) {
-                        this.updateProductDraft(daftData);
-                    }, this));
-            },
-            updateProductDraft: function (daftData) {
-                this.draft.set(daftData);
-            },
             isValueChanged: function (field) {
                 var attribute = field.attribute;
 
-                var changes = this.draft.get('changes');
-                if (!changes || !changes.values || !_.has(changes.values, attribute.code)) {
-                    return false;
-                }
+                return this.getDraft()
+                    .then(function (draft) {
+                        var changes = draft.changes;
+                        if (!changes || !changes.values || !_.has(changes.values, attribute.code)) {
+                            return false;
+                        }
 
-                return undefined !== AttributeManager.getValue(
-                    changes.values[attribute.code],
-                    attribute,
-                    field.context.locale,
-                    field.context.scope
-                );
+                        return undefined !== AttributeManager.getValue(
+                            changes.values[attribute.code],
+                            attribute,
+                            field.context.locale,
+                            field.context.scope
+                        );
+                    });
             },
             render: function () {
-                if (undefined !== this.draft.get('status')) {
-                    this.$el.html(
-                        this.submitTemplate({
-                            'submitted': this.draft.get('status') !== 0
-                        })
-                    );
-                    this.delegateEvents();
-                    this.$el.removeClass('hidden');
-                } else {
-                    this.$el.addClass('hidden');
-                }
+                this.getDraft()
+                    .then(_.bind(function (draft) {
+                        if (undefined !== draft.status) {
+                            this.$el.html(
+                                this.submitTemplate({
+                                    'submitted': draft.status !== 0
+                                })
+                            );
+                            this.delegateEvents();
+                            this.$el.removeClass('hidden');
+                        } else {
+                            this.$el.addClass('hidden');
+                        }
+
+                        this.isOutdated = false;
+                    }, this));
 
                 return this;
             },
             submitDraft: function () {
-                FetcherRegistry.getFetcher('product-draft').sendForApproval(this.draft.toJSON()).done(
-                    _.bind(function (data) {
-                        this.updateProductDraft(data);
-
+                this.getDraft()
+                    .then(function (draft) {
+                        return FetcherRegistry.getFetcher('product-draft').sendForApproval(draft)
+                    })
+                    .then(function () {
                         messenger.notificationFlashMessage(
                             'success',
                             _.__('pimee_enrich.entity.product_draft.flash.sent_for_approval')
                         );
-                    }, this)
-                );
+                    });
+
+                return this;
             }
         });
     }
