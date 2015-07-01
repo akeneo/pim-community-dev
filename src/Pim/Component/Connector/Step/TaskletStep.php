@@ -1,9 +1,10 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Step;
+namespace Pim\Component\Connector\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
+use Pim\Component\Connector\Step\TaskletInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

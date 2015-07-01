@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Step;
+namespace Pim\Component\Connector\Step;
 
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
