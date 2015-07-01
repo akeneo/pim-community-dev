@@ -24,7 +24,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('datagrid', new EnterpriseDataGridContext());
         $this->useContext('navigation', new EnterpriseNavigationContext());
         $this->useContext('transformations', new TransformationContext());
-        $this->useContext('assertions', new AssertionContext());
+        $this->useContext('assertions', new EnterpriseAssertionContext());
         $this->useContext('technical', new TechnicalContext());
         $this->useContext('command', new EnterpriseCommandContext());
     }
@@ -456,6 +456,24 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
 
         $this->wait();
+    }
+
+    /**
+     * @Given /^I start to manage assets for "(?P<field>(?:[^"]|\\")*)"$/
+     */
+    public function iStartToManageAssetsOnAttributeFrontView($field)
+    {
+        $manageAssets = $this->spin(function () use ($field) {
+            return $this->getSubcontext('navigation')->getCurrentPage()->findFieldContainer($field)->getParent()
+                ->find('css', '.add-asset');
+        });
+
+        $manageAssets->click();
+
+        $this->spin(function () {
+            return $this->getSession()->getPage()
+                ->find('css', '#grid-product-asset-grid[data-rendered="true"]');
+        });
     }
 
     protected function getAttributeIcon($iconSelector, $attributeLabel)

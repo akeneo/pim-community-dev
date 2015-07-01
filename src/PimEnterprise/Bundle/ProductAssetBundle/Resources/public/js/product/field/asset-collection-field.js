@@ -32,13 +32,13 @@ define(
             getTemplateContext: function () {
                 return $.when(
                     Field.prototype.getTemplateContext.apply(this, arguments),
-                    FetcherRegistry.getFetcher('asset').findByIdentifiers(this.getCurrentValue().value)
+                    FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.getCurrentValue().value)
                 ).then(_.bind(function (templateContext, assets) {
                     templateContext.assets = _.map(this.getCurrentValue().value, function (assetCode) {
                         return _.findWhere(assets, {code: assetCode});
                     });
                     templateContext.Routing = Routing;
-                    console.log(templateContext);
+
                     return templateContext;
                 }, this));
             },
@@ -68,10 +68,10 @@ define(
                         },
                         allowCancel: true,
                         okCloses: false,
-                        title: _.__('pim_enrich.form.attribute_option.add_option_modal.title'),
+                        title: _.__('pimee_product_asset.form.product.asset.manage_asset.title'),
                         content: '',
-                        cancelText: _.__('pim_enrich.form.attribute_option.add_option_modal.cancel'),
-                        okText: _.__('pim_enrich.form.attribute_option.add_option_modal.confirm')
+                        cancelText: _.__('pimee_product_asset.form.product.asset.manage_asset.cancel'),
+                        okText: _.__('pimee_product_asset.form.product.asset.manage_asset.confirm')
                     });
 
                     modal.open();
@@ -82,11 +82,10 @@ define(
 
                     modal.on('cancel', deferred.reject);
                     modal.on('ok', _.bind(function () {
+                        var assets = _.sortBy(form.getAssets());
                         modal.close();
 
-                        console.log(form.getAssets());
-
-                        deferred.resolve(form.getAssets());
+                        deferred.resolve(assets);
                     }, this));
                 }, this));
 

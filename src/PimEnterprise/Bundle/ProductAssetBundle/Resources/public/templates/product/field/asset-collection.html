@@ -1,13 +1,13 @@
 <div class="asset-gallery">
     <header>
-        <button class="btn btn-success pull-right add-asset"><%= _.__('pimee_product_asset.form.product.asset.add') %></button>
+        <button class="btn btn-success pull-right add-asset"><%= _.__('pimee_product_asset.form.product.asset.manage') %></button>
     </header>
     <ul>
     <% _.each(assets, function (asset) { %>
         <li>
             <div class="asset-thumbnail" style="background-image: url('<%= Routing.generate('pim_enrich_media_show', { filename: _.first(asset.references).file, filter: 'thumbnail'}) %>')"></div>
             <footer>
-                <%= asset.description.substring(0, 50) %><%= asset.description.length > 50 ? '...' : '' %>
+                <%= asset.description.substring(0, 30) %><%= asset.description.length > 30 ? '...' : '' %>
             </footer>
         </li>
     <% }); %>

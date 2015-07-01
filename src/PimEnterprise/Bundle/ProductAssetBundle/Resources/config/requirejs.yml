@@ -6,6 +6,7 @@ config:
         # Templates
         pam/template/product/field/asset-collection: pimenterpriseproductasset/templates/product/field/asset-collection.html
         pam/template/picker/asset-grid: pimenterpriseproductasset/templates/picker/asset-grid.html
+        pam/template/picker/basket: pimenterpriseproductasset/templates/picker/basket.html
 
         # Extensions
         pam/picker/asset-grid: pimenterpriseproductasset/js/picker/asset-grid

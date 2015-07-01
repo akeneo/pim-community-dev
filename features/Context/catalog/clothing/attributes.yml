@@ -359,3 +359,10 @@ attributes:
             reference_data_name: fabrics
         localizable:         true
         scopable:            true
+    front_view:
+        labels:
+            en_US: Front view
+        type:  pim_assets_collection
+        group: media
+        useableAsGridFilter: false
+        sortOrder:           50

@@ -1,0 +1,18 @@
+services:
+    pim_product_asset.updater.setter.product_asset_collection_value:
+        class: %pim_reference_data.updater.setter.reference_data_collection_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - '@pim_reference_data.repository_resolver'
+            - ['pim_assets_collection']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_product_asset.updater.copier.product_asset_collection_value:
+        class: %pim_reference_data.updater.copier.reference_data_collection_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_assets_collection']
+            - ['pim_assets_collection']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
