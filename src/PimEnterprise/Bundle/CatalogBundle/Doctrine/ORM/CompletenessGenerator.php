@@ -73,14 +73,36 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
-        $selectSql = 'SELECT av.value_id, r.locale_id , v.channel_id
-                        FROM pim_catalog_product_value_asset av
-                        JOIN pimee_product_asset_asset a ON av.asset_id = a.id
-                        JOIN pimee_product_asset_reference r ON r.asset_id = a.id
-                        JOIN pimee_product_asset_variation v ON v.reference_id = r.id
-                        GROUP BY av.value_id, r.locale_id, v.channel_id
-                        HAVING COUNT(v.file_id) > 0
-                        ORDER BY channel_id, locale_id';
+        $selectSql = 'SELECT value_id, locale_id, channel_id
+            FROM
+            (
+                SELECT av.value_id, cl.locale_id , v.channel_id, v.file_id
+
+                FROM pim_catalog_product_value_asset av
+
+                JOIN pimee_product_asset_asset a ON av.asset_id = a.id
+                JOIN pimee_product_asset_reference r ON r.asset_id = a.id
+                JOIN pimee_product_asset_variation v ON v.reference_id = r.id
+                JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id
+
+                WHERE r.locale_id IS NULL
+
+            UNION ALL
+
+                SELECT av.value_id, r.locale_id , v.channel_id, v.file_id
+
+                FROM pim_catalog_product_value_asset av
+
+                JOIN pimee_product_asset_asset a ON av.asset_id = a.id
+                JOIN pimee_product_asset_reference r ON r.asset_id = a.id
+                JOIN pimee_product_asset_variation v ON v.reference_id = r.id
+
+                WHERE r.locale_id IS NOT NULL
+            ) AS unionTable
+
+            GROUP BY value_id, locale_id, channel_id
+
+            HAVING COUNT(file_id) > 0';
 
         $createPattern = 'CREATE TEMPORARY TABLE %s (value_id INT, locale_id INT, channel_id INT) %s';
 
