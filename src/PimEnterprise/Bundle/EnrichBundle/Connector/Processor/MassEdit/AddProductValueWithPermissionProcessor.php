@@ -1,12 +1,13 @@
 <?php
 
-namespace PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
+namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\Processor\MassEdit\AddProductValueProcessor as BaseProcessor;
+use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AddProductValueProcessor;
+use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AddProductValueProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -42,7 +43,7 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
         UserManager $userManager,
         SecurityContextInterface $securityContext
     ) {
-        parent::__construct(
+        BaseProcessor::__construct(
             $propertyAdder,
             $validator,
             $jobConfigurationRepo
@@ -61,7 +62,7 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     {
         $this->initSecurityContext($this->stepExecution);
         if ($this->hasRight($product)) {
-            return parent::process($product);
+            return BaseProcessor::process($product);
         }
 
         return null;

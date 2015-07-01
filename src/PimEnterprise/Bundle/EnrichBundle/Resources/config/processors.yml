@@ -1,6 +1,6 @@
 parameters:
-    pim_enrich.mass_edit.edit_common_attributes.processor.class:              PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor
-    pimee_enrich.mass_edit.add_product_value_with_permission.processor.class: PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit\AddProductValueWithPermissionProcessor
+    pim_enrich.mass_edit.edit_common_attributes.processor.class:              PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\EditCommonAttributesProcessor
+    pimee_enrich.mass_edit.add_product_value_with_permission.processor.class: PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\AddProductValueWithPermissionProcessor
 
 services:
     # overriden processor from CE

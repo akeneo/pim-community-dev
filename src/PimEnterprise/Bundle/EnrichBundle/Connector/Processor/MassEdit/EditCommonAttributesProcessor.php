@@ -1,13 +1,13 @@
 <?php
 
-namespace PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
+namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor as BaseProcessor;
+use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -44,7 +44,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         UserManager $userManager,
         SecurityContextInterface $securityContext
     ) {
-        parent::__construct(
+        \Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\parent::__construct(
             $propertySetter,
             $validator,
             $massActionRepository,
@@ -65,7 +65,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
     {
         $this->initSecurityContext($this->stepExecution);
 
-        return parent::process($product);
+        return \Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\parent::process($product);
     }
 
     /**
