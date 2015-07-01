@@ -48,13 +48,13 @@ class ProductDraftApplierSpec extends ObjectBehavior
     {
         $productDraft->getChanges()->willReturn(['values' => [
                 'name' => [
-                    ['value' => 'Test', 'locale' => null, 'scope' => null]
+                    ['data' => 'Test', 'locale' => null, 'scope' => null]
                 ],
                 'description' => [
-                    ['value' => 'Description EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['value' => 'Description EN print', 'locale' => 'en_US', 'scope' => 'print'],
-                    ['value' => 'Description FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['value' => 'Description FR print', 'locale' => 'fr_FR', 'scope' => 'print'],
+                    ['data' => 'Description EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'Description EN print', 'locale' => 'en_US', 'scope' => 'print'],
+                    ['data' => 'Description FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'Description FR print', 'locale' => 'fr_FR', 'scope' => 'print'],
                 ]
             ]
         ]);
