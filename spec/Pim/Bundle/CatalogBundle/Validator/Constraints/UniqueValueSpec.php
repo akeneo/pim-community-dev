@@ -13,7 +13,9 @@ class UniqueValueSpec extends ObjectBehavior
 
     function it_has_message()
     {
-        $this->message->shouldBe('This value is already set on another product.');
+        $this->message->shouldBe(
+            'The value %value% is already set on another product for the unique attribute %attribute%'
+        );
     }
 
     function it_is_a_validator_constraint()

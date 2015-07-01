@@ -75,7 +75,6 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.%s', $field, $value['currency']);
         $fieldData = sprintf('%s.data', $field);
-
         $this->applyFilter($operator, $fieldData, $value['data']);
 
         return $this;

@@ -11,11 +11,13 @@ use Symfony\Component\Validator\ValidatorInterface;
 /**
  * Group import processor, allows to,
  *  - create / update groups (except variant group)
- *  - return the valid groups, throw exceptions to skip invalid ones
+ *  - return the valid groups, throw exceptions to skip invalid ones.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.5, please use to \Pim\Component\Connector\Processor\Denormalization\
  */
 class GroupProcessor extends AbstractProcessor
 {
@@ -25,20 +27,8 @@ class GroupProcessor extends AbstractProcessor
     /** @staticvar string */
     const TYPE_FIELD = 'type';
 
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var DenormalizerInterface */
-    protected $denormalizer;
-
-    /** @var ObjectDetacherInterface */
-    protected $detacher;
-
     /** @var string */
     protected $format;
-
-    /** @var string */
-    protected $class;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
@@ -56,12 +46,8 @@ class GroupProcessor extends AbstractProcessor
         $class,
         $format
     ) {
-        parent::__construct($repository);
-        $this->denormalizer = $denormalizer;
-        $this->detacher = $detacher;
+        parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
         $this->format = $format;
-        $this->class = $class;
-        $this->validator = $validator;
     }
 
     /**
@@ -89,7 +75,7 @@ class GroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Find or create the group
+     * Find or create the group.
      *
      * @param array $groupData
      *
@@ -97,9 +83,7 @@ class GroupProcessor extends AbstractProcessor
      */
     protected function findOrCreateGroup(array $groupData)
     {
-        if (null === $group = $this->findObject($this->repository, $groupData)) {
-            $group = new $this->class();
-        }
+        $group = $this->findOrCreateObject($this->repository, $groupData, $this->class);
 
         $isVariantGroup = false;
         if ((null === $group->getId() && $groupData[self::TYPE_FIELD] === 'VARIANT') ||
@@ -119,7 +103,7 @@ class GroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Update the variant group fields
+     * Update the variant group fields.
      *
      * @param GroupInterface $group
      * @param array          $groupData
@@ -149,18 +133,5 @@ class GroupProcessor extends AbstractProcessor
             $this->detachObject($group);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
-    }
-
-    /**
-     * Detaches the object from the unit of work
-     *
-     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
-     * skipped items or we should use an explicit persist strategy
-     *
-     * @param mixed $object
-     */
-    protected function detachObject($object)
-    {
-        $this->detacher->detach($object);
     }
 }

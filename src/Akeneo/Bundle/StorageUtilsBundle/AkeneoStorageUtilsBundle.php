@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -46,6 +47,8 @@ class AkeneoStorageUtilsBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
+        $container->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('akeneo_repository'));
+
         if (class_exists(self::DOCTRINE_MONGODB)) {
             // TODO	(2014-05-09 19:42 by Gildas): Remove service registration when
             // https://github.com/doctrine/DoctrineMongoDBBundle/pull/197 is merged

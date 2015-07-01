@@ -1,9 +1,7 @@
 parameters:
     pim_base_connector.writer.doctrine.product.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductWriter
-    pim_base_connector.writer.doctrine.product_association.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductAssociationWriter
     pim_base_connector.writer.doctrine.variant_group.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter
     pim_base_connector.writer.doctrine.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer
-    pim_base_connector.writer.doctrine.base.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\BaseWriter
 
     pim_base_connector.writer.file.class: Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
     pim_base_connector.writer.file.product.class: Pim\Bundle\BaseConnectorBundle\Writer\File\ProductWriter
@@ -38,18 +36,16 @@ services:
             - '@pim_catalog.manager.media'
 
     # Doctrine Writer
+    # deprecated will be removed in 1.5
     pim_base_connector.writer.doctrine.product:
         class: %pim_base_connector.writer.doctrine.product.class%
         arguments:
             - '@pim_catalog.manager.media'
+            - '@pim_transform.cache.product_cache_clearer'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pim_base_connector.writer.doctrine.product_association:
-        class: %pim_base_connector.writer.doctrine.product_association.class%
-        parent: pim_base_connector.writer.doctrine
-
+    # deprecated will be removed in 1.5
     pim_base_connector.writer.doctrine.variant_group:
         class: %pim_base_connector.writer.doctrine.variant_group.class%
         arguments:
@@ -57,6 +53,7 @@ services:
             - '@pim_transform.cache.product_cache_clearer'
             - '@pim_catalog.applier.product_template'
 
+    # deprecated will be removed in 1.5
     pim_base_connector.writer.doctrine:
         class: %pim_base_connector.writer.doctrine.class%
         arguments:
@@ -64,14 +61,15 @@ services:
             - '@pim_transform.cache.cache_clearer'
 
     pim_base_connector.writer.doctrine.association_type: '@pim_base_connector.writer.doctrine'
+
+    # deprecated will be removed in 1.5
     pim_base_connector.writer.doctrine.group: '@pim_base_connector.writer.doctrine'
+    # deprecated will be removed in 1.5
     pim_base_connector.writer.doctrine.attribute: '@pim_base_connector.writer.doctrine'
+    # deprecated will be removed in 1.5
+    pim_base_connector.writer.doctrine.association: '@pim_connector.writer.doctrine.product_association'
 
-    pim_base_connector.writer.doctrine.attribute_option:
-        class: %pim_base_connector.writer.doctrine.base.class%
-        arguments:
-            - '@pim_catalog.saver.attribute_option'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
-    pim_base_connector.writer.doctrine.association: '@pim_base_connector.writer.doctrine.product_association'
     pim_base_connector.writer.doctrine.category: '@pim_base_connector.writer.doctrine'
+
+    # deprecated will be removed in 1.5
+    pim_base_connector.writer.doctrine.attribute_option: '@pim_base_connector.writer.doctrine'

@@ -10,9 +10,10 @@ Feature: Edit common attributes of many products at once
       | code       | attributes                                                       |
       | high_heels | sku, name, description, price, rating, size, color, manufacturer |
     And the following attributes:
-      | code        | label       | type   | metric family | default metric unit | families                 |
-      | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
-      | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
+      | code         | label       | type   | metric family | default metric unit | families                 |
+      | weight       | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
+      | heel_height  | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
+      | buckle_color | Buckle      | text   |               |                     | high_heels               |
     And the following products:
       | sku       | family     |
       | boots     | boots      |
@@ -55,10 +56,7 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family
-    Given the following attribute:
-      | code         | label | families   |
-      | buckle_color | Buckle  | high_heels |
-    And the following product values:
+    Given the following product values:
       | product | attribute    | value |
       | boots   | buckle_color | Blue  |
     When I mass-edit products boots and high_heels

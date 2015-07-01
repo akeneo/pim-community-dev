@@ -14,11 +14,11 @@ Feature: Import media with products
 
   Scenario: Successfully import media
     Given the following CSV file to import:
-    """
-    sku;family;groups;frontView;name-en_US;userManual;categories
-    bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
-    fanatic-freewave-76;sneakers;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
-    """
+      """
+      sku;family;groups;frontView;name-en_US;userManual;categories
+      bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
+      fanatic-freewave-76;sneakers;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
+      """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     And import directory of "footwear_product_import" contains the following media:
@@ -39,11 +39,11 @@ Feature: Import media with products
 
   Scenario: Successfully import partial products with media attributes
     Given the following CSV file to import:
-    """
-    sku;family;groups;frontView;name-en_US;userManual;categories
-    bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
-    fanatic-freewave-76;sneakers;;;"Fanatic Freewave 76";;2014_collection
-    """
+      """
+      sku;family;groups;frontView;name-en_US;userManual;categories
+      bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
+      fanatic-freewave-76;sneakers;;;"Fanatic Freewave 76";;2014_collection
+      """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     And import directory of "footwear_product_import" contains the following media:

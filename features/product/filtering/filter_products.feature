@@ -16,12 +16,12 @@ Feature: Filter products
       | Image | no          | yes      | yes                    |
       | Info  | yes         | yes      | yes                    |
     And the following products:
-      | sku    | family    | enabled | name-en_US  | name-fr_FR   | info-en_US-ecommerce    | info-en_US-mobile    | info-fr_FR-ecommerce     | info-fr_FR-mobile     | image-ecommerce  | image-mobile     |
-      | postit | furniture | yes     | Post it     | Etiquette    | My ecommerce info       | My mobile info       | Ma info ecommerce        | Ma info mobile        | large.jpeg       | small.jpeg       |
-      | book   | library   | no      | Book        | Livre        | My ecommerce book info  | My mobile book info  | Ma info livre ecommerce  | Ma info livre mobile  | book_large.jpeg  | book_small.jpeg  |
-      | book2  |           | yes     | Book2       | Livre2       | My ecommerce book2 info | My mobile book2 info | Ma info livre2 ecommerce | Ma info livre2 mobile | book2_large.jpeg | book2_small.jpeg |
-      | ebook  |           | yes     | eBook       | Ebook        | My ecommerce ebook info | My mobile ebook info | Ma info ebook ecommerce  | Ma info ebook mobile  |                  |                  |
-      | chair  | furniture | yes     | Chair/Slash | Chaise/Slash | My ecommerce chair .    | My mobile chaise     | Ma info chaise ecommerce | Ma info chaise mobile |                  |                  |
+      | sku    | family    | enabled | name-en_US  | name-fr_FR   | info-en_US-ecommerce    | info-fr_FR-ecommerce     | info-fr_FR-mobile     | image-ecommerce  | image-mobile     |
+      | postit | furniture | yes     | Post it     | Etiquette    | My ecommerce info       | Ma info ecommerce        | Ma info mobile        | large.jpeg       | small.jpeg       |
+      | book   | library   | no      | Book        | Livre        | My ecommerce book info  | Ma info livre ecommerce  | Ma info livre mobile  | book_large.jpeg  | book_small.jpeg  |
+      | book2  |           | yes     | Book2       | Livre2       | My ecommerce book2 info | Ma info livre2 ecommerce | Ma info livre2 mobile | book2_large.jpeg | book2_small.jpeg |
+      | ebook  |           | yes     | eBook       | Ebook        | My ecommerce ebook info | Ma info ebook ecommerce  | Ma info ebook mobile  |                  |                  |
+      | chair  | furniture | yes     | Chair/Slash | Chaise/Slash | My ecommerce chair .    | Ma info chaise ecommerce | Ma info chaise mobile |                  |                  |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products

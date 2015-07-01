@@ -1,0 +1,6 @@
+parameters:
+    akeneo_storage_utils.saver.base_options_resolver.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver
+    
+services:
+    akeneo_storage_utils.saver.base_options_resolver:
+        class: %akeneo_storage_utils.saver.base_options_resolver.class%

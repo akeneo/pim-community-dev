@@ -1,6 +1,7 @@
 Pim\Bundle\CommentBundle\Entity\Comment:
     type: entity
     table: pim_comment_comment
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         resource_name_resource_id_idx:
             columns:

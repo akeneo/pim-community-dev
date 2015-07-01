@@ -61,6 +61,13 @@ interface ProductTemplateInterface
     public function hasValueForAttribute(AttributeInterface $attribute);
 
     /**
+     * @param string $attributeCode
+     *
+     * @return bool
+     */
+    public function hasValueForAttributeCode($attributeCode);
+
+    /**
      * @return array
      */
     public function getAttributeCodes();

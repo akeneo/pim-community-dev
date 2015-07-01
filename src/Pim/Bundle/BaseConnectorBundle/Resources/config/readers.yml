@@ -5,9 +5,9 @@ parameters:
     pim_base_connector.reader.repository.group.class:         Pim\Bundle\BaseConnectorBundle\Reader\Repository\GroupReader
     pim_base_connector.reader.repository.variant_group.class: Pim\Bundle\BaseConnectorBundle\Reader\Repository\VariantGroupReader
 
-    pim_base_connector.reader.file.csv.class:          Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
-    pim_base_connector.reader.file.csv_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
-    pim_base_connector.reader.file.csv_category.class: Pim\Bundle\BaseConnectorBundle\Reader\File\CsvCategoryReader
+    pim_base_connector.reader.file.csv.class:             Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
+    pim_base_connector.reader.file.csv_product.class:     Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
+    pim_base_connector.reader.file.csv_category.class:    Pim\Bundle\BaseConnectorBundle\Reader\File\CsvCategoryReader
 
     pim_base_connector.reader.file.yaml.class:         Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader
 
@@ -69,14 +69,21 @@ services:
         class: %pim_base_connector.reader.file.csv_product.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
-            - '@pim_transform.builder.field_name'
+            - '@pim_connector.array_converter.flat.product.attribute_column_info_extractor'
             - %pim_catalog.entity.attribute.class%
             - %pim_catalog.entity.channel.class%
             - %pim_catalog.entity.locale.class%
             - %pim_catalog.entity.currency.class%
 
+    pim_base_connector.reader.file.csv_association:
+        parent: pim_base_connector.reader.file.csv
+        class: %pim_base_connector.reader.file.csv.class%
+
     pim_base_connector.reader.file.csv_variant_group:
         alias: pim_base_connector.reader.file.csv_product
+
+    pim_base_connector.reader.file.csv_group:
+        alias: pim_base_connector.reader.file.csv
 
     pim_base_connector.reader.file.csv_attribute_option:
         parent: pim_base_connector.reader.file.csv
@@ -117,5 +124,6 @@ services:
     pim_base_connector.reader.dummy:
         class: %pim_base_connector.reader.dummy.class%
 
+    # Deprecated: This service is deprecated and will be removed in 1.5
     pim_base_connector.reader.cached_association:
         class: %pim_base_connector.reader.cached.class%

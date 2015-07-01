@@ -1,6 +1,7 @@
 Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
     type: entity
     table: pim_catalog_attribute_translation
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         locale_foreign_key_idx:
             columns:

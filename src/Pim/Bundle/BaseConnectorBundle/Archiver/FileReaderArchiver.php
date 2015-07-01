@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Gaufrette\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
+use Pim\Component\Connector\Reader\File\CsvReader;
 
 /**
  * Archive job execution files into conventional directories
@@ -59,7 +60,7 @@ class FileReaderArchiver extends AbstractFilesystemArchiver
      */
     protected function isReaderUsable(ItemReaderInterface $reader)
     {
-        return $reader instanceof FileReader;
+        return $reader instanceof FileReader || $reader instanceof CsvReader;
     }
 
     /**
