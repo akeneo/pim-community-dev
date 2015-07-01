@@ -38,7 +38,7 @@ define(
                 $target.find('.accordion').on('show hide', function (e) {
                     $(e.target).siblings('.accordion-heading')
                         .find('.accordion-toggle i')
-                        .toggleClass('icon-collapse-alt icon-expand-alt');
+                        .toggleClass('icon-chevron-down icon-chevron-right');
                 });
 
                 var $localizableIcon = $('<i>', {

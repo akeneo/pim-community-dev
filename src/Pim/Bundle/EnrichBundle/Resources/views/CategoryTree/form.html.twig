@@ -55,7 +55,7 @@
         {% elseif parentId %}
             {{ elements.backLink(path('pim_enrich_categorytree_edit', { id: parentId }), 'btn.to parent') }}
         {% endif %}
-        {{ elements.submitBtn() }}
+        {{ elements.submitBtn('Save', 'ok') }}
     {% endset %}
 
     {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
