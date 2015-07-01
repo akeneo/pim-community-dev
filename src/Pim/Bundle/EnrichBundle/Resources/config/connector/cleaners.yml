@@ -1,18 +1,18 @@
 parameters:
-    pim_enrich.mass_edit.temporary_file.cleaner.class: Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner
-    pim_enrich.mass_edit.add_to_variant.cleaner.class: Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner
+    pim_enrich.connector.item.mass_edit.temporary_file_cleaner.class: Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner
+    pim_enrich.connector.item.mass_edit.variant_group_cleaner.class:  Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\VariantGroupCleaner
 
 services:
-    pim_enrich.mass_edit.temporary_file.cleaner:
-        class: %pim_enrich.mass_edit.temporary_file.cleaner.class%
+    pim_enrich.connector.item.mass_edit.temporary_file_cleaner:
+        class: %pim_enrich.connector.item.mass_edit.temporary_file_cleaner.class%
         arguments:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.product_mass_action'
             - '@pim_catalog.repository.attribute'
 
-    pim_enrich.mass_edit.add_to_variant.cleaner:
-        class: %pim_enrich.mass_edit.add_to_variant.cleaner.class%
+    pim_enrich.connector.item.mass_edit.variant_group_cleaner:
+        class: %pim_enrich.connector.item.mass_edit.variant_group_cleaner.class%
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_enrich.product.paginator'

@@ -1,28 +1,28 @@
 parameters:
-    pim_enrich.mass_edit.update_product_value.processor.class:         Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor
-    pim_enrich.mass_edit.add_product_value.processor.class:            Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor
-    pim_enrich.mass_edit.edit_common_attributes.processor.class:       Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
-    pim_enrich.mass_edit.set_attribute_requirements.processor.class:   Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements
-    pim_enrich.mass_edit.product_to_flat_array.processor.class:        Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor
-    pim_enrich.mass_edit.add_product_to_variant_group.processor.class: Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor
+    pim_enrich.connector.processor.mass_edit.product.update_value.class:           Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor
+    pim_enrich.connector.processor.mass_edit.product.add_value.class:              Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor
+    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class: Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
+    pim_enrich.connector.processor.mass_edit.product.add_to_variant_group.class:   Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor
+    pim_enrich.connector.processor.mass_edit.family.set_requirements.class:        Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements
+    pim_enrich.connector.processor.quick_export.product_to_flat_array.class:       Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor
 
 services:
-    pim_enrich.mass_edit.update_product_value.processor:
-        class: %pim_enrich.mass_edit.update_product_value.processor.class%
+    pim_enrich.connector.processor.mass_edit.product.update_value:
+        class: %pim_enrich.connector.processor.mass_edit.product.update_value.class%
         arguments:
             - '@pim_catalog.updater.product_property_setter'
             - '@pim_catalog.validator.product'
             - '@pim_connector.repository.job_configuration'
 
-    pim_enrich.mass_edit.add_product_value.processor:
-        class: %pim_enrich.mass_edit.add_product_value.processor.class%
+    pim_enrich.connector.processor.mass_edit.product.add_value:
+        class: %pim_enrich.connector.processor.mass_edit.product.add_value.class%
         arguments:
             - '@pim_catalog.updater.product_property_adder'
             - '@pim_catalog.validator.product'
             - '@pim_connector.repository.job_configuration'
 
-    pim_enrich.mass_edit.edit_common_attributes.processor:
-        class: %pim_enrich.mass_edit.edit_common_attributes.processor.class%
+    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes:
+        class: %pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class%
         arguments:
             - '@pim_catalog.updater.product_property_setter'
             - '@pim_catalog.validator.product'
@@ -30,24 +30,24 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.repository.job_configuration'
 
-    pim_enrich.mass_edit.set_attribute_requirements.processor:
-        class: %pim_enrich.mass_edit.set_attribute_requirements.processor.class%
+    pim_enrich.connector.processor.mass_edit.family.set_requirements:
+        class: %pim_enrich.connector.processor.mass_edit.family.set_requirements.class%
         arguments:
             - '@pim_connector.repository.job_configuration'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
 
-    pim_enrich.mass_edit.add_product_to_variant_group.processor:
-        class: %pim_enrich.mass_edit.add_product_to_variant_group.processor.class%
+    pim_enrich.connector.processor.mass_edit.product.add_to_variant_group:
+        class: %pim_enrich.connector.processor.mass_edit.product.add_to_variant_group.class%
         arguments:
             - '@pim_connector.repository.job_configuration'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.updater.product_template'
 
-    pim_enrich.mass_edit.product_to_flat_array.processor:
-        class: %pim_enrich.mass_edit.product_to_flat_array.processor.class%
+    pim_enrich.connector.processor.quick_export.product_to_flat_array:
+        class: %pim_enrich.connector.processor.quick_export.product_to_flat_array.class%
         arguments:
             - '@pim_connector.repository.job_configuration'
             - '@pim_serializer'
