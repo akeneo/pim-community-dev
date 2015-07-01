@@ -1,0 +1,11 @@
+services:
+    pimee_product_asset.doctrine.query.filter.category:
+        class: %pim_catalog.doctrine.query.filter.category.class%
+        arguments:
+            - '@pimee_product_asset.repository.category'
+            - '@pimee_product_asset.repository.asset_category'
+            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
+            - ['categories.id', 'categories.code']
+            - ['IN', 'NOT IN', 'UNCLASSIFIED', 'IN OR UNCLASSIFIED', 'IN CHILDREN', 'NOT IN CHILDREN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

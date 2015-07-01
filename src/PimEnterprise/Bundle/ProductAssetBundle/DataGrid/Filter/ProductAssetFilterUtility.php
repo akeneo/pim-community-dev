@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PimEnterprise\Bundle\FilterBundle\Filter\Tag\TagFilterAwareInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -26,24 +27,41 @@ class ProductAssetFilterUtility extends BaseFilterUtility implements TagFilterAw
     /** @var AssetRepositoryInterface */
     protected $repository;
 
+    /** @var CategoryFilter */
+    protected $categoryFilter;
+
     /**
      * @param AssetRepositoryInterface $repository
      */
-    public function __construct(AssetRepositoryInterface $repository)
+    public function __construct(AssetRepositoryInterface $repository, CategoryFilter $categoryFilter)
     {
-        $this->repository = $repository;
+        $this->repository     = $repository;
+        $this->categoryFilter = $categoryFilter;
     }
 
     /**
-     * Apply tag filter
+     * {@inheritdoc}
+     */
+    public function applyTagFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
+    {
+        $this->repository->applyTagFilter($ds->getQueryBuilder(), $field, $operator, $value);
+    }
+
+    /**
+     * Apply filter
      *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field
      * @param string                           $operator
      * @param mixed                            $value
      */
-    public function applyTagFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $this->repository->applyTagFilter($ds->getQueryBuilder(), $field, $operator, $value);
+        $qb = $ds->getQueryBuilder();
+
+        if ('categories.id' === $field) {
+            $this->categoryFilter->setQueryBuilder($qb);
+            $this->categoryFilter->addFieldFilter($field, $operator, $value);
+        }
     }
 }

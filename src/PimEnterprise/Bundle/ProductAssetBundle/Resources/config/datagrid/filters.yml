@@ -19,6 +19,7 @@ services:
         class: %pimee_filter.product_asset_utility.class%
         arguments:
             - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.doctrine.query.filter.category'
 
     pimee_product_asset.filter.tag_filter:
         class: %pimee_filter.product_asset_tag_filter.class%

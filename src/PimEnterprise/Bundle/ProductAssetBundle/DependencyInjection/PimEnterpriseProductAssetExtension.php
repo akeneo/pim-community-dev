@@ -41,6 +41,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('formatters.yml');
         $loader->load('forms.yml');
         $loader->load('models.yml');
+        $loader->load('query_builders.yml');
         $loader->load('repositories.yml');
         $loader->load('twig_extension.yml');
         $loader->load('finders.yml');
