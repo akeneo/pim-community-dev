@@ -1,6 +1,9 @@
 <div class="form-field <%= classAttr %>">
     <header>
-        <label><%= label %></label>
+        <label>
+            <%= label %>
+            <span class="label-elements-container"></span>
+        </label>
         <span class="field-info pull-right">
             <% if (attribute.localizable || attribute.scopable) { %>
                 <span class="field-context">
