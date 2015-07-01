@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -269,7 +270,7 @@ class EnterpriseCommandContext extends CommandContext
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft
+     * @return ProductDraftInterface|null
      */
     protected function getProposal(ProductInterface $product, $username)
     {

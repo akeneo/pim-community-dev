@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Applier;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -44,7 +44,7 @@ class ProductDraftApplier implements ProductDraftApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(ProductInterface $product, ProductDraft $productDraft)
+    public function apply(ProductInterface $product, ProductDraftInterface $productDraft)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPLY, new GenericEvent($productDraft));
 

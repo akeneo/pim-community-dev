@@ -16,7 +16,7 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -66,7 +66,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
                 $qb->expr()->in('a.userGroup', ':userGroups')
             )
             ->andWhere(
-                $qb->expr()->eq('p.status', ProductDraft::READY)
+                $qb->expr()->eq('p.status', ProductDraftInterface::READY)
             )
             ->orderBy('p.createdAt', 'desc')
             ->setParameter('userGroups', $user->getGroups()->toArray())
@@ -112,7 +112,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
                     $qb->expr()->in('a.userGroup', ':userGroups')
                 )
                 ->andWhere(
-                    $qb->expr()->eq('p.status', ProductDraft::READY)
+                    $qb->expr()->eq('p.status', ProductDraftInterface::READY)
                 )
                 ->setParameter('userGroups', $user->getGroups()->toArray());
         }

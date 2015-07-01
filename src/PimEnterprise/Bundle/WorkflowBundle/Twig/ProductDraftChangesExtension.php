@@ -15,7 +15,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
@@ -133,16 +133,16 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /**
      * Present an attribute change
      *
-     * @param ProductDraft $productDraft
-     * @param array        $change
-     * @param string       $code
+     * @param ProductDraftInterface $productDraft
+     * @param array                 $change
+     * @param string                $code
      *
      * @throws \InvalidArgumentException
      * @throws \LogicException
      *
      * @return string
      */
-    public function presentChange(ProductDraft $productDraft, array $change, $code)
+    public function presentChange(ProductDraftInterface $productDraft, array $change, $code)
     {
         if (null === $value = $productDraft->getProduct()->getValue($code, $change['locale'], $change['scope'])) {
             $value = $this->createFakeValue($code);

@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 
 /**
  * Product product draft factory
@@ -27,7 +28,7 @@ class ProductDraftFactory
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return ProductDraft
+     * @return ProductDraftInterface
      */
     public function createProductDraft(ProductInterface $product, $username)
     {

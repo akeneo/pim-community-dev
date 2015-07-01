@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Applier;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 
 /**
  * Product draft applier interface
@@ -22,8 +22,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 interface ProductDraftApplierInterface
 {
     /**
-     * @param ProductInterface $product
-     * @param ProductDraft     $productDraft
+     * @param ProductInterface      $product
+     * @param ProductDraftInterface $productDraft
      */
-    public function apply(ProductInterface $product, ProductDraft $productDraft);
+    public function apply(ProductInterface $product, ProductDraftInterface $productDraft);
 }

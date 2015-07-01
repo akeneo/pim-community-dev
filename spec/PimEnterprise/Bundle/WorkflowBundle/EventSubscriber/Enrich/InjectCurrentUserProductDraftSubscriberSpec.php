@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -26,12 +26,11 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
 
     function it_applies_product_changes_when_finding_one(
         $userContext,
-        $catalogContext,
         $repository,
         $applier,
         ProductInterface $product,
         UserInterface $user,
-        ProductDraft $productDraft,
+        ProductDraftInterface $productDraft,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($product);
@@ -68,7 +67,6 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
 
     function it_applies_nothing_if_there_is_no_product_draft(
         $userContext,
-        $catalogContext,
         $repository,
         $applier,
         ProductInterface $product,

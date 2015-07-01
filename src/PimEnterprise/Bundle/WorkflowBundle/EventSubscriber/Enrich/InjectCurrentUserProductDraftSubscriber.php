@@ -16,6 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -95,7 +96,7 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null
+     * @return ProductDraftInterface|null
      */
     protected function getProductDraft(ProductInterface $product, $username)
     {
