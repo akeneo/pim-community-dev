@@ -173,7 +173,7 @@ define([
             setCurrentValue: function (value) {
                 var productValue = this.getCurrentValue();
 
-                productValue.value = value;
+                productValue.data = value;
                 mediator.trigger('entity:form:edit:update_state');
             }
         });

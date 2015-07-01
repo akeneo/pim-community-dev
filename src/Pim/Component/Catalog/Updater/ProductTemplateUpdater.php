@@ -49,7 +49,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
             $this->propertySetter->setData(
                 $product,
                 $attributeCode,
-                $data['value'],
+                $data['data'],
                 ['locale' => $data['locale'], 'scope' => $data['scope']]
             );
         }
