@@ -5,9 +5,9 @@
   margin-left: 4px;
 }
 
-.btn{
+.btn {
   background-image: none;
-  background-color: #E7E7EC;
+  background-color: @color-new-grey;
   position: relative;
   border: none;
   text-shadow: none;
@@ -23,9 +23,10 @@
     background-image: none;
     border: none;
     box-shadow: none;
-    background-color: darken(#E7E7EC, 10%);
+    background-color: darken(@color-new-grey, 10%);
   }
 }
+
 .btn.btn-primary {
   background-color: @color-new-green;
 
@@ -47,11 +48,9 @@
   &:hover {
     background-color: darken(@color-new-green, 10%);
   }
-
 }
 
 .btn.btn-submit {
-  
   background-color: @color-new-green;
   padding: 0 10px 0 44px;
 
@@ -69,20 +68,19 @@
   &:hover {
     background-color: darken(@color-new-green, 10%);
   }
-
 }
 
 .btn-publish {
-  background-color: #5992C7;
+  background-color: @color-new-blue;
 
   &:hover {
-    background-color: darken(#5992C7, 10%);
+    background-color: darken(@color-new-blue, 10%);
   }
 }
 
 .btn.btn-delete, .btn.trash {
   background-color: @color-new-red;
-  color: #FFF;
+  color: #fff;
   padding: 0 10px 0 44px;
   overflow: hidden;
 
@@ -100,12 +98,11 @@
   &:hover {
     background-color: darken(@color-new-red, 10%);
   }
-
 }
 
 .btn.btn-download {
-  background-color: #A1A9B7;
-  color: #FFF;
+  background-color: #a2aab8;
+  color: #fff;
   padding: 0 10px 0 44px;
   overflow: hidden;
   border-radius: 2px;
@@ -117,21 +114,21 @@
     width: 34px;
     height: 34px;
     line-height: 34px;
-    background-color: darken(#A1A9B7, 10%);
+    background-color: darken(#a1a9b7, 10%);
     margin: 0;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
 
   &:hover {
-    background-color: darken(#A1A9B7, 10%);
+    background-color: darken(#a1a9b7, 10%);
   }
 
 }
 
 .btn.delete-product {
   background-color: @color-new-red;
-  color: #FFF;
+  color: #fff;
   padding: 0 10px 0 44px;
   overflow: hidden;
 
@@ -151,31 +148,29 @@
   &:hover {
     background-color: darken(@color-new-red, 10%);
   }
-
 }
 
 .btn.cancel {
-  background-color: #E7E7EC;
+  background-color: @color-new-grey;
 
   &:hover {
-    background-color: darken(#E7E7EC, 10%);
+    background-color: darken(@color-new-grey, 10%);
   }
 
 }
 
 .btn.back-link {
-  background-color: #E7E7EC;
+  background-color: @color-new-grey;
   width: 34px;
 
   &:hover {
-    background-color: darken(#E7E7EC, 10%);
+    background-color: darken(@color-new-grey, 10%);
   }
-
 }
 
 .btn.pencil {
   background-color: @color-new-blue;
-  color: #FFF;
+  color: #fff;
   padding: 0 10px 0 44px;
 
   i {
@@ -192,11 +187,10 @@
   &:hover {
     background-color: darken(@color-new-blue, 10%);
   }
-
 }
 
 .btn-status {
-  background-color: #A1A9B7;
+  background-color: #a1a9b7;
 }
 
 .btn-group > .btn:first-child {
@@ -208,10 +202,10 @@
 }
 
 .filter-box {
-  .btn{
+  .btn {
     border-radius: 2px;
-    background-color: #FFF;
-    border: solid 1px #CBCBD2;
+    background-color: #fff;
+    border: solid 1px #cbcbd2;
 
     &.filter-update {
       background-color: @color-new-green;
@@ -223,13 +217,13 @@
 .select-all-header-cell {
   .btn-group {
     .btn {
-      background-color: #FFF;
+      background-color: #fff;
       height: 28px;
       line-height: 28px;
 
       &.dropdown-toggle {
         width: 28px;
-        background-color: darken(#FFF, 5%);
+        background-color: darken(#fff, 5%);
       }
     }
   }
@@ -244,9 +238,9 @@
 .toolbar {
   .btn {
     background-image: none;
-    background-color: #FFF;
+    background-color: #fff;
     position: relative;
-    border: solid 1px #E7E7EC;
+    border: solid 1px @color-new-grey;
     text-shadow: none;
     box-shadow: none;
     border-radius: 2px;
@@ -258,12 +252,11 @@
   
     &:hover, &:active, &:focus {
       background-image: none;
-      border: solid 1px #E7E7EC;
+      border: solid 1px @color-new-grey;
       box-shadow: none;
-      background-color: darken(#FFF, 10%);
+      background-color: darken(#fff, 10%);
     }
   }
-
 }
 
 .tab-header.attribute-actions {
@@ -273,7 +266,7 @@
     margin: 8px 5px;
     border-radius: 0;
     border: none;
-    background-color: #FFF;
+    background-color: #fff;
 
     .caret {
       margin-top: 12px;
@@ -282,13 +275,12 @@
 
   .attribute-copy-actions {
     .btn {
-      background-color: #A1A9B7;
-      color: #FFF;
+      background-color: #a1a9b7;
+      color: #fff;
 
       .caret {
-        border-top: 4px solid #FFF;
+        border-top: 4px solid #fff;
       }
-
     }
   }
 
@@ -297,26 +289,25 @@
   }
 
   .pimmultiselect {
-    background-color: #FFF;
+    background-color: #fff;
   }
 
   .selection-dropdown {
     .btn {
       
-      background-color: #A1A9B7;
-      color: #FFF;
+      background-color: #a1a9b7;
+      color: #fff;
     }
   }
 
   .btn.copy {
     background-color: @color-new-green;
-    color: #FFF;
+    color: #fff;
 
     &:hover {
       background-color: darken(@color-new-green, 10%);
     }
   }
-
 }
 
 .navbar-title .sub-title .pimmultiselect {

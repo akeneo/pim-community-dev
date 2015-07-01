@@ -10,7 +10,7 @@ body {
   &.login-page {
     background-image: url("/bundles/pimui/images/background.svg");
     background-size: cover;
-    background-color: #F1F4F9;
+    background-color: #f1f4f9;
   }
 
   &.konami:hover {
@@ -654,8 +654,8 @@ body {
 header.tab-header {
   height: 44px;
   border-left: none;
-  border-bottom: solid 1px #CCC;
-  background: #E7E7EC;
+  border-bottom: solid 1px #ccc;
+  background: @color-new-grey;
   padding: 0;
   .display-flex();
   justify-content: flex-start;
@@ -728,7 +728,7 @@ h3.tab-header {
     max-width: @max-field-width + 10px;
     .flex(1);
     margin-left: 10px;
-    border-left: 1px solid #CCC;
+    border-left: 1px solid #ccc;
   }
 }
 
@@ -756,7 +756,7 @@ h3.tab-header {
   & > header {
     margin: 0 0 7px 0;
     padding: 15px 10px 15px 20px;
-    background: #F7F7F9;
+    background: #f7f7f9;
 
     & > div {
       .display-flex();
@@ -828,7 +828,7 @@ h3.tab-header {
         height: 44px;
         border-left: 1px solid #ddd;
         border-right: none;
-        background: #E7E7EC;
+        background: @color-new-grey;
       }
     }
 
@@ -846,7 +846,7 @@ h3.tab-header {
   margin-top: 5px;
 
   .btn {
-    background: #E7E7EC;
+    background: @color-new-grey;
     font-weight: bold;
     font-size: 12px;
     border-color: #e5e5e5;
@@ -856,7 +856,7 @@ h3.tab-header {
     border-radius: 1px;
 
     &.active {
-      background: darken(#E7E7EC, 10%);
+      background: darken(@color-new-grey, 10%);
       text-shadow: none;
       border-color: #555;
       box-shadow: none;
@@ -1584,23 +1584,23 @@ h3.tab-header {
 .btn-dropdown {
   &.enabled > a, & > .enabled {
     opacity: 1;
-    background-color: darken(#A1A9B7, 10%);
-    color: #FFF;
+    background-color: darken(#a1a9b7, 10%);
+    color: #fff;
     border: none;
 
     .caret {
-      border-top-color: #FFF;
+      border-top-color: #fff;
     }
   }
 
   &.disabled > a, & > .disabled {
     opacity: 1;
-    background-color: #A1A9B7;
-    color: #FFF;
+    background-color: #a1a9b7;
+    color: #fff;
     border: none;
 
     .caret {
-      border-top-color: #FFF;
+      border-top-color: #fff;
     }
   }
 }
