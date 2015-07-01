@@ -1,6 +1,7 @@
 Pim\Bundle\CatalogBundle\Entity\Family:
     type: entity
     table: pim_catalog_family
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository
     fields:
         id:
@@ -42,6 +43,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach
         requirements:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
             mappedBy: family

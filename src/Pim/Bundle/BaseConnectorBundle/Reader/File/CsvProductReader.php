@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
 /**
  * Product csv reader
@@ -20,14 +20,17 @@ use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be remove in 1.5, please use Pim\Component\Connector\Reader\File\CsvProductReader, btw the logic
+ *             of checkAttributesInHeader is now handled by the AttributeColumnInfoExtractor
  */
 class CsvProductReader extends CsvReader
 {
     /** @var string[] Media attribute codes */
     protected $mediaAttributes;
 
-    /** @var FieldNameBuilder */
-    protected $fieldNameBuilder;
+    /** @var AttributeColumnInfoExtractor */
+    protected $fieldExtractor;
 
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
@@ -44,22 +47,22 @@ class CsvProductReader extends CsvReader
     /**
      * Constructor
      *
-     * @param EntityManager    $entityManager
-     * @param FieldNameBuilder $fieldNameBuilder
-     * @param string           $attributeClass
-     * @param string           $channelClass
-     * @param string           $localeClass
-     * @param string           $currencyClass
+     * @param EntityManager                $entityManager
+     * @param AttributeColumnInfoExtractor $fieldExtractor
+     * @param string                       $attributeClass
+     * @param string                       $channelClass
+     * @param string                       $localeClass
+     * @param string                       $currencyClass
      */
     public function __construct(
         EntityManager $entityManager,
-        FieldNameBuilder $fieldNameBuilder,
+        AttributeColumnInfoExtractor $fieldExtractor,
         $attributeClass,
         $channelClass,
         $localeClass,
         $currencyClass
     ) {
-        $this->fieldNameBuilder    = $fieldNameBuilder;
+        $this->fieldExtractor      = $fieldExtractor;
         $this->attributeRepository = $entityManager->getRepository($attributeClass);
         $this->channelRepository   = $entityManager->getRepository($channelClass);
         $this->localeRepository    = $entityManager->getRepository($localeClass);
@@ -165,7 +168,7 @@ class CsvProductReader extends CsvReader
         $currencies = $this->currencyRepository->getActivatedCurrencyCodes();
 
         foreach ($this->fieldNames as $fieldName) {
-            if (null !== $info = $this->fieldNameBuilder->extractAttributeFieldNameInfos($fieldName)) {
+            if (null !== $info = $this->fieldExtractor->extractColumnInfo($fieldName)) {
                 $locale = $info['locale_code'];
                 $channel = $info['scope_code'];
                 $currency = isset($info['price_currency']) ? $info['price_currency'] : null;

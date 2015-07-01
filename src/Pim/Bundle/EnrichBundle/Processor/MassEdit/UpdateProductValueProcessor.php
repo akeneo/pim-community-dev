@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -17,25 +17,25 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class UpdateProductValueProcessor extends AbstractMassEditProcessor
 {
-    /** @var ProductUpdaterInterface */
-    protected $productUpdater;
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
 
     /** @var ValidatorInterface */
     protected $validator;
 
     /**
-     * @param ProductUpdaterInterface             $productUpdater
+     * @param PropertySetterInterface             $propertySetter
      * @param ValidatorInterface                  $validator
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
     public function __construct(
-        ProductUpdaterInterface $productUpdater,
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->productUpdater = $productUpdater;
+        $this->propertySetter = $propertySetter;
         $this->validator      = $validator;
     }
 
@@ -91,7 +91,7 @@ class UpdateProductValueProcessor extends AbstractMassEditProcessor
     protected function setData(ProductInterface $product, array $actions)
     {
         foreach ($actions as $action) {
-            $this->productUpdater->setData($product, $action['field'], $action['value']);
+            $this->propertySetter->setData($product, $action['field'], $action['value']);
         }
 
         return $this;

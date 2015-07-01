@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
 use InvalidArgumentException;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 
 /**
  * Applies modifications on families to add attribute requirements.

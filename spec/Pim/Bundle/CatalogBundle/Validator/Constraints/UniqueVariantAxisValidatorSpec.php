@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
@@ -16,9 +15,9 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 
 class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 {
-    function let(ProductManager $productManager, ExecutionContextInterface $context)
+    function let(ProductRepositoryInterface $productRepository, ExecutionContextInterface $context)
     {
-        $this->beConstructedWith($productManager);
+        $this->beConstructedWith($productRepository);
         $this->initialize($context);
     }
 
@@ -154,8 +153,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
     function it_does_not_add_violation_when_validating_product_in_groups_with_unique_combination_of_axis_attributes(
         $context,
-        $productManager,
-        ProductRepositoryInterface $productRepository,
+        $productRepository,
         GroupInterface $tShirtVariantGroup,
         GroupTypeInterface $tShirtGroupType,
         GroupInterface $clothesVariantGroup,
@@ -209,7 +207,6 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 ]
             ];
 
-        $productManager->getProductRepository()->willReturn($productRepository);
         $productRepository->findAllForVariantGroup($tShirtVariantGroup, $criteria)->willReturn([]);
         $productRepository->findAllForVariantGroup($clothesVariantGroup, $criteria)->willReturn([]);
 
@@ -220,8 +217,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
     function it_adds_a_violation_when_validating_product_in_groups_with_non_unique_combination_of_axis_attributes(
         $context,
-        $productManager,
-        ProductRepositoryInterface $productRepository,
+        $productRepository,
         GroupInterface $tShirtVariantGroup,
         GroupTypeInterface $tShirtGroupType,
         GroupInterface $clothesVariantGroup,
@@ -275,7 +271,6 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 ]
             ];
 
-        $productManager->getProductRepository()->willReturn($productRepository);
         $productRepository->findAllForVariantGroup($tShirtVariantGroup, $criteria)->willReturn([]);
         $productRepository->findAllForVariantGroup($clothesVariantGroup, $criteria)->willReturn([$redTShirtProduct2]);
 

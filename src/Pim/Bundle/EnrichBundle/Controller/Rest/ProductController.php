@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
@@ -12,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -39,7 +39,7 @@ class ProductController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductUpdaterInterface */
+    /** @var PropertySetterInterface */
     protected $productUpdater;
 
     /** @var SaverInterface */
@@ -66,7 +66,7 @@ class ProductController
     /**
      * @param ProductRepositoryInterface   $productRepository
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductUpdaterInterface      $productUpdater
+     * @param PropertySetterInterface      $productUpdater
      * @param SaverInterface               $productSaver
      * @param NormalizerInterface          $normalizer
      * @param ValidatorInterface           $validator
@@ -78,7 +78,7 @@ class ProductController
     public function __construct(
         ProductRepositoryInterface $productRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductUpdaterInterface $productUpdater,
+        PropertySetterInterface $productUpdater,
         SaverInterface $productSaver,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
@@ -165,6 +165,11 @@ class ProductController
         } catch (ObjectNotFoundException $e) {
             throw new BadRequestHttpException();
         }
+
+        // TODO: PEF should never update groups, no way to do so from the screen, if a product is added to
+        // another group during the save, this relation will be removed, other issue is that variant groups are never
+        // passed here, so a product is always removed from it's variant group when saved
+        unset($data['groups']);
 
         $this->updateProduct($product, $data);
 

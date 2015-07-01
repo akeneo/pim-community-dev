@@ -52,6 +52,7 @@ class PimEnrichExtension extends Extension
         $loader->load('processors.yml');
         $loader->load('providers.yml');
         $loader->load('readers.yml');
+        $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('resolvers.yml');
         $loader->load('savers.yml');

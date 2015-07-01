@@ -43,7 +43,7 @@ class AttributeValuesResolver
 
     /**
      * Resolves an array of values that are expected to link product to an attribute depending on locale and scope
-     * Each value is returned as an array with 'attribute', 'scope' and 'locale' keys
+     * Each value is returned as an array with 'attribute', 'type', 'scope' and 'locale' keys
      *
      * @param AttributeInterface[] $attributes
      *
@@ -61,7 +61,12 @@ class AttributeValuesResolver
             } elseif ($attribute->isLocalizable()) {
                 $requiredValues = $this->getLocaleRows($attribute);
             } else {
-                $requiredValues[] = ['attribute' => $attribute->getCode(), 'locale' => null, 'scope' => null];
+                $requiredValues[] = [
+                    'attribute' => $attribute->getCode(),
+                    'type'      => $attribute->getAttributeType(),
+                    'locale'    => null,
+                    'scope'     => null
+                ];
             }
             $values = array_merge($values, $this->filterExpectedValues($attribute, $requiredValues));
         }
@@ -104,7 +109,10 @@ class AttributeValuesResolver
         $localeRows = [];
         foreach ($locales as $locale) {
             $localeRows[] = [
-                'attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => null
+                'attribute' => $attribute->getCode(),
+                'type'      => $attribute->getAttributeType(),
+                'locale'    => $locale->getCode(),
+                'scope'     => null
             ];
         }
 
@@ -124,7 +132,10 @@ class AttributeValuesResolver
         $scopeRows = [];
         foreach ($channels as $channel) {
             $scopeRows[] = [
-                'attribute' => $attribute->getCode(), 'locale' => null, 'scope' => $channel->getCode()
+                'attribute' => $attribute->getCode(),
+                'type'      => $attribute->getAttributeType(),
+                'locale'    => null,
+                'scope'     => $channel->getCode()
             ];
         }
 
@@ -146,8 +157,9 @@ class AttributeValuesResolver
             foreach ($channel->getLocales() as $locale) {
                 $scopeToLocaleRows[] = [
                     'attribute' => $attribute->getCode(),
-                    'locale' => $locale->getCode(),
-                    'scope' => $channel->getCode()
+                    'type'      => $attribute->getAttributeType(),
+                    'locale'    => $locale->getCode(),
+                    'scope'     => $channel->getCode()
                 ];
             }
         }

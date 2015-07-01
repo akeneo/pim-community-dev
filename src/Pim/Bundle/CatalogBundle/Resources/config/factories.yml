@@ -4,6 +4,8 @@ parameters:
     pim_catalog.factory.media.class:                 Pim\Bundle\CatalogBundle\Factory\MediaFactory
     pim_catalog.factory.metric.class:                Pim\Bundle\CatalogBundle\Factory\MetricFactory
     pim_catalog.factory.group.class:                 Pim\Bundle\CatalogBundle\Factory\GroupFactory
+    pim_catalog.factory.attribute.class:             Pim\Bundle\CatalogBundle\Factory\AttributeFactory
+    pim_catalog.factory.association_type.class:      Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory
 
 services:
     pim_catalog.factory.family:
@@ -25,6 +27,13 @@ services:
         arguments:
             - %pim_catalog.entity.product_media.class%
 
+    pim_catalog.factory.attribute:
+        class: %pim_catalog.factory.attribute.class%
+        arguments:
+            - '@pim_catalog.registry.attribute_type'
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.product.class%
+
     pim_catalog.factory.metric:
         class: %pim_catalog.factory.metric.class%
         arguments:
@@ -33,9 +42,15 @@ services:
     pim_catalog.factory.group:
         class: %pim_catalog.factory.group.class%
         arguments:
+            - '@pim_catalog.repository.group_type'
             - %pim_catalog.entity.group.class%
 
     pim_catalog.factory.category:
         class: %pim_classification.factories.category.class%
         arguments:
             - %pim_catalog.entity.category.class%
+
+    pim_catalog.factory.association_type:
+        class: %pim_catalog.factory.association_type.class%
+        arguments:
+            - %pim_catalog.entity.association_type.class%

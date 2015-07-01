@@ -43,7 +43,7 @@ class FamilyController extends AbstractDoctrineController
     protected $channelManager;
 
     /** @var FamilyFactory */
-    protected $factory;
+    protected $familyFactory;
 
     /** @var HandlerInterface */
     protected $familyHandler;
@@ -74,7 +74,7 @@ class FamilyController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param FamilyManager            $familyManager
      * @param ChannelManager           $channelManager
-     * @param FamilyFactory            $factory
+     * @param FamilyFactory            $familyFactory
      * @param HandlerInterface         $familyHandler
      * @param Form                     $familyForm
      * @param SaverInterface           $familySaver
@@ -93,7 +93,7 @@ class FamilyController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         FamilyManager $familyManager,
         ChannelManager $channelManager,
-        FamilyFactory $factory,
+        FamilyFactory $familyFactory,
         HandlerInterface $familyHandler,
         Form $familyForm,
         SaverInterface $familySaver,
@@ -114,7 +114,7 @@ class FamilyController extends AbstractDoctrineController
 
         $this->familyManager  = $familyManager;
         $this->channelManager = $channelManager;
-        $this->factory        = $factory;
+        $this->familyFactory  = $familyFactory;
         $this->familyHandler  = $familyHandler;
         $this->familyForm     = $familyForm;
         $this->attributeClass = $attributeClass;
@@ -149,7 +149,7 @@ class FamilyController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_family_index');
         }
 
-        $family = $this->factory->createFamily();
+        $family = $this->familyFactory->createFamily();
 
         if ($this->familyHandler->process($family)) {
             $this->addFlash('success', 'flash.family.created');

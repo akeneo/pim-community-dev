@@ -43,7 +43,7 @@ class ReferenceDataTransformer implements PropertyTransformerInterface
         if (!$this->registry->has($value)) {
             $references = array_keys($this->registry->all());
             throw new \InvalidArgumentException(sprintf(
-                'Reference data "%s" does not exist. Values allowed are: %s',
+                'Reference data "%s" does not exist. Allowed values are: %s',
                 $value,
                 implode(', ', $references)
             ));

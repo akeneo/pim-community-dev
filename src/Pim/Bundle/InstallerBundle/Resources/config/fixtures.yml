@@ -59,9 +59,9 @@ attributes:
 attribute_options:
     order: 50
     csv:
-        processor:         pim_base_connector.processor.denormalization.attribute_option.flat
+        processor:         pim_connector.processor.denormalization.attribute_option.flat
     yml:
-        processor:         pim_base_connector.processor.denormalization.attribute_option.structured
+        processor:         pim_connector.processor.denormalization.attribute_option.structured
 
 families:
     order: 60
@@ -88,18 +88,7 @@ products:
     order: 80
     csv:
         reader:            pim_base_connector.reader.file.csv_product
-        processor:         pim_base_connector.processor.product
-    yml:
-        reader:            pim_base_connector.reader.file.yaml_product
-        processor:         pim_base_connector.processor.product
-
-associations:
-    order: 90
-    csv:
-        processor:         pim_base_connector.processor.association
-    yml:
-        reader:            pim_base_connector.reader.file.yaml_associations
-        processor:         pim_base_connector.processor.association
+        processor:         pim_connector.processor.denormalization.product.flat
 
 jobs:
     order: 90
