@@ -156,9 +156,9 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     ) {
         $options = [
             'from_locale' => $fromLocale,
-            'to_locale' => $toLocale,
-            'from_scope' => $fromScope,
-            'to_scope' => $toScope,
+            'to_locale'   => $toLocale,
+            'from_scope'  => $fromScope,
+            'to_scope'    => $toScope,
         ];
         foreach ($products as $product) {
             $this->propertyCopier->copyData($product, $product, $fromField, $toField, $options);

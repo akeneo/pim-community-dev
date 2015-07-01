@@ -2,6 +2,12 @@
 'use strict';
 
 define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone, Routing) {
+    var getObjects = function (promises) {
+        return $.when.apply($, _.toArray(promises)).then(function () {
+            return 0 !== arguments.length ? _.toArray(arguments) : [];
+        });
+    };
+
     return Backbone.Model.extend({
         entityListPromise: null,
         entityPromises: {},
@@ -72,7 +78,6 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          * @return Promise
          */
         fetchByIdentifiers: function (identifiers) {
-            console.log(identifiers);
             _.each(identifiers, _.bind(function (identifier) {
                 if (identifier in this.entityPromises) {
                     identifiers = _.without(identifiers, identifier);
@@ -80,7 +85,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
             }, this));
 
             if (0 === identifiers.length) {
-                return $.Deferred.resolve(this.entityPromises);
+                return getObjects(this.entityPromises);
             }
 
             return $.when(
@@ -88,14 +93,12 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                         .then(_.identity),
                     this.getIdentifierField()
                 )
-                .done(_.bind(function (entities, identifierCode) {
+                .then(_.bind(function (entities, identifierCode) {
                     _.each(entities, _.bind(function (entity) {
                         this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity);
                     }, this));
 
-                    return $.when.apply($, this.entityPromises).done(function () {
-                        return _.toArray(arguments);
-                    });
+                    return getObjects(this.entityPromises);
                 }, this));
         },
         /**

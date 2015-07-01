@@ -22,7 +22,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             array(
-                'form.pre_set_data' => 'preSetData',
+                'form.pre_set_data'  => 'preSetData',
                 'form.post_set_data' => 'postSetData',
             ),
             AddAttributeRequirementsSubscriber::getSubscribedEvents()
