@@ -167,16 +167,16 @@ select {
 }
 .btn-group > .btn:last-child,
 .btn-group > .dropdown-toggle {
-  -moz-border-radius-topright: 3px;
-  border-top-right-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 2px;
+  border-top-right-radius: 2px;
+  -moz-border-radius-bottomright: 2px;
+  border-bottom-right-radius: 2px;
 }
 .btn-group > .btn:first-child {
-  -moz-border-radius-topleft: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 2px;
+  border-top-left-radius: 2px;
+  -moz-border-radius-bottomleft: 2px;
+  border-bottom-left-radius: 2px;
 }
 
 // Bootstrap - Nav
@@ -444,7 +444,10 @@ select {
   margin-top: 10px;
   overflow: visible;
   .table-bordered {
-    border-left:1px solid #ddd;
+    border-left:1px solid #DFDFDF;
+    -webkit-border-radius: 0px;
+       -moz-border-radius: 0px;
+            border-radius: 0px;
     td,
     th { border-left:0; }
     .boolean-cell {
@@ -464,16 +467,9 @@ select {
     width: 60px;
   }
   thead th {
-    background-color: #eee;
+    background-color: #E7E7EC;
     padding: 5px 10px;
-    #gradient > .vertical(#f5f5f5, #eeeeee);
     white-space: nowrap;
-    &:first-child {
-      .border-radius(4px 0 0 0);
-    }
-    &:last-child {
-      .border-radius(0 4px 0 0);
-    }
   }
   tbody td {
     padding: 5px 10px;
@@ -869,8 +865,8 @@ textarea {
   font-size: 11px;
 }
 .btn-group > a.btn {
-  height: 28px;
-  line-height: 26px;
+  height: 34px;
+  line-height: 34px;
 }
 .oro-action .btn-group > .btn,
 .oro-action .btn-group > .dropdown-menu,
