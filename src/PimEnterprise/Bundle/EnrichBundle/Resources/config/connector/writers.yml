@@ -1,9 +1,9 @@
 parameters:
-    pimee_enrich.writer.mass_edit.product.class: PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter
+    pimee_enrich.connector.writer.mass_edit.product.class: PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter
 
 services:
-    pimee_enrich.writer.doctrine.product:
-        class: %pimee_enrich.writer.mass_edit.product.class%
+    pimee_enrich.connector.writer.mass_edit.product:
+        class: %pimee_enrich.connector.writer.mass_edit.product.class%
         arguments:
             - '@pim_catalog.manager.media'
             - '@pim_versioning.manager.version'

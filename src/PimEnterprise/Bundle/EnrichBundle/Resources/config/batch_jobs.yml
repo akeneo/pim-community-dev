@@ -26,7 +26,7 @@ connector:
                 perform:
                     title: add_product_value_with_permission
                     services:
-                        reader:    pim_enrich.mass_edit.filtered.reader
+                        reader:    pim_enrich.connector.reader.mass_edit.product
                         processor: pimee_enrich.mass_edit.add_product_value.processor
                         writer:    pim_connector.writer.doctrine.product
         edit_common_attributes_with_permission:
@@ -36,13 +36,13 @@ connector:
                 perform:
                     title: edit_common_attributes_with_permission
                     services:
-                        reader:    pim_enrich.mass_edit.filtered.reader
-                        processor: pim_enrich.mass_edit.edit_common_attributes.processor
-                        writer:    pimee_enrich.writer.doctrine.product
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pim_enrich.connector.processor.mass_edit.product.edit_common_attributes
+                        writer:    pimee_enrich.connector.writer.mass_edit.product
                     parameters:
                         batch_size: 1000
                 clean:
                     title: edit_common_attributes_clean
                     class: "%pim_enrich.step.mass_edit.step.class%"
                     services:
-                        cleaner: pim_enrich.mass_edit.temporary_file.cleaner
+                        cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner
