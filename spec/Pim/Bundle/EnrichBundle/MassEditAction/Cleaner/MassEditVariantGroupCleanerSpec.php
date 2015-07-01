@@ -9,10 +9,8 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -21,6 +19,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Connector\Model\JobConfigurationInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -31,20 +31,20 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         PaginatorFactoryInterface $paginatorFactory,
         ObjectDetacherInterface $objectDetacher,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        ObjectManager $objectManager,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductRepositoryInterface $productRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SaverInterface $saver
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $paginatorFactory,
             $objectDetacher,
             $jobConfigurationRepo,
-            $objectManager,
             $groupRepository,
             $productRepository,
-            $translator
+            $translator,
+            $saver
         );
     }
 
@@ -52,9 +52,9 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         $groupRepository,
         $productRepository,
         $jobConfigurationRepo,
-        $objectManager,
         $paginatorFactory,
         $pqbFactory,
+        $saver,
         GroupInterface $variantGroup,
         ProductQueryBuilderInterface $productQueryBuilder,
         StepExecution $stepExecution,
@@ -107,8 +107,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
             Argument::any()
         )->shouldBeCalledTimes(2);
 
-        $objectManager->persist($jobConfiguration)->shouldBeCalled();
-        $objectManager->flush($jobConfiguration)->shouldBeCalled();
+        $saver->save($jobConfiguration)->shouldBeCalled();
 
         $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
         $paginator->rewind()->willReturn();
@@ -124,7 +123,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         $groupRepository,
         $productRepository,
         $jobConfigurationRepo,
-        $objectManager,
+        $saver,
         $paginatorFactory,
         $pqbFactory,
         GroupInterface $variantGroup,
@@ -197,8 +196,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         $productQueryBuilder->addFilter('id', 'IN', [1, 2, 3, 4], [])->shouldBeCalled();
         $productQueryBuilder->execute()->willReturn($cursor);
 
-        $objectManager->persist($jobConfiguration)->shouldBeCalled();
-        $objectManager->flush($jobConfiguration)->shouldBeCalled();
+        $saver->save($jobConfiguration)->shouldBeCalled();
 
         $jobConfiguration->setConfiguration(json_encode([
             'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3, 4]]],
@@ -221,7 +219,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         $groupRepository,
         $productRepository,
         $jobConfigurationRepo,
-        $objectManager,
+        $saver,
         $paginatorFactory,
         $pqbFactory,
         GroupInterface $variantGroup,
@@ -321,8 +319,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         $productQueryBuilder->addFilter('id', 'IN', [1, 2], ['locale' => null, 'scope' => null])->shouldBeCalledTimes(1);
         $productQueryBuilder->execute()->willReturn($cursor);
 
-        $objectManager->persist($jobConfiguration)->shouldBeCalled();
-        $objectManager->flush($jobConfiguration)->shouldBeCalled();
+        $saver->save($jobConfiguration)->shouldBeCalled();
 
         $jobConfiguration->setConfiguration(json_encode([
             'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [2 => 3, 3 => 4]]],

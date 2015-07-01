@@ -8,6 +8,8 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.5. Please use \Pim\Component\Connector\Writer\Doctrine\ProductAssociationWriter
  */
 class ProductAssociationWriter extends Writer
 {
@@ -18,7 +20,7 @@ class ProductAssociationWriter extends Writer
     {
         $count = count($item->getProducts()) + count($item->getGroups());
 
-        $action = $item->getId() ? 'update' : 'create';
+        $action = (null !== $item->getId()) ? 'update' : 'create';
 
         for ($i = 0; $i < $count; $i++) {
             $this->stepExecution->incrementSummaryInfo($action);

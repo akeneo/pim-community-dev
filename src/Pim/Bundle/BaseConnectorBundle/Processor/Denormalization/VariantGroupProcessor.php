@@ -20,11 +20,13 @@ use Symfony\Component\Validator\ValidatorInterface;
  *  - create / update variant groups
  *  - bind values data into a product template linked to a variant group
  *  - validate values and save values in template (it erases existing values)
- *  - return the valid variant groups, throw exceptions to skip invalid ones
+ *  - return the valid variant groups, throw exceptions to skip invalid ones.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be removed in 1.5, please use to \Pim\Component\Connector\Processor\Denormalization\
  */
 class VariantGroupProcessor extends AbstractProcessor
 {
@@ -40,15 +42,6 @@ class VariantGroupProcessor extends AbstractProcessor
     /** @staticvar string */
     const LABEL_PATTERN = 'label-';
 
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var DenormalizerInterface */
-    protected $denormalizer;
-
-    /** @var ObjectDetacherInterface */
-    protected $detacher;
-
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -63,9 +56,6 @@ class VariantGroupProcessor extends AbstractProcessor
 
     /** @var FieldNameBuilder */
     protected $fieldNameBuilder;
-
-    /** @var string */
-    protected $class;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $groupRepository
@@ -91,16 +81,12 @@ class VariantGroupProcessor extends AbstractProcessor
         $templateClass,
         $format
     ) {
-        parent::__construct($groupRepository);
-        $this->denormalizer         = $denormalizer;
-        $this->detacher             = $detacher;
-        $this->normalizer           = $normalizer;
+        parent::__construct($groupRepository, $denormalizer, $validator, $detacher, $groupClass);
+        $this->normalizer = $normalizer;
         $this->templateMediaManager = $templateMediaManager;
-        $this->fieldNameBuilder     = $fieldNameBuilder;
-        $this->templateClass        = $templateClass;
-        $this->format               = $format;
-        $this->class                = $groupClass;
-        $this->validator            = $validator;
+        $this->fieldNameBuilder = $fieldNameBuilder;
+        $this->templateClass = $templateClass;
+        $this->format = $format;
     }
 
     /**
@@ -118,7 +104,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Find or create the variant group
+     * Find or create the variant group.
      *
      * @param array $groupData
      *
@@ -126,10 +112,7 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     protected function findOrCreateVariantGroup(array $groupData)
     {
-        if (null === $variantGroup = $this->findObject($this->repository, $groupData)) {
-            $variantGroup = new $this->class();
-        }
-
+        $variantGroup = $this->findOrCreateObject($this->repository, $groupData, $this->class);
         $isExistingGroup = (null !== $variantGroup->getType() && false === $variantGroup->getType()->isVariant());
         if ($isExistingGroup) {
             $this->skipItemWithMessage(
@@ -142,7 +125,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Update the variant group fields
+     * Update the variant group fields.
      *
      * @param GroupInterface $variantGroup
      * @param array          $groupData
@@ -163,7 +146,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Update the variant group values
+     * Update the variant group values.
      *
      * @param GroupInterface $variantGroup
      * @param array          $groupData
@@ -198,7 +181,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Filters the item data to keep only variant group fields (code, axis, labels) or template product values
+     * Filters the item data to keep only variant group fields (code, axis, labels) or template product values.
      *
      * @param array $groupData
      * @param bool  $keepOnlyFields if true keep only code, axis, labels, else keep only values
@@ -239,7 +222,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Filter empty values that are not used in a template then denormalize the product values objects from CSV fields
+     * Filter empty values that are not used in a template then denormalize the product values objects from CSV fields.
      *
      * @param array                    $rawProductValues
      * @param ProductTemplateInterface $template
@@ -253,7 +236,7 @@ class VariantGroupProcessor extends AbstractProcessor
         foreach ($rawProductValues as $index => $data) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($index);
             $attribute = $attributeInfos['attribute'];
-            if ("" === trim($data) && !in_array($attribute->getCode(), $templateCodes)) {
+            if ('' === trim($data) && !in_array($attribute->getCode(), $templateCodes)) {
                 unset($rawProductValues[$index]);
             }
         }
@@ -262,7 +245,7 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Normalize product value objects to JSON format
+     * Normalize product value objects to JSON format.
      *
      * @param ArrayCollection $values Collection of ProductValueInterface
      *
@@ -288,18 +271,5 @@ class VariantGroupProcessor extends AbstractProcessor
         }
 
         return $template;
-    }
-
-    /**
-     * Detaches the object from the unit of work
-     *
-     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
-     * skipped items or we should use an explicit persist strategy
-     *
-     * @param mixed $object
-     */
-    protected function detachObject($object)
-    {
-        $this->detacher->detach($object);
     }
 }

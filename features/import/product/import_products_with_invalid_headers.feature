@@ -21,7 +21,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see "The field \"comment-fr_FR-mobile\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
+    And I should see " The option \"comment-fr_FR-mobile\" does not exist."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3374
   Scenario: Skip import with a not expected channel for a global attribute
@@ -36,7 +36,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see "The field \"comment-mobile\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
+    And I should see " The option \"comment-mobile\" does not exist."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3375
   Scenario: Skip import with a not expected locale for a global attribute
@@ -51,7 +51,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see "The field \"comment-fr_FR\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
+    And I should see " The option \"comment-fr_FR\" does not exist."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3372
   Scenario: Skip import with a not available locale for a localizable attribute
@@ -66,7 +66,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see "Locale fr_CA does not exist"
+    And I should see " The option \"name-fr_CA\" does not exist."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3370
   Scenario: Skip import with a not existing channel for a scopable attribute
@@ -81,5 +81,90 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see "Channel noexistingchannel does not exist"
+    And I should see " The option \"description-en_US-noexistingchannel\" does not exist."
 
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3312
+  Scenario: Stop imports with attributes where channel is wrong (PIM-3312)
+    Given the following CSV file to import:
+      """
+      sku;name-en_US;description-en_US-wrongchannel
+      SKU-001;high heels;red high heels
+      SKU-002;rangers;black rangers
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see " The option \"description-en_US-wrongchannel\" does not exist."
+    And I should see "FAILED"
+    And there should be 0 product
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3312
+  Scenario: Stop imports with attributes where channel is wrong (PIM-3312)
+    Given the following CSV file to import:
+      """
+      sku;price-FCFA
+      SKU-001;100
+      SKU-002;50
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see " The option \"price-FCFA\" does not exist."
+    And I should see "FAILED"
+    And there should be 0 product
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3312
+  Scenario: Stop imports with attributes where local is wrong (PIM-3312)
+    Given the following CSV file to import:
+      """
+      sku;name-en_US;description-wronglocale-ecommerce
+      SKU-001;high heels;red high heels
+      SKU-002;rangers;black rangers
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "The option \"description-wronglocale-ecommerce\" does not exist."
+    And I should see "FAILED"
+    And there should be 0 product
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3377
+  Scenario: Fail when import invalid attribute with nonexistent specific locale
+    Given the following attributes:
+      | code                      | type | localizable | availableLocales |
+      | locale_specific_attribute | text | yes         | en_US            |
+    Then I am on the Attribute index page
+    And I add the "french" locale to the "mobile" channel
+    Given the following CSV file to import:
+      """
+      sku;locale_specific_attribute-fr_FR
+      SKU-001;test value
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "The option \"locale_specific_attribute-fr_FR\" does not exist."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3369
+  Scenario: Skip import with a not available locale for channel of a localizable attribute
+    Given the following CSV file to import:
+      """
+      sku;description-fr_FR-print
+      SKU-001;"my name"
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "Status: FAILED"
+    And I should see " The option \"description-fr_FR-print\" does not exist."

@@ -1,2 +1,0 @@
-parameters:
-    pim_base_connector.model.job_configuration.class: Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration

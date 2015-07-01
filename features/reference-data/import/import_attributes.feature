@@ -42,4 +42,4 @@ Feature: Import attributes
     When I am on the "footwear_attribute_import" import job page
     And I launch the import job
     And I wait for the "footwear_attribute_import" job to finish
-    Then I should see "Reference data \"test\" does not exist. Values allowed are: fabrics, color"
+    Then I should see "Reference data \"test\" does not exist. Allowed values are: fabrics, color"

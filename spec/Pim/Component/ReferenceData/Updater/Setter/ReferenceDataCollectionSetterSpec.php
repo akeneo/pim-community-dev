@@ -32,7 +32,7 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
 
     function it_is_a_setter()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Updater\Setter\SetterInterface');
     }
 
     function it_supports_reference_data_collection_attributes(

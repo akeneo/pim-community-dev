@@ -23,9 +23,9 @@ Feature: Execute an import
   Scenario: Successfully import a csv file with values for one variant group and empty values for the other
     Given the following CSV file to import:
       """
-      code;name-en_US
-      SANDAL;My new name
-      SANDAL2;
+      code;type;name-en_US
+      SANDAL;VARIANT;My new name
+      SANDAL2;VARIANT;
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |

@@ -5,14 +5,15 @@ Feature: Edit a product
 
   Background:
     Given a "default" catalog configuration
+    And I add the "english" locale to the "mobile" channel
+    And the following attributes:
+      | code        | type     | localizable | wysiwyg_enabled | label       | scopable |
+      | description | textarea | yes         | yes             | Description | yes      |
+      | name        | text     | no          |                 | Name        | no       |
+      | other_name  | text     | yes         |                 | Other Name  | yes      |
     And the following products:
       | sku    |
       | sandal |
-    And the following attributes:
-      | code        | type     | localizable | availableLocales | wysiwyg_enabled | label       | scopable |
-      | description | textarea | yes         | en_US            | yes             | Description | yes      |
-      | name        | text     | no          |                  |                 | Name        | no       |
-      | other_name  | text     | yes         |                  |                 | Other Name  | yes      |
     And the following product values:
       | product | attribute   | value                                | locale | scope     |
       | sandal  | description | My awesome description for ecommerce | en_US  | ecommerce |

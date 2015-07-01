@@ -22,6 +22,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -34,9 +35,10 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 class FixturesContext extends RawMinkContext
 {
     protected $locales = [
-        'english' => 'en_US',
-        'french'  => 'fr_FR',
-        'german'  => 'de_DE',
+        'english'    => 'en_US',
+        'french'     => 'fr_FR',
+        'german'     => 'de_DE',
+        'english UK' => 'en_GB',
     ];
 
     protected $attributeTypes = [
@@ -269,30 +271,13 @@ class FixturesContext extends RawMinkContext
             $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
-        // Clear product transformer cache
-        $this
-            ->getContainer()
-            ->get('pim_transform.transformer.product')
-            ->reset();
-
-        // Reset product import validator
-        $this
-            ->getContainer()
-            ->get('pim_base_connector.validator.product_import')
-            ->reset();
-
+        // use the processor part of the import system
         $product = $this->loadFixture('products', $data);
-        $this->getMediaManager()->handleProductMedias($product);
-
-        // we get rid of "add missing values" but we still have an issue with the ORM price filter on empty operator
-        /** @var ProductValueInterface $value */
-        foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $this->getProductBuilder()->addMissingPrices($value);
-            }
-        }
-
         $this->getProductSaver()->save($product, ['recalculate' => false]);
+
+        // reset the unique value set to allow to update product values
+        $uniqueValueSet = $this->getContainer()->get('pim_catalog.validator.unique_value_set');
+        $uniqueValueSet->reset();
 
         return $product;
     }
@@ -487,8 +472,6 @@ class FixturesContext extends RawMinkContext
 
             $this->createProduct($data);
         }
-
-        $this->flush();
     }
 
     /**
@@ -569,6 +552,7 @@ class FixturesContext extends RawMinkContext
         $family    = $this->getFamily($family);
 
         $family->setAttributeAsLabel($attribute);
+        $this->persist($family);
 
         $this->flush();
     }
@@ -1259,7 +1243,7 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProduct($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->getFieldNameBuilder()->extractAttributeFieldNameInfos($rawCode);
+            $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
 
             $attribute     = $infos['attribute'];
             $attributeCode = $attribute->getCode();
@@ -1751,13 +1735,19 @@ class FixturesContext extends RawMinkContext
 
         $attribute = $this->loadFixture('attributes', $data);
 
+        $familiesToPersist = [];
         if ($families) {
             foreach ($this->listToArray($families) as $familyCode) {
-                $this->getFamily($familyCode)->addAttribute($attribute);
+                $family = $this->getFamily($familyCode);
+                $family->addAttribute($attribute);
+                $familiesToPersist[] = $family;
             }
         }
 
         $this->persist($attribute);
+        foreach ($familiesToPersist as $family) {
+            $this->persist($family);
+        }
 
         return $attribute;
     }
@@ -2140,6 +2130,10 @@ class FixturesContext extends RawMinkContext
             ->get('pim_installer.fixture_loader.configuration_registry')
             ->getProcessor($type, $format);
 
+        if ($processor instanceof ProductProcessor) {
+            $processor->setEnabledComparison(false);
+        }
+
         $entity = $processor->process($data);
 
         return $entity;
@@ -2246,11 +2240,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\TransformBundle\Builder\FieldNameBuilder
+     * @return \Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
      */
-    protected function getFieldNameBuilder()
+    protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_transform.builder.field_name');
+        return $this->getContainer()->get('pim_connector.array_converter.flat.product.attribute_column_info_extractor');
     }
 
     /**

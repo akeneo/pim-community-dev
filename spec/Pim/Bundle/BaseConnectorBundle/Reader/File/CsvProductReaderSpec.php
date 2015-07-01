@@ -8,14 +8,14 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Prophecy\Argument;
 
 class CsvProductReaderSpec extends ObjectBehavior
 {
     function let(
         EntityManager $em,
-        FieldNameBuilder $fieldNameBuilder,
+        AttributeColumnInfoExtractor $fieldExtractor,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
@@ -30,7 +30,7 @@ class CsvProductReaderSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $em,
-            $fieldNameBuilder,
+            $fieldExtractor,
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
             'Pim\Bundle\CatalogBundle\Entity\Channel',
             'Pim\Bundle\CatalogBundle\Entity\Locale',
@@ -52,7 +52,7 @@ class CsvProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $localeRepository,
         $currencyRepository,
-        $fieldNameBuilder
+        $fieldExtractor
     ) {
         $this->setFilePath(
             __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv'
@@ -63,10 +63,10 @@ class CsvProductReaderSpec extends ObjectBehavior
         $currencyRepository->getActivatedCurrencyCodes()->willReturn([]);
 
         $fieldInfo = ['locale_code' => null, 'scope_code' => null, 'price_currency' => null];
-        $fieldNameBuilder->extractAttributeFieldNameInfos('sku')->willReturn($fieldInfo);
-        $fieldNameBuilder->extractAttributeFieldNameInfos('name')->willReturn($fieldInfo);
-        $fieldNameBuilder->extractAttributeFieldNameInfos('view')->willReturn($fieldInfo);
-        $fieldNameBuilder->extractAttributeFieldNameInfos('manual-fr_FR')->willReturn($fieldInfo);
+        $fieldExtractor->extractColumnInfo('sku')->willReturn($fieldInfo);
+        $fieldExtractor->extractColumnInfo('name')->willReturn($fieldInfo);
+        $fieldExtractor->extractColumnInfo('view')->willReturn($fieldInfo);
+        $fieldExtractor->extractColumnInfo('manual-fr_FR')->willReturn($fieldInfo);
 
         $this->read()
             ->shouldReturn([
@@ -82,7 +82,7 @@ class CsvProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $localeRepository,
         $currencyRepository,
-        $fieldNameBuilder
+        $fieldExtractor
     ) {
         $this->setFilePath(
             __DIR__ . '/../../../../../../features/Context/fixtures/invalid_import_header.csv'
@@ -92,10 +92,10 @@ class CsvProductReaderSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr']);
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR']);
 
-        $fieldNameBuilder->extractAttributeFieldNameInfos('description-wronglocale-ecommerce')->willReturn(
+        $fieldExtractor->extractColumnInfo('description-wronglocale-ecommerce')->willReturn(
             ['locale_code' => 'wronglocale', 'scope_code' => 'ecommerce', 'price_currency' => null]
         );
-        $fieldNameBuilder->extractAttributeFieldNameInfos(Argument::any())->willReturn(
+        $fieldExtractor->extractColumnInfo(Argument::any())->willReturn(
             ['locale_code' => null, 'scope_code' => null, 'price_currency' => null]
         );
 
@@ -106,7 +106,7 @@ class CsvProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $localeRepository,
         $currencyRepository,
-        $fieldNameBuilder
+        $fieldExtractor
     ) {
         $this->setFilePath(
             __DIR__ . '/../../../../../../features/Context/fixtures/invalid_import_header.csv'
@@ -116,10 +116,10 @@ class CsvProductReaderSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr']);
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR']);
 
-        $fieldNameBuilder->extractAttributeFieldNameInfos('description-fr_FR-wrongscope')->willReturn(
+        $fieldExtractor->extractColumnInfo('description-fr_FR-wrongscope')->willReturn(
             ['locale_code' => 'fr', 'scope_code' => 'wrongscope', 'price_currency' => null]
         );
-        $fieldNameBuilder->extractAttributeFieldNameInfos(Argument::any())->willReturn(
+        $fieldExtractor->extractColumnInfo(Argument::any())->willReturn(
             ['locale_code' => null, 'scope_code' => null, 'price_currency' => null]
         );
 
@@ -130,7 +130,7 @@ class CsvProductReaderSpec extends ObjectBehavior
         $channelRepository,
         $localeRepository,
         $currencyRepository,
-        $fieldNameBuilder
+        $fieldExtractor
     ) {
         $this->setFilePath(
             __DIR__ . '/../../../../../../features/Context/fixtures/invalid_import_header.csv'
@@ -140,10 +140,10 @@ class CsvProductReaderSpec extends ObjectBehavior
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr']);
         $currencyRepository->getActivatedCurrencyCodes()->willReturn(['EUR']);
 
-        $fieldNameBuilder->extractAttributeFieldNameInfos('price-wrongcurrency')->willReturn(
+        $fieldExtractor->extractColumnInfo('price-wrongcurrency')->willReturn(
             ['locale_code' => null, 'scope_code' => null, 'price_currency' => 'wrongcurrency']
         );
-        $fieldNameBuilder->extractAttributeFieldNameInfos(Argument::any())->willReturn(
+        $fieldExtractor->extractColumnInfo(Argument::any())->willReturn(
             ['locale_code' => null, 'scope_code' => null, 'price_currency' => null]
         );
 

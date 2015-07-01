@@ -26,33 +26,33 @@ class CsvReaderSpec extends ObjectBehavior
         $this->getConfigurationFields()->shouldReturn([
             'filePath' => [
                 'options' => [
-                    'label' => 'pim_base_connector.import.filePath.label',
-                    'help'  => 'pim_base_connector.import.filePath.help'
+                    'label' => 'pim_connector.import.filePath.label',
+                    'help'  => 'pim_connector.import.filePath.help'
                 ]
             ],
             'uploadAllowed' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_base_connector.import.uploadAllowed.label',
-                    'help'  => 'pim_base_connector.import.uploadAllowed.help'
+                    'label' => 'pim_connector.import.uploadAllowed.label',
+                    'help'  => 'pim_connector.import.uploadAllowed.help'
                 ]
             ],
             'delimiter' => [
                 'options' => [
-                    'label' => 'pim_base_connector.import.delimiter.label',
-                    'help'  => 'pim_base_connector.import.delimiter.help'
+                    'label' => 'pim_connector.import.delimiter.label',
+                    'help'  => 'pim_connector.import.delimiter.help'
                 ]
             ],
             'enclosure' => [
                 'options' => [
-                    'label' => 'pim_base_connector.import.enclosure.label',
-                    'help'  => 'pim_base_connector.import.enclosure.help'
+                    'label' => 'pim_connector.import.enclosure.label',
+                    'help'  => 'pim_connector.import.enclosure.help'
                 ]
             ],
             'escape' => [
                 'options' => [
-                    'label' => 'pim_base_connector.import.escape.label',
-                    'help'  => 'pim_base_connector.import.escape.help'
+                    'label' => 'pim_connector.import.escape.label',
+                    'help'  => 'pim_connector.import.escape.help'
                 ]
             ],
         ]);

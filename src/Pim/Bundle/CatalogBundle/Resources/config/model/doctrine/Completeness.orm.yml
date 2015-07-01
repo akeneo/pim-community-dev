@@ -1,6 +1,7 @@
 Pim\Bundle\CatalogBundle\Model\Completeness:
     type: entity
     table: pim_catalog_completeness
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         searchunique_idx:
             columns:
