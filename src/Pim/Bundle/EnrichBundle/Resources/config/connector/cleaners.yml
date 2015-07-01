@@ -1,6 +1,6 @@
 parameters:
-    pim_enrich.mass_edit.temporary_file.cleaner.class: Pim\Bundle\EnrichBundle\MassEditAction\Cleaner\MassEditTemporaryFileCleaner
-    pim_enrich.mass_edit.add_to_variant.cleaner.class: Pim\Bundle\EnrichBundle\MassEditAction\Cleaner\MassEditVariantGroupCleaner
+    pim_enrich.mass_edit.temporary_file.cleaner.class: Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\MassEditTemporaryFileCleaner
+    pim_enrich.mass_edit.add_to_variant.cleaner.class: Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\MassEditVariantGroupCleaner
 
 services:
     pim_enrich.mass_edit.temporary_file.cleaner:

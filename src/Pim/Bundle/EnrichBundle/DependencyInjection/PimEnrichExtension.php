@@ -35,6 +35,7 @@ class PimEnrichExtension extends Extension
         $loader->load('cleaners.yml');
         $loader->load('colors.yml');
         $loader->load('command.yml');
+        $loader->load('connector/cleaners.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
         $loader->load('controllers.yml');

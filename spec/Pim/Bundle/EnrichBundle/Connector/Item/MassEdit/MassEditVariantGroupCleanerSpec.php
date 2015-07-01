@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Cleaner;
+namespace spec\Pim\Bundle\EnrichBundle\Connector\Item\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
