@@ -57,7 +57,9 @@ class Grid extends Index
     {
         try {
             $grid = $this->spin(function () {
-                $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
+                $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']) +
+                    $this->getElement('Dialog')->findAll('css', $this->elements['Grid']['css']);
+
                 foreach ($grids as $grid) {
                     if ($grid->isVisible()) {
                         return $grid;
