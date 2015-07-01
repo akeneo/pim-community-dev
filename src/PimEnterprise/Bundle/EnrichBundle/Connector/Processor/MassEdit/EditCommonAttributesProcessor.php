@@ -44,7 +44,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         UserManager $userManager,
         SecurityContextInterface $securityContext
     ) {
-        \Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\parent::__construct(
+        parent::__construct(
             $propertySetter,
             $validator,
             $massActionRepository,
@@ -65,7 +65,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
     {
         $this->initSecurityContext($this->stepExecution);
 
-        return \Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\parent::process($product);
+        return parent::process($product);
     }
 
     /**
