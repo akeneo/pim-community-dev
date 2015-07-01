@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.saver.base.class:                          Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
-    pim_catalog.saver.base_options_resolver.class:         Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver
     pim_catalog.saver.product.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver
     pim_catalog.saver.product_options_resolver.class:      Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver
     pim_catalog.saver.completeness_options_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\CompletenessSavingOptionsResolver
@@ -15,14 +14,14 @@ services:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pim_catalog.model.group_type.interface%
 
     pim_catalog.saver.currency:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pim_catalog.model.currency.interface%
 
     pim_catalog.saver.product:
@@ -54,35 +53,35 @@ services:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pim_catalog.model.association_type.interface%
 
     pim_catalog.saver.attribute_group:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pim_catalog.model.attribute_group.interface%
 
     pim_catalog.saver.attribute:
         class: %pim_catalog.saver.attribute.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
 
     pim_catalog.saver.attribute_option:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pim_catalog.model.attribute_option.interface%
 
     pim_catalog.saver.category:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pim_catalog.model.category.interface%
 
     pim_catalog.saver.channel:
@@ -96,11 +95,12 @@ services:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pim_catalog.model.locale.interface%
 
+    # deprecated, will be removed in 1.5 (use akeneo_storage_utils.saver.base_options_resolver instead)
     pim_catalog.saver.base_options_resolver:
-        class: %pim_catalog.saver.base_options_resolver.class%
+        alias: akeneo_storage_utils.saver.base_options_resolver
 
     pim_catalog.saver.product_options_resolver:
         class: %pim_catalog.saver.product_options_resolver.class%
