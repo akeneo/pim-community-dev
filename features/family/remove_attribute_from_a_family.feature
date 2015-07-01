@@ -41,11 +41,11 @@ Feature: Remove attribute from a family
     And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel    | locale                  | state    | message         | ratio |
-      | e-commerce | English (United States) | warning  | 1 missing value | 50%   |
-      | e-commerce | French (France)         | warning  | 1 missing value | 50%   |
-      | mobile     | English (United States) | disabled | none            | none  |
-      | mobile     | French (France)         | warning  | 1 missing value | 50%   |
+      | channel    | locale | state    | message         | ratio |
+      | e-commerce | en_US  | warning  | 1 missing value | 50%   |
+      | e-commerce | fr_FR  | warning  | 1 missing value | 50%   |
+      | mobile     | en_US  | disabled | none            | none  |
+      | mobile     | fr_FR  | warning  | 1 missing value | 50%   |
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
     And I remove the "Manufacturer" attribute
@@ -54,18 +54,18 @@ Feature: Remove attribute from a family
     And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel    | locale                  | state    | message            | ratio |
-      | e-commerce | English (United States) |          | Not yet calculated |       |
-      | e-commerce | French (France)         |          | Not yet calculated |       |
-      | mobile     | English (United States) | disabled | none               | none  |
-      | mobile     | French (France)         |          | Not yet calculated |       |
+      | channel    | locale | state    | message            | ratio |
+      | e-commerce | en_US  |          | Not yet calculated |       |
+      | e-commerce | fr_FR  |          | Not yet calculated |       |
+      | mobile     | en_US  | disabled | none               | none  |
+      | mobile     | fr_FR  |          | Not yet calculated |       |
     When I launched the completeness calculator
     And I am on the "bag-noname" product page
     And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel    | locale                  | state    | message  | ratio |
-      | e-commerce | English (United States) | success  | Complete | 100%  |
-      | e-commerce | French (France)         | success  | Complete | 100%  |
-      | mobile     | English (United States) | disabled | none     | none  |
-      | mobile     | French (France)         | success  | Complete | 100%  |
+      | channel    | locale | state    | message  | ratio |
+      | e-commerce | en_US  | success  | Complete | 100%  |
+      | e-commerce | fr_FR  | success  | Complete | 100%  |
+      | mobile     | en_US  | disabled | none     | none  |
+      | mobile     | fr_FR  | success  | Complete | 100%  |

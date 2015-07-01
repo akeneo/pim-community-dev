@@ -1,3 +1,4 @@
+@javascript
 Feature: Add reference data attributes to a product
   In order to provide more information about a product
   As a product manager
@@ -18,7 +19,6 @@ Feature: Add reference data attributes to a product
     Then I should see available attribute Sole fabric in group "Other"
     Then I should see available attribute Lace fabric in group "Other"
 
-  @javascript
   Scenario: Add some available reference data attributes to a product
     Given I am on the "boots" product page
     When I add available attributes Sole color and Sole fabric

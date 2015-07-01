@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\Behat\Event\StepEvent;
 use Behat\Behat\Exception\BehaviorException;
+use Behat\Behat\Exception\PendingException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ExpectationException;
@@ -369,6 +370,37 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         }
 
         return false;
+    }
+
+    /**
+     * Execute javascript
+     *
+     * @param string $name
+     */
+    public function execute($name)
+    {
+        $args = array_slice(func_get_args(), 1);
+        $filepath = sprintf('%s/scripts/%s.js', __DIR__, $name);
+        if (!file_exists($filepath)) {
+            throw new PendingException(
+                sprintf(
+                    'The file could not be found, you can create it in path "%s"',
+                    $filepath
+                )
+            );
+        }
+        $script = file_get_contents($filepath);
+        $result = $this->getSession()
+            ->getDriver()
+            ->getWebDriverSession()
+            ->execute(
+                [
+                    'script' => 'return (' . $script . ').apply(null, arguments);',
+                    'args' => $args
+                ]
+            );
+
+        assertTrue($result, $result);
     }
 
     /**
