@@ -97,7 +97,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     /**
      * {@inheritdoc}
      *
-     * @return \Doctrine\ODM\MongoDB\Query\Builder
+     * @return Builder
      */
     public function createDatagridQueryBuilder(array $parameters = [])
     {
@@ -113,7 +113,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     /**
      * {@inheritdoc}
      *
-     * @param \Doctrine\ODM\MongoDB\Query\Builder $qb
+     * @param Builder $qb
      */
     public function applyDatagridContext($qb, $productId)
     {
@@ -125,7 +125,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     /**
      * {@inheritdoc}
      *
-     * @param \Doctrine\ODM\MongoDB\Query\Builder $qb
+     * @param Builder $qb
      */
     public function applyFilter($qb, $field, $operator, $value)
     {
@@ -151,7 +151,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     /**
      * {@inheritdoc}
      *
-     * @param \Doctrine\ODM\MongoDB\Query\Builder $qb
+     * @param Builder $qb
      */
     public function applySorter($qb, $field, $direction)
     {
@@ -168,6 +168,17 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
         $this->categoryAccessRepo = $repository;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByIds(array $ids)
+    {
+        return $this
+            ->createQueryBuilder('ProductDraft')
+            ->field('_id')->in($ids)
+            ->getQuery()->execute();
     }
 
     /**
@@ -196,7 +207,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
      *
      * @param UserInterface $user
      *
-     * @return \Doctrine\ODM\MongoDB\Query\Builder
+     * @return Builder
      */
     protected function createApprovableQueryBuilder(UserInterface $user)
     {

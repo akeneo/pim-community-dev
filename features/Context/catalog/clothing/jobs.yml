@@ -142,6 +142,18 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    clothing_product_draft_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_draft_import
+        label:     Demo product draft import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            multiple:      false
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+            enabled:       true
     add_product_value_with_permission:
         connector: Akeneo Mass Edit Connector
         alias:     add_product_value_with_permission
@@ -197,3 +209,13 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/products-quick-export.csv
+    approve_product_draft:
+        connector: Akeneo CSV Connector
+        alias:     approve_product_draft
+        label:     Mass approve product drafts
+        type:      mass_edit
+    refuse_product_draft:
+        connector: Akeneo CSV Connector
+        alias:     refuse_product_draft
+        label:     Mass refuse product drafts
+        type:      mass_edit

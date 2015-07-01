@@ -183,6 +183,7 @@ class EnterpriseCommandContext extends CommandContext
                     )
                 );
             }
+
             assertEquals($proposal->getChanges(), $expectedResult);
         }
     }
@@ -307,8 +308,6 @@ class EnterpriseCommandContext extends CommandContext
      */
     protected function getProposal(ProductInterface $product, $username)
     {
-        $repository = $this->getContainer()->get('pimee_workflow.repository.product_draft');
-
-        return $repository->findUserProductDraft($product, $username);
+        return $this->getMainContext()->getSubcontext('fixtures')->getProductDraft($product, $username);
     }
 }

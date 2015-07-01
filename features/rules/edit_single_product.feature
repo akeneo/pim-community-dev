@@ -153,12 +153,12 @@ Feature: Read a single product by applying rules
     And the following product values:
       | product   | attribute          | value          | locale | scope  |
       | my-jacket | name               | White jacket   | en_US  |        |
-      | my-jacket | handmade           | no             |        |        |
+      | my-jacket | handmade           | 0              |        |        |
       | my-jacket | release_date       | 2015-01-01     |        | mobile |
       | my-jacket | length             | 60 CENTIMETER  |        |        |
       | my-jacket | weather_conditions | wet,cold       |        |        |
       | my-jacket | number_in_stock    | 900            |        | mobile |
-      | my-jacket | size               | M              | en_US  |        |
+      | my-jacket | size               | M              |        |        |
       | my-jacket | price-USD          | 200            |        |        |
       | my-jacket | description        | Leather jacket | en_US  | mobile |
     And the following product rules:
@@ -195,20 +195,20 @@ Feature: Read a single product by applying rules
       | description-fr_FR-tablet | En cuir            |
 
   Scenario: Successfully execute a rule with copier actions to update non empty values on all kind of attributes
-    Given the following products:
-      | sku       | family  | weather_conditions |
-      | my-jacket | jackets | dry                |
-    And the following attributes:
+    Given the following attributes:
       | code            | label           | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
       | made_in_france  | Made in France  | boolean     | no       | no          |                   |               |                     |
       | report          | Report          | file        | no       | no          | txt               |               |                     |
       | climate         | Climate         | multiselect | no       | no          |                   |               |                     |
       | promotion_price | Promotion price | prices      | no       | no          |                   |               |                     |
+    And the following products:
+      | sku       | family  | weather_conditions |
+      | my-jacket | jackets | dry                |
     And the following "climate" attribute options: Hot and Cold
     And the following product values:
       | product   | attribute          | value                  | locale | scope  |
-      | my-jacket | handmade           | yes                    |        |        |
-      | my-jacket | made_in_france     | no                     |        |        |
+      | my-jacket | handmade           | 1                      |        |        |
+      | my-jacket | made_in_france     | 0                      |        |        |
       | my-jacket | release_date       | 2015-09-18             |        | mobile |
       | my-jacket | release_date       |                        |        | tablet |
       | my-jacket | datasheet          | %fixtures%/akeneo.txt  |        |        |
@@ -269,28 +269,26 @@ Feature: Read a single product by applying rules
       | description-fr_FR-tablet | A stylish white jacket |
 
   Scenario: Successfully execute a rule with copier actions to update empty values on all kind of attributes
-    Given the following products:
-      | sku       | family  | weather_conditions |
-      | my-jacket | jackets | dry                |
-    And the following attributes:
+    Given the following attributes:
       | code            | label           | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
       | made_in_france  | Made in France  | boolean     | no       | no          |                   |               |                     |
       | report          | Report          | file        | no       | no          | txt               |               |                     |
       | climate         | Climate         | multiselect | no       | no          |                   |               |                     |
       | promotion_price | Promotion price | prices      | no       | no          |                   |               |                     |
+    And the following products:
+      | sku       | family  | weather_conditions |
+      | my-jacket | jackets | dry                |
     And the following "climate" attribute options: Hot and Cold
     And the following product values:
       | product   | attribute          | value                  | locale | scope  |
       | my-jacket | handmade           |                        |        |        |
-      | my-jacket | made_in_france     | no                     |        |        |
+      | my-jacket | made_in_france     | 0                      |        |        |
       | my-jacket | release_date       |                        |        | mobile |
       | my-jacket | release_date       | 2015-09-18             |        | tablet |
       | my-jacket | datasheet          |                        |        |        |
       | my-jacket | report             | %fixtures%/akeneo.txt  |        |        |
       | my-jacket | side_view          |                        |        |        |
       | my-jacket | top_view           | %fixtures%/akeneo2.jpg |        |        |
-      | my-jacket | length             |                        |        |        |
-      | my-jacket | width              | 55 CENTIMETER          |        |        |
       | my-jacket | weather_conditions |                        |        |        |
       | my-jacket | climate            | Hot,Cold               |        |        |
       | my-jacket | number_in_stock    |                        |        | mobile |
@@ -301,6 +299,8 @@ Feature: Read a single product by applying rules
       | my-jacket | name               | White jacket           | fr_FR  |        |
       | my-jacket | description        |                        | en_US  | mobile |
       | my-jacket | description        | A stylish white jacket | fr_FR  | tablet |
+      | my-jacket | length             |                        |        |        |
+      | my-jacket | width              | 55 CENTIMETER          |        |        |
     And the following product rules:
       | code             | priority |
       | copy_name_jacket | 10       |
@@ -319,7 +319,7 @@ Feature: Read a single product by applying rules
       | copy_name_jacket | main_color         | secondary_color |             |           |            |          |
       | copy_name_jacket | name               | name            | en_US       | fr_FR     |            |          |
       | copy_name_jacket | description        | description     | en_US       | fr_FR     | mobile     | tablet   |
-    Given the product rule "copy_name_jacket" is executed
+    And the product rule "copy_name_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | handmade                 |           |
       | made_in_france           |           |

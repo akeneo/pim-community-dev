@@ -11,9 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -22,7 +26,9 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
@@ -39,6 +45,12 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductDraftController extends AbstractController
 {
+    /** @staticvar string */
+    const MASS_APPROVE_JOB_CODE = 'approve_product_draft';
+
+    /** @staticvar string */
+    const MASS_REFUSE_JOB_CODE  = 'refuse_product_draft';
+
     /** @var ObjectRepository */
     protected $repository;
 
@@ -48,18 +60,30 @@ class ProductDraftController extends AbstractController
     /** @var UserContext */
     protected $userContext;
 
+    /** @var JobLauncherInterface */
+    protected $simpleJobLauncher;
+
+    /** @var JobInstanceRepository */
+    protected $jobInstanceRepository;
+
+    /** @var MassActionParametersParser */
+    protected $gridParameterParser;
+
     /**
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ObjectRepository         $repository
-     * @param ProductDraftManager      $manager
-     * @param UserContext              $userContext
+     * @param Request                        $request
+     * @param EngineInterface                $templating
+     * @param RouterInterface                $router
+     * @param SecurityContextInterface       $securityContext
+     * @param FormFactoryInterface           $formFactory
+     * @param ValidatorInterface             $validator
+     * @param TranslatorInterface            $translator
+     * @param EventDispatcherInterface       $eventDispatcher
+     * @param ObjectRepository               $repository
+     * @param ProductDraftManager            $manager
+     * @param UserContext                    $userContext
+     * @param JobLauncherInterface           $simpleJobLauncher
+     * @param JobInstanceRepository          $jobInstanceRepository
+     * @param MassActionParametersParser     $gridParameterParser
      */
     public function __construct(
         Request $request,
@@ -72,7 +96,10 @@ class ProductDraftController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         ObjectRepository $repository,
         ProductDraftManager $manager,
-        UserContext $userContext
+        UserContext $userContext,
+        JobLauncherInterface $simpleJobLauncher,
+        JobInstanceRepository $jobInstanceRepository,
+        MassActionParametersParser $gridParameterParser
     ) {
         parent::__construct(
             $request,
@@ -84,9 +111,12 @@ class ProductDraftController extends AbstractController
             $translator,
             $eventDispatcher
         );
-        $this->repository  = $repository;
-        $this->manager     = $manager;
-        $this->userContext = $userContext;
+        $this->repository            = $repository;
+        $this->manager               = $manager;
+        $this->userContext           = $userContext;
+        $this->simpleJobLauncher     = $simpleJobLauncher;
+        $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->gridParameterParser   = $gridParameterParser;
     }
 
     /**
@@ -148,7 +178,7 @@ class ProductDraftController extends AbstractController
             return new JsonResponse(
                 [
                     'successful' => $status === 'success',
-                    'message' => $this->getTranslator()->trans(
+                    'message'    => $this->getTranslator()->trans(
                         sprintf('flash.product_draft.approve.%s', $status),
                         $messageParams
                     )
@@ -162,7 +192,7 @@ class ProductDraftController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $productDraft->getProduct()->getId(),
+                    'id'         => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
@@ -198,7 +228,7 @@ class ProductDraftController extends AbstractController
             return new JsonResponse(
                 [
                     'successful' => true,
-                    'message' => $this->getTranslator()->trans('flash.product_draft.refuse.success')
+                    'message'    => $this->getTranslator()->trans('flash.product_draft.refuse.success')
                 ]
             );
         }
@@ -207,11 +237,85 @@ class ProductDraftController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $productDraft->getProduct()->getId(),
+                    'id'         => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
         );
+    }
+
+    /**
+     * Launch the mass approve job
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function massApproveAction(Request $request)
+    {
+        $jobExecution = $this->launchMassReviewJob(
+            self::MASS_APPROVE_JOB_CODE,
+            $this->parseGridParameters($request)
+        );
+
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_enrich_job_tracker_show',
+                ['id' => $jobExecution->getId()]
+            )
+        );
+    }
+
+    /**
+     * Launch the mass refuse job
+     *
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function massRefuseAction(Request $request)
+    {
+        $jobExecution = $this->launchMassReviewJob(
+            self::MASS_REFUSE_JOB_CODE,
+            $this->parseGridParameters($request)
+        );
+
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_enrich_job_tracker_show',
+                ['id' => $jobExecution->getId()]
+            )
+        );
+    }
+
+    /**
+     * Launch the specified mass review job
+     *
+     * @param string $jobCode
+     * @param array  $params
+     *
+     * @return JobExecution
+     */
+    protected function launchMassReviewJob($jobCode, array $params)
+    {
+        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier($jobCode);
+        $rawConfiguration = addslashes(json_encode(['draftIds' => $params['values']]));
+
+        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+
+        return $jobExecution;
+    }
+
+    /**
+     * Transform the query string build by the Oro grid into a usable array
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    protected function parseGridParameters(Request $request)
+    {
+        return $this->gridParameterParser->parse($request);
     }
 
     /**

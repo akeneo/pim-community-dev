@@ -7,8 +7,7 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_serializer'
-            - '@pimee_workflow.comparator.registry'
+            - '@pim_catalog.comparator.registry'
             - '@pim_catalog.repository.attribute'
-            - '@security.context'
             - '@pimee_workflow.factory.product_draft'
             - '@pimee_workflow.repository.product_draft'

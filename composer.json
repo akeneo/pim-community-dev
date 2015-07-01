@@ -17,11 +17,10 @@
     },
     "require": {
         "akeneo/pim-community-dev": "dev-PIM-4059",
-        "oro/platform": "dev-pim-1.4@dev",
+        "oro/platform": "dev-pim-1.4",
         "phpspec/php-diff": "1.0.2",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
-        "doctrine/doctrine-migrations-bundle": "1.0.0",
-        "symfony/console": "~2.5.0"
+        "doctrine/doctrine-migrations-bundle": "1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",

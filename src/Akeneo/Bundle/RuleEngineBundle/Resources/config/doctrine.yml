@@ -6,7 +6,7 @@ services:
         class: %akeneo_rule_engine.saver.rule_definition.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - %akeneo_rule_engine.model.rule_definition.class%
 

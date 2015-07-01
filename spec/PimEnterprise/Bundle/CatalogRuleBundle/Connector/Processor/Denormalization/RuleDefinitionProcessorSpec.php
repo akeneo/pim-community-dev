@@ -39,7 +39,7 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
 
     function it_is_an_import_processor()
     {
-        $this->shouldHaveType('Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor');
+        $this->shouldHaveType('Pim\Component\Connector\Processor\Denormalization\AbstractProcessor');
     }
 
     function it_processes_a_new_valid_item(

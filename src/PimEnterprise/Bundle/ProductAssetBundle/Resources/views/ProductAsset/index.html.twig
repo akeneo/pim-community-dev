@@ -1,20 +1,18 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% set title = 'asset.overview'|trans %}
-
 {% block head_script %}
     {{ parent() }}
     {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_create-js-handler.html.twig' %}
     <script type="text/javascript">
         require(
-                ['jquery', 'jquery.sidebarize'],
-                function ($) {
-                    'use strict';
-                    $(function() {
-                        $('.has-sidebar').sidebarize();
-                    });
-                }
+            ['jquery', 'jquery.sidebarize'],
+            function ($) {
+                'use strict';
+                $(function() {
+                    $('.has-sidebar').sidebarize();
+                });
+            }
         );
     </script>
 {% endblock %}
@@ -27,6 +25,8 @@
             {{ 'btn.create.asset'|trans|capitalize }}
         </a>
     {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
 
     {{ elements.page_header(title, buttons) }}
 
