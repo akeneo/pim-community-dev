@@ -133,6 +133,7 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController`, added `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` as last argument 
 - Move `Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter` to `Pim\Bundle\FilterBundle\Filter\CategoryFilter`
 - Change constructor of `Pim\Bundle\FilterBundle\Filter\CategoryFilter`, last argument is now a `Pim\Component\Classification\Repository\CategoryRepositoryInterface`
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter`, second argument is now a `Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface`
 
 # 1.3.16 (2015-06-08)
 

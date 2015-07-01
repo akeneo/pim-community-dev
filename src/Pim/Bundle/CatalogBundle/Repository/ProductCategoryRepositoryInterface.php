@@ -68,6 +68,8 @@ interface ProductCategoryRepositoryInterface
      * Apply a filter by unclassified (not placed in any categories)
      *
      * @param mixed $qb query builder to update
+     *
+     * @deprecated Will be removed in 1.5. Please use CategoryFilterableRepositoryInterface.
      */
     public function applyFilterByUnclassified($qb);
 
@@ -78,6 +80,8 @@ interface ProductCategoryRepositoryInterface
      * @param array $categoryIds category ids
      * @param bool  $include     if yes, get product in those categories, if false
      *                           products NOT in those categories
+     *
+     * @deprecated Will be removed in 1.5. Please use CategoryFilterableRepositoryInterface.
      */
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true);
 
@@ -86,6 +90,8 @@ interface ProductCategoryRepositoryInterface
      *
      * @param mixed $qb          query builder to update
      * @param array $categoryIds category ids
+     *
+     * @deprecated Will be removed in 1.5. Please use CategoryFilterableRepositoryInterface.
      */
     public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds);
 }

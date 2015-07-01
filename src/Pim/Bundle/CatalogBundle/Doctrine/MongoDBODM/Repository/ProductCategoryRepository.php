@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
@@ -18,7 +19,10 @@ use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCategoryRepository implements ProductCategoryRepositoryInterface, ItemCategoryRepositoryInterface
+class ProductCategoryRepository implements
+    ProductCategoryRepositoryInterface,
+    ItemCategoryRepositoryInterface,
+    CategoryFilterableRepositoryInterface
 {
     /**
      * ORM EntityManager to access ORM entities
