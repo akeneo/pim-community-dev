@@ -44,33 +44,27 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
     /**
      * {@inheritdoc}
      */
-    protected function getProductValueConditions()
+    protected function getForeignKeysFromMappings($mappings)
     {
         $index = 0;
 
-        return array_map(
-            function ($field) {
-                return sprintf('%s IS NOT NULL', $field);
-            },
-            array_merge(
-                $this->getClassContentFields($this->productValueClass, 'v'),
-                array_reduce(
-                    $this->getClassMetadata($this->productValueClass)->getAssociationMappings(),
-                    function ($fields, $mapping) use (&$index) {
-                        $index++;
-                        if ($mapping['targetEntity'] == 'PimEnterprise\Component\ProductAsset\Model\Asset') {
-                            return $fields;
-                        }
+        $productForeignKeys = array_reduce(
+            $mappings,
+            function ($fields, $mapping) use (&$index) {
+                $index++;
+                if ($mapping['targetEntity'] == 'PimEnterprise\Component\ProductAsset\Model\Asset') {
+                    return $fields;
+                }
 
-                        return array_merge(
-                            $fields,
-                            $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
-                        );
-                    },
-                    []
-                )
-            )
+                return array_merge(
+                    $fields,
+                    $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
+                );
+            },
+            []
         );
+
+        return $productForeignKeys;
     }
 
     protected function prepareCompleteAssets()
@@ -103,7 +97,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
     {
         $skippedByParent = parent::getSkippedMappings();
 
-        return array_merge($skippedByParent, ['asset']);
+        return array_merge($skippedByParent, ['assets']);
     }
 
     /**
@@ -117,7 +111,6 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
             AND complete_asset.locale_id = l.id';
 
         $assetsJoin = sprintf($assetsJoin, static::ASSETS_VALUES_TABLE);
-
         $extraJoins = array_merge(parent::getExtraJoins(), [$assetsJoin]);
 
         return $extraJoins;
@@ -129,8 +122,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
     protected function getExtraConditions()
     {
         $assetsConditions = sprintf('OR %s.value_id IS NOT NULL', static::ASSETS_VALUES_TABLE);
-
-        $extraConditions = array_merge(parent::getExtraConditions(), [$assetsConditions]);
+        $extraConditions  = array_merge(parent::getExtraConditions(), [$assetsConditions]);
 
         return $extraConditions;
     }
