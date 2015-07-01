@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
+namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
@@ -33,12 +33,12 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Bundle\EnrichBundle\Processor\MassEdit\ProductToFlatArrayProcessor');
+        $this->shouldHaveType('\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\ProductToFlatArrayProcessor');
     }
 
     function it_is_a_mass_edit_processor()
     {
-        $this->shouldImplement('\Pim\Bundle\EnrichBundle\Processor\MassEdit\AbstractMassEditProcessor');
+        $this->shouldImplement('\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AbstractMassEditProcessor');
     }
 
     function it_is_configurable(

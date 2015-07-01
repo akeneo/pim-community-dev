@@ -1,11 +1,12 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
+namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit;
 
 use InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AbstractMassEditProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 
 /**

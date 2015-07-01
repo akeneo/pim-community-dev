@@ -1,12 +1,15 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
+namespace spec\Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
@@ -14,28 +17,33 @@ use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
 
-class AddProductValueProcessorSpec extends ObjectBehavior
+class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(
-        PropertyAdderInterface $propertyAdder,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ValidatorInterface $validator,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
+        GroupRepositoryInterface $groupRepository,
+        ProductTemplateUpdaterInterface $templateUpdater
     ) {
         $this->beConstructedWith(
-            $propertyAdder,
+            $jobConfigurationRepo,
             $validator,
-            $jobConfigurationRepo
+            $groupRepository,
+            $templateUpdater
         );
     }
 
     function it_adds_values_to_product(
-        $propertyAdder,
+        $groupRepository,
         $validator,
+        $templateUpdater,
+        GroupInterface $variantGroup,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobConfigurationInterface $jobConfiguration,
+        ProductTemplateInterface $productTemplate
     ) {
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -44,11 +52,18 @@ class AddProductValueProcessorSpec extends ObjectBehavior
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
+            json_encode(
+                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
+            )
         );
 
-        $propertyAdder->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
+        $groupRepository->findOneByIdentifier('variant_group_code')->willReturn($variantGroup);
+        $product->getVariantGroup()->willReturn(null);
+        $variantGroup->addProduct($product)->shouldBeCalled();
+        $variantGroup->getProductTemplate()->willReturn($productTemplate);
+        $templateUpdater->update($variantGroup->getProductTemplate(), [$product]);
+
+        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled($productTemplate);
 
         $this->setStepExecution($stepExecution);
 
@@ -56,13 +71,16 @@ class AddProductValueProcessorSpec extends ObjectBehavior
     }
 
     function it_adds_invalid_values_to_product(
-        $propertyAdder,
+        $groupRepository,
         $validator,
+        $templateUpdater,
+        GroupInterface $variantGroup,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobConfigurationInterface $jobConfiguration,
+        ProductTemplateInterface $productTemplate
     ) {
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);
@@ -72,10 +90,17 @@ class AddProductValueProcessorSpec extends ObjectBehavior
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
+            json_encode(
+                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
+            )
         );
 
-        $propertyAdder->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
+        $groupRepository->findOneByIdentifier('variant_group_code')->willReturn($variantGroup);
+        $product->getVariantGroup()->willReturn(null);
+        $variantGroup->addProduct($product)->shouldBeCalled();
+        $variantGroup->getProductTemplate()->willReturn($productTemplate);
+        $templateUpdater->update($variantGroup->getProductTemplate(), [$product]);
+
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
 
