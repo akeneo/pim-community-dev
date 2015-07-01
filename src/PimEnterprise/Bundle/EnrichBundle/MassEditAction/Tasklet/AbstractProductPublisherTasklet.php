@@ -7,7 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\BaseConnectorBundle\Step\TaskletInterface;
+use Pim\Component\Connector\Step\TaskletInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
