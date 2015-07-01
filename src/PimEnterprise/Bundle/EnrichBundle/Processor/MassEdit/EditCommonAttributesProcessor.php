@@ -3,12 +3,12 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor as BaseProcessor;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -27,7 +27,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
     protected $userManager;
 
     /**
-     * @param ProductUpdaterInterface              $productUpdater
+     * @param PropertySetterInterface              $propertySetter
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
@@ -36,7 +36,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param SecurityContextInterface             $securityContext
      */
     public function __construct(
-        ProductUpdaterInterface $productUpdater,
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
@@ -45,7 +45,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
-            $productUpdater,
+            $propertySetter,
             $validator,
             $massActionRepository,
             $attributeRepository,

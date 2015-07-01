@@ -4,13 +4,14 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class DelegatingProductSaverSpec extends ObjectBehavior
@@ -84,7 +85,9 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $optionsResolver,
         $securityContext,
         $productDraftBuilder,
-        $draftSaver
+        $draftSaver,
+        UsernamePasswordToken $token,
+        User $user
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
@@ -92,9 +95,12 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $product->getId()->willReturn(42);
         $securityContext->isGranted(Attributes::OWN, $product)
             ->willReturn(false);
-        $securityContext->getToken()->willReturn('token');
 
-        $productDraftBuilder->build($product)
+        $user->getUsername()->willReturn('username');
+        $token->getUser()->willReturn($user);
+        $securityContext->getToken()->willReturn($token);
+
+        $productDraftBuilder->build($product, 'username')
             ->willReturn(null)
             ->shouldBeCalled();
 
@@ -108,7 +114,9 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $optionsResolver,
         $securityContext,
         $productDraftBuilder,
-        $draftSaver
+        $draftSaver,
+        UsernamePasswordToken $token,
+        User $user
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled()
@@ -118,10 +126,12 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $securityContext->isGranted(Attributes::OWN, $product)
             ->shouldBeCalled()
             ->willReturn(false);
-        $securityContext->getToken()->willReturn('token');
-        
+        $user->getUsername()->willReturn('username');
+        $token->getUser()->willReturn($user);
+        $securityContext->getToken()->willReturn($token);
+
         $productDraft = new ProductDraft();
-        $productDraftBuilder->build($product)
+        $productDraftBuilder->build($product, 'username')
             ->willReturn($productDraft)
             ->shouldBeCalled();
 

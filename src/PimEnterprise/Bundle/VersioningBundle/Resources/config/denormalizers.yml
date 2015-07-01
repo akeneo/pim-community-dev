@@ -11,10 +11,11 @@ services:
     pimee_versioning.denormalizer.product:
         class: %pim_serializer.denormalizer.flat.product.class%
         arguments:
-            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - @pim_catalog.doctrine.smart_manager_registry
             - %pim_catalog.entity.product.class%
-            - '@pim_catalog.builder.product'
-            - '@pim_transform.builder.field_name'
+            - @pim_catalog.builder.product
+            - @pim_connector.array_converter.flat.product.attribute_column_info_extractor
+            - @pim_connector.array_converter.flat.product.association_columns_resolver
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.category.class%
             - %pim_catalog.entity.family.class%

@@ -11,9 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
+use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Symfony\Component\Validator\Constraint;
@@ -27,8 +28,11 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ValueActionValidator extends ConstraintValidator
 {
-    /** @var ProductUpdaterInterface */
-    protected $factory;
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
+
+    /** @var PropertyCopierInterface */
+    protected $propertyCopier;
 
     /** @var ProductBuilderInterface */
     protected $productBuilder;
@@ -37,16 +41,19 @@ class ValueActionValidator extends ConstraintValidator
     protected $productValidator;
 
     /**
-     * @param ProductUpdaterInterface $factory
+     * @param PropertySetterInterface $propertySetter
+     * @param PropertyCopierInterface $propertyCopier
      * @param ProductBuilderInterface $productBuilder
      * @param ValidatorInterface      $validator
      */
     public function __construct(
-        ProductUpdaterInterface $factory,
+        PropertySetterInterface $propertySetter,
+        PropertyCopierInterface $propertyCopier,
         ProductBuilderInterface $productBuilder,
         ValidatorInterface $validator
     ) {
-        $this->factory = $factory;
+        $this->propertySetter = $propertySetter;
+        $this->propertyCopier = $propertyCopier;
         $this->productBuilder = $productBuilder;
         $this->productValidator = $validator;
     }
@@ -74,7 +81,7 @@ class ValueActionValidator extends ConstraintValidator
         $fakeProduct = $this->createProduct();
 
         try {
-            $this->factory->setData(
+            $this->propertySetter->setData(
                 $fakeProduct,
                 $action->getField(),
                 $action->getValue(),
@@ -87,7 +94,10 @@ class ValueActionValidator extends ConstraintValidator
             );
         }
 
-        $errors = $this->productValidator->validate($fakeProduct);
+        $fakeValue = $fakeProduct->getValue($action->getField(), $action->getLocale(), $action->getScope());
+        if ($fakeValue) {
+            $errors = $this->productValidator->validate($fakeValue);
+        }
 
         foreach ($errors as $error) {
             $this->context->addViolation(
@@ -107,16 +117,16 @@ class ValueActionValidator extends ConstraintValidator
     {
         try {
             $fakeProduct = $this->createProduct();
-            $this->factory->copyData(
+            $this->propertyCopier->copyData(
                 $fakeProduct,
                 $fakeProduct,
                 $action->getFromField(),
                 $action->getToField(),
                 [
                     'from_locale' => $action->getFromLocale(),
-                    'from_scope'  => $action->getFromScope(),
-                    'to_locale'   => $action->getToLocale(),
-                    'to_scope'    => $action->getToScope()
+                    'from_scope' => $action->getFromScope(),
+                    'to_locale' => $action->getToLocale(),
+                    'to_scope' => $action->getToScope()
                 ]
             );
         } catch (\Exception $e) {

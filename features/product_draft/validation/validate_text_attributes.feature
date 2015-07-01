@@ -28,7 +28,7 @@ Feature: Validate text attributes of a product
   Scenario: Validate the unique constraint of text attribute
     Given I change the Email to "bar@example.com"
     And I save the product
-    Then I should see validation tooltip "This value is already set on another product."
+    Then I should see validation tooltip "The value bar@example.com is already set on another product for the unique attribute email"
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 

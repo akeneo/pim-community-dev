@@ -1,0 +1,15 @@
+parameters:
+    pimee_base_connector.processor.denormalization.product_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor
+
+services:
+    pimee_base_connector.processor.denormalization.product_draft.flat:
+        class: %pimee_base_connector.processor.denormalization.product_draft.class%
+        arguments:
+            - '@pimee_base_connector.array_converter.flat.product_draft'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pimee_workflow.builder.draft'
+            - '@pimee_workflow.applier.product_draft'
+            - '@pimee_workflow.repository.product_draft'
+

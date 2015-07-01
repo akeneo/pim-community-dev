@@ -45,6 +45,9 @@ job_profile_accesses:
     clothing_rule_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
+    clothing_product_draft_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
 
     update_product_value:
         executeJobProfile: [IT support, Manager, Redactor]
@@ -66,3 +69,8 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
     edit_common_attributes_with_permission:
         executeJobProfile: [IT support, Manager, Redactor]
+
+    approve_product_draft:
+        executeJobProfile: [IT support, Manager]
+    refuse_product_draft:
+        executeJobProfile: [IT support, Manager]

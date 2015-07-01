@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -66,7 +65,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $applier->apply($product, $productDraft)->shouldBeCalled();
         $mediaManager->handleProductMedias($product)->shouldBeCalled();
         $workingCopySaver->save($product)->shouldBeCalled();
-        $remover->remove($productDraft)->shouldBeCalled();
+        $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
 
         $dispatcher
             ->dispatch(

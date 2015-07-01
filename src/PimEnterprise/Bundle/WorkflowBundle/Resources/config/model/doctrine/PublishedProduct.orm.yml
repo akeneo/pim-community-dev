@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
     type: entity
     table: pimee_workflow_published_product
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository
     fields:
         id:

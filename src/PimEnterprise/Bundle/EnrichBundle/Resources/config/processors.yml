@@ -7,19 +7,19 @@ services:
     pim_enrich.mass_edit.edit_common_attributes.processor:
         class: %pim_enrich.mass_edit.edit_common_attributes.processor.class%
         arguments:
-            - '@pim_catalog.updater.product'
-            - '@pim_validator'
+            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.product_mass_action'
             - '@pim_catalog.repository.attribute'
-            - '@pim_base_connector.repository.job_configuration'
+            - '@pim_connector.repository.job_configuration'
             - '@oro_user.manager'
             - '@security.context'
 
     pimee_enrich.mass_edit.add_product_value.processor:
         class: %pimee_enrich.mass_edit.add_product_value_with_permission.processor.class%
         arguments:
-            - '@pim_catalog.updater.product'
-            - '@pim_validator'
-            - '@pim_base_connector.repository.job_configuration'
+            - '@pim_catalog.updater.product_property_adder'
+            - '@pim_catalog.validator.product'
+            - '@pim_connector.repository.job_configuration'
             - '@oro_user.manager'
             - '@security.context'

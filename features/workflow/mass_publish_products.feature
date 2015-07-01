@@ -6,6 +6,19 @@ Feature: Publish many products at once
 
   Background:
     Given a "clothing" catalog configuration
+    And the following attributes:
+      | code      | label-en_US | type | scopable | unique | date_min   | date_max   | group |
+      | release   | Release     | date | no       | yes    | 2013-01-01 | 2015-12-12 | info  |
+      | available | Available   | date | yes      | no     | 2013-01-01 | 2015-12-12 | info  |
+    And the following attributes:
+      | code       | label-en_US | type   | scopable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | max_length | Length      | metric | yes      | Length        | METER               | no               | no               |            |            | info  |
+    And the following attributes:
+      | code       | label-en_US | type   | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | popularity | Popularity  | number | yes      | no     | no               | no               | 1          | 10         | info  |
+    And the following attributes:
+      | code    | label-en_US | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
+      | customs | Customs     | prices | yes      |                  | yes              | 10         | 100        | info  |
     And the following product:
       | sku       | family  | name-en_US | categories |
       | unionjack | jackets | UnionJack  | jackets    |
@@ -130,34 +143,21 @@ Feature: Publish many products at once
       | sku       | family  | name-en_US |
       | my-jacket | jackets | Jackets    |
       | my-shoes  | jackets | Shoes      |
-    And the following attributes:
-      | code      | label-en_US | type | scopable | unique | date_min   | date_max   | group |
-      | release   | Release     | date | no       | yes    | 2013-01-01 | 2015-12-12 | info  |
-      | available | Available   | date | yes      | no     | 2013-01-01 | 2015-12-12 | info  |
-    And the following attributes:
-      | code       | label-en_US | type   | scopable | metric_family | default_metric_unit | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | max_length | Length      | metric | yes      | Length        | METER               | no               | no               |            |            | info  |
-    And the following attributes:
-      | code       | label-en_US | type   | scopable | unique | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | popularity | Popularity  | number | yes      | no     | no               | no               | 1          | 10         | info  |
-    And the following attributes:
-      | code    | label-en_US | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
-      | customs | Customs     | prices | yes      |                  | yes              | 10         | 100        | info  |
     And the following family:
       | code | label-en_US | attributes                                               |
       | baz  | Baz         | sku, release, available, max_length, popularity, customs |
     And the following product values:
-      | product   | attribute  | value         | scope     |
-      | my-jacket | release    | 2013-02-02    |           |
-      | my-shoes  | release    | 2013-02-03    |           |
-      | my-jacket | available  | 2013-02-02    | ecommerce |
-      | my-shoes  | available  | 2013-02-03    | ecommerce |
-      | my-jacket | max_length | 60 CENTIMETER | ecommerce |
-      | my-shoes  | max_length | 25 CENTIMETER | ecommerce |
-      | my-jacket | popularity | 9             | ecommerce |
-      | my-shoes  | popularity | 10            | ecommerce |
-      | my-jacket | customs    | 100 EUR       | ecommerce |
-      | my-shoes  | customs    | 50 EUR        | ecommerce |
+      | product   | attribute  | value         | scope  |
+      | my-jacket | release    | 2013-02-02    |        |
+      | my-shoes  | release    | 2013-02-03    |        |
+      | my-jacket | available  | 2013-02-02    | tablet |
+      | my-shoes  | available  | 2013-02-03    | tablet |
+      | my-jacket | max_length | 60 CENTIMETER | tablet |
+      | my-shoes  | max_length | 25 CENTIMETER | tablet |
+      | my-jacket | popularity | 9             | tablet |
+      | my-shoes  | popularity | 10            | tablet |
+      | my-jacket | customs    | 100 EUR       | tablet |
+      | my-shoes  | customs    | 50 EUR        | tablet |
     And I am on the products page
     And I mass-edit products my-jacket and my-shoes
     When I choose the "Publish products" operation

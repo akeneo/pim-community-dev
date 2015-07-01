@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Applier;
 
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdater;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Prophecy\Argument;
@@ -12,9 +12,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductDraftApplierSpec extends ObjectBehavior
 {
-    function let(ProductUpdater $productUpdater, EventDispatcherInterface $dispatcher)
+    function let(PropertySetterInterface $propertySetter, EventDispatcherInterface $dispatcher)
     {
-        $this->beConstructedWith($productUpdater, $dispatcher);
+        $this->beConstructedWith($propertySetter, $dispatcher);
     }
 
     function it_is_a_applier()
@@ -44,10 +44,9 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $this->apply($product, $productDraft);
     }
 
-    function it_applies_a_draft(ProductInterface $product, ProductDraft $productDraft, $dispatcher, $productUpdater)
+    function it_applies_a_draft(ProductInterface $product, ProductDraft $productDraft, $dispatcher, $propertySetter)
     {
-        $productDraft->getChanges()->willReturn(['values' =>
-            [
+        $productDraft->getChanges()->willReturn(['values' => [
                 'name' => [
                     ['value' => 'Test', 'locale' => null, 'scope' => null]
                 ],
@@ -66,19 +65,19 @@ class ProductDraftApplierSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $productUpdater->setData($product, 'name', 'Test', [
+        $propertySetter->setData($product, 'name', 'Test', [
             'locale' => null, 'scope' => null
         ])->shouldBeCalled();
-        $productUpdater->setData($product, 'description', 'Description EN ecommerce', [
+        $propertySetter->setData($product, 'description', 'Description EN ecommerce', [
             'locale' => 'en_US', 'scope' => 'ecommerce'
         ])->shouldBeCalled();
-        $productUpdater->setData($product, 'description', 'Description EN print', [
+        $propertySetter->setData($product, 'description', 'Description EN print', [
             'locale' => 'en_US', 'scope' => 'print'
         ])->shouldBeCalled();
-        $productUpdater->setData($product, 'description', 'Description FR ecommerce', [
+        $propertySetter->setData($product, 'description', 'Description FR ecommerce', [
             'locale' => 'fr_FR', 'scope' => 'ecommerce'
         ])->shouldBeCalled();
-        $productUpdater->setData($product, 'description', 'Description FR print', [
+        $propertySetter->setData($product, 'description', 'Description FR print', [
             'locale' => 'fr_FR', 'scope' => 'print'
         ])->shouldBeCalled();
 

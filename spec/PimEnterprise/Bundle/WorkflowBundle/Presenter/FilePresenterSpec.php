@@ -33,36 +33,47 @@ class FilePresenterSpec extends ObjectBehavior
         Model\ProductValueInterface $value,
         Model\ProductMedia $media
     ) {
+        $file2 = new\SplFileInfo(__FILE__);
+
         $value->getMedia()->willReturn($media);
-        $media->getFilename()->willReturn('uploaded_bar.pdf');
-        $media->getOriginalFilename()->willReturn('bar.pdf');
+        $media->getFilename()->willReturn(__FILE__);
+        $media->getOriginalFilename()->willReturn('original_foo.pdf');
 
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => 'uploaded_bar.pdf'])
-            ->willReturn('/media/uploaded_bar.pdf');
+            ->generate('pim_enrich_media_show', ['filename' => __FILE__], true)
+            ->willReturn(__FILE__);
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => 'uploaded_foo.pdf'])
-            ->willReturn('/media/uploaded_foo.pdf');
+            ->generate('pim_enrich_media_show', ['filename' => __FILE__])
+            ->willReturn(__FILE__);
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => $file2->getFilename()], true)
+            ->willReturn($file2->getPath());
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => $file2->getFilename()])
+            ->willReturn($file2->getPath());
 
         $change = [
             'value' => [
-                'filename' => 'uploaded_foo.pdf',
-                'originalFilename' => 'foo.pdf',
+                'filename' => $file2->getFilename(),
+                'filePath' => $file2->getPath(),
+                'originalFilename' => 'change_foo.pdf',
             ]
         ];
 
-        $this->present($value, $change)->shouldReturn(
+        $this->present($value, $change)->shouldReturn(sprintf(
             '<ul class="diff">' .
                 '<li class="base file">' .
                     '<i class="icon-file"></i>' .
-                    '<a target="_blank" class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a>' .
+                    '<a target="_blank" class="no-hash" href="%s">original_foo.pdf</a>' .
                 '</li>' .
                 '<li class="changed file">' .
                     '<i class="icon-file"></i>' .
-                    '<a target="_blank" class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a>' .
+                    '<a target="_blank" class="no-hash" href="%s">change_foo.pdf</a>' .
                 '</li>' .
-            '</ul>'
-        );
+            '</ul>',
+            __FILE__,
+            $file2->getPath()
+        ));
     }
 
     function it_only_presents_new_file_if_value_does_not_have_a_media_yet(
@@ -71,13 +82,18 @@ class FilePresenterSpec extends ObjectBehavior
     ) {
         $value->getMedia()->willReturn(null);
 
+        $file = new \SplFileInfo(__FILE__);
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => 'uploaded_foo.pdf'])
+            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename()], true)
+            ->willReturn($file->getPath());
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename()])
             ->willReturn('/media/uploaded_foo.pdf');
 
         $change = [
             'value' => [
-                'filename' => 'uploaded_foo.pdf',
+                'filename' => $file->getFilename(),
+                'filePath' => $file->getPath(),
                 'originalFilename' => 'foo.pdf',
             ]
         ];
@@ -97,12 +113,16 @@ class FilePresenterSpec extends ObjectBehavior
         Model\ProductValueInterface $value,
         Model\ProductMedia $media
     ) {
+        $file = new \SplFileInfo(__FILE__);
         $value->getMedia()->willReturn($media);
-        $media->getFilename()->willReturn('uploaded_bar.pdf');
+        $media->getFilename()->willReturn($file->getFilename());
         $media->getOriginalFilename()->willReturn('bar.pdf');
 
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => 'uploaded_bar.pdf'])
+            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename()], true)
+            ->willReturn($file->getPath());
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename()])
             ->willReturn('/media/uploaded_bar.pdf');
 
         $this->present($value, ['value' => []])->shouldReturn(
