@@ -4,14 +4,15 @@ namespace spec\PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 class ProductAssetFilterUtilitySpec extends ObjectBehavior
 {
-    function let(AssetRepositoryInterface $assetRepositoryInterface)
+    function let(AssetRepositoryInterface $assetRepositoryInterface, CategoryFilter $categoryFilter)
     {
-        $this->beConstructedWith($assetRepositoryInterface);
+        $this->beConstructedWith($assetRepositoryInterface, $categoryFilter);
     }
 
     function it_can_filter_by_tag()
