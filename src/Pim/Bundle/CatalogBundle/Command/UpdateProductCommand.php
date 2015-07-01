@@ -30,9 +30,9 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $updatesExample = [
             [
-                'type' => 'set_data',
+                'type'  => 'set_data',
                 'field' => 'name',
-                'data' => 'My name'
+                'data'  => 'My name'
             ],
             [
                 'type'        => 'copy_data',
@@ -46,7 +46,7 @@ class UpdateProductCommand extends ContainerAwareCommand
             [
                 'type'  => 'add_data',
                 'field' => 'categories',
-                'data' => ['tshirt']
+                'data'  => ['tshirt']
             ],
         ];
 
@@ -204,9 +204,9 @@ class UpdateProductCommand extends ContainerAwareCommand
             $update['to_field'],
             [
                 'from_locale' => $update['from_locale'],
-                'to_locale' => $update['to_locale'],
-                'from_scope' => $update['from_scope'],
-                'to_scope' => $update['to_scope']
+                'to_locale'   => $update['to_locale'],
+                'from_scope'  => $update['from_scope'],
+                'to_scope'    => $update['to_scope']
             ]
         );
     }

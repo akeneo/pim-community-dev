@@ -95,9 +95,9 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
         $resolver->setDefaults(
             [
                 'from_locale' => null,
-                'from_scope' => null,
-                'to_locale' => null,
-                'to_scope' => null
+                'from_scope'  => null,
+                'to_locale'   => null,
+                'to_scope'    => null
             ]
         );
     }

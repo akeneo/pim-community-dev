@@ -57,9 +57,9 @@ class AjaxChoiceFilterType extends ChoiceFilterType
 
         $resolver->setDefaults(
             [
-                'choices' => [],
-                'preload_choices' => false,
-                'choice_url' => null,
+                'choices'           => [],
+                'preload_choices'   => false,
+                'choice_url'        => null,
                 'choice_url_params' => null
             ]
         );
