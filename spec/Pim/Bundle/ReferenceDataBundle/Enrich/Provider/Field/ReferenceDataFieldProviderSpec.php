@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\Provider\Field;
+namespace spec\Pim\Bundle\ReferenceDataBundle\Enrich\Provider\Field;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
