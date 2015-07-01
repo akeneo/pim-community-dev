@@ -17,7 +17,3 @@ PimEnterprise\Component\ProductAsset\Model\Variation:
         file:
             - Valid: ~
 
-Akeneo\Component\FileStorage\Model\File:
-    properties:
-        uploadedFile:
-            - File: ~

@@ -10,33 +10,33 @@ services:
         class: %pimee_product_asset.saver.asset.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pimee_product_asset.model.asset.class%
 
     pimee_product_asset.saver.tag:
         class: %pimee_product_asset.saver.asset.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pimee_product_asset.model.tag.class%
 
     pimee_product_asset.saver.reference:
         class: %pimee_product_asset.saver.reference.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pimee_product_asset.model.reference.class%
 
     pimee_product_asset.saver.variation:
         class: %pimee_product_asset.saver.variation.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pimee_product_asset.model.variation.class%
 
     pimee_product_asset.saver.file_metadata:
         class: %pimee_product_asset.saver.file_metadata.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pimee_product_asset.model.file_metadata.class%
