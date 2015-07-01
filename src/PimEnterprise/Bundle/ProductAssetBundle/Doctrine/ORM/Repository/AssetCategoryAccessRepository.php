@@ -62,7 +62,7 @@ class AssetCategoryAccessRepository extends CategoryAccessRepository
      */
     public function getCategoryIdsWithExistingAccess($groups, $categoryIds)
     {
-        $categories = $this->assetCategoryRepo->findAll();
+        $categories = $this->assetCategoryRepo->getCategoriesByIds($categoryIds)->toArray();
 
         return array_map(function ($category) {
             return $category->getId();
