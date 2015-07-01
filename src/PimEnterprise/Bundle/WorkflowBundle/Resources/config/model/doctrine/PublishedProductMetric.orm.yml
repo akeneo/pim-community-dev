@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric:
     type: entity
     table: pimee_workflow_published_product_metric
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
             type: integer

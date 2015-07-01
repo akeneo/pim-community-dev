@@ -17,7 +17,7 @@ Feature: Validate identifier attribute of a product
     Given I am on the "foo" product page
     And I change the SKU to "bar"
     And I save the product
-    Then I should see validation tooltip "This value is already set on another product."
+    Then I should see validation tooltip "The value bar is already set on another product for the unique attribute sku"
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 

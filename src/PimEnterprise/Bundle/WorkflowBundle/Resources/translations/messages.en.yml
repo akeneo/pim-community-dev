@@ -39,6 +39,10 @@ pimee_workflow:
             own: Review / publish
             edit: Edit
             view: View
+    jobs:
+        csv_product_draft_import:
+            title: Product draft import in CSV
+            import.title: Product draft import
 btn.publish: Publish
 btn.unpublish: Unpublish
 

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Applier;
 
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdater;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,19 +25,19 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProductDraftApplier implements ProductDraftApplierInterface
 {
-    /** @var ProductUpdater */
-    protected $productUpdater;
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
 
     /** @var EventDispatcherInterface */
     protected $dispatcher;
 
     /**
-     * @param ProductUpdater           $productUpdater
+     * @param PropertySetterInterface  $propertySetter
      * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(ProductUpdater $productUpdater, EventDispatcherInterface $dispatcher)
+    public function __construct(PropertySetterInterface $propertySetter, EventDispatcherInterface $dispatcher)
     {
-        $this->productUpdater = $productUpdater;
+        $this->propertySetter = $propertySetter;
         $this->dispatcher = $dispatcher;
     }
 
@@ -56,7 +56,7 @@ class ProductDraftApplier implements ProductDraftApplierInterface
 
         foreach ($changes['values'] as $code => $values) {
             foreach ($values as $value) {
-                $this->productUpdater->setData(
+                $this->propertySetter->setData(
                     $product,
                     $code,
                     $value['value'],

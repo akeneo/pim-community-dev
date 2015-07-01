@@ -13,7 +13,7 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
             - '@pim_user.context.user'
-            - '@pim_base_connector.launcher.simple_job_launcher'
+            - '@pim_connector.launcher.simple_job_launcher'
             - '@pim_import_export.repository.job_instance'
             - '@oro_datagrid.mass_action.parameters_parser'
 

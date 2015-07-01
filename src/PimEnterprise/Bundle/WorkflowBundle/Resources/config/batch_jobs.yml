@@ -1,5 +1,5 @@
 connector:
-    name: Akeneo Mass Review Connector
+    name: Akeneo CSV Connector
     jobs:
         approve_product_draft:
             title: approve_product_draft
@@ -19,3 +19,15 @@ connector:
                     class: "%pim_base_connector.step.tasklet.class%"
                     services:
                         tasklet: pimee_workflow.mass_review_tasklet.refuse_draft
+        csv_product_draft_import:
+            title: pimee_workflow.jobs.csv_product_draft_import.title
+            type:  import
+            steps:
+                import:
+                    title:     pimee_workflow.jobs.csv_product_draft_import.import.title
+                    services:
+                        reader:    pimee_workflow.reader.file.csv_product_draft
+                        processor: pimee_base_connector.processor.denormalization.product_draft.flat
+                        writer:    pim_base_connector.writer.doctrine.product_draft
+                    parameters:
+                        batch_size: 10

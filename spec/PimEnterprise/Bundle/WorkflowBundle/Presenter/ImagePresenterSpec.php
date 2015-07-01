@@ -33,25 +33,43 @@ class ImagePresenterSpec extends ObjectBehavior
         Model\ProductValueInterface $value,
         Model\ProductMedia $media
     ) {
+        $file2 = new \SplFileInfo(__FILE__);
+
         $value->getMedia()->willReturn($media);
-        $media->getFilename()->willReturn('foo.jpg');
-        $media->getOriginalFilename()->willReturn('original_foo.jpg');
+        $media->getFilename()->willReturn(__FILE__);
+        $media->getOriginalFilename()->willReturn('original_bar.jpg');
 
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => 'foo.jpg', 'filter' => 'thumbnail'])
-            ->willReturn('/media/foo.jpg');
+            ->generate('pim_enrich_media_show', ['filename' => __FILE__], true)
+            ->willReturn(__FILE__);
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => 'bar.jpg', 'filter' => 'thumbnail'])
-            ->willReturn('/media/bar.jpg');
+            ->generate('pim_enrich_media_show', ['filename' => __FILE__, 'filter' => 'thumbnail'])
+            ->willReturn(__FILE__);
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => $file2->getFilename()], true)
+            ->willReturn($file2->getPath());
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => $file2->getFilename(), 'filter' => 'thumbnail'])
+            ->willReturn($file2->getPath());
+
+        $change = [
+            'value' => [
+                'filename' => $file2->getFilename(),
+                'filePath' => $file2->getPath(),
+                'originalFilename' => 'change_bar.jpg',
+            ]
+        ];
 
         $this
-            ->present($value, ['value' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])
-            ->shouldReturn(
+            ->present($value, $change)
+            ->shouldReturn(sprintf(
                 '<ul class="diff">' .
-                    '<li class="base file"><img src="/media/foo.jpg" title="original_foo.jpg" /></li>' .
-                    '<li class="changed file"><img src="/media/bar.jpg" title="original_bar.jpg" /></li>' .
-                '</ul>'
-            );
+                '<li class="base file"><img src="%s" title="original_bar.jpg" /></li>' .
+                '<li class="changed file"><img src="%s" title="change_bar.jpg" /></li>' .
+                '</ul>',
+                __FILE__,
+                $file2->getPath()
+            ));
     }
 
     function it_presents_only_old_image_if_no_new_one_is_provided(
@@ -59,17 +77,21 @@ class ImagePresenterSpec extends ObjectBehavior
         Model\ProductValueInterface $value,
         Model\ProductMedia $media
     ) {
+        $file = new \SplFileInfo(__FILE__);
         $value->getMedia()->willReturn($media);
-        $media->getFilename()->willReturn('foo.jpg');
-        $media->getOriginalFilename()->willReturn('original_foo.jpg');
+        $media->getFilename()->willReturn($file->getFilename());
+        $media->getOriginalFilename()->willReturn('bar.jpg');
 
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => 'foo.jpg', 'filter' => 'thumbnail'])
-            ->willReturn('/media/foo.jpg');
+            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename()], true)
+            ->willReturn($file->getPath());
+        $generator
+            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename(), 'filter' => 'thumbnail'])
+            ->willReturn('/media/uploaded_bar.jpg');
 
         $this->present($value, ['value' => []])->shouldReturn(
             '<ul class="diff">' .
-                '<li class="base file"><img src="/media/foo.jpg" title="original_foo.jpg" /></li>' .
+            '<li class="base file"><img src="/media/uploaded_bar.jpg" title="bar.jpg" /></li>' .
             '</ul>'
         );
     }
@@ -78,14 +100,23 @@ class ImagePresenterSpec extends ObjectBehavior
         $generator,
         Model\ProductValueInterface $value
     ) {
+        $file = new \SplFileInfo(__FILE__);
         $value->getMedia()->willReturn(null);
 
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => 'bar.jpg', 'filter' => 'thumbnail'])
+            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename(), 'filter' => 'thumbnail'])
             ->willReturn('/media/bar.jpg');
 
+        $change = [
+            'value' => [
+                'filename' => $file->getFilename(),
+                'filePath' => $file->getPath(),
+                'originalFilename' => 'original_bar.jpg',
+            ]
+        ];
+
         $this
-            ->present($value, ['value' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])
+            ->present($value, $change)
             ->shouldReturn(
                 '<ul class="diff">' .
                     '<li class="changed file"><img src="/media/bar.jpg" title="original_bar.jpg" /></li>' .

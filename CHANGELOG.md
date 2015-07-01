@@ -3,6 +3,9 @@
 ## Technical improvements
 - Product edit form revamp
 - Mass approve or refuse proposals
+- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for all models)
+- Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
+- Replaced `attribute_options.yml` by `attribute_options.csv`
 
 ## Bug fixes
 - PIM-3933: Add missing translation keys for published products
@@ -10,9 +13,11 @@
 - PIM-4311: Create indexes on PublishedProduct
 
 ## BC Breaks
+- Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper`, added `Symfony\Component\Security\Core\SecurityContextInterface` argument
 - Remove `PimEnterprise\Bundle\WorkflowBundle\Comparator\DateComparator`
 - Rename `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface` to `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface`. First argument of method `supportsComparison` is replaced by a string $type
 - `PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator` is replaced by `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorRegistry`
+- Move Comparators from `PimEnterprise/Bundle/WorkflowBundle/Comparator` to `Pim/Component/Catalog/Comparator`
 - Replace tag `pimee_workflow.comparator` by `pimee_workflow.attribute.comparator`
 - Remove `PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\ProductDraftSaver`
 - Remove `PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent`
@@ -38,6 +43,9 @@
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController`
 - Add `findByIds` method to `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface`
 - Add a `getGrantedCategoryCodes` method in `PimEnterprise/Bundle/SecurityBundle/Entity/Repository/CategoryAccessRepository`
+- ProductsUpdater takes now ProductPropertySetterInterface and ProductPropertyCopierInterface as arguments and not anymore ProductUpdaterInterface
+- ValueActionValidator takes now ProductPropertySetterInterface and ProductPropertyCopierInterface as arguments and not anymore ProductUpdaterInterface
+- Replace argument ObjectManager by SaverInterface and RemoverInterface in `PimEnterprise\Bundle\DataGridBundle\Manager\DatagridViewManager` constructor
 
 # 1.3.16 (2015-06-08)
 

@@ -9,6 +9,7 @@ use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -16,6 +17,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 
 /**
  * A context for creating entities
@@ -261,6 +263,35 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $this->refresh($published);
 
         return $published;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param string           $username
+     *
+     * @return ProductDraft
+     */
+    public function getProductDraft(ProductInterface $product, $username)
+    {
+        $productDraft = $this->getProposalRepository()->findUserProductDraft($product, $username);
+
+        if ($productDraft) {
+            $this->refresh($productDraft);
+        }
+
+        return $productDraft;
+    }
+
+    /**
+     * @param int $expectedTotal
+     *
+     * @Then /^there should be (\d+) proposals?$/
+     */
+    public function thereShouldBeProposals($expectedTotal)
+    {
+        $total = count($this->getProposalRepository()->findAll());
+
+        assertEquals($expectedTotal, $total);
     }
 
     /**
@@ -701,5 +732,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         return $value;
+    }
+
+    /**
+     * @return ProductDraftRepositoryInterface
+     */
+    protected function getProposalRepository()
+    {
+        return $this->getContainer()->get('pimee_workflow.repository.product_draft');
     }
 }
