@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
         return $.when.apply($, _.toArray(promises)).then(function () {
             return 0 !== arguments.length ? _.toArray(arguments) : [];
         });
-    }
+    };
 
     return Backbone.Model.extend({
         entityListPromise: null,
@@ -100,8 +100,6 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
 
                     return getObjects(this.entityPromises);
                 }, this));
-
-            return deferred;
         },
         /**
          * Get the identifier attribute of the collection
