@@ -1,0 +1,14 @@
+parameters:
+    pimee_product_asset.filter.asset_category_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter
+
+services:
+    pimee_product_asset.filter.asset_category_filter:
+        class: %pimee_product_asset.filter.asset_category_filter.class%
+        arguments:
+            - '@form.factory'
+            - '@pimee_filter.product_asset_utility'
+            - '@pimee_product_asset.repository.category'
+            - '@security.context'
+            - '@pimee_product_asset.repository.asset_category_access'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: asset_category }

@@ -5,13 +5,17 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
 
 /**
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class AssetCategoryRepository implements AssetCategoryRepositoryInterface, ItemCategoryRepositoryInterface
+class AssetCategoryRepository implements
+    AssetCategoryRepositoryInterface,
+    ItemCategoryRepositoryInterface,
+    CategoryFilterableRepositoryInterface
 {
     /** @var string */
     protected $entityName;
@@ -97,5 +101,67 @@ class AssetCategoryRepository implements AssetCategoryRepositoryInterface, ItemC
         }
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO: Those are exactly the same methods as in
+     *       Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository
+     *       We must find a way to avoid duplicate code for the 3 methods below
+     */
+    public function applyFilterByUnclassified($qb)
+    {
+        $rootAlias = $qb->getRootAlias();
+        $alias     = uniqid('filterCategory');
+
+        $qb->leftJoin($rootAlias.'.categories', $alias);
+        $qb->andWhere($qb->expr()->isNull($alias . '.id'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true)
+    {
+        $rootAlias    = $qb->getRootAlias();
+        $alias        = uniqid('filterCategory');
+        $filterCatIds = uniqid('filterCatIds');
+
+        if ($include) {
+            $qb->leftJoin($rootAlias.'.categories', $alias);
+            $qb->andWhere($qb->expr()->in($alias.'.id', ':' . $filterCatIds));
+        } else {
+            $rootAliasIn = uniqid($rootAlias);
+            $rootEntity = current($qb->getRootEntities());
+            $qbIn = $qb->getEntityManager()->createQueryBuilder();
+            $qbIn
+                ->select($rootAliasIn.'.id')
+                ->from($rootEntity, $rootAliasIn, $rootAliasIn . '.id')
+                ->leftJoin($rootAliasIn . '.categories', $alias)
+                ->where($qbIn->expr()->in($alias . '.id', ':' . $filterCatIds));
+
+            $qb->andWhere($qb->expr()->notIn($rootAlias . '.id', $qbIn->getDQL()));
+        }
+        $qb->setParameter($filterCatIds, $categoryIds);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds)
+    {
+        $rootAlias    = $qb->getRootAlias();
+        $alias        = uniqid('filterCategory');
+        $filterCatIds = uniqid('filterCatIdsOrUnclassified');
+
+        $qb->leftJoin($rootAlias . '.categories', $alias);
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->in($alias . '.id', ':' . $filterCatIds),
+                $qb->expr()->isNull($alias . '.id')
+            )
+        );
+        $qb->setParameter($filterCatIds, $categoryIds);
     }
 }
