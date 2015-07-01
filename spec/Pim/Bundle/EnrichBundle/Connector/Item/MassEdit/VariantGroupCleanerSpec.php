@@ -24,7 +24,7 @@ use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class MassEditVariantGroupCleanerSpec extends ObjectBehavior
+class VariantGroupCleanerSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,

@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Connector\Item\MassEdit;
 
 use PhpSpec\ObjectBehavior;
 
-class MassEditTemporaryFileCleanerSpec extends ObjectBehavior
+class TemporaryFileCleanerSpec extends ObjectBehavior
 {
     function it_removes_temporary_files()
     {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit;
+namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family;
 
 use InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AbstractMassEditProcessor;
+use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 
 /**
@@ -17,7 +17,7 @@ use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetAttributeRequirements extends AbstractMassEditProcessor
+class SetAttributeRequirements extends AbstractProcessor
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;

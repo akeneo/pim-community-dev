@@ -1,10 +1,10 @@
 parameters:
-    pim_enrich.mass_edit.update_product_value.processor.class:         Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\UpdateProductValueProcessor
-    pim_enrich.mass_edit.add_product_value.processor.class:            Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AddProductValueProcessor
-    pim_enrich.mass_edit.edit_common_attributes.processor.class:       Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\EditCommonAttributesProcessor
-    pim_enrich.mass_edit.set_attribute_requirements.processor.class:   Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\SetAttributeRequirements
-    pim_enrich.mass_edit.product_to_flat_array.processor.class:        Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\ProductToFlatArrayProcessor
-    pim_enrich.mass_edit.add_product_to_variant_group.processor.class: Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AddProductToVariantGroupProcessor
+    pim_enrich.mass_edit.update_product_value.processor.class:         Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor
+    pim_enrich.mass_edit.add_product_value.processor.class:            Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor
+    pim_enrich.mass_edit.edit_common_attributes.processor.class:       Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
+    pim_enrich.mass_edit.set_attribute_requirements.processor.class:   Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements
+    pim_enrich.mass_edit.product_to_flat_array.processor.class:        Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductToFlatArrayProcessor
+    pim_enrich.mass_edit.add_product_to_variant_group.processor.class: Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor
 
 services:
     pim_enrich.mass_edit.update_product_value.processor:

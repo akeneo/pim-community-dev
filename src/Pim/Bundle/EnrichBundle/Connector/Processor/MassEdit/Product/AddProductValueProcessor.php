@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit;
+namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AbstractMassEditProcessor;
+use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddProductValueProcessor extends AbstractMassEditProcessor
+class AddProductValueProcessor extends AbstractProcessor
 {
     /** @var PropertyAdderInterface */
     protected $propertyAdder;

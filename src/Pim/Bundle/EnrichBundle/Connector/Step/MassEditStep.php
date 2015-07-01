@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Connector\Step;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\MassEditTemporaryFileCleaner;
+use Pim\Bundle\EnrichBundle\Connector\Item\MassEdit\TemporaryFileCleaner;
 use Pim\Bundle\EnrichBundle\Step\MassEditRemoveTemporaryMediaStep;
 
 /**
@@ -59,7 +59,7 @@ class MassEditStep extends AbstractStep
     }
 
     /**
-     * @return MassEditTemporaryFileCleaner
+     * @return TemporaryFileCleaner
      */
     public function getCleaner()
     {

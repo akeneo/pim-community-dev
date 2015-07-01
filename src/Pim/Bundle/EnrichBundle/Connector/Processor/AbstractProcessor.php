@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit;
+namespace Pim\Bundle\EnrichBundle\Connector\Processor;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
@@ -18,7 +18,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractMassEditProcessor extends AbstractConfigurableStepElement implements
+abstract class AbstractProcessor extends AbstractConfigurableStepElement implements
     StepExecutionAwareInterface,
     ItemProcessorInterface
 {

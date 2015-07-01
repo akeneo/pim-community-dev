@@ -1,50 +1,43 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit;
+namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AbstractMassEditProcessor;
-use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
+use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Processor to add product to a variant group in a mass edit
+ * Processor to update product value in a mass edit
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddProductToVariantGroupProcessor extends AbstractMassEditProcessor
+class UpdateProductValueProcessor extends AbstractProcessor
 {
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
+
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var GroupRepositoryInterface */
-    protected $groupRepository;
-
-    /** @var ProductTemplateUpdaterInterface */
-    protected $templateUpdater;
-
     /**
+     * @param PropertySetterInterface             $propertySetter
      * @param ValidatorInterface                  $validator
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     * @param GroupRepositoryInterface            $groupRepository
-     * @param ProductTemplateUpdaterInterface     $templateUpdater
      */
     public function __construct(
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
-        GroupRepositoryInterface $groupRepository,
-        ProductTemplateUpdaterInterface $templateUpdater
+        JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->validator       = $validator;
-        $this->groupRepository = $groupRepository;
-        $this->templateUpdater = $templateUpdater;
+        $this->propertySetter = $propertySetter;
+        $this->validator      = $validator;
     }
 
     /**
@@ -59,14 +52,8 @@ class AddProductToVariantGroupProcessor extends AbstractMassEditProcessor
         }
 
         $actions = $configuration['actions'];
-        $variantGroup = $actions['value'];
-        $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroup);
 
-        $variantGroup->addProduct($product);
-
-        if (null !== $variantGroup->getProductTemplate()) {
-            $this->templateUpdater->update($variantGroup->getProductTemplate(), [$product]);
-        }
+        $this->setData($product, $actions);
 
         if (null === $product || (null !== $product && !$this->isProductValid($product))) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
@@ -92,5 +79,22 @@ class AddProductToVariantGroupProcessor extends AbstractMassEditProcessor
         $this->addWarningMessage($violations, $product);
 
         return 0 === $violations->count();
+    }
+
+    /**
+     * Set data from $actions to the given $product
+     *
+     * @param ProductInterface $product
+     * @param array            $actions
+     *
+     * @return UpdateProductValueProcessor
+     */
+    protected function setData(ProductInterface $product, array $actions)
+    {
+        foreach ($actions as $action) {
+            $this->propertySetter->setData($product, $action['field'], $action['value']);
+        }
+
+        return $this;
     }
 }

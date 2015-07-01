@@ -1,12 +1,13 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit;
+namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\AbstractMassEditProcessor;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductToFlatArrayProcessor extends AbstractMassEditProcessor
+class ProductToFlatArrayProcessor extends AbstractProcessor
 {
     /** @var SerializerInterface */
     protected $serializer;
@@ -145,7 +146,7 @@ class ProductToFlatArrayProcessor extends AbstractMassEditProcessor
      *
      * @param ProductInterface $product
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductMediaInterface[]
+     * @return ProductMediaInterface[]
      */
     protected function getProductMedias(ProductInterface $product)
     {
