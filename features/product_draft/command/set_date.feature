@@ -14,8 +14,8 @@ Feature: Create a draft with a date fields
       | product       | actions                                                                                                  | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "release_date", "data": "2014-02-18", "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                     |
-      | akeneo_tshirt  | Mary     | {"values": {"release_date": [{"locale": null, "scope": "mobile", "value": "2014-02-18"}]}} |
+      | product        | username | result                                                                                    |
+      | akeneo_tshirt  | Mary     | {"values": {"release_date": [{"locale": null, "scope": "mobile", "data": "2014-02-18"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | release_date-mobile | |
 
@@ -27,8 +27,8 @@ Feature: Create a draft with a date fields
       | product       | actions                                                                                                  | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "release_date", "data": "2014-02-18", "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                     |
-      | akeneo_tshirt  | Mary     | {"values": {"release_date": [{"locale": null, "scope": "mobile", "value": "2014-02-18"}]}} |
+      | product        | username | result                                                                                    |
+      | akeneo_tshirt  | Mary     | {"values": {"release_date": [{"locale": null, "scope": "mobile", "data": "2014-02-18"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | release_date-mobile | 2014-12-18 |
 

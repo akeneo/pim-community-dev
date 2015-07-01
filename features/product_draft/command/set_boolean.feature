@@ -14,8 +14,8 @@ Feature: Create a draft with a boolean fields
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                  |
-      | akeneo_tshirt  | Mary     | {"values": {"handmade": [{"locale": null, "scope": null, "value": 1}]}} |
+      | product        | username | result                                                                 |
+      | akeneo_tshirt  | Mary     | {"values": {"handmade": [{"locale": null, "scope": null, "data": 1}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | handmade | |
 
@@ -27,8 +27,8 @@ Feature: Create a draft with a boolean fields
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                  |
-      | akeneo_tshirt  | Mary     | {"values": {"handmade": [{"locale": null, "scope": null, "value": 1}]}} |
+      | product        | username | result                                                                 |
+      | akeneo_tshirt  | Mary     | {"values": {"handmade": [{"locale": null, "scope": null, "data": 1}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | handmade | |
 

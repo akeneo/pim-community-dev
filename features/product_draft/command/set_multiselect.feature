@@ -14,8 +14,8 @@ Feature: Create a draft with a multi select fields
       | product       | actions                                                                                                      | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "weather_conditions", "data": ["Dry", "Wet"], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                         |
-      | akeneo_tshirt  | Mary     | {"values": {"weather_conditions": [{"locale": null, "scope": null, "value": ["dry", "wet"]}]}} |
+      | product        | username | result                                                                                        |
+      | akeneo_tshirt  | Mary     | {"values": {"weather_conditions": [{"locale": null, "scope": null, "data": ["dry", "wet"]}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | weather_conditions | |
 
@@ -27,8 +27,8 @@ Feature: Create a draft with a multi select fields
       | product       | actions                                                                                                              | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "weather_conditions", "data": ["Cold", "Dry", "Wet"], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                |
-      | akeneo_tshirt  | Mary     | {"values": {"weather_conditions": [{"locale": null, "scope": null, "value":["cold", "dry", "wet"]}]}} |
+      | product        | username | result                                                                                               |
+      | akeneo_tshirt  | Mary     | {"values": {"weather_conditions": [{"locale": null, "scope": null, "data":["cold", "dry", "wet"]}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | weather_conditions | [dry] |
 

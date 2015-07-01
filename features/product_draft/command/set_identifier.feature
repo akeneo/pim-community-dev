@@ -14,8 +14,8 @@ Feature: Create a draft with a identifier fields
       | product       | actions                                                                                           | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "sku", "data": "akeneo_tshirt_v2", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                              |
-      | akeneo_tshirt  | Mary     | {"values": {"sku": [{"locale": null, "scope": null, "value": "akeneo_tshirt_v2"}]}} |
+      | product        | username | result                                                                             |
+      | akeneo_tshirt  | Mary     | {"values": {"sku": [{"locale": null, "scope": null, "data": "akeneo_tshirt_v2"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | sku | akeneo_tshirt |
 
@@ -24,8 +24,8 @@ Feature: Create a draft with a identifier fields
       | product       | actions                                                                                           | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "sku", "data": "akeneo_tshirt_v2", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                              |
-      | akeneo_tshirt  | Mary     | {"values": {"sku": [{"locale": null, "scope": null, "value": "akeneo_tshirt_v2"}]}} |
+      | product        | username | result                                                                             |
+      | akeneo_tshirt  | Mary     | {"values": {"sku": [{"locale": null, "scope": null, "data": "akeneo_tshirt_v2"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | sku | akeneo_tshirt |
 
