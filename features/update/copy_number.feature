@@ -13,5 +13,5 @@ Feature: Update number fields
       | sku  | item_count |
       | AKN  | 123        |
     Then I should get the following products after apply the following updater to it:
-      | product | actions                                                                      | result                                                                                |
-      | AKN     | [{"type": "copy_data", "from_field": "item_count", "to_field": "car_count"}] | {"values": {"car_count": [{"value": 123}]}} |
+      | product | actions                                                                      | result                                     |
+      | AKN     | [{"type": "copy_data", "from_field": "item_count", "to_field": "car_count"}] | {"values": {"car_count": [{"data": 123}]}} |

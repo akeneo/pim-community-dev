@@ -9,5 +9,5 @@ Feature: Update identifier fields
       | sku      |
       | AKN_MUG  |
     Then I should get the following products after apply the following updater to it:
-      | product | actions                                                          | result                                                                                                        |
-      | AKN_MUG | [{"type": "set_data", "field": "sku", "data": "AKN_MUG_PURPLE"}] | {"product": "AKN_MUG_PURPLE", "values": {"sku": [{"scope": null, "value": "AKN_MUG_PURPLE"}]}} |
+      | product | actions                                                          | result                                                                                        |
+      | AKN_MUG | [{"type": "set_data", "field": "sku", "data": "AKN_MUG_PURPLE"}] | {"product": "AKN_MUG_PURPLE", "values": {"sku": [{"scope": null, "data": "AKN_MUG_PURPLE"}]}} |
