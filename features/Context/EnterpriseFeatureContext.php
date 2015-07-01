@@ -27,6 +27,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('assertions', new EnterpriseAssertionContext());
         $this->useContext('technical', new TechnicalContext());
         $this->useContext('command', new EnterpriseCommandContext());
+        $this->useContext('asset', new EnterpriseAssetContext());
     }
 
     /**

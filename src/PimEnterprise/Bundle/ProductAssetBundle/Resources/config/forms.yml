@@ -1,5 +1,6 @@
 parameters:
     pimee_product_asset.form.type.asset.class:                 PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType
+    pimee_product_asset.form.type.create_asset.class:          PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType
     pimee_product_asset.form.type.asset_reference.class:       PimEnterprise\Bundle\ProductAssetBundle\Form\Type\ReferenceType
     pimee_product_asset.form.type.asset_variation.class:       PimEnterprise\Bundle\ProductAssetBundle\Form\Type\VariationType
     pimee_product_asset.form.type.ajax_asset_tag.class:        PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AjaxAssetTagType
@@ -12,6 +13,13 @@ services:
             - %pimee_product_asset.model.tag.class%
         tags:
             - { name: form.type, alias: pimee_product_asset }
+
+    pimee_product_asset.form.type.create_asset:
+        class: %pimee_product_asset.form.type.create_asset.class%
+        arguments:
+            - '@pimee_product_asset.form.type.asset_reference'
+        tags:
+            - { name: form.type, alias: pimee_product_asset_create }
 
     pimee_product_asset.form.type.asset_reference:
         class: %pimee_product_asset.form.type.asset_reference.class%

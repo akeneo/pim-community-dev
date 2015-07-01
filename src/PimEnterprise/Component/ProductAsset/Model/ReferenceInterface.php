@@ -36,7 +36,7 @@ interface ReferenceInterface
     /**
      * @param AssetInterface $asset
      *
-     * @return VariationInterface
+     * @return ReferenceInterface
      */
     public function setAsset(AssetInterface $asset);
 
@@ -48,7 +48,7 @@ interface ReferenceInterface
     /**
      * @param LocaleInterface $locale
      *
-     * @return VariationInterface
+     * @return ReferenceInterface
      */
     public function setLocale(LocaleInterface $locale);
 
@@ -60,33 +60,33 @@ interface ReferenceInterface
     /**
      * @param FileInterface $file
      *
-     * @return VariationInterface
+     * @return ReferenceInterface
      */
     public function setFile(FileInterface $file = null);
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection|VariationInterface[]
      */
     public function getVariations();
 
     /**
      * @param ArrayCollection $variations
      *
-     * @return AssetInterface
+     * @return ReferenceInterface
      */
     public function setVariations(ArrayCollection $variations);
 
     /**
      * @param VariationInterface $variation
      *
-     * @return AssetInterface
+     * @return ReferenceInterface
      */
     public function addVariation(VariationInterface $variation);
 
     /**
      * @param VariationInterface $variation
      *
-     * @return AssetInterface
+     * @return ReferenceInterface
      */
     public function removeVariation(VariationInterface $variation);
 

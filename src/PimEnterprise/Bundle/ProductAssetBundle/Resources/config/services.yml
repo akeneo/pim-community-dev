@@ -2,6 +2,7 @@
 parameters:
     pimee_product_asset.variation_file_generator.class:              PimEnterprise\Component\ProductAsset\VariationFileGenerator
     pimee_product_asset.variations_collection_files_generator.class: PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator
+    pimee_product_asset.command_launcher.class:                      Akeneo\Component\Console\CommandLauncher
 
 services:
     pimee_product_asset.variation_file_generator:
@@ -18,6 +19,12 @@ services:
             - 'storage'
 
     pimee_product_asset.variations_collection_files_generator:
-            class: %pimee_product_asset.variations_collection_files_generator.class%
-            arguments:
-                - '@pimee_product_asset.variation_file_generator'
+        class: %pimee_product_asset.variations_collection_files_generator.class%
+        arguments:
+            - '@pimee_product_asset.variation_file_generator'
+
+    pimee_product_asset.command_launcher:
+        class: %pimee_product_asset.command_launcher.class%
+        arguments:
+          - '%kernel.root_dir%'
+          - '%kernel.environment%'

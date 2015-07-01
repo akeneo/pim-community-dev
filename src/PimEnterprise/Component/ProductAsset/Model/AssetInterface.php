@@ -55,12 +55,17 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
     public function setDescription($description);
 
     /**
-     * @return ArrayCollection
+     * @return ReferenceInterface[]|ArrayCollection of ReferenceInterface
      */
     public function getReferences();
 
     /**
-     * @param ArrayCollection $references
+     * @return LocaleInterface[]|ArrayCollection of LocaleInterface
+     */
+    public function getLocales();
+
+    /**
+     * @param ArrayCollection of ReferenceInterface $references
      *
      * @return AssetInterface
      */

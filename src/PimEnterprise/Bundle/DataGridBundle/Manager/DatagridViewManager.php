@@ -11,7 +11,8 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager as BaseDatagridViewManager;
@@ -33,16 +34,18 @@ class DatagridViewManager extends BaseDatagridViewManager
      *
      * @param EntityRepository         $repository
      * @param DatagridManager          $datagridManager
-     * @param ObjectManager            $objectManager
+     * @param SaverInterface           $saver
+     * @param RemoverInterface         $remover
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
         EntityRepository $repository,
         DatagridManager $datagridManager,
-        ObjectManager $objectManager,
+        SaverInterface $saver,
+        RemoverInterface $remover,
         SecurityContextInterface $securityContext
     ) {
-        parent::__construct($repository, $datagridManager, $objectManager);
+        parent::__construct($repository, $datagridManager, $saver, $remover);
         $this->securityContext = $securityContext;
     }
 

@@ -3,11 +3,11 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Processor\MassEdit\AddProductValueProcessor as BaseProcessor;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -29,21 +29,21 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     protected $userManager;
 
     /**
-     * @param ProductUpdaterInterface             $productUpdater
+     * @param PropertyAdderInterface              $propertyAdder
      * @param ValidatorInterface                  $validator
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param UserManager                         $userManager
      * @param SecurityContextInterface            $securityContext
      */
     public function __construct(
-        ProductUpdaterInterface $productUpdater,
+        PropertyAdderInterface $propertyAdder,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
-            $productUpdater,
+            $propertyAdder,
             $validator,
             $jobConfigurationRepo
         );

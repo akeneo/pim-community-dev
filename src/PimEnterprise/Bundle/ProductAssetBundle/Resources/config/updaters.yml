@@ -1,5 +1,8 @@
+parameters:
+    pimee_product_asset.updater.files.class: PimEnterprise\Component\ProductAsset\Updater\FilesUpdater
+
 services:
-    pim_product_asset.updater.setter.product_asset_collection_value:
+    pimee_product_asset.updater.setter.product_asset_collection_value:
         class: %pim_reference_data.updater.setter.reference_data_collection_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
@@ -8,7 +11,7 @@ services:
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
-    pim_product_asset.updater.copier.product_asset_collection_value:
+    pimee_product_asset.updater.copier.product_asset_collection_value:
         class: %pim_reference_data.updater.copier.reference_data_collection_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
@@ -16,3 +19,8 @@ services:
             - ['pim_assets_collection']
         tags:
             - { name: 'pim_catalog.updater.copier' }
+
+    pimee_product_asset.updater.files:
+        class: %pimee_product_asset.updater.files.class%
+        arguments:
+            - '@akeneo_file_storage.file_storage.raw_file.storer'

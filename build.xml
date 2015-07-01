@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
     <property name="symfony.upload.dir" value="product" />
+    <property name="symfony.storage.dir" value="file_storage" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpspec,phpcb"/>
 
@@ -10,9 +11,23 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
+    <target name="build-behat-deprecated" depends="prepare,composer,vendors,prepare-deprecated-behat,install-all-behat,behat"/>
+
     <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
     <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
+
+    <target name="prepare-deprecated-behat" description="Build deprecated behats">
+        <!--
+            In order to keep old import behats with deprecated processor, writer, and reader, we delete
+            the new config file and replace this one with the old one, and we also delete the one in
+            connector bundle to avoid this one to be also called.
+        -->
+        <delete file="${basedir}/vendor/akeneo/pim-community-dev/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
+        <delete file="${basedir}/vendor/akeneo/pim-community-dev/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/vendor/akeneo/pim-community-dev/features/Context/fixtures/base_connector_deprecated_batch_jobs.yml" tofile="${basedir}/vendor/akeneo/pim-community-dev/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/vendor/akeneo/pim-community-dev/features/Context/fixtures/connector_deprecated_batch_jobs.yml" tofile="${basedir}/vendor/akeneo/pim-community-dev/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
+    </target>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
@@ -63,6 +78,11 @@
             </fileset>
         </replaceregexp>
         <replaceregexp match="upload_dir:.*$" replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="pim_parameters.yml" />
+            </fileset>
+        </replaceregexp>
+        <replaceregexp match="storage_dir:.*$" replace="storage_dir: %kernel.root_dir%/%storage.dir%" byline="true">
             <fileset dir="${basedir}/app/config/">
                 <include name="pim_parameters.yml" />
             </fileset>
@@ -280,6 +300,7 @@
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
             <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+            <env key="SYMFONY__STORAGE__DIR" value="${symfony.storage.dir}" />
         </exec>
     </target>
 
@@ -331,6 +352,7 @@
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
           <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__STORAGE__DIR" value="${symfony.storage.dir}" />
         </exec>
     </target>
 
@@ -344,6 +366,7 @@
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
           <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__STORAGE__DIR" value="${symfony.storage.dir}" />
         </exec>
         <exec executable="app/console" failonerror="true">
           <arg value="cache:warmup" />
@@ -354,6 +377,7 @@
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
           <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__STORAGE__DIR" value="${symfony.storage.dir}" />
         </exec>
     </target>
 
@@ -366,6 +390,7 @@
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
           <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__STORAGE__DIR" value="${symfony.storage.dir}" />
         </exec>
     </target>
 

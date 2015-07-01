@@ -8,7 +8,7 @@ Feature: Ensure that a published product is safe
     Given a "clothing" catalog configuration
     And the following published products:
       | sku       | categories | family  | groups          | handmade | manufacturer | weather_conditions |
-      | my-jacket | jackets    | jackets | similar_jackets | yes      | Volcom       | dry                |
+      | my-jacket | jackets    | jackets | similar_jackets | 1        | Volcom       | dry                |
     And I am logged in as "Julia"
 
   @javascript

@@ -10,7 +10,7 @@ define(
         'pim/field',
         'underscore',
         'backbone',
-        'text!pam/template/product/field/asset-collection',
+        'text!pimee/template/product/field/asset-collection',
         'pim/fetcher-registry',
         'routing',
         'pim/form-builder'
@@ -60,7 +60,7 @@ define(
             manageAssets: function () {
                 var deferred = $.Deferred();
 
-                FormBuilder.build('pam/picker/asset-grid').done(_.bind(function (form) {
+                FormBuilder.build('pimeepicker/asset-grid').done(_.bind(function (form) {
                     var modal = new Backbone.BootstrapModal({
                         modalOptions: {
                             backdrop: 'static',

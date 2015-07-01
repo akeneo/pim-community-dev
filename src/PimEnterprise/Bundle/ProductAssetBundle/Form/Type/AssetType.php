@@ -49,8 +49,7 @@ class AssetType extends AbstractType
             ]
         );
         $builder->add('endOfUseAt', 'oro_date', ['required' => false]);
-
-        $builder->add('references', 'collection', array('type' => 'pimee_product_asset_reference'));
+        $builder->add('references', 'collection', ['type' => 'pimee_product_asset_reference']);
     }
 
     /**

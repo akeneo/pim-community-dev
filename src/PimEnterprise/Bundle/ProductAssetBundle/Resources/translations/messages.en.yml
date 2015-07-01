@@ -7,11 +7,15 @@ pimee_product_asset:
         button:
             upload: Upload
             delete: Delete
+            generate_from_reference: Generate from reference
+            reset_variations: Reset variations
+        grid:
+            edit: Edit properties of the asset
         view:
             title: Product asset
             code: Code
             description: Description
-            end_of_use: End of use
+            end_of_use: End of use at
             reference: Reference
             filename: File name
             width: Width
@@ -26,11 +30,28 @@ pimee_product_asset:
             update:
                 success: Asset has been updated
                 error: Asset has not been updated. An error occurs.
+    enrich_reference:
+        flash:
+            delete:
+                success: Reference file has been deleted
+                error: Reference file has not been deleted. An error occurs.
+    enrich_variation:
+        flash:
+            update:
+                success: Variation file has been updated
+                error: Variation file has not been updated. An error occurs.
+            delete:
+                success: Variation file has been deleted
+                error: Variation file has not been deleted. An error occurs.
+    popin.create:
+        title: Create a new asset
+        is_localized: Localizable
     menu: Assets
     page_tab:
         title:
             view: Product asset %asset.code% | View
             edit: Product asset %asset.code% | Edit
+            index: Product assets
     code:
         label: Code
     thumbnail:
@@ -47,7 +68,13 @@ pimee_product_asset:
         label: Last updated at
     tags:
         label: Tags
-
     tabs:
         global-settings.title: Global settings
         variations.title: Variations
+    validation:
+        code:
+            alpha_numeric_plus_underscore: Attribute code may contain only letters, numbers and underscores.
+            not_empty: Code is required. It can not be empty.
+            unique: Code must be unique.
+            new_generation: We generated a new one for you.
+btn.create.asset: Create

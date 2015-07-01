@@ -7,18 +7,18 @@ connector:
             steps:
                 perform:
                     title: publish_product
-                    class: "%pim_base_connector.step.mass_edit_product_publication.class%"
+                    class: "%pim_base_connector.step.tasklet.class%"
                     services:
-                        handler: pim_enrich.mass_edit_handler.publish_product
+                        tasklet: pim_enrich.mass_edit_tasklet.publish_product
         unpublish_product:
             title: unpublish_product
             type:  mass_edit
             steps:
                 perform:
                     title: unpublish_product
-                    class: "%pim_base_connector.step.mass_edit_product_publication.class%"
+                    class: "%pim_base_connector.step.tasklet.class%"
                     services:
-                        handler: pim_enrich.mass_edit_handler.unpublish_product
+                        tasklet: pim_enrich.mass_edit_tasklet.unpublish_product
         add_product_value_with_permission:
             title: add_product_value_with_permission
             type:  mass_edit
@@ -28,7 +28,7 @@ connector:
                     services:
                         reader:    pim_enrich.mass_edit.filtered.reader
                         processor: pimee_enrich.mass_edit.add_product_value.processor
-                        writer:    pim_base_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.doctrine.product
         edit_common_attributes_with_permission:
             title: edit_common_attributes_with_permission
             type:  mass_edit

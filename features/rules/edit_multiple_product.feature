@@ -18,14 +18,13 @@ Feature: Update multiple product by applying rules
     | a-fork      |         |
     | a-rangers   | sandals |
     And the following product values:
-    | product     | attribute | value                  | locale | scope  |
-    | a-my-loafer | name      | White loafer           | en_US  |        |
-    | a-my-loafer | name      | Mocassin blanc         | fr_FR  |        |
-    | a-my-loafer | name      | A stylish white loafer | en_US  | mobile |
-    | a-boot      | name      | Boots                  | en_US  | mobile |
-    | mug         | name      | Mug                    | en_US  | mobile |
-    | fork        | name      | Fork                   | en_US  | mobile |
-    | a-rangers   | name      | Rangers                | en_US  | mobile |
+    | product     | attribute | value                  | locale |
+    | a-my-loafer | name      | White loafer           | en_US  |
+    | a-my-loafer | name      | Mocassin blanc         | fr_FR  |
+    | a-boot      | name      | Boots                  | en_US  |
+    | mug         | name      | Mug                    | en_US  |
+    | fork        | name      | Fork                   | en_US  |
+    | a-rangers   | name      | Rangers                | en_US  |
     And the following product rules:
     | code     | priority |
     | set_name | 10       |
@@ -57,16 +56,16 @@ Feature: Update multiple product by applying rules
     | fork      |         |
     | rangers   | sandals |
     And the following product values:
-    | product   | attribute | value          | locale | scope  |
-    | my-loafer | name      | White loafer   | en_US  |        |
-    | my-loafer | name      | Mocassin blanc | fr_FR  |        |
-    | boot      | name      | Boots          | en_US  | mobile |
-    | mug       | name      | Mug            | en_US  | mobile |
-    | mug       | name      |                | fr_FR  | mobile |
-    | fork      | name      | Fork           | en_US  | mobile |
-    | fork      | name      |                | frFR   | mobile |
-    | rangers   | name      | Rangers        | en_US  | mobile |
-    | rangers   | name      |                | fr_FR  | mobile |
+    | product   | attribute | value          | locale |
+    | my-loafer | name      | White loafer   | en_US  |
+    | my-loafer | name      | Mocassin blanc | fr_FR  |
+    | boot      | name      | Boots          | en_US  |
+    | mug       | name      | Mug            | en_US  |
+    | mug       | name      |                | fr_FR  |
+    | fork      | name      | Fork           | en_US  |
+    | fork      | name      |                | fr_FR  |
+    | rangers   | name      | Rangers        | en_US  |
+    | rangers   | name      |                | fr_FR  |
     And the following product rules:
     | code      | priority |
     | copy_name | 10       |

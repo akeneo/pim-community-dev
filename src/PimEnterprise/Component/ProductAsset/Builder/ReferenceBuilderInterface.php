@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**
  * Builds references related to an asset

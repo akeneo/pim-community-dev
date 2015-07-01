@@ -27,10 +27,11 @@ interface RawFileFetcherInterface
      * @param FileInterface       $file
      * @param FilesystemInterface $filesystem
      *
-     * @return \SplFileInfo
-     *
      * @throws FileTransferException
      * @throws \LogicException
+     *
+     * @return \SplFileInfo
+     *
      */
     public function fetch(FileInterface $file, FilesystemInterface $filesystem);
 }

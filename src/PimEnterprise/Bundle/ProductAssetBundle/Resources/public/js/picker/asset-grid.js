@@ -5,8 +5,8 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pam/template/picker/asset-grid',
-        'text!pam/template/picker/basket',
+        'text!pimee/template/picker/asset-grid',
+        'text!pimee/template/picker/basket',
         'oro/datagrid-builder',
         'oro/mediator',
         'pim/fetcher-registry'

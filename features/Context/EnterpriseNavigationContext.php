@@ -3,7 +3,6 @@
 namespace Context;
 
 use Context\NavigationContext as BaseNavigationContext;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
  * Navigation context
@@ -16,9 +15,8 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     protected $enterprisePageMapping = [
         'published'      => 'Published index',
         'proposals'      => 'Proposal index',
-        'product assets' => 'ProductAsset index',
-        'assets'         => 'ProductAsset index',
-        'asset edit'     => 'ProductAsset edit'
+        'assets'         => 'Asset index',
+        'asset edit'     => 'Asset edit'
     ];
 
     /**

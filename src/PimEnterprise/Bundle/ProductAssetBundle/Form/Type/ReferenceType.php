@@ -25,6 +25,9 @@ class ReferenceType extends AbstractType
     /** @var string */
     protected $entityClass;
 
+    /**
+     * @param string $entityClass
+     */
     public function __construct($entityClass)
     {
         $this->entityClass = $entityClass;
@@ -35,10 +38,13 @@ class ReferenceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'akeneo_file_storage_file');
-        $builder->add('variations', 'collection', array('type' => 'pimee_product_asset_variation'));
+        $builder->add('file', 'akeneo_file_storage_file', ['required' => false]);
+        $builder->add('variations', 'collection', ['type' => 'pimee_product_asset_variation']);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([

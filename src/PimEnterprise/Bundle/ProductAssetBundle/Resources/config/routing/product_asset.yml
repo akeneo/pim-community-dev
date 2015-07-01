@@ -8,6 +8,16 @@ pimee_product_asset_view:
     requirements:
         id: '[0-9]+'
 
+pimee_product_asset_create:
+    path: /create
+    defaults: { _controller: pimee_product_asset.controller.produt_asset:createAction }
+
+pimee_product_asset_next_code:
+    path: /nextCode/{code}
+    defaults: { _controller: pimee_product_asset.controller.produt_asset:getNextAvailableCodeAction }
+    requirements:
+        code: '^[a-zA-Z0-9_]+$'
+
 pimee_product_asset_edit:
     path: /{id}/edit
     defaults: { _controller: pimee_product_asset.controller.product_asset:editAction }
@@ -24,14 +34,12 @@ pimee_product_asset_upload_reference:
     path: /{assetId}/uploadReference/{id}
     defaults: { _controller: pimee_product_asset.controller.product_asset:uploadReferenceAction }
     requirements:
-        assetId: '[0-9]+'
         id: '[0-9]+'
 
 pimee_product_asset_upload_variation:
     path: /{assetId}/uploadVariation/{id}
     defaults: { _controller: pimee_product_asset.controller.product_asset:uploadVariationAction }
     requirements:
-        assetId: '[0-9]+'
         id: '[0-9]+'
 
 pimee_product_asset_rest_index:
