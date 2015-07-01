@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
+namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Component\Connector\Step\TaskletInterface;

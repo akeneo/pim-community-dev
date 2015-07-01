@@ -9,22 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
+namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet\AbstractReviewTasklet;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
- * Tasklet for product drafts mass approval.
+ * Tasklet for product drafts mass refusal.
  *
  * @author Yohan Blain <yohan.blain@akeneo.com>
  */
-class ApproveTasklet extends AbstractReviewTasklet
+class RefuseTasklet extends AbstractReviewTasklet
 {
     /** @staticvar string */
-    const TASKLET_NAME = 'approve';
+    const TASKLET_NAME = 'refuse';
 
     /**
      * {@inheritdoc}
@@ -36,14 +37,14 @@ class ApproveTasklet extends AbstractReviewTasklet
         $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
             try {
-                $this->approveDraft($productDraft);
-                $this->stepExecution->incrementSummaryInfo('approved');
+                $this->refuseDraft($productDraft);
+                $this->stepExecution->incrementSummaryInfo('refused');
             } catch (DraftNotReviewableException $e) {
                 $this->skipWithWarning(
                     $this->stepExecution,
                     self::TASKLET_NAME,
                     $e->getMessage(),
-                    ($prev = $e->getPrevious()) ? ['%error%' => $prev->getMessage()] : [],
+                    [],
                     $productDraft
                 );
             }
@@ -51,18 +52,14 @@ class ApproveTasklet extends AbstractReviewTasklet
     }
 
     /**
-     * Approve a draft
+     * Refuse a draft
      *
      * @param ProductDraftInterface $productDraft
      *
-     * @throws DraftNotReviewableException If draft cannot be approved
+     * @throws DraftNotReviewableException If draft cannot be refused
      */
-    protected function approveDraft(ProductDraftInterface $productDraft)
+    protected function refuseDraft(ProductDraftInterface $productDraft)
     {
-        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
-            throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
-        }
-
         if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
         }
@@ -71,10 +68,6 @@ class ApproveTasklet extends AbstractReviewTasklet
             throw new DraftNotReviewableException(self::ERROR_CANNOT_EDIT_ATTR);
         }
 
-        try {
-            $this->productDraftManager->approve($productDraft);
-        } catch (ValidatorException $e) {
-            throw new DraftNotReviewableException(self::ERROR_INVALID_DRAFT, 0, $e);
-        }
+        $this->productDraftManager->refuse($productDraft);
     }
 }
