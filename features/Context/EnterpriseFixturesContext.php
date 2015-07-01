@@ -444,14 +444,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getEntities()
-    {
-        return array_merge($this->entities, $this->enterpriseEntities);
-    }
-
-    /**
      * @Then /^the asset "([^"]*)" should have the following values:$/
      */
     public function theAssetShouldHaveTheFollowingValues($identifier, TableNode $table)
