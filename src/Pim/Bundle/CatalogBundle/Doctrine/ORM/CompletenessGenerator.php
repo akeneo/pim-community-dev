@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
@@ -63,7 +64,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateMissingForProduct(ProductInterface $product)
     {
-        $this->generate(array('productId' => $product->getId()));
+        $this->generate(['productId' => $product->getId()]);
     }
 
     /**
@@ -71,7 +72,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
-        $this->generate(array('channelId' => $channel->getId()));
+        $this->generate(['channelId' => $channel->getId()]);
     }
 
     /**
@@ -88,7 +89,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param array $criteria
      */
-    protected function generate(array $criteria = array())
+    protected function generate(array $criteria = [])
     {
         $this->prepareCompletePrices($criteria);
         $this->prepareMissingCompletenesses($criteria);
@@ -112,18 +113,18 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param array $criteria
      */
-    protected function prepareCompletePrices($criteria = array())
+    protected function prepareCompletePrices($criteria = [])
     {
-        $cleanupSql = "DROP TABLE IF EXISTS ".self::COMPLETE_PRICES_TABLE."\n";
+        $cleanupSql  = "DROP TABLE IF EXISTS " . self::COMPLETE_PRICES_TABLE . "\n";
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
         $sql = $this->getCompletePricesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
 
-        $sql = "CREATE TEMPORARY TABLE ".
-            self::COMPLETE_PRICES_TABLE.
-            " (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id)) ".
+        $sql = "CREATE TEMPORARY TABLE " .
+            self::COMPLETE_PRICES_TABLE .
+            " (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id)) " .
             $sql;
 
         $sql = $this->applyTableNames($sql);
@@ -142,19 +143,19 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param array $criteria
      */
-    protected function prepareMissingCompletenesses(array $criteria = array())
+    protected function prepareMissingCompletenesses(array $criteria = [])
     {
-        $cleanupSql = "DROP TABLE IF EXISTS ".self::MISSING_TABLE."\n";
+        $cleanupSql  = "DROP TABLE IF EXISTS " . self::MISSING_TABLE . "\n";
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
         $sql = $this->getMissingCompletenessesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
 
-        $sql = "CREATE TEMPORARY TABLE ".
-            self::MISSING_TABLE.
+        $sql = "CREATE TEMPORARY TABLE " .
+            self::MISSING_TABLE .
             " (locale_id int, channel_id int, product_id int)"
-            .$sql;
+            . $sql;
 
         $sql = $this->applyTableNames($sql);
 
@@ -175,11 +176,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * This allow to link with only complete prices
      *
-     * @param array $criteria
-     *
      * @return string
      */
-    protected function getCompletePricesSQL($criteria = array())
+    protected function getCompletePricesSQL()
     {
         return <<<COMPLETE_PRICES_SQL
             SELECT l.id AS locale_id, c.id AS channel_id, v.id AS value_id
@@ -212,11 +211,9 @@ COMPLETE_PRICES_SQL;
      * the process comparing to joining with all attributes from the requirements
      * table
      *
-     * @param array $criteria
-     *
      * @return string
      */
-    protected function getMissingCompletenessesSQL($criteria = array())
+    protected function getMissingCompletenessesSQL()
     {
         return <<<MISSING_SQL
             SELECT l.id AS locale_id, c.id AS channel_id, p.id AS product_id
@@ -266,11 +263,9 @@ MISSING_SQL;
     /**
      * Get the sql query to insert completeness
      *
-     * @param array $criteria
-     *
      * @return string
      */
-    protected function getInsertCompletenessSQL(array $criteria)
+    protected function getInsertCompletenessSQL()
     {
         $sql = $this->getMainSqlPart();
 
@@ -346,10 +341,10 @@ MAIN_SQL;
      */
     protected function getQueryPartReplacements()
     {
-        return array(
+        return [
             '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
             '%product_value_joins%'      => implode(' ', $this->getProductValueJoins())
-        );
+        ];
     }
 
     /**
@@ -361,7 +356,7 @@ MAIN_SQL;
      */
     protected function applyTableNames($sql)
     {
-        $categoryMapping = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
+        $categoryMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
         $categoryMetadata = $this->getClassMetadata($categoryMapping['targetEntity']);
 
         $valueMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('values');
@@ -407,7 +402,7 @@ MAIN_SQL;
                             $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
                         );
                     },
-                    array()
+                    []
                 )
             )
         );
@@ -424,28 +419,28 @@ MAIN_SQL;
     protected function getAssociationFields($mapping, $prefix)
     {
         if (in_array($mapping['fieldName'], $this->getSkippedMappings())) {
-            return array();
+            return [];
         }
 
         switch ($mapping['type']) {
             case ClassMetadataInfo::MANY_TO_MANY:
-                return array(
+                return [
                     sprintf(
                         '%s.%s',
                         $prefix,
                         $mapping['joinTable']['inverseJoinColumns'][0]['name']
                     )
-                );
+                ];
 
             case ClassMetadataInfo::MANY_TO_ONE:
-                return array(sprintf('v.%s', $mapping['joinColumns'][0]['name']));
+                return [sprintf('v.%s', $mapping['joinColumns'][0]['name'])];
 
             case ClassMetadataInfo::ONE_TO_MANY:
             case ClassMetadataInfo::ONE_TO_ONE:
                 return $this->getClassContentFields($mapping['targetEntity'], $prefix);
 
             default:
-                return array();
+                return [];
         }
     }
 
@@ -463,11 +458,11 @@ MAIN_SQL;
     {
         switch ($className) {
             case 'Pim\Bundle\CatalogBundle\Model\Metric':
-                return array(sprintf('%s.%s', $prefix, 'data'));
+                return [sprintf('%s.%s', $prefix, 'data')];
             case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
-                return array();
+                return [];
             case 'Pim\Bundle\CatalogBundle\Model\ProductMedia':
-                return array(sprintf('%s.%s', $prefix, 'filename'));
+                return [sprintf('%s.%s', $prefix, 'filename')];
             default:
                 return array_map(
                     function ($name) use ($prefix) {
@@ -499,7 +494,7 @@ MAIN_SQL;
 
                 return array_merge($joins, $this->getAssociationJoins($mapping, $this->getAssociationAlias($index)));
             },
-            array()
+            []
         );
     }
 
@@ -514,16 +509,16 @@ MAIN_SQL;
     protected function getAssociationJoins($mapping, $prefix)
     {
         if (in_array($mapping['fieldName'], $this->getSkippedMappings())) {
-            return array();
+            return [];
         }
 
         if ($mapping['targetEntity'] === 'Pim\Bundle\CatalogBundle\Model\ProductPrice') {
-            return array();
+            return [];
         }
 
         switch ($mapping['type']) {
             case ClassMetadataInfo::MANY_TO_MANY:
-                return array(
+                return [
                     sprintf(
                         'LEFT JOIN %s %s ON %s.%s = v.id ',
                         $mapping['joinTable']['name'],
@@ -531,13 +526,13 @@ MAIN_SQL;
                         $prefix,
                         $mapping['joinTable']['joinColumns'][0]['name']
                     )
-                );
+                ];
 
             case ClassMetadataInfo::ONE_TO_MANY:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
-                $relatedMapping = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
+                $relatedMapping  = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
 
-                return array(
+                return [
                     sprintf(
                         'LEFT JOIN %s %s ON %s.%s = v.id',
                         $relatedMetadata->getTableName(),
@@ -545,14 +540,14 @@ MAIN_SQL;
                         $prefix,
                         $relatedMapping['joinColumns'][0]['name']
                     )
-                );
+                ];
             case ClassMetadataInfo::ONE_TO_ONE:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
 
                 $joinPattern = 'LEFT JOIN %s %s ON %s.id = v.%s';
-                $joinColumn = $mapping['joinColumns'][0]['name'];
+                $joinColumn  = $mapping['joinColumns'][0]['name'];
 
-                return array(
+                return [
                     sprintf(
                         $joinPattern,
                         $relatedMetadata->getTableName(),
@@ -560,10 +555,10 @@ MAIN_SQL;
                         $prefix,
                         $joinColumn
                     )
-                );
+                ];
 
             default:
-                return array();
+                return [];
         }
     }
 
@@ -574,7 +569,7 @@ MAIN_SQL;
      */
     protected function getSkippedMappings()
     {
-        return array('attribute', 'entity');
+        return ['attribute', 'entity'];
     }
 
     /**
