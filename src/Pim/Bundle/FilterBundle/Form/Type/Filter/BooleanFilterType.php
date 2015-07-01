@@ -45,7 +45,7 @@ class BooleanFilterType extends AbstractChoiceType
     {
         $fieldChoices = array(
             self::TYPE_YES => $this->translator->trans('oro.filter.form.label_type_yes'),
-            self::TYPE_NO => $this->translator->trans('oro.filter.form.label_type_no'),
+            self::TYPE_NO  => $this->translator->trans('oro.filter.form.label_type_no'),
         );
 
         $resolver->setDefaults(
