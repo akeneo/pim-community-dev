@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValuesDenormalizer;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -14,9 +14,9 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
     const FORMAT_CSV  = 'csv';
     const VALUE_CLASS = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
 
-    function let(DenormalizerInterface $valueDenormalizer, FieldNameBuilder $fieldNameBuilder)
+    function let(DenormalizerInterface $valueDenormalizer, AttributeColumnInfoExtractor $fieldExtractor)
     {
-        $this->beConstructedWith($valueDenormalizer, $fieldNameBuilder, self::VALUE_CLASS);
+        $this->beConstructedWith($valueDenormalizer, $fieldExtractor, self::VALUE_CLASS);
     }
 
     function it_is_a_denormalizer()
@@ -39,12 +39,12 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
         )->shouldBe(false);
     }
 
-    function it_denormalizes_variant_group_values($fieldNameBuilder, $valueDenormalizer, AttributeInterface $description)
+    function it_denormalizes_variant_group_values($fieldExtractor, $valueDenormalizer, AttributeInterface $description)
     {
-        $fieldNameBuilder->extractAttributeFieldNameInfos('description-ecommerce-en_US')
+        $fieldExtractor->extractColumnInfo('description-ecommerce-en_US')
             ->willReturn(['attribute' => $description, 'locale_code' => 'en_US', 'scope_code' => 'ecommerce'])
             ->shouldBeCalled();
-        $fieldNameBuilder->extractAttributeFieldNameInfos('description-ecommerce-fr_FR')
+        $fieldExtractor->extractColumnInfo('description-ecommerce-fr_FR')
             ->willReturn(['attribute' => $description, 'locale_code' => 'fr_FR', 'scope_code' => 'ecommerce'])
             ->shouldBeCalled();
 

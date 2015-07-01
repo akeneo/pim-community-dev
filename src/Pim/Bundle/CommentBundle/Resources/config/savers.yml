@@ -1,5 +1,5 @@
 services:
-    pim_catalog.saver.comment:
+    pim_comment.saver.comment:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'

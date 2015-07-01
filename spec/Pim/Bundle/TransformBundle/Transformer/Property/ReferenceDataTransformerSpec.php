@@ -39,7 +39,7 @@ class ReferenceDataTransformerSpec extends ObjectBehavior
         $registry->all()->willReturn($referenceData);
 
         $exception = new \InvalidArgumentException(sprintf(
-            'Reference data "%s" does not exist. Values allowed are: %s',
+            'Reference data "%s" does not exist. Allowed values are: %s',
             $value,
             'car, fabrics'
         ));

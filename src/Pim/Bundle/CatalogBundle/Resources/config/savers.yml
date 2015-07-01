@@ -92,6 +92,13 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.saver.completeness_options_resolver'
 
+    pim_catalog.saver.locale:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pim_catalog.model.locale.interface%
+
     pim_catalog.saver.base_options_resolver:
         class: %pim_catalog.saver.base_options_resolver.class%
 

@@ -37,6 +37,7 @@ services:
             - '@pim_transform.transformer.guesser'
             - '@pim_transform.transformer.column_info_transformer'
 
+    # Deprecated: This service is deprecated and will be removed in 1.5
     pim_transform.transformer.product:
         class: %pim_transform.transformer.product.class%
         parent: pim_transform.transformer.entity

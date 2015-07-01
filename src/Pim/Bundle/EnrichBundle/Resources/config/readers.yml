@@ -8,9 +8,9 @@ services:
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@akeneo_batch.job_repository'
-            - '@pim_base_connector.repository.job_configuration'
+            - '@pim_connector.repository.job_configuration'
     pim_enrich.mass_edit.family.reader:
         class: %pim_enrich.mass_edit.family.reader.class%
         arguments:
-            - '@pim_base_connector.repository.job_configuration'
+            - '@pim_connector.repository.job_configuration'
             - '@pim_catalog.repository.family'

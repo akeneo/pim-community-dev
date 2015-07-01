@@ -4,4 +4,11 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.base_options_resolver'
-            - %pim_base_connector.model.job_configuration.class%
+            - %pim_connector.model.job_configuration.class%
+
+    pim_enrich.saver.sequential_edit:
+        class:  %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pim_enrich.entity.sequential_edit.class%

@@ -1,6 +1,7 @@
 Pim\Bundle\CatalogBundle\Model\ProductMedia:
     type: entity
     table: pim_catalog_product_media
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
             type: integer

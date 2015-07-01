@@ -1,0 +1,104 @@
+parameters:
+    pim_connector.processor.denormalization.attribute_option.class:    Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor
+    pim_connector.processor.denormalization.attribute.class:           Pim\Component\Connector\Processor\Denormalization\AttributeProcessor
+    pim_connector.processor.denormalization.product.class:             Pim\Component\Connector\Processor\Denormalization\ProductProcessor
+    pim_connector.processor.denormalization.product_association.class: Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor
+    pim_connector.processor.denormalization.variant_group.class:       Pim\Component\Connector\Processor\Denormalization\VariantGroupProcessor
+    pim_connector.processor.denormalization.category.class:            Pim\Component\Connector\Processor\Denormalization\CategoryProcessor
+    pim_connector.processor.denormalization.group.class:               Pim\Component\Connector\Processor\Denormalization\GroupProcessor
+    pim_connector.processor.denormalization.association_type.class:    Pim\Component\Connector\Processor\Denormalization\AssociationTypeProcessor
+    pim_connector.processor.denormalization.family.class:              Pim\Component\Connector\Processor\Denormalization\FamilyProcessor
+
+services:
+    pim_connector.processor.denormalization.attribute_option.flat:
+        class: %pim_connector.processor.denormalization.attribute_option.class%
+        arguments:
+            - '@pim_connector.array_converter.flat.attribute_option'
+            - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
+            - %pim_catalog.entity.attribute_option.class%
+
+    pim_connector.processor.denormalization.attribute_option.structured:
+        class: %pim_connector.processor.denormalization.attribute_option.class%
+        arguments:
+            - '@pim_connector.array_converter.structured.attribute_option'
+            - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
+            - '@validator'
+            - %pim_catalog.entity.attribute_option.class%
+
+    pim_connector.processor.denormalization.attribute.flat:
+        class: %pim_connector.processor.denormalization.attribute.class%
+        arguments:
+            - '@pim_connector.array_converter.flat.attribute'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
+
+    pim_connector.processor.denormalization.association_type.flat:
+        class: %pim_connector.processor.denormalization.association_type.class%
+        arguments:
+            - '@pim_connector.array_converter.flat.association_type'
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.factory.association_type'
+            - '@pim_catalog.updater.association_type'
+            - '@validator'
+
+    pim_connector.processor.denormalization.product.flat:
+        class: %pim_connector.processor.denormalization.product.class%
+        arguments:
+            - '@pim_connector.array_converter.flat.product'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_catalog.comparator.filter.product'
+
+    pim_connector.processor.denormalization.product_association.flat:
+        class: %pim_connector.processor.denormalization.product_association.class%
+        arguments:
+            - '@pim_connector.array_converter.flat.product_association'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.comparator.filter.product_association'
+
+    pim_connector.processor.denormalization.variant_group.flat:
+        class: %pim_connector.processor.denormalization.variant_group.class%
+        arguments:
+            - '@pim_connector.array_converter.flat.variant_group'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.factory.group'
+            - '@pim_catalog.updater.variant_group'
+            - '@pim_catalog.validator.product'
+
+    pim_connector.processor.denormalization.group.flat:
+        class: %pim_connector.processor.denormalization.group.class%
+        arguments:
+            - '@pim_connector.array_converter.flat.group'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.factory.group'
+            - '@pim_catalog.updater.group'
+            - '@pim_catalog.validator.product'
+            - %pim_catalog.entity.group.class%
+
+    pim_connector.processor.denormalization.category.flat:
+        class: %pim_connector.processor.denormalization.category.class%
+        arguments:
+            - '@pim_connector.array_converter.flat.category'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.updater.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.validator.product'
+
+    pim_connector.processor.denormalization.family.flat:
+        class: %pim_connector.processor.denormalization.family.class%
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_connector.array_converter.flat.family'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
+            - '@pim_catalog.validator.product'

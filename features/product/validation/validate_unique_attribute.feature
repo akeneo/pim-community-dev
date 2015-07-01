@@ -33,7 +33,7 @@ Feature: Validate unique attribute of a product
     When I am on the "text2" product page
     And I change the Text to "my-text"
     And I save the product
-    Then I should see validation tooltip "This value is already set on another product."
+    Then I should see validation tooltip "The value my-text is already set on another product for the unique attribute text"
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3961
@@ -44,7 +44,7 @@ Feature: Validate unique attribute of a product
     When I am on the "text2" product page
     And I change the Text to ""
     And I save the product
-    Then I should not see validation tooltip "This value is already set on another product."
+    Then I should not see validation tooltip "The value is already set on another product for the unique attribute text"
 
   Scenario: Validate the unique constraint of number attribute with a provided number greater than 0
     Given I am on the "number1" product page
@@ -53,7 +53,7 @@ Feature: Validate unique attribute of a product
     When I am on the "number2" product page
     And I change the Number to "12"
     And I save the product
-    Then I should see validation tooltip "This value is already set on another product."
+    And I should see validation tooltip "The value 12 is already set on another product for the unique attribute number"
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3961
@@ -64,7 +64,7 @@ Feature: Validate unique attribute of a product
     When I am on the "number2" product page
     And I change the Number to ""
     And I save the product
-    Then I should not see validation tooltip "This value is already set on another product."
+    Then I should not see validation tooltip "The value is already set on another product for the unique attribute number"
 
   @skip @info date picker does not work properly on CI
   Scenario: Validate the unique constraint of date attribute with a provided date
@@ -74,7 +74,7 @@ Feature: Validate unique attribute of a product
     Given I am on the "date2" product page
     And I change the Date to "2015/01/01"
     And I save the product
-    Then I should see validation tooltip "This value is already set on another product."
+    And I should see validation tooltip "The value 2015-01-01 is already set on another product for the unique attribute date"
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3961
@@ -83,4 +83,4 @@ Feature: Validate unique attribute of a product
     And I save the product
     When I am on the "date2" product page
     And I save the product
-    Then I should not see validation tooltip "This value is already set on another product."
+    Then I should not see validation tooltip "The value is already set on another product for the unique attribute date1"

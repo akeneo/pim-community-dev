@@ -28,4 +28,4 @@ Feature: Product creation
     And I fill in the following information in the popin:
       | SKU | sandals |
     And I press the "Save" button in the popin
-    Then I should see validation error "This value is already set on another product."
+    Then I should see validation tooltip "The value sandals is already set on another product for the unique attribute sku"

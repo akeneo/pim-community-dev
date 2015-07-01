@@ -9,13 +9,13 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -33,11 +33,8 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var \Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface */
+    /** @var JobConfigurationRepositoryInterface */
     protected $jobConfigurationRepo;
-
-    /** @var ObjectManager */
-    protected $objectManager;
 
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
@@ -57,34 +54,37 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var SaverInterface */
+    protected $jobConfigurationSaver;
+
     /**
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
      * @param PaginatorFactoryInterface             $paginatorFactory
      * @param ObjectDetacherInterface               $objectDetacher
      * @param JobConfigurationRepositoryInterface   $jobConfigurationRepo
-     * @param ObjectManager                         $objectManager
      * @param IdentifiableObjectRepositoryInterface $groupRepository
      * @param ProductRepositoryInterface            $productRepository
      * @param TranslatorInterface                   $translator
+     * @param SaverInterface                        $jobConfigurationSaver
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
         ObjectDetacherInterface $objectDetacher,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        ObjectManager $objectManager,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductRepositoryInterface $productRepository,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        SaverInterface $jobConfigurationSaver
     ) {
         $this->pqbFactory           = $pqbFactory;
         $this->paginatorFactory     = $paginatorFactory;
         $this->objectDetacher       = $objectDetacher;
         $this->jobConfigurationRepo = $jobConfigurationRepo;
-        $this->objectManager        = $objectManager;
         $this->groupRepository      = $groupRepository;
         $this->productRepository    = $productRepository;
         $this->translator           = $translator;
+        $this->jobConfigurationSaver = $jobConfigurationSaver;
     }
 
     /**
@@ -141,8 +141,7 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
         $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
         $massEditJobConf->setConfiguration($configuration);
 
-        $this->objectManager->persist($massEditJobConf);
-        $this->objectManager->flush($massEditJobConf);
+        $this->jobConfigurationSaver->save($massEditJobConf);
     }
 
     /**

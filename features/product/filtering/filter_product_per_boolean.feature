@@ -12,11 +12,11 @@ Feature: Filter products by boolean field
   Scenario: Successfully filter products by boolean value for boolean attributes
     Given the following products:
       | sku   | family  | handmade |
-      | pants | tshirts | yes      |
-      | shirt | tshirts | no       |
-      | shoes | tshirts | no       |
-      | hat   | tshirts | no       |
-      | socks | tshirts | yes      |
+      | pants | tshirts | 1        |
+      | shirt | tshirts | 0        |
+      | shoes | tshirts | 0        |
+      | hat   | tshirts | 0        |
+      | socks | tshirts | 1        |
     And I am on the products page
     Then the grid should contain 5 elements
     And I should see products pants, shirt, shoes, hat and socks

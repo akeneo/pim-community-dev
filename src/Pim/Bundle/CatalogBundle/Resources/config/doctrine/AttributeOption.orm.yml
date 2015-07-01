@@ -1,8 +1,8 @@
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     type: entity
     table: pim_catalog_attribute_option
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository
     changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository
     uniqueConstraints:
         searchunique_idx:
             columns:

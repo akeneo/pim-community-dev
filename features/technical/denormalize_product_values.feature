@@ -15,7 +15,7 @@ Feature: Denormalize product values
       | text_scop             | text         | no          | yes      |               |                     |                    | all      |
       | text_loc_scop         | text         | yes         | yes      |               |                     |                    | all      |
       | number                | number       | no          | no       |               |                     |                    | all      |
-      | number_loc            | number       | no          | yes      |               |                     |                    | all      |
+      | number_loc            | number       | yes         | no       |               |                     |                    | all      |
       | number_scop           | number       | no          | yes      |               |                     |                    | all      |
       | number_loc_scop       | number       | yes         | yes      |               |                     |                    | all      |
       | textarea              | textarea     | no          | no       |               |                     |                    | all      |
