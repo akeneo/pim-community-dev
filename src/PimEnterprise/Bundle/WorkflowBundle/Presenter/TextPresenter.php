@@ -39,7 +39,7 @@ class TextPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return $this->explodeText($change['value']);
+        return $this->explodeText($change['data']);
     }
 
     /**

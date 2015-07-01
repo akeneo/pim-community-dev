@@ -59,7 +59,7 @@ class ProductDraftApplier implements ProductDraftApplierInterface
                 $this->propertySetter->setData(
                     $product,
                     $code,
-                    $value['value'],
+                    $value['data'],
                     ['locale' => $value['locale'], 'scope' => $value['scope']]
                 );
             }
