@@ -1,0 +1,45 @@
+PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess:
+    type: entity
+    table: pimee_security_asset_category_access
+    repositoryClass: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryAccessRepository # TODO: Change namespace
+    uniqueConstraints:
+        category_user_group_idx:
+            columns:
+                - category_id
+                - user_group_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        viewAssets:
+            type: boolean
+            column: view_assets
+            options:
+                default: false
+        editAssets:
+            type: boolean
+            column: edit_assets
+            options:
+                default: false
+        ownAssets:
+            type: boolean
+            column: own_assets
+            options:
+                default: false
+    manyToOne:
+        category:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\Category
+            joinColumns:
+                category_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        userGroup:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Group
+            joinColumns:
+                user_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

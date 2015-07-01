@@ -83,7 +83,7 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - %pimee_security.entity.category_access.class%
+            - %pimee_security.entity.asset_category_access.class%
         tags:
             - { name: 'pim_repository' }
         calls:
