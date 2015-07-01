@@ -16,11 +16,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorRegistry;
+use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -42,48 +41,42 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
-
     /** @var ProductDraftFactory */
     protected $factory;
 
     /** @var ProductDraftRepositoryInterface */
-    protected $repository;
+    protected $productDraftRepo;
 
     /**
      * @param ObjectManager                   $objectManager
      * @param NormalizerInterface             $normalizer
      * @param ComparatorRegistry              $comparatorRegistry
      * @param AttributeRepositoryInterface    $attributeRepository
-     * @param SecurityContextInterface        $securityContext
      * @param ProductDraftFactory             $factory
-     * @param ProductDraftRepositoryInterface $productDraftRepository
+     * @param ProductDraftRepositoryInterface $productDraftRepo
      */
     public function __construct(
         ObjectManager $objectManager,
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
-        SecurityContextInterface $securityContext,
         ProductDraftFactory $factory,
-        ProductDraftRepositoryInterface $productDraftRepository
+        ProductDraftRepositoryInterface $productDraftRepo
     ) {
         $this->objectManager          = $objectManager;
         $this->normalizer             = $normalizer;
         $this->comparatorRegistry     = $comparatorRegistry;
         $this->attributeRepository    = $attributeRepository;
-        $this->securityContext        = $securityContext;
         $this->factory                = $factory;
-        $this->productDraftRepository = $productDraftRepository;
+        $this->productDraftRepository = $productDraftRepo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function build(ProductInterface $product)
+    public function build(ProductInterface $product, $username)
     {
-        $newValues = $this->normalizer->normalize($product->getValues(), 'json');
+        $newValues = $this->normalizer->normalize($product->getValues(), 'json', ['entity' => 'product']);
         $originalValues = $this->getOriginalValues($product);
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
@@ -95,7 +88,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
             foreach ($new as $index => $changes) {
                 $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
-                $diffAttribute = $comparator->getChanges(
+                $diffAttribute = $comparator->compare(
                     $changes,
                     $this->getOriginalValue($originalValues, $code, $index)
                 );
@@ -107,7 +100,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         }
 
         if (!empty($diff)) {
-            $productDraft = $this->getProductDraft($product);
+            $productDraft = $this->getProductDraft($product, $username);
             $productDraft->setChanges($diff);
 
             return $productDraft;
@@ -118,12 +111,12 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
     /**
      * @param ProductInterface $product
+     * @param string           $username
      *
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft
      */
-    protected function getProductDraft(ProductInterface $product)
+    protected function getProductDraft(ProductInterface $product, $username)
     {
-        $username = $this->getUser()->getUsername();
         if (null === $productDraft = $this->productDraftRepository->findUserProductDraft($product, $username)) {
             $productDraft = $this->factory->createProductDraft($product, $username);
         }
@@ -156,7 +149,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             }
         }
 
-        return $this->normalizer->normalize($originalValues, 'json');
+        return $this->normalizer->normalize($originalValues, 'json', ['entity' => 'product']);
     }
 
     /**
@@ -169,25 +162,5 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     protected function getOriginalValue(array $originalValues, $code, $index)
     {
         return !isset($originalValues[$code][$index]) ? [] : $originalValues[$code][$index];
-    }
-
-    /**
-     * Get user from the security context
-     *
-     * @return \Symfony\Component\Security\Core\User\UserInterface
-     *
-     * @throws \LogicException
-     */
-    protected function getUser()
-    {
-        if (null === $token = $this->securityContext->getToken()) {
-            throw new \LogicException('No user logged in');
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            throw new \LogicException('No user logged in');
-        }
-
-        return $user;
     }
 }

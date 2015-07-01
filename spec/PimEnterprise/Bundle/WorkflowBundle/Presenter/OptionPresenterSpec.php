@@ -43,4 +43,3 @@ class OptionPresenterSpec extends ObjectBehavior
         $this->present($value, ['value' => 'blue'])->shouldReturn('diff between two options');
     }
 }
-

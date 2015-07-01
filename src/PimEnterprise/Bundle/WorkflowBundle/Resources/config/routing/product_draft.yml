@@ -10,6 +10,14 @@ pimee_workflow_product_draft_ready:
     path: /{id}/ready
     defaults: { _controller: pimee_workflow.controller.product_draft_rest:readyAction }
 
+pimee_workflow_product_draft_mass_approve:
+    path: /mass-approve
+    defaults: { _controller: pimee_workflow.controller.product_draft:massApproveAction }
+
+pimee_workflow_product_draft_mass_refuse:
+    path: /mass-refuse
+    defaults: { _controller: pimee_workflow.controller.product_draft:massRefuseAction }
+
 pimee_workflow_product_draft_rest_get:
     path: /{id}
     defaults: { _controller: pimee_workflow.controller.product_draft_rest:getAction }

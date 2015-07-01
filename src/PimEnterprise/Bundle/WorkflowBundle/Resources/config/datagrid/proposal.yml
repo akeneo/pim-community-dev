@@ -27,6 +27,11 @@ datagrid:
                 label: pimee_workflow.product_draft.created
                 type: field
                 frontend_type: datetime
+            status:
+                label: pimee_workflow.product_draft.status.label
+                type: twig
+                template: PimEnterpriseWorkflowBundle:Datagrid:Property/product_draft_status.html.twig
+                frontend_type: html
         properties:
             id: ~
             approve_link:
@@ -52,6 +57,19 @@ datagrid:
                 label: pimee_workflow.product_draft.action.refuse
                 icon: remove
                 link: refuse_link
+        mass_actions:
+            mass_approve:
+                type: redirect
+                label: pimee_workflow.product_draft.mass_review_action.approve
+                confirmation: true
+                route: pimee_workflow_product_draft_mass_approve
+                icon: ok
+            mass_refuse:
+                type: redirect
+                label: pimee_workflow.product_draft.mass_review_action.refuse
+                confirmation: true
+                route: pimee_workflow_product_draft_mass_refuse
+                icon: remove
         filters:
             columns:
                 author:
