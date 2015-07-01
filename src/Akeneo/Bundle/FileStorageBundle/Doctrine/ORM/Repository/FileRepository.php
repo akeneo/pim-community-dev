@@ -6,7 +6,7 @@ use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**
- * Implementation of ReferenceRepositoryInterface.
+ * Implementation of FileRepositoryInterface.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
