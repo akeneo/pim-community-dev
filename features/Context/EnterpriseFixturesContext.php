@@ -514,26 +514,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $sku
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\Product
-     */
-    public function getPublished($sku)
-    {
-        $published = $this->getPublishedProductManager()->findByIdentifier($sku);
-
-        if (!$published) {
-            throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
-        }
-
-        $this->refresh($published);
-
-        return $published;
-    }
-
-    /**
      * @param TableNode $table
      *
      * @Given /^I should see the following proposals:$/
