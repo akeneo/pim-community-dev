@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\FilterBundle\Filter\CategoryFilter as BaseCategoryFilter;
 use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -103,8 +104,10 @@ class CategoryFilter extends BaseCategoryFilter
      */
     protected function getAllChildrenIds(CategoryInterface $category)
     {
-        if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
-            return [];
+        if ($category instanceof Category) { // TODO: Remove this first if in PIM-4292
+            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+                return [];
+            }
         }
 
         $childrenIds = BaseCategoryFilter::getAllChildrenIds($category);
