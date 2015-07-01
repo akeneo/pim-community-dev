@@ -7,9 +7,11 @@ define(
         'backbone',
         'oro/mediator',
         'pim/form',
-        'text!pimee/template/product/submit-draft',
         'pim/fetcher-registry',
-        'oro/messenger'
+        'pim/attribute-manager',
+        'oro/messenger',
+        'text!pimee/template/product/submit-draft',
+        'text!pimee/template/product/tab/attribute/modified-by-draft'
     ],
     function (
         $,
@@ -17,13 +19,16 @@ define(
         Backbone,
         mediator,
         BaseForm,
-        template,
         FetcherRegistry,
-        messenger
+        AttributeManager,
+        messenger,
+        submitTemplate,
+        modifiedByDraftTemplate
     ) {
         return BaseForm.extend({
             className: 'btn-group',
-            template: _.template(template),
+            submitTemplate: _.template(submitTemplate),
+            modifiedByDraftTemplate: _.template(modifiedByDraftTemplate),
             draft: undefined,
             events: {
                 'click .submit-draft': 'submitDraft'
@@ -37,9 +42,21 @@ define(
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
                 this.listenTo(mediator, 'product:action:post_update', this.reloadProductDraft);
 
+                this.stopListening(mediator, 'field:extension:add');
+                this.listenTo(mediator, 'field:extension:add', this.addExtension);
+
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
+            },
+            addExtension: function (event) {
+                var field = event.field;
+                if (this.isValueChanged(field)) {
+                    var $element = this.modifiedByDraftTemplate();
+                    field.addElement('label', 'modified_by_draft', $element);
+                }
+
+                return this;
             },
             onProductPostFetch: function (event) {
                 event.promises.push(this.loadProductDraft(event.product));
@@ -71,10 +88,25 @@ define(
             updateProductDraft: function (daftData) {
                 this.draft.set(daftData);
             },
+            isValueChanged: function (field) {
+                var attribute = field.attribute;
+
+                var changes = this.draft.get('changes');
+                if (!changes || !changes.values || !_.has(changes.values, attribute.code)) {
+                    return false;
+                }
+
+                return undefined !== AttributeManager.getValue(
+                    changes.values[attribute.code],
+                    attribute,
+                    field.context.locale,
+                    field.context.scope
+                );
+            },
             render: function () {
                 if (undefined !== this.draft.get('status')) {
                     this.$el.html(
-                        this.template({
+                        this.submitTemplate({
                             'submitted': this.draft.get('status') !== 0
                         })
                     );
