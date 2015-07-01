@@ -1,7 +1,7 @@
 services:
-    pim_catalog.saver.comment:
+    pim_comment.saver.comment:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pim_comment.entity.comment.class%

@@ -4,9 +4,7 @@ namespace Pim\Bundle\CommentBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 
@@ -23,19 +21,27 @@ class CommentManager implements SaverInterface, RemoverInterface
     /** @var CommentRepositoryInterface */
     protected $repository;
 
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var RemoverInterface */
+    protected $remover;
 
     /**
      * Constructor
      *
      * @param CommentRepositoryInterface $repository
-     * @param ObjectManager              $objectManager
+     * @param SaverInterface             $saver
+     * @param RemoverInterface           $remover
      */
-    public function __construct(CommentRepositoryInterface $repository, ObjectManager $objectManager)
-    {
-        $this->repository    = $repository;
-        $this->objectManager = $objectManager;
+    public function __construct(
+        CommentRepositoryInterface $repository,
+        SaverInterface $saver,
+        RemoverInterface $remover
+    ) {
+        $this->repository = $repository;
+        $this->saver      = $saver;
+        $this->remover    = $remover;
     }
 
     /**
@@ -57,43 +63,21 @@ class CommentManager implements SaverInterface, RemoverInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5 please use SaverInterface::save
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof CommentInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a use Pim\Bundle\CommentBundle\Model\CommentInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->persist($object);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->saver->save($object, $options);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5 please use RemoverInterface::remove
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof CommentInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a use Pim\Bundle\CommentBundle\Model\CommentInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->remove($object);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->remover->remove($object, $options);
     }
 }

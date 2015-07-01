@@ -3,15 +3,11 @@ parameters:
     pim_base_connector.processor.csv_serializer.heterogeneous.class: Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HeterogeneousProcessor
     pim_base_connector.processor.csv_serializer.product.class:       Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\ProductProcessor
 
-    pim_base_connector.processor.transformer.class:                   Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
-    pim_base_connector.processor.product.class:                       Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
-    pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
+    pim_base_connector.processor.transformer.class:                       Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
+    pim_base_connector.processor.product.class:                           Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
+    pim_base_connector.processor.category.class:                          Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
     pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
     pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
-    pim_base_connector.processor.denormalization.attribute_option.class:    Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AttributeOptionProcessor
-
-    pim_base_connector.denormalization.array_converter.flat.attribute_option.class:       Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat\AttributeOptionToStandardConverter
-    pim_base_connector.denormalization.array_converter.structured.attribute_option.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Structured\AttributeOptionToStandardConverter
 
     pim_base_connector.processor.product_to_flat_array.class:           Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.normalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor
@@ -69,6 +65,7 @@ services:
         arguments:
             - %pim_catalog.entity.group_type.class%
 
+    # @deprecated will be dropped in 1.5
     pim_base_connector.processor.product:
         class: %pim_base_connector.processor.product.class%
         arguments:
@@ -105,6 +102,7 @@ services:
         arguments:
             - %pim_catalog.entity.attribute.class%
 
+    # @deprecated will be dropped in 1.5
     pim_base_connector.processor.attribute_option:
         parent: pim_base_connector.processor.transformer
         arguments:
@@ -139,17 +137,18 @@ services:
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_serializer'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - %pim_catalog.entity.group.class%
             - 'csv'
 
+    # @deprecated will be dropped in 1.5
     pim_base_connector.processor.denormalization.csv_variant_group:
         class: %pim_base_connector.processor.denormalization.csv_variant_group.class%
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_serializer'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_serializer'
             - '@pim_catalog.manager.product_template_media'
@@ -157,31 +156,6 @@ services:
             - %pim_catalog.entity.group.class%
             - %pim_catalog.entity.product_template.class%
             - 'csv'
-
-    pim_base_connector.processor.denormalization.attribute_option.flat:
-        class: %pim_base_connector.processor.denormalization.attribute_option.class%
-        arguments:
-            - '@pim_base_connector.denormalization.array_converter.flat.attribute_option'
-            - '@pim_catalog.repository.attribute_option'
-            - '@pim_catalog.updater.attribute_option'
-            - %pim_catalog.entity.attribute_option.class%
-
-    pim_base_connector.processor.denormalization.attribute_option.structured:
-        class: %pim_base_connector.processor.denormalization.attribute_option.class%
-        arguments:
-            - '@pim_base_connector.denormalization.array_converter.structured.attribute_option'
-            - '@pim_catalog.repository.attribute_option'
-            - '@pim_catalog.updater.attribute_option'
-            - %pim_catalog.entity.attribute_option.class%
-
-    # Denormalization - ArrayConverter
-    pim_base_connector.denormalization.array_converter.flat.attribute_option:
-        class: %pim_base_connector.denormalization.array_converter.flat.attribute_option.class%
-        arguments:
-            - '@pim_catalog.repository.locale'
-
-    pim_base_connector.denormalization.array_converter.structured.attribute_option:
-        class: %pim_base_connector.denormalization.array_converter.structured.attribute_option.class%
 
     # Normalization
     pim_base_connector.processor.normalization.csv_group:

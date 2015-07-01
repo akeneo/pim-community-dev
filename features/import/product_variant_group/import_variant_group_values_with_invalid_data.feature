@@ -50,8 +50,8 @@ Feature: Execute an import
   Scenario: Skip variant group when a text value is too long (default max_characters to 255)
     Given the following CSV file to import:
       """
-      code;custom_desc
-      SANDAL;"My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
+      code;type;custom_desc
+      SANDAL;VARIANT;"My custom desc is soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long, soooo long"
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
@@ -64,8 +64,8 @@ Feature: Execute an import
   Scenario: Skip variant group when a text value is too long (max_characters to 22)
     Given the following CSV file to import:
       """
-      code;title
-      SANDAL;"My title is soooo long, soooo long, soooo long."
+      code;type;title
+      SANDAL;VARIANT;"My title is soooo long, soooo long, soooo long."
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
@@ -78,8 +78,8 @@ Feature: Execute an import
   Scenario: Skip variant group when a text value does not match the expected regex
     Given the following CSV file to import:
       """
-      code;barcode
-      SANDAL;"ThisIsNotABarcode"
+      code;type;barcode
+      SANDAL;VARIANT;"ThisIsNotABarcode"
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
@@ -92,8 +92,8 @@ Feature: Execute an import
   Scenario: Skip variant group when a text value is not an url as expected
     Given the following CSV file to import:
       """
-      code;link
-      SANDAL;"ThisIsNotAnUrl"
+      code;type;link
+      SANDAL;VARIANT;"ThisIsNotAnUrl"
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
@@ -110,8 +110,8 @@ Feature: Execute an import
       | unique_label       | yes    |
     And the following CSV file to import:
       """
-      code;unique_description;unique_label
-      caterpillar_boots;foo;bar
+      code;type;unique_description;unique_label
+      caterpillar_boots;VARIANT;foo;bar
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |

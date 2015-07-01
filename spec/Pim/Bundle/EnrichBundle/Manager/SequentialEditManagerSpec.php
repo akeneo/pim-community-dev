@@ -2,7 +2,8 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -15,18 +16,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class SequentialEditManagerSpec extends ObjectBehavior
 {
     function let(
-        ObjectManager $om,
         SequentialEditRepository $repository,
         SequentialEditFactory $factory,
-        ProductManager $productManager
+        ProductManager $productManager,
+        SaverInterface $saver,
+        RemoverInterface $remover
     ) {
-        $this->beConstructedWith($om, $repository, $factory, $productManager);
+        $this->beConstructedWith($repository, $factory, $productManager, $saver, $remover);
     }
 
-    function it_saves_a_sequential_edit(SequentialEdit $sequentialEdit, $om)
+    function it_saves_a_sequential_edit($saver, SequentialEdit $sequentialEdit)
     {
-        $om->persist($sequentialEdit)->shouldBeCalled();
-        $om->flush($sequentialEdit)->shouldBeCalled();
+        $saver->save($sequentialEdit, [])->shouldBeCalled();
 
         $this->save($sequentialEdit)->shouldReturn(null);
     }
@@ -38,28 +39,27 @@ class SequentialEditManagerSpec extends ObjectBehavior
         $this->createEntity([1, 3], $user)->shouldReturn($sequentialEdit);
     }
 
-    function it_removes_a_sequential_edit($om, SequentialEdit $sequentialEdit)
+    function it_removes_a_sequential_edit($remover, SequentialEdit $sequentialEdit)
     {
-        $om->remove($sequentialEdit)->shouldBeCalled();
-        $om->flush($sequentialEdit)->shouldBeCalled();
+        $remover->remove($sequentialEdit, [])->shouldBeCalled();
 
         $this->remove($sequentialEdit)->shouldReturn(null);
     }
 
-    function it_removes_a_sequential_edit_from_a_user($om, $repository, UserInterface $user, SequentialEdit $sequentialEdit)
+    function it_removes_a_sequential_edit_from_a_user($remover, $repository, UserInterface $user, SequentialEdit $sequentialEdit)
     {
         $repository->findOneBy(['user' => $user])->willReturn($sequentialEdit);
-        $om->remove($sequentialEdit)->shouldBeCalled();
-        $om->flush($sequentialEdit)->shouldBeCalled();
+
+        $remover->remove($sequentialEdit)->shouldBeCalled();
 
         $this->removeByUser($user)->shouldReturn(null);
     }
 
-    function it_does_not_remove_anything_if_user_have_no_sequential_edit($om, $repository, UserInterface $user)
+    function it_does_not_remove_anything_if_user_have_no_sequential_edit($remover, $repository, UserInterface $user)
     {
         $repository->findOneBy(['user' => $user])->willReturn(null);
-        $om->remove(Argument::any())->shouldNotBeCalled();
-        $om->flush(Argument::any())->shouldNotBeCalled();
+
+        $remover->remove(Argument::any(), Argument::any())->shouldNotBeCalled();
 
         $this->removeByUser($user)->shouldReturn(null);
     }
@@ -100,35 +100,5 @@ class SequentialEditManagerSpec extends ObjectBehavior
     function it_is_a_remover()
     {
         $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
-    }
-
-    function it_throws_exception_when_save_anything_else_than_a_sequential_edit()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a Pim\Bundle\EnrichBundle\Entity\SequentialEdit, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringSave($anythingElse);
-    }
-
-    function it_throws_exception_when_remove_anything_else_than_a_sequential_edit()
-    {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a Pim\Bundle\EnrichBundle\Entity\SequentialEdit, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringRemove($anythingElse);
     }
 }

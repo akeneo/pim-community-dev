@@ -121,10 +121,7 @@ class VariantGroupController extends GroupController
             return $this->redirectToRoute('pim_enrich_variant_group_index');
         }
 
-        $groupType = $this->groupManager
-            ->getGroupTypeRepository()
-            ->findOneBy(['code' => 'VARIANT']);
-        $group = $this->groupFactory->createGroup($groupType);
+        $group = $this->groupFactory->createGroup('VARIANT');
 
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.variant group.created');

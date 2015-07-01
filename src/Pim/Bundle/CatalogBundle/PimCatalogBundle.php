@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQuerySo
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductUpdaterPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterQueryGeneratorsPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterComparatorsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -39,11 +40,12 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new RegisterProductQueryFilterPass())
             ->addCompilerPass(new RegisterProductQuerySorterPass())
             ->addCompilerPass(new RegisterProductUpdaterPass())
-            ->addCompilerPass(new RegisterFilterPass());
+            ->addCompilerPass(new RegisterFilterPass())
+            ->addCompilerPass(new RegisterComparatorsPass());
 
-        $productMappings = array(
+        $productMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
-        );
+        ];
 
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(

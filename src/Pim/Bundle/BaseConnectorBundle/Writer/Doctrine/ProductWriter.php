@@ -6,10 +6,10 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
@@ -29,36 +29,36 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var VersionManager */
     protected $versionManager;
 
+    /** @var CacheClearer */
+    protected $cacheClearer;
+
     /** @var StepExecution */
     protected $stepExecution;
 
     /** @var bool */
     protected $realTimeVersioning = true;
 
-    /** @var BulkSaverInterface */
+    /** @var SaverInterface */
     protected $productSaver;
-
-    /** @var BulkObjectDetacherInterface */
-    protected $detacher;
 
     /**
      * Constructor
      *
-     * @param MediaManager                $mediaManager
-     * @param VersionManager              $versionManager
-     * @param BulkSaverInterface          $productSaver
-     * @param BulkObjectDetacherInterface $detacher
+     * @param MediaManager   $mediaManager
+     * @param CacheClearer   $cacheClearer
+     * @param VersionManager $versionManager
+     * @param SaverInterface $productSaver
      */
     public function __construct(
         MediaManager $mediaManager,
+        CacheClearer $cacheClearer,
         VersionManager $versionManager,
-        BulkSaverInterface $productSaver,
-        BulkObjectDetacherInterface $detacher
+        SaverInterface $productSaver
     ) {
         $this->mediaManager   = $mediaManager;
+        $this->cacheClearer   = $cacheClearer;
         $this->versionManager = $versionManager;
         $this->productSaver   = $productSaver;
-        $this->detacher       = $detacher;
     }
 
     /**
@@ -108,7 +108,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         }
         $this->mediaManager->handleAllProductsMedias($items);
         $this->productSaver->saveAll($items, ['recalculate' => false]);
-        $this->detacher->detachAll($items);
+
+        $this->cacheClearer->clear();
     }
 
     /**
@@ -129,5 +130,13 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush()
+    {
+        $this->cacheClearer->clear(true);
     }
 }
