@@ -23,7 +23,7 @@
         {% set buttons %}
             {{ elements.backLink(indexRoute) }}
             {{ elements.deleteLink(removeRoute, removeAcl, indexRoute, removeMessage, removeSuccessMessage) }}
-            {{ elements.submitBtn('Save', 'ok') }}
+            {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
         {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
