@@ -314,21 +314,25 @@ MISSING_SQL;
                             AND channel_id = c.id
                             AND required = true
                 ) AS required_count
+
             FROM missing_completeness m
-                JOIN pim_catalog_channel c ON c.id = m.channel_id
-                JOIN pim_catalog_locale l ON l.id = m.locale_id
-                JOIN %product_table% p ON p.id = m.product_id
-                JOIN pim_catalog_attribute_requirement r ON r.family_id = p.family_id AND r.channel_id = c.id
-                JOIN %product_value_table% v ON v.attribute_id = r.attribute_id
-                    AND (v.scope_code = c.code OR v.scope_code IS NULL)
-                    AND (v.locale_code = l.code OR v.locale_code IS NULL)
-                    AND v.entity_id = p.id
-                LEFT JOIN complete_price
-                    ON complete_price.value_id = v.id
-                    AND complete_price.channel_id = c.id
-                    AND complete_price.locale_id = l.id
-                %product_value_joins%
-            WHERE (%product_value_conditions% OR complete_price.value_id IS NOT NULL) AND r.required = true
+            JOIN pim_catalog_channel c ON c.id = m.channel_id
+            JOIN pim_catalog_locale l ON l.id = m.locale_id
+            JOIN %product_table% p ON p.id = m.product_id
+            JOIN pim_catalog_attribute_requirement r ON r.family_id = p.family_id AND r.channel_id = c.id
+            JOIN %product_value_table% v ON v.attribute_id = r.attribute_id
+                AND (v.scope_code = c.code OR v.scope_code IS NULL)
+                AND (v.locale_code = l.code OR v.locale_code IS NULL)
+                AND v.entity_id = p.id
+            %product_value_joins%
+            %extra_joins%
+
+            WHERE (
+                %product_value_conditions%
+                %extra_conditions%
+            )
+            AND r.required = true
+
             GROUP BY p.id, c.id, l.id
 MAIN_SQL;
     }
@@ -343,7 +347,9 @@ MAIN_SQL;
     {
         return [
             '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
-            '%product_value_joins%'      => implode(' ', $this->getProductValueJoins())
+            '%product_value_joins%'      => implode(' ', $this->getProductValueJoins()),
+            '%extra_joins%'              => implode(' ', $this->getExtraJoins()),
+            '%extra_conditions%'         => implode(' ', $this->getExtraConditions()),
         ];
     }
 
@@ -644,5 +650,30 @@ SQL;
         $stmt->bindValue('locale_id', $locale->getId());
 
         $stmt->execute();
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getExtraJoins()
+    {
+        $pricesJoin = 'LEFT JOIN %s AS complete_price
+            ON complete_price.value_id = v.id
+            AND complete_price.channel_id = c.id
+            AND complete_price.locale_id = l.id';
+
+        $pricesJoin = sprintf($pricesJoin, static::COMPLETE_PRICES_TABLE);
+
+        return [$pricesJoin];
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getExtraConditions()
+    {
+        $pricesConditions = sprintf('OR %s.value_id IS NOT NULL', static::COMPLETE_PRICES_TABLE);
+
+        return [$pricesConditions];
     }
 }
