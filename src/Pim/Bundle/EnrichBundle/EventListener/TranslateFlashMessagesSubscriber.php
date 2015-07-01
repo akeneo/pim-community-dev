@@ -51,6 +51,10 @@ class TranslateFlashMessagesSubscriber implements EventSubscriberInterface
      */
     public function translate(KernelEvent $event)
     {
+        if (!$event->getRequest()->hasSession()) {
+            return;
+        }
+
         $bag = $event->getRequest()->getSession()->getFlashBag();
         $messages = [];
         foreach ($bag->all() as $type => $flashes) {
