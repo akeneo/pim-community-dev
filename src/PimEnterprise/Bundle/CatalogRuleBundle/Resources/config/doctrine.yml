@@ -3,7 +3,7 @@ services:
         class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %pimee_catalog_rule.model.rule_relation.class%
 
     pimee_catalog_rule.remover.rule_relation:
