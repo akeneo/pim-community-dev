@@ -390,28 +390,43 @@ MAIN_SQL;
      */
     protected function getProductValueConditions()
     {
-        $index = 0;
+        $associationMappings = $this->getClassMetadata($this->productValueClass)->getAssociationMappings();
+
+        // extract aliased foreign keys from associated fields
+        $productForeignKeys = $this->getForeignKeysFromMappings($associationMappings);
+
+        $notNullFields = array_merge($this->getClassContentFields($this->productValueClass, 'v'), $productForeignKeys);
 
         return array_map(
             function ($field) {
                 return sprintf('%s IS NOT NULL', $field);
-            },
-            array_merge(
-                $this->getClassContentFields($this->productValueClass, 'v'),
-                array_reduce(
-                    $this->getClassMetadata($this->productValueClass)->getAssociationMappings(),
-                    function ($fields, $mapping) use (&$index) {
-                        $index++;
-
-                        return array_merge(
-                            $fields,
-                            $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
-                        );
-                    },
-                    []
-                )
-            )
+            }, $notNullFields
         );
+    }
+
+    /**
+     * @param array $mappings
+     *
+     * @return string[]
+     */
+    protected function getForeignKeysFromMappings($mappings)
+    {
+        $index = 0;
+
+        $productForeignKeys = array_reduce(
+            $mappings,
+            function ($fields, $mapping) use (&$index) {
+                $index++;
+
+                return array_merge(
+                    $fields,
+                    $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
+                );
+            },
+            []
+        );
+
+        return $productForeignKeys;
     }
 
     /**
