@@ -5,8 +5,8 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Component\Classification\Factory\CategoryFactory;
+use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
