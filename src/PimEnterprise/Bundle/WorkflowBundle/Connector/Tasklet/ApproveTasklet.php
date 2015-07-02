@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
+namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
@@ -53,13 +53,13 @@ class ApproveTasklet extends AbstractReviewTasklet
     /**
      * Approve a draft
      *
-     * @param ProductDraft $productDraft
+     * @param ProductDraftInterface $productDraft
      *
      * @throws DraftNotReviewableException If draft cannot be approved
      */
-    protected function approveDraft(ProductDraft $productDraft)
+    protected function approveDraft(ProductDraftInterface $productDraft)
     {
-        if (ProductDraft::READY !== $productDraft->getStatus()) {
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
             throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
         }
 

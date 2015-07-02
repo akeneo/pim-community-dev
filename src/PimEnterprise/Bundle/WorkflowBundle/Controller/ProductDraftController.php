@@ -20,7 +20,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -153,7 +153,7 @@ class ProductDraftController extends AbstractController
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
-        if (ProductDraft::READY !== $productDraft->getStatus()) {
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
             throw new \LogicException('A product draft that is not ready can not be approved');
         }
 

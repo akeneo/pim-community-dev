@@ -19,7 +19,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -94,9 +94,9 @@ class ProductDraftManager
     /**
      * Approve a product draft
      *
-     * @param ProductDraft $productDraft
+     * @param ProductDraftInterface $productDraft
      */
-    public function approve(ProductDraft $productDraft)
+    public function approve(ProductDraftInterface $productDraft)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, new GenericEvent($productDraft));
 
@@ -113,14 +113,14 @@ class ProductDraftManager
     /**
      * Refuse a product draft
      *
-     * @param ProductDraft $productDraft
+     * @param ProductDraftInterface $productDraft
      */
-    public function refuse(ProductDraft $productDraft)
+    public function refuse(ProductDraftInterface $productDraft)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, new GenericEvent($productDraft));
 
         if (!$productDraft->isInProgress()) {
-            $productDraft->setStatus(ProductDraft::IN_PROGRESS);
+            $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
             $this->productDraftSaver->save($productDraft);
         } else {
             $this->productDraftRemover->remove($productDraft);
@@ -136,7 +136,7 @@ class ProductDraftManager
      *
      * @throws \LogicException
      *
-     * @return ProductDraft
+     * @return ProductDraftInterface
      */
     public function findOrCreate(ProductInterface $product)
     {
@@ -156,12 +156,12 @@ class ProductDraftManager
     /**
      * Mark a product draft as ready
      *
-     * @param ProductDraft $productDraft
+     * @param ProductDraftInterface $productDraft
      */
-    public function markAsReady(ProductDraft $productDraft)
+    public function markAsReady(ProductDraftInterface $productDraft)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_READY, new GenericEvent($productDraft));
-        $productDraft->setStatus(ProductDraft::READY);
+        $productDraft->setStatus(ProductDraftInterface::READY);
 
         $this->productDraftSaver->save($productDraft);
 

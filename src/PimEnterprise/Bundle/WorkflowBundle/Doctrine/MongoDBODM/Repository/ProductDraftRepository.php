@@ -17,7 +17,7 @@ use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -214,7 +214,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
         $qb = $this->createQueryBuilder('ProductDraft');
 
         $qb
-            ->field('status')->equals(ProductDraft::READY)
+            ->field('status')->equals(ProductDraftInterface::READY)
             ->field('categoryIds')->in($this->getGrantedCategoryIds($user));
 
         return $qb;

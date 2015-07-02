@@ -1,0 +1,9 @@
+parameters:
+    pimee_catalog_rule.reader.doctrine.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\Reader\Doctrine\RuleDefinitionReader
+
+services:
+    # export rules
+    pimee_catalog_rule.reader.doctrine.rule_definition:
+        class: %pimee_catalog_rule.reader.doctrine.rule_definition.class%
+        arguments:
+            - '@akeneo_rule_engine.repository.rule_definition'

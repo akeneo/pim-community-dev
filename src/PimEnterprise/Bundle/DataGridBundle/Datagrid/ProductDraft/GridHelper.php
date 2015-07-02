@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -49,7 +49,7 @@ class GridHelper
                 return ['approve' => false, 'refuse' => false, 'remove' => false];
             }
 
-            if (ProductDraft::IN_PROGRESS === $record->getValue('status')) {
+            if (ProductDraftInterface::IN_PROGRESS === $record->getValue('status')) {
                 return ['approve' => false, 'refuse' => false];
             }
 
@@ -65,8 +65,8 @@ class GridHelper
     public function getStatusChoices()
     {
         return [
-            ProductDraft::IN_PROGRESS => 'pimee_workflow.product_draft.status.in_progress',
-            ProductDraft::READY => 'pimee_workflow.product_draft.status.ready',
+            ProductDraftInterface::IN_PROGRESS => 'pimee_workflow.product_draft.status.in_progress',
+            ProductDraftInterface::READY       => 'pimee_workflow.product_draft.status.ready',
         ];
     }
 }

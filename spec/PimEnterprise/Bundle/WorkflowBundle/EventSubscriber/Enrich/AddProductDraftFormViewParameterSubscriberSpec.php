@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -35,7 +35,7 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
         $formFactory,
         GenericEvent $event,
         ProductInterface $product,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $event->getArgument('parameters')->willReturn([
             'product' => $product,

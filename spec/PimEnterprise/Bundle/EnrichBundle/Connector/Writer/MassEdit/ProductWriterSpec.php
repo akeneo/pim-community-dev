@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\Writer\MassEdit;
+namespace spec\PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;

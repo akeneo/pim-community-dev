@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 
 /**
  * Product draft builder interface
@@ -26,7 +27,7 @@ interface ProductDraftBuilderInterface
      *
      * @throws \LogicException
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null returns null if no draft is created
+     * @return ProductDraftInterface|null returns null if no draft is created
      */
     public function build(ProductInterface $product, $username);
 }
