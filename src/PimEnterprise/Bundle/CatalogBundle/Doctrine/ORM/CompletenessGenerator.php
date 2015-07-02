@@ -1,11 +1,28 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator as CommunityCompletenessGenerator;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
+use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
-class CompletenessGenerator extends CommunityCompletenessGenerator
+/**
+ * Enterprise completeness generator
+ *
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ */
+class CompletenessGenerator extends CommunityCompletenessGenerator implements EnterpriseCompletenessGeneratorInterface
 {
     /** @staticvar string */
     const COMPLETE_ASSETS_TABLE = 'complete_asset';
@@ -13,23 +30,29 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
     /** @var string FQCN of asset */
     protected $assetClass;
 
+    /** @var AssetFinderInterface */
+    protected $assetFinder;
+
     /**
      * @param EntityManagerInterface $manager
      * @param string                 $productClass
      * @param string                 $productValueClass
      * @param string                 $attributeClass
      * @param string                 $assetClass
+     * @param AssetFinderInterface   $assetFinder
      */
     public function __construct(
         EntityManagerInterface $manager,
         $productClass,
         $productValueClass,
         $attributeClass,
-        $assetClass
+        $assetClass,
+        AssetFinderInterface $assetFinder
     ) {
         parent::__construct($manager, $productClass, $productValueClass, $attributeClass);
 
-        $this->assetClass = $assetClass;
+        $this->assetClass  = $assetClass;
+        $this->assetFinder = $assetFinder;
     }
 
     /**
@@ -154,5 +177,17 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
         $extraConditions  = array_merge(parent::getExtraConditions(), [$assetsConditions]);
 
         return $extraConditions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scheduleForAsset(AssetInterface $asset)
+    {
+        $products = $this->assetFinder->retrieveAssetProducts($asset);
+
+        foreach ($products as $product) {
+            $this->schedule($product);
+        }
     }
 }

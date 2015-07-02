@@ -351,7 +351,7 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * Delete a variation and redirect
+     * Delete a reference file and redirect
      *
      * @param Request    $request
      * @param int|string $id
@@ -381,7 +381,7 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * Delete a variation and redirect
+     * Delete a variation file and redirect
      *
      * @param Request    $request
      * @param int|string $id

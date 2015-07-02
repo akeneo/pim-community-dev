@@ -14,12 +14,15 @@ namespace PimEnterprise\Component\ProductAsset\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
  * Product asset repository interface
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 interface AssetRepositoryInterface extends
     ObjectRepository,
@@ -62,4 +65,13 @@ interface AssetRepositoryInterface extends
      * @return string[] Array with codes inside
      */
     public function findSimilarCodes($code);
+
+    /**
+     * Retrieve products linked to an asset
+     *
+     * @param AssetInterface $asset
+     *
+     * @return ProductInterface[]
+     */
+    public function findProducts(AssetInterface $asset);
 }

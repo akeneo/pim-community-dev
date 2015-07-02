@@ -12,8 +12,12 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
@@ -171,6 +175,24 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
      */
     protected function getAlias()
     {
-        return 'pa';
+        return 'asset';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findProducts(AssetInterface $asset, $hydrationMode = Query::HYDRATE_OBJECT)
+    {
+//        $qb = $this->createQueryBuilder($this->getAlias());
+//
+//        $qb->select('product')
+//            ->where(sprintf('%s.id = :assetId', $this->getAlias()))
+//            ->setParameters([
+//                ':assetId' => $asset->getId()
+//            ]);
+//
+//        return $qb->getQuery()->getResult($hydrationMode);
+
+        return [];
     }
 }

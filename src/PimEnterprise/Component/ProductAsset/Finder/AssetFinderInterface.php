@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Finder;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -70,4 +71,13 @@ interface AssetFinderInterface
      * @return VariationInterface
      */
     public function retrieveVariation(ReferenceInterface $reference, ChannelInterface $channel);
+
+    /**
+     * Retrieve all products linked to an asset
+     *
+     * @param AssetInterface $asset
+     *
+     * @return ProductInterface[]
+     */
+    public function retrieveAssetProducts(AssetInterface $asset);
 }
