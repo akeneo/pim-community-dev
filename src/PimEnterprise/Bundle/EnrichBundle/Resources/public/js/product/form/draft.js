@@ -32,7 +32,8 @@ define(
             productId: null,
             isOutdated: true,
             events: {
-                'click .submit-draft': 'submitDraft'
+                'click .submit-draft': 'submitDraft',
+                'click .modified-by-draft': 'showWorkingCopy'
             },
             configure: function () {
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
@@ -146,6 +147,9 @@ define(
                     });
 
                 return this;
+            },
+            showWorkingCopy: function () {
+                mediator.trigger('draft:action:show_working_copy');
             }
         });
     }
