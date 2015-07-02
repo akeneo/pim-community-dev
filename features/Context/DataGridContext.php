@@ -625,6 +625,29 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws ExpectationException
      *
+     * @When /^I uncheck the rows? "([^"]+)"$/
+     */
+    public function iUncheckTheRows($rows)
+    {
+        $rows = $this->getMainContext()->listToArray($rows);
+
+        foreach ($rows as $row) {
+            $gridRow  = $this->datagrid->getRow($row);
+            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+
+            if (!$checkbox) {
+                throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
+            }
+
+            $checkbox->uncheck();
+        }
+    }
+
+    /**
+     * @param string $rows
+     *
+     * @throws ExpectationException
+     *
      * @Then /^the rows? "([^"]*)" should be checked$/
      */
     public function theRowShouldBeChecked($rows)
