@@ -197,6 +197,15 @@ class ProductCategoryRepository implements
      */
     public function getItemCountByTree($product)
     {
+        if (!$product instanceof ProductInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expected a "Pim\Bundle\CatalogBundle\Model\ProductInterface", got a "%s"',
+                    get_class($product)
+                )
+            );
+        }
+
         $categories = $product->getCategories();
         $categoryIds = array();
         foreach ($categories as $category) {

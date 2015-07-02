@@ -20,6 +20,8 @@ interface ItemCategoryRepositoryInterface
      * @param mixed $item The item to look for in the trees
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'itemCount'=>integer
+     *
+     * @throws \InvalidArgumentException If the $item belongs to a class we don't handle
      */
     public function getItemCountByTree($item);
 
