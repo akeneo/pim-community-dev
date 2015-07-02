@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator as CommunityComp
 class CompletenessGenerator extends CommunityCompletenessGenerator
 {
     /** @staticvar string */
-    const ASSETS_VALUES_TABLE = 'complete_asset';
+    const COMPLETE_ASSETS_TABLE = 'complete_asset';
 
     /** @var string FQCN of asset */
     protected $assetClass;
@@ -20,17 +20,17 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
      * @param string                 $attributeClass
      * @param string                 $assetClass
      */
-//    public function __construct(
-//        EntityManagerInterface $manager,
-//        $productClass,
-//        $productValueClass,
-//        $attributeClass,
-//        $assetClass
-//    ) {
-//        parent::__construct($manager, $productClass, $productValueClass, $attributeClass);
-//
-//        $this->assetClass = $assetClass;
-//    }
+    public function __construct(
+        EntityManagerInterface $manager,
+        $productClass,
+        $productValueClass,
+        $attributeClass,
+        $assetClass
+    ) {
+        parent::__construct($manager, $productClass, $productValueClass, $attributeClass);
+
+        $this->assetClass = $assetClass;
+    }
 
     /**
      * {@inheritdoc}
@@ -52,7 +52,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
             $mappings,
             function ($fields, $mapping) use (&$index) {
                 $index++;
-                if ($mapping['targetEntity'] == 'PimEnterprise\Component\ProductAsset\Model\Asset') {
+                if ($mapping['targetEntity'] == $this->assetClass) {
                     return $fields;
                 }
 
@@ -67,9 +67,16 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
         return $productForeignKeys;
     }
 
+    /**
+     * Create temporary table for complete assets collection attributes
+     * An assets collection is complete on a locale/channel
+     * if there is at least one varaition file for the locale/channel tuple
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     */
     protected function prepareCompleteAssets()
     {
-        $cleanupSql  = "DROP TABLE IF EXISTS " . self::ASSETS_VALUES_TABLE . PHP_EOL;
+        $cleanupSql  = "DROP TABLE IF EXISTS " . self::COMPLETE_ASSETS_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
@@ -106,7 +113,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
 
         $createPattern = 'CREATE TEMPORARY TABLE %s (value_id INT, locale_id INT, channel_id INT) %s';
 
-        $createSql = sprintf($createPattern, self::ASSETS_VALUES_TABLE, $selectSql);
+        $createSql = sprintf($createPattern, self::COMPLETE_ASSETS_TABLE, $selectSql);
 
         $stmt = $this->connection->prepare($createSql);
         $stmt->execute();
@@ -132,7 +139,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
             AND complete_asset.channel_id = c.id
             AND complete_asset.locale_id = l.id';
 
-        $assetsJoin = sprintf($assetsJoin, static::ASSETS_VALUES_TABLE);
+        $assetsJoin = sprintf($assetsJoin, static::COMPLETE_ASSETS_TABLE);
         $extraJoins = array_merge(parent::getExtraJoins(), [$assetsJoin]);
 
         return $extraJoins;
@@ -143,7 +150,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator
      */
     protected function getExtraConditions()
     {
-        $assetsConditions = sprintf('OR %s.value_id IS NOT NULL', static::ASSETS_VALUES_TABLE);
+        $assetsConditions = sprintf('OR %s.value_id IS NOT NULL', static::COMPLETE_ASSETS_TABLE);
         $extraConditions  = array_merge(parent::getExtraConditions(), [$assetsConditions]);
 
         return $extraConditions;
