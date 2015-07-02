@@ -54,7 +54,7 @@ class PimCatalogExtension extends Extension
      */
     protected function loadValidationFiles(ContainerBuilder $container)
     {
-        $dirs = array();
+        $dirs = [];
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             $dir = dirname($reflection->getFileName()) . '/Resources/config/validation';
@@ -63,7 +63,7 @@ class PimCatalogExtension extends Extension
             }
         }
         $finder = new Finder();
-        $mappingFiles = array();
+        $mappingFiles = [];
         foreach ($finder->files()->in($dirs) as $file) {
             $mappingFiles[$file->getBasename('.yml')] = $file->getRealPath();
         }

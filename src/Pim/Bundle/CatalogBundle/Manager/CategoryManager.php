@@ -108,7 +108,7 @@ class CategoryManager
      */
     public function getChildren($parentId, $selectNodeId = false)
     {
-        $children = array();
+        $children = [];
 
         $entityRepository = $this->getEntityRepository();
 
@@ -127,7 +127,7 @@ class CategoryManager
     public function getTreeChoices()
     {
         $trees = $this->getTrees();
-        $choices = array();
+        $choices = [];
         foreach ($trees as $tree) {
             $choices[$tree->getId()] = $tree->getLabel();
         }
@@ -159,10 +159,10 @@ class CategoryManager
      */
     public function getFilledTree(CategoryInterface $root, Collection $categories)
     {
-        $parentsIds = array();
+        $parentsIds = [];
 
         foreach ($categories as $category) {
-            $categoryParentsIds = array();
+            $categoryParentsIds = [];
             $path = $this->getEntityRepository()->getPath($category);
 
             if ($path[0]->getId() === $root->getId()) {
@@ -188,7 +188,7 @@ class CategoryManager
     {
         return $this
             ->getEntityRepository()
-            ->findOneBy(array('code' => $code, 'parent' => null));
+            ->findOneBy(['code' => $code, 'parent' => null]);
     }
 
     /**
@@ -202,7 +202,7 @@ class CategoryManager
     {
         return $this
             ->getEntityRepository()
-            ->findOneBy(array('code' => $code));
+            ->findOneBy(['code' => $code]);
     }
 
     /**
@@ -256,7 +256,7 @@ class CategoryManager
 
         while ($childCount < count($childPath) && (!$parentFound)) {
             $parentFound = ($childPath[$childCount]->getId() === $parentNode->getId());
-            $childCount++;
+            ++$childCount;
         }
 
         return $parentFound;

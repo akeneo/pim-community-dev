@@ -21,7 +21,7 @@ abstract class AbstractFilesystemArchiver implements ArchiverInterface
      */
     public function getArchives(JobExecution $jobExecution)
     {
-        $archives = array();
+        $archives = [];
         $keys = $this->filesystem->listKeys(dirname($this->getRelativeArchivePath($jobExecution)));
         foreach ($keys['keys'] as $key) {
             $archives[basename($key)] = $key;

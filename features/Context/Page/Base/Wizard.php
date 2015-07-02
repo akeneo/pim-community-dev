@@ -11,9 +11,9 @@ namespace Context\Page\Base;
  */
 class Wizard extends Form
 {
-    protected $elements = array(
-        'Available attributes form' => array('css' => '#pim_enrich_mass_edit_action_operation_displayedAttributes'),
-    );
+    protected $elements = [
+        'Available attributes form' => ['css' => '#pim_enrich_mass_edit_action_operation_displayedAttributes'],
+    ];
 
     protected $currentStep;
 

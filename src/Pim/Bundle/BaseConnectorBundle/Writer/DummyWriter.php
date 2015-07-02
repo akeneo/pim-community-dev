@@ -27,6 +27,6 @@ class DummyWriter extends AbstractConfigurableStepElement implements ItemWriterI
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 }

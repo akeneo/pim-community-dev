@@ -176,7 +176,7 @@ class CompletenessManager
         $localeCodes  = $getCodes($locales);
 
         $channelTemplate = [
-            'channels' => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
+            'channels' => array_fill_keys($channelCodes, ['completeness' => null, 'missing' => []]),
             'stats'    => [
                 'total'    => 0,
                 'complete' => 0
@@ -197,10 +197,10 @@ class CompletenessManager
             $compLocaleCode = $locale->getCode();
             if (isset($completenesses[$compLocaleCode])) {
                 $completenesses[$compLocaleCode]['channels'][$channel->getCode()]['completeness'] = $completeness;
-                $completenesses[$compLocaleCode]['stats']['total']++;
+                ++$completenesses[$compLocaleCode]['stats']['total'];
 
                 if (0 === $completeness->getMissingCount()) {
-                    $completenesses[$compLocaleCode]['stats']['complete']++;
+                    ++$completenesses[$compLocaleCode]['stats']['complete'];
                 }
             }
         }
@@ -237,7 +237,7 @@ class CompletenessManager
         $attribute = $requirement->getAttribute();
         $channel = $requirement->getChannel();
         foreach ($localeCodes as $localeCode) {
-            $constraint = new ProductValueComplete(array('channel' => $channel));
+            $constraint = new ProductValueComplete(['channel' => $channel]);
             $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $missing = false;
             if (!isset($productValues[$valueCode])) {

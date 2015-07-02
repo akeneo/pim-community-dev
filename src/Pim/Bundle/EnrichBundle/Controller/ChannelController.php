@@ -105,7 +105,7 @@ class ChannelController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -139,13 +139,13 @@ class ChannelController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.channel.saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_enrich_channel_edit', array('id' => $channel->getId()))
+                $this->generateUrl('pim_enrich_channel_edit', ['id' => $channel->getId()])
             );
         }
 
-        return array(
+        return [
             'form' => $this->channelForm->createView(),
-        );
+        ];
     }
 
     /**

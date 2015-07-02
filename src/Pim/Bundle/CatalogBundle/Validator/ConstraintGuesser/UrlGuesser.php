@@ -28,7 +28,7 @@ class UrlGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if ('url' === $attribute->getValidationRule()) {
             $constraints[] = new Assert\Url();

@@ -35,7 +35,7 @@ class RegisterAttributeConstraintGuessersPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds(self::SERVICE_TAG);
 
         foreach (array_keys($taggedServices) as $id) {
-            $service->addMethodCall('addConstraintGuesser', array(new Reference($id)));
+            $service->addMethodCall('addConstraintGuesser', [new Reference($id)]);
         }
     }
 }

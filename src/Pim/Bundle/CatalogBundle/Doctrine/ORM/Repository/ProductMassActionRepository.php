@@ -108,7 +108,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         $stmt->execute();
 
         $attributes = $stmt->fetchAll();
-        $attributeIds = array();
+        $attributeIds = [];
         foreach ($attributes as $attributeId) {
             $attributeIds[] = (int) $attributeId['a_id'];
         }

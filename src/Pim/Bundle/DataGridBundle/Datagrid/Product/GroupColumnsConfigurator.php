@@ -99,7 +99,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             },
             $this->getGroup()->getAxisAttributes()->toArray()
         );
-        $this->axisColumns = array();
+        $this->axisColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
             $attributeType     = $attribute['attributeType'];
@@ -108,9 +108,9 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             if ($attributeTypeConf && $attributeTypeConf['column']) {
                 if (in_array($attributeCode, $axisCodes)) {
                     $columnConfig = $attributeTypeConf['column'];
-                    $columnConfig = $columnConfig + array(
+                    $columnConfig = $columnConfig + [
                         'label' => $attribute['label'],
-                    );
+                    ];
                     $this->axisColumns[$attributeCode] = $columnConfig;
                 }
             }

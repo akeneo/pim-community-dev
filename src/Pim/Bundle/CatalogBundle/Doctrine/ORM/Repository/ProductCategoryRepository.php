@@ -64,9 +64,9 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 
         $stmt->execute();
         $productCounts = $stmt->fetchAll();
-        $trees = array();
+        $trees = [];
         foreach ($productCounts as $productCount) {
-            $tree = array();
+            $tree = [];
             $tree['productCount'] = $productCount['product_count'];
             $tree['tree'] = $this->em->getRepository($categoryClass)->find($productCount['tree_id']);
             $trees[] = $tree;
@@ -118,7 +118,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
             $qb->setParameters($categoryQb->getParameters());
         }
 
-        $products = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $products = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($products);
     }

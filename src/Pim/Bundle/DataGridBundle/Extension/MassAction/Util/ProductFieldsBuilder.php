@@ -70,7 +70,7 @@ class ProductFieldsBuilder
     {
         $this->prepareAvailableAttributeIds($productIds);
         $attributeRepo  = $this->productManager->getAttributeRepository();
-        $attributesList = $attributeRepo->findBy(array('id' => $this->getAttributeIds()));
+        $attributesList = $attributeRepo->findBy(['id' => $this->getAttributeIds()]);
         $fieldsList     = $this->prepareFieldsList($attributesList);
 
         return $fieldsList;
@@ -104,7 +104,7 @@ class ProductFieldsBuilder
      *
      * @return array
      */
-    protected function prepareFieldsList(array $attributesList = array())
+    protected function prepareFieldsList(array $attributesList = [])
     {
         $fieldsList = $this->prepareAttributesList($attributesList);
         $fieldsList[] = ProductNormalizer::FIELD_FAMILY;
@@ -131,7 +131,7 @@ class ProductFieldsBuilder
     {
         $scopeCode   = $this->catalogContext->getScopeCode();
         $localeCodes = $this->localeManager->getActiveCodes();
-        $fieldsList  = array();
+        $fieldsList  = [];
 
         foreach ($attributesList as $attribute) {
             $attCode = $attribute->getCode();

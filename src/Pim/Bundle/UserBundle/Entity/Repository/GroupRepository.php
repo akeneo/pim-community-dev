@@ -23,7 +23,7 @@ class GroupRepository extends BaseGroupRepository implements
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('name' => $code));
+        return $this->findOneBy(['name' => $code]);
     }
 
     /**
@@ -63,6 +63,6 @@ class GroupRepository extends BaseGroupRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('name');
+        return ['name'];
     }
 }

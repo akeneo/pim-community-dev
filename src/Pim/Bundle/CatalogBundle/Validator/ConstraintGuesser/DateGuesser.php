@@ -22,9 +22,9 @@ class DateGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 'pim_catalog_date',
-            )
+            ]
         );
     }
 

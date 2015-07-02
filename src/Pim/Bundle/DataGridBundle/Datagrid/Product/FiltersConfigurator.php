@@ -61,14 +61,14 @@ class FiltersConfigurator implements ConfiguratorInterface
 
             if ($showFilter && $attributeTypeConf && isset($attributeTypeConf['filter'])) {
                 $filterConfig = $attributeTypeConf['filter'];
-                $filterConfig = $filterConfig + array(
+                $filterConfig = $filterConfig + [
                     ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
                     'label'                             => $attribute['label'],
                     'enabled'                           => ($attributeType === 'pim_catalog_identifier'),
                     'order'                             => $attribute['sortOrder'],
                     'group'                             => $attribute['group'],
                     'groupOrder'                        => $attribute['groupOrder']
-                );
+                ];
 
                 if ($attributeType === 'pim_catalog_metric') {
                     $filterConfig['family'] = $attribute['metricFamily'];

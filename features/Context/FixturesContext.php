@@ -605,13 +605,13 @@ class FixturesContext extends RawMinkContext
         $attributeData = [];
         $optionData    = [];
 
-        for ($i = 1; $i <= $attributeCount; $i++) {
+        for ($i = 1; $i <= $attributeCount; ++$i) {
             $attributeData[] = [
                 'code'        => sprintf($attCodePattern, $i),
                 'label-en_US' => sprintf($attLabelPattern, $i),
             ] + $attributeConfig;
 
-            for ($j = 1; $j <= $optionCount; $j++) {
+            for ($j = 1; $j <= $optionCount; ++$j) {
                 $optionData[] = [
                     'attribute'   => sprintf($attCodePattern, $i),
                     'code'        => sprintf($optionCodePattern, $i, $j),

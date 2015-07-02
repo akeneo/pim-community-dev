@@ -39,12 +39,12 @@ class UserPreferencesSubscriber implements EventSubscriber
     /**
      * @var array
      */
-    private $metadata = array();
+    private $metadata = [];
 
     /**
      * @var array
      */
-    private $deactivatedLocales = array();
+    private $deactivatedLocales = [];
 
     /**
      * Inject service container
@@ -67,10 +67,10 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'onFlush',
             'postFlush',
-        );
+        ];
     }
 
     /**
@@ -170,7 +170,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function onChannelRemoved(ChannelInterface $channel)
     {
-        $users  = $this->findUsersBy(array('catalogScope' => $channel));
+        $users  = $this->findUsersBy(['catalogScope' => $channel]);
         $scopes = $this->container->get('pim_catalog.manager.channel')->getChannels();
 
         $defaultScope = current(
@@ -195,7 +195,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function onTreeRemoved(CategoryInterface $category)
     {
-        $users = $this->findUsersBy(array('defaultTree' => $category));
+        $users = $this->findUsersBy(['defaultTree' => $category]);
         $trees = $this->container->get('pim_catalog.manager.category')->getTrees();
 
         $defaultTree = current(
@@ -224,14 +224,14 @@ class UserPreferencesSubscriber implements EventSubscriber
 
         foreach ($this->deactivatedLocales as $localeCode) {
             $deactivatedLocale = $localeManager->getLocaleByCode($localeCode);
-            $users = $this->findUsersBy(array('catalogLocale' => $deactivatedLocale));
+            $users = $this->findUsersBy(['catalogLocale' => $deactivatedLocale]);
 
             foreach ($users as $user) {
                 $user->setCatalogLocale($defaultLocale);
                 $this->manager->persist($user);
             }
         }
-        $this->deactivatedLocales = array();
+        $this->deactivatedLocales = [];
 
         $this->manager->flush();
     }

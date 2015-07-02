@@ -15,7 +15,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class FamilyNormalizer extends Structured\FamilyNormalizer
 {
     /** @var string[] */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}
@@ -33,7 +33,7 @@ class FamilyNormalizer extends Structured\FamilyNormalizer
     protected function normalizeRequirements(FamilyInterface $family)
     {
         $requirements = parent::normalizeRequirements($family);
-        $flat = array();
+        $flat = [];
         foreach ($requirements as $channel => $attributes) {
             $flat[] = $channel.':'.implode(',', $attributes);
         }

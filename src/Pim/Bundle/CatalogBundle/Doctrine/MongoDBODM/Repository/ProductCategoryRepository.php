@@ -64,7 +64,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     public function getProductCountByTree(ProductInterface $product)
     {
         $categories = $product->getCategories();
-        $categoryIds = array();
+        $categoryIds = [];
         foreach ($categories as $category) {
             $categoryIds[] = $category->getId();
         }
@@ -100,9 +100,9 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         $stmt->execute();
 
         $productCounts = $stmt->fetchAll();
-        $trees = array();
+        $trees = [];
         foreach ($productCounts as $productCount) {
-            $tree = array();
+            $tree = [];
             $tree['productCount'] = $productCount['product_count'];
             $tree['tree'] = $categoryRepository->find($productCount['tree_id']);
             $trees[] = $tree;
@@ -143,13 +143,13 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
      */
     protected function getCategoryIds(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
-        $categoryIds = array();
+        $categoryIds = [];
 
         if (null !== $categoryQb) {
             $categoryAlias = $categoryQb->getRootAlias();
             $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
         } else {
-            $categories = array(array('id' => $category->getId()));
+            $categories = [['id' => $category->getId()]];
         }
 
         foreach ($categories as $category) {

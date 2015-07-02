@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 class MediaNormalizer extends AbstractProductValueDataNormalizer
 {
     /** @var array */
-    protected $supportedFormats = array('csv', 'flat');
+    protected $supportedFormats = ['csv', 'flat'];
 
     /** @var MediaManager */
     protected $manager;
@@ -35,7 +35,7 @@ class MediaNormalizer extends AbstractProductValueDataNormalizer
      *
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         if (isset($context['prepare_copy'])) {
             $identifier = isset($context['identifier']) ? $context['identifier'] : null;
@@ -62,7 +62,7 @@ class MediaNormalizer extends AbstractProductValueDataNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function doNormalize($object, $format = null, array $context = array())
+    protected function doNormalize($object, $format = null, array $context = [])
     {
         $context = $this->resolveContext($context);
 

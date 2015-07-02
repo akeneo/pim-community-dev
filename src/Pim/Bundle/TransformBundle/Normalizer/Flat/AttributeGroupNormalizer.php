@@ -17,7 +17,7 @@ class AttributeGroupNormalizer extends Structured\AttributeGroupNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}

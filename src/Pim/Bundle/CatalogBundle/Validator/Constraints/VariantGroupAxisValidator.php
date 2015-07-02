@@ -31,16 +31,16 @@ class VariantGroupAxisValidator extends ConstraintValidator
             if ($isNew && $isVariantGroup && !$hasAxis) {
                 $this->context->addViolation(
                     $constraint->expectedAxisMessage,
-                    array(
+                    [
                         '%variant group%' => $variantGroup->getCode()
-                    )
+                    ]
                 );
             } elseif (!$isVariantGroup && $hasAxis) {
                 $this->context->addViolation(
                     $constraint->unexpectedAxisMessage,
-                    array(
+                    [
                         '%group%' => $variantGroup->getCode()
-                    )
+                    ]
                 );
             }
         }

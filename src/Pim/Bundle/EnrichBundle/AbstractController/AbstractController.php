@@ -180,7 +180,7 @@ abstract class AbstractController
      *
      * @see UrlGeneratorInterface
      */
-    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->router->generate($route, $parameters, $referenceType);
     }
@@ -206,7 +206,7 @@ abstract class AbstractController
      *
      * @return string The rendered view
      */
-    protected function renderView($view, array $parameters = array())
+    protected function renderView($view, array $parameters = [])
     {
         return $this->templating->render($view, $parameters);
     }
@@ -220,7 +220,7 @@ abstract class AbstractController
      *
      * @return Response A Response instance
      */
-    public function render($view, array $parameters = array(), Response $response = null)
+    public function render($view, array $parameters = [], Response $response = null)
     {
         return $this->templating->renderResponse($view, $parameters, $response);
     }
@@ -252,7 +252,7 @@ abstract class AbstractController
      * @param string $message    the flash message
      * @param array  $parameters the flash message parameters
      */
-    protected function addFlash($type, $message, array $parameters = array())
+    protected function addFlash($type, $message, array $parameters = [])
     {
         $this->request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
     }
@@ -266,7 +266,7 @@ abstract class AbstractController
      *
      * @return RedirectResponse
      */
-    protected function redirectToRoute($route, $parameters = array(), $status = 302)
+    protected function redirectToRoute($route, $parameters = [], $status = 302)
     {
         return $this->redirect($this->generateUrl($route, $parameters), $status);
     }
@@ -297,7 +297,7 @@ abstract class AbstractController
      *
      * @return \Symfony\Component\Form\Form
      */
-    public function createForm($type, $data = null, array $options = array())
+    public function createForm($type, $data = null, array $options = [])
     {
         return $this->formFactory->create($type, $data, $options);
     }
@@ -310,7 +310,7 @@ abstract class AbstractController
      *
      * @return FormBuilder
      */
-    public function createFormBuilder($data = null, array $options = array())
+    public function createFormBuilder($data = null, array $options = [])
     {
         return $this->formFactory->createBuilder('form', $data, $options);
     }

@@ -27,7 +27,7 @@ class BooleanTransformer implements PropertyTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         if (is_bool($value)) {
             return $value;

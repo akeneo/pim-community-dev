@@ -142,8 +142,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     {
         $this->collection = $this->documentManager->getDocumentCollection($this->productClass);
 
-        $productsToInsert = array();
-        $productsToUpdate = array();
+        $productsToInsert = [];
+        $productsToUpdate = [];
         foreach ($products as $product) {
             if (null === $product->getId()) {
                 $productsToInsert[] = $product;
@@ -205,7 +205,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     {
         $this->collection->batchInsert($docs);
         $productsCount = count($docs);
-        for ($i = 0; $i < $productsCount; $i++) {
+        for ($i = 0; $i < $productsCount; ++$i) {
             $this->stepExecution->incrementSummaryInfo('create');
         }
     }
@@ -239,7 +239,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**

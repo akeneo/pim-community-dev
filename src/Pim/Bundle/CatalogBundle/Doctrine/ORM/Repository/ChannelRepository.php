@@ -20,7 +20,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findBy(array $criteria, array $orderBy = array('label' => 'ASC'), $limit = null, $offset = null)
+    public function findBy(array $criteria, array $orderBy = ['label' => 'ASC'], $limit = null, $offset = null)
     {
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
@@ -28,7 +28,7 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findOneBy(array $criteria, array $orderBy = array('label' => 'ASC'))
+    public function findOneBy(array $criteria, array $orderBy = ['label' => 'ASC'])
     {
         return parent::findOneBy($criteria, $orderBy);
     }
@@ -92,13 +92,13 @@ SQL;
 
         $stmt = $this->getEntityManager()->getConnection()->executeQuery(
             $sql,
-            array(
+            [
                 ':channel_id'         => $channel->getId(),
                 ':current_locale_ids' => $currentLocaleIds,
-            ),
-            array(
+            ],
+            [
                 ':current_locale_ids' => Connection::PARAM_INT_ARRAY,
-            )
+            ]
         );
 
         $rows = $stmt->fetchAll();
@@ -150,7 +150,7 @@ SQL;
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -158,6 +158,6 @@ SQL;
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

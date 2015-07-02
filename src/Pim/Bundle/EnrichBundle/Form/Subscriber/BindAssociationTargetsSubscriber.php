@@ -21,9 +21,9 @@ class BindAssociationTargetsSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::SUBMIT => 'submit',
-        );
+        ];
     }
 
     /**
@@ -36,7 +36,7 @@ class BindAssociationTargetsSubscriber implements EventSubscriberInterface
         $form         = $event->getForm();
         $associations = $event->getData();
 
-        for ($count = $form->count(), $i = 0; $count > $i; $i++) {
+        for ($count = $form->count(), $i = 0; $count > $i; ++$i) {
             $child = $form->get($i);
 
             $associationType = $child->get('associationType')->getData();

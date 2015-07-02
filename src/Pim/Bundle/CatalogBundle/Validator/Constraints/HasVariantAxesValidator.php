@@ -27,11 +27,11 @@ class HasVariantAxesValidator extends ConstraintValidator
             if (count($missingAxisCodes) > 0) {
                 $this->context->addViolation(
                     $constraint->message,
-                    array(
+                    [
                         '%product%' => $product->getIdentifier(),
                         '%variant%' => $variant->getCode(),
                         '%axes%'    => implode(', ', $missingAxisCodes),
-                    )
+                    ]
                 );
             }
         }

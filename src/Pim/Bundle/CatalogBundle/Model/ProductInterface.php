@@ -175,7 +175,7 @@ interface ProductInterface extends
      *
      * @return ProductInterface
      */
-    public function setAssociations(array $associations = array());
+    public function setAssociations(array $associations = []);
 
     /**
      * Add product association

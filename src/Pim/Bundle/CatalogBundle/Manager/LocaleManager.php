@@ -41,7 +41,7 @@ class LocaleManager
      */
     public function getDisabledLocales()
     {
-        $criterias = array('activated' => false);
+        $criterias = ['activated' => false];
 
         return $this->getLocales($criterias);
     }
@@ -53,7 +53,7 @@ class LocaleManager
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
      */
-    public function getLocales($criterias = array())
+    public function getLocales($criterias = [])
     {
         return $this->repository->findBy($criterias);
     }
@@ -67,7 +67,7 @@ class LocaleManager
      */
     public function getLocaleByCode($code)
     {
-        return $this->repository->findOneBy(array('code' => $code));
+        return $this->repository->findOneBy(['code' => $code]);
     }
 
     /**

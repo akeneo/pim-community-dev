@@ -140,7 +140,7 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
 
         return $manager
             ->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
-            ->findBy(array('type' => FixtureJobLoader::JOB_TYPE));
+            ->findBy(['type' => FixtureJobLoader::JOB_TYPE]);
     }
 
     /**
@@ -156,6 +156,6 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
 
         return $manager
             ->getRepository($this->container->getParameter('akeneo_batch.entity.job_execution.class'))
-            ->findOneBy(array('jobInstance' => $jobInstance));
+            ->findOneBy(['jobInstance' => $jobInstance]);
     }
 }

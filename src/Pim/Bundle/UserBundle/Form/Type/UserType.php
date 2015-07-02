@@ -73,7 +73,7 @@ class UserType extends OroUserType
             ->add(
                 'rolesCollection',
                 'entity',
-                array(
+                [
                     'label'          => 'Roles',
                     'class'          => 'OroUserBundle:Role',
                     'property'       => 'label',
@@ -83,12 +83,12 @@ class UserType extends OroUserType
                     'required'       => !$this->isMyProfilePage,
                     'read_only'      => $this->isMyProfilePage,
                     'disabled'       => $this->isMyProfilePage,
-                )
+                ]
             )
             ->add(
                 'groups',
                 'entity',
-                array(
+                [
                     'class'          => 'OroUserBundle:Group',
                     'property'       => 'name',
                     'query_builder'  => $this->groupRepository->getAllButDefaultQB(),
@@ -97,17 +97,17 @@ class UserType extends OroUserType
                     'required'       => false,
                     'read_only'      => $this->isMyProfilePage,
                     'disabled'       => $this->isMyProfilePage
-                )
+                ]
             )
             ->add(
                 'plainPassword',
                 'repeated',
-                array(
+                [
                     'type'           => 'password',
                     'required'       => true,
-                    'first_options'  => array('label' => 'Password'),
-                    'second_options' => array('label' => 'Re-enter password'),
-                )
+                    'first_options'  => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Re-enter password'],
+                ]
             )
             ->add(
                 'change_password',

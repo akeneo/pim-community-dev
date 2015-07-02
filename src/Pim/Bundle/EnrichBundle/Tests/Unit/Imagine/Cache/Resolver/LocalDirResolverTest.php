@@ -86,7 +86,7 @@ class LocalDirResolverTest extends \PHPUnit_Framework_TestCase
     public function testClear()
     {
         @mkdir($this->cacheDir . '/bar_filter', 0777, true);
-        $images = array('image1.gif', 'image2.gif', 'image3.gif');
+        $images = ['image1.gif', 'image2.gif', 'image3.gif'];
         foreach ($images as $image) {
             file_put_contents($this->cacheDir . '/bar_filter/' . $image, 'image content');
         }

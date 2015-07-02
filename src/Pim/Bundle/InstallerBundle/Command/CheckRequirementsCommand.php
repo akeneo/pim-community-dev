@@ -47,7 +47,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
             require_once $path;
         }
 
-        $directories = array();
+        $directories = [];
         if ($this->getContainer()->getParameter('kernel.environment') !== 'behat') {
             $directories[] = $this->getContainer()->getParameter('upload_dir');
             $directories[] = $this->getContainer()->getParameter('archive_dir');
@@ -97,18 +97,18 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         $table = $this->getHelperSet()->get('table');
 
         $table
-            ->setHeaders(array('Check  ', $header))
-            ->setRows(array());
+            ->setHeaders(['Check  ', $header])
+            ->setRows([]);
 
         foreach ($collection as $requirement) {
             if ($requirement->isFulfilled()) {
-                $table->addRow(array('OK', $requirement->getTestMessage()));
+                $table->addRow(['OK', $requirement->getTestMessage()]);
             } else {
                 $table->addRow(
-                    array(
+                    [
                         $requirement->isOptional() ? 'WARNING' : 'ERROR',
                         $requirement->getHelpText()
-                    )
+                    ]
                 );
             }
         }

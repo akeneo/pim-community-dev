@@ -33,7 +33,7 @@ class CurrencyManager
      */
     public function getActiveCurrencies()
     {
-        $criterias = array('activated' => true);
+        $criterias = ['activated' => true];
 
         return $this->getCurrencies($criterias);
     }
@@ -45,7 +45,7 @@ class CurrencyManager
      *
      * @return \Doctrine\Common\Persistence\mixed
      */
-    public function getCurrencies($criterias = array())
+    public function getCurrencies($criterias = [])
     {
         return $this->repository->findBy($criterias);
     }

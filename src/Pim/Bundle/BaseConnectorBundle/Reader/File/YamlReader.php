@@ -168,14 +168,14 @@ class YamlReader extends FileReader implements
      */
     public function getUploadedFileConstraints()
     {
-        return array(
+        return [
             new Assert\NotBlank(),
             new AssertFile(
-                array(
-                    'allowedExtensions' => array('yml', 'yaml')
-                )
+                [
+                    'allowedExtensions' => ['yml', 'yaml']
+                ]
             )
-        );
+        ];
     }
 
     /**
@@ -228,7 +228,7 @@ class YamlReader extends FileReader implements
             }
         }
 
-        return $this->multiple ? array($fileData) : $fileData;
+        return $this->multiple ? [$fileData] : $fileData;
     }
 
     /**
@@ -237,19 +237,19 @@ class YamlReader extends FileReader implements
     public function getConfigurationFields()
     {
         return [
-            'filePath' => array(
-                'options' => array(
+            'filePath' => [
+                'options' => [
                     'label' => 'pim_base_connector.import.yamlFilePath.label',
                     'help'  => 'pim_base_connector.import.yamlFilePath.help'
-                )
-            ),
-            'uploadAllowed' => array(
+                ]
+            ],
+            'uploadAllowed' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_base_connector.import.uploadAllowed.label',
                     'help'  => 'pim_base_connector.import.uploadAllowed.help'
-                )
-            ),
+                ]
+            ],
         ];
     }
 

@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 class MetricNormalizer extends AbstractProductValueDataNormalizer
 {
     /** @var array */
-    protected $supportedFormats = array('csv', 'flat');
+    protected $supportedFormats = ['csv', 'flat'];
 
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $context = $this->resolveContext($context);
         $decimalsAllowed = !array_key_exists('decimals_allowed', $context) || true === $context['decimals_allowed'];
@@ -53,7 +53,7 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
     /**
      * {@inheritdoc}
      */
-    public function doNormalize($object, $format = null, array $context = array())
+    public function doNormalize($object, $format = null, array $context = [])
     {
     }
 

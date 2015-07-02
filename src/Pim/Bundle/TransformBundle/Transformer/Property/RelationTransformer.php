@@ -41,7 +41,7 @@ class RelationTransformer implements PropertyTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         if (!isset($options['class'])) {
             throw new \InvalidArgumentException('class option is required');
@@ -60,7 +60,7 @@ class RelationTransformer implements PropertyTransformerInterface
                 isset($options['reference_prefix']) ? $options['reference_prefix'] . '.' : ''
             );
         } else {
-            return $multiple ? array() : null;
+            return $multiple ? [] : null;
         }
     }
 
@@ -85,7 +85,7 @@ class RelationTransformer implements PropertyTransformerInterface
                 $objectName = end($tokens);
                 throw new PropertyTransformerException(
                     'The "%objectName%" with code "%code%" is unknown',
-                    array('%objectName%' => $objectName, '%code%' => $referencePrefix.$value)
+                    ['%objectName%' => $objectName, '%code%' => $referencePrefix.$value]
                 );
             }
 

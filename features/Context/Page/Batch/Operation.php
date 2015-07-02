@@ -15,7 +15,7 @@ use Context\Page\Base\Wizard;
  */
 class Operation extends Wizard
 {
-    protected $steps = array(
+    protected $steps = [
         'Change status (enable / disable)' => 'Batch ChangeStatus',
         'Edit common attributes'           => 'Batch EditCommonAttributes',
         'Change the family of products'    => 'Batch ChangeFamily',
@@ -23,7 +23,7 @@ class Operation extends Wizard
         'Add to a variant group'           => 'Batch AddToVariantGroup',
         'Set attribute requirements'       => 'Batch SetAttributeRequirements',
         'Classify products in categories'  => 'Batch Classify',
-    );
+    ];
 
     /**
      * @param string $operation

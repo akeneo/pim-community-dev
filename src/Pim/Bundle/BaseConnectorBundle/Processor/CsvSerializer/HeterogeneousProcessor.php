@@ -26,13 +26,13 @@ class HeterogeneousProcessor extends Processor
         return $this->serializer->serialize(
             $item,
             'csv',
-            array(
+            [
                 'delimiter'     => $this->delimiter,
                 'enclosure'     => $this->enclosure,
                 'withHeader'    => $this->withHeader,
                 'heterogeneous' => true,
                 'locales'       => $this->localeManager->getActiveCodes(),
-            )
+            ]
         );
     }
 }

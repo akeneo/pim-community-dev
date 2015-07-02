@@ -119,7 +119,7 @@ class LoadUserData extends AbstractInstallerFixture
     {
         return $this->om
             ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('role' => $role));
+            ->findOneBy(['role' => $role]);
     }
 
     /**
@@ -133,7 +133,7 @@ class LoadUserData extends AbstractInstallerFixture
     {
         return $this->om
             ->getRepository('OroUserBundle:Group')
-            ->findOneBy(array('name' => $group));
+            ->findOneBy(['name' => $group]);
     }
 
     /**

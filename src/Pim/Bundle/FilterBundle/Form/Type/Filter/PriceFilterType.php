@@ -70,7 +70,7 @@ class PriceFilterType extends AbstractType
      */
     protected function createCurrencyOptions(array $options)
     {
-        $result = array('required' => false);
+        $result = ['required' => false];
         if ($options['currency_choices']) {
             $result['choices'] = $options['currency_choices'];
         }
@@ -88,12 +88,12 @@ class PriceFilterType extends AbstractType
 
         $currencyChoices = $this->currencyManager->getActiveCodes();
 
-        $resolver->replaceDefaults(array('data_type' => NumberFilterType::DATA_DECIMAL));
+        $resolver->replaceDefaults(['data_type' => NumberFilterType::DATA_DECIMAL]);
         $resolver->setDefaults(
-            array(
+            [
                 'currency_choices' => array_combine($currencyChoices, $currencyChoices),
-                'currency_options' => array()
-            )
+                'currency_options' => []
+            ]
         );
     }
 

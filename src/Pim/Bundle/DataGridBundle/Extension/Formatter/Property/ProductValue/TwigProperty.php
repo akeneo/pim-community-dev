@@ -32,9 +32,9 @@ class TwigProperty extends FieldProperty
     {
         if ($value) {
             return $this->getTemplate()->render(
-                array(
+                [
                     'value' => $value,
-                )
+                ]
             );
         }
 

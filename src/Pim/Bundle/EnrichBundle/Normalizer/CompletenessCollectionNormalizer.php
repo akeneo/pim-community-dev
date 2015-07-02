@@ -27,7 +27,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($completenesses, $format = null, array $context = array())
+    public function normalize($completenesses, $format = null, array $context = [])
     {
         foreach ($completenesses as $locale => $channels) {
             foreach ($channels['channels'] as $channel => $completeness) {
@@ -59,7 +59,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeCompleteness($completeness, $format = null, array $context = array())
+    protected function normalizeCompleteness($completeness, $format = null, array $context = [])
     {
         $missing = [];
         foreach ($completeness['missing'] as $attribute) {

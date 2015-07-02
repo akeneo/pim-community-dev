@@ -97,7 +97,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                 $this->directory,
                 strtr(
                     $this->getRelativeArchivePath($jobExecution),
-                    array('%filename%' => $zipName)
+                    ['%filename%' => $zipName]
                 )
             )
         );

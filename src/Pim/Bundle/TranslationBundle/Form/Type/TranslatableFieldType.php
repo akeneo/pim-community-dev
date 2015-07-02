@@ -85,16 +85,16 @@ class TranslatableFieldType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         parent::setDefaultOptions($resolver);
-        $resolver->setRequired(array('entity_class', 'translation_class', 'field', 'required_locale'));
+        $resolver->setRequired(['entity_class', 'translation_class', 'field', 'required_locale']);
         $resolver->setDefaults(
-            array(
+            [
                 'translation_class' => false,
                 'entity_class'      => false,
                 'field'             => false,
                 'locales'           => $this->userContext->getUserLocaleCodes(),
-                'required_locale'   => array(),
+                'required_locale'   => [],
                 'widget'            => 'text'
-            )
+            ]
         );
     }
 

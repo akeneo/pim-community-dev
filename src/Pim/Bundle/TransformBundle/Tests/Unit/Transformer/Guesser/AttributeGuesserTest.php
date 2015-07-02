@@ -31,7 +31,7 @@ class AttributeGuesserTest extends GuesserTestCase
         $guesser = new AttributeGuesser($this->transformer, 'class', 'backend_type');
 
         $this->assertEquals(
-            array($this->transformer, array()),
+            [$this->transformer, []],
             $guesser->getTransformerInfo($this->columnInfo, $this->metadata)
         );
     }

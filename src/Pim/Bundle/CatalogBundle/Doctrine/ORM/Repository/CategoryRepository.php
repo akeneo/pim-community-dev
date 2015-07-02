@@ -63,7 +63,7 @@ class CategoryRepository extends NestedTreeRepository implements
      *
      * @return Collection of categories
      */
-    public function getCategoriesByIds(array $categoriesIds = array())
+    public function getCategoriesByIds(array $categoriesIds = [])
     {
         if (count($categoriesIds) === 0) {
             return new ArrayCollection();
@@ -95,7 +95,7 @@ class CategoryRepository extends NestedTreeRepository implements
     public function getTreeFromParents(array $parentsIds)
     {
         if (count($parentsIds) === 0) {
-            return array();
+            return [];
         }
 
         $meta = $this->getClassMetadata();
@@ -167,7 +167,7 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -175,7 +175,7 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
     /**
      * Return categories ids provided by the categoryQb or by the provided category
@@ -187,13 +187,13 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function getCategoryIds(CategoryInterface $category, QueryBuilder $categoryQb = null)
     {
-        $categoryIds = array();
+        $categoryIds = [];
 
         if (null !== $categoryQb) {
             $categoryAlias = $categoryQb->getRootAlias();
             $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
         } else {
-            $categories = array(array('id' => $category->getId()));
+            $categories = [['id' => $category->getId()]];
         }
 
         foreach ($categories as $category) {
@@ -211,7 +211,7 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function getChildrenByParentId($parentId)
     {
-        $parent = $this->findOneBy(array('id' => $parentId));
+        $parent = $this->findOneBy(['id' => $parentId]);
 
         return $this->getChildren($parent, true);
     }
@@ -229,14 +229,14 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function getChildrenTreeByParentId($parentId, $selectNodeId = false)
     {
-        $children = array();
+        $children = [];
 
-        $parent = $this->findOneBy(array('id' => $parentId));
+        $parent = $this->findOneBy(['id' => $parentId]);
 
         if ($selectNodeId === false) {
             $children = $this->childrenHierarchy($parent);
         } else {
-            $selectNode = $this->findOneBy(array('id' => $selectNodeId));
+            $selectNode = $this->findOneBy(['id' => $selectNodeId]);
             if ($selectNode != null) {
                 $meta = $this->getClassMetadata();
                 $config = $this->listener->getConfiguration($this->_em, $meta->name);
@@ -247,7 +247,7 @@ class CategoryRepository extends NestedTreeRepository implements
                 // Remove the node itself from his ancestor
                 array_pop($selectPath);
 
-                $ancestorsIds = array();
+                $ancestorsIds = [];
 
                 foreach ($selectPath as $ancestor) {
                     $ancestorsIds[] = $ancestor->getId();
@@ -276,18 +276,18 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function buildTreeNode(array $nodes)
     {
-        $vectorMap = array();
-        $tree = array();
+        $vectorMap = [];
+        $tree = [];
         $childrenIndex = $this->repoUtils->getChildrenIndex();
 
         foreach ($nodes as $node) {
             if (!isset($vectorMap[$node->getId()])) {
                 // Node does not exist, and none of his children has
                 // already been in the loop, so we create it.
-                $vectorMap[$node->getId()] = array(
+                $vectorMap[$node->getId()] = [
                     'item'         => $node,
-                    $childrenIndex => array()
-                );
+                    $childrenIndex => []
+                ];
             } else {
                 // Node already existing in the map because a child has been
                 // added to his children array. We still need to add the node
@@ -299,9 +299,9 @@ class CategoryRepository extends NestedTreeRepository implements
                 if (!isset($vectorMap[$node->getParent()->getId()])) {
                     // The parent does not exist in the map, create its
                     // children property
-                    $vectorMap[$node->getParent()->getId()] = array(
-                        $childrenIndex => array()
-                    );
+                    $vectorMap[$node->getParent()->getId()] = [
+                        $childrenIndex => []
+                    ];
                 }
 
                 $vectorMap[$node->getParent()->getId()][$childrenIndex][] =& $vectorMap[$node->getId()];
@@ -318,7 +318,7 @@ class CategoryRepository extends NestedTreeRepository implements
             $nodeIt = 0;
             $foundItemLess = false;
             $nodeIds = array_keys($vectorMap);
-            $nodesByLevel = array();
+            $nodesByLevel = [];
 
             while ($nodeIt < count($nodeIds) && !$foundItemLess) {
                 $nodeId = $nodeIds[$nodeIt];
@@ -329,7 +329,7 @@ class CategoryRepository extends NestedTreeRepository implements
                 } else {
                     $tree =& $vectorMap[$nodeId][$childrenIndex];
                 }
-                $nodeIt++;
+                ++$nodeIt;
             }
             // $tree still empty there, means we need to pick the lowest level nodes as tree roots
             if (empty($tree)) {

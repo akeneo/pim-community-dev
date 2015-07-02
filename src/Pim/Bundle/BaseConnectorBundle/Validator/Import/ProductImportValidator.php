@@ -182,7 +182,7 @@ class ProductImportValidator extends ImportValidator
             if ($this->constraintGuesser->supportAttribute($attribute)) {
                 $this->constraints[$code] = $this->constraintGuesser->guessConstraints($attribute);
             } else {
-                $this->constraints[$code] = array();
+                $this->constraints[$code] = [];
             }
         }
 

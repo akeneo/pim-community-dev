@@ -100,7 +100,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     {
         $properties = $this->defineCustomAttributeProperties($attribute);
 
-        $types = array();
+        $types = [];
 
         foreach ($properties as $property) {
             $fieldType = 'text';
@@ -111,7 +111,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             if (isset($property['data'])) {
                 $data = $property['data'];
             }
-            $options = array();
+            $options = [];
             if (isset($property['options'])) {
                 $options = $property['options'];
             }
@@ -166,12 +166,12 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      */
     public function prepareValueFormOptions(ProductValueInterface $value)
     {
-        return array(
+        return [
             'label'           => $value->getAttribute()->getLabel(),
             'required'        => $value->getAttribute()->isRequired(),
             'auto_initialize' => false,
             'label_attr'      => ['truncate' => true]
-        );
+        ];
     }
 
     /**
@@ -184,12 +184,12 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     public function prepareValueFormConstraints(ProductValueInterface $value)
     {
         if ($this->constraintGuesser->supportAttribute($attribute = $value->getAttribute())) {
-            return array(
+            return [
                 'constraints' => $this->constraintGuesser->guessConstraints($attribute),
-            );
+            ];
         }
 
-        return array();
+        return [];
     }
 
     /**

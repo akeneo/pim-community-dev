@@ -478,7 +478,7 @@ class AssertionContext extends RawMinkContext
         $file     = fopen($fileName, 'rb');
         $rowCount = 0;
         while (fgets($file) !== false) {
-            $rowCount++;
+            ++$rowCount;
         }
         fclose($file);
 

@@ -89,6 +89,6 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

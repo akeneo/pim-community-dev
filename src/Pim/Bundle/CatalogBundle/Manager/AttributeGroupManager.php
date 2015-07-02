@@ -72,7 +72,7 @@ class AttributeGroupManager
     {
         $maxOrder = $group->getMaxAttributeSortOrder();
         foreach ($attributes as $attribute) {
-            $maxOrder++;
+            ++$maxOrder;
             $attribute->setSortOrder($maxOrder);
             $group->addAttribute($attribute);
         }

@@ -46,7 +46,7 @@ interface CategoryRepositoryInterface extends
      *
      * @return Collection of categories
      */
-    public function getCategoriesByIds(array $categoriesIds = array());
+    public function getCategoriesByIds(array $categoriesIds = []);
 
     /**
      * Get a tree filled with children and their parents

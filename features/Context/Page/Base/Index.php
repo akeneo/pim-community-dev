@@ -19,15 +19,15 @@ class Index extends Base
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Creation link' => array('css' => '.navbar-buttons .btn-primary'),
-            )
+            [
+                'Creation link' => ['css' => '.navbar-buttons .btn-primary'],
+            ]
         );
     }
 
