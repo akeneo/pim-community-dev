@@ -50,6 +50,7 @@ define([
             },
             render: function () {
                 this.setEditable(true);
+                this.setValid(true);
                 var promises  = [];
                 this.elements = {};
                 mediator.trigger('field:extension:add', {'field': this, 'promises': promises});
