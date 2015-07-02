@@ -1,5 +1,5 @@
-category_accesses:
-    default:
-        editItems: [IT support, Manager, Redactor]
+product_category_accesses:
+    master:
         viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
         ownItems: [IT support, Manager]

@@ -1,4 +1,4 @@
-category_accesses:
+product_category_accesses:
     master:
         viewItems: [IT support, Manager, Redactor]
         editItems: [IT support, Manager]
