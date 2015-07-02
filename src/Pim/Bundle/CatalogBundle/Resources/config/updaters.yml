@@ -9,7 +9,6 @@ parameters:
     pim_catalog.updater.attribute.class:                      Pim\Component\Catalog\Updater\AttributeUpdater
     pim_catalog.updater.variant_group.class:                  Pim\Component\Catalog\Updater\VariantGroupUpdater
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
-    pim_catalog.updater.category.class:                       Pim\Component\Catalog\Updater\CategoryUpdater
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
     pim_catalog.updater.family.class:                         Pim\Component\Catalog\Updater\FamilyUpdater
 
@@ -108,7 +107,7 @@ services:
             - '@?pim_reference_data.registry'
 
     pim_catalog.updater.category:
-        class: %pim_catalog.updater.category.class%
+        class: %pim_classification.updater.category.class%
         arguments:
             - '@pim_catalog.repository.category'
 

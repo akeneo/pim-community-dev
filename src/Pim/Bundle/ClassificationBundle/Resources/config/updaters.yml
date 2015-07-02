@@ -1,0 +1,2 @@
+parameters:
+    pim_classification.updater.category.class: Pim\Component\Classification\Updater\CategoryUpdater
