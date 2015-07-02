@@ -15,4 +15,5 @@ return [
     'newline_after_open_tag',
     'ordered_use',
     'phpdoc_order'
-]
+];
+
