@@ -305,8 +305,7 @@ class ProductAssetController extends Controller
             $locale = null;
         }
 
-        $assetForm    = $this->createForm('pimee_product_asset', $productAsset);
-
+        $assetForm = $this->createForm('pimee_product_asset', $productAsset);
         $assetForm->handleRequest($request);
 
         if ($assetForm->isValid()) {

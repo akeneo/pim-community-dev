@@ -82,3 +82,4 @@ pimee_product_asset:
             unique: Code must be unique.
             new_generation: We generated a new one for you.
 btn.create.asset: Create
+btn.drag_or_upload: Drag and drop a file or click here

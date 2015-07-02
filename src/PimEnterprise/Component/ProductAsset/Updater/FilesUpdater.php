@@ -26,12 +26,11 @@ class FilesUpdater implements FilesUpdaterInterface
     protected $rawFileStorer;
 
     /**
-     * @param RawFileStorerInterface   $rawFileStorer
+     * @param RawFileStorerInterface $rawFileStorer
      */
-    public function __construct(
-        RawFileStorerInterface $rawFileStorer
-    ) {
-        $this->rawFileStorer   = $rawFileStorer;
+    public function __construct(RawFileStorerInterface $rawFileStorer)
+    {
+        $this->rawFileStorer = $rawFileStorer;
     }
 
     /**
@@ -48,7 +47,6 @@ class FilesUpdater implements FilesUpdaterInterface
             $this->updateReferenceFile($reference);
         }
     }
-
 
     /**
      * {@inheritdoc}
