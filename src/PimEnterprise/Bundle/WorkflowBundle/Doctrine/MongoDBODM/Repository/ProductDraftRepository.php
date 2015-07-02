@@ -235,7 +235,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
             ->join('o.category', 'category')
             ->select('category.id')
             ->where($qb->expr()->in('o.userGroup', ':userGroups'))
-            ->andWhere('o.ownProducts = 1')
+            ->andWhere('o.ownItems = 1')
             ->setParameter('userGroups', $user->getGroups()->toArray());
 
         $result = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);

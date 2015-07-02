@@ -60,7 +60,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
             ->leftJoin('product.categories', 'category')
             ->innerJoin('PimEnterpriseSecurityBundle:ProductCategoryAccess', 'a', 'WITH', 'a.category = category')
             ->where(
-                $qb->expr()->eq('a.ownProducts', true)
+                $qb->expr()->eq('a.ownItems', true)
             )
             ->andWhere(
                 $qb->expr()->in('a.userGroup', ':userGroups')
@@ -106,7 +106,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
                 ->leftJoin('product.categories', 'category')
                 ->innerJoin('PimEnterpriseSecurityBundle:ProductCategoryAccess', 'a', 'WITH', 'a.category = category')
                 ->where(
-                    $qb->expr()->eq('a.ownProducts', true)
+                    $qb->expr()->eq('a.ownItems', true)
                 )
                 ->andWhere(
                     $qb->expr()->in('a.userGroup', ':userGroups')
