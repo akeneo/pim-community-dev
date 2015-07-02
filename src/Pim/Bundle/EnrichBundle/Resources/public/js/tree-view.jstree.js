@@ -184,7 +184,7 @@ define(
             }
 
             if (!$('#node_' + all).length) {
-                createNode(all, null, 'jstree.all');
+                createNode(all, null, 'jstree.' + relatedEntity + '.all');
             }
         };
 
@@ -192,7 +192,7 @@ define(
             var $node = $(data.args[0]);
 
             if ($node.attr('rel') === 'folder' && !$('#node_' + unclassified).length) {
-                createNode(unclassified, $node.attr('id'), 'jstree.unclassified');
+                createNode(unclassified, $node.attr('id'), 'jstree.' + relatedEntity + '.unclassified');
             }
         };
 
