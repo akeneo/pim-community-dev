@@ -13,7 +13,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs as ORMLifecycleEventsArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 
@@ -45,7 +45,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
 
     function it_synchronizes_product_draft_document_before_it_is_persisted(
         MongoDBODMLifecycleEventArgs $event,
-        ProductDraft $productDraft,
+        ProductDraftInterface $productDraft,
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB
@@ -65,7 +65,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
 
     function it_synchronizes_product_draft_document_before_it_is_updated(
         MongoDBODMPreUpdateEventsArgs $event,
-        ProductDraft $productDraft,
+        ProductDraftInterface $productDraft,
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB
@@ -89,8 +89,8 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB,
-        ProductDraft $productDraftA,
-        ProductDraft $productDraftB,
+        ProductDraftInterface $productDraftA,
+        ProductDraftInterface $productDraftB,
         DocumentManager $dm,
         UnitOfWork $uow
     ) {
@@ -121,9 +121,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         CategoryInterface $category,
         ProductInterface $productA,
         ProductInterface $productB,
-        ProductDraft $productDraftAA,
-        ProductDraft $productDraftAB,
-        ProductDraft $productDraftBA
+        ProductDraftInterface $productDraftAA,
+        ProductDraftInterface $productDraftAB,
+        ProductDraftInterface $productDraftBA
     ) {
         $event->getEntity()->willReturn($category);
         $category->getId()->willReturn(4);
@@ -169,7 +169,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB,
-        ProductDraft $productDraft,
+        ProductDraftInterface $productDraft,
         DocumentManager $dm,
         UnitOfWork $uow
     ) {

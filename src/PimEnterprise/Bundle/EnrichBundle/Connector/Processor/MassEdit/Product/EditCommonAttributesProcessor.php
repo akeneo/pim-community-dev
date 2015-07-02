@@ -1,26 +1,24 @@
 <?php
 
-namespace PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
+namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\Processor\MassEdit\AddProductValueProcessor as BaseProcessor;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * It adds a product value but check if the user has right to mass edit the product (if he is the owner).
- *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddProductValueWithPermissionProcessor extends BaseProcessor
+class EditCommonAttributesProcessor extends BaseProcessor
 {
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -29,22 +27,28 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     protected $userManager;
 
     /**
-     * @param PropertyAdderInterface              $propertyAdder
-     * @param ValidatorInterface                  $validator
-     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
-     * @param UserManager                         $userManager
-     * @param SecurityContextInterface            $securityContext
+     * @param PropertySetterInterface              $propertySetter
+     * @param ValidatorInterface                   $validator
+     * @param ProductMassActionRepositoryInterface $massActionRepository
+     * @param AttributeRepositoryInterface         $attributeRepository
+     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
+     * @param UserManager                          $userManager
+     * @param SecurityContextInterface             $securityContext
      */
     public function __construct(
-        PropertyAdderInterface $propertyAdder,
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
+        ProductMassActionRepositoryInterface $massActionRepository,
+        AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
         SecurityContextInterface $securityContext
     ) {
-        parent::__construct(
-            $propertyAdder,
+        BaseProcessor::__construct(
+            $propertySetter,
             $validator,
+            $massActionRepository,
+            $attributeRepository,
             $jobConfigurationRepo
         );
 
@@ -60,11 +64,8 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     public function process($product)
     {
         $this->initSecurityContext($this->stepExecution);
-        if ($this->hasRight($product)) {
-            return parent::process($product);
-        }
 
-        return null;
+        return BaseProcessor::process($product);
     }
 
     /**
@@ -79,27 +80,5 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->securityContext->setToken($token);
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return bool
-     */
-    protected function hasRight(ProductInterface $product)
-    {
-        $isAuthorized = $this->securityContext->isGranted(Attributes::OWN, $product);
-
-        if (!$isAuthorized) {
-            $this->stepExecution->addWarning(
-                $this->getName(),
-                'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
-                [],
-                $product
-            );
-            $this->stepExecution->incrementSummaryInfo('skipped_products');
-        }
-
-        return $isAuthorized;
     }
 }

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -70,7 +70,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
             return -1;
         }
 
-        if ($proposal->getStatus() === ProductDraft::READY) {
+        if ($proposal->getStatus() === ProductDraftInterface::READY) {
             $this->getProductDraftManager()->approve($proposal);
             $output->writeln(sprintf('<info>Proposal "%s" has been approved<info>', $identifier));
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Writer\MassEdit;
+namespace PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit;
 
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -44,7 +44,7 @@ class ProductWriter extends BaseProductWriter
         BulkObjectDetacherInterface $detacher,
         SecurityContextInterface $securityContext
     ) {
-        parent::__construct($mediaManager, $versionManager, $productSaver, $detacher);
+        BaseProductWriter::__construct($mediaManager, $versionManager, $productSaver, $detacher);
 
         $this->securityContext = $securityContext;
     }

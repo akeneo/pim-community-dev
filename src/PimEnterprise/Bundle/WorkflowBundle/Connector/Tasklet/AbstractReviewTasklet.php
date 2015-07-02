@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
+namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\BaseConnectorBundle\Step\TaskletInterface;
+use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

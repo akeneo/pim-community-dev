@@ -7,7 +7,7 @@ connector:
             steps:
                 perform:
                     title: approve_product_draft
-                    class: "%pim_base_connector.step.tasklet.class%"
+                    class: "%pim_connector.step.tasklet.class%"
                     services:
                         tasklet: pimee_workflow.mass_review_tasklet.approve_draft
         refuse_product_draft:
@@ -16,7 +16,7 @@ connector:
             steps:
                 perform:
                     title: refuse_product_draft
-                    class: "%pim_base_connector.step.tasklet.class%"
+                    class: "%pim_connector.step.tasklet.class%"
                     services:
                         tasklet: pimee_workflow.mass_review_tasklet.refuse_draft
         csv_product_draft_import:

@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -117,7 +118,7 @@ class ProductDraftController
      *
      * @param string $id the product id
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null
+     * @return ProductDraftInterface|null
      */
     protected function findDraftForProduct($id)
     {

@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -60,7 +60,7 @@ class ProductDraftVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof ProductDraft;
+        return $class instanceof ProductDraftInterface;
     }
 
     /**
@@ -90,23 +90,23 @@ class ProductDraftVoter implements VoterInterface
     }
 
     /**
-     * @param UserInterface $user
-     * @param ProductDraft  $draft
+     * @param UserInterface         $user
+     * @param ProductDraftInterface $draft
      *
      * @return bool
      */
-    protected function isOwner(UserInterface $user, ProductDraft $draft)
+    protected function isOwner(UserInterface $user, ProductDraftInterface $draft)
     {
         return $user->getUsername() === $draft->getAuthor();
     }
 
     /**
-     * @param UserInterface $user
-     * @param ProductDraft  $draft
+     * @param UserInterface         $user
+     * @param ProductDraftInterface $draft
      *
      * @return bool
      */
-    protected function canApprove(UserInterface $user, ProductDraft $draft)
+    protected function canApprove(UserInterface $user, ProductDraftInterface $draft)
     {
         foreach ($this->getAttributeGroupsImpactedByADraft($draft) as $group) {
             $userGranted = $this->attrGroupAccessManager->isUserGranted($user, $group, Attributes::EDIT_ATTRIBUTES);
@@ -119,11 +119,11 @@ class ProductDraftVoter implements VoterInterface
     }
 
     /**
-     * @param ProductDraft $draft
+     * @param ProductDraftInterface $draft
      *
      * @return AttributeGroupInterface
      */
-    protected function getAttributeGroupsImpactedByADraft(ProductDraft $draft)
+    protected function getAttributeGroupsImpactedByADraft(ProductDraftInterface $draft)
     {
         $changes = $draft->getChanges();
         if (!isset($changes['values'])) {
