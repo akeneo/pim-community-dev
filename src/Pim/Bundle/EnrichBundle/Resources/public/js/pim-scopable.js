@@ -137,8 +137,8 @@ define(
 
                 this._reindexFields();
 
-                _.each(this.fields, function (field) {
-                    this._addField(field);
+                _.each(this.fields, function ($field) {
+                    this._addField($field);
                 }, this);
 
                 this.label = this.$el.find('.control-label').first().get(0).outerHTML;
@@ -205,8 +205,8 @@ define(
                 return this;
             },
 
-            _addField: function (field) {
-                this.fieldViews.push(new ScopableField({ el: field }));
+            _addField: function ($field) {
+                this.fieldViews.push(new ScopableField({ $el: $field }));
 
                 return this;
             },
@@ -216,15 +216,9 @@ define(
                     this.expanded = true;
 
                     this._destroyUI();
-                    this._reindexFields();
-
-                    var first = true;
-                    _.each(this.fields, function (field) {
-                        this._showField(field, first);
-                        first = false;
-                    }, this);
-
+                    this._refreshFieldsDisplay();
                     this._initUI();
+
                     this.$el.find('i.field-toggle').removeClass(this.expandIcon).addClass(this.collapseIcon);
                     this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
@@ -237,24 +231,24 @@ define(
                     this.expanded = false;
 
                     this._destroyUI();
-                    this._reindexFields();
-
-                    var first = true;
-                    _.each(this.fields, function (field) {
-                        if (first) {
-                            this._showField(field, first);
-                            first = false;
-                        } else {
-                            this._hideField(field);
-                        }
-                    }, this);
-
+                    this._refreshFieldsDisplay();
                     this._initUI();
+
                     this.$el.find('i.field-toggle').removeClass(this.collapseIcon).addClass(this.expandIcon);
                     this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
                 return this;
+            },
+
+            _refreshFieldsDisplay: function () {
+                _.each(this.fields, function ($field) {
+                    if (this.expanded || $field.hasClass('first')) {
+                        this._showField($field);
+                    } else {
+                        this._hideField($field);
+                    }
+                }, this);
             },
 
             _toggle: function (e) {
@@ -265,30 +259,28 @@ define(
             },
 
             _changeDefault: function (scope) {
-                this.skipUIInit = true;
-                this._toggle();
+                this._destroyUI();
 
-                _.each(this.fields, function (field) {
-                    if ($(field).data('scope') === scope) {
-                        $(field).addClass('first');
-                        this._setFieldFirst(field);
-                    } else {
-                        $(field).removeClass('first');
-                    }
-                }, this);
-
-                this.skipUIInit = false;
-                this._toggle();
+                this._setFieldFirst(this.$el.find('[data-scope="' + scope + '"]:first'));
+                this._refreshFieldsDisplay();
+                this._initUI();
 
                 return this;
             },
 
             _reindexFields: function () {
-                this.fields = this.$el.find('[data-scope]');
+                this.fields = _.map(this.$el.find('[data-scope]'), function (field) {
+                    return $(field);
+                });
+
+                if (!this.$el.find('[data-scope]').length) {
+                    _.first(this.fields).addClass('first');
+                }
             },
 
-            _setFieldFirst: function (field) {
-                var $field = $(field);
+            _setFieldFirst: function ($field) {
+                this.$el.find('[data-scope]').removeClass('first');
+                $field.addClass('first');
 
                 var $target = this.$el.find('>label');
                 if ($target.length) {
@@ -296,30 +288,29 @@ define(
                 } else {
                     $field.prependTo(this.$el);
                 }
+
+                this._reindexFields();
             },
 
-            _showField: function (field, first) {
-                var $icons = $(field).find('.icons-container i:not(".validation-tooltip")');
+            _showField: function ($field) {
+                var $icons = $field.find('.icons-container i:not(".validation-tooltip")');
 
-                if (first) {
-                    $(field).addClass('first');
+                if ($field.hasClass('first')) {
                     $icons.attr('style', 'display: inline !important');
-                    this._setFieldFirst(field);
                 } else {
-                    $(field).removeClass('first');
                     $icons.attr('style', 'display: none !important');
                 }
 
-                $(field).show();
+                $field.show();
             },
 
-            _hideField: function (field) {
-                $(field).hide();
+            _hideField: function ($field) {
+                $field.hide();
             },
 
             _destroyUI: function () {
-                _.each(this.fields, function (field) {
-                    var $textarea = $(field).find('textarea.wysiwyg');
+                _.each(this.fields, function ($field) {
+                    var $textarea = $field.find('textarea.wysiwyg');
                     if ($textarea.length) {
                         wysiwyg.destroy($textarea);
                     }
@@ -330,13 +321,13 @@ define(
 
             _initUI: function () {
                 if (!this.skipUIInit) {
-                    _.each(this.fields, function (field) {
-                        var $textarea = $(field).find('textarea.wysiwyg');
+                    _.each(this.fields, function ($field) {
+                        var $textarea = $field.find('textarea.wysiwyg');
                         if ($textarea.length) {
                             wysiwyg.init($textarea);
                         }
 
-                        var $fileInput = $(field).find('input[type=file][id]');
+                        var $fileInput = $field.find('input[type=file][id]');
                         if ($fileInput.length) {
                             fileinput.init($fileInput.attr('id'));
                         }
