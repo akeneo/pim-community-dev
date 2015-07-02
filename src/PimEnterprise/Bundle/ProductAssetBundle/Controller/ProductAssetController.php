@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
+use Akeneo\Component\FileStorage\FileFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -86,6 +87,9 @@ class ProductAssetController extends Controller
     /** @var AssetFactory */
     protected $assetFactory;
 
+    /** @var FileFactoryInterface */
+    protected $fileFactory;
+
     /**
      * @param AssetRepositoryInterface        $assetRepository
      * @param ReferenceRepositoryInterface    $referenceRepository
@@ -99,7 +103,7 @@ class ProductAssetController extends Controller
      * @param SaverInterface                  $variationSaver
      * @param EventDispatcherInterface        $eventDispatcher
      * @param AssetFactory                    $assetFactory
-     * @param RawFileStorerInterface          $rawFileStorer
+     * @param FileFactoryInterface            $fileFactory
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -114,7 +118,7 @@ class ProductAssetController extends Controller
         SaverInterface $variationSaver,
         EventDispatcherInterface $eventDispatcher,
         AssetFactory $assetFactory,
-        RawFileStorerInterface $rawFileStorer
+        FileFactoryInterface $fileFactory
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -128,7 +132,7 @@ class ProductAssetController extends Controller
         $this->variationSaver         = $variationSaver;
         $this->eventDispatcher        = $eventDispatcher;
         $this->assetFactory           = $assetFactory;
-        $this->rawFileStorer          = $rawFileStorer;
+        $this->fileFactory            = $fileFactory;
     }
 
     /**
@@ -215,8 +219,14 @@ class ProductAssetController extends Controller
             try {
                 if (!$isLocalized) {
                     $reference = $asset->getReference();
-                    $file      = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+                    $file = $this->fileFactory->create(
+                        $uploadedFile,
+                        ['path' => '', 'file_name' => '', 'guid' => ''],
+                        ProductAssetFileSystems::FS_STORAGE
+                    );
+                    $file->setUploadedFile($uploadedFile);
                     $reference->setFile($file);
+                    $this->assetFilesUpdater->updateAssetFiles($asset);
                     $this->assetSaver->save($asset);
                     $this->eventDispatcher->dispatch(
                         AssetEvent::POST_UPLOAD_FILES,
