@@ -14,9 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Extension\Filter;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension as BaseFilterExtension;
 
 /**
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
 class FilterExtension extends BaseFilterExtension
 {
