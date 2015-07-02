@@ -38,7 +38,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
      * @param EntityManager $em
      * @param array         $excludedTables
      */
-    public function __construct(EntityManager $em = null, array $excludedTables = array())
+    public function __construct(EntityManager $em = null, array $excludedTables = [])
     {
         $this->em             = $em;
         $this->excludedTables = $excludedTables;
@@ -49,7 +49,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
      */
     public function purge()
     {
-        $classes   = array();
+        $classes   = [];
         $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
 
         foreach ($metadatas as $metadata) {
@@ -143,7 +143,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
      */
     protected function getAssociationTables(array $classes)
     {
-        $associationTables = array();
+        $associationTables = [];
 
         foreach ($classes as $class) {
             foreach ($class->associationMappings as $assoc) {

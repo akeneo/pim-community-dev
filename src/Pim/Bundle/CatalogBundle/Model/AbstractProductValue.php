@@ -521,7 +521,7 @@ abstract class AbstractProductValue implements ProductValueInterface
         }
 
         if ($data instanceof Collection) {
-            $items = array();
+            $items = [];
             foreach ($data as $item) {
                 $value = (string) $item;
                 if (!empty($value)) {

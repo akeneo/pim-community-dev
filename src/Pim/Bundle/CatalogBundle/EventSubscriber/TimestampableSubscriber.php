@@ -25,10 +25,10 @@ class TimestampableSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'prePersist',
             'preUpdate'
-        );
+        ];
     }
 
     /**
@@ -57,7 +57,7 @@ class TimestampableSubscriber implements EventSubscriber
         if ($object instanceof ProductValueInterface) {
             $product = $object->getEntity();
             if ($product !== null) {
-                $this->updateProductFields($args->getObjectManager(), $product, array('updated'));
+                $this->updateProductFields($args->getObjectManager(), $product, ['updated']);
             }
         }
 
@@ -79,9 +79,9 @@ class TimestampableSubscriber implements EventSubscriber
         // ORM specific, for Document the value is embedded
         if (method_exists($uow, 'scheduleExtraUpdate')) {
             $now     = new \DateTime('now', new \DateTimeZone('UTC'));
-            $changes = array();
+            $changes = [];
             foreach ($fields as $field) {
-                $changes[$field] = array(null, $now);
+                $changes[$field] = [null, $now];
             }
             $uow->scheduleExtraUpdate($product, $changes);
         }

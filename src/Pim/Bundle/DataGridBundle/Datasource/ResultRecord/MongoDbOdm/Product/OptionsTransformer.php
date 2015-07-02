@@ -25,7 +25,7 @@ class OptionsTransformer
     {
         $attributeCode = $attribute['code'];
         $normalizedData = $result['normalizedData'];
-        $fromNormData = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
+        $fromNormData = ['pim_catalog_simpleselect', 'pim_catalog_multiselect'];
         if (in_array($attribute['attributeType'], $fromNormData)) {
             $fieldCode = ProductQueryUtility::getNormalizedValueField(
                 $attributeCode,

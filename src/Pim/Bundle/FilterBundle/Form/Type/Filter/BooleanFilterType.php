@@ -43,15 +43,15 @@ class BooleanFilterType extends AbstractChoiceType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $fieldChoices = array(
+        $fieldChoices = [
             self::TYPE_YES => $this->translator->trans('oro.filter.form.label_type_yes'),
             self::TYPE_NO  => $this->translator->trans('oro.filter.form.label_type_no'),
-        );
+        ];
 
         $resolver->setDefaults(
-            array(
-                'field_options' => array('choices' => $fieldChoices),
-            )
+            [
+                'field_options' => ['choices' => $fieldChoices],
+            ]
         );
     }
 }

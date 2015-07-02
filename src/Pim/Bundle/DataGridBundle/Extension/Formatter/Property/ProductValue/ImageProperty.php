@@ -22,10 +22,10 @@ class ImageProperty extends TwigProperty
 
         if ($fileName) {
             return $this->getTemplate()->render(
-                array(
+                [
                     'filename' => $fileName,
                     'title'    => $title
-                )
+                ]
             );
         }
 

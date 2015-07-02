@@ -34,7 +34,7 @@ class RegisterEntityTransformersPass implements CompilerPassInterface
             if (!isset($tags[0]['entity'])) {
                 throw new \LogicException(sprintf('The %s tag requires an entity property', self::TRANSFORMER_TAG));
             }
-            $definition->addMethodCall('addEntityTransformer', array($tags[0]['entity'], $serviceId));
+            $definition->addMethodCall('addEntityTransformer', [$tags[0]['entity'], $serviceId]);
         }
     }
 }

@@ -51,11 +51,11 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
 
     protected function createTransformer($multiple)
     {
-        $options = array(
+        $options = [
             'collection_id' => 'collection_id',
             'multiple'      => $multiple,
             'locale'        => 'locale'
-        );
+        ];
 
         return new AjaxEntityTransformer($this->repository, $options);
     }
@@ -80,12 +80,12 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function getReverseTransformData()
     {
-        return array(
-            'single'         => array('1', '_1_', false),
-            'single_empty'   => array('', null, false),
-            'multiple'       => array('1,2,3', array('_1_', '_2_', '_3_'), true),
-            'multiple_empty' => array('', array(), true),
-        );
+        return [
+            'single'         => ['1', '_1_', false],
+            'single_empty'   => ['', null, false],
+            'multiple'       => ['1,2,3', ['_1_', '_2_', '_3_'], true],
+            'multiple_empty' => ['', [], true],
+        ];
     }
 
     /**
@@ -99,11 +99,11 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function getTransformData()
     {
-        return array(
-            'single'        => array(1, 1, false),
-            'single_empty'  => array(null, null, false),
-            'multiple'      => array(array(1, 2, 3), '1,2,3', true),
-        );
+        return [
+            'single'        => [1, 1, false],
+            'single_empty'  => [null, null, false],
+            'multiple'      => [[1, 2, 3], '1,2,3', true],
+        ];
     }
 
     /**
@@ -118,19 +118,19 @@ class AjaxEntityTransformerTest extends \PHPUnit_Framework_TestCase
 
     public function getGetOptionsData()
     {
-        return array(
-            'single'        => array(1, array('id' =>1, 'text' => '_1_'), false),
-            'single_empty'  => array(null, null, false),
-            'multiple'      => array(
-                array(1, 2, 3),
-                array(
-                    array('id' => 1, 'text' => '_1_'),
-                    array('id' => 2, 'text' => '_2_'),
-                    array('id' => 3, 'text' => '_3_')
-                ),
+        return [
+            'single'        => [1, ['id' =>1, 'text' => '_1_'], false],
+            'single_empty'  => [null, null, false],
+            'multiple'      => [
+                [1, 2, 3],
+                [
+                    ['id' => 1, 'text' => '_1_'],
+                    ['id' => 2, 'text' => '_2_'],
+                    ['id' => 3, 'text' => '_3_']
+                ],
                 true
-            ),
-        );
+            ],
+        ];
     }
 
     /**

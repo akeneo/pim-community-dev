@@ -24,10 +24,10 @@ class EntityTransformerRegistryTest extends \PHPUnit_Framework_TestCase
 
     public function getTestData()
     {
-        return array(
-            'default_transformer' => array(false),
-            'custom_transformer'  => array(true),
-        );
+        return [
+            'default_transformer' => [false],
+            'custom_transformer'  => [true],
+        ];
     }
 
     /**
@@ -44,8 +44,8 @@ class EntityTransformerRegistryTest extends \PHPUnit_Framework_TestCase
             ->method('transform')
             ->with(
                 $this->equalTo('class'),
-                $this->equalTo(array('data')),
-                $this->equalTo(array('defaults'))
+                $this->equalTo(['data']),
+                $this->equalTo(['defaults'])
             )
             ->will($this->returnValue('transformed_data'));
         $transformer->expects($this->any())
@@ -62,7 +62,7 @@ class EntityTransformerRegistryTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($withCustomTransformer ? 'custom_transformer' : 'default_transformer'))
             ->will($this->returnValue($transformer));
 
-        $this->assertEquals('transformed_data', $this->registry->transform('class', array('data'), array('defaults')));
+        $this->assertEquals('transformed_data', $this->registry->transform('class', ['data'], ['defaults']));
         $this->assertEquals('errors', $this->registry->getErrors('class'));
         $this->assertEquals('columns', $this->registry->getTransformedColumnsInfo('class'));
     }

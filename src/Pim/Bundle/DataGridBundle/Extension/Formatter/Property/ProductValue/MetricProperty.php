@@ -22,10 +22,10 @@ class MetricProperty extends TwigProperty
 
         if ($data && $unit) {
             return $this->getTemplate()->render(
-                array(
+                [
                     'data' => $data,
                     'unit' => $unit
-                )
+                ]
             );
         }
     }

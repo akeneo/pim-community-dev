@@ -16,9 +16,9 @@ class ObjectClassExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
+        return [
             'class' => new \Twig_Filter_Method($this, 'getClass')
-        );
+        ];
     }
 
     /**

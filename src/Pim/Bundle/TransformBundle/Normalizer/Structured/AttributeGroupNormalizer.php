@@ -17,7 +17,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * @var TranslationNormalizer
@@ -37,13 +37,13 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        return array(
+        return [
             'code'       => $object->getCode(),
             'sortOrder'  => $object->getSortOrder(),
             'attributes' => $this->normalizeAttributes($object)
-        ) + $this->transNormalizer->normalize($object, $format, $context);
+        ] + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -63,7 +63,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
      */
     protected function normalizeAttributes(AttributeGroupInterface $group)
     {
-        $attributes = array();
+        $attributes = [];
         foreach ($group->getAttributes() as $attribute) {
             $attributes[] = $attribute->getCode();
         }

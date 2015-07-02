@@ -43,17 +43,17 @@ class YamlPersister
         $data = Yaml::parse($this->paramFile);
 
         if (!is_array($data) || !isset($data['parameters'])) {
-            return array();
+            return [];
         }
 
-        $parameters = array();
+        $parameters = [];
 
         foreach ($data['parameters'] as $key => $value) {
             $section = explode('_', $key);
             $section = isset($section[1]) ? $section[0] : 'system';
 
             if (!isset($parameters[$section])) {
-                $parameters[$section] = array();
+                $parameters[$section] = [];
             }
 
             $parameters[$section]['pim_installer_' . $key] = $value;
@@ -67,7 +67,7 @@ class YamlPersister
      */
     public function dump(array $data)
     {
-        $parameters = array();
+        $parameters = [];
 
         foreach ($data as $section) {
             foreach ($section as $key => $value) {
@@ -75,7 +75,7 @@ class YamlPersister
             }
         }
 
-        if (false === file_put_contents($this->paramFile, Yaml::dump(array('parameters' => $parameters)))) {
+        if (false === file_put_contents($this->paramFile, Yaml::dump(['parameters' => $parameters]))) {
             throw new \RuntimeException(sprintf('Failed to write to %s.', $this->paramFile));
         }
     }

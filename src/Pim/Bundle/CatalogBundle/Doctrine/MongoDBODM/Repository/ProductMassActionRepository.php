@@ -66,7 +66,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
 
         $attIds = null;
         foreach ($results as $result) {
-            $familyAttr = isset($result['_id']['family']) ? $families[$result['_id']['family']] : array();
+            $familyAttr = isset($result['_id']['family']) ? $families[$result['_id']['family']] : [];
             $prodAttIds = array_unique(array_merge($result['attribute'], $familyAttr));
             if (null === $attIds) {
                 $attIds = $prodAttIds;
@@ -114,16 +114,16 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         $expr->setClassMetadata($class);
         $expr->field('_id')->in($productIds);
 
-        $pipeline = array(
-            array('$match'  => $expr->getQuery()),
-            array('$unwind' => '$values'),
-            array(
-                '$group'  => array(
-                    '_id'       => array('id'         => '$_id', 'family' => '$family'),
-                    'attribute' => array( '$addToSet' => '$values.attribute')
-                )
-            )
-        );
+        $pipeline = [
+            ['$match'  => $expr->getQuery()],
+            ['$unwind' => '$values'],
+            [
+                '$group'  => [
+                    '_id'       => ['id'         => '$_id', 'family' => '$family'],
+                    'attribute' => [ '$addToSet' => '$values.attribute']
+                ]
+            ]
+        ];
 
         return $collection->aggregate($pipeline)->toArray();
     }

@@ -20,9 +20,9 @@ class MetricGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        return array(
+        return [
             new ValidMetric()
-        );
+        ];
     }
 
     /**

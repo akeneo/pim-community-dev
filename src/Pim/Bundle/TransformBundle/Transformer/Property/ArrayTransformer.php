@@ -32,7 +32,7 @@ class ArrayTransformer extends DefaultTransformer implements EntityUpdaterInterf
     /**
      * {@inheritdoc}
      */
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = [])
     {
         $suffixes = $columnInfo->getSuffixes();
         $this->propertyAccessor->setValue(

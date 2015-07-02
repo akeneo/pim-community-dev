@@ -75,15 +75,15 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'copyValues' => array(
+        return [
+            'copyValues' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_base_connector.import.copyValuesToProducts.label',
                     'help'  => 'pim_base_connector.import.copyValuesToProducts.help'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

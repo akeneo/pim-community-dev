@@ -18,17 +18,17 @@ abstract class CategoryView extends Form
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Category tree'    => array('css' => '#tree'),
-                'Tree select'      => array('css' => '#tree_select'),
-                'Right click menu' => array('css' => '#vakata-contextmenu'),
-            )
+            [
+                'Category tree'    => ['css' => '#tree'],
+                'Tree select'      => ['css' => '#tree_select'],
+                'Right click menu' => ['css' => '#vakata-contextmenu'],
+            ]
         );
     }
 

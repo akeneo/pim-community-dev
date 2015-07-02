@@ -31,7 +31,7 @@ class FormTypeHelpExtension extends AbstractTypeExtension
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setOptional(array('help'));
+        $resolver->setOptional(['help']);
     }
 
     /**

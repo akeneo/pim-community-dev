@@ -16,5 +16,5 @@ class TabRedirectAction extends AbstractAction
     /**
      * @var string[]
      */
-    protected $requiredOptions = array('link', 'tab');
+    protected $requiredOptions = ['link', 'tab'];
 }

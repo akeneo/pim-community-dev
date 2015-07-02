@@ -15,9 +15,9 @@ class Login extends Page
 {
     protected $path = '/user/login';
 
-    protected $elements = array(
-        'Login form' => array('css' => '.form-signin')
-    );
+    protected $elements = [
+        'Login form' => ['css' => '.form-signin']
+    ];
 
     /**
      * Log in the user

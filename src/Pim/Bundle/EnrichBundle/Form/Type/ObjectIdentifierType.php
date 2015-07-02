@@ -61,9 +61,9 @@ class ObjectIdentifierType extends AbstractType
             ->setDefaults(['repository_options' => [], 'multiple' => true, 'delimiter' => ','])
             ->setRequired(['repository'])
             ->setAllowedValues(
-                array(
-                    'multiple' => array(true, false),
-                )
+                [
+                    'multiple' => [true, false],
+                ]
             )
             ->setNormalizers(
                 [

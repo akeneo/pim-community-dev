@@ -20,7 +20,7 @@ interface EntityTransformerInterface
      *
      * @return object
      */
-    public function transform($class, array $data, array $defaults = array());
+    public function transform($class, array $data, array $defaults = []);
 
     /**
      * Return infos about the last imported columns

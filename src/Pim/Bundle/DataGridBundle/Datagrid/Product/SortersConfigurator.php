@@ -74,10 +74,10 @@ class SortersConfigurator implements ConfiguratorInterface
                 if (isset($attributeTypeConf['sorter'])) {
                     $this->configuration->offsetSetByPath(
                         sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
-                        array(
+                        [
                             PropertyInterface::DATA_NAME_KEY => $attributeCode,
                             'sorter'                         => $attributeTypeConf['sorter']
-                        )
+                        ]
                     );
                 }
             }

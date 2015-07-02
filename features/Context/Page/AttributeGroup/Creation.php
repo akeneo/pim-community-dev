@@ -18,15 +18,15 @@ class Creation extends Form
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Attributes' => array('css' => '.tab-pane.tab-attribute table'),
-            )
+            [
+                'Attributes' => ['css' => '.tab-pane.tab-attribute table'],
+            ]
         );
     }
 

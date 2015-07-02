@@ -423,7 +423,7 @@ class CategoryExtension extends \Twig_Extension
         foreach ($children as $child) {
             $selectedChildren += $child['selectedChildrenCount'];
             if (preg_match('/checked/', $child['state'])) {
-                $selectedChildren++;
+                ++$selectedChildren;
             }
         }
         $result['selectedChildrenCount'] = $selectedChildren;

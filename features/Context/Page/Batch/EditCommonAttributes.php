@@ -13,14 +13,14 @@ use Context\Page\Base\Wizard;
  */
 class EditCommonAttributes extends Wizard
 {
-    protected $elements = array(
-        'Available attributes button'     => array('css' => 'button:contains("Select attributes")'),
-        'Available attributes add button' => array('css' => '.pimmultiselect a:contains("Select")'),
-        'Available attributes form'       => array(
+    protected $elements = [
+        'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
+        'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
+        'Available attributes form'       => [
             'css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'
-        ),
-        'Locales dropdown' => array('css' => '#pim_enrich_mass_edit_choose_action_operation_locale'),
-    );
+        ],
+        'Locales dropdown' => ['css' => '#pim_enrich_mass_edit_choose_action_operation_locale'],
+    ];
 
     /**
      * @param string $locale

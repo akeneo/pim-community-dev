@@ -81,7 +81,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
         while ((false !== $line = fgets($handle)) &&
             (count($errors) < $this->maxErrors)
         ) {
-            $lineNo++;
+            ++$lineNo;
             if (false === iconv($this->charset, $this->charset, $line)) {
                 $errors[] = $lineNo;
             }

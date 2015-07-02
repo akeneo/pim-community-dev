@@ -21,17 +21,17 @@ class Creation extends Form
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'attribute_option_table' => array('css' => '#attribute-option-grid table'),
-                'attribute_options'      => array('css' => '#attribute-option-grid tbody tr'),
-                'add_option_button'      => array('css' => '#attribute-option-grid .btn.option-add'),
-            )
+            [
+                'attribute_option_table' => ['css' => '#attribute-option-grid table'],
+                'attribute_options'      => ['css' => '#attribute-option-grid tbody tr'],
+                'add_option_button'      => ['css' => '#attribute-option-grid .btn.option-add'],
+            ]
         );
     }
 

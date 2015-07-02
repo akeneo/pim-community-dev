@@ -19,14 +19,14 @@ class CachedReader extends AbstractConfigurableStepElement implements ItemReader
     /**
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**

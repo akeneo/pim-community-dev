@@ -27,9 +27,9 @@ class AjaxOptionControllerTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('data_locale'),
                 $this->equalTo('collection_id'),
                 $this->equalTo('search'),
-                $this->equalTo(array('options'))
+                $this->equalTo(['options'])
             )
-            ->will($this->returnValue(array('success' => true)));
+            ->will($this->returnValue(['success' => true]));
 
         $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
             ->disableOriginalConstructor()
@@ -37,13 +37,13 @@ class AjaxOptionControllerTest extends \PHPUnit_Framework_TestCase
         $request->query = $this->getMockBuilder('Symfony\Component\HttpFoundation\ParameterBag')
             ->disableOriginalConstructor()
             ->getMock();
-        $arguments = array(
+        $arguments = [
             'class'         => 'class',
             'dataLocale'    => 'data_locale',
             'collectionId'  => 'collection_id',
             'search'        => 'search',
-            'options'       => array('options')
-        );
+            'options'       => ['options']
+        ];
         $request->query->expects($this->any())
             ->method('get')
             ->will(

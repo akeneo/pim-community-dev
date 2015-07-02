@@ -262,7 +262,7 @@ class UserContext
             $user   = $token->getUser();
             $method = sprintf('get%s', ucfirst($optionName));
 
-            if ($user && is_callable(array($user, $method))) {
+            if ($user && is_callable([$user, $method])) {
                 $value = $user->$method();
                 if ($value) {
                     return $value;

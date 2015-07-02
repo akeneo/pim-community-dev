@@ -32,7 +32,7 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         if (!$this->serializer instanceof NormalizerInterface) {
             throw new \RuntimeException(

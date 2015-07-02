@@ -14,7 +14,7 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 class CompletenessWidget extends Element
 {
     /** @var array */
-    protected $selector = array('css' => '#completeness-widget');
+    protected $selector = ['css' => '#completeness-widget'];
 
     /**
      * Get the channel completeness ratio inside the completeness widget

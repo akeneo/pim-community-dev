@@ -55,14 +55,14 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function validateVariantGroup(GroupInterface $variantGroup, Constraint $constraint)
     {
-        $existingCombinations = array();
+        $existingCombinations = [];
 
         $products = $variantGroup->getProducts();
         if (null === $products) {
             $products = $this->getMatchingProducts($variantGroup);
         }
         foreach ($products as $product) {
-            $values = array();
+            $values = [];
             foreach ($variantGroup->getAxisAttributes() as $attribute) {
                 $code = $attribute->getCode();
                 $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : '';
@@ -95,7 +95,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 $criteria = $this->prepareQueryCriterias($variantGroup, $product);
                 $matchingProducts = $this->getMatchingProducts($variantGroup, $product, $criteria);
                 if (count($matchingProducts) !== 0) {
-                    $values = array();
+                    $values = [];
                     foreach ($criteria as $item) {
                         $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
                     }
@@ -119,7 +119,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function prepareQueryCriterias(GroupInterface $variantGroup, ProductInterface $product)
     {
-        $criteria = array();
+        $criteria = [];
         foreach ($variantGroup->getAxisAttributes() as $attribute) {
             $value = $product->getValue($attribute->getCode());
             // we don't add criteria when option is null, as this check is performed by HasVariantAxesValidator
@@ -177,10 +177,10 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         $this->context->addViolation(
             $constraint->message,
-            array(
+            [
                 '%variant group%' => $variantLabel,
                 '%values%'        => $values
-            )
+            ]
         );
     }
 }

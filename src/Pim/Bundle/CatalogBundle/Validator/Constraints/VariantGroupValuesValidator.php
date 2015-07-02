@@ -60,10 +60,10 @@ class VariantGroupValuesValidator extends ConstraintValidator
         if (count($invalidAttrCodes) > 0) {
             $this->context->addViolation(
                 $constraint->message,
-                array(
+                [
                     '%group%'      => $variantGroup->getCode(),
                     '%attributes%' => $this->formatValues($invalidAttrCodes)
-                )
+                ]
             );
         }
     }

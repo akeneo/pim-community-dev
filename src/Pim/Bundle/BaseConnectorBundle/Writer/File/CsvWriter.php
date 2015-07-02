@@ -38,7 +38,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * @var array
      */
-    protected $writtenFiles = array();
+    protected $writtenFiles = [];
 
     /**
      * @var array
@@ -148,27 +148,27 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         return
             array_merge(
                 parent::getConfigurationFields(),
-                array(
-                    'delimiter' => array(
-                        'options' => array(
+                [
+                    'delimiter' => [
+                        'options' => [
                             'label' => 'pim_base_connector.export.delimiter.label',
                             'help'  => 'pim_base_connector.export.delimiter.help'
-                        )
-                    ),
-                    'enclosure' => array(
-                        'options' => array(
+                        ]
+                    ],
+                    'enclosure' => [
+                        'options' => [
                             'label' => 'pim_base_connector.export.enclosure.label',
                             'help'  => 'pim_base_connector.export.enclosure.help'
-                        )
-                    ),
-                    'withHeader' => array(
+                        ]
+                    ],
+                    'withHeader' => [
                         'type'    => 'switch',
-                        'options' => array(
+                        'options' => [
                             'label' => 'pim_base_connector.export.withHeader.label',
                             'help'  => 'pim_base_connector.export.withHeader.help'
-                        )
-                    ),
-                )
+                        ]
+                    ],
+                ]
             );
     }
 

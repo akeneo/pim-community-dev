@@ -29,10 +29,10 @@ class RelationGuesserTest extends GuesserTestCase
 
     public function getMatchingData()
     {
-        return array(
-            'multiple'  => array(ClassMetadataInfo::MANY_TO_MANY, true),
-            'single'    => array(ClassMetadataInfo::MANY_TO_ONE, false),
-        );
+        return [
+            'multiple'  => [ClassMetadataInfo::MANY_TO_MANY, true],
+            'single'    => [ClassMetadataInfo::MANY_TO_ONE, false],
+        ];
     }
 
     /**
@@ -50,7 +50,7 @@ class RelationGuesserTest extends GuesserTestCase
             ->method('getAssociationMapping')
             ->with($this->equalTo('property_path'))
             ->will(
-                $this->returnValue(array('targetEntity' => 'target_entity', 'type' => $type))
+                $this->returnValue(['targetEntity' => 'target_entity', 'type' => $type])
             );
 
         $repository = $this->getMock(
@@ -63,7 +63,7 @@ class RelationGuesserTest extends GuesserTestCase
 
         $guesser = new RelationGuesser($this->transformer, $this->doctrine);
         $this->assertEquals(
-            array($this->transformer, array('class' => 'target_entity', 'multiple' => $multiple)),
+            [$this->transformer, ['class' => 'target_entity', 'multiple' => $multiple]],
             $guesser->getTransformerInfo($this->columnInfo, $this->metadata)
         );
     }
@@ -91,7 +91,7 @@ class RelationGuesserTest extends GuesserTestCase
             ->method('getAssociationMapping')
             ->with($this->equalTo('property_path'))
             ->will(
-                $this->returnValue(array('targetEntity' => 'target_entity', 'type' => ClassMetadataInfo::MANY_TO_MANY))
+                $this->returnValue(['targetEntity' => 'target_entity', 'type' => ClassMetadataInfo::MANY_TO_MANY])
             );
 
         $repository = new \stdClass();

@@ -90,7 +90,7 @@ class AttributeManager
     public function getAttributeTypes()
     {
         $types = $this->registry->getAliases();
-        $choices = array();
+        $choices = [];
         foreach ($types as $type) {
             $choices[$type] = $type;
         }

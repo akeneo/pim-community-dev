@@ -35,7 +35,7 @@ class FormTypeSelect2Extension extends AbstractTypeExtension
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setOptional(array('select2'));
+        $resolver->setOptional(['select2']);
     }
 
     /**

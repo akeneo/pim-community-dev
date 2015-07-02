@@ -21,15 +21,15 @@ class Creation extends Form
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Roles' => array('css' => '#oro_user_user_form_rolesCollection'),
-            )
+            [
+                'Roles' => ['css' => '#oro_user_user_form_rolesCollection'],
+            ]
         );
     }
 

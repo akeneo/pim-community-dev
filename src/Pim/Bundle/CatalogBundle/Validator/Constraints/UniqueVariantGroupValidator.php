@@ -30,10 +30,10 @@ class UniqueVariantGroupValidator extends ConstraintValidator
             if (count($variantGroups) > 1) {
                 $this->context->addViolation(
                     $constraint->message,
-                    array(
+                    [
                         '%groups%'  => $this->formatValues($variantGroups, ConstraintValidator::OBJECT_TO_STRING),
                         '%product%' => $product->getIdentifier()
-                    )
+                    ]
                 );
             }
         }

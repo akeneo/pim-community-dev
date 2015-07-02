@@ -68,7 +68,7 @@ class ViewElementExtension extends \Twig_Extension
         $content  = '';
 
         $elementCount = count($elements);
-        for ($i = 0; $i < $elementCount; $i++) {
+        for ($i = 0; $i < $elementCount; ++$i) {
             $element = $elements[$i];
             $elementContext = [
                 'viewElement' => [

@@ -55,7 +55,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         }
         $key =  strtr(
             $this->getRelativeArchivePath($jobExecution),
-            array('%filename%' => 'invalid_items.csv')
+            ['%filename%' => 'invalid_items.csv']
         );
         $this->filesystem->write($key, '', true);
         $this->writer->setFilePath(

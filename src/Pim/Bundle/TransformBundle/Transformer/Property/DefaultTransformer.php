@@ -14,7 +14,7 @@ class DefaultTransformer implements PropertyTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         if (is_scalar($value)) {
             $value = trim($value);

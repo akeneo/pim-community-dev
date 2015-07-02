@@ -35,7 +35,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('prePersist');
+        return ['prePersist'];
     }
 
     /**

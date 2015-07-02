@@ -271,7 +271,7 @@ abstract class AbstractProduct implements ProductInterface
     protected function indexValuesIfNeeded()
     {
         if ($this->indexedValuesOutdated) {
-            $this->indexedValues = array();
+            $this->indexedValues = [];
             foreach ($this->values as $value) {
                 $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
             }
@@ -410,7 +410,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAttributes()
     {
-        $attributes = array();
+        $attributes = [];
 
         foreach ($this->values as $value) {
             $attributes[] = $value->getAttribute();
@@ -438,7 +438,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getOrderedGroups()
     {
-        $groups = array();
+        $groups = [];
 
         foreach ($this->getAttributes() as $attribute) {
             $group = $attribute->getGroup();
@@ -511,7 +511,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getCategoryCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getCategories() as $category) {
             $codes[] = $category->getCode();
         }
@@ -525,7 +525,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getGroupCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getGroups() as $group) {
             $codes[] = $group->getCode();
         }
@@ -644,11 +644,11 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getMedia()
     {
-        $media = array();
+        $media = [];
         foreach ($this->getValues() as $value) {
             if (in_array(
                 $value->getAttribute()->getAttributeType(),
-                array('pim_catalog_image', 'pim_catalog_file')
+                ['pim_catalog_image', 'pim_catalog_file']
             )) {
                 $media[] = $value->getData();
             }
@@ -723,7 +723,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(array $associations = array())
+    public function setAssociations(array $associations = [])
     {
         $this->associations = new ArrayCollection($associations);
 

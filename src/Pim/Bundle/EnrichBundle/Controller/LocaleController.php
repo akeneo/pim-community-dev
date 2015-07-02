@@ -25,6 +25,6 @@ class LocaleController extends AbstractController
      */
     public function indexAction()
     {
-        return array();
+        return [];
     }
 }
