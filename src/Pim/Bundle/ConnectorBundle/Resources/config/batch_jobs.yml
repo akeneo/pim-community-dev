@@ -86,21 +86,21 @@ connector:
                         writer:    pim_connector.writer.doctrine.category
                     parameters:
                         batchSize: 1
-        csv_group_import:
-            title: pim_connector.jobs.csv_group_import.title
-            type:  import
-            steps:
-                validation:
-                    title: pim_connector.jobs.csv_group_import.validation.title
-                    class: %pim_connector.step.validator.class%
-                    services:
-                        charsetValidator: pim_connector.validator.item.charset_validator
-                import:
-                    title:         pim_connector.jobs.csv_group_import.import.title
-                    services:
-                        reader:    pim_connector.reader.file.csv_group
-                        processor: pim_connector.processor.denormalization.group.flat
-                        writer:    pim_connector.writer.doctrine.group
+        #csv_group_import:
+        #    title: pim_connector.jobs.csv_group_import.title
+        #    type:  import
+        #    steps:
+        #        validation:
+        #            title: pim_connector.jobs.csv_group_import.validation.title
+        #            class: %pim_connector.step.validator.class%
+        #            services:
+        #                charsetValidator: pim_connector.validator.item.charset_validator
+        #        import:
+        #            title:         pim_connector.jobs.csv_group_import.import.title
+        #            services:
+        #                reader:    pim_connector.reader.file.csv_group
+        #                processor: pim_connector.processor.denormalization.group.flat
+        #                writer:    pim_connector.writer.doctrine.group
         csv_association_type_import:
             title: pim_connector.jobs.csv_association_type_import.title
             type: import

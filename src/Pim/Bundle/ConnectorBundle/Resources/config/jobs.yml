@@ -1,0 +1,36 @@
+parameters: ~
+
+services:
+    pim_connector.job.csv_group_import:
+        class: %akeneo_batch.job.class%
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@event_dispatcher'
+            -
+                - '@pim_connector.step.validator'
+                - '@pim_connector.step.csv_group_import'
+            - 'pim_connector.jobs.csv_product_import.title'
+        tags:
+            -
+                name: 'akeneo_batch.job'
+                job_alias: 'csv_group_import'
+                job_type: 'import'
+                connector: 'Akeneo CSV Connector'
+
+    pim_connector.step.validator:
+        class: %pim_connector.step.validator.class%
+        arguments:
+            - 'pim_base_connector.jobs.csv_group_import.validation.title'
+            - '@akeneo_batch.job_repository'
+            - '@event_dispatcher'
+            - '@pim_connector.validator.item.charset_validator'
+
+    pim_connector.step.csv_group_import:
+        class: %akeneo_batch.step.item_step.class%
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@event_dispatcher'
+            - '@pim_connector.reader.file.csv_group'
+            - '@pim_connector.processor.denormalization.group.flat'
+            - '@pim_connector.writer.doctrine.group'
+            - 'pim_connector.jobs.csv_group_import.import.title'

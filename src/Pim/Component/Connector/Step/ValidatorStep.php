@@ -4,8 +4,10 @@ namespace Pim\Component\Connector\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
 use Pim\Component\Connector\Item\CharsetValidator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Validator Step for imports
@@ -18,6 +20,22 @@ class ValidatorStep extends AbstractStep
 {
     /** @var CharsetValidator */
     protected $charsetValidator;
+
+    /**
+     * @param string                   $name
+     * @param JobRepositoryInterface   $jobRepository
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param CharsetValidator         $charsetValidator
+     */
+    public function __construct(
+        $name = null,
+        JobRepositoryInterface $jobRepository = null,
+        EventDispatcherInterface $eventDispatcher = null,
+        CharsetValidator $charsetValidator = null
+    ) {
+        parent::__construct($name, $jobRepository, $eventDispatcher);
+        $this->charsetValidator = $charsetValidator;
+    }
 
     /**
      * {@inheritdoc}
