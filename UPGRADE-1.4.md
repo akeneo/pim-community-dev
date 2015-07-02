@@ -19,12 +19,12 @@ The new structure is more simple to read and respect our exchange format.
 ["values": [                                     |["values": [
     "description-en_US-ecommerce": [             |    "description": [
          "text": "Text of description",          |        [
-         "__context__": [                        |            "value": "Text of description",
+         "__context__": [                        |            "data": "Text of description",
              "attribute": "description",         |            "locale": "en_US",
              "locale": "en_US",                  |            "scope": "ecommerce"
              "scope": "ecommerce"                |        ],
          ]                                       |        [
-    ],                                           |             "value": "Text of description",
+    ],                                           |             "data": "Text of description",
     "description-en_US-mobile": [                |             "locale": "en_US",
         "text": "Text of description",           |             "scope": "mobile"
         "__context__": [                         |        ]
