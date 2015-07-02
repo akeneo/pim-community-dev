@@ -89,10 +89,15 @@ define(
                     .then(_.bind(function (draft) {
                         var changes = draft.changes;
                         if (changes && changes.values) {
-                            productData.values = _.extend(
-                                productData.values || {},
-                                changes.values
-                            )
+                            _.each(changes.values, function (draftValues, attributeCode) {
+                                _.each(draftValues, function (draftValue) {
+                                    var productValue = _.findWhere(
+                                        productData.values[attributeCode],
+                                        {locale: draftValue.locale, scope: draftValue.scope}
+                                    );
+                                    productValue.data = draftValue.data;
+                                });
+                            });
                         }
                     }, this));
             },
@@ -137,7 +142,7 @@ define(
             submitDraft: function () {
                 this.getDraft()
                     .then(function (draft) {
-                        return FetcherRegistry.getFetcher('product-draft').sendForApproval(draft)
+                        return FetcherRegistry.getFetcher('product-draft').sendForApproval(draft);
                     })
                     .then(function () {
                         messenger.notificationFlashMessage(
