@@ -6,3 +6,8 @@ services:
         class: %pimee_product_asset.updater.files.class%
         arguments:
             - '@akeneo_file_storage.file_storage.raw_file.storer'
+
+    pimee_product_asset.updater.category:
+        class: %pim_classification.updater.category.class%
+        arguments:
+            - '@pimee_product_asset.repository.category'

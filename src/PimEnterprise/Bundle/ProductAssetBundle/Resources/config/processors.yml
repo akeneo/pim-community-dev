@@ -1,0 +1,9 @@
+services:
+    pimee_product_asset.processor.denormalization.category.flat:
+        class: %pim_connector.processor.denormalization.category.class%
+        arguments:
+            - '@pim_connector.array_converter.flat.category'
+            - '@pimee_product_asset.repository.category'
+            - '@pimee_product_asset.updater.category'
+            - '@pimee_product_asset.factory.category'
+            - '@pim_catalog.validator.product'

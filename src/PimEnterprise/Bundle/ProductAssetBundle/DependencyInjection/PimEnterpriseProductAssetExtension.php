@@ -44,6 +44,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('formatters.yml');
         $loader->load('forms.yml');
         $loader->load('models.yml');
+        $loader->load('processors.yml');
         $loader->load('query_builders.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
@@ -51,5 +52,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('services.yml');
         $loader->load('twig_extension.yml');
         $loader->load('updaters.yml');
+        $loader->load('writers.yml');
     }
 }
