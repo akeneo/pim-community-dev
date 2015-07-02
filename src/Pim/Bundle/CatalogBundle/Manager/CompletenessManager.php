@@ -197,10 +197,10 @@ class CompletenessManager
             $compLocaleCode = $locale->getCode();
             if (isset($completenesses[$compLocaleCode])) {
                 $completenesses[$compLocaleCode]['channels'][$channel->getCode()]['completeness'] = $completeness;
-                $completenesses[$compLocaleCode]['stats']['total']++;
+                ++$completenesses[$compLocaleCode]['stats']['total'];
 
                 if (0 === $completeness->getMissingCount()) {
-                    $completenesses[$compLocaleCode]['stats']['complete']++;
+                    ++$completenesses[$compLocaleCode]['stats']['complete'];
                 }
             }
         }

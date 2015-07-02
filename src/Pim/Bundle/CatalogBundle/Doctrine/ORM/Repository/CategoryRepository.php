@@ -329,7 +329,7 @@ class CategoryRepository extends NestedTreeRepository implements
                 } else {
                     $tree =& $vectorMap[$nodeId][$childrenIndex];
                 }
-                $nodeIt++;
+                ++$nodeIt;
             }
             // $tree still empty there, means we need to pick the lowest level nodes as tree roots
             if (empty($tree)) {

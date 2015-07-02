@@ -44,9 +44,9 @@ class PathGenerator implements PathGeneratorInterface
         $pathName = $path.$fileName;
 
         return [
-            'guid' => $guid,
+            'guid'      => $guid,
             'file_name' => $fileName,
-            'path' => $path,
+            'path'      => $path,
             'path_name' => $pathName,
         ];
     }

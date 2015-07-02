@@ -119,7 +119,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
 
             if (null !== $family && $family->hasAttribute($attribute)) {
                 $this->propertySetter->setData($product, $action['field'], $action['value'], $action['options']);
-                $modifiedAttributesNb++;
+                ++$modifiedAttributesNb;
             }
         }
 
