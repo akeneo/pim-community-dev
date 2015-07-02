@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Bug fixes
+- PIM-4494: Fix js memory leak on a product edit form with scopable attributes
+
 # 1.2.35 (2015-05-29)
 
 ## Bug fixes
