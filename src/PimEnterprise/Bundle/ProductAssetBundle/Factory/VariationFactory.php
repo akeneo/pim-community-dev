@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**
