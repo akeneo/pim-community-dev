@@ -399,9 +399,9 @@ class CategoryAccessRepository extends EntityRepository
     protected function getAccessField($accessLevel)
     {
         $mapping = [
-            Attributes::OWN_PRODUCTS => 'ownProducts',
-            Attributes::EDIT_PRODUCTS => 'editProducts',
-            Attributes::VIEW_PRODUCTS => 'viewProducts',
+            Attributes::OWN_PRODUCTS => 'ownItems',
+            Attributes::EDIT_PRODUCTS => 'editItems',
+            Attributes::VIEW_PRODUCTS => 'viewItems',
         ];
         if (!isset($mapping[$accessLevel])) {
             throw new \LogicException(sprintf('"%s" access level does not exist', $accessLevel));

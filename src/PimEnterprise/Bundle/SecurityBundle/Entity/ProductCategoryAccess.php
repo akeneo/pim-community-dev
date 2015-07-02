@@ -32,13 +32,13 @@ class ProductCategoryAccess implements CategoryAccessInterface
     protected $userGroup;
 
     /** @var bool */
-    protected $viewProducts;
+    protected $viewItems;
 
     /** @var bool */
-    protected $editProducts;
+    protected $editItems;
 
     /** @var bool */
-    protected $ownProducts;
+    protected $ownItems;
 
     /**
      * {@inheritdoc}
@@ -89,7 +89,7 @@ class ProductCategoryAccess implements CategoryAccessInterface
      */
     public function setEditItems($editItems)
     {
-        $this->editProducts = $editItems;
+        $this->editItems = $editItems;
 
         return $this;
     }
@@ -99,7 +99,7 @@ class ProductCategoryAccess implements CategoryAccessInterface
      */
     public function isEditItems()
     {
-        return $this->editProducts;
+        return $this->editItems;
     }
 
     /**
@@ -107,7 +107,7 @@ class ProductCategoryAccess implements CategoryAccessInterface
      */
     public function setViewItems($viewItems)
     {
-        $this->viewProducts = $viewItems;
+        $this->viewItems = $viewItems;
 
         return $this;
     }
@@ -117,7 +117,7 @@ class ProductCategoryAccess implements CategoryAccessInterface
      */
     public function isViewItems()
     {
-        return $this->viewProducts;
+        return $this->viewItems;
     }
 
     /**
@@ -125,7 +125,7 @@ class ProductCategoryAccess implements CategoryAccessInterface
      */
     public function setOwnItems($ownItems)
     {
-        $this->ownProducts = $ownItems;
+        $this->ownItems = $ownItems;
 
         return $this;
     }
@@ -135,6 +135,6 @@ class ProductCategoryAccess implements CategoryAccessInterface
      */
     public function isOwnItems()
     {
-        return $this->ownProducts;
+        return $this->ownItems;
     }
 }

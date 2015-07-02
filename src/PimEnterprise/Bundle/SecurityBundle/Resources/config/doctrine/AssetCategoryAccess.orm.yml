@@ -13,19 +13,19 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess:
             id: true
             generator:
                 strategy: AUTO
-        viewAssets:
+        viewItems:
             type: boolean
-            column: view_assets
+            column: view_items
             options:
                 default: false
-        editAssets:
+        editItems:
             type: boolean
-            column: edit_assets
+            column: edit_items
             options:
                 default: false
-        ownAssets:
+        ownItems:
             type: boolean
-            column: own_assets
+            column: own_items
             options:
                 default: false
     manyToOne:

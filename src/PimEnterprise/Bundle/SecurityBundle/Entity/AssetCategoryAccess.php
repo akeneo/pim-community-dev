@@ -32,13 +32,13 @@ class AssetCategoryAccess implements CategoryAccessInterface
     protected $userGroup;
 
     /** @var bool */
-    protected $viewAssets;
+    protected $viewItems;
 
     /** @var bool */
-    protected $editAssets;
+    protected $editItems;
 
     /** @var bool */
-    protected $ownAssets;
+    protected $ownItems;
 
     /**
      * {@inheritdoc}
@@ -89,7 +89,7 @@ class AssetCategoryAccess implements CategoryAccessInterface
      */
     public function setEditItems($editItems)
     {
-        $this->editAssets = $editItems;
+        $this->editItems = $editItems;
 
         return $this;
     }
@@ -99,7 +99,7 @@ class AssetCategoryAccess implements CategoryAccessInterface
      */
     public function isEditItems()
     {
-        return $this->editAssets;
+        return $this->editItems;
     }
 
     /**
@@ -107,7 +107,7 @@ class AssetCategoryAccess implements CategoryAccessInterface
      */
     public function setViewItems($viewItems)
     {
-        $this->viewAssets = $viewItems;
+        $this->viewItems = $viewItems;
 
         return $this;
     }
@@ -117,7 +117,7 @@ class AssetCategoryAccess implements CategoryAccessInterface
      */
     public function isViewItems()
     {
-        return $this->viewAssets;
+        return $this->viewItems;
     }
 
     /**
@@ -125,7 +125,7 @@ class AssetCategoryAccess implements CategoryAccessInterface
      */
     public function setOwnItems($ownItems)
     {
-        $this->ownAssets = $ownItems;
+        $this->ownItems = $ownItems;
 
         return $this;
     }
@@ -135,6 +135,6 @@ class AssetCategoryAccess implements CategoryAccessInterface
      */
     public function isOwnItems()
     {
-        return $this->ownAssets;
+        return $this->ownItems;
     }
 }
