@@ -49,7 +49,7 @@ class ProductAssetController
     public function indexAction(Request $request)
     {
         $identifiers = $request->get('identifiers');
-        $identifiers = '' !== $identifiers ? explode(',', $identifiers) : [];
+        $identifiers = ('' !== $identifiers) ? explode(',', $identifiers) : [];
 
         if (0 === count($identifiers)) {
             $assets = $this->assetRepository->findAll();

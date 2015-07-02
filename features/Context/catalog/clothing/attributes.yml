@@ -363,6 +363,8 @@ attributes:
         labels:
             en_US: Front view
         type:  pim_assets_collection
+        properties:
+            reference_data_name: assets
         group: media
         useableAsGridFilter: false
         sortOrder:           50

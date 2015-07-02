@@ -473,8 +473,21 @@ class EnterpriseFeatureContext extends FeatureContext
 
         $this->spin(function () {
             return $this->getSession()->getPage()
-                ->find('css', '#grid-product-asset-grid[data-rendered="true"]');
+                ->find('css', '#grid-asset-picker-grid[data-rendered="true"]');
         });
+    }
+
+    /**
+     * @Given /^I remove "([^"]*)" from the asset basket$/
+     */
+    public function iRemoveFromTheAssetBasket($entity)
+    {
+        $removeButton = $this->spin(function () use ($entity) {
+            return $this->getSession()->getPage()
+                ->find('css', sprintf('.asset-basket li[data-asset="%s"] .remove-asset', $entity));
+        });
+
+        $removeButton->click();
     }
 
     protected function getAttributeIcon($iconSelector, $attributeLabel)

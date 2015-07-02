@@ -29,6 +29,9 @@ define(
             events: {
                 'click .add-asset': 'updateAssets'
             },
+            /**
+             * {@inheritdoc}
+             */
             getTemplateContext: function () {
                 return $.when(
                     Field.prototype.getTemplateContext.apply(this, arguments),
@@ -42,25 +45,30 @@ define(
                     return templateContext;
                 }, this));
             },
+            /**
+             * {@inheritdoc}
+             */
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
-            updateModel: function () {
-
-            },
-            setFocus: function () {
-
-            },
+            /**
+             * Launch the asset picker and set the assets after update
+             */
             updateAssets: function () {
                 this.manageAssets().done(_.bind(function (assets) {
                     this.setCurrentValue(assets);
                     this.render();
                 }, this));
             },
+            /**
+             * Launch the asset picker
+             *
+             * @return Promise
+             */
             manageAssets: function () {
                 var deferred = $.Deferred();
 
-                FormBuilder.build('pimeepicker/asset-grid').done(_.bind(function (form) {
+                FormBuilder.build('pimee/picker/asset-grid').done(_.bind(function (form) {
                     var modal = new Backbone.BootstrapModal({
                         modalOptions: {
                             backdrop: 'static',

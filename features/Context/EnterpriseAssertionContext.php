@@ -24,4 +24,29 @@ class EnterpriseAssertionContext extends BaseAssertionContext
             });
         }
     }
+
+    /**
+     * @Then /^the "([^"]*)" asset gallery should contains (.*)$/
+     */
+    public function theAssetGalleryShouldContains($field, $entities)
+    {
+        $fieldContainer = $this->getCurrentPage()->findFieldContainer($field);
+
+        $entities = $this->getMainContext()->listToArray($entities);
+        foreach ($entities as $entity) {
+            $entity = $this->spin(function () use ($entity, $fieldContainer) {
+                return $fieldContainer->find('css', sprintf('.asset-gallery li[data-asset="%s"]', $entity));
+            });
+        }
+
+        if (count($fieldContainer->findAll('css', '.asset-gallery li')) !== count($entities)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Incorrect item count in asset gallery (expected: %s, current: %s',
+                    count($entities),
+                    count($fieldContainer->findAll('css', '.asset-gallery li'))
+                )
+            );
+        }
+    }
 }

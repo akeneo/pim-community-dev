@@ -1,5 +1,5 @@
 datagrid:
-    product-asset-grid:
+    asset-picker-grid:
         options:
             entityHint: asset
             requireJSModules:

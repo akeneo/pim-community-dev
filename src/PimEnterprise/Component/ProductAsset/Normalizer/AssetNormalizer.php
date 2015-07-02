@@ -31,15 +31,18 @@ class AssetNormalizer implements NormalizerInterface
     {
         return [
             'code'          => $asset->getCode(),
-            'categories'    => array_map(function (CategoryInterface $category) {
-                return $category->getCode();
-            }, $asset->getCategories()->toArray()),
+            'categories'    => array_map(
+                function (CategoryInterface $category) {
+                    return $category->getCode();
+                },
+                $asset->getCategories()->toArray()
+            ),
             'description'   => $asset->getDescription(),
             'references'    => $this->normalizeReferences($asset->getReferences()),
             'enabled'       => $asset->isEnabled(),
-            'end_of_use_at' => null !== $asset->getEndOfUseAt() ? $asset->getEndOfUseAt()->format('Y-m-d H:i:s') : null,
-            'created_at'    => null !== $asset->getCreatedAt() ? $asset->getCreatedAt()->format('Y-m-d H:i:s') : null,
-            'updated_at'    => null !== $asset->getUpdatedAt() ? $asset->getUpdatedAt()->format('Y-m-d H:i:s') : null,
+            'end_of_use_at' => (null !== $asset->getEndOfUseAt()) ? $asset->getEndOfUseAt()->format('Y-m-d H:i:s') : null,
+            'created_at'    => (null !== $asset->getCreatedAt()) ? $asset->getCreatedAt()->format('Y-m-d H:i:s') : null,
+            'updated_at'    => (null !== $asset->getUpdatedAt()) ? $asset->getUpdatedAt()->format('Y-m-d H:i:s') : null,
 
         ];
     }
@@ -61,14 +64,14 @@ class AssetNormalizer implements NormalizerInterface
      */
     protected function normalizeReferences(Collection $references)
     {
-        $normalizeedReferences = [];
+        $normalizedReferences = [];
         foreach ($references as $reference) {
-            $normalizeedReferences[] = [
-                'locale' => null !== $reference->getLocale() ? $reference->getLocale()->getCode() : null,
-                'file'   => null !== $reference->getFile() ? $reference->getFile()->getKey() : null
+            $normalizedReferences[] = [
+                'locale' => (null !== $reference->getLocale()) ? $reference->getLocale()->getCode() : null,
+                'file'   => (null !== $reference->getFile()) ? $reference->getFile()->getKey() : null
             ];
         }
 
-        return $normalizeedReferences;
+        return $normalizedReferences;
     }
 }

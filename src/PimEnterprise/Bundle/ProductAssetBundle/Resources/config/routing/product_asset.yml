@@ -42,6 +42,30 @@ pimee_product_asset_upload_variation:
     requirements:
         id: '[0-9]+'
 
+pimee_product_asset_reference_delete:
+    path: /reference/{id}/update
+    defaults: { _controller: pimee_product_asset.controller.product_asset:deleteReferenceFileAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_variation_delete:
+    path: /variation/{id}/update
+    defaults: { _controller: pimee_product_asset.controller.product_asset:deleteVariationFileAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_variation_reset:
+    path: /variation/{id}/reset
+    defaults: { _controller: pimee_product_asset.controller.product_asset:resetVariationFileAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_variations_reset:
+    path: /variations/{id}/reset
+    defaults: { _controller: pimee_product_asset.controller.product_asset:resetVariationsFilesAction }
+    requirements:
+        id: '[0-9]+'
+
 pimee_product_asset_rest_index:
     path: /rest/
     defaults: { _controller: pimee_product_asset.controller.rest.product_asset:indexAction, _format: json }

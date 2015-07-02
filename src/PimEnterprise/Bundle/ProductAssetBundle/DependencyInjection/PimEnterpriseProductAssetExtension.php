@@ -51,6 +51,5 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('services.yml');
         $loader->load('twig_extension.yml');
         $loader->load('updaters.yml');
-        $loader->load('updaters.yml');
     }
 }
