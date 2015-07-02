@@ -157,7 +157,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             foreach ($pricesReqs as $priceField => $currencies) {
                 if (isset($normalizedData[$priceField]) &&
                     count(array_diff($currencies, array_keys($normalizedData[$priceField]))) === 0) {
-                    $missingPricesCount--;
+                    --$missingPricesCount;
                 }
             }
 

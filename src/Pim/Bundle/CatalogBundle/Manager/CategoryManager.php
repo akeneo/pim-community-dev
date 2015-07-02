@@ -256,7 +256,7 @@ class CategoryManager
 
         while ($childCount < count($childPath) && (!$parentFound)) {
             $parentFound = ($childPath[$childCount]->getId() === $parentNode->getId());
-            $childCount++;
+            ++$childCount;
         }
 
         return $parentFound;

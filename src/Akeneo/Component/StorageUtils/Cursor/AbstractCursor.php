@@ -29,7 +29,7 @@ abstract class AbstractCursor implements CursorInterface
      */
     public function next()
     {
-        $this->position++;
+        ++$this->position;
     }
 
     /**

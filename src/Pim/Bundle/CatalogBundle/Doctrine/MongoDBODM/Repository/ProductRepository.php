@@ -651,7 +651,7 @@ class ProductRepository extends DocumentRepository implements
 
         // we iterate over the number of association types because the query removes only the product that
         // belongs to the first association (instead of removing it in existing associations)
-        for ($i = 0; $i < $assocTypeCount; $i++) {
+        for ($i = 0; $i < $assocTypeCount; ++$i) {
             $collection->update(
                 [
                     'associations' => [

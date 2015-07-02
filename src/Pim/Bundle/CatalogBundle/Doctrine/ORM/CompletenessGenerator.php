@@ -400,7 +400,7 @@ MAIN_SQL;
                 array_reduce(
                     $this->getClassMetadata($this->productValueClass)->getAssociationMappings(),
                     function ($fields, $mapping) use (&$index) {
-                        $index++;
+                        ++$index;
 
                         return array_merge(
                             $fields,
@@ -495,7 +495,7 @@ MAIN_SQL;
         return array_reduce(
             $this->getClassMetadata($this->productValueClass)->getAssociationMappings(),
             function ($joins, $mapping) use (&$index) {
-                $index++;
+                ++$index;
 
                 return array_merge($joins, $this->getAssociationJoins($mapping, $this->getAssociationAlias($index)));
             },

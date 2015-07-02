@@ -77,7 +77,7 @@ class Paginator implements PaginatorInterface
     public function next()
     {
         if ($this->valid()) {
-            $this->pageNumber++;
+            ++$this->pageNumber;
             $this->pageData = $this->getNextDataPage();
         } else {
             $this->pageData = false;
@@ -134,7 +134,7 @@ class Paginator implements PaginatorInterface
             if (null !== $current && false !== $current) {
                 $result[] = $current;
             }
-            $i++;
+            ++$i;
             $this->cursor->next();
         } while ($i < $this->pageSize && null !== $current && false !== $current);
 
