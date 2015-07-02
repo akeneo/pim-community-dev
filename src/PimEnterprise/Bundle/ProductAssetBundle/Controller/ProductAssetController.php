@@ -271,7 +271,8 @@ class ProductAssetController extends Controller
 
         if (!empty($codes)) {
             $nextId = 1;
-            while (in_array(sprintf('%s_%d', $code, $nextId), $codes)) {
+            $code = substr($code, 0, strlen($code));
+            while (in_array($code . '_' . $nextId, $codes)) {
                 $nextId++;
             }
 
