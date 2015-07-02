@@ -217,7 +217,7 @@ class ProductAssetController extends Controller
             $asset->setCode($form->get('code')->getData());
 
             try {
-                if (!$isLocalized) {
+                if (!$isLocalized && null !== $uploadedFile) {
                     $reference = $asset->getReference();
                     $file = $this->fileFactory->create(
                         $uploadedFile,
