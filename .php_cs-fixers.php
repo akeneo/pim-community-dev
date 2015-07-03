@@ -16,4 +16,3 @@ return [
     'ordered_use',
     'phpdoc_order'
 ];
-
