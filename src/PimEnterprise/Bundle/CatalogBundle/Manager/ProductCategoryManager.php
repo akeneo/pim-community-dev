@@ -67,7 +67,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
         foreach ($trees as $tree) {
             if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree)) {
                 $treeCount[] = [
-                    'tree' => $tree,
+                    'tree'         => $tree,
                     'productCount' => isset($count[$tree->getId()]) ? $count[$tree->getId()] : 0
                 ];
             }

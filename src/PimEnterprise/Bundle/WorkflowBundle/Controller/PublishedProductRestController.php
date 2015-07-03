@@ -53,8 +53,8 @@ class PublishedProductRestController
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      *
-     * @return JsonResponse
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @return JsonResponse
      */
     public function publishAction(Request $request)
     {
@@ -78,8 +78,8 @@ class PublishedProductRestController
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      *
-     * @return JsonResponse
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @return JsonResponse
      */
     public function unpublishAction(Request $request)
     {
@@ -100,9 +100,9 @@ class PublishedProductRestController
      *
      * @param integer|string $id
      *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findPublishedOr404($originalProductId)
     {
@@ -123,9 +123,9 @@ class PublishedProductRestController
      *
      * @param integer|string $id
      *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findOr404($originalProductId)
     {

@@ -109,7 +109,7 @@ class EnterpriseFeatureContext extends FeatureContext
             $condition = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $condition
             );
@@ -170,7 +170,7 @@ class EnterpriseFeatureContext extends FeatureContext
             $action = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $action
             );
@@ -234,7 +234,7 @@ class EnterpriseFeatureContext extends FeatureContext
             $action = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $action
             );

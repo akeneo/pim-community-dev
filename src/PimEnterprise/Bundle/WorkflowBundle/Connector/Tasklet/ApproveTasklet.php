@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
