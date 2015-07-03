@@ -9,9 +9,9 @@ require(['oro/mediator'], function (mediator) {
     });
 });
 
-require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation',
+require(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'pim/router',
     'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'
-    ], function ($, _, __, app, mediator, layout, Navigation, DeleteConfirmation, messenger) {
+    ], function ($, Backbone, _, __, app, mediator, layout, router, DeleteConfirmation, messenger) {
     'use strict';
 
     /* ============================================================
@@ -149,10 +149,7 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
             });
 
             confirm.on('ok', function () {
-                var navigation = Navigation.getInstance();
-                if (navigation) {
-                    navigation.loadingMask.show();
-                }
+                router.showLoadingMask();
 
                 $.ajax({
                     url: el.data('url'),
@@ -167,14 +164,12 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
                         if (el.data('redirect')) {
                             $.isActive(true);
                             Backbone.history.navigate(el.data('redirect'));
-                        } else if (navigation) {
-                            navigation.loadingMask.hide();
+                        } else {
+                            router.hideLoadingMask();
                         }
                     },
                     error: function () {
-                        if (navigation) {
-                            navigation.loadingMask.hide();
-                        }
+                        router.hideLoadingMask();
 
                         messenger.notificationMessage(
                             'error',

@@ -13,5 +13,5 @@ define(function (require) {
         set: function (params) {
             routeParams = params;
         }
-    }
+    };
 });

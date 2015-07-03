@@ -1,3 +1,4 @@
+/* jshint unused:false */
 'use strict';
 
 define(function (require) {
