@@ -7,9 +7,10 @@ define(function (require) {
 
     return BaseController.extend({
         renderRoute: function (route, path) {
-            return $.get(path).then(_.bind(function (template) {
-                this.$el.html(template);
-            }, this)).promise();
+            return $.get(path).then(_.bind(this.renderTemplate, this)).promise();
+        },
+        renderTemplate: function (template) {
+            this.$el.html(template);
         }
     });
 });
