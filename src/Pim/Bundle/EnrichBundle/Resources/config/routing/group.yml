@@ -27,19 +27,19 @@ pim_enrich_group_history:
 
 pim_enrich_group_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.group:indexAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group:indexAction }
     methods: [GET]
 
 pim_enrich_group_rest_get:
     path: /rest/{identifier}
-    defaults: { _controller: pim_enrich.controller.rest.group:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group:getAction }
     requirements:
         identifier: '[a-zA-Z0-9_]+'
     methods: [GET]
 
 pim_enrich_group_rest_list_products:
     path: /rest/{identifier}/products
-    defaults: { _controller: pim_enrich.controller.rest.group:listProductsAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.group:listProductsAction }
     requirements:
         identifier: '[a-zA-Z0-9_]+'
     methods: [GET]

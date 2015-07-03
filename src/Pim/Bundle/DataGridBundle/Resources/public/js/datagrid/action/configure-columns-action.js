@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'pim/datagrid/state', 'backbone/bootstrap-modal', 'jquery-ui-full'],
-    function($, _, Backbone, Routing, LoadingMask, DatagridState) {
+    ['jquery', 'underscore', 'backbone', 'pim/router', 'oro/loading-mask', 'pim/datagrid/state', 'backbone/bootstrap-modal', 'jquery-ui-full'],
+    function($, _, Backbone, router, LoadingMask, DatagridState) {
         'use strict';
 
         var Column = Backbone.Model.extend({
@@ -261,7 +261,7 @@ define(
 
             execute: function(e) {
                 e.preventDefault();
-                var url = Routing.generate('pim_datagrid_view_list_columns', { alias: this.gridName, dataLocale: this.locale });
+                var url = router.generate('pim_datagrid_view_list_columns', { alias: this.gridName, dataLocale: this.locale });
 
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo($('#container'));
@@ -312,9 +312,7 @@ define(
                         } else {
                             DatagridState.set(this.gridName, 'columns', values.join(','));
                             modal.close();
-                            var url = window.location.hash;
-                            Backbone.history.fragment = new Date().getTime();
-                            Backbone.history.navigate(url, true);
+                            router.reloadPage();
                         }
                     }, this));
                 }, this));

@@ -26,18 +26,17 @@ pim_enrich_product_listcategories:
     requirements:
         id: '[0-9a-f]+'
         categoryId: \d+
-        _format: json
 
 pim_enrich_product_rest_get:
     path: /rest/{id}
-    defaults: { _controller: pim_enrich.controller.rest.product:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.product:getAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET]
 
 pim_enrich_product_rest_post:
     path: /rest/{id}
-    defaults: { _controller: pim_enrich.controller.rest.product:postAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.product:postAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [POST]
@@ -51,32 +50,31 @@ pim_enrich_product_rest_remove:
 
 pim_enrich_product_category_rest_list:
     path: /rest/{id}/categories
-    defaults: { _controller: pim_enrich.controller.rest.product_category:listAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.product_category:listAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET]
 
 pim_enrich_product_completeness_rest_get:
     path: /rest/{id}/completeness
-    defaults: { _controller: pim_enrich.controller.rest.completeness:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.completeness:getAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET]
 
 pim_enrich_product_history_rest_get:
     path: /rest/{entityId}/history
-    defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: product, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: product }
     requirements:
         entityId: '[0-9a-f]+'
     methods: [GET]
 
 pim_enrich_product_remove_attribute_rest:
     path: /rest/{productId}/{attributeId}
-    defaults: { _controller: pim_enrich.controller.rest.product:removeAttributeAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.product:removeAttributeAction }
     requirements:
         productId: '[0-9a-f]+'
         attributeId: '\d+'
-        _format: json
     methods: [DELETE]
 
 pim_enrich_product_comments_rest_get:
@@ -87,18 +85,16 @@ pim_enrich_product_comments_rest_get:
     methods: [GET]
 
 pim_enrich_product_comments_rest_post:
-    path: /{id}/comments.{_format}
-    defaults: { _controller: pim_enrich.controller.rest.product_comment:postAction, _format: json }
+    path: /{id}/comments
+    defaults: { _controller: pim_enrich.controller.rest.product_comment:postAction }
     requirements:
         id: '[0-9a-f]+'
-        _format: json
     methods: [POST]
 
 pim_enrich_product_comment_reply_rest_post:
-    path: /{id}/comments/{commentId}.{_format}
-    defaults: { _controller: pim_enrich.controller.rest.product_comment:postReplyAction, _format: json }
+    path: /{id}/comments/{commentId}
+    defaults: { _controller: pim_enrich.controller.rest.product_comment:postReplyAction }
     requirements:
         id: '[0-9a-f]+'
         commentId: '[0-9a-f]+'
-        _format: json
     methods: [POST]

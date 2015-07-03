@@ -20,8 +20,6 @@ pim_enrich_associationtype_remove:
     methods: [DELETE]
 
 pim_enrich_associationtype_rest_index:
-    path: /rest.{_format}
-    defaults: { _controller: pim_enrich.controller.rest.association_type:indexAction, _format: json }
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.association_type:indexAction }
     methods: [GET]
-    requirements:
-        _format: json
