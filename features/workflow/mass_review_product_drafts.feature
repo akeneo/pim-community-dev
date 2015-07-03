@@ -15,8 +15,8 @@ Feature: Approve or refuse several product drafts at once
   Scenario: Successfully approve several proposals
     Given the following product drafts:
       | product        | status | author                        | result                                                                                 |
-      | leather-jacket | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"value":"Awesome leather jacket"}]}} |
-      | wool-jacket    | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"value":"Lame wool jacket"}]}}       |
+      | leather-jacket | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}} |
+      | wool-jacket    | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
     And I press the "Approve selected" button
@@ -31,9 +31,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Unsuccessfully approve proposals that contain values I can't edit
     Given the following product drafts:
-      | product        | status | author                        | result                                                                                 |
-      | leather-jacket | ready  | clothing_product_draft_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"value":"Dumb value"}]}} |
-      | wool-jacket    | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"value":"Lame wool jacket"}]}}       |
+      | product        | status | author                        | result                                                                                |
+      | leather-jacket | ready  | clothing_product_draft_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"data":"Dumb value"}]}} |
+      | wool-jacket    | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
     And I press the "Approve selected" button
@@ -46,9 +46,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Successfully refuse several proposals
     Given the following product drafts:
-      | product        | status | author                        | result                                                                                 |
-      | leather-jacket | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"value":"Awesome leather jacket"}]}} |
-      | wool-jacket    | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"value":"Lame wool jacket"}]}}       |
+      | product        | status | author                        | result                                                                                |
+      | leather-jacket | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Awesome leather jacket"}]}} |
+      | wool-jacket    | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
     And I press the "Refuse selected" button
@@ -63,9 +63,9 @@ Feature: Approve or refuse several product drafts at once
 
   Scenario: Unsuccessfully refuse proposals that contain values I can't edit
     Given the following product drafts:
-      | product        | status | author                        | result                                                                                 |
-      | leather-jacket | ready  | clothing_product_draft_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"value":"Dumb value"}]}} |
-      | wool-jacket    | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"value":"Lame wool jacket"}]}}       |
+      | product        | status | author                        | result                                                                                |
+      | leather-jacket | ready  | clothing_product_draft_import | {"values":{"legacy_attribute":[{"locale":"en_US","scope":null,"data":"Dumb value"}]}} |
+      | wool-jacket    | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
     And I press the "Refuse selected" button

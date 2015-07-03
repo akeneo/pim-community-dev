@@ -14,8 +14,8 @@ Feature: Create a draft with a simple select fields
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "rating", "data": "2", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                  |
-      | akeneo_tshirt  | Mary     | {"values": {"rating": [{"locale": null, "scope": null, "value": "2"}]}} |
+      | product        | username | result                                                                 |
+      | akeneo_tshirt  | Mary     | {"values": {"rating": [{"locale": null, "scope": null, "data": "2"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | rating | |
 
@@ -27,8 +27,8 @@ Feature: Create a draft with a simple select fields
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "rating", "data": "2", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                  |
-      | akeneo_tshirt  | Mary     | {"values": {"rating": [{"locale": null, "scope": null, "value": "2"}]}} |
+      | product        | username | result                                                                 |
+      | akeneo_tshirt  | Mary     | {"values": {"rating": [{"locale": null, "scope": null, "data": "2"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | rating | [3] |
 

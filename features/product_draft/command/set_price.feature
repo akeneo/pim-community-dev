@@ -14,8 +14,8 @@ Feature: Create a draft with a price fields
       | product       | actions                                                                                                                                             | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "price", "data": [{"data": 4, "currency": "EUR"}, {"data": "5", "currency": "USD"}], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                 |
-      | akeneo_tshirt  | Mary     | {"values": {"price": [{"locale": null, "scope": null, "value": [{"data": 4, "currency": "EUR"}, {"data": "5", "currency": "USD"}]}]}} |
+      | product        | username | result                                                                                                                               |
+      | akeneo_tshirt  | Mary     | {"values": {"price": [{"locale": null, "scope": null, "data": [{"data": 4, "currency": "EUR"}, {"data": "5", "currency": "USD"}]}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | price | |
 
@@ -24,11 +24,11 @@ Feature: Create a draft with a price fields
       | product       | attribute | value  |
       | akeneo_tshirt | price     | 12.00 EUR, 15.00 USD |
     Then I should get the following products after apply the following updater to it:
-      | product       | actions                                                                                                                                             | result | username |
+      | product       | actions                                                                                                                                                 | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "price", "data": [{"data": 4.00, "currency": "EUR"}, {"data": 5.00, "currency": "USD"}], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                                |
-      | akeneo_tshirt  | Mary     | {"values": {"price": [{"locale": null, "scope": null, "value": [{"data": 4.00, "currency": "EUR"}, {"data": 5.00, "currency": "USD"}]}]}} |
+      | product        | username | result                                                                                                                                   |
+      | akeneo_tshirt  | Mary     | {"values": {"price": [{"locale": null, "scope": null, "data": [{"data": 4.00, "currency": "EUR"}, {"data": 5.00, "currency": "USD"}]}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | price | 12.00 EUR, 15.00 USD |
 
@@ -37,7 +37,7 @@ Feature: Create a draft with a price fields
       | product       | attribute | value    |
       | akeneo_tshirt | price     | 5.00 USD |
     Then I should get the following products after apply the following updater to it:
-      | product       | actions                                                                                                                | result | username |
+      | product       | actions                                                                                                              | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "price", "data": [{"data": 5.00, "currency": "USD"}], "locale": null, "scope": null}] | {}     | Mary     |
     And I should not get the following proposal:
       | product       | username |
