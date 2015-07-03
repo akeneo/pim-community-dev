@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**

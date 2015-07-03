@@ -124,9 +124,9 @@ class ValueActionValidator extends ConstraintValidator
                 $action->getToField(),
                 [
                     'from_locale' => $action->getFromLocale(),
-                    'from_scope' => $action->getFromScope(),
-                    'to_locale' => $action->getToLocale(),
-                    'to_scope' => $action->getToScope()
+                    'from_scope'  => $action->getFromScope(),
+                    'to_locale'   => $action->getToLocale(),
+                    'to_scope'    => $action->getToScope()
                 ]
             );
         } catch (\Exception $e) {

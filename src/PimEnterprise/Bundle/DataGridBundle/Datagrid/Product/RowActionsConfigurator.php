@@ -102,8 +102,8 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         $properties = $this->configuration->offsetGetByPath('[properties]');
         $properties['row_action_link'] = [
-            'type'  => 'url',
-            'route' => 'pimee_enrich_product_dispatch',
+            'type'   => 'url',
+            'route'  => 'pimee_enrich_product_dispatch',
             'params' => ['id', 'dataLocale']
         ];
         $this->configuration->offsetSetByPath('[properties]', $properties);
