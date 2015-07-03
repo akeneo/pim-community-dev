@@ -84,10 +84,16 @@ define(function (require) {
             return RouteMatcher.match.apply(RouteMatcher, arguments);
         },
         redirect: function (fragment, options) {
+            fragment = fragment.indexOf('#') === 0 ? fragment : '#' + fragment;
             Backbone.history.navigate(fragment, options);
         },
         redirectToRoute: function (route, routeParams, options) {
             this.redirect(Routing.generate(route, routeParams), options);
+        },
+        reloadPage: function () {
+            var fragment = window.location.hash;
+            Backbone.history.fragment = new Date().getTime();
+            this.redirect(fragment, true);
         }
     });
 

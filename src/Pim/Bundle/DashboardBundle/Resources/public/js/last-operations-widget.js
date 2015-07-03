@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'pim/dashboard/abstract-widget', 'moment'],
-    function ($, _, Backbone, Routing, AbstractWidget, moment) {
+    ['jquery', 'underscore', 'pim/router', 'pim/dashboard/abstract-widget', 'moment'],
+    function ($, _, router, AbstractWidget, moment) {
         'use strict';
 
         return AbstractWidget.extend({
@@ -92,24 +92,19 @@ define(
                 e.preventDefault();
                 var route;
                 var operationType = $(e.currentTarget).data('operation-type');
+                var routeParams = { id: $(e.currentTarget).data('id') };
 
                 switch (operationType) {
                     case 'mass_edit':
                     case 'quick_export':
-                        route = Routing.generate(
-                            'pim_enrich_job_tracker_show',
-                            { id: $(e.currentTarget).data('id') }
-                        );
+                        route = 'pim_enrich_job_tracker_show';
                         break;
                     default:
-                        route = Routing.generate(
-                            'pim_importexport_' + operationType + '_execution_show',
-                            { id: $(e.currentTarget).data('id') }
-                        );
+                        route = 'pim_importexport_' + operationType + '_execution_show';
                         break;
                 }
 
-                Backbone.history.navigate(route);
+                router.redirectToRoute(route, routeParams);
             },
 
             setShowListBtn: function () {
@@ -124,7 +119,7 @@ define(
             showList: function (e) {
                 e.preventDefault();
 
-                Backbone.history.navigate(Routing.generate('pim_enrich_job_tracker_index'));
+                router.redirectToRoute('pim_enrich_job_tracker_index');
             },
 
             _processResponse: function (data) {

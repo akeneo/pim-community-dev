@@ -3,7 +3,6 @@ pim_dashboard_widget_data:
     defaults: { _controller: pim_dashboard.controller.widget:dataAction }
     requirements:
         _method: GET
-        _format: json
 
 pim_dashboard_index:
     path: /dashboard
