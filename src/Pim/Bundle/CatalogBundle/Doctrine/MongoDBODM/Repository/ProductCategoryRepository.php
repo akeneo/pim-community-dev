@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
@@ -98,13 +99,13 @@ class ProductCategoryRepository implements
      */
     protected function getCategoryIds(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
-        $categoryIds = array();
+        $categoryIds = [];
 
         if (null !== $categoryQb) {
             $categoryAlias = $categoryQb->getRootAlias();
             $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
         } else {
-            $categories = array(array('id' => $category->getId()));
+            $categories = [['id' => $category->getId()]];
         }
 
         foreach ($categories as $category) {
@@ -201,13 +202,13 @@ class ProductCategoryRepository implements
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected a "Pim\Bundle\CatalogBundle\Model\ProductInterface", got a "%s"',
-                    get_class($product)
+                    ClassUtils::getClass($product)
                 )
             );
         }
 
         $categories = $product->getCategories();
-        $categoryIds = array();
+        $categoryIds = [];
         foreach ($categories as $category) {
             $categoryIds[] = $category->getId();
         }
@@ -243,9 +244,9 @@ class ProductCategoryRepository implements
         $stmt->execute();
 
         $productCounts = $stmt->fetchAll();
-        $trees = array();
+        $trees = [];
         foreach ($productCounts as $productCount) {
-            $tree = array();
+            $tree = [];
             $tree['productCount'] = $productCount['product_count'];
             $tree['tree'] = $categoryRepository->find($productCount['tree_id']);
             $trees[] = $tree;

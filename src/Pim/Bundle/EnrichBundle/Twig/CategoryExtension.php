@@ -13,8 +13,6 @@ use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: A lot of protected functions can be moved into a proper repository
  */
 class CategoryExtension extends \Twig_Extension
 {

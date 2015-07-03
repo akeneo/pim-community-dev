@@ -62,6 +62,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
      */
     protected function setData(CategoryInterface $category, $field, $data)
     {
+        // TODO: Locales should be managed in a dedicated implementation of this updater
         if ('labels' === $field && $category instanceof TranslatableInterface) {
             foreach ($data as $localeCode => $label) {
                 $category->setLocale($localeCode);

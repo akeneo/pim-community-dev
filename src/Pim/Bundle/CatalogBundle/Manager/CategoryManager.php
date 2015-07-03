@@ -40,14 +40,14 @@ class CategoryManager
      */
     public function __construct(
         ObjectManager $om,
-        $categoryClass,
         CategoryRepositoryInterface $productCategoryRepo,
-        CategoryFactory $categoryFactory
+        CategoryFactory $categoryFactory,
+        $categoryClass
     ) {
         $this->om                  = $om;
-        $this->categoryClass       = $categoryClass;
         $this->productCategoryRepo = $productCategoryRepo;
         $this->categoryFactory     = $categoryFactory;
+        $this->categoryClass       = $categoryClass;
     }
 
     /**
@@ -55,7 +55,7 @@ class CategoryManager
      *
      * @return ObjectManager
      *
-     * @deprecated
+     * @deprecated Will be removed in 1.5
      *
      * TODO: To REMOVE.
      */
@@ -136,7 +136,7 @@ class CategoryManager
      */
     public function getChildren($parentId, $selectNodeId = false)
     {
-        $children = array();
+        $children = [];
 
         $entityRepository = $this->getEntityRepository();
 
@@ -157,7 +157,7 @@ class CategoryManager
     public function getTreeChoices()
     {
         $trees = $this->getTrees();
-        $choices = array();
+        $choices = [];
         foreach ($trees as $tree) {
             $choices[$tree->getId()] = $tree->getLabel();
         }
@@ -193,10 +193,10 @@ class CategoryManager
      */
     public function getFilledTree(CategoryInterface $root, Collection $categories)
     {
-        $parentsIds = array();
+        $parentsIds = [];
 
         foreach ($categories as $category) {
-            $categoryParentsIds = array();
+            $categoryParentsIds = [];
             $path = $this->getEntityRepository()->getPath($category);
 
             if ($path[0]->getId() === $root->getId()) {
@@ -236,7 +236,7 @@ class CategoryManager
      */
     public function getCategoryByCode($code)
     {
-        return $this->productCategoryRepo->findOneBy(array('code' => $code));
+        return $this->productCategoryRepo->findOneBy(['code' => $code]);
     }
 
     /**

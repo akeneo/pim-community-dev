@@ -46,8 +46,5 @@ jstree:
     product:
         all:          All products
         unclassified: Unclassified products
-    asset:
-        all:          All assets
-        unclassified: Unclassified assets
     no_tree:      No tree available
     include_sub:  Include sub-categories

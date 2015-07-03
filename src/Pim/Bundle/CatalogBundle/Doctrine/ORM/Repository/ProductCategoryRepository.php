@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
@@ -146,7 +147,7 @@ class ProductCategoryRepository implements
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected a "Pim\Bundle\CatalogBundle\Model\ProductInterface", got a "%s"',
-                    get_class($product)
+                    ClassUtils::getClass($product)
                 )
             );
         }
@@ -176,11 +177,12 @@ class ProductCategoryRepository implements
 
         $stmt->execute();
         $productCounts = $stmt->fetchAll();
-        $trees = array();
+        $trees = [];
+        $categoryRepo = $this->em->getRepository($categoryClass);
         foreach ($productCounts as $productCount) {
-            $tree = array();
+            $tree = [];
             $tree['productCount'] = $productCount['product_count'];
-            $tree['tree'] = $this->em->getRepository($categoryClass)->find($productCount['tree_id']);
+            $tree['tree'] = $categoryRepo->find($productCount['tree_id']);
             $trees[] = $tree;
         }
 
@@ -205,7 +207,7 @@ class ProductCategoryRepository implements
             $qb->setParameters($categoryQb->getParameters());
         }
 
-        $products = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $products = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($products);
     }
