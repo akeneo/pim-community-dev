@@ -39,14 +39,14 @@ define(function (require) {
             }
 
             this.showLoadingMask();
-            if (currentController) {
-                currentController.remove();
-                $('#container').empty();
-            }
 
             this.triggerStart(route);
 
             ControllerRegistry.get(route.name).done(_.bind(function (Controller) {
+                if (currentController) {
+                    currentController.remove();
+                    $('#container').empty();
+                }
                 var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
                 currentController = new Controller({ el: $view });
                 currentController.renderRoute(route, path).done(_.bind(function () {
@@ -82,6 +82,12 @@ define(function (require) {
         },
         match: function () {
             return RouteMatcher.match.apply(RouteMatcher, arguments);
+        },
+        redirect: function (fragment, options) {
+            Backbone.history.navigate(fragment, options);
+        },
+        redirectToRoute: function (route, routeParams, options) {
+            this.redirect(Routing.generate(route, routeParams), options);
         }
     });
 

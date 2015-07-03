@@ -51,7 +51,7 @@
         "monolog/monolog": "1.10.0",
         "nelmio/api-doc-bundle": "2.9.0",
         "oneup/flysystem-bundle": "1.1.0",
-        "oro/platform": "0.10.4",
+        "oro/platform": "dev-pim-1.4-navigation@dev",
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "sensio/generator-bundle": "2.3.5",

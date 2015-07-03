@@ -6,7 +6,7 @@ define(function (require) {
     require('jquery.select2');
 
     return FormController.extend({
-        renderRoute: function (route, path) {
+        renderRoute: function () {
             return FormController.prototype.renderRoute.apply(this, arguments).then(_.bind(function () {
                 this.$('select').select2();
             }, this));
