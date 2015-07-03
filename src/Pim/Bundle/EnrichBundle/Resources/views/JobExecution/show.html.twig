@@ -1,5 +1,3 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
-
 {% block content %}
 
     {% set title = "execution details"|trans ~ ' - ' ~ execution.jobInstance.label ~ ' [' ~ execution.jobInstance.code ~ ']' %}
@@ -36,11 +34,6 @@
             </tbody>
         </table>
     </div>
-
-{% endblock %}
-
-{% block head_script %}
-    {{ parent() }}
 
     <script type="text/template" id="job-execution-summary">
         {% block job_execution_summary %}
@@ -191,7 +184,7 @@
                         statusLabel:   '{{ 'Status'|trans }}',
                         downloadLabel: '{{ 'Download log'|trans }}',
 
-                        path:              '{{ path(refresh_route, {id:  execution.id, _format:  'json'}) }}',
+                        path:              '{{ path(refresh_route, {id: execution.id}) }}',
                         executionId:       {{ execution.id }},
                         downloadFileRoute: '{{ download_file_route }}',
                         downloadLogRoute:  '{{ download_log_route }}'

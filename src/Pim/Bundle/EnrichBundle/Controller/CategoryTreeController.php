@@ -112,7 +112,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @return array
      *
-     * @Template
+     * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
      * @AclAncestor("pim_enrich_category_list")
      */
     public function listTreeAction(Request $request)
@@ -163,7 +163,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @Template
+     * @Template("PimEnrichBundle:CategoryTree:children.json.twig")
      * @AclAncestor("pim_enrich_category_list")
      *
      * @return array

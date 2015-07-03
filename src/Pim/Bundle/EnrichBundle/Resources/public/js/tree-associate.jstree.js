@@ -51,7 +51,6 @@ define(
                                     {
                                         id: id,
                                         categoryId: currentTree,
-                                        _format: 'json',
                                         dataLocale: dataLocale,
                                         context: 'associate'
                                     }
@@ -61,7 +60,6 @@ define(
                             return Routing.generate(
                                 'pim_enrich_categorytree_children',
                                 {
-                                    _format: 'json',
                                     dataLocale: dataLocale,
                                     context: 'associate'
                                 }
