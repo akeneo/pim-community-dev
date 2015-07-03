@@ -44,9 +44,10 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     public function iShouldBeOnTheAssetEditPage($assetCode)
     {
         $asset = $this->getMainContext()->getSubcontext('fixtures')->getProductAsset($assetCode);
-
         $expectedAddress = $this->getPage('Asset edit')->getUrl(['id' => $asset->getId()]);
+
         $this->assertAddress($expectedAddress);
+        $this->currentPage = 'Asset edit';
     }
 
     /**
@@ -56,5 +57,6 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     {
         $expectedAddress = $this->getPage('Asset index')->getUrl();
         $this->assertAddress($expectedAddress);
+        $this->currentPage = 'Asset index';
     }
 }

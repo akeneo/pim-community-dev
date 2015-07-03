@@ -57,7 +57,7 @@ class EnterpriseAssetContext extends RawMinkContext
      * @Then /^I should see the reference upload zone$/
      * @Then /^I should see the (\S+) variation upload zone$/
      *
-     * @param null $channel
+     * @param null|string $channel
      *
      * @throws ElementNotFoundException
      */
@@ -108,6 +108,38 @@ class EnterpriseAssetContext extends RawMinkContext
     public function iUploadTheVariationFile($channel, $file)
     {
         $this->iUploadTheAssetFile($file, $channel);
+    }
+
+    /**
+     * @Given /^I switch localizable button to (\yes|no|Yes|No)$/
+     */
+    public function iSwitchLocalizableButtonTo($isLocalizable)
+    {
+        if ('yes' === strtolower($isLocalizable)) {
+            $isLocalizable = 'on';
+        } else {
+            $isLocalizable = 'off';
+        }
+
+        $this->getCurrentPage()->changeLocalizableSwitch($isLocalizable);
+    }
+
+    /**
+     * @Given /^I fill the code with (\S+)(| and wait for validation)$/
+     */
+    public function iFillTheCodeWith($value, $wait)
+    {
+        $dialog = $this->getCurrentPage()->getDialog();
+        $code   = $dialog->findField('Code');
+        $code->setValue($value);
+
+        if (!empty($wait)) {
+            $iconContainer = $code->getParent()->find('css', '.icons-container');
+            $this->getMainContext()->spin(function () use ($iconContainer) {
+                $tooltip = $iconContainer->find('css', 'i.validation-tooltip');
+                return $tooltip ? true : false;
+            });
+        }
     }
 
     /**
