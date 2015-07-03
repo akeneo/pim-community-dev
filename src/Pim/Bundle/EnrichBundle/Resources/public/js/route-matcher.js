@@ -27,8 +27,9 @@ define(function (require) {
 
         var escape = function (value) {
             return value.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
-        }
+        };
 
+        /* jshint loopfunc:true */
         for (var name in routes) {
             route = routes[name];
             var pattern = '';
@@ -79,7 +80,7 @@ define(function (require) {
         }
 
         return false;
-    }
+    };
 
     return {
         match: matchUrl

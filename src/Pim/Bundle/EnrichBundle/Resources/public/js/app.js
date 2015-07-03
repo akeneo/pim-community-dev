@@ -5,6 +5,7 @@ define(function (require) {
     var Backbone = require('backbone');
     var messenger = require('oro/messenger');
     var _ = require('underscore');
+    var FetcherRegistry = require('pim/fetcher-registry');
 
     return (function () {
         return {
@@ -13,6 +14,8 @@ define(function (require) {
                 this.debug = !!options.debug;
                 require('pim/router');
                 require('pim/page-title');
+
+                FetcherRegistry.initialize();
 
                 messenger.setup({
                     container: '#flash-messages .flash-messages-holder',
