@@ -15,6 +15,7 @@ Feature: Remove an attribute from a variant group
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
     When I add available attribute Comment
+    And I visit the "Attributes" tab
     And I visit the "Other" group
     Then I should see the Comment field
     When I am on the "boot" product page
@@ -22,6 +23,7 @@ Feature: Remove an attribute from a variant group
     Then I should see the Comment field
     And the field Comment should be disabled
     When I am on the "caterpillar_boots" variant group page
+    And I visit the "Attributes" tab
     And I remove the "Comment" attribute
     And I confirm the deletion
     Then I should see flash message "Attribute successfully removed from the variant group"
@@ -32,6 +34,7 @@ Feature: Remove an attribute from a variant group
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
     When I add available attribute Comment
+    And I visit the "Attributes" tab
     And I visit the "Other" group
     Then I should see the Comment field
     And I am on the "boot" product page

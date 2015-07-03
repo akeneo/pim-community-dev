@@ -1632,7 +1632,7 @@ class WebUser extends RawMinkContext
             // Get and print the normalized jobexecution to ease debugging
             $this->getSession()->executeScript(
                 sprintf(
-                    '$.get("/%s/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
+                    '$.get("/%s/%s_execution/%d?_format=json", function (resp) { window.executionLog = resp; });',
                     $jobInstance->getType() === 'import' ? 'collect' : 'spread',
                     $jobInstance->getType(),
                     $jobExecution->getId()

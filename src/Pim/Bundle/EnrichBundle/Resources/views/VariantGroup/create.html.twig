@@ -1,8 +1,4 @@
-{% spaceless %}
-{% if elements is not defined %}
-    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% endif %}
-{% endspaceless %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {{ form_start(form, {
     'action': path('pim_enrich_variant_group_create'),

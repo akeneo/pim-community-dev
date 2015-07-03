@@ -19,7 +19,7 @@ define(function (require) {
                 url:  $form.prop('action'),
                 data: $form.serialize()
             }).always(_.bind(function (template) {
-                this.$el.html(template);
+                this.renderTemplate(template);
                 router.hideLoadingMask();
             }, this));
 

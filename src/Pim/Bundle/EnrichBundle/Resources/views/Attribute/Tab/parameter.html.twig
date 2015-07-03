@@ -1,9 +1,5 @@
 <div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
-    {% spaceless %}
-    {% if elements is not defined %}
-        {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-    {% endif %}
-    {% endspaceless %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
     {% set generalParameters %}
         {{ form_row(form.code, { 'label': 'Code'|trans }) }}
