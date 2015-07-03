@@ -94,7 +94,7 @@ define([
                 return {
                     'locale': locale,
                     'scope':  scope,
-                    'value':  attribute.empty_value
+                    'data':   attribute.empty_value
                 };
             },
 
@@ -124,7 +124,7 @@ define([
                         }
 
                         if ('pim_catalog_price_collection' === attribute.type) {
-                            newValue.value = this.generateMissingPrices(newValue.value, currencies);
+                            newValue.data = this.generateMissingPrices(newValue.data, currencies);
                         }
 
                     }, this));

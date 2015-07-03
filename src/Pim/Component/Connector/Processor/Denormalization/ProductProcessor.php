@@ -133,9 +133,7 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function filterIdenticalData(ProductInterface $product, array $filteredItem)
     {
-        $filteredItem = $this->productFilter->filter($product, $this->convertDataToValue($filteredItem));
-
-        return $this->convertValueToData($filteredItem);
+        return $this->productFilter->filter($product, $filteredItem);
     }
 
     /**
@@ -406,57 +404,5 @@ class ProductProcessor extends AbstractProcessor
     protected function getDefaultValues()
     {
         return ['enabled' => $this->enabled];
-    }
-
-    /**
-     * This is a temp method to convert "data" keys to "value" keys.
-     * This is an inconsistent between array converters & normalizers. Will be removed with PIM-4246
-     *
-     * @param array $items
-     *
-     * @return array
-     */
-    protected function convertDataToValue(array $items)
-    {
-        $data = $items;
-
-        foreach ($items as $code => $item) {
-            if (is_array($item)) {
-                foreach ($item as $index => $value) {
-                    if (is_array($value) && array_key_exists('data', $value)) {
-                        $data[$code][$index]['value'] = $value['data'];
-                        unset($data[$code][$index]['data']);
-                    }
-                }
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * This is a temp method to convert "value" keys to "data" keys.
-     * This is an inconsistent between array converters & normalizers. Will be removed with PIM-4246
-     *
-     * @param array $items
-     *
-     * @return array
-     */
-    protected function convertValueToData(array $items)
-    {
-        $data = $items;
-
-        foreach ($items as $code => $item) {
-            if (is_array($item)) {
-                foreach ($item as $index => $value) {
-                    if (is_array($value) && array_key_exists('value', $value)) {
-                        $data[$code][$index]['data'] = $value['value'];
-                        unset($data[$code][$index]['value']);
-                    }
-                }
-            }
-        }
-
-        return $data;
     }
 }

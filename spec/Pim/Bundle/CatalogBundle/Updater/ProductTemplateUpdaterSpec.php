@@ -34,26 +34,26 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
                 [
                     'locale' => 'en_US',
                     'scope'  => 'ecommerce',
-                    'value'  => 'Foo'
+                    'data'   => 'Foo'
                 ],
                 [
                     'locale' => 'en_US',
                     'scope'  => 'mobile',
-                    'value'  => 'Bar'
+                    'data'   => 'Bar'
                 ]
             ],
             'color' => [
                 [
                     'locale' => null,
                     'scope'  => null,
-                    'value'  => 'red'
+                    'data'   => 'red'
                 ]
             ],
             'price' => [
                 [
                     'locale' => 'fr_FR',
-                    'scope' => null,
-                    'value' => [
+                    'scope'  => null,
+                    'data'   => [
                         ['data' => 10, 'currency' => 'EUR'],
                         ['data' => 20, 'currency' => 'USD']
                     ]
@@ -62,8 +62,8 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
             'image' => [
                 [
                     'locale' => null,
-                    'scope' => 'mobile',
-                    'value' => [
+                    'scope'  => 'mobile',
+                    'data'   => [
                         'filePath' => '/uploads/image.jpg',
                         'originalFilename' => 'Image.jpg'
                     ]

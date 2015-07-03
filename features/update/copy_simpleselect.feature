@@ -14,5 +14,5 @@ Feature: Update simple select fields
       | sku                 | front_color  |
       | MONOCHROMATIC_PAPER | Red          |
     Then I should get the following products after apply the following updater to it:
-      | product             | actions                                                                        | result                                         |
-      | MONOCHROMATIC_PAPER | [{"type": "copy_data", "from_field": "front_color", "to_field": "back_color"}] | {"values": {"back_color": [{"value": "Red"}]}} |
+      | product             | actions                                                                        | result                                        |
+      | MONOCHROMATIC_PAPER | [{"type": "copy_data", "from_field": "front_color", "to_field": "back_color"}] | {"values": {"back_color": [{"data": "Red"}]}} |

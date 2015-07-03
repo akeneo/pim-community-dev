@@ -19,6 +19,13 @@ The goal of this API is to give a straightforward and normalized way to update o
 
 To achieve a consistent API and avoid BC Breaks, we depreciate few methods from ProductUpdater.
 
+To have a better consistence between updaters and normalizers, `Pim\Bundle\TransformBundle\Normalizer\Structured\ProductValueNormalizer` now returns an array with a "data" key instead of "value" key.
+This has an impact on the table `pim_catalog_product_template` which is used by the variant groups for instance. To convert the database structure of this table, you can execute the following command in your project folder:
+
+```
+    php upgrades/common/migrate_product_template.php --env=YOUR_ENV
+```
+
 ## UPGRADE IMPORT/EXPORT
 
 The Import/Export system has been reworked.
