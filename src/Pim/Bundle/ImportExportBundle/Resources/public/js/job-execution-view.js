@@ -221,7 +221,7 @@ define(
 
                 var jobExecution = new JobExecution(params);
                 loading = true;
-                jobExecution.fetch();
+                jobExecution.fetch({data: {_format: 'json'}});
 
                 params.model = jobExecution;
 
@@ -237,7 +237,7 @@ define(
 
                 interval = setInterval(function () {
                     if (!loading) {
-                        jobExecution.fetch();
+                        jobExecution.fetch({data: {_format: 'json'}});
                     }
                 }, 1000);
 

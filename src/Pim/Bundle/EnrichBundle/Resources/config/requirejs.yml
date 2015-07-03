@@ -25,7 +25,7 @@ config:
                 pim_enrich_group_edit:                pim/controller/form
                 pim_enrich_group_type_edit:           pim/controller/form
                 pim_enrich_product_edit:              pim/controller/product
-                pim_enrich_variant_group_edit:        pim/controller/form
+                pim_enrich_variant_group_edit:        pim/controller/variantGroup
                 pim_importexport_export_profile_edit: pim/controller/form
                 pim_importexport_import_profile_edit: pim/controller/form
                 oro_user_create:                      pim/controller/form
@@ -134,6 +134,7 @@ config:
         pim/controller/form:                pimenrich/js/controller/form
         pim/controller/channel:             pimenrich/js/controller/channel
         pim/controller/product:             pimenrich/js/controller/product
+        pim/controller/variantGroup:        pimenrich/js/controller/variantGroup
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector

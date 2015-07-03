@@ -44,7 +44,8 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Attributes" tab
 
   Scenario: Change a pim_catalog_boolean attribute of a variant group
-    When I add available attributes Handmade
+    When I add available attribute Handmade
+    And I visit the "Attributes" tab
     And I visit the "Other" group
     And I check the "Handmade" switch
     And I save the variant group
@@ -103,7 +104,8 @@ Feature: Editing attribute values of a variant group also updates products
       | description-en_US-tablet | The best boots! |
 
   Scenario: Change a pim_catalog_image attribute of a variant group
-    When I add available attributes Side view
+    When I add available attribute Side view
+    And I visit the "Attributes" tab
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"
     And I save the variant group
@@ -111,7 +113,8 @@ Feature: Editing attribute values of a variant group also updates products
       | side_view | SNKRS-1R.png |
 
   Scenario: Change a pim_catalog_file attribute of a variant group
-    When I add available attributes Technical description
+    When I add available attribute Technical description
+    And I visit the "Attributes" tab
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Technical description"
     And I save the variant group

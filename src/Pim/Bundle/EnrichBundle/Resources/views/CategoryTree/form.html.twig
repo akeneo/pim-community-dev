@@ -1,7 +1,5 @@
 {% spaceless %}
-{% if elements is not defined %}
-    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% endif %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set parentId = form.vars.value.parent ? form.vars.value.parent.id : null %}
 
