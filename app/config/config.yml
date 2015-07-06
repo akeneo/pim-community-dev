@@ -26,6 +26,7 @@ framework:
         path:                 /_fragment # used for controller action in template
     serializer:
         enabled:              true
+    http_method_override: true
 
 # Twig Configuration
 twig:
