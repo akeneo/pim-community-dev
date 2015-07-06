@@ -44,4 +44,13 @@ interface AssetRepositoryInterface extends
      * @param mixed        $value
      */
     public function applyTagFilter(QueryBuilder $qb, $field, $operator, $value);
+
+    /**
+     * Find assets by identifiers
+     *
+     * @param array $identifiers
+     *
+     * @return ArrayCollection
+     */
+    public function findByIdentifiers(array $identifiers = []);
 }

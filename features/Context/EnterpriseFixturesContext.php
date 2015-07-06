@@ -24,6 +24,7 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\Tag;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 
 /**
  * A context for creating entities
@@ -116,7 +117,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
-            $productDraft->setStatus($data['status'] === 'ready' ? ProductDraft::READY : ProductDraft::IN_PROGRESS);
+            $productDraft->setStatus($data['status'] === 'ready' ? ProductDraftInterface::READY : ProductDraftInterface::IN_PROGRESS);
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
 
             if (isset($data['result'])) {

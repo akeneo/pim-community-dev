@@ -1,0 +1,13 @@
+pimee_product_asset:
+    form:
+        product:
+            asset:
+                manage: Manage assets
+                panel:
+                    basket:
+                        title: Basket
+                        empty_basket: Basket is empty
+                manage_asset:
+                    title: Manage assets
+                    cancel: Cancel
+                    confirm: Confirm

@@ -1,4 +1,24 @@
 config:
     paths:
+        # Fields
+        pimee/asset-collection-field: pimenterpriseproductasset/js/product/field/asset-collection-field
+
+        # Templates
+        pimee/template/product/field/asset-collection: pimenterpriseproductasset/templates/product/field/asset-collection.html
+        pimee/template/picker/asset-grid: pimenterpriseproductasset/templates/picker/asset-grid.html
+        pimee/template/picker/basket: pimenterpriseproductasset/templates/picker/basket.html
+
+        # Extensions
+        pimee/picker/asset-grid: pimenterpriseproductasset/js/picker/asset-grid
+
         pimee/productasset/variations: pimenterpriseproductasset/js/form/variations
         pimee/productasset/uploader:   pimenterpriseproductasset/js/form/uploader
+
+    config:
+        pim/fetcher-registry:
+            fetchers:
+                asset:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pimee_product_asset_rest_index

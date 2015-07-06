@@ -30,6 +30,8 @@ class PimEnterpriseEnrichExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_icons.yml');
+        $loader->load('connector/processors.yml');
+        $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('event_listeners.yml');
@@ -38,12 +40,10 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('mass_actions.yml');
         $loader->load('normalizers.yml');
         $loader->load('parameters.yml');
-        $loader->load('processors.yml');
         $loader->load('twig.yml');
         $loader->load('view_elements/attribute_group.yml');
         $loader->load('view_elements/category.yml');
         $loader->load('view_elements/product.yml');
         $loader->load('view_updaters.yml');
-        $loader->load('writers.yml');
     }
 }

@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -86,7 +86,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $valuePresenter,
         Model\ProductValueInterface $value,
         Model\ProductInterface $product,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
@@ -110,7 +110,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ProductValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
         $productDraft->getProduct()->willReturn($product);
@@ -139,7 +139,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ProductValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface');
         $productDraft->getProduct()->willReturn($product);
@@ -168,7 +168,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         \Twig_Environment $twig,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface');
         $productDraft->getProduct()->willReturn($product);
