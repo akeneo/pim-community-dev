@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Factory\CategoryFactory;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Category import processor, allows to,

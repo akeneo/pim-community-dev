@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Manages completeness
@@ -242,7 +242,7 @@ class CompletenessManager
             $missing = false;
             if (!isset($productValues[$valueCode])) {
                 $missing = true;
-            } elseif ($this->validator->validateValue($productValues[$valueCode], $constraint)->count()) {
+            } elseif ($this->validator->validate($productValues[$valueCode], $constraint)->count()) {
                 $missing = true;
             }
             if ($missing) {
