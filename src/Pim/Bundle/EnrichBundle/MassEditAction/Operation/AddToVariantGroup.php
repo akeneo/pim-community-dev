@@ -71,6 +71,10 @@ class AddToVariantGroup extends ProductMassEditOperation
         $this->skippedObjects = [];
 
         foreach ($products as $product) {
+            if (is_array($product)) {
+                $product = $product[0];
+            }
+
             $violations = $this->validator->validate($product, ['pim_catalog_variant_group']);
 
             if ($product instanceof ProductInterface &&
