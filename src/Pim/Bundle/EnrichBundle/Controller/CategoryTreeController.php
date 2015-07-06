@@ -146,7 +146,7 @@ class CategoryTreeController extends AbstractDoctrineController
             'trees'          => $this->categoryRepository->getTrees(),
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
-            'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
+            'item_count'  => (bool) $this->getRequest()->get('with_items_count', true),
             'related_entity' => $relatedEntity
         ];
     }
@@ -195,11 +195,11 @@ class CategoryTreeController extends AbstractDoctrineController
             return ['categories' => []];
         }
 
-        $selectNodeId      = $this->getRequest()->get('select_node_id', -1);
-        $withProductsCount = (bool) $this->getRequest()->get('with_products_count', false);
-        $includeParent     = (bool) $this->getRequest()->get('include_parent', false);
-        $includeSub        = (bool) $this->getRequest()->get('include_sub', false);
-        $relatedEntity     = $this->getRequest()->get('related_entity', 'product');
+        $selectNodeId   = $this->getRequest()->get('select_node_id', -1);
+        $withItemsCount = (bool)$this->getRequest()->get('with_items_count', false);
+        $includeParent  = (bool)$this->getRequest()->get('include_parent', false);
+        $includeSub     = (bool)$this->getRequest()->get('include_sub', false);
+        $relatedEntity  = $this->getRequest()->get('related_entity', 'product');
 
         try {
             $selectNode = $this->findCategory($selectNodeId);
@@ -225,7 +225,7 @@ class CategoryTreeController extends AbstractDoctrineController
                 'categories'     => $categories,
                 'parent'         => ($includeParent) ? $parent : null,
                 'include_sub'    => $includeSub,
-                'product_count'  => $withProductsCount,
+                'item_count'     => $withItemsCount,
                 'select_node'    => $selectNode,
                 'related_entity' => $relatedEntity
             ],

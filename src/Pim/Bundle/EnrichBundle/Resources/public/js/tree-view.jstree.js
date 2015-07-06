@@ -131,7 +131,7 @@ define(
                             return {
                                 id: getNodeId(node),
                                 select_node_id: getActiveNode(),
-                                with_products_count: 1, // TODO: Change naming
+                                with_items_count: 1,
                                 include_sub: +includeSub
                             };
                         }

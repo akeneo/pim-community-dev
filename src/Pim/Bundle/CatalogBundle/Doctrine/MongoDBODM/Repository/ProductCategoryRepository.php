@@ -222,7 +222,7 @@ class ProductCategoryRepository implements
         if (!empty($categoryIds)) {
             $sql = "SELECT".
                    "    tree.id AS tree_id,".
-                   "    COUNT(category.id) AS product_count".
+                   "    COUNT(category.id) AS item_count".
                    "  FROM $categoryTable tree".
                    "  LEFT JOIN $categoryTable category".
                    "    ON category.root = tree.id".
@@ -232,7 +232,7 @@ class ProductCategoryRepository implements
         } else {
             $sql = "SELECT".
                    "    tree.id AS tree_id,".
-                   "    '0' AS product_count".
+                   "    '0' AS item_count".
                    "  FROM $categoryTable tree".
                    "  LEFT JOIN $categoryTable category".
                    "    ON category.root = tree.id".
@@ -247,7 +247,7 @@ class ProductCategoryRepository implements
         $trees = [];
         foreach ($productCounts as $productCount) {
             $tree = [];
-            $tree['productCount'] = $productCount['product_count'];
+            $tree['itemCount'] = $productCount['item_count'];
             $tree['tree'] = $categoryRepository->find($productCount['tree_id']);
             $trees[] = $tree;
         }

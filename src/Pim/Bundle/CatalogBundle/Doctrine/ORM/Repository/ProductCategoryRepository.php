@@ -163,7 +163,7 @@ class ProductCategoryRepository implements
 
         $sql = "SELECT".
             "    tree.id AS tree_id,".
-            "    COUNT(category_product.product_id) AS product_count".
+            "    COUNT(category_product.product_id) AS item_count".
             "  FROM $categoryTable tree".
             "  JOIN $categoryTable category".
             "    ON category.root = tree.id".
@@ -181,7 +181,7 @@ class ProductCategoryRepository implements
         $categoryRepo = $this->em->getRepository($categoryClass);
         foreach ($productCounts as $productCount) {
             $tree = [];
-            $tree['productCount'] = $productCount['product_count'];
+            $tree['itemCount'] = $productCount['item_count'];
             $tree['tree'] = $categoryRepo->find($productCount['tree_id']);
             $trees[] = $tree;
         }
