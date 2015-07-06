@@ -102,13 +102,12 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                         onDelete: CASCADE
     oneToOne:
         media:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInterface
             cascade:
                 - remove
                 - persist
                 - refresh
                 - detach
-            inversedBy: value
             joinColumns:
                 media_id:
                     referencedColumnName: id
