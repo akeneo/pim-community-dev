@@ -36,7 +36,7 @@ class SetAttributeRequirementsType extends AbstractType
                 'attributeRequirements',
                 'collection',
                 [
-                    'type' => 'pim_enrich_attribute_requirement',
+                    'type'    => 'pim_enrich_attribute_requirement',
                     'options' => [
                         'keep_non_required' => true
                     ],

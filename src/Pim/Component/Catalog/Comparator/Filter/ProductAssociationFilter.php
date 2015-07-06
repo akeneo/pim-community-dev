@@ -97,7 +97,6 @@ class ProductAssociationFilter implements ProductFilterInterface
         return !isset($originalValues[$type][$key]) ? [] : $originalValues[$type][$key];
     }
 
-
     /**
      * Normalize original product
      *

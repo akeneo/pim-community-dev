@@ -20,6 +20,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class AssertionContext extends RawMinkContext
 {
+    use SpinCapableTrait;
+
     /**
      * Checks, that page contains specified text.
      *

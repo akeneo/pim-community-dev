@@ -329,7 +329,7 @@ class ProductController extends AbstractDoctrineController
             }
 
             $params = [
-                'id' => $product->getId(),
+                'id'         => $product->getId(),
                 'dataLocale' => $this->getDataLocaleCode(),
             ];
             if ($comparisonLocale = $this->getComparisonLocale()) {

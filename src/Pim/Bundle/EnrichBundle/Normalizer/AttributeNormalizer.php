@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -24,14 +25,22 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var FieldProviderInterface */
     protected $fieldProvider;
 
+    /** @var EmptyValueProviderInterface */
+    protected $emptyValueProvider;
+
     /**
-     * @param NormalizerInterface    $normalizer
-     * @param FieldProviderInterface $fieldProvider
+     * @param NormalizerInterface         $normalizer
+     * @param FieldProviderInterface      $fieldProvider
+     * @param EmptyValueProviderInterface $emptyValueProvider
      */
-    public function __construct(NormalizerInterface $normalizer, FieldProviderInterface $fieldProvider)
-    {
-        $this->normalizer    = $normalizer;
-        $this->fieldProvider = $fieldProvider;
+    public function __construct(
+        NormalizerInterface $normalizer,
+        FieldProviderInterface $fieldProvider,
+        EmptyValueProviderInterface $emptyValueProvider
+    ) {
+        $this->normalizer         = $normalizer;
+        $this->fieldProvider      = $fieldProvider;
+        $this->emptyValueProvider = $emptyValueProvider;
     }
 
     /**
@@ -42,7 +51,7 @@ class AttributeNormalizer implements NormalizerInterface
         $normalizedAttribute = $this->normalizer->normalize($attribute, 'json', $context) + [
             'id'              => $attribute->getId(),
             'wysiwyg_enabled' => $attribute->isWysiwygEnabled(),
-            'empty_value'     => $this->getEmptyValue($attribute),
+            'empty_value'     => $this->emptyValueProvider->getEmptyValue($attribute),
             'field_type'      => $this->fieldProvider->getField($attribute)
         ];
 
@@ -55,42 +64,5 @@ class AttributeNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AttributeInterface && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Get empty value for specified attribute depending on its type
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return array|bool|string|null
-     */
-    protected function getEmptyValue(AttributeInterface $attribute)
-    {
-        switch ($attribute->getAttributeType()) {
-            case 'pim_catalog_metric':
-                $emptyValue = [
-                    'data' => null,
-                    'unit' => $attribute->getDefaultMetricUnit(),
-                ];
-                break;
-            case 'pim_catalog_multiselect':
-            case 'pim_reference_data_multiselect':
-                $emptyValue = [];
-                break;
-            case 'pim_catalog_text':
-                $emptyValue = '';
-                break;
-            case 'pim_catalog_boolean':
-                $emptyValue = false;
-                break;
-            case 'pim_catalog_price_collection':
-                $emptyValue = [];
-                break;
-            default:
-                $emptyValue = null;
-                break;
-        }
-
-        return $emptyValue;
     }
 }

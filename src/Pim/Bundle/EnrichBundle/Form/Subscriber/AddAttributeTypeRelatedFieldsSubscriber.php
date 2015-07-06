@@ -158,7 +158,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
             'required'  => true,
             'multiple'  => false,
             'read_only' => true,
-            'attr' => [
+            'attr'      => [
                 'class' => 'hide'
             ]
         ];

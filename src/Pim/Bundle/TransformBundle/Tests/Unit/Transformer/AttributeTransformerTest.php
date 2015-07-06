@@ -128,10 +128,10 @@ class AttributeTransformerTest extends EntityTransformerTestCase
         $object = $this->transformer->transform(
             'Pim\Bundle\CatalogBundle\Entity\Attribute',
             array(
-                'code' => 'code',
-                'type' => 'type',
-                'col1' => 'val1',
-                'col2' => 'val2',
+                'code'    => 'code',
+                'type'    => 'type',
+                'col1'    => 'val1',
+                'col2'    => 'val2',
                 'options' => array(
                     array(
                         'code' => 'o1code',

@@ -115,11 +115,11 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         $expr->field('_id')->in($productIds);
 
         $pipeline = array(
-            array('$match' => $expr->getQuery()),
+            array('$match'  => $expr->getQuery()),
             array('$unwind' => '$values'),
             array(
                 '$group'  => array(
-                    '_id'       => array('id' => '$_id', 'family' => '$family'),
+                    '_id'       => array('id'         => '$_id', 'family' => '$family'),
                     'attribute' => array( '$addToSet' => '$values.attribute')
                 )
             )

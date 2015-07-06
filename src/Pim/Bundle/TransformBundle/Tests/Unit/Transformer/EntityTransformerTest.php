@@ -47,7 +47,7 @@ class EntityTransformerTest extends EntityTransformerTestCase
 
         $object = $this->transformer->transform(
             'stdClass',
-            array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2', 'skipped' => 'skipped'),
+            array('code'  => 'code', 'col1' => 'val1', 'col2' => 'val2', 'skipped' => 'skipped'),
             array('prop3' => 'val3', 'prop4' => 'val4')
         );
         $this->assertInstanceOf('stdClass', $object);

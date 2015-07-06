@@ -153,8 +153,8 @@ class ProductPdfRenderer implements RendererInterface
         $resolver->setDefaults(
             [
                 'groupedAttributes' => [],
-                'imageAttributes' => [],
-                'renderingDate' => new \DateTime()
+                'imageAttributes'   => [],
+                'renderingDate'     => new \DateTime()
             ]
         );
     }

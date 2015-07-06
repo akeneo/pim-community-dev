@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class BaseFieldProvider implements FieldProviderInterface
 {
+    /** @var array */
     protected $fields = [
         'pim_catalog_boolean'          => 'akeneo-switch-field',
         'pim_catalog_date'             => 'akeneo-datepicker-field',
