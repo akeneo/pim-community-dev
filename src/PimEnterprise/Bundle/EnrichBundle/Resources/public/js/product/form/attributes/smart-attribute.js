@@ -6,12 +6,11 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'pim/field-manager',
         'pimee/rule-manager',
         'oro/mediator',
         'text!pimee/template/product/tab/attribute/smart-attribute'
     ],
-    function ($, _, Backbone, BaseForm, FieldManager, RuleManager, mediator, smartAttributeTemplate) {
+    function ($, _, Backbone, BaseForm, RuleManager, mediator, smartAttributeTemplate) {
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {
