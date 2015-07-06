@@ -32,22 +32,24 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
         $loader->load('controllers.yml');
+        $loader->load('data_sources.yml');
         $loader->load('datagrid/attribute_types.yml');
         $loader->load('datagrid/filters.yml');
         $loader->load('datagrid/formatters.yml');
         $loader->load('datagrid/selectors.yml');
-        $loader->load('data_sources.yml');
+        $loader->load('events.yml');
         $loader->load('factories.yml');
+        $loader->load('finders.yml');
         $loader->load('formatters.yml');
         $loader->load('forms.yml');
         $loader->load('models.yml');
+        $loader->load('normalizers.yml');
+        $loader->load('providers.yml');
         $loader->load('repositories.yml');
-        $loader->load('twig_extension.yml');
-        $loader->load('finders.yml');
         $loader->load('savers.yml');
-        $loader->load('updaters.yml');
         $loader->load('selectors.yml');
-        $loader->load('events.yml');
         $loader->load('services.yml');
+        $loader->load('twig_extension.yml');
+        $loader->load('updaters.yml');
     }
 }

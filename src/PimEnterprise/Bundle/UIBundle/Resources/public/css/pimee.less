@@ -1,3 +1,5 @@
+@import '../../pimui/css/less/mixins';
+
 .permission-changes {
   color: #777;
 }
@@ -105,4 +107,123 @@
 
 .meta .published-version {
   flex-shrink: 0;
+}
+
+.asset-gallery {
+  border: 1px solid #ccc;
+
+  header {
+    background-color: #f3f3f3;
+    padding: 5px;
+    .display-flex();
+    .justify-content(flex-end);
+
+    .btn {
+      background-image: none;
+      padding: 3px 15px;
+      height: 35px;
+      text-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  ul {
+    padding: 10px 0 0 10px;
+    margin: 0;
+    min-height: 180px;
+
+    li {
+      list-style: none;
+      display: block;
+      float: left;
+      margin: 0 10px 10px 0;
+      padding: 9px;
+      width: 180px;
+      height: 160px;
+      border: 1px solid #ddd;
+      border-radius: 1px;
+
+      footer {
+        padding: 5px;
+        font-size: 11px;
+        text-align: center;
+        line-height: 14px;
+      }
+    }
+  }
+}
+
+.asset-thumbnail {
+  width: 160px;
+  height: 110px;
+  background-size: 100% auto;
+  background-position: center center;
+}
+
+.asset-basket {
+  width: 400px;
+
+  ul {
+    margin: 10px 0;
+    padding: 0;
+
+    li {
+      list-style: none;
+      .display-flex();
+      .flex-direction(row);
+      padding: 10px;
+      border: 1px solid #ccc;
+
+      &:not(:nth-last-child(2)) {
+        border-bottom: none;
+      }
+
+      .asset-thumbnail {
+        width: 60px;
+        height: 60px;
+        background-size: auto 100%;
+      }
+
+      .asset-description {
+        .flex(1);
+        font-size: 11px;
+        margin-left: 10px;
+      }
+
+      &.empty-basket {
+        border: 1px dashed #ccc;
+        height: 100px;
+        line-height: 80px;
+        text-align: center;
+        display: block;
+        color: #ccc;
+        font-size: 16;
+      }
+    }
+  }
+}
+
+.modal-asset {
+  width: 90%;
+  height: 90%;
+  top: 5%;
+  left: 5%;
+  margin: 0;
+
+  .modal-body {
+    height: 90%;
+    max-height: none;
+    .display-flex();
+    .flex-direction(row);
+
+    .asset-grid {
+      .flex(1);
+    }
+  }
+}
+
+.akeneo-asset-collection-field.view {
+  .asset-gallery header {
+    display: none;
+  }
 }
