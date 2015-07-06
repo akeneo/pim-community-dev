@@ -45,6 +45,6 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
      */
     protected function normalizeChange(array $change)
     {
-        return sprintf('%s %s', $change['value']['data'], $this->translator->trans($change['value']['unit']));
+        return sprintf('%s %s', $change['data']['data'], $this->translator->trans($change['data']['unit']));
     }
 }

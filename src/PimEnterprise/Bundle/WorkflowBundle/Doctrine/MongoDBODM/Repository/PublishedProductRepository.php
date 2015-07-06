@@ -163,8 +163,8 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
 
         $mongoRef = [
             '$ref' => $this->dm->getClassMetadata(get_class($published))->getCollection(),
-            '$id' => new \MongoId($published->getId()),
-            '$db' => $this->dm->getConfiguration()->getDefaultDB(),
+            '$id'  => new \MongoId($published->getId()),
+            '$db'  => $this->dm->getConfiguration()->getDefaultDB(),
         ];
 
         $collection = $this->dm->getDocumentCollection(get_class($published));

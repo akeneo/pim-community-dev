@@ -63,10 +63,10 @@ class FilePresenter implements PresenterInterface
         }
 
         $after = '';
-        if (isset($change['value']['originalFilename']) && isset($change['value']['filename'])) {
+        if (isset($change['data']['originalFilename']) && isset($change['data']['filename'])) {
             $after = sprintf(
                 '<li class="changed file">%s</li>',
-                $this->createFileElement($change['value']['filename'], $change['value']['originalFilename'])
+                $this->createFileElement($change['data']['filename'], $change['data']['originalFilename'])
             );
         }
 
@@ -108,7 +108,7 @@ class FilePresenter implements PresenterInterface
             $data = null;
         }
 
-        $change = isset($change['value']['filePath']) ? sha1_file($change['value']['filePath']) : null;
+        $change = isset($change['data']['filePath']) ? sha1_file($change['data']['filePath']) : null;
 
         return $data !== $change;
     }

@@ -146,7 +146,7 @@ class PublishedProductController extends AbstractController
             return new JsonResponse(
                 [
                     'successful' => true,
-                    'message' => $this->translator->trans('flash.product.unpublished')
+                    'message'    => $this->translator->trans('flash.product.unpublished')
                 ]
             );
         }

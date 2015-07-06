@@ -53,7 +53,7 @@ class FilePresenterSpec extends ObjectBehavior
             ->willReturn($file2->getPath());
 
         $change = [
-            'value' => [
+            'data' => [
                 'filename' => $file2->getFilename(),
                 'filePath' => $file2->getPath(),
                 'originalFilename' => 'change_foo.pdf',
@@ -91,7 +91,7 @@ class FilePresenterSpec extends ObjectBehavior
             ->willReturn('/media/uploaded_foo.pdf');
 
         $change = [
-            'value' => [
+            'data' => [
                 'filename' => $file->getFilename(),
                 'filePath' => $file->getPath(),
                 'originalFilename' => 'foo.pdf',
@@ -125,7 +125,7 @@ class FilePresenterSpec extends ObjectBehavior
             ->generate('pim_enrich_media_show', ['filename' => $file->getFilename()])
             ->willReturn('/media/uploaded_bar.pdf');
 
-        $this->present($value, ['value' => []])->shouldReturn(
+        $this->present($value, ['data' => []])->shouldReturn(
             '<ul class="diff">' .
                 '<li class="base file">' .
                     '<i class="icon-file"></i>' .
