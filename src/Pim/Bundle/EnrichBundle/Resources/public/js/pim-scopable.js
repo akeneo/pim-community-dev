@@ -206,7 +206,7 @@ define(
             },
 
             _addField: function ($field) {
-                this.fieldViews.push(new ScopableField({ $el: $field }));
+                this.fieldViews.push(new ScopableField({ el: $field }));
 
                 return this;
             },
