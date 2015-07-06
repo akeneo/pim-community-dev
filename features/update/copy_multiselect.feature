@@ -14,5 +14,5 @@ Feature: Update multi select fields
       | sku             | body_color   |
       | STRIPED_T_SHIRT | Black, White |
     Then I should get the following products after apply the following updater to it:
-      | product         | actions                                                                          | result                                                                 |
-      | STRIPED_T_SHIRT | [{"type": "copy_data", "from_field": "body_color", "to_field": "sleeves_color"}] | {"values": {"sleeves_color": [{"value": {"0":"Black", "1":"White"}}]}} |
+      | product         | actions                                                                          | result                                                                |
+      | STRIPED_T_SHIRT | [{"type": "copy_data", "from_field": "body_color", "to_field": "sleeves_color"}] | {"values": {"sleeves_color": [{"data": {"0":"Black", "1":"White"}}]}} |

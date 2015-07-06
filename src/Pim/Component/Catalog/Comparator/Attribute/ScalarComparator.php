@@ -37,9 +37,9 @@ class ScalarComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        $default = ['locale' => null, 'scope' => null, 'value' => null];
+        $default = ['locale' => null, 'scope' => null, 'data' => null];
         $originals = array_merge($default, $originals);
 
-        return (string) $data['value'] !== (string) $originals['value'] ? $data : null;
+        return (string) $data['data'] !== (string) $originals['data'] ? $data : null;
     }
 }
