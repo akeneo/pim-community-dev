@@ -11,8 +11,8 @@
 
 namespace AcmeEnterprise\Bundle\AppBundle\Model;
 
-use Acme\Bundle\AppBundle\Entity\Color;
-use Acme\Bundle\AppBundle\Entity\Fabric;
+use AcmeEnterprise\Bundle\AppBundle\Entity\Color;
+use AcmeEnterprise\Bundle\AppBundle\Entity\Fabric;
 use Doctrine\Common\Collections\ArrayCollection;
 use PimEnterprise\Bundle\CatalogBundle\Model\ProductValue as PimProductValue;
 
