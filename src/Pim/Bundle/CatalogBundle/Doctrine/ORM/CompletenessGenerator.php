@@ -115,16 +115,16 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function prepareCompletePrices($criteria = [])
     {
-        $cleanupSql  = "DROP TABLE IF EXISTS " . self::COMPLETE_PRICES_TABLE . PHP_EOL;
+        $cleanupSql  = 'DROP TABLE IF EXISTS ' . self::COMPLETE_PRICES_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
         $sql = $this->getCompletePricesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
 
-        $sql = "CREATE TEMPORARY TABLE " .
+        $sql = 'CREATE TEMPORARY TABLE ' .
             self::COMPLETE_PRICES_TABLE .
-            " (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id)) " .
+            ' (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id)) ' .
             $sql;
 
         $sql = $this->applyTableNames($sql);
@@ -145,16 +145,16 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function prepareMissingCompletenesses(array $criteria = [])
     {
-        $cleanupSql  = "DROP TABLE IF EXISTS " . self::MISSING_TABLE . PHP_EOL;
+        $cleanupSql  = 'DROP TABLE IF EXISTS ' . self::MISSING_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
         $sql = $this->getMissingCompletenessesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
 
-        $sql = "CREATE TEMPORARY TABLE " .
+        $sql = 'CREATE TEMPORARY TABLE ' .
             self::MISSING_TABLE .
-            " (locale_id int, channel_id int, product_id int)"
+            ' (locale_id int, channel_id int, product_id int)'
             . $sql;
 
         $sql = $this->applyTableNames($sql);
@@ -243,15 +243,15 @@ MISSING_SQL;
      */
     protected function applyCriteria($sql, $criteria)
     {
-        $productConditions = "";
-        $channelConditions = "";
+        $productConditions = '';
+        $channelConditions = '';
 
         if (array_key_exists('productId', $criteria)) {
-            $productConditions = "AND p.id = :productId";
+            $productConditions = 'AND p.id = :productId';
         }
 
         if (array_key_exists('channelId', $criteria)) {
-            $channelConditions = "AND c.id = :channelId";
+            $channelConditions = 'AND c.id = :channelId';
         }
 
         $sql = str_replace('%product_conditions%', $productConditions, $sql);
