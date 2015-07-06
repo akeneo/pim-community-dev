@@ -19,8 +19,8 @@
         "akeneo/batch-bundle": "0.4.*",
         "akeneo/measure-bundle": "0.2.*",
         "apy/jsfv-bundle": "2.0.1",
-        "ass/xmlsecurity": "1.0.0",
-        "doctrine/annotations": "1.2.3",
+        "ass/xmlsecurity": "1.1.1",
+        "doctrine/annotations": "1.2.6",
         "doctrine/cache": "1.3.1",
         "doctrine/common": "2.4.2",
         "doctrine/data-fixtures": "1.0.0",
@@ -34,6 +34,7 @@
         "friendsofsymfony/jsrouting-bundle": "1.5.0",
         "friendsofsymfony/rest-bundle": "0.12.0",
         "gedmo/doctrine-extensions":"v2.3.10",
+        "stof/doctrine-extensions-bundle": "1.1.0",
         "incenteev/composer-parameter-handler": "2.1.0",
         "jms/serializer": "0.14.0",
         "jms/serializer-bundle": "0.13.0",
@@ -50,19 +51,17 @@
         "nelmio/api-doc-bundle": "2.4.4",
         "oneup/flysystem-bundle": "1.1.0",
         "oro/platform": "dev-pim-1.4@dev",
-        "sensio/distribution-bundle": "2.3.7",
-        "sensio/framework-extra-bundle": "2.3.4",
-        "sensio/generator-bundle": "2.3.5",
-        "stof/doctrine-extensions-bundle": "1.1.0",
+        "sensio/distribution-bundle": "~4.0",
+        "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
         "symfony/assetic-bundle": "2.3.1",
         "symfony/icu": "1.1.0",
-        "symfony/monolog-bundle": "2.3.0",
+        "symfony/monolog-bundle": "~2.4",
         "symfony/swiftmailer-bundle": "2.3.8",
-        "symfony/symfony": "2.3.23",
-        "twig/extensions": "1.0.1",
-        "twig/twig": "<1.18.1"
+        "symfony/symfony": "2.7.*",
+        "twig/extensions": "1.2.0"
     },
     "require-dev": {
+        "sensio/generator-bundle": "2.3.5",
         "phpunit/phpunit": "3.7.*",
         "squizlabs/php_codesniffer": "2.*",
         "pdepend/pdepend": "1.1.*",
@@ -98,6 +97,8 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
             "php app/console fos:js-routing:dump --target=web/js/routes.js"
         ],
         "post-update-cmd": [
@@ -106,6 +107,8 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::removeSymfonyStandardFiles",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget",
             "php app/console fos:js-routing:dump --target=web/js/routes.js"
         ]
     },
@@ -116,7 +119,7 @@
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
-        "symfony-assets-install": "symlink",
+        "symfony-assets-install": "relative",
         "incenteev-parameters": {
             "keep-outdated": true,
             "file": "app/config/parameters.yml",
