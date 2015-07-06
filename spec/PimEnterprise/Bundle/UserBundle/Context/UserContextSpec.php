@@ -86,6 +86,6 @@ class UserContextSpec extends ObjectBehavior
         $chainedFilter->filterCollection([], 'pim.internal_api.product_category.view')
             ->willReturn([]);
 
-        $this->shouldThrow(new \LogicException('User should have a product default tree'))->during('getAccessibleUserTree');
+        $this->shouldThrow(new \LogicException('User should have a default product tree'))->during('getAccessibleUserTree');
     }
 }

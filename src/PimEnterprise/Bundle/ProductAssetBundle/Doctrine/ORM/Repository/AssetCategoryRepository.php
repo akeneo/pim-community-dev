@@ -57,7 +57,7 @@ class AssetCategoryRepository implements AssetCategoryRepositoryInterface
 
         $sql = "SELECT" .
             "    tree.id AS tree_id," .
-            "    COUNT(category_asset.asset_id) AS asset_count" .
+            "    COUNT(category_asset.asset_id) AS item_count" .
             "  FROM $categoryTable tree" .
             "  JOIN $categoryTable category" .
             "    ON category.root = tree.id" .
@@ -74,7 +74,7 @@ class AssetCategoryRepository implements AssetCategoryRepositoryInterface
         $trees = array();
         foreach ($assetCounts as $assetCount) {
             $tree = array();
-            $tree['productCount'] = $assetCount['asset_count'];
+            $tree['itemCount'] = $assetCount['item_count'];
             $tree['tree'] = $this->em->getRepository($categoryClass)->find($assetCount['tree_id']);
             $trees[] = $tree;
         }
