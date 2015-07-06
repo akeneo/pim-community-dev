@@ -35,6 +35,12 @@ define(
                 'click .submit-draft': 'submitDraft',
                 'click .modified-by-draft': 'showWorkingCopy'
             },
+
+            /**
+             * Configure this extension
+             *
+             * @returns {Promise}
+             */
             configure: function () {
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
                 this.listenTo(mediator, 'product:action:pre_save', this.onProductPreSave);
@@ -46,13 +52,30 @@ define(
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
             },
+
+            /**
+             * Event callback called just after product is fetched form backend
+             *
+             * @param {Object} event
+             */
             onProductPostFetch: function (event) {
                 this.productId = event.product.meta.id;
                 event.promises.push(this.applyDraft(event.product));
             },
+
+            /**
+             * Event callback called just before data is sent to backend to be saved
+             */
             onProductPreSave: function() {
                 this.clearDraftCache();
             },
+
+            /**
+             * Mark a field as "modified by draft" if necessary
+             *
+             * @param {Object} event
+             * @returns {Object}
+             */
             addFieldExtension: function (event) {
                 var field = event.field;
 
@@ -68,10 +91,17 @@ define(
 
                 return this;
             },
+
+            /**
+             * Retrieve the current draft using the draft fetcher
+             *
+             * @returns {Promise}
+             */
             getDraft: function () {
                 return FetcherRegistry.getFetcher('product-draft')
                     .fetchForProduct(this.productId)
                     .then(_.bind(function (draft) {
+                        // TODO: use a better way to trigger the rendering (e.g. an event on fetch)
                         if (this.isOutdated) {
                             this.render();
                         }
@@ -79,11 +109,23 @@ define(
                         return draft;
                     }, this));
             },
+
+            /**
+             * Clear draft fetcher's cache
+             */
             clearDraftCache: function() {
                 this.isOutdated = true;
                 FetcherRegistry.getFetcher('product-draft')
                     .clear(this.productId);
             },
+
+            /**
+             * Apply draft values on product values
+             * productData is modified by reference
+             *
+             * @param {Object} productData
+             * @returns {Promise}
+             */
             applyDraft: function (productData) {
                 return this.getDraft()
                     .then(_.bind(function (draft) {
@@ -101,6 +143,13 @@ define(
                         }
                     }, this));
             },
+
+            /**
+             * Check if the specified field's value has been modified in the current draft, in any locale or scope
+             *
+             * @param {Object} field
+             * @returns {Boolean}
+             */
             isValueChanged: function (field) {
                 var attribute = field.attribute;
 
@@ -119,6 +168,12 @@ define(
                         ));
                     });
             },
+
+            /**
+             * Refresh the "send for approval" button rendering
+             *
+             * @returns {Object}
+             */
             render: function () {
                 this.getDraft()
                     .then(_.bind(function (draft) {
@@ -139,6 +194,12 @@ define(
 
                 return this;
             },
+
+            /**
+             * Submit the current draft to backend for approval
+             *
+             * @returns {Object}
+             */
             submitDraft: function () {
                 this.getDraft()
                     .then(function (draft) {
@@ -159,6 +220,10 @@ define(
 
                 return this;
             },
+
+            /**
+             * Trigger an event to open the working copy panel
+             */
             showWorkingCopy: function () {
                 mediator.trigger('draft:action:show_working_copy');
             }
