@@ -246,7 +246,7 @@ foreach ($images as $key => $references) {
         try {
             $pipelines = getVariationPipeline($imageName);
             
-            foreach($pipelines as $outputName => $pipeline) {
+            foreach ($pipelines as $outputName => $pipeline) {
                 $transformer->transform($splFileRef, $pipeline, $outputName);
                 /** @var \Pim\Bundle\CatalogBundle\Model\ChannelInterface $channel */
                 $channel    = $channelRepo->findOneByIdentifier(getChannelCode($outputName));

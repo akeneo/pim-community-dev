@@ -16,4 +16,3 @@ PimEnterprise\Component\ProductAsset\Model\Variation:
     properties:
         file:
             - Valid: ~
-

@@ -50,7 +50,7 @@ class UserContext extends BaseUserContext
      * @param ChainedFilter               $chainedFilter
      * @param string                      $defaultLocale
      */
-    function __construct(
+    public function __construct(
         SecurityContextInterface $securityContext,
         LocaleManager $localeManager,
         ChannelManager $channelManager,

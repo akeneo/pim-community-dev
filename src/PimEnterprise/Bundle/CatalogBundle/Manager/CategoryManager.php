@@ -91,7 +91,7 @@ class CategoryManager extends BaseCategoryManager
                     $trees[] = $tree;
                 }
             }
-        } elseif('asset' === $relatedEntity) {
+        } elseif ('asset' === $relatedEntity) {
             $trees = $this->assetCategoryRepo->getTrees();
         }
 
