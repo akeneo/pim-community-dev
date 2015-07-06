@@ -40,7 +40,7 @@ define(
                 this.listenTo(mediator, 'product:action:pre_save', this.onProductPreSave);
 
                 this.stopListening(mediator, 'field:extension:add');
-                this.listenTo(mediator, 'field:extension:add', this.addExtension);
+                this.listenTo(mediator, 'field:extension:add', this.addFieldExtension);
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -48,12 +48,12 @@ define(
             },
             onProductPostFetch: function (event) {
                 this.productId = event.product.meta.id;
-                event.promises.push(this.loadProductDraft(event.product));
+                event.promises.push(this.applyDraft(event.product));
             },
             onProductPreSave: function() {
-                this.clearDraft();
+                this.clearDraftCache();
             },
-            addExtension: function (event) {
+            addFieldExtension: function (event) {
                 var field = event.field;
 
                 event.promises.push(
@@ -79,12 +79,12 @@ define(
                         return draft;
                     }, this));
             },
-            clearDraft: function() {
+            clearDraftCache: function() {
                 this.isOutdated = true;
-                return FetcherRegistry.getFetcher('product-draft')
+                FetcherRegistry.getFetcher('product-draft')
                     .clear(this.productId);
             },
-            loadProductDraft: function (productData) {
+            applyDraft: function (productData) {
                 return this.getDraft()
                     .then(_.bind(function (draft) {
                         var changes = draft.changes;
@@ -111,18 +111,18 @@ define(
                             return false;
                         }
 
-                        return undefined !== AttributeManager.getValue(
+                        return !_.isUndefined(AttributeManager.getValue(
                             changes.values[attribute.code],
                             attribute,
                             field.context.locale,
                             field.context.scope
-                        );
+                        ));
                     });
             },
             render: function () {
                 this.getDraft()
                     .then(_.bind(function (draft) {
-                        if (undefined !== draft.status) {
+                        if (!_.isUndefined(draft.status)) {
                             this.$el.html(
                                 this.submitTemplate({
                                     'submitted': draft.status !== 0
@@ -148,6 +148,12 @@ define(
                         messenger.notificationFlashMessage(
                             'success',
                             _.__('pimee_enrich.entity.product_draft.flash.sent_for_approval')
+                        );
+                    })
+                    .fail(function () {
+                        messenger.notificationFlashMessage(
+                            'error',
+                            _.__('pimee_enrich.entity.product_draft.flash.draft_not_sendable')
                         );
                     });
 
