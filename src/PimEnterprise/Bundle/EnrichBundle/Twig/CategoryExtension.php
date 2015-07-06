@@ -32,6 +32,14 @@ class CategoryExtension extends BaseCategoryExtension
     /** @var ItemCategoryRepositoryInterface */
     protected $itemPublishedCatRepo;
 
+    /**
+     * @param CategoryRepositoryInterface     $productCategoryRepo
+     * @param ItemCategoryRepositoryInterface $itemProductCatRepo
+     * @param CategoryRepositoryInterface     $assetCategoryRepo
+     * @param ItemCategoryRepositoryInterface $itemAssetCatRepo
+     * @param ItemCategoryRepositoryInterface $itemPublishedCatRepo
+     * @param int|null                        $productsLimitForRemoval
+     */
     public function __construct(
         CategoryRepositoryInterface $productCategoryRepo,
         ItemCategoryRepositoryInterface $itemProductCatRepo,

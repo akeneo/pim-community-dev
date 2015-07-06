@@ -166,11 +166,11 @@ class UserContext extends BaseUserContext
         $trees = $this->productCategoryRepo->getTrees();
         $grantedTrees = $this->chainedFilter->filterCollection($trees, 'pim.internal_api.product_category.view');
 
-        if (count($grantedTrees)) {
+        if (!empty($grantedTrees)) {
             return current($grantedTrees);
         }
 
-        throw new \LogicException('User should have a product default tree');
+        throw new \LogicException('User should have a default product tree');
     }
 
     /**
@@ -187,10 +187,10 @@ class UserContext extends BaseUserContext
         $trees = $this->assetCategoryRepo->getTrees();
         $grantedTrees = $this->chainedFilter->filterCollection($trees, 'pim.internal_api.asset_category.view');
 
-        if (count($grantedTrees)) {
+        if (!empty($grantedTrees)) {
             return current($grantedTrees);
         }
 
-        throw new \LogicException('User should have an asset default tree');
+        throw new \LogicException('User should have a default asset tree');
     }
 }

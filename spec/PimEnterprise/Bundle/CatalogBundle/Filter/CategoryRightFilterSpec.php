@@ -18,7 +18,7 @@ class CategoryRightFilterSpec extends ObjectBehavior
         $this->beConstructedWith($securityContext, $categoryAccessRepo);
     }
 
-    function it_filters_a_category_collection_depending_on_permissions_the_user_have_on_it(
+    function it_filters_a_category_collection_depending_on_user_s_permissions(
         $securityContext,
         $categoryAccessRepo,
         CategoryInterface $bootCategory,
@@ -41,7 +41,7 @@ class CategoryRightFilterSpec extends ObjectBehavior
         $this->filterCollection([$bootCategory, $shirtCategory], 'view')->shouldReturn([1 => $shirtCategory]);
     }
 
-    function it_filters_a_category_depending_on_permissions_the_user_have_on_it(
+    function it_filters_a_category_depending_on_user_s_permissions(
         $securityContext,
         CategoryInterface $category
     ) {

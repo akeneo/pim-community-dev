@@ -110,7 +110,7 @@ class CategoryFilter extends BaseCategoryFilter
             }
         }
 
-        $childrenIds = BaseCategoryFilter::getAllChildrenIds($category);
+        $childrenIds = parent::getAllChildrenIds($category);
 
         $user = $this->securityContext->getToken()->getUser();
         $grantedIds = $this->accessRepository->getCategoryIdsWithExistingAccess(
