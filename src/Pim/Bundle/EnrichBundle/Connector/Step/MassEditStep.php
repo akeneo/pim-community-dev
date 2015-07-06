@@ -69,7 +69,7 @@ class MassEditStep extends AbstractStep
     /**
      * @param StepExecutionAwareInterface $cleaner
      *
-     * @return MassEditRemoveTemporaryMediaStep
+     * @return MassEditStep
      */
     public function setCleaner(StepExecutionAwareInterface $cleaner)
     {
