@@ -43,7 +43,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
         $this
-            ->present($value, ['value' => ['unit' => 'MILLIMETER', 'data' => '123']])
+            ->present($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123']])
             ->shouldReturn('diff between two metrics');
     }
 
@@ -58,6 +58,6 @@ class MetricPresenterSpec extends ObjectBehavior
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->present($value, ['value' => ['unit' => 'MILLIMETER', 'data' => '123']])->shouldReturn('a new metric');
+        $this->present($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123']])->shouldReturn('a new metric');
     }
 }

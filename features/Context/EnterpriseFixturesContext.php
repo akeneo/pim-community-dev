@@ -18,13 +18,13 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\Tag;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 
 /**
  * A context for creating entities
@@ -761,7 +761,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $data
             );
@@ -777,7 +777,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
 
             $condition = [
-                'field' => $data['field'],
+                'field'    => $data['field'],
                 'operator' => $data['operator'],
                 // TODO: replace this dirty fix to use the same class than ConditionNormalizer
                 'value' => $data['value'],
@@ -809,7 +809,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $data
             );
@@ -825,7 +825,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $value = $this->formatActionData($attribute, $data['value']);
 
             $action = [
-                'type' => 'set_value',
+                'type'  => 'set_value',
                 'field' => $code,
                 'value' => $value,
             ];
@@ -854,7 +854,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $data
             );
@@ -865,9 +865,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $content['actions'] = [];
             }
             $action = [
-                'type' => 'copy_value',
+                'type'       => 'copy_value',
                 'from_field' => $data['from_field'],
-                'to_field' => $data['to_field'],
+                'to_field'   => $data['to_field'],
             ];
             if ($data['from_locale'] !== null && $data['from_locale'] !== '') {
                 $action['from_locale'] = $data['from_locale'];

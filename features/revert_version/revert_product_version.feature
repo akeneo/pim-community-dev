@@ -116,20 +116,6 @@ Feature: Revert a product to a previous version
       | price      |            |
       | name-fr_FR | Nice jeans |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3301
-  Scenario: Successfully revert a product date and leave it empty
-    And the following product:
-      | sku   | family  |
-      | jeans | jackets |
-    When I edit the "jeans" product
-    And I switch the scope to "mobile"
-    And I change the "Release date" to "2014-05-20"
-    And I save the product
-    And I open the history
-    When I revert the product version number 1
-    And the product "jeans" should have the following values:
-      | release_date-mobile |  |
-
   Scenario: Successfully revert a product number and leave it empty
     And the following product:
       | sku   | family  |
@@ -167,29 +153,45 @@ Feature: Revert a product to a previous version
     And the product "short" should have the following values:
       | handmade |  |
 
-  Scenario: Successfully revert a pim_catalog_date attribute
+  @jira https://akeneo.atlassian.net/browse/PIM-3301
+  Scenario: Successfully revert a product date and leave it empty
+    And the following product:
+      | sku           | family  |
+      | akeneo-jacket | jackets |
+    When I edit the "akeneo-jacket" product
+    And I switch the scope to "mobile"
+    And I change the "Release date" to "2014-05-20"
+    And I save the product
+    And I open the history
+    When I revert the product version number 1
+    And the product "akeneo-jacket" should have the following values:
+      | release_date-mobile | |
+
+  Scenario: Successfully revert a pim_catalog_date attribute with original empty value
     Given the following product:
-      | sku   | family | release_date-mobile |
-      | jeans | pants  | 2011-08-17          |
-      | short | pants  |                     |
-    Given I am on the "jeans" product page
+      | sku           | family  | release_date-mobile |
+      | akeneo-jacket | jackets |                     |
+    And I am on the "akeneo-jacket" product page
     And I switch the scope to "mobile"
     When I change the "Release date" to "2001-01-01"
     And I save the product
     And I open the history
     When I revert the product version number 1
-    Then the product "jeans" should have the following values:
+    Then the product "akeneo-jacket" should have the following values:
+      | release_date-mobile | |
+
+  Scenario: Successfully revert a pim_catalog_date attribute with original non empty value
+    Given the following product:
+      | sku           | family  | release_date-mobile |
+      | akeneo-jacket | jackets | 2011-08-17          |
+    And I am on the "akeneo-jacket" product page
+    And I switch the scope to "mobile"
+    When I change the "Release date" to "2001-01-01"
+    And I save the product
+    And I open the history
+    When I revert the product version number 1
+    Then the product "akeneo-jacket" should have the following values:
       | release_date-mobile | 2011-08-17 |
-    Given I am on the "short" product page
-    And I visit the "Attributes" tab
-    And I add available attributes Release date
-    And I switch the scope to "mobile"
-    When I change the "Release date" to "2001-01-01"
-    And I save the product
-    And I open the history
-    When I revert the product version number 1
-    Then the product "short" should have the following values:
-      | release_date-mobile |  |
 
   Scenario: Successfully revert a pim_catalog_identifier attribute
     Given the following product:

@@ -42,6 +42,6 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return !empty($change['value']) ? (new \DateTime($change['value']))->format(self::DATE_FORMAT) : '';
+        return !empty($change['data']) ? (new \DateTime($change['data']))->format(self::DATE_FORMAT) : '';
     }
 }

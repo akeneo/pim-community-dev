@@ -8,5 +8,6 @@ $finder->name('*.php')
     ->in(__DIR__ . '/src');
 
 return \Symfony\CS\Config\Config::create()
+    ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
     ->fixers($fixers)
     ->finder($finder);

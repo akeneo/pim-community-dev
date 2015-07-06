@@ -167,7 +167,7 @@ class ProductController extends BaseProductController
         return $this->render(
             'PimEnterpriseEnrichBundle:Product:_product_drafts.html.twig',
             array(
-                'product' => $this->findProductOr404($id),
+                'product'    => $this->findProductOr404($id),
                 'dataLocale' => $this->getDataLocaleCode()
             )
         );

@@ -45,7 +45,7 @@ class SupportedOperatorConditionValidator extends ConstraintValidator
             $this->context->addViolation(
                 $constraint->message,
                 [
-                    '%field%' => $productCondition->getField(),
+                    '%field%'    => $productCondition->getField(),
                     '%operator%' => $productCondition->getOperator(),
                 ]
             );

@@ -39,7 +39,7 @@ class BooleanPresenter extends AbstractProductValuePresenter implements Translat
      */
     protected function normalizeData($data)
     {
-        return $this->translator->trans($data['value'] ? self::YES : self::NO);
+        return $this->translator->trans($data['data'] ? self::YES : self::NO);
     }
 
     /**
@@ -47,6 +47,6 @@ class BooleanPresenter extends AbstractProductValuePresenter implements Translat
      */
     protected function normalizeChange(array $change)
     {
-        return $this->translator->trans($change['value'] ? self::YES : self::NO);
+        return $this->translator->trans($change['data'] ? self::YES : self::NO);
     }
 }
