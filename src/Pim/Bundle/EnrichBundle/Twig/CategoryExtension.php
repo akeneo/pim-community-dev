@@ -179,7 +179,7 @@ class CategoryExtension extends \Twig_Extension
     public function exceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub)
     {
         return null !== $this->productsLimitForRemoval &&
-            $this->countItems($category, $includeSub, true) > $this->productsLimitForRemoval;
+            $this->countItems($category, $includeSub, 'product') > $this->productsLimitForRemoval;
     }
 
     /**
