@@ -101,7 +101,10 @@ define(
                     .fail(function (response) {
                         switch (response.status) {
                             case 400:
-                                mediator.trigger('validation_error', response.responseJSON);
+                                mediator.trigger(
+                                    'entity:action:validation_error',
+                                    {'sentData': product, 'response': response.responseJSON}
+                                );
                                 break;
                             case 500:
                                 /* global console */
