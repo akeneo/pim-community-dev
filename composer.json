@@ -17,7 +17,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "~1.2.36",
+        "akeneo/pim-community-dev": "1.2.x-dev@dev",
         "monolog/monolog": "1.10.*",
         "symfony/icu": "1.1.0",
         "oro/platform": "1.0.0-beta17",
