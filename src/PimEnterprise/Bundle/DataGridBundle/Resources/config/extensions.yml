@@ -1,5 +1,5 @@
 parameters:
-    pimee_datagrid.extension.filter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension
+    pim_datagrid.extension.filter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension
 
 services:
     pim_datagrid.extension.selector.orm_selector:
@@ -11,15 +11,5 @@ services:
             - [addEligibleDatasource, ['pim_datasource_product']]
             - [addEligibleDatasource, ['pim_datasource_associated_product']]
             - [addEligibleDatasource, ['pimee_datasource_published_product']]
-        tags:
-             - { name: oro_datagrid.extension }
-
-    # We override the FilterExtension
-    pim_datagrid.extension.filter:
-        class: %pimee_datagrid.extension.filter.class%
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-            - '@translator'
-            - '@pim_datagrid.datasource.adapter_resolver'
         tags:
              - { name: oro_datagrid.extension }

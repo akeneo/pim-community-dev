@@ -39,7 +39,7 @@ class CategoryManager extends BaseCategoryManager
     protected $securityContext;
 
     /** @var CategoryRepositoryInterface */
-    private $assetCategoryRepo;
+    protected $assetCategoryRepo;
 
     /**
      * @param ObjectManager               $om
@@ -53,19 +53,19 @@ class CategoryManager extends BaseCategoryManager
      */
     public function __construct(
         ObjectManager $om,
+        CategoryRepositoryInterface $productCategoryRepo,
+        CategoryFactory $categoryFactory,
         $categoryClass,
         EventDispatcherInterface $eventDispatcher,
         CategoryAccessRepository $categoryAccessRepo,
         SecurityContextInterface $securityContext,
-        CategoryRepositoryInterface $productCategoryRepo,
-        CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $assetCategoryRepo
     ) {
-        parent::__construct($om, $categoryClass, $productCategoryRepo, $categoryFactory);
+        parent::__construct($om, $productCategoryRepo, $categoryFactory, $categoryClass);
 
         $this->categoryAccessRepo = $categoryAccessRepo;
-        $this->securityContext = $securityContext;
-        $this->assetCategoryRepo = $assetCategoryRepo;
+        $this->securityContext    = $securityContext;
+        $this->assetCategoryRepo  = $assetCategoryRepo;
     }
 
     /**

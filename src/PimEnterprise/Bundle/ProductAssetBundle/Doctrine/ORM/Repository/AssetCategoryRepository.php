@@ -14,8 +14,6 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
 
 /**
@@ -25,10 +23,7 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInter
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class AssetCategoryRepository implements
-    AssetCategoryRepositoryInterface,
-    ItemCategoryRepositoryInterface,
-    CategoryFilterableRepositoryInterface
+class AssetCategoryRepository implements AssetCategoryRepositoryInterface
 {
     /** @var string */
     protected $entityName;
@@ -60,15 +55,15 @@ class AssetCategoryRepository implements
 
         $categoryAssocTable = $categoryAssoc['joinTable']['name'];
 
-        $sql = "SELECT".
-            "    tree.id AS tree_id,".
-            "    COUNT(category_asset.asset_id) AS asset_count".
-            "  FROM $categoryTable tree".
-            "  JOIN $categoryTable category".
-            "    ON category.root = tree.id".
-            "  LEFT JOIN $categoryAssocTable category_asset".
-            "    ON category_asset.asset_id = :assetId".
-            "   AND category_asset.category_id = category.id".
+        $sql = "SELECT" .
+            "    tree.id AS tree_id," .
+            "    COUNT(category_asset.asset_id) AS asset_count" .
+            "  FROM $categoryTable tree" .
+            "  JOIN $categoryTable category" .
+            "    ON category.root = tree.id" .
+            "  LEFT JOIN $categoryAssocTable category_asset" .
+            "    ON category_asset.asset_id = :assetId" .
+            "   AND category_asset.category_id = category.id" .
             " GROUP BY tree.id";
 
         $stmt = $this->em->getConnection()->prepare($sql);
@@ -128,7 +123,7 @@ class AssetCategoryRepository implements
         $rootAlias = $qb->getRootAlias();
         $alias     = uniqid('filterCategory');
 
-        $qb->leftJoin($rootAlias.'.categories', $alias);
+        $qb->leftJoin($rootAlias . '.categories', $alias);
         $qb->andWhere($qb->expr()->isNull($alias . '.id'));
     }
 

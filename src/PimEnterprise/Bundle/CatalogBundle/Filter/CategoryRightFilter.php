@@ -36,7 +36,7 @@ class CategoryRightFilter extends AbstractFilter
      */
     public function __construct(SecurityContextInterface $securityContext, CategoryAccessRepository $categoryAccessRepo)
     {
-        $this->securityContext = $securityContext;
+        $this->securityContext    = $securityContext;
         $this->categoryAccessRepo = $categoryAccessRepo;
     }
 

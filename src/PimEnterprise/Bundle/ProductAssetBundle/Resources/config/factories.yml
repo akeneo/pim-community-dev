@@ -8,6 +8,6 @@ services:
             - %pimee_product_asset.model.asset.class%
             
     pimee_product_asset.factory.category:
-        class: %pim_classification.factories.category.class%
+        class: %pim_classification.factory.category.class%
         arguments:
             - %pimee_product_asset.model.category.class%
