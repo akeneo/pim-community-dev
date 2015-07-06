@@ -26,7 +26,7 @@ Feature: Edit a product I have access
       | rangers | vintage, classy | rangers    |
       | boots   | boots           | boots      |
 
-  @javascript @skip-pef
+  @javascript
   Scenario: Successfully create, edit and save a product I have access
     Given I am on the "rangers" product page
     And I fill in the following information:
