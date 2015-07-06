@@ -12,13 +12,14 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
 use Akeneo\Component\Console\CommandLauncher;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Asset events listenener
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class AssetEventListener
+class AssetEventSubscriber implements EventSubscriberInterface
 {
     /** @var CommandLauncher */
     protected $commandLauncher;
@@ -29,6 +30,16 @@ class AssetEventListener
     public function __construct(CommandLauncher $commandLauncher)
     {
         $this->commandLauncher = $commandLauncher;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            AssetEvent::POST_UPLOAD_FILES => 'onAssetFilesUploaded'
+        ];
     }
 
     /**

@@ -1,10 +1,10 @@
 parameters:
-    pimee_product_asset.event_listener.variation.class: PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEventListener
+    pimee_product_asset.event_subscriber.class: PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEventSubscriber
 
 services:
-    pimee_product_asset.event_listener.variation:
-        class: %pimee_product_asset.event_listener.variation.class%
+    pimee_product_asset.event_subscriber:
+        class: %pimee_product_asset.event_subscriber.class%
         arguments:
             - '@pimee_product_asset.command_launcher'
         tags:
-            - { name: kernel.event_listener, event: pimee_product_asset.asset.files_upload.post, method: onAssetFilesUploaded }
+            - { name: kernel.event_subscriber }

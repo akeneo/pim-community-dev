@@ -16,14 +16,15 @@ use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**
- * Saver for an asset reference
+ * Saver for an asset
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class AssetReferenceSaver implements SaverInterface
+class AssetSaver implements SaverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -52,27 +53,27 @@ class AssetReferenceSaver implements SaverInterface
     /**
      * {@inheritdoc}
      */
-    public function save($reference, array $options = [])
+    public function save($asset, array $options = [])
     {
-        if (!$reference instanceof ReferenceInterface) {
+        if (!$asset instanceof AssetInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "PimEnterprise\Component\ProductAsset\Model\ReferenceInterface", "%s" provided.',
-                    ClassUtils::getClass($reference)
+                    'Expects a "PimEnterprise\Component\ProductAsset\Model\AssetInterface", "%s" provided.',
+                    ClassUtils::getClass($asset)
                 )
             );
         }
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
-        $this->objectManager->persist($reference);
+        $this->objectManager->persist($asset);
         if (true === $options['flush'] && true === $options['flush_only_object']) {
-            $this->objectManager->flush($reference);
+            $this->objectManager->flush($asset);
         } elseif (true === $options['flush']) {
             $this->objectManager->flush();
         }
 
         if (true === $options['schedule']) {
-            $this->completenessGenerator->scheduleForAsset($reference->getAsset());
+            $this->completenessGenerator->scheduleForAsset($asset);
         }
     }
 }
