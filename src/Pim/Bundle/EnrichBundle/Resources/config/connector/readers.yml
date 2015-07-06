@@ -1,0 +1,17 @@
+parameters:
+    pim_enrich.connector.reader.mass_edit.product.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader
+    pim_enrich.connector.reader.mass_edit.family.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader
+
+services:
+    pim_enrich.connector.reader.mass_edit.product:
+        class: %pim_enrich.connector.reader.mass_edit.product.class%
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.repository.job_configuration'
+
+    pim_enrich.connector.reader.mass_edit.family:
+        class: %pim_enrich.connector.reader.mass_edit.family.class%
+        arguments:
+            - '@pim_connector.repository.job_configuration'
+            - '@pim_catalog.repository.family'

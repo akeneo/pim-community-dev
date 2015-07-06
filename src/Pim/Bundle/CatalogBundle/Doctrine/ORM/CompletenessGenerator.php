@@ -115,7 +115,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function prepareCompletePrices($criteria = [])
     {
-        $cleanupSql  = "DROP TABLE IF EXISTS " . self::COMPLETE_PRICES_TABLE . "\n";
+        $cleanupSql  = "DROP TABLE IF EXISTS " . self::COMPLETE_PRICES_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
@@ -145,7 +145,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function prepareMissingCompletenesses(array $criteria = [])
     {
-        $cleanupSql  = "DROP TABLE IF EXISTS " . self::MISSING_TABLE . "\n";
+        $cleanupSql  = "DROP TABLE IF EXISTS " . self::MISSING_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
