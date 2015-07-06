@@ -1,7 +1,9 @@
 pimee_product_asset:
     acl:
-        asset.index: Enrich asset
-        asset.create: Create an asset
+        asset:
+            index: Enrich asset
+            create: Create an asset
+            remove: Remove asset
     acl_group:
         asset: Product assets
     enrich_asset:
@@ -10,6 +12,9 @@ pimee_product_asset:
             delete: Delete
             generate_from_reference: Generate from reference
             reset_variations: Reset variations
+        confirmation.remove: Are you sure you want to remove asset "%asset%" ?
+        grid:
+            edit: Edit properties of the asset
         view:
             title: Product asset
             code: Code
@@ -32,6 +37,8 @@ pimee_product_asset:
             create:
                 success: Asset has been created.
                 error: Asset has not been created. An error occured.
+            remove:
+                success: Asset has been removed.
     enrich_reference:
         flash:
             delete:

@@ -12,3 +12,9 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - %pimee_product_asset.model.channel_variations_configuration.class%
+    pimee_product_asset.remover.asset:
+        class:  %pim_catalog.remover.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.remover.base_options_resolver'
+            - %pimee_product_asset.model.asset.class%

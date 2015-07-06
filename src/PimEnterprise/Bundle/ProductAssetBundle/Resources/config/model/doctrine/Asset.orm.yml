@@ -43,6 +43,7 @@ PimEnterprise\Component\ProductAsset\Model\Asset:
                 - persist
                 - refresh
                 - detach
+                - remove
     manyToMany:
         tags:
             targetEntity: PimEnterprise\Component\ProductAsset\Model\TagInterface

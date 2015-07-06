@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
 use Akeneo\Component\FileStorage\FileFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
@@ -81,6 +81,9 @@ class ProductAssetController extends Controller
     /** @var SaverInterface */
     protected $variationSaver;
 
+    /** @var RemoverInterface */
+    protected $assetRemover;
+
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -101,6 +104,7 @@ class ProductAssetController extends Controller
      * @param SaverInterface                  $assetSaver
      * @param SaverInterface                  $referenceSaver
      * @param SaverInterface                  $variationSaver
+     * @param RemoverInterface                $assetRemover
      * @param EventDispatcherInterface        $eventDispatcher
      * @param AssetFactory                    $assetFactory
      * @param FileFactoryInterface            $fileFactory
@@ -116,6 +120,7 @@ class ProductAssetController extends Controller
         SaverInterface $assetSaver,
         SaverInterface $referenceSaver,
         SaverInterface $variationSaver,
+        RemoverInterface $assetRemover,
         EventDispatcherInterface $eventDispatcher,
         AssetFactory $assetFactory,
         FileFactoryInterface $fileFactory
@@ -130,6 +135,7 @@ class ProductAssetController extends Controller
         $this->assetSaver             = $assetSaver;
         $this->referenceSaver         = $referenceSaver;
         $this->variationSaver         = $variationSaver;
+        $this->assetRemover           = $assetRemover;
         $this->eventDispatcher        = $eventDispatcher;
         $this->assetFactory           = $assetFactory;
         $this->fileFactory            = $fileFactory;
@@ -348,6 +354,34 @@ class ProductAssetController extends Controller
             'metadata'      => $metadata,
             'currentLocale' => $locale,
         ]);
+    }
+
+    /**
+     * Remove an asset
+     *
+     * @param Request    $request
+     * @param string|int $id
+     *
+     * @return Response|RedirectResponse
+     */
+    public function removeAction(Request $request, $id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+
+        try {
+            $this->assetRemover->remove($productAsset);
+            $route = 'pimee_product_asset_index';
+            $parameters = [];
+        } catch (\Exception $e) {
+            $route = 'pimee_product_asset_edit';
+            $parameters = ['id' => $id];
+        }
+
+        if ($this->getRequest()->isXmlHttpRequest() && !isset($e)) {
+            return new Response('', 204);
+        } else {
+            return $this->redirect($this->generateUrl($route, $parameters));
+        }
     }
 
     /**

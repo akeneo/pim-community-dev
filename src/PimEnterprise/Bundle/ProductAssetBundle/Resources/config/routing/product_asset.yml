@@ -24,6 +24,12 @@ pimee_product_asset_edit:
     requirements:
         id: '[0-9]+'
 
+pimee_product_asset_remove:
+    path: /{id}/remove
+    defaults: { _controller: pimee_product_asset.controller.product_asset:removeAction }
+    requirements:
+        id: '[0-9]+'
+
 pimee_product_asset_reference_delete:
     path: /reference/{id}/update
     defaults: { _controller: pimee_product_asset.controller.product_asset:deleteReferenceFileAction }
