@@ -63,10 +63,10 @@ class ImagePresenter implements PresenterInterface
         }
 
         $after = '';
-        if (isset($change['value']['filename']) && isset($change['value']['originalFilename'])) {
+        if (isset($change['data']['filename']) && isset($change['data']['originalFilename'])) {
             $after = sprintf(
                 '<li class="changed file">%s</li>',
-                $this->createImageElement($change['value']['filename'], $change['value']['originalFilename'])
+                $this->createImageElement($change['data']['filename'], $change['data']['originalFilename'])
             );
         }
 
@@ -89,7 +89,7 @@ class ImagePresenter implements PresenterInterface
                 'pim_enrich_media_show',
                 [
                     'filename' => $filename,
-                    'filter' => 'thumbnail',
+                    'filter'   => 'thumbnail',
                 ]
             ),
             $title
@@ -114,7 +114,7 @@ class ImagePresenter implements PresenterInterface
             $data = null;
         }
 
-        $change = isset($change['value']['filePath']) ? sha1_file($change['value']['filePath']) : null;
+        $change = isset($change['data']['filePath']) ? sha1_file($change['data']['filePath']) : null;
 
         return $data !== $change;
     }

@@ -397,7 +397,7 @@ class CategoryAccessRepository extends EntityRepository
     protected function getAccessField($accessLevel)
     {
         $mapping = [
-            Attributes::OWN_PRODUCTS => 'ownProducts',
+            Attributes::OWN_PRODUCTS  => 'ownProducts',
             Attributes::EDIT_PRODUCTS => 'editProducts',
             Attributes::VIEW_PRODUCTS => 'viewProducts',
         ];

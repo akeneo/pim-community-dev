@@ -57,12 +57,12 @@ class OptionsPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        if (null === $change['value']) {
+        if (null === $change['data']) {
             return null;
         }
 
         $result = [];
-        $options = $this->repository->findBy(['code' => $change['value']]);
+        $options = $this->repository->findBy(['code' => $change['data']]);
         if (null === $options) {
             return $result;
         }

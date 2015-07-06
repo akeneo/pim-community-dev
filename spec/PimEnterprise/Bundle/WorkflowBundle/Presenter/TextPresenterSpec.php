@@ -26,7 +26,7 @@ class TextPresenterSpec extends ObjectBehavior
         $renderer->renderDiff(['bar'], ['foo'])->willReturn('diff between bar and foo');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['value' => 'foo'])->shouldReturn('diff between bar and foo');
+        $this->present($value, ['data' => 'foo'])->shouldReturn('diff between bar and foo');
     }
 
     function it_explodes_text_paragraph_before_rendering_diff(
@@ -37,7 +37,7 @@ class TextPresenterSpec extends ObjectBehavior
         $renderer->renderDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['value' => '<p>foo</p>'])->shouldReturn('diff between bar and foo');
+        $this->present($value, ['data' => '<p>foo</p>'])->shouldReturn('diff between bar and foo');
     }
 
     function it_explodes_text_paragraph_without_space_before_rendering_diff(
@@ -48,6 +48,6 @@ class TextPresenterSpec extends ObjectBehavior
         $renderer->renderDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['value' => '<p>foo</p>'])->shouldReturn('diff between bar and foo');
+        $this->present($value, ['data' => '<p>foo</p>'])->shouldReturn('diff between bar and foo');
     }
 }

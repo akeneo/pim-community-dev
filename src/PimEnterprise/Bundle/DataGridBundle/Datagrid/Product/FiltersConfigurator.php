@@ -46,7 +46,7 @@ class FiltersConfigurator extends BaseFiltersConfigurator
                 'field_options' => [
                     'multiple' => false,
                     'choices'  => [
-                        PermissionFilter::OWN => 'pimee_workflow.product.permission.own',
+                        PermissionFilter::OWN  => 'pimee_workflow.product.permission.own',
                         PermissionFilter::EDIT => 'pimee_workflow.product.permission.edit',
                         PermissionFilter::VIEW => 'pimee_workflow.product.permission.view',
                     ]

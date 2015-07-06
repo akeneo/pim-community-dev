@@ -65,7 +65,7 @@ class PricesPresenter extends AbstractProductValuePresenter
     protected function normalizeChange(array $change)
     {
         $prices = [];
-        foreach ($change['value'] as $price) {
+        foreach ($change['data'] as $price) {
             $prices[$price['currency']] = sprintf('%s %s', $price['data'], $price['currency']);
         }
 

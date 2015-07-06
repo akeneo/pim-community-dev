@@ -179,9 +179,9 @@ class Migration
 
                             if (null !== $newValue) {
                                 $newStructure[$draft['id']][$nameBuilder['attribute']->getCode()][] = [
-                                        'locale' => $nameBuilder['locale_code'],
-                                        'scope'  => $nameBuilder['scope_code'],
-                                    ] + $newValue;
+                                    'locale' => $nameBuilder['locale_code'],
+                                    'scope'  => $nameBuilder['scope_code'],
+                                ] + $newValue;
                             }
                         }
                     } catch (\Exception $e) {
@@ -206,7 +206,7 @@ class Migration
         switch ($attribute->getBackendType()) {
             case 'media':
                 $newValue = [
-                    'value' => [
+                    'data' => [
                         'originalFilename' => $value['media']['originalFilename'],
                         'filePath'         => $value['media']['filePath'],
                         'filename'         => $value['media']['filename'],
@@ -223,16 +223,16 @@ class Migration
                     foreach ($options as $option) {
                         $codes[] = $option->getCode();
                     }
-                    $newValue['value'] = $codes;
+                    $newValue['data'] = $codes;
                 }
                 break;
 
             case 'option':
-                $newValue['value'] = current($value);
-                if (!empty($newValue['value'])) {
-                    $ids = explode(',', $newValue['value']);
+                $newValue['data'] = current($value);
+                if (!empty($newValue['data'])) {
+                    $ids = explode(',', $newValue['data']);
                     $options = $this->getOptions($ids);
-                    $newValue['value'] = current($options)->getCode();
+                    $newValue['data'] = current($options)->getCode();
                 }
                 break;
 
@@ -240,7 +240,7 @@ class Migration
                 $newValue['values'] = [];
                 foreach ($value as $prices) {
                     foreach ($prices as $price) {
-                        $newValue['value'][] = [
+                        $newValue['data'][] = [
                             'currency' => $price['currency'],
                             'data'     => $price['data'],
                         ];
@@ -254,7 +254,7 @@ class Migration
             case 'decimal':
             case 'text':
             case 'metric':
-                $newValue['value'] = current($value);
+                $newValue['data'] = current($value);
                 break;
 
             default:

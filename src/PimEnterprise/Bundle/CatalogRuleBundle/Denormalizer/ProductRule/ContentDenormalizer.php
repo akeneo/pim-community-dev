@@ -93,7 +93,7 @@ class ContentDenormalizer implements DenormalizerInterface, ChainedDenormalizerA
 
         return [
             'conditions' => $conditions,
-            'actions' => $actions,
+            'actions'    => $actions,
         ];
     }
 
