@@ -279,7 +279,7 @@ class ProductController
                         $this->productUpdater->setData(
                             $product,
                             $attributeCode,
-                            $value['value'],
+                            $value['data'],
                             [
                                 'locale' => $value['locale'],
                                 'scope'  => $value['scope']

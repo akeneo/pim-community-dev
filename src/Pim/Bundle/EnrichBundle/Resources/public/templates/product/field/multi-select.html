@@ -1,4 +1,4 @@
-<input type="hidden" class="select-field" value="<%= value.value.join(',') %>" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'view' ? 'disabled' : '' %>/>
+<input type="hidden" class="select-field" value="<%= value.data.join(',') %>" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'view' ? 'disabled' : '' %>/>
 <% if (userCanAddOption) { %>
     <span class="btn icons-holder add-attribute-option">
         <i class="icon-plus"></i>

@@ -38,7 +38,7 @@ define(
                 }
                 createOption(this.attribute).done(_.bind(function (option) {
                     if (this.isEditable()) {
-                        var value = this.getCurrentValue().value;
+                        var value = this.getCurrentValue().data;
                         value.push(option.code);
                         this.setCurrentValue(value);
                     }
