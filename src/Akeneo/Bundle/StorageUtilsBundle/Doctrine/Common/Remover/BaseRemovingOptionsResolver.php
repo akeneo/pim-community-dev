@@ -4,7 +4,6 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Resolve removing options for single or bulk remove
@@ -21,9 +20,10 @@ class BaseRemovingOptionsResolver implements RemovingOptionsResolverInterface
     public function resolveRemoveOptions(array $options)
     {
         $resolver = $this->createOptionsResolver();
-        $resolver->setOptional(['flush_only_object']);
-        $resolver->setAllowedTypes(['flush_only_object' => 'bool']);
-        $resolver->setDefaults(['flush_only_object' => false]);
+        $resolver->setDefined(['flush_only_object'])
+            ->setAllowedTypes('flush_only_object', 'bool')
+            ->setDefaults(['flush_only_object' => false]);
+
         $options = $resolver->resolve($options);
 
         return $options;
@@ -41,14 +41,14 @@ class BaseRemovingOptionsResolver implements RemovingOptionsResolverInterface
     }
 
     /**
-     * @return OptionsResolverInterface
+     * @return OptionsResolver
      */
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush']);
-        $resolver->setAllowedTypes(['flush' => 'bool']);
-        $resolver->setDefaults(['flush' => true]);
+        $resolver->setDefined(['flush'])
+            ->setAllowedTypes('flush', 'bool')
+            ->setDefaults(['flush' => true]);
 
         return $resolver;
     }

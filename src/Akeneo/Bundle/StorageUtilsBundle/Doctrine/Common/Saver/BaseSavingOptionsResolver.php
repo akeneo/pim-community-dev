@@ -4,7 +4,6 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Resolve saving options for single or bulk save
@@ -21,9 +20,10 @@ class BaseSavingOptionsResolver implements SavingOptionsResolverInterface
     public function resolveSaveOptions(array $options)
     {
         $resolver = $this->createOptionsResolver();
-        $resolver->setOptional(['flush_only_object']);
-        $resolver->setAllowedTypes(['flush_only_object' => 'bool']);
-        $resolver->setDefaults(['flush_only_object' => false]);
+        $resolver->setDefined(['flush_only_object'])
+            ->setAllowedTypes('flush_only_object', 'bool')
+            ->setDefaults(['flush_only_object' => false]);
+
         $options = $resolver->resolve($options);
 
         return $options;
@@ -41,14 +41,14 @@ class BaseSavingOptionsResolver implements SavingOptionsResolverInterface
     }
 
     /**
-     * @return OptionsResolverInterface
+     * @return OptionsResolver
      */
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush']);
-        $resolver->setAllowedTypes(['flush' => 'bool']);
-        $resolver->setDefaults(['flush' => true]);
+        $resolver->setDefined(['flush'])
+            ->setAllowedTypes('flush', 'bool')
+            ->setDefaults(['flush' => true]);
 
         return $resolver;
     }

@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -94,41 +94,38 @@ class AjaxEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(array('class'));
-        $resolver->setOptional(array('locale', 'url'));
+        $resolver->setRequired(['class']);
+        $resolver->setDefined(['locale', 'url']);
         $resolver->setDefaults(
-            array(
+            [
                 'multiple'              => false,
-                'transformer_options'   => array(),
+                'transformer_options'   => [],
                 'collection_id'         => null,
                 'route'                 => 'pim_ui_ajaxentity_list',
-                'route_parameters'      => array(),
+                'route_parameters'      => [],
                 'data_class'            => null,
                 'error_bubbling'        => false,
                 'minimum_input_length'  => 0
-            )
+            ]
         );
-        $resolver->setNormalizers(
-            array(
-                'locale' => function (Options $options, $value) {
-                    if (!$value) {
-                        $value = $this->userContext->getCurrentLocaleCode();
-                    }
-
-                    return $value;
-                },
-                'url' => function (Options $options, $value) {
-                    if (!$value) {
-                        $parameters = $this->getRouteParameters($options);
-                        $value = $this->router->generate($options['route'], $parameters);
-                    }
-
-                    return $value;
+        $resolver
+            ->setNormalizer('locale', function (Options $options, $value) {
+                if (!$value) {
+                    $value = $this->userContext->getCurrentLocaleCode();
                 }
-            )
-        );
+
+                return $value;
+            })
+            ->setNormalizer('url', function (Options $options, $value) {
+                if (!$value) {
+                    $parameters = $this->getRouteParameters($options);
+                    $value = $this->router->generate($options['route'], $parameters);
+                }
+
+                return $value;
+            });
     }
 
     /**

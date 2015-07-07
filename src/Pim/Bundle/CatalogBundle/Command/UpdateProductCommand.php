@@ -128,32 +128,32 @@ class UpdateProductCommand extends ContainerAwareCommand
     protected function update(ProductInterface $product, array $updates)
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['type']);
-        $resolver->setAllowedValues(['type' => ['set_data', 'copy_data', 'add_data', 'remove_data']]);
-        $resolver->setOptional(
-            [
-                'field',
-                'data',
-                'locale',
-                'scope',
-                'from_field',
-                'to_field',
-                'from_locale',
-                'to_locale',
-                'from_scope',
-                'to_scope'
-            ]
-        );
-        $resolver->setDefaults(
-            [
-                'locale'      => null,
-                'scope'       => null,
-                'from_locale' => null,
-                'to_locale'   => null,
-                'from_scope'  => null,
-                'to_scope'    => null
-            ]
-        );
+        $resolver->setRequired(['type'])
+            ->setAllowedValues('type', ['set_data', 'copy_data', 'add_data', 'remove_data'])
+            ->setDefined(
+                [
+                    'field',
+                    'data',
+                    'locale',
+                    'scope',
+                    'from_field',
+                    'to_field',
+                    'from_locale',
+                    'to_locale',
+                    'from_scope',
+                    'to_scope'
+                ]
+            )
+            ->setDefaults(
+                [
+                    'locale'      => null,
+                    'scope'       => null,
+                    'from_locale' => null,
+                    'to_locale'   => null,
+                    'from_scope'  => null,
+                    'to_scope'    => null
+                ]
+            );
 
         foreach ($updates as $update) {
             $update = $resolver->resolve($update);

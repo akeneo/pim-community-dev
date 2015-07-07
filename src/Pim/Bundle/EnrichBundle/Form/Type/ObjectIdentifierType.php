@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Object identifier form type. Provides an hidden field to store
@@ -55,29 +55,21 @@ class ObjectIdentifierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults(['repository_options' => [], 'multiple' => true, 'delimiter' => ','])
             ->setRequired(['repository'])
-            ->setAllowedValues(
-                array(
-                    'multiple' => array(true, false),
-                )
-            )
-            ->setNormalizers(
-                [
-                    'repository' => function (Options $options, $value) {
-                        if (!$value instanceof ObjectRepository) {
-                            throw new UnexpectedTypeException(
-                                '\Doctrine\Common\Persistence\ObjectRepository',
-                                $value
-                            );
-                        }
+            ->setAllowedValues('multiple', [true, false])
+            ->setNormalizer('repository', function (Options $options, $value) {
+                if (!$value instanceof ObjectRepository) {
+                    throw new UnexpectedTypeException(
+                        '\Doctrine\Common\Persistence\ObjectRepository',
+                        $value
+                    );
+                }
 
-                        return $value;
-                    }
-                ]
-            );
+                return $value;
+            });
     }
 }

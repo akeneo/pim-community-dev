@@ -9,7 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Light entity form type
@@ -51,33 +51,29 @@ class LightEntityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults(['repository_options' => []])
             ->setRequired(['repository'])
-            ->setNormalizers(
-                [
-                    'choices' => function (Options $options, $value) {
-                        return $options['repository']->getChoices($options['repository_options']);
-                    },
-                    'repository' => function (Options $options, $value) {
-                        if (!$value instanceof ObjectRepository) {
-                            throw new UnexpectedTypeException(
-                                '\Doctrine\Common\Persistence\ObjectRepository',
-                                $value
-                            );
-                        }
-                        if (!$value instanceof ChoicesProviderInterface) {
-                            throw new UnexpectedTypeException(
-                                '\Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface',
-                                $value
-                            );
-                        }
+            ->setNormalizer('choices', function (Options $options, $value) {
+                return $options['repository']->getChoices($options['repository_options']);
+            })
+            ->setNormalizer('repository', function (Options $options, $value) {
+                if (!$value instanceof ObjectRepository) {
+                    throw new UnexpectedTypeException(
+                        '\Doctrine\Common\Persistence\ObjectRepository',
+                        $value
+                    );
+                }
+                if (!$value instanceof ChoicesProviderInterface) {
+                    throw new UnexpectedTypeException(
+                        '\Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface',
+                        $value
+                    );
+                }
 
-                        return $value;
-                    }
-                ]
-            );
+                return $value;
+            });
     }
 }

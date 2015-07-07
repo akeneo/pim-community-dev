@@ -52,7 +52,7 @@ class AvailableAttributesTypeSpec extends ObjectBehavior
 
     function it_sets_the_default_form_data_class(OptionsResolverInterface $resolver)
     {
-        $resolver->setNormalizers(Argument::any())->shouldBeCalled();
+        $resolver->setNormalizer(Argument::any(), Argument::any())->shouldBeCalled();
         $resolver->setDefaults(
             [
                 'data_class'          => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
