@@ -143,6 +143,23 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
+     * @Then /^removing "([^"]+)" permissions should hide "([^"]+)" button on "([^"]+)" page$/
+     */
+    public function removingPermissionsShouldHideButtonOnPage($permission, $button, $page)
+    {
+        $steps = [];
+
+        $steps[] = new Step\Then('I am on the "Administrator" role page');
+        $steps[] = new Step\Then(sprintf('I remove rights to %s', $permission));
+        $steps[] = new Step\Then('I save the role');
+        $steps[] = new Step\Then(sprintf('I am on the %s page', $page));
+        $steps[] = new Step\Then(sprintf('I should not see the "%s" button', $button));
+        $steps[] = new Step\Then('I reset the "Administrator" rights');
+
+        return $steps;
+    }
+
+    /**
      * @param mixed|null  $file
      * @param string|null $channel
      *
