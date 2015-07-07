@@ -368,7 +368,7 @@ services:
     pim_enrich.controller.rest.media:
         class: %pim_enrich.controller.rest.media.class%
         arguments:
-            - %upload_dir%
+            - %tmp_storage_dir%
 
     pim_enrich.controller.rest.product:
         class: %pim_enrich.controller.rest.product.class%

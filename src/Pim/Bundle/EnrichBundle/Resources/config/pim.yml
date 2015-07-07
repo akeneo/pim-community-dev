@@ -46,3 +46,19 @@ doctrine_migrations:
 
 pim_enrich:
     max_products_category_removal: %max_products_category_removal%
+
+oneup_flysystem:
+    adapters:
+        storage_adapter:
+            local:
+                directory: %storage_dir%
+        tmp_storage_adapter:
+            local:
+                directory: %tmp_storage_dir%
+    filesystems:
+        storage:
+            adapter: storage_adapter
+            mount: storage
+        tmp_storage:
+            adapter: tmp_storage_adapter
+            mount: tmp_storage

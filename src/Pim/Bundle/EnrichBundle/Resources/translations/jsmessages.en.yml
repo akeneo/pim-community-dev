@@ -188,6 +188,8 @@ pim_enrich:
         not_applicable: N/A
         entity:
             updated: There are unsaved changes.
+    error:
+        upload: An error occured during the upload of the file
     alert:
         not_allowed: You are not allowed to access this page
         error_occured: An error occured during the loading of the page

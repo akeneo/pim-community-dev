@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -36,10 +37,14 @@ class MediaController
     {
         $file = $request->files->get('file');
 
-        $movedFile = $file->move(
-            $this->uploadDir . '/',
-            uniqid() . '_' . $file->getClientOriginalName()
-        );
+        try {
+            $movedFile = $file->move(
+                $this->uploadDir,
+                uniqid() . '_' . $file->getClientOriginalName()
+            );
+        } catch (FileException $e) {
+            return new JsonResponse(null, 400);
+        }
 
         return new JsonResponse(
             [
