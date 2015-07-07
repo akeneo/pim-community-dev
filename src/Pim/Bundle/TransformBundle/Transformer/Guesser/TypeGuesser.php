@@ -3,8 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
 
 /**
  * Guesses the property transformer by inspecting the ORM column type

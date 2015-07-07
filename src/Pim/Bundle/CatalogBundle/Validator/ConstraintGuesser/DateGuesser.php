@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
-use Symfony\Component\Validator\Constraints\Date;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * Date guesser
@@ -18,7 +18,7 @@ class DateGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AbstractAttribute $attribute)
+    public function supportAttribute(AttributeInterface $attribute)
     {
         return in_array(
             $attribute->getAttributeType(),
@@ -31,7 +31,7 @@ class DateGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AbstractAttribute $attribute)
+    public function guessConstraints(AttributeInterface $attribute)
     {
         $constraints = [new Date()];
 

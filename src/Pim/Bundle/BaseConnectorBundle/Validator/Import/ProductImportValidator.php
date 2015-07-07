@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
+use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
-use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -53,7 +53,7 @@ class ProductImportValidator extends ImportValidator
     public function __construct(
         ValidatorInterface $validator,
         ConstraintGuesserInterface $constraintGuesser,
-        ProductManager $productManager = null
+        ProductManager $productManager
     ) {
         parent::__construct($validator);
         $this->constraintGuesser = $constraintGuesser;
@@ -75,6 +75,11 @@ class ProductImportValidator extends ImportValidator
             $this->checkUniqueValues($entity, $columnsInfo, $data);
         } catch (DuplicateProductValueException $e) {
             $errors[$data['sku']] = [[$e->getMessage()]];
+        }
+
+        $groupsViolations = $this->validator->validate($entity, ['pim_catalog_variant_group']);
+        if ($groupsViolations->count()) {
+            $errors['groups'] = $this->getErrorArray($groupsViolations);
         }
 
         foreach ($columnsInfo as $columnInfo) {
@@ -123,7 +128,7 @@ class ProductImportValidator extends ImportValidator
                     $code      = $value->getAttribute()->getCode();
                     $valueData = (string) $value;
                     if ($valueData !== '') {
-                        if ($this->productManager !== null && $this->productManager->valueExists($value)) {
+                        if ($this->productManager->valueExists($value)) {
                             throw new DuplicateProductValueException($code, $valueData, $data);
                         }
                         $this->uniqueValues[$code] =
@@ -164,11 +169,11 @@ class ProductImportValidator extends ImportValidator
     /**
      * Returns an array of constraints for a given attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return string
      */
-    protected function getAttributeConstraints(AbstractAttribute $attribute)
+    protected function getAttributeConstraints(AttributeInterface $attribute)
     {
         $code = $attribute->getCode();
         if (!isset($this->constraints[$code])) {

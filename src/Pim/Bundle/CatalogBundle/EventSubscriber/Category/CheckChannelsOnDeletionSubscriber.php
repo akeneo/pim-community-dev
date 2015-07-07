@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\Category;
 
+use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\Translation\TranslatorInterface;
-use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 
 /**
  * Check if the category is used by a channel when try to remove it

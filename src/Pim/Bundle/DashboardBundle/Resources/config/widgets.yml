@@ -14,18 +14,20 @@ services:
     pim_dashboard.widget.links:
         class: %pim_dashboard.widget.links.class%
         tags:
-            - { name: pim_dashboard.widget, alias: links }
+            - { name: pim_dashboard.widget, position: 10 }
 
     pim_dashboard.widget.completeness:
         class: %pim_dashboard.widget.completeness.class%
         arguments:
             - '@pim_catalog.repository.completeness'
+            - '@pim_catalog.helper.locale'
         tags:
-            - { name: pim_dashboard.widget, alias: completeness }
+            - { name: pim_dashboard.widget, position: 20 }
 
     pim_dashboard.widget.last_operations:
         class: %pim_dashboard.widget.last_operations.class%
         arguments:
             - '@pim_import_export.manager.job_execution'
+            - '@translator'
         tags:
-            - { name: pim_dashboard.widget, alias: last_operations }
+            - { name: pim_dashboard.widget, position: 30 }

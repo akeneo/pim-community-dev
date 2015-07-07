@@ -9,7 +9,7 @@ Feature: Export products
     And the following job "ecommerce_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And the following products:
-      | sku       | family  | categories                                        | price                 |
+      | sku       | family  | categories                   | price                 |
       | my-sandal | sandals | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP |
     And the following product values:
       | product   | attribute   | value                            | locale | scope     |
@@ -24,7 +24,7 @@ Feature: Export products
       | my-sandal | description | A really stylish white sandal    | en_US  | print     |
       | my-sandal | description | Ein sehr elegantes weißes Sandal | de_DE  | print     |
     And the following products:
-      | sku          | family  | categories                                        | price                 | size   | color | manufacturer     | material | country_of_manufacture |
+      | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
       | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
     And the following product values:
@@ -56,8 +56,8 @@ Feature: Export products
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;family;groups;categories;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;name-de_DE;name-en_GB;name-en_US;name-fr_FR;price-EUR;price-GBP;price-USD;enabled;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;number_in_stock-ecommerce;release_date-ecommerce;size;thumbnail;washing_temperature;weight
-    my-sandal;sandals;;men_2013,men_2014,men_2015;"Ein elegantes weißes Sandal";"An elegant white sandal";"A stylish white sandal";"Une sandale blanche élégante";"Weißes Sandal";"White sandal";"White sandal";"Sandale blanche";10.00;9.00;15.00;1;;;;;;;;;;;;;;;;;;;;;;;;;
-    tshirt-white;tshirts;;men_2013,men_2014,men_2015;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";10.00;9.00;15.00;1;;white;;;;usa;;;;;;;;;;;;american_apparel;cotton;;;size_M;;;
-    tshirt-black;tshirts;;men_2013,men_2014,men_2015;"Ein elegantes schwarzes T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";"Schwarzes T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt noir";10.00;9.00;15.00;1;;black;;;;usa;;;;;;;;;;;;american_apparel;cotton;;;size_L;;;
-       """
+    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;weight
+    my-sandal;;men_2013,men_2014,men_2015;;;;;;;;;;;"Ein elegantes weißes Sandal";"An elegant white sandal";"A stylish white sandal";"Une sandale blanche élégante";1;sandals;;;;;;;;;;"Weißes Sandal";"White sandal";"White sandal";"Sandale blanche";;10.00;9.00;15.00;;;;;
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;10.00;9.00;15.00;;size_M;;;
+    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt noir";;10.00;9.00;15.00;;size_L;;;
+    """

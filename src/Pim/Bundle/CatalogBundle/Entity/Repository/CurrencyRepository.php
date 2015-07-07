@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 
 /**
  * Currency repository
@@ -10,13 +11,13 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
-class CurrencyRepository extends ReferableEntityRepository
+class CurrencyRepository extends ReferableEntityRepository implements CurrencyRepositoryInterface
 {
     /**
-     * Return an array of activated currencies
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getActivatedCurrencies()
     {
@@ -26,9 +27,7 @@ class CurrencyRepository extends ReferableEntityRepository
     }
 
     /**
-     * Return an array of currency codes
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getActivatedCurrencyCodes()
     {
@@ -46,9 +45,7 @@ class CurrencyRepository extends ReferableEntityRepository
     }
 
     /**
-     * Return a query builder for activated currencies
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
     public function getActivatedCurrenciesQB()
     {
@@ -60,7 +57,7 @@ class CurrencyRepository extends ReferableEntityRepository
     }
 
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
     public function createDatagridQueryBuilder()
     {

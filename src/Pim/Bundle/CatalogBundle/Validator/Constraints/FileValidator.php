@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
-use Symfony\Component\Validator\Constraint;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 
 /**
- * Constraint
+ * Constraint.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +22,7 @@ class FileValidator extends BaseFileValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof AbstractProductMedia) {
+        if ($value instanceof ProductMediaInterface) {
             $value = $value->getFile();
         }
 
@@ -36,7 +36,7 @@ class FileValidator extends BaseFileValidator
     }
 
     /**
-     * Validate if extension is allowed
+     * Validate if extension is allowed.
      *
      * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
@@ -57,7 +57,7 @@ class FileValidator extends BaseFileValidator
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->extensionsMessage,
-                    array('{{ extensions }}' => join(', ', $constraint->allowedExtensions))
+                    ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
                 );
             }
         }

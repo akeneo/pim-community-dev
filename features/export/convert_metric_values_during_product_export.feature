@@ -1,4 +1,3 @@
-@javascript
 Feature: Export of metric values
   In order to homogeneize exported metric values
   As a product manager
@@ -16,6 +15,7 @@ Feature: Export of metric values
       | Washing temperature |
       | Weight              |
 
+  @javascript
   Scenario: Successfully convert metric values
     Given the following channel "ecommerce" conversion options:
       | weight | GRAM |
@@ -47,7 +47,7 @@ Feature: Export of metric values
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit;enabled
-    tshirt-white;tshirts;;men_2014;;white;;;;;;;;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";;;;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;10.00;9.00;15.00;;size_M;;60.0000;CELSIUS;5000.0000;GRAM;1
-    tshirt-black;tshirts;;men_2014;;white;;;;;;;;;;"Ein elegantes schwarz T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";;;;;;;american_apparel;cotton;"Schwarz T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt Black";;10.00;9.00;15.00;;size_M;;0.0000;CELSIUS;5000.0000;GRAM;1
+    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit
+    tshirt-white;;men_2014;white;;;;;;;;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;10.00;9.00;15.00;;size_M;;60;CELSIUS;5000;GRAM
+    tshirt-black;;men_2014;white;;;;;;;;;;"Ein elegantes schwarz T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Schwarz T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt Black";;10.00;9.00;15.00;;size_M;;0;CELSIUS;5000;GRAM
     """

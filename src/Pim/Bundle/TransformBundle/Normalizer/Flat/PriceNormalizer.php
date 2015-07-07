@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 
 /**
  * Normalize a product price
@@ -21,7 +21,7 @@ class PriceNormalizer extends AbstractProductValueDataNormalizer
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractProductPrice && in_array($format, $this->supportedFormats);
+        return $data instanceof ProductPriceInterface && in_array($format, $this->supportedFormats);
     }
 
     /**

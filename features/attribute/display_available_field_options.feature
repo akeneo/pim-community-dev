@@ -11,23 +11,23 @@ Feature: Display available field options
 
   Scenario: Successfully display available parameter fields for attribute types
     Then the following attribute types should have the following fields
-      | Identifier | Max characters, Validation rule                                                                                  |
-      | Yes/No     | Default value                                                                                                    |
-      | Date       | Default value, Min date, Max date                                                                                |
-      | File       | Max file size (MB), Allowed extensions                                                                           |
-      | Image      | Max file size (MB), Allowed extensions                                                                           |
-      | Metric     | Default value, Min number, Max number, Allow decimals, Allow negative values, Metric family, Default metric unit |
-      | Price      | Min number, Max number, Allow decimals                                                                           |
-      | Number     | Default value, Min number, Max number, Allow decimals, Allow negative values                                     |
-      | Text Area  | Default value, Max characters, WYSIWYG enabled                                                                   |
-      | Text       | Default value, Max characters, Validation rule                                                                   |
+      | Identifier | Max characters, Validation rule                                                                   |
+      | Date       | Min date, Max date                                                                                |
+      | File       | Max file size (MB), Allowed extensions                                                            |
+      | Image      | Max file size (MB), Allowed extensions                                                            |
+      | Metric     | Min number, Max number, Allow decimals, Allow negative values, Metric family, Default metric unit |
+      | Price      | Min number, Max number, Allow decimals                                                            |
+      | Number     | Min number, Max number, Allow decimals, Allow negative values                                     |
+      | Text Area  | Max characters, WYSIWYG enabled                                                                   |
+      | Text       | Max characters, Validation rule                                                                   |
 
   Scenario Outline: Successfully display available values fields for attribute types
     Given I create a "<type>" attribute
     And I visit the "Values" tab
+    And I save the attribute
     Then I should see the <fields> fields
 
     Examples:
-      | type          | fields                         |
-      | Multi select  | Code, Automatic option sorting |
-      | Simple select | Code, Automatic option sorting |
+      | type          | fields                   |
+      | Multi select  | Automatic option sorting |
+      | Simple select | Automatic option sorting |

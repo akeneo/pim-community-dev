@@ -5,13 +5,17 @@ parameters:
     pim_enrich.form.subscriber.family_disable_fields_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber
     pim_enrich.form.subscriber.family_attribute_label_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber
     pim_enrich.form.subscriber.set_attribute_group_sort_order.class: Pim\Bundle\EnrichBundle\Form\Subscriber\SetAttributeGroupSortOrderSubscriber
+    pim_enrich.form.subscriber.transform_product_template_values.class: Pim\Bundle\EnrichBundle\Form\Subscriber\TransformProductTemplateValuesSubscriber
+    pim_enrich.form.subscriber.add_variant_group_template.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddVariantGroupTemplateSubscriber
 
 services:
     # Subscribers
     pim_enrich.form.subscriber.attribute:
         class: %pim_enrich.form.subscriber.add_attribute_type.class%
         arguments:
-            - '@pim_catalog.factory.attribute_type'
+            - '@pim_catalog.registry.attribute_type'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.repository.attribute_group'
 
     pim_enrich.form.subscriber.attribute_requirements:
         class: %pim_enrich.form.subscriber.add_attribute_requirements.class%
@@ -21,7 +25,7 @@ services:
     pim_enrich.form.subscriber.add_value_field_subscriber:
         class: %pim_enrich.form.subscriber.add_value_field_subscriber.class%
         arguments:
-            - '@pim_enrich.factory.product_value_form_factory'
+            - '@pim_enrich.form.factory.product_value'
 
     pim_enrich.form.subscriber.family_disable_fields_subscriber:
         class: %pim_enrich.form.subscriber.family_disable_fields_subscriber.class%
@@ -39,3 +43,14 @@ services:
         class: %pim_enrich.form.subscriber.set_attribute_group_sort_order.class%
         arguments:
             - '@pim_catalog.repository.attribute_group'
+
+    pim_enrich.form.subscriber.transform_product_template_values:
+        class: %pim_enrich.form.subscriber.transform_product_template_values.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_serializer'
+
+    pim_enrich.form.subscriber.add_variant_group_template:
+        class: %pim_enrich.form.subscriber.add_variant_group_template.class%
+        arguments:
+            - '@pim_user.context.user'

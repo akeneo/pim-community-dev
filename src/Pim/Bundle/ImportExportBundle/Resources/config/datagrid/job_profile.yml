@@ -11,12 +11,12 @@ datagrid:
                 label: Label
             alias:
                 label:     Job
-                data_name: jobAlias
+                type:      job_name
             connector:
                 label: Connector
             status:
-                label: Status
-                type: translateable
+                label:     Status
+                type:      translateable
                 data_name: statusLabel
         properties:
             id: ~

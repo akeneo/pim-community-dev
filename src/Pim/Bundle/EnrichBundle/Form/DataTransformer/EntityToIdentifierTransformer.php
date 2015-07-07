@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Transforms entity into its identifier and the opposite

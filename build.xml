@@ -365,7 +365,7 @@
             </fileset>
         </replaceregexp>
 
-        <replaceregexp match="pim_catalog_storage_driver: doctrine/orm" replace="pim_catalog_storage_driver: doctrine/mongodb-odm" byline="true">
+        <replaceregexp match="pim_catalog_product_storage_driver: doctrine/orm" replace="pim_catalog_product_storage_driver: doctrine/mongodb-odm" byline="true">
             <fileset dir="${basedir}/app/config/">
                 <include name="pim_parameters*" />
             </fileset>

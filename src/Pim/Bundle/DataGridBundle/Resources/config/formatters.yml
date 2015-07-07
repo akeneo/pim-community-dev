@@ -10,6 +10,7 @@ parameters:
     pim_datagrid.extension.formatter.property.product_value.date_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\DateProperty
     pim_datagrid.extension.formatter.property.product_value.twig_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty
     pim_datagrid.extension.formatter.property.product.groups_property.class:                  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Product\GroupsProperty
+    pim_datagrid.extension.formatter.property.job.name_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job\NameProperty
 
 services:
     pim_datagrid.extension.formatter.property.product_value.field_property:
@@ -88,3 +89,12 @@ services:
             - '@translator'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_groups }
+
+    pim_datagrid.extension.formatter.property.job.name_property:
+        class: %pim_datagrid.extension.formatter.property.job.name_property.class%
+        arguments:
+            - '@akeneo_batch.connectors'
+            - '@translator'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: job_name }
+

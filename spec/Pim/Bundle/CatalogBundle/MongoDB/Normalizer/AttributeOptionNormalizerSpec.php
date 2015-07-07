@@ -3,9 +3,8 @@
 namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
@@ -14,7 +13,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_mongodb_json_of_attribute_option(AttributeOption $option)
+    function it_supports_normalization_in_mongodb_json_of_attribute_option(AttributeOptionInterface $option)
     {
         $this->supportsNormalization($option, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($option, 'json')->shouldBe(false);
@@ -22,9 +21,9 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_attribute_option(
-        AttributeOption $option,
-        AttributeOptionValue $valueUs,
-        AttributeOptionValue $valueFr
+        AttributeOptionInterface $option,
+        AttributeOptionValueInterface $valueUs,
+        AttributeOptionValueInterface $valueFr
     ) {
         $option->getId()->willReturn(42);
         $option->getCode()->willReturn('red');

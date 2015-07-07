@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 
@@ -25,11 +25,11 @@ class BooleanFilter extends OroBooleanFilter
             return false;
         }
 
-        $this->util->applyFilterByAttribute(
+        $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            $data['value'],
-            '='
+            '=',
+            $data['value']
         );
 
         return true;
@@ -40,13 +40,15 @@ class BooleanFilter extends OroBooleanFilter
      */
     public function parseData($data)
     {
-        $allowedValues = array(BooleanFilterType::TYPE_YES, BooleanFilterType::TYPE_NO);
+        $allowedValues = [BooleanFilterType::TYPE_YES, BooleanFilterType::TYPE_NO];
         if (!is_array($data)
             || !array_key_exists('value', $data)
             || !in_array($data['value'], $allowedValues, true)
         ) {
             return false;
         }
+
+        $data['value'] = (bool) $data['value'];
 
         return $data;
     }

@@ -2,25 +2,24 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler;
-use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Group controller
@@ -37,11 +36,17 @@ class GroupController extends AbstractController
     /** @var GroupManager */
     protected $groupManager;
 
-    /** @var GroupHandler */
+    /** @var HandlerInterface */
     protected $groupHandler;
 
     /** @var Form */
     protected $groupForm;
+
+    /** @var GroupFactory */
+    protected $groupFactory;
+
+    /** @var RemoverInterface */
+    protected $groupRemover;
 
     /**
      * Constructor
@@ -55,8 +60,10 @@ class GroupController extends AbstractController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param GroupManager             $groupManager
-     * @param GroupHandler             $groupHandler
+     * @param HandlerInterface         $groupHandler
      * @param Form                     $groupForm
+     * @param GroupFactory             $groupFactory
+     * @param RemoverInterface         $groupRemover
      */
     public function __construct(
         Request $request,
@@ -68,8 +75,10 @@ class GroupController extends AbstractController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         GroupManager $groupManager,
-        GroupHandler $groupHandler,
-        Form $groupForm
+        HandlerInterface $groupHandler,
+        Form $groupForm,
+        GroupFactory $groupFactory,
+        RemoverInterface $groupRemover
     ) {
         parent::__construct(
             $request,
@@ -85,6 +94,8 @@ class GroupController extends AbstractController
         $this->groupManager = $groupManager;
         $this->groupHandler = $groupHandler;
         $this->groupForm    = $groupForm;
+        $this->groupFactory = $groupFactory;
+        $this->groupRemover = $groupRemover;
     }
 
     /**
@@ -98,9 +109,9 @@ class GroupController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'groupTypes' => array_keys($this->groupManager->getTypeChoices(false))
-        );
+        ];
     }
 
     /**
@@ -117,27 +128,29 @@ class GroupController extends AbstractController
             return $this->redirectToRoute('pim_enrich_group_index');
         }
 
-        $group = new Group();
+        $group = $this->groupFactory->createGroup();
 
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.group.created');
 
             $url = $this->generateUrl(
                 'pim_enrich_group_edit',
-                array('id' => $group->getId())
+                ['id' => $group->getId()]
             );
-            $response = array('status' => 1, 'url' => $url);
+            $response = ['status' => 1, 'url' => $url];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->groupForm->createView()
-        );
+        ];
     }
 
     /**
      * Edit a group
+     *
+     * TODO : find a way to use param converter with interfaces
      *
      * @param Group $group
      *
@@ -151,14 +164,17 @@ class GroupController extends AbstractController
             $this->addFlash('success', 'flash.group.updated');
         }
 
-        return array(
+        return [
             'form'         => $this->groupForm->createView(),
             'currentGroup' => $group->getId()
-        );
+        ];
     }
 
     /**
      * Remove a group
+     *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
      * @AclAncestor("pim_enrich_group_remove")
@@ -166,7 +182,7 @@ class GroupController extends AbstractController
      */
     public function removeAction(Group $group)
     {
-        $this->groupManager->remove($group);
+        $this->groupRemover->remove($group);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -177,6 +193,8 @@ class GroupController extends AbstractController
 
     /**
      * Display the products of a group
+     *
+     * TODO : find a way to use param converter with interfaces
      *
      * @param Group $group
      *
@@ -193,17 +211,20 @@ class GroupController extends AbstractController
     /**
      * History of a group
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Group $group
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @AclAncestor("pim_enrich_group_history")
+     * @return Response
      */
     public function historyAction(Group $group)
     {
         return $this->render(
             'PimEnrichBundle:Group:_history.html.twig',
-            array(
+            [
                 'group' => $group
-            )
+            ]
         );
     }
 }

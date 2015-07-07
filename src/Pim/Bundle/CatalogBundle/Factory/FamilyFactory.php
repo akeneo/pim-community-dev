@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Family factory
@@ -61,9 +61,8 @@ class FamilyFactory
         $family->setAttributeAsLabel($identifier);
 
         foreach ($this->getChannels() as $channel) {
-            $family->addAttributeRequirement(
-                $this->factory->createAttributeRequirement($identifier, $channel, true)
-            );
+            $requirement = $this->factory->createAttributeRequirement($identifier, $channel, true);
+            $family->addAttributeRequirement($requirement);
         }
 
         return $family;
@@ -72,7 +71,7 @@ class FamilyFactory
     /**
      * Get the PIM channels
      *
-     * @return Pim\Bundle\CatalogBundle\Entity\Channel[]
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel[]
      */
     protected function getChannels()
     {

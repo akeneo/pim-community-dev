@@ -2,32 +2,29 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
+use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
+use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
+use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
+use Pim\Bundle\ImportExportBundle\Manager\JobManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-
-use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
-use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
-use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
-use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Job Profile controller
@@ -59,6 +56,12 @@ class JobProfileController extends AbstractDoctrineController
     /** @var ConstraintViolationListInterface  */
     protected $fileError;
 
+    /** @var JobManager */
+    protected $jobManager;
+
+    /** @var File */
+    protected $file;
+
     /**
      * Constructor
      *
@@ -77,6 +80,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param string                   $environment
      * @param JobInstanceType          $jobInstanceType
      * @param JobInstanceFactory       $jobInstanceFactory
+     * @param JobManager               $jobManager
      */
     public function __construct(
         Request $request,
@@ -93,7 +97,8 @@ class JobProfileController extends AbstractDoctrineController
         $rootDir,
         $environment,
         JobInstanceType $jobInstanceType,
-        JobInstanceFactory $jobInstanceFactory
+        JobInstanceFactory $jobInstanceFactory,
+        JobManager $jobManager
     ) {
         parent::__construct(
             $request,
@@ -107,15 +112,16 @@ class JobProfileController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->connectorRegistry = $connectorRegistry;
-        $this->jobType           = $jobType;
-        $this->rootDir           = $rootDir;
-        $this->environment       = $environment;
+        $this->connectorRegistry  = $connectorRegistry;
+        $this->jobType            = $jobType;
+        $this->rootDir            = $rootDir;
+        $this->environment        = $environment;
 
-        $this->jobInstanceType   = $jobInstanceType;
+        $this->jobInstanceType    = $jobInstanceType;
         $this->jobInstanceType->setJobType($this->jobType);
 
         $this->jobInstanceFactory = $jobInstanceFactory;
+        $this->jobManager         = $jobManager;
     }
 
     /**
@@ -134,15 +140,15 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->persist($jobInstance);
+                $this->jobManager->save($jobInstance);
 
                 $this->addFlash('success', sprintf('flash.%s.created', $this->getJobType()));
 
                 $url = $this->generateUrl(
                     sprintf('pim_importexport_%s_profile_edit', $this->getJobType()),
-                    array('id' => $jobInstance->getId())
+                    ['id' => $jobInstance->getId()]
                 );
-                $response = array('status' => 1, 'url' => $url);
+                $response = ['status' => 1, 'url' => $url];
 
                 return new Response(json_encode($response));
             }
@@ -150,9 +156,9 @@ class JobProfileController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimImportExportBundle:%sProfile:create.html.twig', ucfirst($this->getJobType())),
-            array(
+            [
                 'form' => $form->createView()
-            )
+            ]
         );
     }
 
@@ -197,14 +203,14 @@ class JobProfileController extends AbstractDoctrineController
 
         return $this->render(
             $template,
-            array(
+            [
                 'form'             => $form->createView(),
                 'jobInstance'      => $jobInstance,
-                'violations'       => $validator->validate($jobInstance, array('Default', 'Execution')),
-                'uploadViolations' => $validator->validate($jobInstance, array('Default', 'UploadExecution')),
+                'violations'       => $validator->validate($jobInstance, ['Default', 'Execution']),
+                'uploadViolations' => $validator->validate($jobInstance, ['Default', 'UploadExecution']),
                 'uploadAllowed'    => $uploadAllowed,
                 'uploadForm'       => $uploadForm,
-            )
+            ]
         );
     }
 
@@ -233,7 +239,7 @@ class JobProfileController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->persist($jobInstance);
+                $this->jobManager->save($jobInstance);
 
                 $this->addFlash(
                     'success',
@@ -252,10 +258,10 @@ class JobProfileController extends AbstractDoctrineController
 
         return $this->render(
             $template,
-            array(
+            [
                 'jobInstance' => $jobInstance,
                 'form'        => $form->createView(),
-            )
+            ]
         );
     }
 
@@ -281,7 +287,7 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_REMOVE, new GenericEvent($jobInstance));
 
-        $this->remove($jobInstance);
+        $this->jobManager->remove($jobInstance);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -291,14 +297,43 @@ class JobProfileController extends AbstractDoctrineController
     }
 
     /**
-     * Launch a job
+     * Validate if the job is correct or not
      *
-     * @param Request $request
+     * @param JobInstance $jobInstance
+     *
+     * @return boolean
+     */
+    protected function validate(JobInstance $jobInstance)
+    {
+        $violations = $this->getValidator()->validate($jobInstance, ['Default', 'Execution']);
+
+        return $violations->count() === 0;
+    }
+
+    /**
+     * Validate if the job is correct from an uploaded file
+     *
+     * @param JobInstance $jobInstance
+     *
+     * @return boolean
+     */
+    protected function validateUpload(JobInstance $jobInstance)
+    {
+        $uploadViolations = $this->getValidator()->validate($jobInstance, ['Default', 'UploadExecution']);
+
+        $uploadMode = $uploadViolations->count() === 0 ? $this->processUploadForm($jobInstance) : false;
+
+        return $uploadMode && $this->configureUploadJob($jobInstance, $this->file);
+    }
+
+    /**
+     * Launch a job from uploaded file
+     *
      * @param integer $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function launchAction(Request $request, $id)
+    public function launchUploadedAction($id)
     {
         try {
             $jobInstance = $this->getJobInstance($id);
@@ -308,54 +343,39 @@ class JobProfileController extends AbstractDoctrineController
             return $this->redirectToIndexView();
         }
 
-        $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
-
-        $violations       = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
-        $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
-
-        $uploadMode = $uploadViolations->count() === 0 ? $this->processUploadForm($jobInstance) : false;
-
-        $fileErrorCount = 0;
-
-        if ($this->fileError instanceof ConstraintViolationListInterface) {
-            $fileErrorCount = $this->fileError->count();
-        }
-
-        if ($uploadMode === true || $violations->count() === 0 && $fileErrorCount === 0) {
-            $jobExecution = new JobExecution();
-            $jobExecution->setJobInstance($jobInstance);
-            $manager = $this->getDoctrine()->getManagerForClass(get_class($jobExecution));
-            $manager->persist($jobExecution);
-            $manager->flush($jobExecution);
-            $instanceCode = $jobExecution->getJobInstance()->getCode();
-            $executionId = $jobExecution->getId();
-            $pathFinder = new PhpExecutableFinder();
-
-            $cmd = sprintf(
-                '%s %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute.log 2>&1',
-                $pathFinder->find(),
-                $this->rootDir,
-                $this->environment,
-                $this->getUser()->getEmail(),
-                $uploadMode ? sprintf('-c \'%s\'', json_encode($jobInstance->getJob()->getConfiguration())) : '',
-                $instanceCode,
-                $executionId,
-                $this->rootDir
-            );
-            // Please note we do not use Symfony Process as it has some problem
-            // when executed from HTTP request that stop fast (race condition that makes
-            // the process cloning fail when the parent process, i.e. HTTP request, stops
-            // at the same time)
-            exec($cmd . ' &', $output);
-
-            $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
-
-            $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
+        if ($this->validateUpload($jobInstance)) {
+            $jobExecution = $this->launchJob(true, $jobInstance);
 
             return $this->redirectToReportView($jobExecution->getId());
         }
 
-        return $this->redirectToShowView($jobInstance->getId());
+        return $this->redirectToShowView($id);
+    }
+
+    /**
+     * Launch a job
+     *
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function launchAction($id)
+    {
+        try {
+            $jobInstance = $this->getJobInstance($id);
+        } catch (NotFoundHttpException $e) {
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToIndexView();
+        }
+
+        if ($this->validate($jobInstance)) {
+            $jobExecution = $this->launchJob(false, $jobInstance);
+
+            return $this->redirectToReportView($jobExecution->getId());
+        }
+
+        return $this->redirectToShowView($id);
     }
 
     /**
@@ -373,10 +393,10 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->get('file')->getData();
-                if ($file = $data->getFile()) {
-                    $file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
+                if (null !== $file = $data->getFile()) {
+                    $this->file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
 
-                    return $this->configureUploadJob($jobInstance, $file);
+                    return true;
                 }
 
                 $this->addFlash('error', 'You must select a file to upload');
@@ -384,6 +404,33 @@ class JobProfileController extends AbstractDoctrineController
         }
 
         return false;
+    }
+
+    /**
+     * Allow to validate and run the job
+     *
+     * @param boolean     $isUpload
+     * @param JobInstance $jobInstance
+     *
+     * @return JobInstance
+     */
+    protected function launchJob($isUpload, JobInstance $jobInstance)
+    {
+        $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
+
+        $jobExecution = $this->jobManager->launch(
+            $jobInstance,
+            $this->getUser(),
+            $this->rootDir,
+            $this->environment,
+            $isUpload
+        );
+
+        $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
+
+        $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
+
+        return $jobExecution;
     }
 
     /**
@@ -497,7 +544,7 @@ class JobProfileController extends AbstractDoctrineController
     {
         return $this->redirectToRoute(
             sprintf('pim_importexport_%s_profile_show', $this->getJobType()),
-            array('id' => $jobId)
+            ['id' => $jobId]
         );
     }
 
@@ -512,7 +559,7 @@ class JobProfileController extends AbstractDoctrineController
     {
         return $this->redirectToRoute(
             sprintf('pim_importexport_%s_execution_show', $this->getJobType()),
-            array('id' => $jobId)
+            ['id' => $jobId]
         );
     }
 

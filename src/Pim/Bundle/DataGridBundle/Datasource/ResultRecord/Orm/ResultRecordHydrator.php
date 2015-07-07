@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm;
 
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm

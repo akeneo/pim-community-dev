@@ -4,5 +4,3 @@ parameters:
 services:
     pim_filter.product_utility:
         class: %pim_filter.product_utility.class%
-        arguments:
-            - '@pim_catalog.manager.product'

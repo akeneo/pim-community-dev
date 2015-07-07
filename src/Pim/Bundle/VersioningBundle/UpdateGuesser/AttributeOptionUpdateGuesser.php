@@ -4,8 +4,8 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 /**
  * Attribute option update guesser
@@ -50,9 +50,9 @@ class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
     {
         $pendings = [];
 
-        if ($entity instanceof AttributeOption) {
+        if ($entity instanceof AttributeOptionInterface) {
             $pendings[] = $entity->getAttribute();
-        } elseif ($entity instanceof AttributeOptionValue) {
+        } elseif ($entity instanceof AttributeOptionValueInterface) {
             $pendings[] = $entity->getOption()->getAttribute();
         }
 

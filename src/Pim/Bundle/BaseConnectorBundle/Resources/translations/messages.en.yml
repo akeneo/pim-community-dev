@@ -20,6 +20,9 @@ pim_base_connector:
         csv_group_export:
             title: Group export in CSV
             export.title: Group export
+        csv_variant_group_export:
+            title: Variant group export in CSV
+            export.title: Variant group export
         csv_product_import:
             title: Product import in CSV
             validation.title: File validation
@@ -45,7 +48,10 @@ pim_base_connector:
             title: Group import in CSV
             validation.title: File validation
             import.title: Group import
-
+        csv_variant_group_import:
+            title: Variant group import in CSV
+            validation.title: File validation
+            import.title: Variant group import
     steps:
 
         dummy_reader.title:                  Dummy reader
@@ -56,22 +62,25 @@ pim_base_connector:
             invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %csvPath%:%lineno%'
         csv_product_reader.title:            CSV product reader
         csv_category_reader.title:           CSV category reader
+        csv_variant_group .title:            CSV variant group reader
 
-        dummy_processor.title:               Dummy processor
-        product_processor.title:             Product creation
-        category_processor.title:            Category creation
-        association_processor.title:         Association creation
-        group_processor.title:               Group creation
-        attribute_processor.title:           Attribute creation
-        attribute_option_processor.title:    Attribute option creation
-        heterogeneous_processor.title:       CSV product serializer
-        homogeneous_processor.title:         CSV entity serializer
-        transformer_processor.title:         Transformation
+        dummy_processor.title:            Dummy processor
+        product_processor.title:          Product creation
+        variant_group_processor.title:    Variant group creation / update
+        category_processor.title:         Category creation
+        association_processor.title:      Association creation
+        group_processor.title:            Group creation
+        attribute_processor.title:        Attribute creation
+        attribute_option_processor.title: Attribute option creation
+        heterogeneous_processor.title:    CSV product serializer
+        homogeneous_processor.title:      CSV entity serializer
+        transformer_processor.title:      Transformation
 
         dummy_writer.title:                  Dummy writer
         file_writer.title:                   Output
         product_writer.title:                Product storage
         category_writer.title:               Category storage
+        variant_group_writer.title:          Variant group storage
         writer.title:                        Entity storage
         csv_writer.title:                    Csv Writer
 
@@ -107,7 +116,10 @@ pim_base_connector:
             help: Name of the groups column
         filePath:
             label: File
-            help: The csv file to import
+            help: The CSV file to import
+        yamlFilePath:
+            label: File
+            help: The YAML file to import
         uploadAllowed:
             label: Allow file upload
             help: Whether or not to allow uploading the file directly
@@ -126,3 +138,6 @@ pim_base_connector:
         realTimeVersioning:
             label: Real time history update
             help: Means that the product history is automatically updated, can be switched off to improve performances
+        copyValuesToProducts:
+            label: Copy variant group values to products
+            help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group

@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class WritableDirectorySpec extends ObjectBehavior
 {

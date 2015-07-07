@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 
+use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
  * Register batch operations into the batch operator
@@ -33,7 +32,6 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         foreach ($container->findTaggedServiceIds('pim_enrich.mass_edit_action') as $id => $config) {
-
             // Mass Edit Action was originally used by the product grid
             // so, in order not to break BC, we fallback operator to the product one.
             // We may deprecate this behaviour in the future and enforce operator parameter

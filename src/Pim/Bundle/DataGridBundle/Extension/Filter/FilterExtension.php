@@ -2,19 +2,19 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Filter;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\FilterInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Filter extension, storage agnostic
@@ -94,7 +94,7 @@ class FilterExtension extends AbstractExtension
         $values  = $this->getValuesToApply($config);
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
         $adapterClass = $this->adapterResolver->getAdapterClass($datasourceType);
-        $datasourceAdapter = new $adapterClass($datasource->getQueryBuilder());
+        $datasourceAdapter = new $adapterClass($datasource);
 
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
@@ -142,7 +142,6 @@ class FilterExtension extends AbstractExtension
                 $metadata,
                 ['label' => $this->translator->trans($metadata['label'])]
             );
-
         }
 
         $data->offsetAddToArray('state', ['filters' => $filtersState])
@@ -211,7 +210,7 @@ class FilterExtension extends AbstractExtension
         $filters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         $defaultFilters = $config->offsetGetByPath(Configuration::DEFAULT_FILTERS_PATH, []);
-        $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ? : $defaultFilters;
+        $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ?: $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
             if (isset($filters[$column])) {

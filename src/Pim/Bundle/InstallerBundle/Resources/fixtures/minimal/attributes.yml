@@ -6,6 +6,5 @@ attributes:
         type:       pim_catalog_identifier
         group:               other
         unique:              true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1

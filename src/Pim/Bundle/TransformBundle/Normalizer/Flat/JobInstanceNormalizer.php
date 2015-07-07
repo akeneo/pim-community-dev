@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\TransformBundle\Normalizer\Structured;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 /**
  * A normalizer to transform a job instance entity into a array

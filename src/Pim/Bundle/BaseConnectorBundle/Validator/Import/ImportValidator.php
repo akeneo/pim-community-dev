@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateIdentifierException;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;

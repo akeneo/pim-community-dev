@@ -40,4 +40,18 @@ Feature: Variant group creation
     Given I fill in the following information in the popin:
       | Code | MUG |
     And I press the "Save" button
-    Then I should see validation error "This collection should contain 1 element or more."
+    Then I should see "Variant group \"MUG\" must be defined with at least one axis"
+
+  Scenario: Successfully create a variant group and check history
+    Then I should see the Code, Axis and Type fields
+    And the field Type should be disabled
+    And I fill in the following information in the popin:
+      | Code | MUG   |
+      | Axis | Color |
+    And I press the "Save" button
+    And I visit the "History" tab
+    And I should see history:
+      | version | author                          | property | value |
+      | 1       | Julia Stark - Julia@example.com | code     | MUG   |
+    Then I am on the variant groups page
+    And I should see group MUG

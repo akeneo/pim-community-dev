@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 
 /**
  * Normalize a media value
@@ -38,9 +38,11 @@ class MediaNormalizer extends AbstractProductValueDataNormalizer
     public function normalize($object, $format = null, array $context = array())
     {
         if (isset($context['prepare_copy'])) {
+            $identifier = isset($context['identifier']) ? $context['identifier'] : null;
+
             return [
-                'filePath' => $this->manager->getFilePath($object),
-                'exportPath' => $this->manager->getExportPath($object)
+                'filePath'   => $this->manager->getFilePath($object),
+                'exportPath' => $this->manager->getExportPath($object, $identifier)
             ];
         }
 
@@ -54,7 +56,7 @@ class MediaNormalizer extends AbstractProductValueDataNormalizer
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractProductMedia && in_array($format, $this->supportedFormats);
+        return $data instanceof ProductMediaInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
@@ -68,7 +70,9 @@ class MediaNormalizer extends AbstractProductValueDataNormalizer
             return $object->getFilename();
         }
 
-        return $this->manager->getExportPath($object);
+        $identifier = isset($context['identifier']) ? $context['identifier'] : null;
+
+        return $this->manager->getExportPath($object, $identifier);
     }
 
     /**

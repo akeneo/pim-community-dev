@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric;
 
 /**
  * Guesser for metric values
@@ -18,7 +18,7 @@ class MetricGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AbstractAttribute $attribute)
+    public function guessConstraints(AttributeInterface $attribute)
     {
         return array(
             new ValidMetric()
@@ -28,7 +28,7 @@ class MetricGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AbstractAttribute $attribute)
+    public function supportAttribute(AttributeInterface $attribute)
     {
         return 'pim_catalog_metric' === $attribute->getAttributeType();
     }

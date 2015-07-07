@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
 class SetProductsSubscriberSpec extends ObjectBehavior
 {
@@ -94,8 +94,13 @@ class SetProductsSubscriberSpec extends ObjectBehavior
 
 class ProductsAware
 {
-    public function getId() {}
-    public function setProducts($products) {}
+    function getId()
+    {
+    }
+
+    function setProducts($products)
+    {
+    }
 }
 
 class InvalidProductsAware
@@ -104,5 +109,7 @@ class InvalidProductsAware
 
 class ProductsUnaware
 {
-    public function setProducts($products) {}
+    function setProducts($products)
+    {
+    }
 }

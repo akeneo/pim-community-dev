@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
 
@@ -25,7 +25,7 @@ class AttributeOptionGuesser extends RelationGuesser
      * Constructor
      *
      * @param PropertyTransformerInterface $transformer
-     * @param RegistryInterface            $doctrine
+     * @param ManagerRegistry              $doctrine
      * @param string                       $valueClass
      */
     public function __construct(PropertyTransformerInterface $transformer, ManagerRegistry $doctrine, $valueClass)

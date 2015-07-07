@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
-use Symfony\Component\Form\FormFactoryInterface;
-use Oro\Bundle\FilterBundle\Filter\NumberFilter;
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\FilterBundle\Filter\NumberFilter;
+use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Category filter
@@ -60,10 +60,8 @@ class CategoryFilter extends NumberFilter
 
         if ($data['categoryId'] === self::ALL_CATEGORY) {
             return $this->applyFilterByAll($ds, $data);
-
         } elseif ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
             return $this->applyFilterByUnclassified($ds, $data);
-
         } else {
             return $this->applyFilterByCategory($ds, $data);
         }
@@ -113,13 +111,10 @@ class CategoryFilter extends NumberFilter
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
         $categoryRepository = $this->manager->getCategoryRepository();
-        $productRepository  = $this->manager->getProductCategoryRepository();
-        $qb                 = $ds->getQueryBuilder();
-
         $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {
             $categoryIds = $this->getAllChildrenIds($tree);
-            $productRepository->applyFilterByCategoryIds($qb, $categoryIds, false);
+            $this->util->applyFilter($ds, 'categories.id', 'NOT IN', $categoryIds);
 
             return true;
         }
@@ -138,9 +133,6 @@ class CategoryFilter extends NumberFilter
     protected function applyFilterByCategory(FilterDatasourceAdapterInterface $ds, $data)
     {
         $categoryRepository = $this->manager->getCategoryRepository();
-        $productRepository  = $this->manager->getProductCategoryRepository();
-        $qb                 = $ds->getQueryBuilder();
-
         $category = $categoryRepository->find($data['categoryId']);
 
         if (!$category) {
@@ -154,7 +146,7 @@ class CategoryFilter extends NumberFilter
                 $categoryIds = array();
             }
             $categoryIds[] = $category->getId();
-            $productRepository->applyFilterByCategoryIds($qb, $categoryIds, true);
+            $this->util->applyFilter($ds, 'categories.id', 'IN', $categoryIds);
 
             return true;
         }
@@ -175,23 +167,6 @@ class CategoryFilter extends NumberFilter
         $categoryIds = $categoryRepository->getAllChildrenIds($category);
 
         return $categoryIds;
-    }
-
-    /**
-     * Get product ids in category (and children)
-     *
-     * @param CategoryInterface $category
-     * @param array             $data
-     *
-     * @return integer[]
-     *
-     * @deprecated since version 1.2.10. Will be removed in 1.3. Please do not load all product ids for filtering.
-     */
-    protected function getProductIdsInCategory(CategoryInterface $category, $data)
-    {
-        $productIds = $this->manager->getProductIdsInCategory($category, $data['includeSub']);
-
-        return (empty($productIds)) ? array(0) : $productIds;
     }
 
     /**

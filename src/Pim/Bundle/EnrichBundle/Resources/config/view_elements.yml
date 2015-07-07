@@ -1,0 +1,30 @@
+parameters:
+    pim_enrich.view_element.registry.class:                     Pim\Bundle\EnrichBundle\ViewElement\ViewElementRegistry
+    pim_enrich.view_element.base.class:                         Pim\Bundle\EnrichBundle\ViewElement\BaseViewElement
+    pim_enrich.view_element.visibility_checker.acl.class:       Pim\Bundle\EnrichBundle\ViewElement\Checker\AclVisibilityChecker
+    pim_enrich.view_element.visibility_checker.voter.class:     Pim\Bundle\EnrichBundle\ViewElement\Checker\VoterVisibilityChecker
+    pim_enrich.view_element.visibility_checker.edit_form.class: Pim\Bundle\EnrichBundle\ViewElement\Checker\EditFormVisibilityChecker
+    pim_enrich.view_element.visibility_checker.non_empty_property.class: Pim\Bundle\EnrichBundle\ViewElement\Checker\NonEmptyPropertyVisibilityChecker
+
+services:
+    pim_enrich.view_element.registry:
+        class: %pim_enrich.view_element.registry.class%
+
+    pim_enrich.view_element.base:
+        class: %pim_enrich.view_element.base.class%
+
+    pim_enrich.view_element.visibility_checker.acl:
+        class: %pim_enrich.view_element.visibility_checker.acl.class%
+        arguments:
+            - '@oro_security.security_facade'
+
+    pim_enrich.view_element.visibility_checker.voter:
+        class: %pim_enrich.view_element.visibility_checker.voter.class%
+        arguments:
+            - '@oro_security.security_facade'
+
+    pim_enrich.view_element.visibility_checker.edit_form:
+        class: %pim_enrich.view_element.visibility_checker.edit_form.class%
+
+    pim_enrich.view_element.visibility_checker.non_empty_property:
+        class: %pim_enrich.view_element.visibility_checker.non_empty_property.class%

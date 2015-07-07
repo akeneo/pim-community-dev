@@ -1,4 +1,4 @@
-@javascript @info https://akeneo.atlassian.net/browse/PIM-355
+@info https://akeneo.atlassian.net/browse/PIM-355
 Feature: Add attribute to a family
   In order to validate exported attributes
   As an administrator
@@ -24,7 +24,7 @@ Feature: Add attribute to a family
     And I should see attribute "Size" in group "Sizes"
     And I should see attributes "Color and Lace color" in group "Colors"
 
-  @info https://akeneo.atlassian.net/browse/PIM-244
+  @javascript @info https://akeneo.atlassian.net/browse/PIM-244
   Scenario: Successfully add an attribute to a family
     Given I am on the "Sandals" family page
     And I visit the "Attributes" tab

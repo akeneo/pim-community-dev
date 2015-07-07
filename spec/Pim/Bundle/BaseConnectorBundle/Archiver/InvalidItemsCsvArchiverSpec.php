@@ -62,7 +62,8 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
         $this->archive($jobExecution);
     }
 
-    function it_returns_the_name_of_the_archiver() {
+    function it_returns_the_name_of_the_archiver()
+    {
         $this->getName()->shouldReturn('invalid');
     }
 

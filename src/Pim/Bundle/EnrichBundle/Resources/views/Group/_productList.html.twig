@@ -6,7 +6,8 @@
                 <table class="grid table table-hover table-bordered table-condensed groups">
                     <thead>
                         <tr>
-                            <th>{{ products[0].identifier.attribute.label }}</th>
+                            {% set product = products|first %}
+                            <th>{{ product.identifier.attribute.label }}</th>
                             <th>{{ 'Label'|trans }}</th>
                         </tr>
                     </thead>

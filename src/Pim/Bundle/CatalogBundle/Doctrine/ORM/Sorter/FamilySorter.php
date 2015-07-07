@@ -3,8 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 
 /**
  * Family sorter
@@ -15,29 +14,29 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class FamilySorter implements FieldSorterInterface
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /**
-     * @param QueryBuilder   $qb
-     * @param CatalogContext $context
+     * {@inheritdoc}
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function setQueryBuilder($queryBuilder)
     {
-        $this->qb      = $qb;
-        $this->context = $context;
+        $this->qb = $queryBuilder;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function supportsField($field)
+    {
+        return $field === 'family';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldSorter($field, $direction, $locale = null, $scope = null)
     {
         $rootAlias = $this->qb->getRootAlias();
 
@@ -53,6 +52,9 @@ class FamilySorter implements FieldSorterInterface
             ->addSelect('COALESCE('.$trans.'.label, CONCAT(\'[\', '.$family.'.code, \']\')) as '.$field);
 
         $this->qb->addOrderBy($field, $direction);
+
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
 
         return $this;
     }

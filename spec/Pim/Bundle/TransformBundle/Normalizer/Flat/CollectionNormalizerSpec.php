@@ -2,11 +2,10 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class CollectionNormalizerSpec extends ObjectBehavior
 {
@@ -64,7 +63,6 @@ class CollectionNormalizerSpec extends ObjectBehavior
 
         $this->normalize($collection, null, ['field_name' => 'even'])->shouldReturn(['even' => 'Four,Eight,Fifteen']);
     }
-
 
     function it_concatenate_normalized_elements_using_the_same_key(
         $serializer,

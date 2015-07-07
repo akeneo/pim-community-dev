@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM\Base;
 
-use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
-use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Load fixtures for groups

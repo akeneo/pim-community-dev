@@ -1,31 +1,31 @@
 imports:
-    - { resource: @PimEnrichBundle/Resources/config/bundles/a2lix_translation_form.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/akeneo_batch.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/apy_js_form_validation.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/assetic.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/be_simple_soap.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/clank.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/doctrine.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/escape_wsse_authentication.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/fos_js_routing.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/fos_rest.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/genemu_form.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/knp_gaufrette.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/knp_paginator.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/lexik_maintenance.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/liip_imagine.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/oro_entity_extend.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/oro_filter.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/oro_help.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/oro_require_js.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/oro_translation.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/oro_ui.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/oro_user.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/stof_doctrine_extensions.yml }
-    - { resource: @PimEnrichBundle/Resources/config/bundles/twig.yml }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/a2lix_translation_form.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/akeneo_batch.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/apy_js_form_validation.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/assetic.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/be_simple_soap.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/clank.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/doctrine.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/escape_wsse_authentication.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_js_routing.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_rest.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/genemu_form.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/knp_gaufrette.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/knp_paginator.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/lexik_maintenance.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/liip_imagine.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_entity_extend.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_filter.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_help.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_require_js.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_translation.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_ui.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_user.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/stof_doctrine_extensions.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/twig.yml' }
 
-pim_catalog:
-    storage_driver: '%pim_catalog_storage_driver%'
+akeneo_storage_utils:
+    storage_driver: '%pim_catalog_product_storage_driver%'
 
 services:
     oro.cache.abstract:
@@ -47,3 +47,11 @@ services:
             -
               db_table:       oro_session
               db_id_col:      id
+
+doctrine_migrations:
+    dir_name: %doctrine_migrations_dir%
+    namespace: Pim\Upgrade\Schema
+    name: PIM Migrations
+
+parameters:
+    max_products_category_removal: 100

@@ -8,6 +8,7 @@ parameters:
     pim_enrich.mass_edit_action.classify.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify
     pim_enrich.mass_edit_action.change_family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
     pim_enrich.mass_edit_action.add_to_groups.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
+    pim_enrich.mass_edit_action.add_to_variant_group.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup
     pim_entich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
 
 services:
@@ -15,7 +16,7 @@ services:
     pim_enrich.mass_edit_action.operator.registry:
         class: %pim_enrich.mass_edit_action.operator.registry.class%
 
-    # Mass edit action operator
+    # Mass edit action operators
     pim_enrich.mass_edit_action.operator:
         public: false
         abstract: true
@@ -27,8 +28,6 @@ services:
         public: false
         parent: pim_enrich.mass_edit_action.operator
         class: %pim_enrich.mass_edit_action.operator.product.class%
-        arguments:
-            - '@pim_catalog.manager.product'
         tags:
             - { name: pim_enrich.mass_edit_action_operator, datagrid: product-grid }
 
@@ -45,6 +44,8 @@ services:
     pim_enrich.mass_edit_action.change_status:
         public: false
         class: %pim_enrich.mass_edit_action.change_status.class%
+        arguments:
+            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -56,14 +57,13 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
         arguments:
-            - '@pim_catalog.manager.product'
-            - '@pim_user.context.user'
-            - '@pim_catalog.manager.currency'
-            - '@pim_catalog.context.catalog'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_user.context.user'
+            - '@pim_catalog.context.catalog'
             - '@pim_catalog.manager.product_mass_action'
-            - '@pim_catalog.factory.metric'
-            - {'product_media': %pim_catalog.entity.product_media.class%, 'product_price': %pim_catalog.entity.product_price.class%}
+            - '@pim_serializer'
+            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -76,6 +76,7 @@ services:
         class: %pim_enrich.mass_edit_action.classify.class%
         arguments:
             - '@pim_catalog.manager.category'
+            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -86,6 +87,8 @@ services:
     pim_enrich.mass_edit_action.change_family:
         public: false
         class: %pim_enrich.mass_edit_action.change_family.class%
+        arguments:
+            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -97,11 +100,27 @@ services:
         class: %pim_enrich.mass_edit_action.add_to_groups.class%
         arguments:
             - '@pim_catalog.repository.group'
+            - '@pim_catalog.saver.product'
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: add-to-groups
                 acl: pim_enrich_product_add_to_groups
+                operator: pim_enrich.mass_edit_action.operator.product
+
+    pim_enrich.mass_edit_action.add_to_variant_group:
+        class: %pim_enrich.mass_edit_action.add_to_variant_group.class%
+        arguments:
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.updater.product_template'
+            - '@validator'
+            - '@pim_catalog.repository.product_mass_action'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: add-to-variant-group
+                acl: pim_enrich_product_add_to_variant_group
                 operator: pim_enrich.mass_edit_action.operator.product
 
     # Family Grid Mass edit actions

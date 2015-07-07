@@ -1,4 +1,3 @@
-@javascript
 Feature: Execute a job
   In order to launch an export
   As a product manager
@@ -21,6 +20,7 @@ Feature: Execute a job
     Then I should not see "The export is running."
     And I should not see "An error occured during the export execution."
 
+  @javascript
   Scenario: Successfully launch a valid job
     Given the following product:
       | sku       | family | categories        | name-en_US | price          | size | color |

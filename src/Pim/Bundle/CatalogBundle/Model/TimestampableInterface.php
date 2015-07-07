@@ -14,14 +14,14 @@ interface TimestampableInterface
     /**
      * Get created datetime
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getCreated();
 
     /**
      * Set created datetime
      *
-     * @param datetime $created
+     * @param \Datetime $created
      *
      * @return TimestampableInterface
      */
@@ -30,16 +30,16 @@ interface TimestampableInterface
     /**
      * Get updated datetime
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getUpdated();
 
     /**
      * Set updated datetime
      *
-     * @param datetime $updated
+     * @param \Datetime $updated
      *
      * @return TimestampableInterface
-    */
+     */
     public function setUpdated($updated);
 }

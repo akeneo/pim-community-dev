@@ -108,6 +108,10 @@ class UserLoader extends LoadUserData
         $user->setDefaultTree($this->getTree($data['defaultTree']));
 
         $this->getUserManager()->updateUser($user);
+        // Following to fix a cascade persist issue on UserApi occuring only during Behat Execution
+        $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\User');
+        $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\UserApi');
+        $this->getUserManager()->getStorageManager()->clear('OroEmail\Cache\OroEmailBundle\Entity\EmailAddressProxy');
     }
 
     /**

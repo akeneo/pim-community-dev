@@ -2,10 +2,9 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Event;
 
-use PhpSpec\ObjectBehavior;
-
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+use PhpSpec\ObjectBehavior;
 
 class MassActionEventSpec extends ObjectBehavior
 {

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
  * Association type normalizer
@@ -49,6 +49,6 @@ class AssociationTypeNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AssociationType && in_array($format, $this->supportedFormats);
+        return $data instanceof AssociationTypeInterface && in_array($format, $this->supportedFormats);
     }
 }

@@ -28,19 +28,52 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Attributes'                 => array('css' => '#attributes table'),
+                'Attributes'                 => array('css' => '.tab-pane.tab-attribute table'),
                 'Attribute as label choices' => array('css' => '#pim_enrich_family_form_attributeAsLabel'),
             )
         );
     }
 
     /**
-     * @param string $attribute
-     * @param string $group
+     * @param string $attributeName
+     * @param string $groupName
      *
-     * @return NodeElement
+     * @return \Behat\Mink\Element\NodeElement|mixed|null
      */
-    public function getAttribute($attribute, $group)
+    public function getAttribute($attributeName, $groupName = null)
+    {
+        if (null !== $groupName) {
+            return $this->getAttributeByGroupAndName($attributeName, $groupName);
+        }
+
+        return $this->getAttributeByName($attributeName);
+    }
+
+    /**
+     * @param $attributeName
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed|null
+     */
+    protected function getAttributeByName($attributeName)
+    {
+        $attributeNodes = $this->getElement('Attributes')->findAll('css', 'table.groups tbody tr:not(.group)');
+        foreach ($attributeNodes as $attributeNode) {
+            $attribute = $attributeNode->find('css', sprintf('td:contains("%s")', $attributeName));
+            if (null !== $attribute) {
+                return $attribute;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param $attribute
+     * @param $group
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed|null
+     */
+    protected function getAttributeByGroupAndName($attribute, $group)
     {
         $groupNode = $this->getElement('Attributes')->find('css', sprintf('tr.group:contains("%s")', $group));
 
@@ -59,7 +92,7 @@ class Edit extends Form
     /**
      * @param string $attribute
      *
-     * @return NodeElement
+     * @return \Behat\Mink\Element\NodeElement|mixed
      */
     public function getRemoveLinkFor($attribute)
     {

@@ -24,7 +24,7 @@ Feature: Delete many product at once
 
   Scenario: Display a message when try to delete none product
     Given I press mass-delete button
-    Then I should see flash message "No products selected"
+    Then I should see flash message "No product selected"
 
   Scenario: Successfully remove many products
     Given I mass-delete products boots_S36, boots_S37 and boots_S38
@@ -55,3 +55,18 @@ Feature: Delete many product at once
     And I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
     Then the grid should contain 0 elements
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3849
+  Scenario: Successfully mass delete complete products on a different scope
+    Given the following products:
+      | sku       | family | categories        | name-en_US    | price          | size | color | lace_color  |
+      | boots_S42 | boots  | winter_collection | Amazing boots | 20 EUR, 25 USD | 42   | red   | laces_black |
+    And I launched the completeness calculator
+    And I reload the page
+    And I filter by "Channel" with value "Mobile"
+    And I filter by "Complete" with value "yes"
+    And I select all visible products
+    When I press mass-delete button
+    Then I should see "Are you sure you want to delete selected products?"
+    When I confirm the removal
+    Then the grid should contain 0 element

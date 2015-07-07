@@ -72,7 +72,7 @@ The Akeneo PIM archive contains a 'Community' directory.
 
 To add a pack you have to :
 * rename the directories by following the rule 'src/Pim/Bundle/EnrichBundle' to 'PimEnrichBundle'
-* move this directory to app/Resources/
+* move those directories to app/Resources/translations
 * run php app/console oro:translation:dump fr de en (if you use en, fr and de locales)
 
 To use a pack :

@@ -3,8 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 
 /**
  * In group sorter
@@ -15,35 +14,38 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class InGroupSorter implements FieldSorterInterface
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /**
-     * @param QueryBuilder   $qb
-     * @param CatalogContext $context
+     * {@inheritdoc}
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function setQueryBuilder($queryBuilder)
     {
-        $this->qb      = $qb;
-        $this->context = $context;
+        $this->qb = $queryBuilder;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function supportsField($field)
+    {
+        return (strpos($field, 'in_group_') !== false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldSorter($field, $direction, $locale = null, $scope = null)
     {
         $alias = 'inGroupSorter';
         $inGroupExpr = 'CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END';
         $this->qb
             ->addSelect(sprintf('%s AS %s', $inGroupExpr, $alias))
             ->addOrderBy($alias, $direction);
+
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
 
         return $this;
     }

@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as SorterConfiguration;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes;
 
 /**

@@ -4,10 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Association type entity
@@ -18,16 +16,12 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class AssociationType implements TranslatableInterface, ReferableInterface, VersionableInterface
+class AssociationType implements AssociationTypeInterface
 {
-    /**
-     * @var integer
-     */
+    /** @var int */
     protected $id;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $code;
 
     /**
@@ -38,19 +32,13 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
      */
     protected $locale;
 
-    /**
-     * @var ArrayCollection $translations
-     */
+    /** @var ArrayCollection */
     protected $translations;
 
-    /**
-     * @var datetime $created
-     */
+    /** @var \DateTime */
     protected $created;
 
-    /**
-     * @var datetime $updated
-     */
+    /** @var \DateTime */
     protected $updated;
 
     /**
@@ -62,9 +50,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -72,11 +58,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AssociationType
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -86,9 +68,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Get code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -96,11 +76,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return AssociationType
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -110,9 +86,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Get created datetime
-     *
-     * @return datetime
+     * {@inheritdoc}
      */
     public function getCreated()
     {
@@ -120,11 +94,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Set created datetime
-     *
-     * @param datetime $created
-     *
-     * @return TimestampableInterface
+     * {@inheritdoc}
      */
     public function setCreated($created)
     {
@@ -134,9 +104,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Get updated datetime
-     *
-     * @return datetime
+     * {@inheritdoc}
      */
     public function getUpdated()
     {
@@ -144,11 +112,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Set updated datetime
-     *
-     * @param datetime $updated
-     *
-     * @return TimestampableInterface
+     * {@inheritdoc}
      */
     public function setUpdated($updated)
     {
@@ -230,9 +194,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Get label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -242,11 +204,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return AssociationType
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -256,9 +214,7 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
-     * Returns the label of the association type
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {

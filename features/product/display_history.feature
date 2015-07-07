@@ -138,3 +138,91 @@ Feature: Display the product history
       | 1       | weather_conditions | cold,snowy |
       | 1       | comment            | nice boots |
 
+  @jira https://akeneo.atlassian.net/browse/PIM-3628
+  Scenario: Update product history when updating product prices
+    Given a "footwear" catalog configuration
+    And the following product:
+      | sku   | price          |
+      | boots | 10 EUR, 20 USD |
+    And I am logged in as "Julia"
+    When I edit the "boots" product
+    And I visit the "History" tab
+    Then there should be 1 update
+    And I should see history:
+      | version | property  | value |
+      | 1       | price-EUR | 10    |
+      | 1       | price-USD | 20    |
+    When I visit the "Attributes" tab
+    And I visit the "Marketing" group
+    And I change the "$ Price" to "19"
+    And I save the product
+    And I visit the "History" tab
+    Then there should be 2 updates
+    And I should see history:
+      | version | property  | value |
+      | 2       | price-USD | 19    |
+    When I visit the "Attributes" tab
+    And I visit the "Marketing" group
+    And I remove the "Price" attribute
+    And I visit the "History" tab
+    Then there should be 3 updates
+    And I should see history:
+      | version | property  | value |
+      | 3       | price-EUR |       |
+      | 3       | price-USD |       |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3628
+  Scenario: Update product history when updating product metric
+    Given a "footwear" catalog configuration
+    And the following product:
+      | sku   | length        |
+      | boots | 30 CENTIMETER |
+    And I am logged in as "Julia"
+    When I edit the "boots" product
+    And I visit the "History" tab
+    Then there should be 1 update
+    And I should see history:
+      | version | property    | value      |
+      | 1       | length      | 30         |
+      | 1       | length-unit | CENTIMETER |
+    When I visit the "Attributes" tab
+    And I change the "Length" to "35"
+    And I save the product
+    And I visit the "History" tab
+    Then there should be 2 updates
+    And I should see history:
+      | version | property | value   |
+      | 2       | length   | 35      |
+    When I visit the "Attributes" tab
+    And I remove the "Length" attribute
+    And I visit the "History" tab
+    Then there should be 3 updates
+    And I should see history:
+      | version | property    | value |
+      | 3       | length      |       |
+      | 3       | length-unit |       |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3628
+  Scenario: Update product history when updating product media
+    Given a "footwear" catalog configuration
+    And a "boots" product
+    And I am logged in as "Julia"
+    When I edit the "boots" product
+    And I add available attribute Side view
+    And I visit the "Media" group
+    And I attach file "SNKRS-1R.png" to "Side view"
+    And I save the product
+    When I visit the "History" tab
+    Then there should be 2 updates
+    And I should see history:
+      | version | property  | value            |
+      | 2       | side_view | (.)*SNKRS-1R.png |
+    When I visit the "Attributes" tab
+    And I visit the "Media" group
+    And I remove the "Side view" file
+    And I save the product
+    And I visit the "History" tab
+    Then there should be 3 updates
+    And I should see history:
+      | version | property  | value |
+      | 3       | side_view |       |

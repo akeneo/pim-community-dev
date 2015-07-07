@@ -21,20 +21,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_number
                 - pim_catalog_price_collection
                 - pim_catalog_metric
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDefaultValue:
-            groups:
-                - pim_catalog_text
-                - pim_catalog_textarea
-                - pim_catalog_price_collection
-                - pim_catalog_number
-                - pim_catalog_date
-                - pim_catalog_metric
-        - Callback:
-            methods:
-                - [Pim\Bundle\CatalogBundle\Validator\AttributeValidator, areOptionsValid]
-            groups:
-                - pim_catalog_multiselect
-                - pim_catalog_simpleselect
     properties:
         attributeType:
             - NotBlank: ~
@@ -58,15 +44,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - 'False':
                 message: An unique attribute can not be scopable
                 groups: [unique]
-        useableAsGridColumn:
-            - Type: bool
         useableAsGridFilter:
             - Type: bool
-            - 'False':
-                message: This attribute type can't be used as a grid filter
-                groups:
-                    - pim_catalog_file
-                    - pim_catalog_image
         wysiwygEnabled:
             - Type: bool
         decimalsAllowed:
@@ -129,24 +108,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Type:
                 type: numeric
                 groups: [pim_catalog_file, pim_catalog_image]
-        defaultValue:
-            - Blank:
-                message: No default value may be specified for this attribute type
-                groups: [pim_catalog_file, pim_catalog_image, pim_catalog_identifier]
-            - Length:
-                max: 65535
-                groups: [pim_catalog_textarea]
-            - Length:
-                max: 255
-                groups: [pim_catalog_text]
-            - Choice:
-                choices: [0, 1]
-                message: This value should be Yes or No
-                groups: [pim_catalog_boolean]
-            - Email:
-                groups: [email]
-            - Url:
-                groups: [url]
         dateMin:
             - DateTime:
                 groups: [pim_catalog_date]

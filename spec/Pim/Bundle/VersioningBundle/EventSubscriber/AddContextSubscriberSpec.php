@@ -2,23 +2,23 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Prophecy\Argument;
 
 class AddContextSubscriberSpec extends ObjectBehavior
 {
     function let(
-        VersionManager $versionManager,
+        VersionContext $versionContext,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         JobInstance $jobInstance
     ) {
-        $this->beConstructedWith($versionManager);
+        $this->beConstructedWith($versionContext);
 
         $event->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
@@ -34,21 +34,21 @@ class AddContextSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([EventInterface::BEFORE_JOB_EXECUTION => 'addContext']);
     }
 
-    function it_injects_versioning_context_into_the_version_manager($event, $jobInstance, $versionManager)
+    function it_injects_versioning_context_into_the_version_manager($event, $jobInstance, $versionContext)
     {
         $jobInstance->getType()->willReturn(JobInstance::TYPE_IMPORT);
         $jobInstance->getCode()->willReturn('foo');
 
-        $versionManager->setContext('import "foo"')->shouldBeCalled();
+        $versionContext->addContextInfo('import "foo"')->shouldBeCalled();
 
         $this->addContext($event);
     }
 
-    function it_does_not_inject_context_if_the_job_is_not_an_import($event, $jobInstance, $versionManager)
+    function it_does_not_inject_context_if_the_job_is_not_an_import($event, $jobInstance, $versionContext)
     {
         $jobInstance->getType()->willReturn(JobInstance::TYPE_EXPORT);
 
-        $versionManager->setContext(Argument::any())->shouldNotBeCalled();
+        $versionContext->addContextInfo(Argument::any())->shouldNotBeCalled();
 
         $this->addContext($event);
     }

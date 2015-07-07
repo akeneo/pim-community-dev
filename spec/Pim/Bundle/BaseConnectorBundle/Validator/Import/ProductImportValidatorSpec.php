@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
@@ -28,8 +28,8 @@ class ProductImportValidatorSpec extends ObjectBehavior
         Product $product2,
         ColumnInfo $columnInfo1,
         ColumnInfo $columnInfo2,
-        AbstractAttribute $attribute1,
-        AbstractAttribute $attribute2,
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2,
         ProductValueInterface $productValue1,
         ProductValueInterface $productValue2,
         ProductValueInterface $productValue3,
@@ -99,6 +99,9 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $validator->validateValue('17727158', Argument::any())->shouldBeCalled()->willReturn($constraint);
         $validator->validateValue('1200000011a', Argument::any())->shouldBeCalled()->willReturn($constraint);
         $validator->validateValue('AKNTS_BPXL', Argument::any())->shouldBeCalled()->willReturn($constraint);
+
+        $validator->validate($product1, Argument::any())->shouldBeCalled()->willReturn($constraint);
+        $validator->validate($product2, Argument::any())->shouldBeCalled()->willReturn($constraint);
         $constraint->count()->willReturn(0);
 
         $errors = [

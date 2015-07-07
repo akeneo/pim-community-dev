@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
-use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
 
 /**
  * Translation guesser

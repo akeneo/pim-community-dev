@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
-use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Context configurator for product grid, it allows to inject all dynamic configuration as user grid config,
@@ -258,6 +259,7 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addDisplayedColumnCodes()
     {
         $userColumns = $this->getUserGridColumns();
+
         if ($userColumns) {
             $path = $this->getSourcePath(self::DISPLAYED_COLUMNS_KEY);
             $this->configuration->offsetSetByPath($path, $userColumns);
@@ -283,10 +285,10 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $om = $this->productManager->getObjectManager();
         if ($om instanceof \Doctrine\ORM\EntityManagerInterface) {
-            return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_ORM;
-        } else {
-             return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_MONGODB_ODM;
+            return AkeneoStorageUtilsExtension::DOCTRINE_ORM;
         }
+
+        return AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM;
     }
 
     /**
@@ -315,13 +317,25 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getCurrentScopeCode()
     {
         $filterValues = $this->requestParams->get('_filter');
-        if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
-            return $filterValues['scope']['value'];
-        } else {
-            $channel = $this->userContext->getUser()->getCatalogScope();
+        $currentScopeCode = null;
 
-            return $channel->getCode();
+        if (isset($filterValues['scope']['value'])) {
+            $currentScopeCode = $filterValues['scope']['value'];
         }
+
+        if (null === $currentScopeCode) {
+            $requestFilters = $this->request->get('filters');
+            if (isset($requestFilters['scope']['value'])) {
+                $currentScopeCode = $requestFilters['scope']['value'];
+            }
+        }
+
+        if (null === $currentScopeCode) {
+            $channel = $this->userContext->getUser()->getCatalogScope();
+            $currentScopeCode = $channel->getCode();
+        }
+
+        return $currentScopeCode;
     }
 
     /**
@@ -351,6 +365,7 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getUserGridColumns()
     {
         $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
+
         if (isset($params['view']) && isset($params['view']['columns'])) {
             return explode(',', $params['view']['columns']);
         }

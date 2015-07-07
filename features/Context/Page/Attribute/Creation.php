@@ -28,9 +28,9 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Attribute options table' => array('css' => 'table#sortable_options'),
-                'Attribute options'       => array('css' => 'table#sortable_options tbody tr'),
-                'Add option button'       => array('css' => 'a.btn.add_option_link'),
+                'attribute_option_table' => array('css' => '#attribute-option-grid table'),
+                'attribute_options'      => array('css' => '#attribute-option-grid tbody tr'),
+                'add_option_button'      => array('css' => '#attribute-option-grid .btn.option-add'),
             )
         );
     }
@@ -42,7 +42,7 @@ class Creation extends Form
     {
         $field = parent::findField($name);
         if (!$field) {
-            $field = $this->getElement('Attribute options table')->find('css', sprintf('th:contains("%s")', $name));
+            $field = $this->getElement('attribute_option_table')->find('css', sprintf('th:contains("%s")', $name));
         }
 
         return $field;
@@ -50,33 +50,48 @@ class Creation extends Form
 
     /**
      * Add an attribute option
-     * @param string  $name
-     * @param boolean $selectedByDefault
+     * @param string $name
      */
-    public function addOption($name, $selectedByDefault = 'no')
+    public function addOption($name)
     {
-        $selectedByDefault = strtolower($selectedByDefault == 'yes') ? true : false;
-
-        foreach ($this->getOptionsElement() as $row) {
-            if (!$row->find('css', '[id*="_code"]')->getValue()) {
-                $row->find('css', '[id*="_code"]')->setValue($name);
-                if ($selectedByDefault) {
-                    $row->find('css', 'input[name="default"]')->click();
-                }
-
-                return;
-            }
+        if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
+            $this->getElement('add_option_button')->click();
+            $this->getSession()->wait(1000);
         }
-
-        $this->getElement('Add option button')->click();
 
         $rows = $this->getOptionsElement();
         $row = end($rows);
 
-        $row->find('css', '[id*="_code"]')->setValue($name);
-        if ($selectedByDefault) {
-            $row->find('css', 'input[name="default"]')->click();
-        }
+        $row->find('css', '.attribute_option_code')->setValue($name);
+        $row->find('css', '.btn.update-row')->click();
+    }
+
+    /**
+     * Edit an attribute option
+     * @param string $name
+     * @param string $newValue
+     */
+    public function editOption($name, $newValue)
+    {
+        $row = $this->getOptionElement($name);
+
+        $row->find('css', '.edit-row')->click();
+        $row->find('css', '.attribute_option_code')->setValue($newValue);
+        $row->find('css', '.btn.update-row')->click();
+    }
+
+    /**
+     * Edit and cancel edition on an attribute option
+     * @param string $name
+     * @param string $newValue
+     */
+    public function editOptionAndCancel($name, $newValue)
+    {
+        $row = $this->getOptionElement($name);
+
+        $row->find('css', '.edit-row')->click();
+        $row->find('css', '.attribute_option_code')->setValue($newValue);
+        $row->find('css', '.btn.show-row')->click();
     }
 
     /**
@@ -85,16 +100,16 @@ class Creation extends Form
      */
     public function countOptions()
     {
-        return count($this->findAll('css', $this->elements['Attribute options']['css']));
+        return count($this->findAll('css', $this->elements['attribute_options']['css']));
     }
 
     /**
-     * Count the number of removable attribute options
+     * Count the number of attribute options
      * @return integer
      */
-    public function countRemovableOptions()
+    public function countOrderableOptions()
     {
-        return count($this->findAll('css', 'button.action-delete-inline:not([disabled])'));
+        return count($this->findAll('css', '#attribute-option-grid table:not(.ui-sortable-disabled) .handle'));
     }
 
     /**
@@ -106,7 +121,7 @@ class Creation extends Form
     public function removeOption($optionName)
     {
         $optionRow = $this->getOptionElement($optionName);
-        $deleteBtn = $optionRow->find('css', 'button.action-delete-inline:not([disabled])');
+        $deleteBtn = $optionRow->find('css', '.btn.delete-row');
 
         if ($deleteBtn === null) {
             throw new \InvalidArgumentException(
@@ -123,7 +138,7 @@ class Creation extends Form
      */
     protected function getOptionsElement()
     {
-        return $this->findAll('css', $this->elements['Attribute options']['css']);
+        return $this->findAll('css', $this->elements['attribute_options']['css']);
     }
 
     /**
@@ -137,7 +152,15 @@ class Creation extends Form
     protected function getOptionElement($optionName)
     {
         foreach ($this->getOptionsElement() as $optionRow) {
-            if ($optionRow->find('css', '[id*="_code"]')->getValue() === $optionName) {
+            if ((
+                    $optionRow->find('css', '.attribute_option_code') &&
+                    $optionRow->find('css', '.attribute_option_code')->getValue() === $optionName
+                ) ||
+                (
+                    $optionRow->find('css', '.option-code') &&
+                    $optionRow->find('css', '.option-code')->getText() === $optionName
+                )
+            ) {
                 return $optionRow;
             }
         }

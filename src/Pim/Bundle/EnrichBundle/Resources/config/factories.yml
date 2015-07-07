@@ -1,10 +1,8 @@
 parameters:
-    pim_enrich.form.factory.product_value_form_factory: Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory
+    pim_enrich.factory.sequential_edit.class: Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory
 
 services:
-    pim_enrich.factory.product_value_form_factory:
-        class: %pim_enrich.form.factory.product_value_form_factory%
+    pim_enrich.factory.sequential_edit:
+        class: %pim_enrich.factory.sequential_edit.class%
         arguments:
-            - '@form.factory'
-            - '@pim_catalog.factory.attribute_type'
-            - '@event_dispatcher'
+            - %pim_enrich.entity.sequential_edit.class%

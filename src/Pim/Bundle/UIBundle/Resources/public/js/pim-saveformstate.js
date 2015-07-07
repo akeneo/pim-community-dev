@@ -28,22 +28,20 @@ define(
         }
 
         function restoreFormState() {
-            if (sessionStorage.redirectTab) {
-                var $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']');
-                if ($redirectTab.length && !$('.loading-mask').is(':visible')) {
+            if (!$('.hash-loading-mask .loading-mask').is(':visible')) {
+                var $redirectTab;
+                if (sessionStorage.redirectTab) {
+                    $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']');
+                }
+                if(!($redirectTab && $redirectTab.length) && sessionStorage[formId + '_activeTab']) {
+                    $redirectTab = $('a[href=' + sessionStorage[formId + '_activeTab'] + ']');
+                }
+                if ($redirectTab && $redirectTab.length) {
                     $redirectTab.tab('show');
                     if (cb) {
                         cb($redirectTab);
                     }
                     sessionStorage.removeItem('redirectTab');
-                }
-            } else if (sessionStorage[formId + '_activeTab']) {
-                var $activeTab = $('a[href=' + sessionStorage[formId + '_activeTab'] + ']');
-                if ($activeTab.length && !$('.loading-mask').is(':visible')) {
-                    $activeTab.tab('show');
-                    if (cb) {
-                        cb($activeTab);
-                    }
                 }
             }
 

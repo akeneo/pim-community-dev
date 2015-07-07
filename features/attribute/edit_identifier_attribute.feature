@@ -10,7 +10,7 @@ Feature: Edit an identifier attribute
   Scenario: Successfully display the identifier related fields
     Given I am on the "SKU" attribute page
     Then I should see the Max characters and Validation rule fields
-    And the fields Unique, Scope, Usable as grid column and Usable as grid filter should be disabled
+    And the fields Unique, Scope and Usable as grid filter should be disabled
 
   @javascript
   Scenario: Fail to create a second identifier attribute
@@ -43,7 +43,6 @@ Feature: Edit an identifier attribute
     And I save the attribute
     Then I should see validation error "This value should not be blank."
 
-  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "SKU" attribute page
     And I change the "Validation rule" to "Regular expression"

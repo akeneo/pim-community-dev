@@ -1,0 +1,137 @@
+<?php
+namespace Pim\Bundle\CatalogBundle\Repository;
+
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+
+/**
+ * Repository interface for attribute
+ *
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+interface AttributeRepositoryInterface extends
+    ChoicesProviderInterface,
+    IdentifiableObjectRepositoryInterface,
+    ObjectRepository
+{
+    /**
+     * @return AttributeInterface[]
+     */
+    public function findAllWithTranslations();
+
+    /**
+     * Find attributes with related attribute groups
+     *
+     * @param array $attributeIds
+     * @param array $criterias
+     *
+     * @return array
+     */
+    public function findWithGroups(array $attributeIds = array(), array $criterias = array());
+
+    /**
+     * Find all attributes that belongs to the default group
+     *
+     * @return AttributeInterface[]
+     */
+    public function findAllInDefaultGroup();
+
+    /**
+     * Find all unique attribute codes
+     *
+     * @return string[]
+     */
+    public function findUniqueAttributeCodes();
+
+    /**
+     * Find media attribute codes
+     *
+     * @return string[]
+     */
+    public function findMediaAttributeCodes();
+
+    /**
+     * Find all attributes of type axis
+     * An axis define a variation of a variant group
+     * Axes are attributes with simple select option, not localizable and not scopable
+     *
+     * @return mixed a query builder
+     */
+    public function findAllAxisQB();
+
+    /**
+     * Find all axis
+     * @see findAllAxisQB
+     *
+     * @return array
+     */
+    public function findAllAxis();
+
+    /**
+     * Get available attributes as label as a choice
+     *
+     * @return array
+     */
+    public function getAvailableAttributesAsLabelChoice();
+
+    /**
+     * Get attribute as array indexed by code
+     *
+     * @param boolean $withLabel translated label should be joined
+     * @param string  $locale    the locale code of the label
+     * @param array   $ids       the attribute ids
+     *
+     * @return array
+     */
+    public function getAttributesAsArray($withLabel = false, $locale = null, array $ids = []);
+
+    /**
+     * Get ids of attributes usable in grid
+     *
+     * @param array $codes
+     * @param array $groupIds
+     *
+     * @return array
+     */
+    public function getAttributeIdsUseableInGrid($codes = null, $groupIds = null);
+
+    /**
+     * Get ids from codes
+     *
+     * @param mixed $codes the attribute codes
+     *
+     * @return array
+     */
+    public function getAttributeIds($codes);
+
+    /**
+     * @return mixed a query builder
+     */
+    public function createDatagridQueryBuilder();
+
+    /**
+     * Get the identifier attribute
+     * Only one identifier attribute can exists
+     *
+     * @return AttributeInterface
+     */
+    public function getIdentifier();
+
+    /**
+     * Get the identifier code
+     *
+     * @return string
+     */
+    public function getIdentifierCode();
+
+    /**
+     * Get non identifier attributes
+     *
+     * @return AttributeInterface[]
+     */
+    public function getNonIdentifierAttributes();
+}

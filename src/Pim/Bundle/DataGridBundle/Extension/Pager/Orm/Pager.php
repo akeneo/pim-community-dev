@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Pager\Orm;
 
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Pim\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
+use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
+use Pim\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
 
 /**
  * Doctrine ORM pager

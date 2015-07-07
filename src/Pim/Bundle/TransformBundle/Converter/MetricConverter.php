@@ -3,8 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -33,15 +33,15 @@ class MetricConverter
      * Convert all the products metric values into the channel configured conversion units
      *
      * @param ProductInterface $product
-     * @param Channel          $channel
+     * @param ChannelInterface $channel
      */
-    public function convert(ProductInterface $product, Channel $channel)
+    public function convert(ProductInterface $product, ChannelInterface $channel)
     {
         $channelUnits = $channel->getConversionUnits();
         foreach ($product->getValues() as $value) {
             $data = $value->getData();
             $attribute = $value->getAttribute();
-            if ($data instanceof AbstractMetric && isset($channelUnits[$attribute->getCode()])) {
+            if ($data instanceof MetricInterface && isset($channelUnits[$attribute->getCode()])) {
                 $channelUnit = $channelUnits[$attribute->getCode()];
                 $this->converter->setFamily($data->getFamily());
                 $data->setData(

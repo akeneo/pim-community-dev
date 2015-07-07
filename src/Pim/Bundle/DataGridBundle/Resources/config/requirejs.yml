@@ -7,3 +7,47 @@ config:
         pim/datagrid/state:                     pimdatagrid/js/datagrid/state
         pim/datagrid/state-listener:            pimdatagrid/js/datagrid/state-listener
         pim/datagrid/column-form-listener:      pimdatagrid/js/datagrid/listener/column-form-listener
+
+        oro/datagrid/action-launcher:           pimdatagrid/js/datagrid/action-launcher
+        oro/datagrid/abstract-action:           pimdatagrid/js/datagrid/action/oro-abstract-action
+        oro/datagrid/delete-action:             pimdatagrid/js/datagrid/action/oro-delete-action
+        oro/datagrid/ajax-action:               pimdatagrid/js/datagrid/action/ajax-action
+        oro/datagrid/mass-action:               pimdatagrid/js/datagrid/action/oro-mass-action
+        oro/datagrid/model-action:              pimdatagrid/js/datagrid/action/model-action
+        oro/datagrid/navigate-action:           pimdatagrid/js/datagrid/action/navigate-action
+        oro/datagrid/refresh-collection-action: pimdatagrid/js/datagrid/action/refresh-collection-action
+        oro/datagrid/reset-collection-action:   pimdatagrid/js/datagrid/action/reset-collection-action
+        oro/datagrid/actions-panel:             pimdatagrid/js/datagrid/actions-panel
+        oro/datagrid/action-column:             pimdatagrid/js/datagrid/column/action-column
+        oro/datagrid/body:                      pimdatagrid/js/datagrid/body
+        oro/datagrid/action-cell:               pimdatagrid/js/datagrid/cell/oro-action-cell
+        oro/datagrid/boolean-cell:              pimdatagrid/js/datagrid/cell/boolean-cell
+        oro/datagrid/html-cell:                 pimdatagrid/js/datagrid/cell/html-cell
+        oro/datagrid/date-cell:                 pimdatagrid/js/datagrid/cell/date-cell
+        oro/datagrid/datetime-cell:             pimdatagrid/js/datagrid/cell/datetime-cell
+        oro/datagrid/number-cell:               pimdatagrid/js/datagrid/cell/number-cell
+        oro/datagrid/select-cell:               pimdatagrid/js/datagrid/cell/select-cell
+        oro/datagrid/select-row-cell:           pimdatagrid/js/datagrid/cell/select-row-cell
+        oro/datagrid/string-cell:               pimdatagrid/js/datagrid/cell/string-cell
+        oro/datagrid/cell-formatter:            pimdatagrid/js/datagrid/formatter/cell-formatter
+        oro/datagrid/datetime-formatter:        pimdatagrid/js/datagrid/formatter/datetime-formatter
+        oro/datagrid/number-formatter:          pimdatagrid/js/datagrid/formatter/number-formatter
+        oro/datagrid/grid:                      pimdatagrid/js/datagrid/grid
+        oro/datagrid/header-cell:               pimdatagrid/js/datagrid/header-cell/header-cell
+        oro/datagrid/select-all-header-cell:    pimdatagrid/js/datagrid/header-cell/select-all-header-cell
+        oro/datagrid/header:                    pimdatagrid/js/datagrid/header
+        oro/datagrid/abstract-listener:         pimdatagrid/js/datagrid/listener/abstract-listener
+        oro/datagrid/column-form-listener:      pimdatagrid/js/datagrid/listener/oro-column-form-listener
+        oro/datagrid/callback-listener:         pimdatagrid/js/datagrid/listener/callback-listener
+        oro/datagrid/page-size:                 pimdatagrid/js/datagrid/page-size
+        oro/datagrid/grid-views/view:           pimdatagrid/js/datagrid/grid-views/view
+        oro/datagrid/grid-views/model:          pimdatagrid/js/datagrid/grid-views/model
+        oro/datagrid/grid-views/collection:     pimdatagrid/js/datagrid/grid-views/collection
+        oro/datagrid/pagination-input:          pimdatagrid/js/datagrid/pagination-input
+        oro/datagrid/pagination:                pimdatagrid/js/datagrid/pagination
+        oro/datagrid/router:                    pimdatagrid/js/datagrid/router
+        oro/datagrid/row:                       pimdatagrid/js/datagrid/row
+        oro/datagrid/toolbar:                   pimdatagrid/js/datagrid/toolbar
+        oro/datagrid-builder:                   pimdatagrid/js/datagrid-builder
+        oro/loading-mask:                       pimdatagrid/js/loading-mask
+        oro/pageable-collection:                pimdatagrid/js/pageable-collection

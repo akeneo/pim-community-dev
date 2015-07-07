@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Translation normalizer
@@ -34,9 +34,10 @@ class TranslationNormalizer implements NormalizerInterface
         $method = sprintf('get%s', ucfirst($context['property']));
 
         foreach ($object->getTranslations() as $translation) {
-            // TODO : throw an exception on master, not in 1.2 to avoid BC break
             if (method_exists($translation, $method) === false) {
-                break;
+                throw new \LogicException(
+                    sprintf("Class %s doesn't provide method %s", get_class($translation), $method)
+                );
             }
             if (empty($context['locales']) || in_array($translation->getLocale(), $context['locales'])) {
                 $translations[$translation->getLocale()] = $translation->$method();

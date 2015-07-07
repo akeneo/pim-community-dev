@@ -21,7 +21,7 @@ Pim\Bundle\CatalogBundle\Entity\FamilyTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            targetEntity: Pim\Bundle\CatalogBundle\Model\FamilyInterface
             inversedBy: translations
             joinColumns:
                 foreign_key:

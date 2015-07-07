@@ -1,0 +1,5 @@
+pim_enrich_mass_edit_action_sequential_edit:
+    path: /
+    defaults: { _controller: pim_enrich.controller.sequential_edit:sequentialEditAction }
+    requirements:
+        _method: GET|POST

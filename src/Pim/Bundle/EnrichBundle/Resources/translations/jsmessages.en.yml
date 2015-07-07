@@ -15,6 +15,13 @@ confirmation:
         user:             Are you sure you want to delete this user?
         role:             Are you sure you want to delete this role?
 
+pim_datagrid:
+    mass_action:
+        delete:
+            confirm_content: Are you sure you want to delete selected products?
+            success:         Selected products successfully deleted.
+            error:           Error ocurred when trying to delete selected products, please try again.
+
 flash:
     item:
         removed: Item successfully removed
@@ -58,7 +65,24 @@ error:
         export profile:   Cannot delete this export profile
         user:             Cannot delete this user
         role:             Cannot delete this role
+        attribute_option: Error during deletion of the attribute option
+    saving:
+        attribute_option: Cannot save attribute option
+alert:
+    attribute_option:
+        error_occured_during_submission: An error occured during the form submission on the server
+        save_before_edit_other:          Please register your modifications on other rows before editing this one
 
+confirm:
+    attribute_option:
+        cancel_edition_on_new_option_text: Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ?
+        cancel_edition_on_new_option_title: Cancel modification
+
+label:
+    attribute_option:
+        add_option: Add an option
+
+Code:                           Code
 Edit:                           Edit
 Delete:                         Delete
 Edit attributes of the product: Edit attributes of the product
@@ -71,8 +95,18 @@ Toggle status:                  Toggle status
 pim.grid.mass_action.quick_export.csv_all: CSV (All attributes)
 pim.grid.mass_action.delete:               Delete
 pim.grid.mass_action.mass_edit:            Mass Edit
+pim.grid.mass_action.sequential_edit:      Sequential Edit
 
 # Jstree context menu actions
 jstree.create: Create
 switch_on: "Yes"
 switch_off: "No"
+
+pim_enrich:
+    item:
+        list:
+            delete.label: Delete
+            delete.error: Error during item deletion
+        delete:
+            confirm.content: Are you sure you want to delete this {{ itemName }}? It is not possible to undo this action
+            confirm.title: Delete this {{ itemName }}

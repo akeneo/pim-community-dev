@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Imagine\Cache\Resolver;
 
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\Request;
 use Liip\ImagineBundle\Imagine\Cache\Resolver\WebPathResolver;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**

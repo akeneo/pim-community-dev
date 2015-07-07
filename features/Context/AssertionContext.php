@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Behat\Context\Step\Then;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
@@ -52,6 +53,20 @@ class AssertionContext extends RawMinkContext
             $this->getMainContext()->wait();
             $errors = $this->getCurrentPage()->getValidationErrors();
             assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
+        }
+    }
+
+    /**
+     * @param string $error
+     *
+     * @Then /^I should not see(?: a)? validation (?:error|tooltip) "([^"]*)"$/
+     */
+    public function iShouldNotSeeValidationError($error)
+    {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
+            $found = $this->getSession()->evaluateScript(sprintf($script, $error));
+            assertFalse($found, sprintf('Expecting to not see validation error, "%s" found', $error));
         }
     }
 
@@ -206,34 +221,49 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeHistory(TableNode $table)
     {
-        $updates = array();
+        $updates = [];
         $rows = $this->getCurrentPage()->getHistoryRows();
         foreach ($rows as $row) {
             $version = (int) $row->find('css', 'td.number-cell')->getHtml();
+            $author = $row->findAll('css', 'td.string-cell');
+            if (count($author) > 4) {
+                $author = $row->findAll('css', 'td.string-cell')[1]->getHtml();
+            } else {
+                $author = $row->findAll('css', 'td.string-cell')[0]->getHtml();
+            }
             $data = $row->findAll('css', 'td>ul');
             $data = end($data);
             $data = preg_replace('/\s+|\n+|\r+/m', ' ', $data->getHtml());
 
-            $updates[] = array(
+            $updates[] = [
                 'version' => $version,
-                'data'    => $data
-            );
+                'data'    => $data,
+                'author'  => $author,
+            ];
         }
 
         $valuePattern = '/(.)*<b>%s:<\/b>\s*%s\s*(.)*/';
 
         $expectedUpdates = $table->getHash();
         foreach ($expectedUpdates as $data) {
+            if (!array_key_exists('author', $data)) {
+                $data['author'] = '';
+            }
             $expectedPattern = sprintf(
                 $valuePattern,
                 $data['property'],
-                $data['value']
+                $data['value'],
+                $data['author']
             );
 
             $found = false;
             foreach ($updates as $update) {
+                if ('' === $data['author']) {
+                    $update['author'] = '';
+                }
                 if ((int) $data['version'] === $update['version']) {
-                    if (preg_match($expectedPattern, $update['data'])) {
+                    if (preg_match($expectedPattern, $update['data'])
+                        && $data['author'] === $update['author']) {
                         $found = true;
                         break;
                     }
@@ -243,8 +273,9 @@ class AssertionContext extends RawMinkContext
             if (!$found) {
                 throw $this->createExpectationException(
                     sprintf(
-                        'Expecting to see history update %d - %s - %s, not found',
+                        'Expecting to see history update %d - %s - %s - %s, not found',
                         $data['version'],
+                        $data['author'],
                         $data['property'],
                         $data['value']
                     )
@@ -403,6 +434,159 @@ class AssertionContext extends RawMinkContext
                 )
             );
         }
+    }
+
+    /**
+     * @param integer $count
+     *
+     * @Then /^I should have (\d+) new notification$/
+     */
+    public function iShouldHaveNewNotification($count)
+    {
+        $actualCount = $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+        assertEquals(
+            $actualCount,
+            $count,
+            sprintf('Expecting to see %d new notifications, saw %d', $count, $actualCount)
+        );
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^I should see notifications?:$/
+     */
+    public function iShouldSeeNotifications(TableNode $table)
+    {
+        $element = $this->getCurrentPage()->find('css', '#header-notification-widget');
+        $element->find('css', '.dropdown-toggle')->click();
+        $this->getMainContext()->wait();
+
+        $icons = [
+            'success' => 'icon-ok',
+            'warning' => 'icon-warning-sign',
+            'error'   => 'icon-remove',
+        ];
+
+        foreach ($table->getHash() as $data) {
+            $notification = $element->find('css', sprintf('.dropdown-menu li>a:contains("%s")', $data['message']));
+
+            if (!$notification) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting to see notification "%s", not found.',
+                        $data['message']
+                    )
+                );
+            }
+
+            if (!isset($icons[$data['type']])) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Unknown notification type "%s". Known types are %s.',
+                        $data['type'],
+                        join(', ', array_keys($icons))
+                    )
+                );
+            }
+
+            if (!$notification->find('css', sprintf('i.%s', $icons[$data['type']]))) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting the type of notification "%s" to be "%s"',
+                        $data['message'],
+                        $data['type']
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $attribute
+     *
+     * @return bool
+     * @throws ExpectationException
+     * @Then /^I should see that (.*) is inherited from variant group attribute$/
+     */
+    public function iShouldSeeThatAttributeIsInheritedFromVariantGroup($attribute)
+    {
+        $icons = $this->getCurrentPage()->findFieldIcons($attribute);
+        foreach ($icons as $icon) {
+            if ($icon->hasClass('icon-lock')) {
+                return true;
+            }
+        }
+
+        throw $this->createExpectationException('Affected by a variant group icon was not found');
+    }
+
+    /**
+     * @param string $attribute
+     *
+     * @return bool
+     * @throws ExpectationException
+     * @Then /^I should see that (.*) is not inherited from variant group attribute$/
+     */
+    public function iShouldSeeThatAttributeIsNotInheritedFromVariantGroup($attribute)
+    {
+        $icons = $this->getCurrentPage()->findFieldIcons($attribute);
+        foreach ($icons as $icon) {
+            if (!$icon->hasClass('icon-lock')) {
+                return true;
+            }
+        }
+
+        throw $this->createExpectationException('Affected by a variant group icon is found and it should not');
+    }
+
+    /**
+     * @param $fieldName
+     * @param $string
+     *
+     * @return bool
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^the field "([^"]*)" should have the following options:$/
+     */
+    public function theFieldShouldHaveTheFollowingOptions($fieldName, PyStringNode $string)
+    {
+        $field = $this->getCurrentPage()->findField($fieldName);
+        $id = $field->getAttribute('id');
+
+        if ('select' === $field->getTagName()) {
+            $options = $field->findAll('css', 'option');
+        } elseif ('input' === $field->getTagName() && 0 === strpos($id, 's2id_')) {
+            $options = $field->getParent()->getParent()->findAll('css', 'option');
+        } else {
+            throw $this->createExpectationException(
+                sprintf('"%s" field is not a select field, can\'t have options.', $fieldName)
+            );
+        }
+
+        $availableOptions = [];
+
+        foreach ($options as $option) {
+            $optionValue = trim($option->getText());
+
+            if ($optionValue) {
+                $availableOptions[] = $optionValue;
+            }
+        }
+
+        if (count(array_intersect($string->getLines(), $availableOptions)) === count($string->getLines())) {
+            return true;
+        }
+
+        throw $this->createExpectationException(
+            sprintf(
+                '"%s" field have these options (%s), but expected following options (%s).',
+                $fieldName,
+                implode(', ', $availableOptions),
+                implode(', ', $string->getLines())
+            )
+        );
     }
 
     /**

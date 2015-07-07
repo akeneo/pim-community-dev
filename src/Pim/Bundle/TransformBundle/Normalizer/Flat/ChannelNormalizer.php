@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * A normalizer to transform a channel entity into a flat array
@@ -22,7 +22,7 @@ class ChannelNormalizer extends Structured\ChannelNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeCurrencies(Channel $channel)
+    protected function normalizeCurrencies(ChannelInterface $channel)
     {
         $currencies = parent::normalizeCurrencies($channel);
 
@@ -32,7 +32,7 @@ class ChannelNormalizer extends Structured\ChannelNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLocales(Channel $channel)
+    protected function normalizeLocales(ChannelInterface $channel)
     {
         $locales = parent::normalizeLocales($channel);
 

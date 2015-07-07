@@ -4,13 +4,11 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\File;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 class CsvProductWriterSpec extends ObjectBehavior
 {
-    function let(MediaManager $mediaManager, StepExecution $stepExecution)
+    function let(StepExecution $stepExecution)
     {
-        $this->beConstructedWith($mediaManager);
         $this->setStepExecution($stepExecution);
     }
 

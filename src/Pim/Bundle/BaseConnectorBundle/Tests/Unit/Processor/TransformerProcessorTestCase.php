@@ -14,9 +14,21 @@ abstract class TransformerProcessorTestCase extends \PHPUnit_Framework_TestCase
     protected $validator;
     protected $translator;
     protected $transformer;
+    protected $managerRegistry;
 
     protected function setUp()
     {
+        $em = $this
+            ->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->managerRegistry = $this
+            ->getMockBuilder('Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->managerRegistry->expects($this->any())->method('getManagerForClass')->will($this->returnValue($em));
+
         $this->validator = $this->getMock('Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface');
         $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
         $this->translator

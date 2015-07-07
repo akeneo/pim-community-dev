@@ -76,6 +76,19 @@ class TransformationContext extends RawMinkContext
     /**
      * @param string $code
      *
+     * @Transform /^"([^"]*)" product group$/
+     * @Transform /^"([^"]*)" variant group$/
+     *
+     * @return GroupInterface
+     */
+    public function castProductGroupCodeToProductGroup($code)
+    {
+        return $this->getFixturesContext()->getProductGroup($code);
+    }
+
+    /**
+     * @param string $code
+     *
      * @Transform /^"([^"]*)" family$/
      *
      * @return Family

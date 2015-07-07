@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Channel normalizer
@@ -40,17 +39,17 @@ class ChannelNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Channel && in_array($format, $this->supportedFormats);
+        return $data instanceof ChannelInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Normalize label property
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return string
      */
-    protected function normalizeLabel(Channel $channel)
+    protected function normalizeLabel(ChannelInterface $channel)
     {
         return $channel->getLabel();
     }
@@ -58,11 +57,11 @@ class ChannelNormalizer implements NormalizerInterface
     /**
      * Returns an array containing the currency values
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
-    protected function normalizeCurrencies(Channel $channel)
+    protected function normalizeCurrencies(ChannelInterface $channel)
     {
         $currencies = array();
         foreach ($channel->getCurrencies() as $currency) {
@@ -75,11 +74,11 @@ class ChannelNormalizer implements NormalizerInterface
     /**
      * Returns an array containing the locale values
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
-    protected function normalizeLocales(Channel $channel)
+    protected function normalizeLocales(ChannelInterface $channel)
     {
         $locales = array();
         foreach ($channel->getLocales() as $locale) {
@@ -92,11 +91,11 @@ class ChannelNormalizer implements NormalizerInterface
     /**
      * Returns category tree code
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return string
      */
-    protected function normalizeCategoryTree(Channel $channel)
+    protected function normalizeCategoryTree(ChannelInterface $channel)
     {
         return $channel->getCategory()->getCode();
     }
@@ -104,11 +103,11 @@ class ChannelNormalizer implements NormalizerInterface
     /**
      * Returns conversion units
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
-     * @return array
+     * @return string
      */
-    protected function normalizeConversionUnits(Channel $channel)
+    protected function normalizeConversionUnits(ChannelInterface $channel)
     {
         $result = array();
         foreach ($channel->getConversionUnits() as $family => $unit) {

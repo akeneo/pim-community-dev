@@ -1,4 +1,3 @@
-@javascript
 Feature: Edit an association type
   In order to manage existing association types in the catalog
   As a product manager

@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
 class JobExecutionException extends \Exception
 {
     /**
-     * @param StepExecution $stepExecution
+     * @param JobExecution $jobExecution
      */
     public function __construct(JobExecution $jobExecution)
     {

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Util;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Product value key generator
@@ -24,11 +24,11 @@ class ProductValueKeyGenerator
      * Get the internal key that is used to index
      * a product value in a collection of values
      *
-     * @param AbstractProductValue $value
+     * @param ProductValueInterface $value
      *
      * @return string
      */
-    public static function getKey(AbstractProductValue $value)
+    public static function getKey(ProductValueInterface $value)
     {
         $attribute = $value->getAttribute();
         $key = $attribute->getCode();

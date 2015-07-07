@@ -2,20 +2,19 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datasource;
 
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 
 class DatasourceSpec extends ObjectBehavior
 {
-    function let(ObjectManager $manager, HydratorInterface $hydrator, ProductMassActionRepository $massActionRepo)
+    function let(ObjectManager $manager, HydratorInterface $hydrator, ProductMassActionRepository $massActionRepo, ProductQueryBuilderFactoryInterface $factory)
     {
-        $this->beConstructedWith($manager, $hydrator, $massActionRepo);
+        $this->beConstructedWith($manager, $hydrator, $massActionRepo, $factory);
     }
 
     function it_is_a_datasource()
@@ -33,7 +32,7 @@ class DatasourceSpec extends ObjectBehavior
             'entity'            => 'Product'
         ];
         $manager->getRepository('Product')->willReturn($repository);
-        $repository->createDatagridQueryBuilder()->shouldBeCalled();
+        $repository->createDatagridQueryBuilder([])->shouldBeCalled();
         $grid->setDatasource($this)->shouldBeCalled();
         $this->process($grid, $config);
     }
@@ -63,7 +62,7 @@ class DatasourceSpec extends ObjectBehavior
             'entity' => 'Product'
         ];
         $manager->getRepository('Product')->willReturn($repository);
-        $repository->createQueryBuilder('o')->shouldBeCalled();
+        $repository->createQueryBuilder([])->shouldBeCalled();
         $grid->setDatasource($this)->shouldBeCalled();
         $this->process($grid, $config);
     }

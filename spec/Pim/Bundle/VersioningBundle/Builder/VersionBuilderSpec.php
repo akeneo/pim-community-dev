@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\VersioningBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VersionBuilderSpec extends ObjectBehavior
 {
@@ -14,7 +14,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $this->beConstructedWith($normalizer);
     }
 
-    function it_builds_versions_for_versionable_entities($normalizer, AbstractProduct $product)
+    function it_builds_versions_for_versionable_entities($normalizer,ProductInterface $product)
     {
         $product->getId()->willReturn(1);
         $normalizer->normalize($product, 'csv', ['versioning' => true])->willReturn(['bar' => 'baz']);
@@ -28,7 +28,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $version->getChangeset()->shouldReturn(['bar' => ['old' => '', 'new' => 'baz']]);
     }
 
-    function it_creates_pending_versions(AbstractProduct $product)
+    function it_creates_pending_version(ProductInterface $product)
     {
         $version = $this->createPendingVersion($product, 'baz', []);
         $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');

@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use PhpSpec\ObjectBehavior;
 
 class ProductRepositorySpec extends ObjectBehavior
 {

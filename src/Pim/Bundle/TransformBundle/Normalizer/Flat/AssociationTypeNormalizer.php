@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 /**
@@ -22,7 +22,7 @@ class AssociationTypeNormalizer extends Structured\AssociationTypeNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLabel(AssociationType $associationType)
+    protected function normalizeLabel(AssociationTypeInterface $associationType)
     {
         $values = array();
         foreach ($associationType->getTranslations() as $translation) {

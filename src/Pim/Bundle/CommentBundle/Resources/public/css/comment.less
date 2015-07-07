@@ -1,0 +1,105 @@
+#comment_threads {
+  margin: 20px;
+  a {
+    color: #444;
+  }
+  .toggle-active {
+    display: none;
+  }
+  .active .toggle-active {
+    display: inherit;
+  }
+  textarea {
+    height: 20px;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+    resize: none;
+  }
+  .active textarea {
+    height: 60px;
+  }
+  .date {
+    color: #808080;
+  }
+}
+
+.comment-btn  {
+    margin: 3px;
+}
+
+li.comment-create {
+  border-radius: 3px;
+}
+
+ol.comment-thread li {
+  border: 1px solid #ddd;
+  border-top: none;
+}
+
+li.comment-create {
+  border: 1px solid #ddd;
+}
+
+ol.comment-thread > :first-child {
+  margin-top: 15px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  border: 1px solid #ddd;
+}
+
+ol.comment-thread > :last-child {
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+li.comment-reply:last-child {
+  border-bottom: 1px solid #ddd;
+}
+
+li.comment-topic {
+  background-color: #f6f6f6;
+  border-bottom: 1px solid #ddd;
+  padding: 3px;
+
+  &:hover {
+    .comment-buttons {
+      display: inherit;
+    }
+  }
+}
+
+li.comment-topic, li.comment-reply {
+  .message {
+    word-break: break-all;
+  }
+}
+
+li.comment-create, .comment-reply-action {
+  background-color: #eee;
+}
+
+.comment-reply {
+  border: 1px solid #ddd;
+  padding: 5px;
+
+  &:hover {
+    .comment-buttons {
+      display: inherit;
+    }
+  }
+}
+
+.comment-buttons {
+  display: none;
+}
+
+.comment-reply-action {
+  border-top: none;
+}
+
+.image-reply {
+  border-left: 10px solid rgba(163, 163, 163, 0.2);
+}

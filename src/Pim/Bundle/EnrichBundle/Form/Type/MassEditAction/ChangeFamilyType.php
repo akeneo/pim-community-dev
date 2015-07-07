@@ -15,6 +15,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ChangeFamilyType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,12 +34,12 @@ class ChangeFamilyType extends AbstractType
         $builder->add(
             'family',
             'entity',
-            array(
+            [
                 'class'       => 'PimCatalogBundle:Family',
                 'empty_value' => 'None',
                 'required'    => false,
                 'select2'     => true
-            )
+            ]
         );
     }
 
@@ -39,7 +50,7 @@ class ChangeFamilyType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\ChangeFamily',
+                'data_class' => $this->dataClass,
             ]
         );
     }

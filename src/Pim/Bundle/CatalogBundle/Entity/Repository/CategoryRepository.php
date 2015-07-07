@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Doctrine\Common\Collections\Collection;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
@@ -16,8 +18,13 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
-class CategoryRepository extends NestedTreeRepository implements ReferableEntityRepositoryInterface
+class CategoryRepository extends NestedTreeRepository implements
+    IdentifiableObjectRepositoryInterface,
+    ReferableEntityRepositoryInterface,
+    CategoryRepositoryInterface
 {
     /**
      * Get query builder for all existitng category trees
@@ -32,8 +39,8 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * Count children for a given category.
      *
-     * @param Category $category   the requested node
-     * @param boolean  $onlyDirect true to cound only direct children
+     * @param CategoryInterface $category   the requested node
+     * @param boolean           $onlyDirect true to count only direct children
      *
      * @return integer
      */
@@ -112,7 +119,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * Create a query builder with just a link to the category passed in parameter
      *
-     * @param Category $category
+     * @param CategoryInterface $category
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -128,8 +135,8 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * Shortcut to get all children query builder
      *
-     * @param Category $category    the requested node
-     * @param boolean  $includeNode true to include actual node in query result
+     * @param CategoryInterface $category    the requested node
+     * @param boolean           $includeNode true to include actual node in query result
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -141,7 +148,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * Shortcut to get all children ids
      *
-     * @param Category $parent the parent
+     * @param CategoryInterface $parent the parent
      *
      * @return integer[]
      */
@@ -160,7 +167,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
+    public function findOneByIdentifier($code)
     {
         return $this->findOneBy(array('code' => $code));
     }
@@ -168,7 +175,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     /**
      * {@inheritdoc}
      */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array('code');
     }
@@ -176,7 +183,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
      * Return categories ids provided by the categoryQb or by the provided category
      *
      * @param CategoryInterface $category
-     * @param OrmQueryBuilder   $categoryQb
+     * @param QueryBuilder      $categoryQb
      *
      * @return array $categoryIds
      */
@@ -233,7 +240,6 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
         } else {
             $selectNode = $this->findOneBy(array('id' => $selectNodeId));
             if ($selectNode != null) {
-
                 $meta = $this->getClassMetadata();
                 $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
@@ -313,7 +319,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
             // the node present itself in the set
             $nodeIt = 0;
             $foundItemLess = false;
-            $nodeIds= array_keys($vectorMap);
+            $nodeIds = array_keys($vectorMap);
             $nodesByLevel = array();
 
             while ($nodeIt < count($nodeIds) && !$foundItemLess) {
@@ -339,7 +345,6 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
         return $tree;
     }
 
-
     /**
      * Search Segment entities from an array of criterias.
      * Search is done on a "%value%" LIKE expression.
@@ -359,5 +364,25 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
         $queryBuilder->andWhere('c.root = :rootId')->setParameter('rootId', $treeRootId);
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
     }
 }

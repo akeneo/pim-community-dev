@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 /**
  * A normalizer to transform a group entity into an array
@@ -12,16 +13,12 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupNormalizer implements NormalizerInterface
+class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array $supportedFormats
-     */
+    /** @var array $supportedFormats */
     protected $supportedFormats = array('json', 'xml');
 
-    /**
-     * @var TranslationNormalizer $transNormalizer
-     */
+    /** @var TranslationNormalizer $transNormalizer */
     protected $transNormalizer;
 
     /**
@@ -39,11 +36,24 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $results = array(
+        $results = [
             'code' => $object->getCode(),
-            'type' => $object->getType()->getCode(),
-            'attributes' => $this->normalizeAttributes($object)
-        ) + $this->transNormalizer->normalize($object, $format, $context);
+            'type' => $object->getType()->getCode()
+        ];
+
+        $axisAttributes = $this->normalizeAxisAttributes($object);
+        if (!empty($axisAttributes)) {
+            $results += ['axis' => $axisAttributes];
+        }
+
+        $results += $this->transNormalizer->normalize($object, $format, $context);
+
+        if (isset($context['with_variant_group_values']) && true === $context['with_variant_group_values']) {
+            $variantGroupValues = $this->normalizeVariantGroupValues($object, $format, $context);
+            if (!empty($variantGroupValues)) {
+                $results += $variantGroupValues;
+            }
+        }
 
         return $results;
     }
@@ -53,24 +63,44 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Group && in_array($format, $this->supportedFormats);
+        return $data instanceof GroupInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Normalize the attributes
      *
-     * @param Group $group
+     * @param GroupInterface $group
      *
      * @return array
      */
-    protected function normalizeAttributes(Group $group)
+    protected function normalizeAxisAttributes(GroupInterface $group)
     {
         $attributes = array();
-        foreach ($group->getAttributes() as $attribute) {
+        foreach ($group->getAxisAttributes() as $attribute) {
             $attributes[] = $attribute->getCode();
         }
         sort($attributes);
 
         return $attributes;
+    }
+
+    /**
+     * Normalize the variant group values
+     *
+     * @param GroupInterface $group
+     * @param string         $format
+     * @param array          $context
+     *
+     * @return array
+     */
+    protected function normalizeVariantGroupValues(GroupInterface $group, $format, array $context)
+    {
+        $valuesData = [];
+        if ($group->getType()->isVariant() && null !== $group->getProductTemplate()) {
+            $template = $group->getProductTemplate();
+            $valuesData = $template->getValuesData();
+        }
+
+        return $valuesData;
     }
 }

@@ -1,4 +1,3 @@
-@javascript
 Feature: Create a category
   In order to provide a tree of my product categories
   As a product manager

@@ -1,3 +1,13 @@
+pim_user:
+    user:
+        tab:
+            general.title:               General
+            additional.title:            Additional
+            group_and_role.title:        Groups and Roles
+            password.title:              Password
+            business_unit.title:         Business Units
+            email_synchronization.title: Email synchronization settings
+
 # user grids
 oro.user.controller:
     group.message.saved: "Group saved"
@@ -32,8 +42,10 @@ pim_title:
 
 # User
 user.title: User
+user.overview: User
 Users Management: Users Management
 Create user: Create user
+btn.create.user: Create user
 New user: New user
 Additional: Additional
 Groups and Roles: Groups and Roles
@@ -79,8 +91,10 @@ Save and close: Save and close
 Has role : Has role
 role:
     title: role
+    overview: role
     edit: Edit role
     create: Create role
+btn.create.role: Create role
 
 rights:
     action: Permissions
@@ -127,8 +141,10 @@ oro:
 
 # User Group
 Create group: Create group
+btn.create.user-group: Create group
 Has group: Has group
 Save and Close: Save and close
+user-group.overview: Groups
 
 # Login page
 Log in: Log in

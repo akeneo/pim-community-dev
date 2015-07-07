@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface as ContainerAwareInt;
-use Doctrine\Common\DataFixtures\OrderedFixtureInterface as OrderedFixtureInt;
-use Doctrine\Common\DataFixtures\AbstractFixture;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface as OrderedFixtureInt;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface as ContainerAwareInt;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Abstract installer fixture

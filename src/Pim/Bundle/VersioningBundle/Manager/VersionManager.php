@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\Manager;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Version manager
@@ -37,7 +36,7 @@ class VersionManager
     /**
      * Versioning context
      *
-     * @var string|null
+     * @var array
      */
     protected $context;
 
@@ -51,14 +50,22 @@ class VersionManager
      */
     protected $versionBuilder;
 
+    /** @var VersionContext */
+    protected $versionContext;
+
     /**
      * @param SmartManagerRegistry $registry
      * @param VersionBuilder       $versionBuilder
+     * @param VersionContext       $versionContext
      */
-    public function __construct(SmartManagerRegistry $registry, VersionBuilder $versionBuilder)
-    {
+    public function __construct(
+        SmartManagerRegistry $registry,
+        VersionBuilder $versionBuilder,
+        VersionContext $versionContext
+    ) {
         $this->registry       = $registry;
         $this->versionBuilder = $versionBuilder;
+        $this->versionContext = $versionContext;
     }
 
     /**
@@ -94,26 +101,6 @@ class VersionManager
     }
 
     /**
-     * Set context
-     *
-     * @param string $context
-     */
-    public function setContext($context)
-    {
-        $this->context = $context;
-    }
-
-    /**
-     * Get context
-     *
-     * @return string|null
-     */
-    public function getContext()
-    {
-        return $this->context;
-    }
-
-    /**
      * Build a version from a versionable entity
      *
      * @param object $versionable
@@ -144,10 +131,20 @@ class VersionManager
             }
 
             $createdVersions[] = $this->versionBuilder
-                ->buildVersion($versionable, $this->username, $previousVersion, $this->context);
+                ->buildVersion(
+                    $versionable,
+                    $this->username,
+                    $previousVersion,
+                    $this->versionContext->getContextInfo(ClassUtils::getClass($versionable))
+                );
         } else {
             $createdVersions[] = $this->versionBuilder
-                ->createPendingVersion($versionable, $this->username, $changeset, $this->context);
+                ->createPendingVersion(
+                    $versionable,
+                    $this->username,
+                    $changeset,
+                    $this->versionContext->getContextInfo(ClassUtils::getClass($versionable))
+                );
         }
 
         return $createdVersions;
@@ -164,7 +161,7 @@ class VersionManager
     }
 
     /**
-     * @return VersionRepositoryInterface
+     * @return \Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface
      */
     public function getVersionRepository()
     {
@@ -244,7 +241,7 @@ class VersionManager
      *
      * @return Version[]
      */
-    protected function buildPendingVersions($versionable)
+    public function buildPendingVersions($versionable)
     {
         $createdVersions = [];
 

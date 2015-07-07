@@ -35,9 +35,9 @@ Feature: Filter products by boolean field
     Then the grid should contain 5 elements
     And I should see products pants, shirt, shoes, hat and socks
     And I should be able to use the following filters:
-      | filter    | value | result               |
-      | Handmade  | yes   | pants and socks      |
-      | Handmade  | no    | shirt, shoes and hat |
+      | filter   | value | result               |
+      | Handmade | yes   | pants and socks      |
+      | Handmade | no    | shirt, shoes and hat |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3406
   Scenario: Successfully filter products by boolean value for boolean attributes

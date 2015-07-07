@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Locale controller for configuration

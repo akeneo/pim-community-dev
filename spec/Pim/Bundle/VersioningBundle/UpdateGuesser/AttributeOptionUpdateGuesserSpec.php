@@ -3,13 +3,11 @@
 namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
@@ -19,9 +17,9 @@ class AttributeOptionUpdateGuesserSpec extends ObjectBehavior
         ManagerRegistry $registry,
         ProductRepositoryInterface $repository,
         EntityManager $em,
-        AbstractAttribute $attribute,
-        AttributeOption $option,
-        AttributeOptionValue $optionValue
+        AttributeInterface $attribute,
+        AttributeOptionInterface $option,
+        AttributeOptionValueInterface $optionValue
     ) {
         $registry->getRepository('product')->willReturn($repository);
         $repository->findAllWithAttributeOption($option)->willReturn([]);

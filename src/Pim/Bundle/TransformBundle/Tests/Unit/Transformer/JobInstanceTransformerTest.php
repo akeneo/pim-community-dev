@@ -23,7 +23,7 @@ class JobInstanceTransformerTest extends EntityTransformerTestCase
             $this->columnInfoTransformer
         );
         $this->addColumn('code');
-        $this->repository = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Doctrine\EntityRepository')
+        $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
         $this->doctrine

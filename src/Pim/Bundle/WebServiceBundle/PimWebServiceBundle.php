@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\WebServiceBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Web service bundle

@@ -3,12 +3,15 @@ parameters:
     pim_base_connector.processor.csv_serializer.heterogeneous.class: Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HeterogeneousProcessor
     pim_base_connector.processor.csv_serializer.product.class:       Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\ProductProcessor
 
-    pim_base_connector.processor.transformer.class:                  Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
-    pim_base_connector.processor.product.class:                      Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
-    pim_base_connector.processor.category.class:                     Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
+    pim_base_connector.processor.transformer.class:                   Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
+    pim_base_connector.processor.product.class:                       Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
+    pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
+    pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
+    pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
 
-    pim_base_connector.processor.product_to_flat_array.class:        Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
-    pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
+    pim_base_connector.processor.product_to_flat_array.class:           Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
+    pim_base_connector.processor.normalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor
+    pim_base_connector.processor.dummy.class:                           Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
 
 services:
     pim_base_connector.processor.csv_serializer:
@@ -36,6 +39,7 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.channel'
+            - %upload_dir%
 
     pim_base_connector.processor.dummy:
         class: %pim_base_connector.processor.dummy.class%
@@ -47,8 +51,7 @@ services:
             - '@pim_base_connector.validator.import'
             - '@translator'
             - '@pim_transform.transformer.registry'
-        calls:
-            - [setManagerRegistry, ['@pim_catalog.doctrine.smart_manager_registry']]
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_base_connector.processor.channel:
         parent: pim_base_connector.processor.transformer
@@ -68,8 +71,8 @@ services:
             - '@pim_base_connector.validator.product_import'
             - '@translator'
             - '@pim_transform.transformer.registry'
-            - %pim_catalog.entity.product.class%
             - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.product.class%
 
     pim_base_connector.processor.association:
         parent: pim_base_connector.processor.transformer
@@ -80,18 +83,13 @@ services:
         class: %pim_base_connector.processor.category.class%
         parent: pim_base_connector.processor.transformer
         arguments:
-            - '@pim_transform.cache.doctrine_cache'
             - %pim_catalog.entity.category.class%
+            - '@pim_transform.cache.doctrine_cache'
 
     pim_base_connector.processor.association_type:
         parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.association_type.class%
-
-    pim_base_connector.processor.group:
-        parent: pim_base_connector.processor.transformer
-        arguments:
-            - %pim_catalog.entity.group.class%
 
     pim_base_connector.processor.attribute_group:
         parent: pim_base_connector.processor.transformer
@@ -119,7 +117,49 @@ services:
             - '@pim_base_connector.validator.skip_import'
             - '@translator'
             - '@pim_transform.transformer.registry'
-            - %akeneo_batch.entity.job_instance.class%
             - '@pim_catalog.doctrine.smart_manager_registry'
+            - %akeneo_batch.entity.job_instance.class%
         calls:
             - [ addMapping, [ configuration, rawConfiguration ] ]
+
+    # deprecated, will be dropped in 1.4, use pim_base_connector.processor.denormalization.csv_group or variant_group
+    pim_base_connector.processor.group:
+        parent: pim_base_connector.processor.transformer
+        arguments:
+            - %pim_catalog.entity.group.class%
+
+    pim_base_connector.processor.denormalization.csv_group:
+        class: %pim_base_connector.processor.denormalization.csv_group.class%
+        arguments:
+            - '@pim_catalog.repository.group'
+            - '@pim_serializer'
+            - '@pim_validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - %pim_catalog.entity.group.class%
+            - 'csv'
+
+    pim_base_connector.processor.denormalization.csv_variant_group:
+        class: %pim_base_connector.processor.denormalization.csv_variant_group.class%
+        arguments:
+            - '@pim_catalog.repository.group'
+            - '@pim_serializer'
+            - '@pim_validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_serializer'
+            - '@pim_catalog.manager.product_template_media'
+            - '@pim_transform.builder.field_name'
+            - %pim_catalog.entity.group.class%
+            - %pim_catalog.entity.product_template.class%
+            - 'csv'
+
+    pim_base_connector.processor.normalization.csv_group:
+        class: %pim_base_connector.processor.csv_serializer.homogeneous.class%
+        parent: pim_base_connector.processor.csv_serializer
+
+    pim_base_connector.processor.normalization.csv_variant_group:
+        class: %pim_base_connector.processor.normalization.csv_variant_group.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_serializer'
+            - %upload_dir%
+            - 'csv'

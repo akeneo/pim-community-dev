@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Calculate the completeness of the products
@@ -30,9 +30,9 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("<info>Generating missing completenesses...<info>");
+        $output->writeln("<info>Generating missing completenesses...</info>");
         $this->getCompletenessManager()->generateMissing();
-        $output->writeln("<info>Missing completenesses generated.<info>");
+        $output->writeln("<info>Missing completenesses generated.</info>");
     }
 
     /**

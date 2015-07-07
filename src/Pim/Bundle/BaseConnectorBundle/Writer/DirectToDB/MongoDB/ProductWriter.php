@@ -2,21 +2,21 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
-use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
+use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product writer using direct MongoDB method in order to
@@ -112,7 +112,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param NormalizerInterface      $normalizer
      * @param EventDispatcherInterface $eventDispatcher
      * @param MongoObjectsFactory      $mongoFactory
-     * @param string                   $productClass:
+     * @param string                   $productClass
      * @param CacheClearer             $cacheClearer
      */
     public function __construct(

@@ -4,7 +4,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser as BaseContainsProductsUpdateGuesser;
@@ -47,7 +47,7 @@ class ContainsProductsUpdateGuesser extends BaseContainsProductsUpdateGuesser
     {
         $pendings = array();
 
-        if ($entity instanceof Group && $entity->getId()) {
+        if ($entity instanceof GroupInterface && $entity->getId()) {
             $products = $this->registry->getRepository($this->productClass)->findAllForGroup($entity);
             foreach ($products as $product) {
                 $pendings[] = $product;

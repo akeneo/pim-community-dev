@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
+use Prophecy\Argument;
 
 class ChannelExtensionSpec extends ObjectBehavior
 {
@@ -31,7 +31,7 @@ class ChannelExtensionSpec extends ObjectBehavior
         $functions['channel_font_color']->shouldBeAnInstanceOf('\Twig_Function_Method');
     }
 
-    function it_provides_the_color_and_font_color_for_the_given_channel($manager, Channel $channel, $colorsProvider)
+    function it_provides_the_color_and_font_color_for_the_given_channel($manager, ChannelInterface $channel, $colorsProvider)
     {
         $manager->getChannelByCode(Argument::not(null))->willReturn($channel);
         $channel->getColor()->willReturn('blue');

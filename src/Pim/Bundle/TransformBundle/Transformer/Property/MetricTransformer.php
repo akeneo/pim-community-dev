@@ -18,7 +18,7 @@ class MetricTransformer extends DefaultTransformer implements EntityUpdaterInter
     protected $metricFactory;
 
     /**
-     * @param string $metricClass
+     * @param MetricFactory $metricFactory
      */
     public function __construct(MetricFactory $metricFactory)
     {

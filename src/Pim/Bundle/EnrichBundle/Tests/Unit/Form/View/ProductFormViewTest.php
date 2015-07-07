@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\View;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
 
 /**
@@ -20,7 +21,11 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->formView = new ProductFormView();
+        $viewUpdaterRegistry = $this->getMock('Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry');
+        $viewUpdaterRegistry->expects($this->any())
+            ->method('getUpdaters')
+            ->will($this->returnValue([]));
+        $this->formView = new ProductFormView($viewUpdaterRegistry);
     }
 
     /**
@@ -525,7 +530,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     private function getAttributeMock(array $options)
     {
@@ -577,8 +582,9 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $options
+
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+*@return AttributeGroupInterface
      */
     private function getGroupMock(array $options)
     {

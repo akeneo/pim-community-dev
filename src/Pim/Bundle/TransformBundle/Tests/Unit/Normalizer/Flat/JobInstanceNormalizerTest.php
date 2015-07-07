@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat;
 
-use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\JobInstanceNormalizer;
+use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
 /**
  * Test related class

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ product.identifier }} - {{ renderingDate|date }}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <style type="text/css">
+            * {
+                font-family: Helvetica;
+                font-weight: 100;
+            }
+
+            .header {
+                margin-bottom: 20px;
+                width: 100%;
+            }
+
+            .header h1 {
+                margin-bottom: 5px;
+            }
+
+            .header .rendering-date {
+                font-size: 15px;
+            }
+
+            .images {
+                width: 100%;
+                overflow: hidden;
+            }
+
+            .images img {
+                height: 100px;
+                display: inline-block;
+                margin-right: 20px;
+                margin-bottom: 20px;
+            }
+
+            .attribute-group table {
+                width: 100%;
+                border: 1px solid #aaa;
+                border-radius: 5px;
+                margin-top: 0px;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+
+            .attribute-group table h2 {
+                width: 100%;
+                background: #7887AB;
+                color: white;
+                padding: 2.5px 5px;
+                font-size: 23px;
+                text-transform: uppercase;
+                margin: 0px;
+            }
+
+            .attribute-group table tr {
+                border-bottom: 1px solid #aaa;
+            }
+
+            .attribute-group table th {
+                padding: 0px;
+                text-align: left;
+            }
+
+            .attribute-group table td {
+                padding: 5px;
+                text-align: left;
+            }
+
+            .attribute-group table .attribute {
+                width: 300px;
+                vertical-align: top;
+            }
+
+            .attribute-group table .value p{
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            {% block header %}
+                <h1>{{ product.label }} {{ product.identifier != product.label ? '(' ~ product.identifier ~ ')' : '' }}</h1>
+                <span class="rendering-date">{{ renderingDate|date }}</span>
+            {% endblock %}
+        </div>
+        <div class="images">
+            {% block images %}
+                {% for attribute in imageAttributes if product.getValue(attribute.code, locale, scope).media is not null
+                    and product.getValue(attribute.code, locale, scope).media.filename is not null %}
+                    <img src="{{ uploadDir }}{{ product.getValue(attribute.code, locale, scope).media.filename }}" />
+                {% endfor %}
+            {% endblock %}
+        </div>
+        <div class="attribute-group">
+            {% for group, attributes in groupedAttributes %}
+                {% block attribute_group %}
+                <table>
+                    <thead>
+                        <tr class="group">
+                            <th colspan="2"><h2>{{ group }}</h2></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attribute in attributes %}
+                            {% block attribute %}
+                            <tr>
+                                <td class="attribute">
+                                    {{ attribute.label }}
+                                </td>
+                                <td class="value">
+                                {% if attribute.attributeType == 'pim_catalog_image' and product.getValue(attribute.code, locale, scope).media is not null %}
+                                    {{ product.getValue(attribute.code, locale, scope).media.originalFilename }}
+                                {% elseif attribute.attributeType == 'pim_catalog_textarea' and attribute.isWysiwygEnabled %}
+                                    {{ product.getValue(attribute.code, locale, scope)|raw }}
+                                {% else %}
+                                    {{ product.getValue(attribute.code, locale, scope) }}
+                                {% endif %}
+                                </td>
+                            </tr>
+                            {% endblock %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endblock %}
+            {% endfor %}
+        </div>
+    </body>
+</html>

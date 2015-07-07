@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat;
 
-use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\ChannelNormalizer;
+use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
 /**
  * Test related class

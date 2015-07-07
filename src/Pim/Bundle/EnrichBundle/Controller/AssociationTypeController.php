@@ -2,8 +2,17 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
+use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,17 +21,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
-use Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler;
 
 /**
  * Association type controller
@@ -33,7 +31,7 @@ use Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler;
  */
 class AssociationTypeController extends AbstractDoctrineController
 {
-    /** @var AssociationTypeHandler */
+    /** @var HandlerInterface */
     protected $assocTypeHandler;
 
     /** @var Form */
@@ -44,6 +42,9 @@ class AssociationTypeController extends AbstractDoctrineController
 
     /** @var AssociationManager */
     protected $assocManager;
+
+    /** @var RemoverInterface */
+    protected $assocTypeRemover;
 
     /**
      * Constructor
@@ -59,8 +60,9 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param AssociationTypeManager   $assocTypeManager
      * @param AssociationManager       $assocManager
-     * @param AssociationTypeHandler   $assocTypeHandler
+     * @param HandlerInterface         $assocTypeHandler
      * @param Form                     $assocTypeForm
+     * @param RemoverInterface         $assocTypeRemover
      */
     public function __construct(
         Request $request,
@@ -74,8 +76,9 @@ class AssociationTypeController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         AssociationTypeManager $assocTypeManager,
         AssociationManager $assocManager,
-        AssociationTypeHandler $assocTypeHandler,
-        Form $assocTypeForm
+        HandlerInterface $assocTypeHandler,
+        Form $assocTypeForm,
+        RemoverInterface $assocTypeRemover
     ) {
         parent::__construct(
             $request,
@@ -93,6 +96,7 @@ class AssociationTypeController extends AbstractDoctrineController
         $this->assocManager     = $assocManager;
         $this->assocTypeHandler = $assocTypeHandler;
         $this->assocTypeForm    = $assocTypeForm;
+        $this->assocTypeRemover = $assocTypeRemover;
     }
 
     /**
@@ -106,7 +110,7 @@ class AssociationTypeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -129,18 +133,17 @@ class AssociationTypeController extends AbstractDoctrineController
         if ($this->assocTypeHandler->process($associationType)) {
             $this->addFlash('success', 'flash.association type.created');
 
-            $response = array(
+            $response = [
                 'status' => 1,
-                'url' =>
-                    $this->generateUrl('pim_enrich_association_type_edit', array('id' => $associationType->getId()))
-            );
+                'url'    => $this->generateUrl('pim_enrich_association_type_edit', ['id' => $associationType->getId()])
+            ];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->assocTypeForm->createView(),
-        );
+        ];
     }
 
     /**
@@ -160,14 +163,14 @@ class AssociationTypeController extends AbstractDoctrineController
         if ($this->assocTypeHandler->process($associationType)) {
             $this->addFlash('success', 'flash.association type.updated');
 
-            return $this->redirectToRoute('pim_enrich_association_type_edit', array('id' => $id));
+            return $this->redirectToRoute('pim_enrich_association_type_edit', ['id' => $id]);
         }
         $usageCount = $this->assocManager->countForAssociationType($associationType);
 
-        return array(
+        return [
             'form'       => $this->assocTypeForm->createView(),
             'usageCount' => $usageCount
-        );
+        ];
     }
 
     /**
@@ -180,7 +183,7 @@ class AssociationTypeController extends AbstractDoctrineController
      */
     public function removeAction(AssociationType $associationType)
     {
-        $this->assocTypeManager->remove($associationType);
+        $this->assocTypeRemover->remove($associationType);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

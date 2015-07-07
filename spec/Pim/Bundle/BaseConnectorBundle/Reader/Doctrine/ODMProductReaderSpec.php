@@ -2,21 +2,18 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Doctrine\ODM\MongoDB\Cursor;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\EntityManager;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\AbstractQuery;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Doctrine\ODM\MongoDB\Query\Builder;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Doctrine\ORM\Query\Expr\From;
+use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -27,11 +24,11 @@ class ODMProductReaderSpec extends ObjectBehavior
         ProductRepositoryInterface $repository,
         ChannelManager $channelManager,
         CompletenessManager $completenessManager,
-        MetricConverter $metricConverter,
+        MetricConverter $converter,
         StepExecution $stepExecution,
         DocumentManager $documentManager
     ) {
-        $this->beConstructedWith($repository, $channelManager, $completenessManager, $metricConverter, $documentManager);
+        $this->beConstructedWith($repository, $channelManager, $completenessManager, $converter, $documentManager);
 
         $this->setStepExecution($stepExecution);
     }
@@ -45,7 +42,7 @@ class ODMProductReaderSpec extends ObjectBehavior
     function it_reads_products_one_by_one(
         $channelManager,
         $repository,
-        Channel $channel,
+        ChannelInterface $channel,
         Builder $builder,
         AbstractQuery $query,
         ProductInterface $sku1,
@@ -69,7 +66,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         $channelManager,
         $completenessManager,
         $repository,
-        Channel $channel,
+        ChannelInterface $channel,
         Builder $builder,
         AbstractQuery $query,
         ProductInterface $sku1,
@@ -95,8 +92,8 @@ class ODMProductReaderSpec extends ObjectBehavior
     function it_converts_metric_values(
         $channelManager,
         $repository,
-        $metricConverter,
-        Channel $channel,
+        $converter,
+        ChannelInterface $channel,
         Builder $builder,
         AbstractQuery $query,
         ProductInterface $sku1,
@@ -113,7 +110,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         $cursor->next()->willReturn(null);
         $this->setChannel('foobar');
 
-        $metricConverter->convert($sku1, $channel)->shouldBeCalled();
+        $converter->convert($sku1, $channel)->shouldBeCalled();
 
         $this->read()->shouldReturn($sku1);
     }
@@ -122,7 +119,7 @@ class ODMProductReaderSpec extends ObjectBehavior
         $channelManager,
         $repository,
         $stepExecution,
-        Channel $channel,
+        ChannelInterface $channel,
         Builder $builder,
         AbstractQuery $query,
         ProductInterface $sku1,

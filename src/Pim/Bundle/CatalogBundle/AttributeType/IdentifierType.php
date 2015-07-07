@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Identifier attribute type
@@ -16,7 +16,7 @@ class IdentifierType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
+    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         return [
             'maxCharacters' => [
@@ -57,15 +57,6 @@ class IdentifierType extends AbstractAttributeType
             ],
             'required' => [
                 'name'      => 'required',
-                'fieldType' => 'switch',
-                'options'   => [
-                    'data'      => true,
-                    'disabled'  => true,
-                    'read_only' => true
-                ]
-            ],
-            'useableAsGridColumn' => [
-                'name'      => 'useableAsGridColumn',
                 'fieldType' => 'switch',
                 'options'   => [
                     'data'      => true,

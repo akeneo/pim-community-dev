@@ -2,15 +2,15 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Prophecy\Argument;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\Extension\Core\View\ChoiceView;
-use Pim\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 class BooleanFilterSpec extends ObjectBehavior
 {
@@ -30,41 +30,23 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->getName()->shouldReturn('foo');
     }
 
-    function it_parses_value_of_type_yes()
+    function it_should_parse_data()
     {
-        $this->shouldParseData(array('value' => BooleanFilterType::TYPE_YES));
-    }
-
-    function it_parses_value_of_type_no()
-    {
-        $this->shouldParseData(array('value' => BooleanFilterType::TYPE_NO));
-    }
-
-    function it_does_not_parse_value_of_other_type()
-    {
-        $this->shouldNotParseData(array('value' => 'foo'));
-    }
-
-    function it_does_not_parse_empty_value()
-    {
-        $this->shouldNotParseData(array('value' => null));
-    }
-
-    function it_does_not_parse_unexisting_value_key()
-    {
-        $this->shouldNotParseData(array());
-    }
-
-    function it_does_not_parse_something_else_than_an_array()
-    {
-        $this->shouldNotParseData(0);
+        $this->parseData(['value' => 0])->shouldReturn(['value' => false]);
+        $this->parseData(['value' => 1])->shouldReturn(['value' => true]);
+        $this->parseData(['value' => true])->shouldReturn(false);
+        $this->parseData(['value' => false])->shouldReturn(false);
+        $this->parseData(null)->shouldReturn(false);
+        $this->parseData([])->shouldReturn(false);
+        $this->parseData(1)->shouldReturn(false);
+        $this->parseData(0)->shouldReturn(false);
     }
 
     function it_applies_boolean_flexible_filter_on_the_datasource(
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'bar', BooleanFilterType::TYPE_YES, '=')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'bar', '=', true)->shouldBeCalled();
 
         $this->apply($datasource, array('value' => BooleanFilterType::TYPE_YES))->shouldReturn(true);
     }
@@ -73,12 +55,12 @@ class BooleanFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute(Argument::cetera())->shouldNotBeCalled();
+        $utility->applyFilter(Argument::cetera())->shouldNotBeCalled();
 
         $this->apply($datasource, array('value' => 'foo'))->shouldReturn(false);
         $this->apply($datasource, array('value' => null))->shouldReturn(false);
         $this->apply($datasource, array())->shouldReturn(false);
-        $this->apply($datasource, 0)->shouldReturn(false);
+        $this->apply($datasource, BooleanFilterType::TYPE_NO)->shouldReturn(false);
     }
 
     function it_uses_the_boolean_filter_form_type(FormInterface $form, $factory)
@@ -136,14 +118,5 @@ class BooleanFilterSpec extends ObjectBehavior
             ]
         );
 
-    }
-
-    public function getMatchers()
-    {
-        return [
-            'parseData' => function ($subject, $data) {
-                return $subject->parseData($data) === $data;
-            },
-        ];
     }
 }

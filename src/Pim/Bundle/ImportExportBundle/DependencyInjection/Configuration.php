@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
  * Configuration of the PimImportExport Bundle

@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Normalize a product value into an array
@@ -68,8 +67,9 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $result = [$fieldName => ''];
         } elseif (is_int($data)) {
             $result = [$fieldName => (string) $data];
-        } elseif (is_float($data)) {
-            $result = [$fieldName => sprintf(sprintf('%%.%sF', $this->precision), $data)];
+        } elseif (is_float($data) || 'decimal' === $entity->getAttribute()->getBackendType()) {
+            $pattern = $entity->getAttribute()->isDecimalsAllowed() ? sprintf('%%.%sF', $this->precision) : '%d';
+            $result = [$fieldName => sprintf($pattern, $data)];
         } elseif (is_string($data)) {
             $result = [$fieldName => $data];
         } elseif (is_bool($data)) {
@@ -84,9 +84,12 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 $data = $this->sortOptions($data);
                 $context['field_name'] = $fieldName;
                 $result = $this->serializer->normalize($data, $format, $context);
-
             } else {
                 $context['field_name'] = $fieldName;
+                if ('metric' === $entity->getAttribute()->getBackendType()) {
+                    $context['decimals_allowed'] = $entity->getAttribute()->isDecimalsAllowed();
+                }
+
                 $result = $this->serializer->normalize($data, $format, $context);
             }
         }
@@ -121,6 +124,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     protected function getFieldValue($value)
     {
+        // TODO : should be extracted
         $suffix = '';
 
         if ($value->getAttribute()->isLocalizable()) {
@@ -136,23 +140,18 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * Check if the attribute is locale specific and check if the given local exist in available locales
      *
-     * @param AbstractProductValue $entity
+     * @param ProductValueInterface $value
      *
      * @return bool
      */
-    protected function filterLocaleSpecific(AbstractProductValue $entity)
+    protected function filterLocaleSpecific(ProductValueInterface $value)
     {
-        $actualLocale = $entity->getLocale();
-
-        /** @var AbstractAttribute $attribute */
-        $attribute = $entity->getAttribute();
+        /** @var AttributeInterface $attribute */
+        $attribute = $value->getAttribute();
         if ($attribute->isLocaleSpecific()) {
-            $availableLocales = [];
-            foreach ($attribute->getAvailableLocales() as $locale) {
-                $availableLocales[] = $locale->getCode();
-            }
-
-            if (!in_array($actualLocale, $availableLocales)) {
+            $currentLocale = $value->getLocale();
+            $availableLocales = $attribute->getLocaleSpecificCodes();
+            if (!in_array($currentLocale, $availableLocales)) {
                 return true;
             }
         }

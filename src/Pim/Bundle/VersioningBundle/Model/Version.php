@@ -52,7 +52,7 @@ class Version
     protected $version;
 
     /**
-     * @var datetime
+     * @var \DateTime
      */
     protected $loggedAt;
 
@@ -212,7 +212,7 @@ class Version
     /**
      * Get context
      *
-     * @return string|null
+     * @return string
      */
     public function getContext()
     {
@@ -220,7 +220,7 @@ class Version
     }
 
     /**
-     * @return datetime
+     * @return \DateTime
      */
     public function getLoggedAt()
     {

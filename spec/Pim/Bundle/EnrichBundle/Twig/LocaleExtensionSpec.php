@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
 class LocaleExtensionSpec extends ObjectBehavior
@@ -65,7 +64,7 @@ class LocaleExtensionSpec extends ObjectBehavior
         $this->currencyLabel('fr', 'en_US')->shouldReturn('Euro');
     }
 
-    public function getMatchers()
+    function getMatchers()
     {
         $filterArgs = new \Twig_Node();
 

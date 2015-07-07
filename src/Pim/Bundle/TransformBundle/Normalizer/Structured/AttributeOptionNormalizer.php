@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * Attribute option normalizer
@@ -31,7 +31,6 @@ class AttributeOptionNormalizer implements NormalizerInterface
         return array(
             'attribute'  => $entity->getAttribute()->getCode(),
             'code'       => $entity->getCode(),
-            'default'    => ($entity->isDefault()) ? '1' : '0',
             'sort_order' => $entity->getSortOrder(),
         ) + $this->normalizeLabel($entity, $context);
     }
@@ -41,22 +40,23 @@ class AttributeOptionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AttributeOption && in_array($format, $this->supportedFormats);
+        return $data instanceof AttributeOptionInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
      * Returns an array containing the label values
      *
-     * @param AttributeOption $entity
-     * @param array           $context
+     * @param AttributeOptionInterface $entity
+     * @param array                    $context
      *
      * @return array
      */
-    protected function normalizeLabel(AttributeOption $entity, $context)
+    protected function normalizeLabel(AttributeOptionInterface $entity, $context)
     {
-        $labels = array_fill_keys($context['locales'], '');
+        $locales = isset($context['locales']) ? $context['locales'] : [];
+        $labels = array_fill_keys($locales, '');
         foreach ($entity->getOptionValues() as $translation) {
-            if (empty($context['locales']) || in_array($translation->getLocale(), $context['locales'])) {
+            if (empty($locales) || in_array($translation->getLocale(), $locales)) {
                 $labels[$translation->getLocale()] = $translation->getValue();
             }
         }

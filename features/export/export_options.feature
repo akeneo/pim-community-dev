@@ -14,44 +14,44 @@ Feature: Export options
     And I wait for the "footwear_option_export" job to finish
     Then exported file of "footwear_option_export" should contain:
     """
-    attribute;code;default;sort_order;label-en_US
-    manufacturer;Converse;0;1;Converse
-    manufacturer;TimberLand;0;2;TimberLand
-    manufacturer;Nike;0;3;Nike
-    manufacturer;Caterpillar;0;4;Caterpillar
-    weather_conditions;dry;0;1;Dry
-    weather_conditions;wet;0;2;Wet
-    weather_conditions;hot;0;3;Hot
-    weather_conditions;cold;0;4;Cold
-    weather_conditions;snowy;0;5;Snowy
-    rating;1;0;1;"1 star"
-    rating;2;0;2;"2 stars"
-    rating;3;0;3;"3 stars"
-    rating;4;0;4;"4 stars"
-    rating;5;0;5;"5 stars"
-    size;35;0;1;35
-    size;36;0;2;36
-    size;37;0;3;37
-    size;38;0;4;38
-    size;39;0;5;39
-    size;40;0;6;40
-    size;41;0;7;41
-    size;42;0;8;42
-    size;43;0;9;43
-    size;44;0;10;44
-    size;45;0;11;45
-    size;46;0;12;46
-    color;white;0;1;White
-    color;black;0;2;Black
-    color;blue;0;3;Blue
-    color;maroon;0;4;Maroon
-    color;saddle;0;5;Saddle
-    color;greem;0;6;Greem
-    color;red;0;7;Red
-    color;charcoal;0;8;Charcoal
-    lace_color;laces_black;0;1;Black
-    lace_color;laces_brown;0;2;Brown
-    lace_color;laces_white;0;3;White
+    attribute;code;sort_order;label-en_US
+    manufacturer;Converse;1;Converse
+    manufacturer;TimberLand;2;TimberLand
+    manufacturer;Nike;3;Nike
+    manufacturer;Caterpillar;4;Caterpillar
+    weather_conditions;dry;1;Dry
+    weather_conditions;wet;2;Wet
+    weather_conditions;hot;3;Hot
+    weather_conditions;cold;4;Cold
+    weather_conditions;snowy;5;Snowy
+    rating;1;1;"1 star"
+    rating;2;2;"2 stars"
+    rating;3;3;"3 stars"
+    rating;4;4;"4 stars"
+    rating;5;5;"5 stars"
+    size;35;1;35
+    size;36;2;36
+    size;37;3;37
+    size;38;4;38
+    size;39;5;39
+    size;40;6;40
+    size;41;7;41
+    size;42;8;42
+    size;43;9;43
+    size;44;10;44
+    size;45;11;45
+    size;46;12;46
+    color;white;1;White
+    color;black;2;Black
+    color;blue;3;Blue
+    color;maroon;4;Maroon
+    color;saddle;5;Saddle
+    color;greem;6;Greem
+    color;red;7;Red
+    color;charcoal;8;Charcoal
+    lace_color;laces_black;1;Black
+    lace_color;laces_brown;2;Brown
+    lace_color;laces_white;3;White
 
     """
 

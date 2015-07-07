@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat;
 
-use Pim\Bundle\TransformBundle\Normalizer\Flat\AttributeNormalizer;
-use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
-use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\TransformBundle\Normalizer\Flat\AttributeNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
+use Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
 /**
  * Test class for AttributeNormalizer
@@ -59,14 +59,12 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                     'sort_order'             => 5,
                     'required'               => 0,
                     'unique'                 => 0,
-                    'default_options'        => 'en:Red,fr:Rouge',
                     'localizable'            => '1',
                     'available_locales'      => 'All',
                     'metric_family'          => '',
                     'default_metric_unit'    => '',
                     'scope'                  => 'Global',
                     'options'                => 'Code:green,en:Green,fr:Vert|Code:red,en:Red,fr:Rouge',
-                    'useable_as_grid_column' => 1,
                     'useable_as_grid_filter' => 0,
                 )
             ),
@@ -80,15 +78,12 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                     'sort_order'             => 1,
                     'required'               => 1,
                     'unique'                 => 0,
-                    'default_value'          => 'No description',
-                    'default_options'        => '',
                     'localizable'            => '1',
                     'available_locales'      => 'en,fr',
                     'metric_family'          => '',
                     'default_metric_unit'    => '',
                     'scope'                  => 'Channel',
                     'options'                => '',
-                    'useable_as_grid_column' => 1,
                     'useable_as_grid_filter' => 1,
                     'max_characters'         => '200',
                     'validation_rule'        => 'regexp',
@@ -100,10 +95,10 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addLabels(AbstractAttribute $attribute, $data)
+    protected function addLabels(AttributeInterface $attribute, $data)
     {
         foreach ($data as $key => $label) {
             if (strpos($key, 'label-') !== false) {
@@ -115,10 +110,10 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addAvailableLocales(AbstractAttribute $attribute, $data)
+    protected function addAvailableLocales(AttributeInterface $attribute, $data)
     {
         if (strtolower($data['available_locales']) !== 'all') {
             $locales = explode(',', $data['available_locales']);
@@ -133,10 +128,10 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
     /**
      * Create attribute options
      *
-     * @param AbstractAttribute $attribute
-     * @param array             $data
+     * @param AttributeInterface $attribute
+     * @param array              $data
      */
-    protected function addOptions(AbstractAttribute $attribute, $data)
+    protected function addOptions(AttributeInterface $attribute, $data)
     {
         $options = array_filter(explode('|', $data['options']));
         foreach ($options as $option) {
@@ -156,35 +151,6 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                 }
             }
             $attribute->addOption($attributeOption);
-        }
-    }
-
-    /**
-     * Add attribute default options
-     *
-     * @param AbstractAttribute $attribute
-     * @param array             $data
-     */
-    protected function addDefaultOptions(AbstractAttribute $attribute, $data)
-    {
-        $defaultOptions = array_filter(explode('|', $data['default_options']));
-        foreach ($defaultOptions as $defaultOption) {
-            $translations = explode(',', $defaultOption);
-            foreach ($translations as $translation) {
-                $translation = explode(':', $translation);
-                $locale      = reset($translation);
-                $value       = end($translation);
-                $options     = $attribute->getOptions();
-                foreach ($options as $option) {
-                    $optionValues = $option->getOptionValues();
-                    foreach ($optionValues as $optionValue) {
-                        if ($optionValue->getLocale() == $locale && $optionValue->getValue() == $value) {
-                            $option->setDefault(true);
-                            break;
-                        }
-                    }
-                }
-            }
         }
     }
 }

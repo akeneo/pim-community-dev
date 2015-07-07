@@ -23,6 +23,10 @@ pim_importexport_export_profile_launch:
     type: action
     label: pim_importexport.acl.export_profile.launch
     group_name: pim_importexport.acl_group.export
+pim_importexport_export_profile_history:
+    type: action
+    label: pim_importexport.acl.export_profile.history
+    group_name: pim_importexport.acl_group.export
 
 # Import
 pim_importexport_import_profile_index:
@@ -48,6 +52,10 @@ pim_importexport_import_profile_remove:
 pim_importexport_import_profile_launch:
     type: action
     label: pim_importexport.acl.import_profile.launch
+    group_name: pim_importexport.acl_group.import
+pim_importexport_import_profile_history:
+    type: action
+    label: pim_importexport.acl.import_profile.history
     group_name: pim_importexport.acl_group.import
 
 # Export reports

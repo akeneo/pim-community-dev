@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\GroupNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -53,13 +54,13 @@ class GroupNormalizerTest extends NormalizerTestCase
                     'type'        => 'VARIANT',
                     'label-en_US' => 'My variant group',
                     'label-fr_FR' => 'Mon groupe variant',
-                    'attributes'  => array('color', 'size')
+                    'axis'        => array('color', 'size')
                 ),
                 array(
-                    'code'       => 'my_group',
-                    'type'       => 'RELATED',
-                    'label'      => array('en' => 'My group', 'fr' => 'Mon group'),
-                    'attributes' => array()
+                    'code'  => 'my_group',
+                    'type'  => 'RELATED',
+                    'label' => array('en' => 'My group', 'fr' => 'Mon group'),
+                    'axis'  => array()
                 )
             ),
         );
@@ -68,7 +69,7 @@ class GroupNormalizerTest extends NormalizerTestCase
     /**
      * {@inheritdoc}
      *
-     * @return Group
+     * @return GroupInterface
      */
     protected function createEntity(array $data)
     {
@@ -111,7 +112,7 @@ class GroupNormalizerTest extends NormalizerTestCase
     protected function getAttributes($data)
     {
         $attributes = array();
-        $codes = $data['attributes'];
+        $codes = $data['axis'];
         foreach ($codes as $code) {
             $attribute = new Attribute();
             $attribute->setCode($code);

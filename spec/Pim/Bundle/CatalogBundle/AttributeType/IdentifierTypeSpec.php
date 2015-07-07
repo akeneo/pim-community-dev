@@ -3,58 +3,65 @@
 namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 class IdentifierTypeSpec extends ObjectBehavior
 {
-    function let(AttributeConstraintGuesser $guesser)
+    function let(AttributeConstraintGuesser $guesser, ProductValueInterface $value, AttributeInterface $sku)
     {
+        $value->getAttribute()->willReturn($sku);
+
         $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_VARCHAR, 'text', $guesser);
     }
 
-    function it_builds_the_attribute_forms(FormFactory $factory, AbstractAttribute $sku)
+    function it_builds_the_attribute_forms(FormFactory $factory, $sku)
     {
-        $this->buildAttributeFormTypes($factory, $sku)->shouldHaveCount(8);
+        $sku->getId()->willReturn(42);
+        $sku->getProperties()->willReturn([]);
+        $sku->setProperty(Argument::any(), Argument::any())->shouldBeCalled();
+        $this->buildAttributeFormTypes($factory, $sku)->shouldHaveCount(7);
     }
 
-    function it_prepares_the_product_value_form(AbstractProductValue $value, AbstractAttribute $sku)
+    function it_prepares_the_product_value_form($value, $sku)
     {
-        $value->getAttribute()->willReturn($sku);
         $sku->getBackendType()->willReturn(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
         $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
     }
 
-    function it_prepares_the_product_value_form_alias(AbstractProductValue $value)
+    function it_prepares_the_product_value_form_alias($value)
     {
         $this->prepareValueFormAlias($value)->shouldReturn('text');
     }
 
-    function it_prepares_the_product_value_form_options(AbstractProductValue $value, AbstractAttribute $sku)
+    function it_prepares_the_product_value_form_options($value, $sku)
     {
         $sku->getLabel()->willReturn('sku');
         $sku->isRequired()->willReturn(true);
-        $value->getAttribute()->willReturn($sku);
 
         $this->prepareValueFormOptions($value)->shouldHaveCount(4);
     }
 
-    function it_prepares_the_product_value_form_constraints(AbstractProductValue $value, AbstractAttribute $sku, $guesser)
+    function it_prepares_the_product_value_form_constraints($value, $sku, $guesser)
     {
-        $value->getAttribute()->willReturn($sku);
         $guesser->supportAttribute($sku)->willReturn(true);
         $guesser->guessConstraints($sku)->willReturn([]);
 
         $this->prepareValueFormConstraints($value)->shouldHaveCount(1);
     }
 
-    function it_prepares_the_product_value_form_data(AbstractProductValue $value, AbstractAttribute $sku)
+    function it_prepares_the_product_value_form_data($value)
     {
         $value->getData()->willReturn('sku-001');
         $this->prepareValueFormData($value)->shouldReturn('sku-001');
+    }
+
+    function it_has_a_name()
+    {
+        $this->getName()->shouldReturn('pim_catalog_identifier');
     }
 }

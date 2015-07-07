@@ -1,0 +1,3 @@
+product:
+    resource: '@PimPdfGeneratorBundle/Resources/config/routing/product.yml'
+    prefix: /enrich/product

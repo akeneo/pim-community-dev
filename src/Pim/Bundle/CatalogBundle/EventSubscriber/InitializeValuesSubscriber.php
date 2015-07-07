@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Event\ProductEvent;
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Aims to add all values / required values when create or load a new product
@@ -54,9 +54,6 @@ class InitializeValuesSubscriber implements EventSubscriberInterface
         foreach ($attributes as $attribute) {
             $value = $manager->createProductValue();
             $value->setAttribute($attribute);
-            if ($attribute->getDefaultValue() !== null) {
-                $value->setData($attribute->getDefaultValue());
-            }
             $product->addValue($value);
         }
     }

@@ -60,11 +60,12 @@
 
     {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-    {% include 'PimEnrichBundle:CategoryTree:_navbar.html.twig' %}
+    {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
     <div class="row-fluid tab-content">
         {{ elements.form_errors(form) }}
-        {% include 'PimEnrichBundle:CategoryTree:_tab-panes.html.twig' %}
+
+        {{ view_elements(form.vars.id ~ '.form_tab') }}
     </div>
 {{ form_end(form) }}
 <script type="text/javascript">

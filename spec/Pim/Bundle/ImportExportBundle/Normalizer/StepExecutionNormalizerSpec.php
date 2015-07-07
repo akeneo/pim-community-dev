@@ -7,7 +7,6 @@ use Akeneo\Bundle\BatchBundle\Entity\Warning;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior

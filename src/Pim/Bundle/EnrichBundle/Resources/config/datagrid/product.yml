@@ -63,14 +63,14 @@ datagrid:
             edit:
                 type:      tab-redirect
                 label:     Edit attributes of the product
-                tab:       attributes
+                tab:       pim_enrich-product-tab-attribute
                 icon:      edit
                 link:      edit_link
                 rowAction: true
             edit_categories:
                 type:  tab-redirect
                 label: Classify the product
-                tab:   categories
+                tab:   pim_enrich-product-tab-category
                 icon:  folder-close
                 link:  edit_link
             delete:
@@ -92,12 +92,12 @@ datagrid:
                 acl_resource: pim_enrich_product_remove
                 handler: product_mass_delete
                 messages:
-                    confirm_title: Delete confirmation
-                    confirm_content: Are you sure you want to delete selected products?
-                    confirm_ok: OK
-                    success: Selected products successfully deleted
-                    error: Error ocurred when trying to delete selected products, please try again
-                    empty_selection: No products selected
+                    confirm_title: pim_datagrid.mass_action.delete.confirm_title
+                    confirm_content: pim_datagrid.mass_action.delete.confirm_content
+                    confirm_ok: pim_datagrid.mass_action.delete.confirm_ok
+                    success: pim_datagrid.mass_action.delete.success
+                    error: pim_datagrid.mass_action.delete.error
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
                 launcherOptions:
                     icon: trash
 
@@ -122,6 +122,14 @@ datagrid:
                 handler: product_mass_edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
+
+            sequential_edit:
+                type: edit
+                acl_resource: pim_enrich_product_edit_attributes
+                label: pim.grid.mass_action.sequential_edit
+                handler: sequential_edit
+                route: pim_enrich_mass_edit_action_sequential_edit
+                icon: sort-by-attributes
         sorters:
             columns:
                 family:

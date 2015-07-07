@@ -1,0 +1,10 @@
+parameters:
+    pim_notification.controller.notification.class: Pim\Bundle\NotificationBundle\Controller\NotificationController
+
+services:
+    pim_notification.controller.notification:
+        class: %pim_notification.controller.notification.class%
+        arguments:
+            - '@templating'
+            - '@pim_notification.manager.notification'
+            - '@pim_user.context.user'

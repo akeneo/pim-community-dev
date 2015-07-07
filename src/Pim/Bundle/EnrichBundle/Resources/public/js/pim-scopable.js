@@ -67,7 +67,7 @@ define(
 
                     field.input = $field.get(0).outerHTML;
 
-                    _.each($field.siblings('input, select'), function(el) {
+                    _.each($field.siblings('input, select'), function (el) {
                         field.input += el.outerHTML;
                     });
 
@@ -79,7 +79,7 @@ define(
                         field.input += $field.siblings('a.add-attribute-option').get(0).outerHTML;
                     }
 
-                    _.each($field.siblings('.validation-tooltip'), function(icon) {
+                    _.each($field.siblings('.validation-tooltip'), function (icon) {
                         $(icon).appendTo(this.$el.find('.icons-container'));
                     }, this);
                 }

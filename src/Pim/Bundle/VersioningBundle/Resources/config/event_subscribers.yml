@@ -10,6 +10,7 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_versioning.update_guesser.chained'
             - '@pim_versioning.serializer'
+            - '@pim_versioning.context.version'
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -24,6 +25,6 @@ services:
     pim_versioning.event_subscriber.addcontext:
         class: %pim_versioning.event_subscriber.addcontext.class%
         arguments:
-            - '@pim_versioning.manager.version'
+            - '@pim_versioning.context.version'
         tags:
             - { name: kernel.event_subscriber}

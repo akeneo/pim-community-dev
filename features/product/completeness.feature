@@ -47,33 +47,33 @@ Feature: Display the completeness of a product
     And I switch the locale to "English (United States)"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 100%  |
+     | column   | value |
+     | complete | 100%  |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    | 40%  |
+     | column   | value |
+     | complete | 40%   |
     And I filter by "Channel" with value "Tablet"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 89%  |
+     | column   | value |
+     | complete | 89%   |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    | 25%  |
+     | column   | value |
+     | complete | 25%   |
     And I switch the locale to "French (France)"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 100%  |
+     | column   | value |
+     | complete | 100%  |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    | 60%  |
+     | column   | value |
+     | complete | 60%   |
     And I filter by "Channel" with value "Tablet"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 78%  |
+     | column   | value |
+     | complete | 78%   |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    | 50%  |
+     | column   | value |
+     | complete | 50%   |
 
   Scenario: Successfully update the completeness at product save
     Given I am on the "sneakers" product page
@@ -93,11 +93,11 @@ Feature: Display the completeness of a product
     When I visit the "Completeness" tab
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message          | ratio |
-      | mobile  | English (United States) | success | Complete         | 100%  |
-      | mobile  | French (France)         | success | Complete         | 100%  |
-      | tablet  | English (United States) | success | Complete         | 100%  |
-      | tablet  | French (France)         | warning | 1 missing value  | 89%   |
+      | channel | locale                  | state   | message         | ratio |
+      | mobile  | English (United States) | success | Complete        | 100%  |
+      | mobile  | French (France)         | success | Complete        | 100%  |
+      | tablet  | English (United States) | success | Complete        | 100%  |
+      | tablet  | French (France)         | warning | 1 missing value | 89%   |
 
   Scenario: Successfully display the completeness of the product in the grid after product save (PIM-2916)
     Given I am on the "sneakers" product page
@@ -109,21 +109,21 @@ Feature: Display the completeness of a product
     And I switch the locale to "English (United States)"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 100%  |
+     | column   | value |
+     | complete | 100%  |
     And I filter by "Channel" with value "Tablet"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 100%  |
+     | column   | value |
+     | complete | 100%  |
     And I switch the locale to "French (France)"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 100%  |
+     | column   | value |
+     | complete | 100%  |
     And I filter by "Channel" with value "Tablet"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 89%   |
+     | column   | value |
+     | complete | 89%   |
 
   Scenario: Remove completeness when family requirements changed
     Given I am on the "sneakers" family page
@@ -158,33 +158,33 @@ Feature: Display the completeness of a product
     And I switch the locale to "English (United States)"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    |   -   |
+     | column   | value |
+     | complete | -     |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    | 40%  |
+     | column   | value |
+     | complete | 40%   |
     And I filter by "Channel" with value "Tablet"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    |   -   |
+     | column   | value |
+     | complete | -     |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    |  25%  |
+     | column   | value |
+     | complete | 25%   |
     And I switch the locale to "French (France)"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    |   -   |
+     | column   | value |
+     | complete | -     |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    | 60%  |
+     | column   | value |
+     | complete | 60%   |
     And I filter by "Channel" with value "Tablet"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    |   -   |
+     | column   | value |
+     | complete | -     |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    |  50%  |
+     | column   | value |
+     | complete | 50%   |
 
   Scenario: Remove completeness when locales of a channel are deleted
     Given I am on the "tablet" channel page
@@ -217,30 +217,30 @@ Feature: Display the completeness of a product
     And I switch the locale to "English (United States)"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 100%  |
+     | column   | value |
+     | complete | 100%  |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    | 40%  |
+     | column   | value |
+     | complete | 40%   |
     And I filter by "Channel" with value "Tablet"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    |   -   |
+     | column   | value |
+     | complete | -     |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    |   -   |
+     | column   | value |
+     | complete | -     |
     And I switch the locale to "French (France)"
     And I filter by "Channel" with value "Mobile"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    | 100%  |
+     | column   | value |
+     | complete | 100%  |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    | 60%  |
+     | column   | value |
+     | complete | 60%   |
     And I filter by "Channel" with value "Tablet"
     Then the row "sneakers" should contain:
-     | column      | value |
-     | complete    |  78%  |
+     | column   | value |
+     | complete | 78%   |
     Then the row "sandals" should contain:
-     | column      | value |
-     | complete    |  50%  |
+     | column   | value |
+     | complete | 50%   |

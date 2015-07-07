@@ -1,4 +1,3 @@
-@javascript
 Feature: Add attributes to a product
   In order to provide more information about a product
   As a product manager
@@ -19,6 +18,7 @@ Feature: Add attributes to a product
     And I should see available attribute Top view in group "Media"
     But I should not see available attribute Side view in group "Media"
 
+  @javascript
   Scenario: Add some available attributes to a product
     Given I am on the "sandals" product page
     When I add available attributes Weather conditions and Lace color
@@ -27,6 +27,7 @@ Feature: Add attributes to a product
     And I should not see available attribute Lace color in group "Colors"
     And I should not see available attribute Weather conditions in group "Product information"
 
+  @javascript
   Scenario: Successfully add a metric attribute to a product
     Given I am on the "boots" product page
     And I add available attribute Length

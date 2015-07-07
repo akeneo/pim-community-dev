@@ -23,25 +23,25 @@ interface TranslatableInterface
     /**
      * Get translation for current locale
      *
-     * @return Pim\Bundle\TranslationBundle\Entity\AbstractTranslation
+     * @return \Pim\Bundle\TranslationBundle\Entity\AbstractTranslation
      */
     public function getTranslation();
 
     /**
      * Add translation
      *
-     * @param Pim\Bundle\TranslationBundle\Entity\AbstractTranslation $translation
+     * @param AbstractTranslation $translation
      *
-     * @return Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
+     * @return \Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
      */
     public function addTranslation(AbstractTranslation $translation);
 
     /**
      * Remove translation
      *
-     * @param Pim\Bundle\TranslationBundle\Entity\AbstractTranslation $translation
+     * @param AbstractTranslation $translation
      *
-     * @return Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
+     * @return \Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
      */
     public function removeTranslation(AbstractTranslation $translation);
 
@@ -57,7 +57,7 @@ interface TranslatableInterface
      *
      * @param string $locale
      *
-     * @return Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
+     * @return \Pim\Bundle\TranslationBundle\Entity\TranslatableInterface
      */
     public function setLocale($locale);
 }

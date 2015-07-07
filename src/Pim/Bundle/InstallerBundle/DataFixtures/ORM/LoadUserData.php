@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
-use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Load fixtures for users

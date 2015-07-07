@@ -4,9 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Group type entity
@@ -17,26 +16,18 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class GroupType implements TranslatableInterface, ReferableInterface
+class GroupType implements GroupTypeInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var int */
     protected $id;
 
-    /**
-     * @var string $code
-     */
+    /** @var string */
     protected $code;
 
-    /**
-     * @var string $entity
-     */
+    /** @var bool */
     protected $variant;
 
-    /**
-     * @var ArrayCollection $groups
-     */
+    /** @var ArrayCollection */
     protected $groups;
 
     /**
@@ -47,9 +38,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
      */
     protected $locale;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $translations
-     */
+    /** @var \Doctrine\Common\Collections\ArrayCollection */
     protected $translations;
 
     /**
@@ -63,9 +52,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * Get the id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -73,9 +60,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * Get code
-     *
-     * @return string $code
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -83,11 +68,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return GroupType
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -97,9 +78,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * Is variant
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isVariant()
     {
@@ -107,11 +86,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * Set variant
-     *
-     * @param boolean $variant
-     *
-     * @return GroupType
+     * {@inheritdoc}
      */
     public function setVariant($variant)
     {
@@ -121,9 +96,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * Get groups
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getGroups()
     {
@@ -213,9 +186,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * Get label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -225,11 +196,7 @@ class GroupType implements TranslatableInterface, ReferableInterface
     }
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return Group
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {

@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\UserBundle\Context;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -238,11 +238,11 @@ class UserContext
     /**
      * Checks if a locale is activated
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return boolean
      */
-    protected function isLocaleAvailable(Locale $locale)
+    protected function isLocaleAvailable(LocaleInterface $locale)
     {
         return $locale->isActivated();
     }

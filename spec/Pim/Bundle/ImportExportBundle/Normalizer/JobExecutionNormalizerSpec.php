@@ -2,13 +2,12 @@
 
 namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Serializer\SerializerInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Symfony\Component\Translation\TranslatorInterface;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use PhpSpec\ObjectBehavior;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class JobExecutionNormalizerSpec extends ObjectBehavior
 {

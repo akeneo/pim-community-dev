@@ -740,6 +740,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @When /^I press sequential-edit button$/
+     */
+    public function iPressSequentialEditButton()
+    {
+        $this->getCurrentPage()->sequentialEdit();
+        $this->wait();
+    }
+
+    /**
      * @param string $viewLabel
      *
      * @When /^I apply the "([^"]*)" view$/
@@ -760,6 +769,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @return Then[]
      * @When /^I create the view:$/
      */
     public function iCreateTheView(TableNode $table)
@@ -782,6 +794,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $not
+     * @param string $viewLabel
+     *
      * @Then /^I should( not)? see the "([^"]*)" view$/
      */
     public function iShouldSeeTheView($not, $viewLabel)

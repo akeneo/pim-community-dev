@@ -466,7 +466,7 @@ class CategoryExtension extends \Twig_Extension
      * @param bool              $includeSub
      * @param string            $relatedEntity
      *
-     * @return string
+     * @return integer
      */
     protected function countProducts(CategoryInterface $category, $includeSub, $relatedEntity)
     {

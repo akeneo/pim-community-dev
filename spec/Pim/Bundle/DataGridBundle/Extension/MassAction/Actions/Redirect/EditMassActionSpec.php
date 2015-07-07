@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect;
 
+use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 class EditMassActionSpec extends ObjectBehavior
 {
@@ -15,7 +15,7 @@ class EditMassActionSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('There is no option "route" for action "edit".')
-        )->duringSetOptions($options);;
+        )->duringSetOptions($options);
     }
 
     function it_defines_default_values()

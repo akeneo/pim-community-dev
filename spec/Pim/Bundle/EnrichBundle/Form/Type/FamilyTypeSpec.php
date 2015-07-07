@@ -23,9 +23,10 @@ class FamilyTypeSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $requireSubscriber,
-            'Pim\Bundle\CatalogBundle\Entity\Family',
             $disableSubscriber,
-            $attributeAsLabelSubscriber
+            $attributeAsLabelSubscriber,
+            'Pim\Bundle\CatalogBundle\Entity\Attribute',
+            'Pim\Bundle\CatalogBundle\Entity\Family'
         );
     }
 

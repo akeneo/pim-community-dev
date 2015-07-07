@@ -28,3 +28,4 @@ config:
         pim/saveformstate:         pimui/js/pim-saveformstate
         pim/fileinput:             pimui/js/pim-fileinput
         pim/dialogform:            pimui/js/pim-dialogform
+        oro/error:                 pimui/js/pim-error

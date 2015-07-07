@@ -3,11 +3,10 @@
 namespace spec\Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
-use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 
 class RegisterMassEditOperationsPassSpec extends ObjectBehavior
 {

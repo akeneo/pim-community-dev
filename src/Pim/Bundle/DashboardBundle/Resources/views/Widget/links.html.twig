@@ -1,12 +1,14 @@
-<div class="span12 shortcuts text-center">
-    <div class="btn-group fullwidth">
-        {% for link in widget.links %}
-            <a href="{{ path(link.route) }}" class="btn shortcut" title="{{ link.label|trans }}">
-                {{ link.label|trans }}
-                <div class="big-icon">
-                    <i class="icon-{{ link.icon }}"></i>
-                </div>
-            </a>
-        {% endfor %}
+<div class="row unspaced buffer-bottom">
+    <div class="span12 shortcuts text-center">
+        <div class="btn-group fullwidth">
+            {% for link in links %}
+                <a href="{{ path(link.route) }}" class="btn shortcut" title="{{ link.label|trans }}">
+                    {{ link.label|trans }}
+                    <div class="big-icon">
+                        <i class="icon-{{ link.icon }}"></i>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
     </div>
 </div>

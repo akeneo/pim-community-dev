@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * A normalizer to transform a category entity into an array

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Type for association type form
@@ -16,6 +16,17 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
  */
 class AssociationTypeType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -38,12 +49,12 @@ class AssociationTypeType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationTypeTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AssociationType',
                 'property_path'     => 'translations'
-            )
+            ]
         );
     }
 
@@ -53,9 +64,9 @@ class AssociationTypeType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AssociationType'
-            )
+            [
+                'data_class' => $this->dataClass
+            ]
         );
     }
 

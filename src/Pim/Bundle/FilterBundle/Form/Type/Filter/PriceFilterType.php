@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 
 /**
  * Price filter type for products

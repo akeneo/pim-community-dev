@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Cache;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\Common\DataFixtures\ReferenceRepository;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class DoctrineCacheSpec extends ObjectBehavior
 {
@@ -25,9 +25,9 @@ class DoctrineCacheSpec extends ObjectBehavior
         ObjectRepository $repository,
         \stdClass $object
     ) {
-        $repository->implement('Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface');
+        $repository->implement('Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface');
         $manager->getRepository('Object\\Class')->willReturn($repository);
-        $repository->findByReference('foo')->willReturn($object);
+        $repository->findOneByIdentifier('foo')->willReturn($object);
 
         $this->find('Object\\Class', 'foo')->shouldReturn($object);
     }
@@ -37,9 +37,9 @@ class DoctrineCacheSpec extends ObjectBehavior
         ObjectRepository $repository,
         \stdClass $object
     ) {
-        $repository->implement('Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface');
+        $repository->implement('Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface');
         $manager->getRepository('Object\\Class')->willReturn($repository);
-        $repository->findByReference('foo')->shouldBeCalledTimes(1)->willReturn($object);
+        $repository->findOneByIdentifier('foo')->shouldBeCalledTimes(1)->willReturn($object);
 
         $this->find('Object\\Class', 'foo')->shouldReturn($object);
         $this->find('Object\\Class', 'foo')->shouldReturn($object);

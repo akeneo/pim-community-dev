@@ -3,8 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer;
 use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer;
 
 /**
  * Tests related class
@@ -48,7 +48,53 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
 
         $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
             ->setMethods(
-                array('getMetric', 'setMetric', '__toString', 'setData', 'getData', 'getAttribute', 'getEntity')
+                [
+                    'setText',
+                    'setDatetime',
+                    'setInteger',
+                    'setId',
+                    'getOption',
+                    'getMedia',
+                    'getDecimal',
+                    'setDecimal',
+                    'setAttribute',
+                    'addOption',
+                    'getBoolean',
+                    'setOptions',
+                    'setPrices',
+                    'getId',
+                    'setVarchar',
+                    'setBoolean',
+                    'getData',
+                    'getMetric',
+                    'getDate',
+                    'getAttribute',
+                    'getEntity',
+                    'setMedia',
+                    'getPrices',
+                    'getOptions',
+                    'getLocale',
+                    'setMetric',
+                    'addPrice',
+                    'getVarchar',
+                    'removePrice',
+                    'hasData',
+                    'setScope',
+                    'removeOption',
+                    'getText',
+                    'setData',
+                    'setOption',
+                    'getPrice',
+                    'setDate',
+                    'addData',
+                    'setLocale',
+                    'isRemovable',
+                    'getScope',
+                    'getDatetime',
+                    'setEntity',
+                    'getInteger',
+                    '__toString'
+                ]
             )
             ->getMock();
 

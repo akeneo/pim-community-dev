@@ -2,16 +2,17 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
-use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\TransformBundle\Converter\MetricConverter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Reads products one by one
+ *
+ * @deprecated, will be removed in 1.4
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

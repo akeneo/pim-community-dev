@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Akeneo\Bundle\BatchBundle\Connector\Connector;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Base connector bundle

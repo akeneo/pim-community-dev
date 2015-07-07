@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
@@ -16,6 +18,17 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
  */
 class StringFilter extends OroStringFilter
 {
+    /** @var array */
+    protected $operatorTypes = array(
+        TextFilterType::TYPE_CONTAINS     => Operators::CONTAINS,
+        TextFilterType::TYPE_NOT_CONTAINS => Operators::DOES_NOT_CONTAIN,
+        TextFilterType::TYPE_EQUAL        => Operators::EQUALS,
+        TextFilterType::TYPE_STARTS_WITH  => Operators::STARTS_WITH,
+        TextFilterType::TYPE_ENDS_WITH    => Operators::ENDS_WITH,
+        FilterType::TYPE_EMPTY            => Operators::IS_EMPTY,
+        FilterType::TYPE_IN_LIST          => Operators::IN_LIST,
+    );
+
     /**
      * {@inheritdoc}
      */
@@ -28,11 +41,11 @@ class StringFilter extends OroStringFilter
 
         $operator = $this->getOperator($data['type']);
 
-        $this->util->applyFilterByAttribute(
+        $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            $data['value'],
-            $operator
+            $operator,
+            $data['value']
         );
 
         return true;
@@ -58,11 +71,38 @@ class StringFilter extends OroStringFilter
 
         if ('in' === $data['type']) {
             $data['value'] = explode(',', $data['value']);
-        } else {
-            $format = $ds->getFormatByComparisonType($data['type']);
-            $data['value'] = sprintf($format, $data['value']);
+        }
+
+        if ('empty' === $data['type']) {
+            $data['value'] = '';
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function parseData($data)
+    {
+        if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
+            return false;
+        }
+
+        $data['type'] = isset($data['type']) ? $data['type'] : null;
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getOperator($type)
+    {
+        if (!isset($this->operatorTypes[$type])) {
+            throw new InvalidArgumentException(sprintf('Operator %s is not supported', $type));
+        }
+
+        return $this->operatorTypes[$type];
     }
 }

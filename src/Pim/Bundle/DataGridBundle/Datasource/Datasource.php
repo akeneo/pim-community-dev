@@ -64,16 +64,15 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     public function process(DatagridInterface $grid, array $config)
     {
         $this->configuration = $config;
-
+        $queryBuilderConfig = [];
         if (isset($config['repository_method']) && $method = $config['repository_method']) {
             if (isset($config[ContextConfigurator::REPOSITORY_PARAMETERS_KEY])) {
-                $this->qb = $this->getRepository()->$method($config[ContextConfigurator::REPOSITORY_PARAMETERS_KEY]);
-            } else {
-                $this->qb = $this->getRepository()->$method();
+                $queryBuilderConfig = $config[ContextConfigurator::REPOSITORY_PARAMETERS_KEY];
             }
         } else {
-            $this->qb = $this->getRepository()->createQueryBuilder('o');
+            $method = 'createQueryBuilder';
         }
+        $this->initializeQueryBuilder($method, $queryBuilderConfig);
 
         $grid->setDatasource(clone $this);
     }
@@ -190,5 +189,18 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
         }
 
         return $this->configuration[$key];
+    }
+
+    /**
+     * @param string $method the query builder creation method
+     * @param array  $config the query builder creation config
+     *
+     * @return Datasource
+     */
+    protected function initializeQueryBuilder($method, array $config = [])
+    {
+        $this->qb = $this->getRepository()->$method($config);
+
+        return $this;
     }
 }

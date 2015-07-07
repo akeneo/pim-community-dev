@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
-use Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
  * Service to massively insert pending versions.
@@ -25,6 +26,7 @@ class PendingMassPersister extends AbstractPendingMassPersister
     /**
      * @param VersionBuilder      $versionBuilder
      * @param VersionManager      $versionManager
+     * @param VersionContext      $versionContext
      * @param NormalizerInterface $normalizer
      * @param string              $versionClass
      * @param DocumentManager     $documentManager
@@ -32,11 +34,12 @@ class PendingMassPersister extends AbstractPendingMassPersister
     public function __construct(
         VersionBuilder $versionBuilder,
         VersionManager $versionManager,
+        VersionContext $versionContext,
         NormalizerInterface $normalizer,
         $versionClass,
         DocumentManager $documentManager
     ) {
-        parent::__construct($versionBuilder, $versionManager, $normalizer, $versionClass);
+        parent::__construct($versionBuilder, $versionManager, $normalizer, $versionContext, $versionClass);
         $this->documentManager = $documentManager;
     }
 

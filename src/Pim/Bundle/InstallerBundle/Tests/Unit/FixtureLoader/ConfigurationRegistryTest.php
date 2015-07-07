@@ -103,15 +103,15 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-            $this->configurationRegistry = $this
-                ->getMockBuilder('Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistry')
-                ->setMethods(array('getConfiguration'))
-                ->setConstructorArgs(array($this->container, $this->propertyAccessor, array(), '', false))
-                ->getMock();
+        $this->configurationRegistry = $this
+            ->getMockBuilder('Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistry')
+            ->setMethods(array('getConfiguration'))
+            ->setConstructorArgs(array($this->container, $this->propertyAccessor, array(), '', false))
+            ->getMock();
 
-            $this->configurationRegistry->expects($this->any())
-                ->method('getConfiguration')
-                ->will($this->returnValue($this->configuration));
+        $this->configurationRegistry->expects($this->any())
+            ->method('getConfiguration')
+            ->will($this->returnValue($this->configuration));
     }
 
     public function testContains()

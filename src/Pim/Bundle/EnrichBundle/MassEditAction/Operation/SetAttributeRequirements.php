@@ -3,11 +3,11 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
 /**
  * Set attribute requirements
@@ -20,10 +20,10 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  */
 class SetAttributeRequirements extends FamilyMassEditOperation
 {
-    /** @var ChannelRepository */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var AttributeRequirementFactory */
@@ -33,13 +33,13 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     protected $attRequirements;
 
     /**
-     * @param ChannelRepository           $channelRepository
-     * @param AttributeRepository         $attributeRepository
-     * @param AttributeRequirementFactory $factory
+     * @param ChannelRepositoryInterface   $channelRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param AttributeRequirementFactory  $factory
      */
     public function __construct(
-        ChannelRepository $channelRepository,
-        AttributeRepository $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementFactory $factory
     ) {
         $this->channelRepository = $channelRepository;
@@ -61,9 +61,9 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     /**
      * Add an attribute requirement
      *
-     * @param AttributeRequirement $attributeRequirement
+     * @param AttributeRequirementInterface $attributeRequirement
      */
-    public function addAttributeRequirement(AttributeRequirement $attributeRequirement)
+    public function addAttributeRequirement(AttributeRequirementInterface $attributeRequirement)
     {
         if (!$this->attRequirements->contains($attributeRequirement)) {
             $this->attRequirements->set(
@@ -80,9 +80,9 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     /**
      * Remove an attribute requirement
      *
-     * @param AttributeRequirement $attributeRequirement
+     * @param AttributeRequirementInterface $attributeRequirement
      */
-    public function removeAttributeRequirement(AttributeRequirement $attributeRequirement)
+    public function removeAttributeRequirement(AttributeRequirementInterface $attributeRequirement)
     {
         $this->attRequirements->removeElement($attributeRequirement);
     }
@@ -116,7 +116,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(Family $family)
+    protected function doPerform(FamilyInterface $family)
     {
         foreach ($this->attRequirements as $attributeRequirement) {
             $family->addAttribute($attributeRequirement->getAttribute());

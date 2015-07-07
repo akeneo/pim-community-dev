@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\CatalogBundle\Helper;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Intl;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Intl;
 
 class LocaleHelperSpec extends ObjectBehavior
 {
-    function let(UserContext $userContext, LocaleManager $localeManager, Locale $en)
+    function let(UserContext $userContext, LocaleManager $localeManager, LocaleInterface $en)
     {
         $en->getCode()->willReturn('en_US');
         $userContext->getCurrentLocale()->willReturn($en);

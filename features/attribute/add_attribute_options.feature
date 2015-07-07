@@ -8,61 +8,76 @@ Feature: Add attribute options
     Given the "default" catalog configuration
     And I am logged in as "Julia"
     And I am on the attributes page
-
-  Scenario Outline: Sucessfully display the Options section when creating an attribute
-    Given I create a "<type>" attribute
-    And I visit the "Values" tab
-    Then I should see the "Options" section
-    And the Options section should contain 1 empty option
-
-    Examples:
-      | type          |
-      | Simple select |
-      | Multi select  |
-
-  Scenario: Fail to remove the only option
-    Given I create a "Simple select" attribute
-    And I visit the "Values" tab
-    Then the Options section should contain 1 empty option
-    And the option should not be removable
-
-  Scenario: Fail to create a select attribute with an empty option
-    Given I create a "Simple select" attribute
-    And I fill in the following information:
-      | Code            | color |
-      | Attribute group | Other |
-    And I save the attribute
-    Then I should see "Code must be specified for all options"
-
-  Scenario: Successfully create a select attribute with some options
-    Given I create a "Simple select" attribute
-    And I fill in the following information:
-      | Code            | color |
-      | Attribute group | Other |
-    And I visit the "Values" tab
-    And I check the "Automatic option sorting" switch
-    And I create the following attribute options:
-      | Code  | Selected by default |
-      | red   | no                  |
-      | blue  | yes                 |
-      | green | no                  |
-    And I save the attribute
-    Then I should see flash message "Attribute successfully created"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-2166
-  Scenario: Remove some options
-    Given I create a "Simple select" attribute
+    And I create a "Simple select" attribute
     And I fill in the following information:
       | Code            | size  |
       | Attribute group | Other |
     And I visit the "Values" tab
-    And I create the following attribute options:
-      | Code | Selected by default |
-      | S    | no                  |
-      | M    | yes                 |
-      | L    | no                  |
+    Then I should see the "Options" section
+    Then I should see "To manage options, please save the attribute first"
     And I save the attribute
-    And I should see flash message "Attribute successfully created"
-    When I remove the "S" option
+    Then I should see flash message "Attribute successfully created"
+    And I wait for options to load
+    And I check the "Automatic option sorting" switch
+
+  Scenario: Successfully create some attribute options
+    Given I create the following attribute options:
+      | Code  |
+      | red   |
+      | blue  |
+      | green |
+    Then I should see "green"
     And I save the attribute
+    And I wait for options to load
     Then I should see flash message "Attribute successfully updated"
+    Then I should see "green"
+
+  Scenario: Successfully edit some attribute options
+    Given I create the following attribute options:
+      | Code  |
+      | red   |
+      | blue  |
+      | green |
+    And I wait for options to load
+    And I edit the "green" option and turn it to "yellow"
+    Then I should see "yellow"
+    Then I should not see "green"
+
+  Scenario: Successfully cancel while editing some attribute options
+    Given I create the following attribute options:
+      | Code  |
+      | red   |
+      | blue  |
+      | green |
+    And I wait for options to load
+    And I edit the code "green" to turn it to "yellow" and cancel
+    Then I should see a confirm dialog with the following content:
+      | title   | Cancel modification                                                                                    |
+      | content | Warning, you will lose unsaved data. Are you sure you want to cancel modification on this new option ? |
+    And I confirm the cancellation
+    And I wait for options to load
+    Then I should see "green"
+    But I should not see "yellow"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-2166
+  Scenario: Successfully delete some attribute options
+    Given I create the following attribute options:
+      | Code        |
+      | small_size  |
+      | medium_size |
+      | large_size  |
+    When I remove the "small_size" option
+    And I confirm the deletion
+    And I wait for options to load
+    Then I should not see "small_size"
+
+  Scenario: Auto sorting disable reorder
+    Given I create the following attribute options:
+      | Code        |
+      | small_size  |
+      | medium_size |
+      | large_size  |
+    Then I should not see reorder handles
+    Given I uncheck the "Automatic option sorting" switch
+    And I wait for options to load
+    Then I should see reorder handles

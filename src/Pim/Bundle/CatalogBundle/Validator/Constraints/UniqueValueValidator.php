@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-
-use Symfony\Component\Validator\ConstraintValidator;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Form\Form;
 
 /**
  * Validator for unique value constraint
@@ -19,9 +18,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueValueValidator extends ConstraintValidator
 {
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
     /**
@@ -35,35 +32,48 @@ class UniqueValueValidator extends ConstraintValidator
     }
 
     /**
-     * Constraint is applied on ProductValue data property.
-     * That's why we use the current property path to guess the code
-     * of the attribute to which the data belongs to.
-     * @param object     $rawValue
-     * @param Constraint $constraint
+     * Due to constraint guesser, the constraint is applied on :
+     * - ProductValueInterface data when applied through form
+     * - ProductValueInterface when applied directly through validator
+     *
+     * The constraint guesser should be re-worked in a future version to avoid such behavior
+     *
+     * @param ProductValueInterface|mixed $data
+     * @param Constraint                  $constraint
      *
      * @see Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
      */
-    public function validate($rawValue, Constraint $constraint)
+    public function validate($data, Constraint $constraint)
     {
-        if (empty($rawValue)) {
+        if (empty($data)) {
             return;
         }
 
-        $value = $this->getProductValue();
-
-        if ($value instanceof ProductValueInterface && $this->productManager->valueExists($value)) {
-            $this->context->addViolation($constraint->message);
+        if (is_object($data) && $data instanceof ProductValueInterface) {
+            $productValue = $data;
+        } else {
+            $productValue = $this->getProductValueFromForm();
         }
 
+        if ($productValue instanceof ProductValueInterface && $this->productManager->valueExists($productValue)) {
+            if ($productValue->getData() !== null && $productValue->getData() !== '') {
+                $this->context->addViolation($constraint->message);
+            }
+        }
     }
 
     /**
-     * Get productValue
+     * Get product value from form
      *
      * @return ProductValueInterface|null
      */
-    protected function getProductValue()
+    protected function getProductValueFromForm()
     {
+        $root = $this->context->getRoot();
+        if (!$root instanceof Form) {
+            return;
+        }
+
         preg_match(
             '/children\[values\].children\[(\w+)\].children\[\w+\].data/',
             $this->context->getPropertyPath(),

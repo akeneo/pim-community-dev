@@ -25,6 +25,7 @@ services:
         class: %pim_versioning.event_subscriber.mongodb.product_addversion.class%
         arguments:
             - '@pim_versioning.manager.version'
+            - '@pim_versioning.context.version'
             - '@pim_serializer'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
@@ -34,6 +35,7 @@ services:
         arguments:
             - '@pim_versioning.builder.version'
             - '@pim_versioning.manager.version'
+            - '@pim_versioning.context.version'
             - '@pim_serializer'
             - %pim_versioning.entity.version.class%
             - '@doctrine.odm.mongodb.document_manager'

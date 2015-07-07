@@ -1,0 +1,4 @@
+pim_pdf_generator_product_download:
+    type: action
+    label: pim_enrich.acl.product.download
+    group_name: pim_enrich.acl_group.product

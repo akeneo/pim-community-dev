@@ -10,3 +10,5 @@ This value should be Yes or No:                                  This value shou
 This value should not be blank:                                  This value should not be blank
 Option code may contain only letters, numbers and underscores:   Option code may contain only letters, numbers and underscores
 This color is already used by another channel:                   This color is already used by another channel
+This value should not be a decimal.:                             This value should not be a decimal.
+file.extensions.message:                                         'The file extension is not allowed (allowed extensions: %extensions%).'

@@ -3,9 +3,8 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 
 class TranslationNormalizerSpec extends ObjectBehavior
 {
@@ -106,7 +105,7 @@ class TranslationNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_skip_the_translations_if_method_not_exists(
+    function it_throws_an_exception_if_method_not_exists(
         TranslatableInterface $translatable,
         AttributeTranslation $english,
         AttributeTranslation $french,
@@ -125,9 +124,9 @@ class TranslationNormalizerSpec extends ObjectBehavior
         $german->getLocale()->willReturn('de_DE');
         $german->getLabel()->willReturn('baz');
 
-        $this->normalize($translatable, 'csv', [
+        $this->shouldThrow('\LogicException')->duringNormalize($translatable, 'csv', [
             'locales'  => [],
             'property' => 'unknown_property'
-        ])->shouldReturn([]);
+        ]);
     }
 }

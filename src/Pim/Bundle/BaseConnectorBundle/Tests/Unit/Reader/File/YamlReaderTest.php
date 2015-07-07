@@ -84,14 +84,21 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
     {
         $reader = new YamlReader();
         $this->assertEquals(
-            array(
+            [
                 'filePath' => array(
-                    'system' => true
+                    'options' => array(
+                        'label' => 'pim_base_connector.import.yamlFilePath.label',
+                        'help'  => 'pim_base_connector.import.yamlFilePath.help'
+                    )
                 ),
-                'multiple' => array(
-                    'system' => true
-                )
-            ),
+                'uploadAllowed' => array(
+                    'type'    => 'switch',
+                    'options' => array(
+                        'label' => 'pim_base_connector.import.uploadAllowed.label',
+                        'help'  => 'pim_base_connector.import.uploadAllowed.help'
+                    )
+                ),
+            ],
             $reader->getConfigurationFields()
         );
     }

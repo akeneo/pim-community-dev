@@ -20,4 +20,14 @@ final class AttributeEvents
      * @staticvar string
      */
     const PRE_REMOVE = 'pim_catalog.pre_remove.attribute';
+
+    /**
+     * This event is thrown after an attribute is removed.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_REMOVE = 'pim_catalog.post_remove.attribute';
 }

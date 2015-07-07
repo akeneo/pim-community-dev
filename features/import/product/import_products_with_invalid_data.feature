@@ -7,13 +7,13 @@ Feature: Execute a job
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code  | label     | attributes | type    |
-      | CROSS | Bag Cross |            | VARIANT |
+      | code  | label     | axis | type    |
+      | CROSS | Bag Cross |      | VARIANT |
     And I am logged in as "Julia"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with invalid prices during an import
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;price
       SKU-001;"100 EUR, 90 USD"
@@ -39,7 +39,7 @@ Feature: Execute a job
       | SKU-001 | 99 EUR |
       | SKU-002 | 45 EUR |
       | SKU-003 | 12 EUR |
-    And the following file to import:
+    And the following CSV file to import:
       """
       sku;price
       SKU-001;"100 EUR, 90 USD"
@@ -62,7 +62,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with invalid metrics during an import
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;length
       SKU-001;4000 CENTIMETER
@@ -84,7 +84,7 @@ Feature: Execute a job
       | sku     | length        |
       | SKU-001 | 98 CENTIMETER |
       | SKU-002 | 2 KILOMETER   |
-    And the following file to import:
+    And the following CSV file to import:
       """
       sku;length
       SKU-001;4000 CENTIMETER
@@ -107,7 +107,7 @@ Feature: Execute a job
     Given the following products:
       | sku     | number_in_stock |
       | SKU-001 | 4000            |
-    And the following file to import:
+    And the following CSV file to import:
       """
       sku;number_in_stock
       SKU-001;2000
@@ -129,7 +129,7 @@ Feature: Execute a job
       | sku     | number_in_stock |
       | SKU-001 | 4000            |
       | SKU-002 | 99              |
-    And the following file to import:
+    And the following CSV file to import:
       """
       sku;number_in_stock
       SKU-001;invalid_stock
@@ -145,7 +145,7 @@ Feature: Execute a job
     And the product "SKU-001" should have the following value:
       | number_in_stock | 4000 |
     And the product "SKU-002" should have the following value:
-      | number_in_stock | 100  |
+      | number_in_stock | 100 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new products with non-existing media attributes during an import
@@ -153,7 +153,7 @@ Feature: Execute a job
       | label       | type  | allowed extensions |
       | Front view  | image | gif, jpg           |
       | User manual | file  | txt, pdf           |
-    And the following file to import:
+    And the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
       bic-core-148;sneakers;;invalid-front-view.gif;"Bic Core 148";invalid-user-manual.txt;2014_collection
@@ -172,7 +172,7 @@ Feature: Execute a job
     And I should see "frontView: File not found"
     And I should see "userManual: File not found"
     And the product "fanatic-freewave-76" should have the following values:
-      | name-en_US | Fanatic Freewave 76 |
+      | name-en_US | Fanatic Freewave 76     |
       | frontView  | fanatic-freewave-76.gif |
       | userManual | fanatic-freewave-76.txt |
 
@@ -186,7 +186,7 @@ Feature: Execute a job
       | label       | type  | allowed extensions |
       | Front view  | image | gif, jpg           |
       | User manual | file  | txt, pdf           |
-    And the following file to import:
+    And the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
       bic-core-148;sneakers;;invalid-front-view.gif;"New Bic Core 148";invalid-user-manual.txt;2014_collection
@@ -216,7 +216,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip products with empty SKU
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;name-en_US
       ;invalid product
@@ -237,7 +237,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip products with a SKU that has just been created
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;name-en_US
       SKU-001;high heels
@@ -256,7 +256,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3312
   Scenario: Stop imports with attributes where local is wrong (PIM-3312)
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;name-en_US;description-wronglocale-ecommerce
       SKU-001;high heels;red high heels
@@ -273,7 +273,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3312
   Scenario: Stop imports with attributes where channel is wrong (PIM-3312)
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;name-en_US;description-en_US-wrongchannel
       SKU-001;high heels;red high heels
@@ -290,7 +290,7 @@ Feature: Execute a job
 
   @jira https://akeneo.atlassian.net/browse/PIM-3312
   Scenario: Stop imports with attributes where channel is wrong (PIM-3312)
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;price-FCFA
       SKU-001;100

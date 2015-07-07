@@ -28,8 +28,8 @@ Feature: Add products to many groups at once
     And I am logged in as "Julia"
     And I am on the products page
     Given I mass-edit products kickers, hiking_shoes
-    And I choose the "Add to groups" operation
-    And I check "Caterpillar boots"
+    And I choose the "Add to a variant group" operation
+    And I select the "Caterpillar boots" variant group
     When I move on to the next step
     Then I should see:
     """

@@ -109,7 +109,7 @@ abstract class AbstractMassEditOperator
      *
      * @param array $products
      *
-     * @return MassEditActionOperator
+     * @return AbstractMassEditOperator
      */
     public function setObjectsToMassEdit(array $products)
     {
@@ -124,9 +124,9 @@ abstract class AbstractMassEditOperator
      *
      * @param string $operationAlias
      *
-     * @throws InvalidArgumentException when the alias is not registered
+     * @throws \InvalidArgumentException when the alias is not registered
      *
-     * @return MassEditOperationInterface
+     * @return AbstractMassEditOperator
      */
     public function setOperationAlias($operationAlias)
     {

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 
 /**
  * Normalize a metric data
@@ -21,7 +21,7 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractMetric && in_array($format, $this->supportedFormats);
+        return $data instanceof MetricInterface && in_array($format, $this->supportedFormats);
     }
 
     /**
@@ -30,19 +30,20 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
     public function normalize($object, $format = null, array $context = array())
     {
         $context = $this->resolveContext($context);
+        $decimalsAllowed = !array_key_exists('decimals_allowed', $context) || true === $context['decimals_allowed'];
 
         if ('multiple_fields' === $context['metric_format']) {
             $fieldKey = $this->getFieldName($object, $context);
             $unitFieldKey = sprintf('%s-unit', $fieldKey);
 
-            $data = $this->getMetricData($object, false);
+            $data = $this->getMetricData($object, false, $decimalsAllowed);
             $result = [
                 $fieldKey => $data,
                 $unitFieldKey => '' === $data ? '' : $object->getUnit(),
             ];
         } else {
             $result = [
-                $this->getFieldName($object, $context) => $this->getMetricData($object, true),
+                $this->getFieldName($object, $context) => $this->getMetricData($object, true, $decimalsAllowed),
             ];
         }
 
@@ -59,22 +60,24 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
     /**
      * Get the data stored in the metric
      *
-     * @param AbstractMetric $metric
-     * @param boolean        $withUnit
+     * @param MetricInterface $metric
+     * @param boolean         $withUnit
+     * @param boolean         $decimalsAllowed
      *
      * @return string
      */
-    public function getMetricData(AbstractMetric $metric, $withUnit)
+    public function getMetricData(MetricInterface $metric, $withUnit, $decimalsAllowed = true)
     {
         $data = $metric->getData();
         if (null === $data || '' === $data) {
             return '';
         }
 
+        $pattern = $decimalsAllowed ? '%.4F' : '%d';
         if ($withUnit) {
-            $data = sprintf('%.4F %s', $metric->getData(), $metric->getUnit());
+            $data = sprintf($pattern. ' %s', $metric->getData(), $metric->getUnit());
         } else {
-            $data = sprintf('%.4F', $metric->getData());
+            $data = sprintf($pattern, $metric->getData());
         }
 
         return $data;

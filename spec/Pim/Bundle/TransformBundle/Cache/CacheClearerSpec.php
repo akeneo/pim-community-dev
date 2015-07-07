@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ProductCacheClearerSpec extends ObjectBehavior
+class CacheClearerSpec extends ObjectBehavior
 {
     function let(
         DoctrineCache $doctrineCache,
@@ -21,15 +21,16 @@ class ProductCacheClearerSpec extends ObjectBehavior
         $entityManager->getUnitOfWork()->willReturn($uow);
     }
 
-    function it_is_initializable() {
-        $this->shouldHaveType('Pim\Bundle\TransformBundle\Cache\ProductCacheClearer');
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('Pim\Bundle\TransformBundle\Cache\CacheClearer');
     }
 
     function it_clears_the_import_cache(
         DoctrineCache $doctrineCache,
         EntityManager $entityManager,
         UnitOfWork $uow
-    ){
+    ) {
         $this->setNonClearableEntities(['NonClearable']);
         $uow->getIdentityMap()->willReturn(
             [

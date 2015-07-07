@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
- * A normalizer to transform an AbstractAttribute entity into a flat array
+ * A normalizer to transform an AttributeInterface entity into a flat array
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -29,16 +29,11 @@ class AttributeNormalizer extends Structured\AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAvailableLocales(AbstractAttribute $attribute)
+    protected function normalizeAvailableLocales(AttributeInterface $attribute)
     {
-        $availableLocales = $attribute->getAvailableLocales();
+        $availableLocales = $attribute->getLocaleSpecificCodes();
 
         if ($availableLocales) {
-            $availableLocales = $availableLocales->map(
-                function ($locale) {
-                    return $locale->getCode();
-                }
-            )->toArray();
             $availableLocales = implode(self::ITEM_SEPARATOR, $availableLocales);
         }
 
@@ -48,7 +43,7 @@ class AttributeNormalizer extends Structured\AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeOptions(AbstractAttribute $attribute)
+    protected function normalizeOptions(AttributeInterface $attribute)
     {
         $options = $attribute->getOptions();
 
@@ -69,31 +64,5 @@ class AttributeNormalizer extends Structured\AttributeNormalizer
         }
 
         return $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function normalizeDefaultOptions(AbstractAttribute $attribute)
-    {
-        $defaultOptions = $attribute->getDefaultOptions();
-
-        if ($defaultOptions->isEmpty()) {
-            $defaultOptions = '';
-        } else {
-            $data = array();
-            foreach ($defaultOptions as $option) {
-                $item = array();
-                foreach ($option->getOptionValues() as $value) {
-                    $label = str_replace('{locale}', $value->getLocale(), self::LOCALIZABLE_PATTERN);
-                    $label = str_replace('{value}', $value->getValue(), $label);
-                    $item[] = $label;
-                }
-                $data[] = implode(self::ITEM_SEPARATOR, $item);
-            }
-            $defaultOptions = implode(self::GROUP_SEPARATOR, $data);
-        }
-
-        return $defaultOptions;
     }
 }

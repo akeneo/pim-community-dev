@@ -35,7 +35,7 @@ class GroupTypeTranslation extends AbstractTranslation
      *
      * @param string $label
      *
-     * @return GroupTranslation
+     * @return GroupTypeTranslation
      */
     public function setLabel($label)
     {

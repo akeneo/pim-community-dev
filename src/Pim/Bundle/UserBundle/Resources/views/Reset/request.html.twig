@@ -35,8 +35,7 @@
 
         <fieldset class="oro-forgot-password">
             <div class="input-prepend">
-                <span class="add-on">{{ 'Username or Email'|trans }}</span>
-                <input type="text" id="prependedInput" class="span2" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus="autofocus"/>
+                <input type="text" id="prepended-input-request" class="span2 input-request" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus="autofocus"/>
             </div>
             <div class="form-row">
                 <a href="{{ path('oro_user_security_login') }}" class="btn extra-btn-large btn-large">{{ 'Cancel'|trans }}</a>

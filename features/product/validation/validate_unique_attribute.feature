@@ -1,0 +1,89 @@
+@javascript
+Feature: Validate unique attribute of a product
+  In order to keep my data consistent
+  As a regular user
+  I need to be able to see validation errors for unique attribute
+
+  Background:
+    Given the "default" catalog configuration
+    And the following attributes:
+      | code   | label-en_US | type   | unique |
+      | text   | Text        | text   | yes    |
+      | number | Number      | number | yes    |
+      | date   | Date        | date   | yes    |
+    And the following families:
+      | code        | label-en_US | attributes  |
+      | with_text   | With Text   | sku, text   |
+      | with_number | With Number | sku, number |
+      | with_date   | With Date   | sku, date   |
+    And the following products:
+      | sku     | family      |
+      | text1   | with_text   |
+      | text2   | with_text   |
+      | number1 | with_number |
+      | number2 | with_number |
+      | date1   | with_date   |
+      | date2   | with_date   |
+    And I am logged in as "Mary"
+
+  Scenario: Validate the unique constraint of text attribute with a provided text
+    Given I am on the "text1" product page
+    And I change the Text to "my-text"
+    And I save the product
+    When I am on the "text2" product page
+    And I change the Text to "my-text"
+    And I save the product
+    Then I should see validation tooltip "This value is already set on another product."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3961
+  Scenario: Validate the unique constraint of text attribute with an empty text
+    Given I am on the "text1" product page
+    And I change the Text to ""
+    And I save the product
+    When I am on the "text2" product page
+    And I change the Text to ""
+    And I save the product
+    Then I should not see validation tooltip "This value is already set on another product."
+
+  Scenario: Validate the unique constraint of number attribute with a provided number greater than 0
+    Given I am on the "number1" product page
+    And I change the Number to "12"
+    And I save the product
+    When I am on the "number2" product page
+    And I change the Number to "12"
+    And I save the product
+    Then I should see validation tooltip "This value is already set on another product."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3961
+  Scenario: Validate the unique constraint of number attribute with an empty number
+    Given I am on the "number1" product page
+    And I change the Number to ""
+    And I save the product
+    When I am on the "number2" product page
+    And I change the Number to ""
+    And I save the product
+    Then I should not see validation tooltip "This value is already set on another product."
+
+  @skip @info date picker does not work properly on CI
+  Scenario: Validate the unique constraint of date attribute with a provided date
+    Given the following product values:
+      | product | attribute |value       |
+      | postit  | date      | 2015-01-01 |
+    Given I am on the "date2" product page
+    And I change the Date to "2015/01/01"
+    And I save the product
+    Then I should see validation tooltip "This value is already set on another product."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3961
+  Scenario: Validate the unique constraint of date attribute with an empty date
+    Given I am on the "date1" product page
+    And I save the product
+    When I am on the "date2" product page
+    And I save the product
+    Then I should not see validation tooltip "This value is already set on another product."

@@ -2,15 +2,14 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
+use Pim\Bundle\InstallerBundle\CommandExecutor;
+use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-
-use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
-use Pim\Bundle\InstallerBundle\CommandExecutor;
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 
 /**
  * Database preparing command
@@ -85,7 +84,7 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this->commandExecutor->runCommand('doctrine:database:create');
 
-        if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $driver) {
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $driver) {
             $this->commandExecutor
                 ->runCommand('doctrine:mongodb:schema:drop')
                 ->runCommand('doctrine:mongodb:schema:create');
@@ -120,7 +119,7 @@ class DatabaseCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return InstallCommand
+     * @return DatabaseCommand
      */
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
     {
@@ -151,7 +150,7 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this->commandExecutor->runCommand('doctrine:fixtures:load', $params);
 
-        if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
+        if (AkeneoStorageUtilsExtension::DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
             $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load', array('--append' => true));
         }
 
@@ -188,7 +187,7 @@ class DatabaseCommand extends ContainerAwareCommand
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
-     * @return InstallCommand
+     * @return DatabaseCommand
      */
     protected function launchCommands(InputInterface $input, OutputInterface $output)
     {
@@ -206,7 +205,7 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function getStorageDriver()
     {
-        return $this->getContainer()->getParameter('pim_catalog.storage_driver');
+        return $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
     }
 
     /**

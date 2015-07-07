@@ -2,17 +2,17 @@
 
 namespace Pim\Bundle\TranslationBundle\Form\Subscriber;
 
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Inflector\Inflector;
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\TranslationBundle\Exception\MissingOptionException;
 use Pim\Bundle\TranslationBundle\Factory\TranslationFactory;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Define subscriber for translation fields

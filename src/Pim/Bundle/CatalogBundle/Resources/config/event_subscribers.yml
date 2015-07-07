@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.event_subscriber.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber
-    pim_catalog.event_subscriber.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventSubscriber\MetricBaseValuesSubscriber
     pim_catalog.event_subscriber.localizable.class:                  Pim\Bundle\CatalogBundle\EventSubscriber\LocalizableSubscriber
     pim_catalog.event_subscriber.scopable.class:                     Pim\Bundle\CatalogBundle\EventSubscriber\ScopableSubscriber
     pim_catalog.event_subscriber.timestampable.class:                Pim\Bundle\CatalogBundle\EventSubscriber\TimestampableSubscriber

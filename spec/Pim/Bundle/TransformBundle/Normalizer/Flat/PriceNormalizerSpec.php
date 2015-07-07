@@ -3,8 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 
 class PriceNormalizerSpec extends ObjectBehavior
 {
@@ -13,12 +12,12 @@ class PriceNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_csv_normalization_of_product_price(AbstractProductPrice $price)
+    function it_supports_csv_normalization_of_product_price(ProductPriceInterface $price)
     {
         $this->supportsNormalization($price, 'csv')->shouldBe(true);
     }
 
-    function it_supports_flat_normalization_of_product_price(AbstractProductPrice $price)
+    function it_supports_flat_normalization_of_product_price(ProductPriceInterface $price)
     {
         $this->supportsNormalization($price, 'flat')->shouldBe(true);
     }
@@ -28,7 +27,7 @@ class PriceNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 
-    function it_normalizes_price(AbstractProductPrice $price)
+    function it_normalizes_price(ProductPriceInterface $price)
     {
         $price->getData()->willReturn(25.3);
         $price->getCurrency()->willReturn('EUR');
@@ -36,7 +35,7 @@ class PriceNormalizerSpec extends ObjectBehavior
         $this->normalize($price, null, ['field_name' => 'price'])->shouldReturn(['price-EUR' => '25.30']);
     }
 
-    function it_normalizes_null_price(AbstractProductPrice $price)
+    function it_normalizes_null_price(ProductPriceInterface $price)
     {
         $price->getData()->willReturn(null);
         $price->getCurrency()->willReturn('EUR');
@@ -44,7 +43,7 @@ class PriceNormalizerSpec extends ObjectBehavior
         $this->normalize($price, null, ['field_name' => 'price'])->shouldReturn(['price-EUR' => '']);
     }
 
-    function it_normalizes_empty_price(AbstractProductPrice $price)
+    function it_normalizes_empty_price(ProductPriceInterface $price)
     {
         $price->getData()->willReturn('');
         $price->getCurrency()->willReturn('EUR');

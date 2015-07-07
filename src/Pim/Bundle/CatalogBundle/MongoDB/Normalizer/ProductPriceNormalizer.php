@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 
 /**
  * Normalize a product price collection to store it as mongodb_json
@@ -35,6 +35,6 @@ class ProductPriceNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractProductPrice && 'mongodb_json' === $format;
+        return $data instanceof ProductPriceInterface && 'mongodb_json' === $format;
     }
 }

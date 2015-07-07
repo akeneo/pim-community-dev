@@ -1,0 +1,10 @@
+parameters:
+    pim_enrich.form.factory.product_value.class: Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory
+
+services:
+    pim_enrich.form.factory.product_value:
+        class: %pim_enrich.form.factory.product_value.class%
+        arguments:
+            - '@form.factory'
+            - '@pim_catalog.registry.attribute_type'
+            - '@event_dispatcher'

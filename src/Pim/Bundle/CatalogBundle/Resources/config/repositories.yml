@@ -10,6 +10,7 @@ parameters:
     pim_catalog.repository.group.class:            Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository
     pim_catalog.repository.group_type.class:       Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository
     pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
+    pim_catalog.repository.product_template.class: Pim\Bundle\CatalogBundle\Entity\Repository\ProductTemplateRepository
     pim_catalog.repository.product_value.class:    Doctrine\ORM\EntityRepository
 
 services:
@@ -107,6 +108,14 @@ services:
         tags:
             - { name: 'pim_repository' }
 
+    pim_catalog.repository.product_template:
+        class: %pim_catalog.repository.product_template.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.product_template.class%]
+        tags:
+            - { name: 'pim_repository' }
+
     pim_catalog.repository.product_value:
         class: %pim_catalog.repository.product_value.class%
         factory_service: pim_catalog.doctrine.smart_manager_registry
@@ -114,7 +123,3 @@ services:
         arguments: [%pim_catalog.entity.product_value.class%]
         tags:
             - { name: 'pim_repository' }
-
-    pim_catalog.doctrine.product_query_builder:
-        class: %pim_catalog.doctrine.product_query_builder.class%
-        arguments: ['@pim_catalog.context.catalog']

@@ -5,8 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
- * Product import processor
- * Allows to bind data into a product and validate them
+ * Product import processor, allows to bind data into a product and validate them
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

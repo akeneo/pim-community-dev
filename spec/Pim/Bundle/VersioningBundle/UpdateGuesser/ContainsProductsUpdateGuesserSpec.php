@@ -3,9 +3,8 @@
 namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
@@ -29,7 +28,7 @@ class ContainsProductsUpdateGuesserSpec extends ObjectBehavior
         EntityManager $em,
         ProductInterface $foo,
         ProductInterface $bar,
-        Group $group
+        GroupInterface $group
     ) {
         $group->getProducts()->willReturn([$foo, $bar]);
         $this->guessUpdates($em, $group, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$foo, $bar]);

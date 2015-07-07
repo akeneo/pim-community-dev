@@ -6,7 +6,6 @@ attributes:
         group: info
         required:            true
         unique:              true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
     name:
@@ -15,7 +14,6 @@ attributes:
         type:  pim_catalog_text
         group: info
         localizable:         true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
     manufacturer:
@@ -23,7 +21,6 @@ attributes:
             en_US: Manufacturer
         type:  pim_catalog_simpleselect
         group: info
-        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           3
         options:
@@ -48,7 +45,6 @@ attributes:
             en_US: Weather conditions
         type:  pim_catalog_multiselect
         group: info
-        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           4
         options:
@@ -79,7 +75,6 @@ attributes:
         group: info
         localizable:         true
         scopable:            true
-        useableAsGridColumn: false
         useableAsGridFilter: true
         maxCharacters:       1000
         sortOrder:           5
@@ -88,7 +83,6 @@ attributes:
             en_US: Comment
         group: other
         type:  pim_catalog_text
-        useableAsGridColumn: false
         useableAsGridFilter: true
         maxCharacters:       255
     price:
@@ -96,7 +90,6 @@ attributes:
             en_US: Price
         type:  pim_catalog_price_collection
         group: marketing
-        useableAsGridColumn: true
         useableAsGridFilter: true
         numberMin:           1
         numberMax:           200
@@ -107,7 +100,6 @@ attributes:
             en_US: Rating
         type:  pim_catalog_simpleselect
         group: marketing
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
         options:
@@ -152,7 +144,6 @@ attributes:
             en_US: Size
         type:  pim_catalog_simpleselect
         group: sizes
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
         options:
@@ -209,7 +200,6 @@ attributes:
             en_US: Color
         type:  pim_catalog_simpleselect
         group: colors
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
         options:
@@ -250,10 +240,8 @@ attributes:
             en_US: Lace color
         type:  pim_catalog_simpleselect
         group: colors
-        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           2
-        defaultValue:        laces_black
         options:
             laces_black:
                 labels:
@@ -282,3 +270,17 @@ attributes:
         group: other
         decimalsAllowed:     false
         negativeAllowed:     false
+    destocking_date:
+        labels:
+            en_US: Destocking date
+        type:  pim_catalog_date
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           25
+    handmade:
+        labels:
+            en_US: Handmade
+        type:  pim_catalog_boolean
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           30

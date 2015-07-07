@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber\MassEditAction;
 
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 
 /**
  * Add selected operation field if one is set

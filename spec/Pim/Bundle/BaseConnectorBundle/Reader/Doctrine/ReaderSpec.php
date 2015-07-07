@@ -2,12 +2,11 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\MongoDB\Query\Query;
-use Doctrine\MongoDB\Cursor;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Doctrine\MongoDB\Cursor;
+use Doctrine\MongoDB\Query\Query;
+use Doctrine\ORM\AbstractQuery;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @require Doctrine\MongoDB\Query\Query

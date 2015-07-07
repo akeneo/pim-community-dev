@@ -30,10 +30,17 @@ Feature: Join an image to a product
     And I follow "akeneo.jpg"
     Then I should see the uploaded image
 
-  @javascript
   Scenario: Successfully remove an image
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product
+    And I remove the "Visual" file
+    And I save the product
+    Then I should not see "akeneo.jpg"
+
+  Scenario: Successfully remove an image if media not on filesystem
+    When I attach file "akeneo.jpg" to "Visual"
+    And I save the product
+    And I delete "Car" media from filesystem
     And I remove the "Visual" file
     And I save the product
     Then I should not see "akeneo.jpg"

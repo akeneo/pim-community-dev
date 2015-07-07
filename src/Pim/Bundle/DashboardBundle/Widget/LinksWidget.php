@@ -22,6 +22,14 @@ class LinksWidget implements WidgetInterface
     /**
      * {@inheritdoc}
      */
+    public function getAlias()
+    {
+        return 'links';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParameters()
     {
         return array(
@@ -42,11 +50,19 @@ class LinksWidget implements WidgetInterface
                     'icon' => 'list-ul',
                 ),
                 array(
-                    'route' => 'pim_enrich_categorytree_create',
+                    'route' => 'pim_enrich_categorytree_index',
                     'label' => 'pim_dashboard.link.label.category',
                     'icon' => 'sitemap',
                 ),
             ),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
+    {
+        return null;
     }
 }

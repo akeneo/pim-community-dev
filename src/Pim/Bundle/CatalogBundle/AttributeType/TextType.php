@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Text attribute type
@@ -16,12 +16,9 @@ class TextType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
+    protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         $properties = parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name' => 'defaultValue'
-            ],
             'maxCharacters' => [
                 'name'      => 'maxCharacters',
                 'fieldType' => 'text'

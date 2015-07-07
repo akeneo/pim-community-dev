@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
+use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -9,8 +11,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory;
 
 /**
  * Ajax entity type

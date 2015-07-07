@@ -2,12 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 
 /**
  * Association type manager
@@ -18,30 +15,24 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
  */
 class AssociationTypeManager
 {
-    /** @var AssociationTypeRepository $repository */
+    /** @var AssociationTypeRepositoryInterface $repository */
     protected $repository;
 
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
-     * @param AssociationTypeRepository $repository
-     * @param ObjectManager             $objectManager
-     * @param EventDispatcherInterface  $eventDispatcher
+     * @param AssociationTypeRepositoryInterface $repository
+     * @param ObjectManager                      $objectManager
      */
     public function __construct(
-        AssociationTypeRepository $repository,
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        AssociationTypeRepositoryInterface $repository,
+        ObjectManager $objectManager
     ) {
         $this->repository      = $repository;
         $this->objectManager   = $objectManager;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -57,15 +48,12 @@ class AssociationTypeManager
     /**
      * Remove an association type
      *
-     * @param AssociationType $associationType
+     * @param AssociationTypeInterface $associationType
+     *
+     * @deprecated will be removed in 1.4, replaced by AssociationTypeRemover::remove
      */
-    public function remove(AssociationType $associationType)
+    public function remove(AssociationTypeInterface $associationType)
     {
-        $this->eventDispatcher->dispatch(
-            AssociationTypeEvents::PRE_REMOVE,
-            new GenericEvent($associationType)
-        );
-
         $this->objectManager->remove($associationType);
         $this->objectManager->flush();
     }

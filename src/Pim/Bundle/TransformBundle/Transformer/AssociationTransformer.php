@@ -3,9 +3,9 @@
 namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -43,7 +43,7 @@ class AssociationTransformer extends EntityTransformer
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $colInfoTransformer,
         $productClass,
-        $associationTypeClass = 'Pim\Bundle\CatalogBundle\Entity\AssociationType'
+        $associationTypeClass
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer);
         $this->productClass         = $productClass;
@@ -71,7 +71,7 @@ class AssociationTransformer extends EntityTransformer
 
         $associationTypeRepo = $this->doctrine->getManagerForClass($this->associationTypeClass)
             ->getRepository($this->associationTypeClass);
-        $associationType = $associationTypeRepo->findByReference($data['association_type']);
+        $associationType = $associationTypeRepo->findOneByIdentifier($data['association_type']);
         if (!$associationType) {
             throw new InvalidItemException(
                 'The association type %association_type% does not exist',
@@ -82,7 +82,7 @@ class AssociationTransformer extends EntityTransformer
 
         $productRepository = $this->doctrine->getManagerForClass($this->productClass)
             ->getRepository($this->productClass);
-        $product = $productRepository->findByReference($data['owner']);
+        $product = $productRepository->findOneByIdentifier($data['owner']);
         if (!$product) {
             throw new InvalidItemException(
                 'No product with identifier %identifier%',

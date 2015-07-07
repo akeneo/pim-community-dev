@@ -21,7 +21,7 @@
     {{ elements.page_header(title, buttons, '', left) }}
 
     <div class="container-fluid grid-container">
-        <img src="{{ asset('bundles/pimimportexport/images/loading.gif') }}" alt="Loading" class="transparent loading" />
+        <img src="{{ asset('bundles/pimimportexport/images/loading.gif') }}" alt="{{ 'Loading ...'|trans }}" class="transparent loading" />
         {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh', class: 'transparent loading btn-mini' }) }}
         <table class="table table-bordered groups" id="job-execution">
             <thead>
@@ -72,7 +72,9 @@
                         <span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;
                         <ul>
                             <% _.each(warning.reason.split("\n"), function(warningItem) { %>
-                                <li><%= warningItem %></li>
+                                <% if (warningItem) { %>
+                                    <li><%= warningItem %></li>
+                                <% } %>
                             <% }) %>
                         </ul>
                         <a class="data" href="#"
@@ -84,7 +86,13 @@
                             <% _.each(warning.item, function (value, key) { %>
                                 <tr>
                                     <td><%= key %></td>
-                                    <td><%= value %></td>
+                                    <td>
+                                        <% if (typeof value === 'object') { %>
+                                            <%= JSON.stringify(value) %>
+                                        <% } else { %>
+                                            <%= value %>
+                                        <% } %>
+                                    </td>
                                 </tr>
                             <% }); %>
                         </table>

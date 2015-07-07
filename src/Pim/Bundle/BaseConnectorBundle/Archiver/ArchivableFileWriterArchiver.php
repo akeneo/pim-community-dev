@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Gaufrette\Filesystem;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
+use Gaufrette\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 
 /**
  * Archive job execution files into conventional directories
@@ -48,10 +48,10 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
             }
             $writer = $step->getWriter();
             if ($this->isWriterUsable($writer)) {
-                    $filesystem = $this->getZipFilesystem(
-                        $jobExecution,
-                        sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME))
-                    );
+                $filesystem = $this->getZipFilesystem(
+                    $jobExecution,
+                    sprintf('%s.zip', pathinfo($writer->getPath(), PATHINFO_FILENAME))
+                );
 
                 foreach ($writer->getWrittenFiles() as $fullPath => $localPath) {
                     $filesystem->write($localPath, file_get_contents($fullPath), true);

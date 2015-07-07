@@ -39,3 +39,7 @@ Feature: Product category back to the grid
     And I click back to grid
     Then I should see products black-boots
     And I should not see products purple-sneakers and black-sneakers
+
+  Scenario: Successfully display the no results found message
+    Given I filter by "SKU" with value "novalues"
+    Then I should see "No results found. Try to change your search criteria."

@@ -4,9 +4,9 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Attribute requirement form type
@@ -17,6 +17,17 @@ use Symfony\Component\Form\FormInterface;
  */
 class AttributeRequirementType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -45,10 +56,10 @@ class AttributeRequirementType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeRequirement',
+            [
+                'data_class'        => $this->dataClass,
                 'keep_non_required' => false,
-            )
+            ]
         );
     }
 

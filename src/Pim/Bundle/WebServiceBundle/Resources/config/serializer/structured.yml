@@ -24,6 +24,8 @@ services:
 
     pim_webservice.serializer.normalizer.media:
         class: %pim_serializer.normalizer.media.class%
+        arguments:
+            - '@pim_catalog.manager.media'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 90 }
 

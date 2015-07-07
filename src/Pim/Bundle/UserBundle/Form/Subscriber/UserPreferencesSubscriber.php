@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
+use Doctrine\ORM\EntityRepository;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Subscriber to override additional user fields with regular entity fields and use custom query builders
@@ -58,7 +58,6 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $this->updateCatalogLocale($form);
         $this->updateCatalogScope($form);
         $this->updateDefaultTree($form);
-
     }
 
     /**

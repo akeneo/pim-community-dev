@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\VersioningBundle\Builder;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Version builder

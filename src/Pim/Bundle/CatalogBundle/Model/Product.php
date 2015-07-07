@@ -13,6 +13,6 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractProduct implements ReferableInterface
+class Product extends AbstractProduct
 {
 }

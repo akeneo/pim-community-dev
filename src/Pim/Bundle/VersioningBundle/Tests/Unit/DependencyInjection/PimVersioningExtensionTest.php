@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\VersioningBundle\DependencyInjection\PimVersioningExtension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Test related class
@@ -38,7 +38,7 @@ class PimVersioningExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->extension = new PimVersioningExtension();
         $this->containerBuilder = new ContainerBuilder();
-        $this->containerBuilder->setParameter('pim_catalog.storage_driver', 'foo');
+        $this->containerBuilder->setParameter('pim_catalog_product_storage_driver', 'foo');
     }
 
     /**

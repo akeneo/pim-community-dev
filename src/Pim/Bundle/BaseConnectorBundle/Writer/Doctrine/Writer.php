@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
-use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
 /**
  * Generic writer for basic entities

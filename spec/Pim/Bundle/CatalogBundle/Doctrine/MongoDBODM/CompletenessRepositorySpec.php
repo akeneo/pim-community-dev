@@ -2,21 +2,18 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
-
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-
+use Doctrine\MongoDB\Cursor;
+use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use Doctrine\MongoDB\Query\Query;
-use Doctrine\MongoDB\Cursor;
 use Doctrine\ORM\QueryBuilder;
-
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Prophecy\Argument;
 
 /**
@@ -26,13 +23,13 @@ class CompletenessRepositorySpec extends ObjectBehavior
 {
     function let(
         DocumentManager $manager,
-        Channel $ecommerce,
-        Channel $mobile,
-        Locale $enUs,
-        Locale $frFr,
+        ChannelInterface $ecommerce,
+        ChannelInterface $mobile,
+        LocaleInterface $enUs,
+        LocaleInterface $frFr,
         CategoryInterface $category,
         ChannelManager $channelManager,
-        CategoryRepository $categoryRepository,
+        CategoryRepositoryInterface $categoryRepository,
         ProductRepository $productRepository,
         QueryBuilder $ormQb,
         Builder $odmQb,

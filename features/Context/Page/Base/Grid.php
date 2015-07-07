@@ -40,7 +40,7 @@ class Grid extends Index
                 'Configure columns' => ['css' => 'a:contains("Columns")'],
                 'View selector'     => ['css' => '#view-selector'],
                 'Views list'        => ['css' => 'div.ui-multiselect-menu.highlight-hover'],
-                'Select2 results'   => ['css' => '.select2-results'],
+                'Select2 results'   => ['css' => '#select2-drop .select2-results'],
             ],
             $this->elements
         );
@@ -177,12 +177,21 @@ class Grid extends Index
             }
 
             if (null !== $results && null !== $select2) {
-                $driver->getWebDriverSession()
-                    ->element('xpath', $select2->getXpath())
-                    ->postValue(array('value' => array($value)));
-                sleep(2);
-                $results->find('css', 'li')->click();
-                sleep(2);
+                if (in_array($value, ['empty', 'is empty'])) {
+                    // Allow passing 'empty' as value too (for backwards compability with existing scenarios)
+                    $filter->find('css', 'button.dropdown-toggle')->click();
+                    $filter->find('css', '[data-value="empty"]')->click();
+                } else {
+                    $values = explode(',', $value);
+                    foreach ($values as $value) {
+                        $driver->getWebDriverSession()
+                            ->element('xpath', $select2->getXpath())
+                            ->postValue(array('value' => array($value)));
+                        sleep(2);
+                        $results->find('css', 'li')->click();
+                        sleep(2);
+                    }
+                }
             } elseif ($value !== false) {
                 $elt->fillField('value', $value);
             }
@@ -535,8 +544,7 @@ class Grid extends Index
 
         return $this
             ->getElement('Views list')
-            ->find('css', sprintf('label:contains("%s")', $viewLabel))
-        ;
+            ->find('css', sprintf('label:contains("%s")', $viewLabel));
     }
 
     /**
@@ -839,6 +847,14 @@ class Grid extends Index
     public function massDelete()
     {
         $this->pressButton('Delete');
+    }
+
+    /**
+     * Press the sequential edit button
+     */
+    public function sequentialEdit()
+    {
+        $this->pressButton('Sequential Edit');
     }
 
     /**

@@ -38,3 +38,9 @@ pim_importexport_import_profile_launch:
     defaults: { _controller: pim_import_export.controller.import_profile:launchAction }
     requirements:
         id: \d+
+
+pim_importexport_import_profile_launch_upload:
+    path: /{id}/launch-upload
+    defaults: { _controller: pim_import_export.controller.import_profile:launchUploadedAction }
+    requirements:
+        id: \d+

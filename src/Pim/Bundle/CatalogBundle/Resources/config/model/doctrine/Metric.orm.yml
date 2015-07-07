@@ -33,3 +33,11 @@ Pim\Bundle\CatalogBundle\Model\Metric:
             length: 20
             nullable: true
             column: family
+    oneToOne:
+        value:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+            mappedBy: metric
+            joinColumns:
+                metric_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'

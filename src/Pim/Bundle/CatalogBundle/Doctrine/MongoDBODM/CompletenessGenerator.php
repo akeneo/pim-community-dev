@@ -2,19 +2,17 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\Completeness;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 
 /**
  * Generate the completeness when Product are in MongoDBODM
@@ -29,44 +27,36 @@ use Doctrine\MongoDB\Query\Expr;
  */
 class CompletenessGenerator implements CompletenessGeneratorInterface
 {
-    /**
-     * @var DocumentManager;
-     */
+    /** @var DocumentManager */
     protected $documentManager;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productClass;
 
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /**
-     * @var FamilyRepository
-     */
+    /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
     /**
      * Constructor
      *
-     * @param DocumentManager  $documentManager
-     * @param string           $productClass
-     * @param ChannelManager   $channelManager
-     * @param FamilyRepository $familyRepository
+     * @param DocumentManager           $documentManager
+     * @param string                    $productClass
+     * @param ChannelManager            $channelRepository
+     * @param FamilyRepositoryInterface $familyRepository
      */
     public function __construct(
         DocumentManager $documentManager,
         $productClass,
-        ChannelManager $channelManager,
-        FamilyRepository $familyRepository
+        ChannelRepositoryInterface $channelRepository,
+        FamilyRepositoryInterface $familyRepository
     ) {
-        $this->documentManager     = $documentManager;
-        $this->productClass        = $productClass;
-        $this->channelManager      = $channelManager;
-        $this->familyRepository    = $familyRepository;
+        $this->documentManager   = $documentManager;
+        $this->productClass      = $productClass;
+        $this->channelRepository = $channelRepository;
+        $this->familyRepository  = $familyRepository;
     }
 
     /**
@@ -82,7 +72,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateMissingForChannel(Channel $channel)
+    public function generateMissingForChannel(ChannelInterface $channel)
     {
         $this->generate(null, $channel);
     }
@@ -100,9 +90,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * if provided. CAUTION: the product must be already flushed to the DB
      *
      * @param ProductInterface $product
-     * @param Channel          $channel
+     * @param ChannelInterface $channel
      */
-    protected function generate(ProductInterface $product = null, Channel $channel = null)
+    protected function generate(ProductInterface $product = null, ChannelInterface $channel = null)
     {
         $productsQb = $this->documentManager->createQueryBuilder($this->productClass);
 
@@ -137,7 +127,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $allCompletenesses = false;
 
         if ((!isset($normalizedData['completenesses'])) ||
-            (null === $normalizedData['completenesses'])||
+            (null === $normalizedData['completenesses']) ||
             (0 === count($normalizedData['completenesses']))
         ) {
             $missingComps = array_keys($normalizedReqs);
@@ -227,7 +217,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $collection->update($query, $normalizedComp, $options);
         } else {
             foreach ($completenesses as $key => $value) {
-
                 $compObject = array('$push' => array('completenesses' => $value['object']));
 
                 $collection->update($query, $compObject, $options);
@@ -243,11 +232,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * calculate completenesses.
      *
      * @param ProductInterface $product
-     * @param Channel          $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
-    protected function getFamilyRequirements(ProductInterface $product = null, Channel $channel = null)
+    protected function getFamilyRequirements(ProductInterface $product = null, ChannelInterface $channel = null)
     {
         $selectFamily = null;
 
@@ -323,14 +312,17 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * Get the name of a normalized data field
      *
-     * @param AbstractAttribute $attribute
-     * @param Channel           $channel
-     * @param Locale            $locale
+     * @param AttributeInterface $attribute
+     * @param ChannelInterface   $channel
+     * @param LocaleInterface    $locale
      *
      * @return string
      */
-    protected function getNormalizedFieldName(AbstractAttribute $attribute, Channel $channel, Locale $locale)
-    {
+    protected function getNormalizedFieldName(
+        AttributeInterface $attribute,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
         $suffix = '';
 
         if ($attribute->isLocalizable()) {
@@ -347,14 +339,14 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Apply the query part to search for product where the completenesses
      * are missing. Apply only to the channel or product if provided.
      *
-     * @param Builder $productsQb
-     * @param Product $product
-     * @param Channel $channel
+     * @param Builder          $productsQb
+     * @param ProductInterface $product
+     * @param ChannelInterface $channel
      */
     protected function applyFindMissingQuery(
         Builder $productsQb,
         ProductInterface $product = null,
-        Channel $channel = null
+        ChannelInterface $channel = null
     ) {
         if (null !== $product) {
             $productsQb->field('_id')->equals($product->getId());
@@ -377,11 +369,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Generate a list of potential completeness value from existing channel
      * or from the provided channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
-    protected function getChannelLocaleCombinations(Channel $channel = null)
+    protected function getChannelLocaleCombinations(ChannelInterface $channel = null)
     {
         $channels = array();
         $combinations = array();
@@ -389,7 +381,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         if (null !== $channel) {
             $channels = [$channel];
         } else {
-            $channels = $this->channelManager->getFullChannels();
+            $channels = $this->channelRepository->getFullChannels();
         }
 
         foreach ($channels as $channel) {
@@ -413,7 +405,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function scheduleForFamily(Family $family)
+    public function scheduleForFamily(FamilyInterface $family)
     {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 
@@ -430,7 +422,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function scheduleForChannelAndLocale(Channel $channel, Locale $locale)
+    public function scheduleForChannelAndLocale(ChannelInterface $channel, LocaleInterface $locale)
     {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 

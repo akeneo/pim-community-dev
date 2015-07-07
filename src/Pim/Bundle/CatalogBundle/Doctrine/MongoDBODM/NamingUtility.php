@@ -2,7 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
  * Provides util methods to get attributes codes
@@ -71,11 +75,11 @@ class NamingUtility
 
     /**
      * Get all locale codes
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    public function getLocaleCodes(AbstractAttribute $attribute = null)
+    public function getLocaleCodes(AttributeInterface $attribute = null)
     {
         $localeCodes = [];
 
@@ -90,11 +94,11 @@ class NamingUtility
 
     /**
      * Get all channel codes
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    public function getChannelCodes(AbstractAttribute $attribute = null)
+    public function getChannelCodes(AttributeInterface $attribute = null)
     {
         $channelCodes = [];
 
@@ -126,12 +130,12 @@ class NamingUtility
     /**
      * Get the attribute fields codes for normalizedData
      *
-     * @param AbstractAttribute $attribute
-     * @param string            $prefix
+     * @param AttributeInterface $attribute
+     * @param string             $prefix
      *
      * @return string[]
      */
-    public function getAttributeNormFields(AbstractAttribute $attribute, $prefix = null)
+    public function getAttributeNormFields(AttributeInterface $attribute, $prefix = null)
     {
         $localeCodes  = $this->getLocaleCodes($attribute);
         $channelCodes = $this->getChannelCodes($attribute);
@@ -153,7 +157,7 @@ class NamingUtility
     /**
      * Get all channels
      *
-     * @return Channel[]
+     * @return ChannelInterface[]
      */
     public function getChannels()
     {
@@ -166,7 +170,7 @@ class NamingUtility
     /**
      * Get active currencies
      *
-     * @return Currency[]
+     * @return CurrencyInterface[]
      */
     public function getCurrencies()
     {
@@ -179,7 +183,7 @@ class NamingUtility
     /**
      * Get active locales
      *
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     public function getLocales()
     {
@@ -193,7 +197,7 @@ class NamingUtility
      * Get filterable prices backend type attribute
      * @param bool $onlyInGrid
      *
-     * @return AbstractAttribute[]
+     * @return AttributeInterface[]
      */
     public function getPricesAttributes($onlyInGrid = true)
     {
@@ -215,7 +219,7 @@ class NamingUtility
      * Get filterable scopable attributes
      * @param bool $onlyInGrid
      *
-     * @return AbstractAttribute[]
+     * @return AttributeInterface[]
      */
     public function getScopableAttributes($onlyInGrid = true)
     {
@@ -237,7 +241,7 @@ class NamingUtility
      * Get filterable localizable attributes
      * @param bool $onlyInGrid
      *
-     * @return AbstractAttribute[]
+     * @return AttributeInterface[]
      */
     public function getLocalizableAttributes($onlyInGrid = true)
     {

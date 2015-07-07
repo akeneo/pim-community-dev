@@ -66,7 +66,7 @@ class FamilyTransformerTest extends EntityTransformerTestCase
 
     protected function setupRepositories($referable = true)
     {
-        $this->repository = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Doctrine\EntityRepository')
+        $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
 

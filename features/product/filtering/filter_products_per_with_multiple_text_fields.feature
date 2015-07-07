@@ -11,9 +11,9 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | code           | label          | type         | useable as grid filter |
-      | name           | Name           | text         | yes                    |
-      | description    | Description    | text         | yes                    |
+      | code        | label       | type | useable as grid filter |
+      | name        | Name        | text | yes                    |
+      | description | Description | text | yes                    |
     And the following "name" attribute options: Black and Green
     And the following "description" attribute options: Black and White and Red
     And the following products:
@@ -28,18 +28,18 @@ Feature: Filter products
       | POST-2 | furniture | red color      |       |
       | POST-3 | furniture | black color    |       |
     And the following product groups:
-      | code   | label  | attributes        | type    | products                           |
-      | MUG    | Mug    | name, description | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5  |
-      | POSTIT | Postit | description       | X_SELL  | POST-1, POST-2, POST-3             |
-      | EMPTY  | Empty  |                   | X_SELL  |                                    |
+      | code   | label  | axis              | type    | products                          |
+      | MUG    | Mug    | name, description | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5 |
+      | POSTIT | Postit | description       | X_SELL  | POST-1, POST-2, POST-3            |
+      | EMPTY  | Empty  |                   | X_SELL  |                                   |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products with the sames attributes
     Given I am on the products page
     And I show the filter "Description"
-    And I filter by "Description" with value "red"
+    And I filter by "Description" with value "Red"
     And I show the filter "Name"
-    And I filter by "Name" with value "green"
+    And I filter by "Name" with value "Green"
     Then the grid should contain 3 elements
     And I should see entities "MUG-2" and "MUG-3" and "MUG-4"
     And I hide the filter "Description"

@@ -4,10 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -19,6 +19,9 @@ use Psr\Log\LoggerInterface;
  */
 class IndexCreator
 {
+    /** @staticvar int 64 is the MongoDB limit for indexes (not configurable) */
+    const MONGODB_INDEXES_LIMIT = 64;
+
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
@@ -27,6 +30,9 @@ class IndexCreator
 
     /** @var string */
     protected $productClass;
+
+    /** @var string */
+    protected $attributeClass;
 
     /** @var LoggerInterface */
     protected $logger;
@@ -41,12 +47,14 @@ class IndexCreator
         ManagerRegistry $managerRegistry,
         NamingUtility $namingUtility,
         $productClass,
-        $logger = null
+        LoggerInterface $logger,
+        $attributeClass = 'Pim\Bundle\CatalogBundle\Entity\Attribute'
     ) {
         $this->managerRegistry = $managerRegistry;
         $this->namingUtility   = $namingUtility;
         $this->productClass    = $productClass;
         $this->logger          = $logger;
+        $this->attributeClass  = $attributeClass;
     }
 
     /**
@@ -54,9 +62,9 @@ class IndexCreator
      * Indexes will be created on the normalizedData part for attribute
      * that are usable as column and as filter and for identifier and unique attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      */
-    public function ensureIndexesFromAttribute(AbstractAttribute $attribute)
+    public function ensureIndexesFromAttribute(AttributeInterface $attribute)
     {
         $attributeFields = $this->namingUtility->getAttributeNormFields($attribute);
 
@@ -79,9 +87,9 @@ class IndexCreator
      * - completenesses
      * - scopable attributes
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      */
-    public function ensureIndexesFromChannel(Channel $channel)
+    public function ensureIndexesFromChannel(ChannelInterface $channel)
     {
         $this->channel = null;
 
@@ -101,9 +109,9 @@ class IndexCreator
      * - completenesses
      * - localizable attributes
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      */
-    public function ensureIndexesFromLocale(Locale $locale)
+    public function ensureIndexesFromLocale(LocaleInterface $locale)
     {
         $completenessFields = $this->getCompletenessNormFields();
         $this->ensureIndexes($completenessFields);
@@ -120,9 +128,9 @@ class IndexCreator
      * Indexes will be created on the normalizedData part for:
      * - prices (because of potentially added currency)
      *
-     * @param Currency $currency
+     * @param CurrencyInterface $currency
      */
-    public function ensureIndexesFromCurrency(Currency $currency)
+    public function ensureIndexesFromCurrency(CurrencyInterface $currency)
     {
         $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
@@ -131,13 +139,62 @@ class IndexCreator
     }
 
     /**
+     * Ensure indexes for completeness
+     */
+    public function ensureCompletenessesIndexes()
+    {
+        $completenessFields = $this->getCompletenessNormFields();
+        $this->ensureIndexes($completenessFields);
+    }
+
+    /**
+     * Ensure indexes for unique attributes
+     */
+    public function ensureUniqueAttributesIndexes()
+    {
+        $attributes = $this->getAttributeRepository()->findBy(
+            ['unique' => true],
+            ['created' => 'ASC'],
+            self::MONGODB_INDEXES_LIMIT
+        );
+
+        foreach ($attributes as $attribute) {
+            $this->ensureIndexesFromAttribute($attribute);
+        }
+    }
+
+    /**
+     * Ensure indexes for attributes
+     */
+    public function ensureAttributesIndexes()
+    {
+        $attributes = $this->getAttributeRepository()->findBy(
+            ['useableAsGridFilter' => true],
+            ['created' => 'ASC'],
+            self::MONGODB_INDEXES_LIMIT
+        );
+
+        foreach ($attributes as $attribute) {
+            $this->ensureIndexesFromAttribute($attribute);
+        }
+    }
+
+    /**
+     * @return AttributeRepositoryInterface
+     */
+    protected function getAttributeRepository()
+    {
+        return $this->managerRegistry->getRepository($this->attributeClass);
+    }
+
+    /**
      * Get the completeness fields for the channel
      *
-     * @param Channel $channel
+     * @param ChannelInterface $channel
      *
      * @return array
      */
-    protected function getCompletenessNormFields(Channel $channel = null)
+    protected function getCompletenessNormFields(ChannelInterface $channel = null)
     {
         $normFields = [];
         $channels = [];
@@ -173,7 +230,7 @@ class IndexCreator
     {
         $currencyCodes = $this->namingUtility->getCurrencyCodes();
         $updatedFields = $this->namingUtility->appendSuffixes($fields, $currencyCodes, '.');
-        $updatedFields = $this->namingUtility->appendSuffixes($fields, ['data'], '.');
+        $updatedFields = $this->namingUtility->appendSuffixes($updatedFields, ['data'], '.');
 
         return $updatedFields;
     }
@@ -204,13 +261,9 @@ class IndexCreator
         $collection = $this->getCollection();
         $preNbIndexes = count($collection->getIndexInfo());
         $postNbIndexes = $preNbIndexes + count($fields);
-        if ($postNbIndexes > 64) {
+        if ($postNbIndexes > self::MONGODB_INDEXES_LIMIT) {
             $msg = sprintf('Too many MongoDB indexes (%d), no way to add %s', $preNbIndexes, print_r($fields, true));
-            if (null !== $this->logger) {
-                $this->logger->error($msg);
-            } else {
-                error_log($msg);
-            }
+            $this->logger->error($msg);
 
             return;
         }

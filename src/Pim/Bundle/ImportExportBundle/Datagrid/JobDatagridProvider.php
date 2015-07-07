@@ -77,16 +77,16 @@ class JobDatagridProvider
      */
     protected function getJobChoices($type)
     {
-        $jobs = array();
+        $choices = array();
         $registryJobs = $this->registry->getJobs($type);
 
-        foreach ($registryJobs as $registryJob) {
-            $jobs = array_merge($jobs, array_keys($registryJob));
+        foreach ($registryJobs as $connectorJobs) {
+            foreach ($connectorJobs as $code => $job) {
+                $choices[$code] = $job->getName();
+            }
         }
 
-        $choices = array_unique($jobs);
-
-        return empty($choices) ? array() : array_combine($choices, $choices);
+        return array_unique($choices);
     }
 
     /**

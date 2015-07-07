@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm\Product;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 
 /**
  * Product completeness selector
@@ -24,7 +24,10 @@ class CompletenessSelector implements SelectorInterface
         $qb        = $datasource->getQueryBuilder();
         $joinAlias = 'selectCompleteness';
         $util      = new CompletenessJoin($qb);
-        $util->addJoins($joinAlias);
+
+        $locale = $configuration->offsetGetByPath('[source][locale_code]');
+        $scope = $configuration->offsetGetByPath('[source][scope_code]');
+        $util->addJoins($joinAlias, $locale, $scope);
         $qb->addSelect($joinAlias.'.ratio AS ratio');
     }
 }

@@ -2,24 +2,27 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface as MongoProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Product repository
@@ -27,26 +30,26 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository in 1.4
  */
 class ProductRepository extends DocumentRepository implements
     ProductRepositoryInterface,
+    IdentifiableObjectRepositoryInterface,
     ReferableEntityRepositoryInterface,
-    AssociationRepositoryInterface
+    AssociationRepositoryInterface,
+    MongoProductRepositoryInterface
 {
-    /** @var ProductQueryBuilder */
-    protected $productQB;
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $queryBuilderFactory;
 
-    /**
-     * ORM EntityManager to access ORM entities
-     *
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $entityManager;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var CategoryRepository */
+    /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
     /**
@@ -54,7 +57,7 @@ class ProductRepository extends DocumentRepository implements
      *
      * @param EntityManager $entityManager
      *
-     * @return ProductRepository $this
+     * @return ProductRepositoryInterface $this
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -64,11 +67,11 @@ class ProductRepository extends DocumentRepository implements
     /**
      * Set the attribute repository
      *
-     * @param AttributeRepository $attributeRepository
+     * @param AttributeRepositoryInterface $attributeRepository
      *
-     * @return ProductRepository
+     * @return ProductRepositoryInterface
      */
-    public function setAttributeRepository(AttributeRepository $attributeRepository)
+    public function setAttributeRepository(AttributeRepositoryInterface $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
 
@@ -78,11 +81,11 @@ class ProductRepository extends DocumentRepository implements
     /**
      * Set the category repository
      *
-     * @param CategoryRepository $categoryRepository
+     * @param CategoryRepositoryInterface $categoryRepository
      *
-     * @return ProductRepository
+     * @return ProductRepositoryInterface
      */
-    public function setCategoryRepository(CategoryRepository $categoryRepository)
+    public function setCategoryRepository(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
 
@@ -92,38 +95,13 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllByAttributes(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset);
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findOneBy(array $criteria)
+    public function findOneByIdentifier($identifier)
     {
-        $qb = $this->createQueryBuilder('p');
-        $pqb = $this->getProductQueryBuilder($qb);
-        foreach ($criteria as $field => $data) {
-            if (is_array($data)) {
-                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
-            } else {
-                $pqb->addFieldFilter($field, '=', $data);
-            }
-        }
-
+        $pqb = $this->queryBuilderFactory->create();
+        $qb = $pqb->getQueryBuilder();
+        $attribute = $this->getIdentifierAttribute();
+        $pqb->addFilter($attribute->getCode(), '=', $identifier);
         $result = $qb->getQuery()->execute();
-
-        if ($result->count() > 1) {
-            throw new \LogicException('Many products have been found that match criteria.');
-        }
 
         return $result->getNext();
     }
@@ -131,15 +109,20 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function buildByScope($scope)
+    public function findOneById($id)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $pqb = $this->queryBuilderFactory->create();
+        $pqb->addFilter('id', '=', $id);
+        $qb = $pqb->getQueryBuilder();
+        $result = $qb->getQuery()->execute();
+
+        return $result->getNext();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function buildByChannelAndCompleteness(Channel $channel)
+    public function buildByChannelAndCompleteness(ChannelInterface $channel)
     {
         $qb = $this->createQueryBuilder('p');
         foreach ($channel->getLocales() as $locale) {
@@ -160,11 +143,9 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    public function findAllIdsForAttribute(AbstractAttribute $attribute)
+    public function findAllIdsForAttribute(AttributeInterface $attribute)
     {
         $qb = $this->createQueryBuilder('p')
             ->hydrate(false)
@@ -177,11 +158,9 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param Family $family
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    public function findAllIdsForFamily(Family $family)
+    public function findAllIdsForFamily(FamilyInterface $family)
     {
         $qb = $this->createQueryBuilder('p')
             ->hydrate(false)
@@ -194,9 +173,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param CategoryInterface $category
-     *
-     * @return ProductInterface[]
+     * {@inheritdoc}
      */
     public function findAllForCategory(CategoryInterface $category)
     {
@@ -208,21 +185,19 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param Group $group
-     *
-     * @return ProductInterface[]
+     * {@inheritdoc}
      */
-    public function findAllForGroup(Group $group)
+    public function findAllForGroup(GroupInterface $group)
     {
         $qb = $this->createQueryBuilder('p');
 
-        $qb->field('groups')->in([$group->getId()]);
+        $qb->field('groupIds')->in([$group->getId()]);
 
         return $qb->getQuery()->execute();
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeFamilyRemoval($id)
     {
@@ -235,7 +210,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeAttributeRemoval($id)
     {
@@ -249,7 +224,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeCategoryRemoval($id)
     {
@@ -262,7 +237,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeGroupRemoval($id)
     {
@@ -275,7 +250,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeAssociationTypeRemoval($id)
     {
@@ -289,7 +264,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
      */
     public function cascadeAttributeOptionRemoval($id)
     {
@@ -311,7 +286,24 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $id
+     * {@inheritdoc}
+     */
+    public function findByIds(array $ids)
+    {
+        $qb = $this->createQueryBuilder('p')->eagerCursor(true);
+        $qb->field('_id')->in($ids);
+
+        $cursor   = $qb->getQuery()->execute();
+        $products = [];
+        foreach ($cursor as $product) {
+            $products[] = $product;
+        }
+
+        return $products;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function cascadeChannelRemoval($id)
     {
@@ -328,32 +320,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByExistingFamily()
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByIds(array $ids)
-    {
-        $qb = $this->createQueryBuilder('p')->eagerCursor(true);
-        $qb->field('_id')->in($ids);
-
-        $cursor = $qb->getQuery()->execute();
-        $products = [];
-        foreach ($cursor as $product) {
-            $products[] = $product;
-        }
-
-        return $products;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAllForVariantGroup(Group $variantGroup, array $criteria = array())
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array())
     {
         $qb = $this->createQueryBuilder()->eagerCursor(true);
 
@@ -380,7 +347,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllWithAttribute(AbstractAttribute $attribute)
+    public function findAllWithAttribute(AttributeInterface $attribute)
     {
         return $this->createQueryBuilder('p')
             ->field('values.attribute')->equals((int) $attribute->getId())
@@ -392,7 +359,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllWithAttributeOption(AttributeOption $option)
+    public function findAllWithAttributeOption(AttributeOptionInterface $option)
     {
         $id = (int) $option->getId();
         $qb = $this->createQueryBuilder('p');
@@ -428,22 +395,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findByReference($code)
-    {
-        return $this->findOneBy(
-            [
-                [
-                    'attribute' => $this->attributeRepository->getIdentifier(),
-                    'value' => $code,
-                ]
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getReferenceProperties()
+    public function getIdentifierProperties()
     {
         return array($this->attributeRepository->getIdentifierCode());
     }
@@ -453,9 +405,10 @@ class ProductRepository extends DocumentRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $qb = $this->createQueryBuilder();
-        $productQueryBuilder = $this->getProductQueryBuilder($qb);
-        $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
+        $productQueryBuilder = $this->queryBuilderFactory->create();
+        $qb = $productQueryBuilder->getQueryBuilder();
+
+        $productQueryBuilder->addFilter($value->getAttribute()->getCode(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->execute();
 
         if (0 === $result->count() ||
@@ -470,26 +423,11 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function setProductQueryBuilder($productQB)
+    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory)
     {
-        $this->productQB = $productQB;
+        $this->queryBuilderFactory = $factory;
 
         return $this;
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductQueryBuilder($qb)
-    {
-        if (!$this->productQB) {
-            throw new \LogicException('Product query builder must be configured');
-        }
-
-        $this->productQB->setQueryBuilder($qb);
-
-        return $this->productQB;
     }
 
     /**
@@ -545,9 +483,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param integer $variantGroupId
-     *
-     * @return array product ids
+     * {@inheritdoc}
      */
     public function getEligibleProductIdsForVariantGroup($variantGroupId)
     {
@@ -560,6 +496,23 @@ class ProductRepository extends DocumentRepository implements
         $attributes = $stmt->fetchAll();
 
         $qb = $this->createQueryBuilder()->hydrate(false)->select('_id');
+
+        $otherVariantGroupsSQL = 'SELECT g.id as group_id ' .
+            'FROM pim_catalog_group as g ' .
+            'JOIN pim_catalog_group_type as gt on gt.id = g.type_id ' .
+            'WHERE gt.code = "VARIANT" ' .
+            'AND g.id != :groupId';
+
+        $stmt = $this->entityManager->getConnection()->prepare($otherVariantGroupsSQL);
+        $stmt->bindValue('groupId', $variantGroupId);
+        $stmt->execute();
+        $otherVariantGroups = $stmt->fetchAll();
+
+        $groupsToRemove = [];
+        foreach ($otherVariantGroups as $variantGroup) {
+            $groupsToRemove[] = (int) $variantGroup['group_id'];
+        }
+        $qb->addAnd($qb->expr()->field('groupIds')->notIn($groupsToRemove));
 
         foreach ($attributes as $attribute) {
             $andExpr = $qb
@@ -583,15 +536,15 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function countForAssociationType(AssociationType $associationType)
+    public function countForAssociationType(AssociationTypeInterface $associationType)
     {
         $assocMatch = [
             '$and' => [
                 ['associationType' => $associationType->getId()],
                 [
                     '$or' => [
-                        [ 'products' => [ '$ne'=> [] ] ],
-                        [ 'groups'   => [ '$ne'=> [] ] ]
+                        [ 'products' => [ '$ne' => [] ] ],
+                        [ 'groups'   => [ '$ne' => [] ] ]
                     ]
                 ]
             ]
@@ -637,11 +590,11 @@ class ProductRepository extends DocumentRepository implements
     /**
      * Set family repository
      *
-     * @param FamilyRepository $familyRepository
+     * @param FamilyRepositoryInterface $familyRepository
      *
-     * @return \Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
+     * @return ProductRepositoryInterface
      */
-    public function setFamilyRepository(FamilyRepository $familyRepository)
+    public function setFamilyRepository(FamilyRepositoryInterface $familyRepository)
     {
         $this->familyRepository = $familyRepository;
 
@@ -685,55 +638,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * Finds documents by a set of criteria
-     *
-     * @param array        $attributes
-     * @param array        $criteria
-     * @param array        $orderBy
-     * @param integer|null $limit
-     * @param integer|null $offset
-     *
-     * @return QueryBuilder
-     *
-     * @throws \RuntimeException
-     */
-    protected function findAllByAttributesQB(
-        array $attributes = array(),
-        array $criteria = null,
-        array $orderBy = null,
-        $limit = null,
-        $offset = null
-    ) {
-        $qb = $this->createQueryBuilder('p');
-
-        foreach ($attributes as $attribute => $value) {
-            $qb->field($attribute)->equals($value);
-        }
-
-        if ($criteria) {
-            foreach ($criteria as $field => $value) {
-                $qb->field('normalizedData.'.$field)->equals($value);
-            }
-        }
-
-        if ($orderBy) {
-            throw new \RuntimeException("Order by is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($limit) {
-            throw new \RuntimeException("Limit is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($offset) {
-            throw new \RuntimeException("Offset is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        return $qb;
-    }
-
-    /**
-     * @param integer $productId
-     * @param integer $assocTypeCount
+     * {@inheritdoc}
      *
      * @TODO: Make some refactoring with PublishedProductRepository
      */
@@ -774,5 +679,63 @@ class ProductRepository extends DocumentRepository implements
     public function getObjectManager()
     {
         return $this->getDocumentManager();
+    }
+
+    /**
+     * Return the identifier attribute
+     *
+     * @return AttributeInterface|null
+     */
+    protected function getIdentifierAttribute()
+    {
+        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function getReferenceProperties()
+    {
+        return $this->getIdentifierProperties();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.4
+     */
+    public function findByReference($code)
+    {
+        return $this->findOneByIdentifier($code);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductsByGroup(GroupInterface $group, $maxResults)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->field('groupIds')->in([$group->getId()])
+            ->limit($maxResults);
+
+        $products = $qb->getQuery()->execute()->toArray();
+
+        return $products;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductCountByGroup(GroupInterface $group)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->field('groupIds')->in([$group->getId()]);
+
+        $count = $qb->getQuery()->execute()->count();
+
+        return $count;
     }
 }

@@ -2,28 +2,24 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Form\FormError;
-
 use Doctrine\Common\Persistence\ManagerRegistry;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
+use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Mass edit operation controller
@@ -96,7 +92,6 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->validator = $validator;
         $this->operatorRegistry = $operatorRegistry;
         $this->parametersParser = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
@@ -144,7 +139,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
-     * @return template|RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function configureAction($operationAlias)
     {
@@ -189,7 +184,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
-     * @return template|RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function performAction($operationAlias)
     {
@@ -210,20 +205,22 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         $operator->initializeOperation();
-        $form = $this->getOperatorForm($operator);
+        $form = $this->getOperatorForm($operator, ['Default', 'configureAction']);
         $form->submit($this->request);
 
-        // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $operator->performOperation();
-        foreach ($this->validator->validate($operator) as $violation) {
-            $form->addError(
-                new FormError(
-                    $violation->getMessage(),
-                    $violation->getMessageTemplate(),
-                    $violation->getMessageParameters(),
-                    $violation->getMessagePluralization()
-                )
-            );
+        if ($form->isValid()) {
+            $operator->performOperation();
+            // Binding does not actually perform the operation, thus form errors can miss some constraints
+            foreach ($this->validator->validate($operator) as $violation) {
+                $form->addError(
+                    new FormError(
+                        $violation->getMessage(),
+                        $violation->getMessageTemplate(),
+                        $violation->getMessageParameters(),
+                        $violation->getMessagePluralization()
+                    )
+                );
+            }
         }
 
         if ($form->isValid()) {
@@ -275,15 +272,19 @@ class MassEditActionController extends AbstractDoctrineController
 
     /**
      * @param AbstractMassEditOperator $operator
+     * @param array                    $validationGroups
      *
      * @return Form
      */
-    protected function getOperatorForm(AbstractMassEditOperator $operator)
+    protected function getOperatorForm(AbstractMassEditOperator $operator, array $validationGroups = [])
     {
         return $this->createForm(
             new MassEditOperatorType(),
             $operator,
-            array('operations' => $operator->getOperationChoices())
+            [
+                'operations' => $operator->getOperationChoices(),
+                'validation_groups' => $validationGroups
+            ]
         );
     }
 

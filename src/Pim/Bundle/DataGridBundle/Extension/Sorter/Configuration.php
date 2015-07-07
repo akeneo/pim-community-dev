@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter;
 
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OroConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OroConfiguration;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
  * Sorter configuration, extended to add own configuration

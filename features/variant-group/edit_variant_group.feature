@@ -1,4 +1,3 @@
-@javascript
 Feature: Edit a variant group
   In order to manage existing variant groups for the catalog
   As a product manager
@@ -10,6 +9,7 @@ Feature: Edit a variant group
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Properties" tab
 
+  @javascript
   Scenario: Successfully edit a variant group
     Then I should see the Code and Axis fields
     And the fields Code and Axis should be disabled

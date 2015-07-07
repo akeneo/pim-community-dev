@@ -2,15 +2,14 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Prophecy\Argument;
 
 class SortersConfiguratorSpec extends ObjectBehavior
 {

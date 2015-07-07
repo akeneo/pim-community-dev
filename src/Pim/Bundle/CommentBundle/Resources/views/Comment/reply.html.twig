@@ -1,0 +1,26 @@
+{% spaceless %}
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+{% endspaceless %}
+
+{{ form_start(replyForms[comment.id], {
+    'id': 'pim_comment_comment_reply_' ~ comment.id,
+    'action': path('pim_comment_comment_reply'),
+    'class': 'unspaced'
+}) }}
+    {{ JSFV(replyForms[comment.id]) }}
+
+    {{ elements.form_errors(replyForms[comment.id]) }}
+
+<div class="row-fluid">
+    <div class="span12">
+        {{ form_widget(replyForms[comment.id].body, { 'id': 'pim_comment_comment_body_reply_' ~ comment.id, 'attr': {'class': 'exclude span12'} }) }}
+        {{ form_row(replyForms[comment.id].resourceName) }}
+        {{ form_row(replyForms[comment.id].resourceId) }}
+        {{ form_row(replyForms[comment.id].parent) }}
+        <button class="btn comment-btn pull-right">{{ 'btn.reply'|trans|capitalize }}</button>
+        <input class="btn cancel comment-btn pull-right" type="reset" value="{{ 'btn.cancel'|trans|capitalize }}"/>
+    </div>
+</div>
+{{ form_end(replyForms[comment.id]) }}

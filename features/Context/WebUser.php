@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
@@ -361,16 +362,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Then /^the option should not be removable$/
-     */
-    public function theOptionShouldNotBeRemovable()
-    {
-        if (0 !== $this->getCurrentPage()->countRemovableOptions()) {
-            throw $this->createExpectationException('The option should not be removable.');
-        }
-    }
-
-    /**
      * @param string $optionName
      *
      * @Then /^I remove the "([^"]*)" option$/
@@ -681,6 +672,20 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     *
+     * @Then /^I should not see the "([^"]*)" attribute$/
+     */
+    public function iShouldNotSeeTheAttribute($attribute)
+    {
+        $element = $this->getCurrentPage()->getAttribute($attribute);
+
+        if (null !== $element) {
+            throw new \RuntimeException(sprintf('Attribute "%s" found and should not be.', $attribute));
+        }
+    }
+
+    /**
      * @param string $field
      *
      * @When /^I add a new option to the "([^"]*)" attribute$/
@@ -698,6 +703,26 @@ class WebUser extends RawMinkContext
 
         $link->click();
         $this->wait();
+    }
+
+    /**
+     * @Then /^I should see reorder handles$/
+     */
+    public function iShouldSeeReorderHandles()
+    {
+        if ($this->getCurrentPage()->countOrderableOptions() <= 0) {
+            throw $this->createExpectationException('No reorder handle found');
+        }
+    }
+
+    /**
+     * @Then /^I should not see reorder handles$/
+     */
+    public function iShouldNotSeeReorderHandles()
+    {
+        if ($this->getCurrentPage()->countOrderableOptions() > 0) {
+            throw $this->createExpectationException('Reorder handle was not expected');
+        }
     }
 
     /**
@@ -869,6 +894,31 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Then /^removing the following permissions? should hide the following history:$/
+     *
+     * @return Then[]
+     */
+    public function removingPermissionsShouldHideTheHistory(TableNode $table)
+    {
+        $steps = array();
+
+        foreach ($table->getHash() as $data) {
+            $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
+            $steps[] = new Step\Then('I should see "History"');
+            $steps[] = new Step\Then('I am on the "Administrator" role page');
+            $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
+            $steps[] = new Step\Then('I save the role');
+            $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
+            $steps[] = new Step\Then('I should not see "History"');
+        }
+        $steps[] = new Step\Then('I reset the "Administrator" rights');
+
+        return $steps;
+    }
+
+    /**
      * @param string $file
      * @param string $field
      *
@@ -885,7 +935,18 @@ class WebUser extends RawMinkContext
         }
 
         $this->getCurrentPage()->attachFileToField($field, $file);
-        $this->getMainContext()->executeScript('$("[disabled]").removeAttr("disabled");');
+
+        if (null !== $field = $this->getCurrentPage()->findField($field)) {
+            if ($field->getAttribute('type') !== 'file') {
+                $field = $field->getParent()->find('css', 'input[type="file"]');
+            }
+            $id = $field->getAttribute('id');
+            $script = "$('{$id}').closest('div.control-group').find('[disabled]').removeAttr('disabled');";
+        } else {
+            $script = '$("[disabled]").removeAttr("disabled");';
+        }
+
+        $this->getMainContext()->executeScript($script);
     }
 
     /**
@@ -948,8 +1009,33 @@ class WebUser extends RawMinkContext
     public function iCreateTheFollowingAttributeOptions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->getCurrentPage()->addOption($data['Code'], $data['Selected by default']);
+            $this->getCurrentPage()->addOption($data['Code']);
+            $this->wait(3000);
         }
+    }
+
+    /**
+     * @param string $oldOptionName
+     * @param string $newOptionName
+     *
+     * @Given /^I edit the "([^"]*)" option and turn it to "([^"]*)"$/
+     */
+    public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
+    {
+        $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
+        $this->wait(3000);
+    }
+
+    /**
+     * @param string $oldOptionName
+     * @param string $newOptionName
+     *
+     * @Given /^I edit the code "([^"]*)" to turn it to "([^"]*)" and cancel$/
+     */
+    public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
+    {
+        $this->getCurrentPage()->editOptionAndCancel($oldOptionName, $newOptionName);
+        $this->wait(3000);
     }
 
     /**
@@ -1244,6 +1330,24 @@ class WebUser extends RawMinkContext
             // Call the wait method again to trigger timeout failure
             $this->wait(100, $condition);
         }
+    }
+
+    /**
+     * @Given /^I wait for (the )?widgets to load$/
+     */
+    public function iWaitForTheWidgetsToLoad()
+    {
+        $this->wait(2000, false);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I wait for (the )?options to load$/
+     */
+    public function iWaitForTheOptionsToLoad()
+    {
+        $this->wait(2000, false);
+        $this->wait();
     }
 
     /**
@@ -1787,6 +1891,135 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @return array
+     * @throws ExpectationException
+     *
+     * @Given /^I should see the following product comments:$/
+     */
+    public function iShouldSeeTheFollowingProductComments(TableNode $table)
+    {
+        $comments = [];
+
+        foreach ($table->getHash() as $data) {
+            try {
+                $author = $this->getFixturesContext()->getUser($data['author']);
+                $authorName = $author->getFirstName() . ' ' . $author->getLastName();
+                /** @var NodeElement $comment */
+                $comment = $this->getCurrentPage()->findComment($data['message'], $authorName);
+                $comments[$data['#']] = $comment;
+
+                if (!empty($data['parent'])) {
+                    $expectedParent = $comments[$data['parent']];
+                    if (true !== $this->getCurrentPage()->isReplyOfComment($comment, $expectedParent)) {
+                        throw $this->createExpectationException(
+                            sprintf('The comment #%s is not a reply of the comment #%s', $data['#'], $data['parent'])
+                        );
+                    }
+                }
+
+            } catch (\LogicException $e) {
+                throw $this->createExpectationException($e->getMessage());
+            }
+        }
+
+        return $comments;
+    }
+
+    /**
+     * @param string $message
+     *
+     * @When /^I delete the "([^"]*)" comment$/
+     */
+    public function iDeleteTheComment($message)
+    {
+        $username = $this->getMainContext()->getSubcontext('fixtures')->getUsername();
+        $author = $this->getFixturesContext()->getUser($username);
+        $authorName = $author->getFirstName() . ' ' . $author->getLastName();
+        $comment = $this->getCurrentPage()->findComment($message, $authorName);
+
+        // doing that because $commment->mouseOver() has no effect
+        $this->getMainContext()->executeScript("$('.comment-buttons').css('display', 'inherit');");
+        $this->getCurrentPage()->deleteComment($comment);
+    }
+
+    /**
+     * @param string $message
+     * @param string $author
+     *
+     * @return bool
+     * @throws ExpectationException
+     *
+     * @Then /^I should not see the link to delete the "([^"]*)" comment of "([^"]*)"$/
+     */
+    public function iShouldNotSeeTheLinkToDeleteTheComment($message, $author)
+    {
+        $author = $this->getFixturesContext()->getUser($author);
+        $authorName = $author->getFirstName() . ' ' . $author->getLastName();
+        $comment = $this->getCurrentPage()->findComment($message, $authorName);
+
+        try {
+            $this->getCurrentPage()->deleteComment($comment);
+        } catch (\LogicException $e) {
+            // the delete link is missing, that's ok
+            return true;
+        }
+
+        throw $this->createExpectationException(
+            sprintf('Expecting not to see link to delete the comment "%s"', $message)
+        );
+    }
+
+    /**
+     * @param string $message
+     *
+     * @When /^I add a new comment "([^"]*)"$/
+     */
+    public function iAddANewComment($message)
+    {
+        $this->getCurrentPage()->createComment($message);
+        $this->wait();
+    }
+
+    /**
+     * @param string $comment
+     * @param string $author
+     * @param string $reply
+     *
+     * @When /^I reply to the comment "([^"]*)" of "([^"]*)" with "([^"]*)"$/
+     */
+    public function iReplyToTheCommentWith($comment, $author, $reply)
+    {
+        $author = $this->getFixturesContext()->getUser($author);
+        $authorName = $author->getFirstName() . ' ' . $author->getLastName();
+        $comment = $this->getCurrentPage()->findComment($comment, $authorName);
+
+        $this->getCurrentPage()->replyComment($comment, $reply);
+        $this->wait();
+    }
+
+    /**
+     * @param string $contentType
+     *
+     * @Then /^the response content type should be "([^"]*)"$/
+     */
+    public function contentTypeShouldBe($contentType)
+    {
+        $headers = $this->getSession()->getResponseHeaders();
+
+        assertTrue(in_array($contentType, $headers['content-type']));
+    }
+
+    /**
+     * @Given /^I select the "([^"]*)" variant group$/
+     */
+    public function iSelectVariantGroup($variant)
+    {
+        $this->getCurrentPage()->fillField('Group', $variant);
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *
@@ -1827,6 +2060,8 @@ class WebUser extends RawMinkContext
                 return str_repeat('foobar ', 50);
             case 'product edit.longtext':
                 return str_repeat('foobar ', 9500);
+            case 'batch editcommonattributes.comment':
+                return str_repeat('foobar ', 40);
             default:
                 return '!@#-?_'.$this->lorem(250);
         }

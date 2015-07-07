@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\DataTransformer;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class StringToBooleanTransformerSpec extends ObjectBehavior
 {

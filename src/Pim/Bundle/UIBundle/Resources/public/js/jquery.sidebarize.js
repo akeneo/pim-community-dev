@@ -218,7 +218,6 @@
             'text-align': 'right'
         },
         separatorCss: {
-            'z-index': '100',
             'border': '1px solid #ddd'
         },
         unselectableCss: {

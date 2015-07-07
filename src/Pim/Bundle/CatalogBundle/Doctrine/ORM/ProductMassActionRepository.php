@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 
 /**
@@ -11,6 +12,8 @@ use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class ProductMassActionRepository implements ProductMassActionRepositoryInterface
 {
@@ -44,10 +47,8 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
             $qb->andWhere($valueWhereCondition);
         }
 
-        $qb
-            ->resetDQLPart('select')
+        $this->buildSelect($qb, $rootAlias)
             ->resetDQLPart('from')
-            ->select($rootAlias)
             ->from($this->entityName, $rootAlias);
 
         // Remove 'entityIds' part from querybuilder (added by product pager)
@@ -67,6 +68,57 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
                 }
             )
         );
+    }
+
+    /**
+     * Keep alias only if they are called in orderBy
+     *
+     * @param QueryBuilder $qb
+     * @param string       $rootAlias
+     *
+     * @return QueryBuilder
+     */
+    protected function buildSelect(QueryBuilder $qb, $rootAlias)
+    {
+        $selects = $this->getAliasFromSelect($qb);
+        $orders = $qb->getDQLPart('orderBy');
+
+        $qb->resetDQLPart('select');
+        $qb->select($rootAlias);
+
+        foreach ($orders as $order) {
+            foreach ($order->getParts() as $part) {
+                $parts = explode(' ', $part);
+                if (isset($parts[0]) && isset($selects[$parts[0]])) {
+                    $qb->addSelect($selects[$parts[0]]);
+                }
+            }
+        }
+
+        return $qb;
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     *
+     * @return array
+     */
+    protected function getAliasFromSelect(QueryBuilder $qb)
+    {
+        $search = ' as ';
+        $data = [];
+        $selects = $qb->getDQLPart('select');
+
+        foreach ($selects as $select) {
+            foreach ($select->getParts() as $part) {
+                $alias = stristr($part, $search);
+                if (false !== $alias) {
+                    $data[str_ireplace($search, '', $alias)] = $part;
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -96,7 +148,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         $commonAttSql = strtr(
             $commonAttSql,
             [
-                '%product_ids%' => '('. implode($productIds, ',') .')',
+                '%product_ids%' => '('.implode($productIds, ',').')',
                 '%product_ids_count%'  => count($productIds)
             ]
         );
@@ -107,7 +159,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         $stmt->execute();
 
         $attributes = $stmt->fetchAll();
-        $attributeIds = array();
+        $attributeIds = [];
         foreach ($attributes as $attributeId) {
             $attributeIds[] = (int) $attributeId['a_id'];
         }

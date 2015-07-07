@@ -3,8 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 class ProductValueCompleteSpec extends ObjectBehavior
 {
@@ -26,7 +25,7 @@ class ProductValueCompleteSpec extends ObjectBehavior
             ->shouldThrow(
                 new \LogicException(
                     sprintf(
-                        'Expecting $channel to be an instance of "\Pim\Bundle\CatalogBundle\Entity\Channel", got "%s"',
+                        'Expecting $channel to be an instance of "Pim\Bundle\CatalogBundle\Model\ChannelInterface", got "%s"',
                         'ecommerce'
                     )
                 )
@@ -34,10 +33,24 @@ class ProductValueCompleteSpec extends ObjectBehavior
             ->duringGetChannel();
     }
 
-    function it_has_a_channel(Channel $channel)
+    function it_has_a_channel(ChannelInterface $channel)
     {
         $this->beConstructedWith(['channel' => $channel]);
 
         $this->getChannel()->shouldReturn($channel);
+    }
+
+    function it_has_message_complete(ChannelInterface $channel)
+    {
+        $this->beConstructedWith(['channel' => $channel]);
+
+        $this->messageComplete->shouldBe('This value should be complete');
+    }
+
+    function it_has_message_not_null(ChannelInterface $channel)
+    {
+        $this->beConstructedWith(['channel' => $channel]);
+
+        $this->messageNotNull->shouldBe('This value should not be null');
     }
 }

@@ -23,6 +23,17 @@ pim_import_export:
         input:   download read file|download read files
         invalid: download invalid data
 
+    notification:
+        export:
+            error:   Export <strong>%label%</strong> failed
+            warning: Export <strong>%label%</strong> finished with some warnings
+            success: Export <strong>%label%</strong> finished
+        import:
+            error:   Import <strong>%label%</strong> failed
+            warning: Import <strong>%label%</strong> finished with some warnings
+            success: Import <strong>%label%</strong> finished
+    list: Select a job
+
 # Page titles:
 pim_title.export_profile.index:   Export profiles management
 pim_title.export_profile.edit:    Export profiles %job.label% | Edit
@@ -62,6 +73,7 @@ pim_importexport:
             edit: Edit an export profile
             remove: Remove an export profile
             launch: Launch an export profile
+            history: View export profile history
         import_profile:
             index: View import profiles list
             create: Create an import profile
@@ -69,6 +81,7 @@ pim_importexport:
             edit: Edit an import profile
             remove: Remove an import profile
             launch: Launch an import profile
+            history: View import profile history
         export_execution:
             index: View export reports list
             show: View export report details
@@ -146,6 +159,8 @@ job_execution.summary:
     skip:   skipped
     create: created
     update: updated
+    update_products: updated products
+    skip_products: skipped products
     displayed: first warnings displayed
     charset_validator:
         title: File encoding:

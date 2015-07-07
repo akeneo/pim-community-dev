@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormEvent;
 
 class SetAttributeGroupSortOrderSubscriberSpec extends ObjectBehavior
 {
-    function let(AttributeGroupRepository $repository)
+    function let(AttributeGroupRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
     }
@@ -34,7 +34,7 @@ class SetAttributeGroupSortOrderSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_sets_the_sort_order_when_creating_an_attribute_group($repository, FormEvent $event, AttributeGroup $group)
+    function it_sets_the_sort_order_when_creating_an_attribute_group($repository, FormEvent $event, AttributeGroupInterface $group)
     {
         $event->getData()->willReturn($group);
         $group->getId()->willReturn(null);
@@ -45,7 +45,7 @@ class SetAttributeGroupSortOrderSubscriberSpec extends ObjectBehavior
         $this->preSetData($event);
     }
 
-    function it_does_nothing_if_a_new_group_is_not_being_created($repository, FormEvent $event, AttributeGroup $group)
+    function it_does_nothing_if_a_new_group_is_not_being_created($repository, FormEvent $event, AttributeGroupInterface $group)
     {
         $event->getData()->willReturn($group);
         $group->getId()->willReturn(5);

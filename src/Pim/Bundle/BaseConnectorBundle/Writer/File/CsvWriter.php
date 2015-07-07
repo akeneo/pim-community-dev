@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Write data into a csv file on the filesystem
@@ -119,7 +119,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         $this->writtenFiles[$this->getPath()] = basename($this->getPath());
 
         $uniqueKeys = $this->getAllKeys($this->items);
-        $fullItems = $this->mergeKeys($uniqueKeys);
+        $fullItems  = $this->mergeKeys($uniqueKeys);
         if (false === $csvFile = fopen($this->getPath(), 'w')) {
             throw new RuntimeErrorException('Failed to open file %path%', ['%path%' => $this->getPath()]);
         }
@@ -197,8 +197,13 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         }
 
         $mergedKeys = call_user_func_array('array_merge', $intKeys);
+        $uniqueKeys = array_unique($mergedKeys);
 
-        return array_unique($mergedKeys);
+        $identifier = array_shift($uniqueKeys);
+        sort($uniqueKeys, SORT_FLAG_CASE | SORT_NATURAL);
+        array_unshift($uniqueKeys, $identifier);
+
+        return $uniqueKeys;
     }
 
     /**

@@ -1,5 +1,6 @@
 parameters:
     pim_filter.datasource.orm_adapter.class: Pim\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter
+    pim_filter.datasource.product_orm_adapter.class: Pim\Bundle\FilterBundle\Datasource\Orm\OrmFilterProductDatasourceAdapter
 
     pim_filter.ajax_choice_filter.class:  Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter
 
@@ -26,7 +27,7 @@ services:
         class: %pim_filter.ajax_choice_filter.class%
         arguments:
             - '@form.factory'
-            - '@oro_filter.filter_utility'
+            - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: ajax_choice }
 
@@ -34,7 +35,7 @@ services:
         class: %pim_filter.product_scope_filter.class%
         arguments:
             - '@form.factory'
-            - '@oro_filter.filter_utility'
+            - '@pim_filter.product_utility'
             - '@pim_catalog.context.catalog'
             - '@pim_user.context.user'
         tags:
@@ -44,7 +45,7 @@ services:
         class: %pim_filter.product_category_filter.class%
         arguments:
             - '@form.factory'
-            - '@oro_filter.filter_utility'
+            - '@pim_filter.product_utility'
             - '@pim_catalog.manager.product_category'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_category }
@@ -107,6 +108,7 @@ services:
             - '@pim_filter.product_utility'
             - '@pim_datagrid.datagrid.request_parameters_extractor'
             - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.manager.product'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_is_associated }
 
@@ -125,6 +127,7 @@ services:
             - '@pim_filter.product_utility'
             - '@pim_user.context.user'
             - %pim_catalog.entity.attribute_option.class%
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_value_choice }
 
@@ -167,7 +170,6 @@ services:
             - '@pim_filter.product_utility'
             - '@translator'
             - '@akeneo_measure.manager'
-            - '@akeneo_measure.measure_converter'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_value_metric }
 

@@ -1,6 +1,7 @@
 parameters:
     pim_base_connector.writer.doctrine.product.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductWriter
     pim_base_connector.writer.doctrine.product_association.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductAssociationWriter
+    pim_base_connector.writer.doctrine.variant_group.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter
     pim_base_connector.writer.doctrine.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer
 
     pim_base_connector.writer.file.class: Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
@@ -9,6 +10,7 @@ parameters:
     pim_base_connector.writer.dummy.class: Pim\Bundle\BaseConnectorBundle\Writer\DummyWriter
     pim_base_connector.writer.file.csv.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter
     pim_base_connector.writer.file.csv_product.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvProductWriter
+    pim_base_connector.writer.file.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvVariantGroupWriter
 
 services:
     pim_base_connector.writer.file:
@@ -17,8 +19,6 @@ services:
     pim_base_connector.writer.product_file:
         parent: pim_base_connector.writer.file
         class: %pim_base_connector.writer.file.product.class%
-        arguments:
-            - '@pim_catalog.manager.media'
 
     pim_base_connector.writer.dummy:
         class: %pim_base_connector.writer.dummy.class%
@@ -31,16 +31,29 @@ services:
         arguments:
             - '@pim_catalog.manager.media'
 
+    pim_base_connector.writer.file.csv_variant_group:
+        class: %pim_base_connector.writer.file.csv_variant_group.class%
+        arguments:
+            - '@pim_catalog.manager.media'
+
     pim_base_connector.writer.doctrine.product:
         class: %pim_base_connector.writer.doctrine.product.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.media'
             - '@pim_transform.cache.product_cache_clearer'
             - '@pim_versioning.manager.version'
+            - '@pim_catalog.saver.product'
 
     pim_base_connector.writer.doctrine.product_association:
         class: %pim_base_connector.writer.doctrine.product_association.class%
         parent: pim_base_connector.writer.doctrine
+
+    pim_base_connector.writer.doctrine.variant_group:
+        class: %pim_base_connector.writer.doctrine.variant_group.class%
+        arguments:
+            - '@pim_catalog.saver.group'
+            - '@pim_transform.cache.product_cache_clearer'
+            - '@pim_catalog.applier.product_template'
 
     pim_base_connector.writer.doctrine:
         class: %pim_base_connector.writer.doctrine.class%

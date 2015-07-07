@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
 /**
  * Form type for ajax choice filter
@@ -42,7 +43,9 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+        $builder->add('type', $options['operator_type'], ['choices' => $this->getOperatorChoices($options)]);
         $builder->add('value', 'text');
+        $builder->add('valueChoices', 'choice', $options['field_options'] + ['mapped' => false]);
     }
 
     /**
@@ -52,7 +55,14 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     {
         parent::setDefaultOptions($resolver);
 
-        $resolver->setDefaults(['preload_choices' => true, 'choice_url' => null, 'choice_url_params' => null]);
+        $resolver->setDefaults(
+            [
+                'choices' => [],
+                'preload_choices' => false,
+                'choice_url' => null,
+                'choice_url_params' => null
+            ]
+        );
     }
 
     /**
@@ -60,9 +70,31 @@ class AjaxChoiceFilterType extends ChoiceFilterType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        parent::finishView($view, $form, $options);
+        $view->vars['choices']           = $view->children['valueChoices']->vars['choices'];
         $view->vars['preload_choices']   = $options['preload_choices'];
         $view->vars['choice_url']        = $options['choice_url'];
         $view->vars['choice_url_params'] = $options['choice_url_params'];
+        $view->vars['empty_choice'] = isset($options['field_options']['attr']['empty_choice']) ?
+            $options['field_options']['attr']['empty_choice'] :
+            false;
+    }
+
+    /**
+     * Returns the available operator choices
+     *
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function getOperatorChoices($options)
+    {
+        $operatorChoices = [strtolower(Operators::IN_LIST)];
+
+        if (isset($options['field_options']['attr']['empty_choice']) &&
+            true === $options['field_options']['attr']['empty_choice']) {
+            $operatorChoices[] = strtolower(Operators::IS_EMPTY);
+        }
+
+        return array_combine($operatorChoices, $operatorChoices);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EntityBundle\ORM;
 
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver as BaseEntityClassResolver;
 
 /**

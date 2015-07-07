@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Product value form type

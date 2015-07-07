@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -33,7 +33,6 @@ class AddMassActionHandlersPass implements CompilerPassInterface
             $alias = (isset($tags[0]['alias'])) ? $tags[0]['alias'] : $serviceId;
 
             $handlerRegistry->addMethodCall('addHandler', array($alias, new Reference($serviceId)));
-
         }
     }
 }

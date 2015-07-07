@@ -13,16 +13,12 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
  *
  * @ExclusionPolicy("all")
  */
-abstract class AbstractProductPrice
+abstract class AbstractProductPrice implements ProductPriceInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var int|string */
     protected $id;
 
-    /**
-     * @var ProductValueInterface
-     */
+    /** @var ProductValueInterface */
     protected $value;
 
     /**
@@ -32,15 +28,15 @@ abstract class AbstractProductPrice
     protected $data;
 
     /**
-     * Currency code
+     * CurrencyInterface code
      * @var string $currency
      */
     protected $currency;
 
     /**
      * Constructor
-     * @param decimal $data
-     * @param string  $currency
+     * @param double $data
+     * @param string $currency
      */
     public function __construct($data = null, $currency = null)
     {
@@ -49,9 +45,7 @@ abstract class AbstractProductPrice
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -59,11 +53,7 @@ abstract class AbstractProductPrice
     }
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return AbstractProductPrice
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -73,9 +63,7 @@ abstract class AbstractProductPrice
     }
 
     /**
-     * Get data
-     *
-     * @return double
+     * {@inheritdoc}
      */
     public function getData()
     {
@@ -83,11 +71,7 @@ abstract class AbstractProductPrice
     }
 
     /**
-     * Set data
-     *
-     * @param double $data
-     *
-     * @return AbstractProductPrice
+     * {@inheritdoc}
      */
     public function setData($data)
     {
@@ -97,9 +81,7 @@ abstract class AbstractProductPrice
     }
 
     /**
-     * Get used currency
-     *
-     * @return string $currency
+     * {@inheritdoc}
      */
     public function getCurrency()
     {
@@ -107,11 +89,7 @@ abstract class AbstractProductPrice
     }
 
     /**
-     * Set used currency
-     *
-     * @param string $currency
-     *
-     * @return AbstractProductPrice
+     * {@inheritdoc}
      */
     public function setCurrency($currency)
     {
@@ -121,9 +99,7 @@ abstract class AbstractProductPrice
     }
 
     /**
-     * Get value
-     *
-     * @return ProductValueInterface $value
+     * {@inheritdoc}
      */
     public function getValue()
     {
@@ -131,11 +107,7 @@ abstract class AbstractProductPrice
     }
 
     /**
-     * Set value
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return AbstractProductPrice
+     * {@inheritdoc}
      */
     public function setValue(ProductValueInterface $value)
     {
@@ -145,9 +117,7 @@ abstract class AbstractProductPrice
     }
 
     /**
-     * To string
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function __toString()
     {

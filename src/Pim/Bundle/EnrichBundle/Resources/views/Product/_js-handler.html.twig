@@ -1,7 +1,21 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2', 'tinymce'],
-        function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator) {
+        [
+            'jquery',
+            'underscore',
+            'pim/optionform',
+            'pim/scopable',
+            'pim/currencyfield',
+            'datepicker',
+            'pim/dialog',
+            'pim/dialogform',
+            'oro/mediator',
+            'pim/datagrid/state',
+            'backbone/bootstrap-modal',
+            'jquery.select2',
+            'tinymce'
+        ],
+        function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator, stateManager) {
             'use strict';
 
             $(function () {
@@ -9,8 +23,14 @@
                     optionform.init('#' + optionLink.getAttribute('id'));
                 });
 
+                var initialScope = '{{ app.user.catalogScope.code }}';
+                var datagridFilters = stateManager.getParsed('product-grid', 'filters')
+                if (null != datagridFilters && undefined != datagridFilters.f.scope) {
+                    initialScope = datagridFilters.f.scope;
+                }
+
                 _.each($('form div.scopable:not(.currency)'), function (field) {
-                    new Scopable({ el: $(field), initialScope: '{{ app.user.catalogScope.code }}' });
+                    new Scopable({ el: $(field), initialScope: initialScope });
                 });
 
                 _.each($('form div.currency'), function (field) {
@@ -37,6 +57,12 @@
                             '{{ "info.product.change family"|trans }}',
                             function () {
                                 $('#{{ form.vars.id }}').append($('#{{ form.family.vars.id }}'));
+                                if($("#sequentialEdit").length) {
+                                    var formAction = $('#{{ form.vars.id }}').attr('action');
+                                    formAction = formAction.replace('action=SaveAndNext', '');
+                                    formAction = formAction.replace('action=SaveAndFinish', '');
+                                    $('#{{ form.vars.id }}').attr('action', formAction);
+                                }
                                 $('#{{ form.vars.id }}').submit();
                             }
                         );
@@ -54,7 +80,7 @@
                             {{ path('pim_enrich_group_productlist', { id: group.id })|json_encode|raw }},
                             function (content) {
                                 var groupDoAction = function () {
-                                    var $groupLink = $('<a href="{{ path('pim_enrich_group_edit', { 'id': group.id }) }}" class="hide"></a>');
+                                    var $groupLink = $('<a href="{{ path(group.type.variant ? 'pim_enrich_variant_group_edit' : 'pim_enrich_group_edit', { 'id': group.id }) }}" class="hide"></a>');
                                     $groupLink.appendTo($('#{{ form.vars.id }}')).click();
                                 };
 
@@ -86,6 +112,8 @@
                     new DialogForm('#create-product');
                     $('#create-product').click();
                 {% endif %}
+
+                {{ view_elements('pim_enrich_product_edit.after_form_init') }}
             });
         }
     );

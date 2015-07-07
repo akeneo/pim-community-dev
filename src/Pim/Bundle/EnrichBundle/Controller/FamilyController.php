@@ -2,10 +2,22 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,20 +26,6 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler;
 
 /**
  * Family controller
@@ -47,10 +45,7 @@ class FamilyController extends AbstractDoctrineController
     /** @var FamilyFactory */
     protected $factory;
 
-    /** @var CompletenessManager */
-    protected $completenessManager;
-
-    /** @var FamilyHandler */
+    /** @var HandlerInterface */
     protected $familyHandler;
 
     /** @var Form */
@@ -58,6 +53,12 @@ class FamilyController extends AbstractDoctrineController
 
     /** @var string */
     protected $attributeClass;
+
+    /** @var SaverInterface */
+    protected $familySaver;
+
+    /** @var RemoverInterface */
+    protected $familyRemover;
 
     /**
      * Constructor
@@ -74,9 +75,10 @@ class FamilyController extends AbstractDoctrineController
      * @param FamilyManager            $familyManager
      * @param ChannelManager           $channelManager
      * @param FamilyFactory            $factory
-     * @param CompletenessManager      $completenessManager
-     * @param FamilyHandler            $familyHandler
+     * @param HandlerInterface         $familyHandler
      * @param Form                     $familyForm
+     * @param SaverInterface           $familySaver
+     * @param RemoverInterface         $familyRemover
      * @param string                   $attributeClass
      */
     public function __construct(
@@ -92,9 +94,10 @@ class FamilyController extends AbstractDoctrineController
         FamilyManager $familyManager,
         ChannelManager $channelManager,
         FamilyFactory $factory,
-        CompletenessManager $completenessManager,
-        FamilyHandler $familyHandler,
+        HandlerInterface $familyHandler,
         Form $familyForm,
+        SaverInterface $familySaver,
+        RemoverInterface $familyRemover,
         $attributeClass
     ) {
         parent::__construct(
@@ -109,13 +112,14 @@ class FamilyController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->familyManager       = $familyManager;
-        $this->channelManager      = $channelManager;
-        $this->factory             = $factory;
-        $this->completenessManager = $completenessManager;
-        $this->familyHandler       = $familyHandler;
-        $this->familyForm          = $familyForm;
-        $this->attributeClass      = $attributeClass;
+        $this->familyManager  = $familyManager;
+        $this->channelManager = $channelManager;
+        $this->factory        = $factory;
+        $this->familyHandler  = $familyHandler;
+        $this->familyForm     = $familyForm;
+        $this->attributeClass = $attributeClass;
+        $this->familySaver    = $familySaver;
+        $this->familyRemover  = $familyRemover;
     }
 
     /**
@@ -127,7 +131,7 @@ class FamilyController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -148,21 +152,23 @@ class FamilyController extends AbstractDoctrineController
         if ($this->familyHandler->process($family)) {
             $this->addFlash('success', 'flash.family.created');
 
-            $response = array(
+            $response = [
                 'status' => 1,
-                'url'    => $this->generateUrl('pim_enrich_family_edit', array('id' => $family->getId()))
-            );
+                'url'    => $this->generateUrl('pim_enrich_family_edit', ['id' => $family->getId()])
+            ];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->familyForm->createView()
-        );
+        ];
     }
 
     /**
      * Edit a family
+     *
+     * TODO : find a way to use param converter with interfaces
      *
      * @param Family $family
      *
@@ -176,29 +182,32 @@ class FamilyController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.family.updated');
         }
 
-        return array(
+        return [
             'form'            => $this->familyForm->createView(),
             'attributesForm'  => $this->getAvailableAttributesForm(
                 $family->getAttributes()->toArray()
             )->createView(),
             'channels' => $this->channelManager->getChannels()
-        );
+        ];
     }
 
     /**
      * History of a family
      *
+     * TODO : find a way to use param converter with interfaces
+     *
      * @param Family $family
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @AclAncestor("pim_enrich_family_history")
+     * @return Response
      */
     public function historyAction(Family $family)
     {
         return $this->render(
             'PimEnrichBundle:Family:_history.html.twig',
-            array(
+            [
                 'family' => $family
-            )
+            ]
         );
     }
 
@@ -212,7 +221,7 @@ class FamilyController extends AbstractDoctrineController
      */
     public function removeAction(Family $family)
     {
-        $this->familyManager->remove($family);
+        $this->familyRemover->remove($family);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -242,11 +251,11 @@ class FamilyController extends AbstractDoctrineController
             $family->addAttribute($attribute);
         }
 
-        $this->getManagerForClass('PimCatalogBundle:Family')->flush();
+        $this->familySaver->save($family);
 
         $this->addFlash('success', 'flash.family.attributes added');
 
-        return $this->redirectToRoute('pim_enrich_family_edit', array('id' => $family->getId()));
+        return $this->redirectToRoute('pim_enrich_family_edit', ['id' => $family->getId()]);
     }
 
     /**
@@ -273,21 +282,19 @@ class FamilyController extends AbstractDoctrineController
             throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));
         } else {
             $family->removeAttribute($attribute);
-
             foreach ($family->getAttributeRequirements() as $requirement) {
                 if ($requirement->getAttribute() === $attribute) {
+                    $family->removeAttributeRequirement($requirement);
                     $this->getManagerForClass(ClassUtils::getClass($requirement))->remove($requirement);
                 }
             }
 
-            $this->completenessManager->scheduleForFamily($family);
-
-            $this->getManagerForClass('PimCatalogBundle:Family')->flush();
+            $this->familySaver->save($family);
         }
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_family_edit', array('id' => $family->getId()));
+            return $this->redirectToRoute('pim_enrich_family_edit', ['id' => $family->getId()]);
         }
     }
 
@@ -300,13 +307,13 @@ class FamilyController extends AbstractDoctrineController
      * @return \Symfony\Component\Form\Form
      */
     protected function getAvailableAttributesForm(
-        array $attributes = array(),
+        array $attributes = [],
         AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
-            array('attributes' => $attributes)
+            ['excluded_attributes' => $attributes]
         );
     }
 }

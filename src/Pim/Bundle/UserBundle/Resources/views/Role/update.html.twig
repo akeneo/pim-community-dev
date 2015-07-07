@@ -95,7 +95,7 @@
         {% endfor %}
         {% set tabs = tabs|merge(['Users']) %}
 
-        {{ elements.form_navbar(tabs) }}
+        {{ elements.form_navbar(tabs, '') }}
 
         <div class="row-fluid tab-content">
 
@@ -176,7 +176,7 @@
             {% endfor %}
 
             <div class="tab-pane" id="users">
-                {{ dataGrid.renderGrid('role-users-grid', {role_id: entityId}) }}
+                {{ dataGrid.renderGrid('pim-role-user-grid', {role_id: entityId}) }}
                 {{ form_widget(form.appendUsers, {'id': 'roleAppendUsers'}) }}
                 {{ form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}) }}
             </div>

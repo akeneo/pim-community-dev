@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -17,13 +17,13 @@ use Symfony\Component\Form\FormEvents;
  */
 class SetAttributeGroupSortOrderSubscriber implements EventSubscriberInterface
 {
-    /** @var AttributeGroupRepository */
+    /** @var AttributeGroupRepositoryInterface */
     protected $repository;
 
     /**
-     * @param AttributeGroupRepository $repository
+     * @param AttributeGroupRepositoryInterface $repository
      */
-    public function __construct(AttributeGroupRepository $repository)
+    public function __construct(AttributeGroupRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

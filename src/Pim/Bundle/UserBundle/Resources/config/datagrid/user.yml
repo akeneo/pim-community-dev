@@ -1,0 +1,127 @@
+datagrid:
+    pim-user-grid:
+        extended_entity_name: %oro_user.entity.class%
+        options:
+            entityHint: user
+        source:
+            acl_resource: oro_user_user_view
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                    - u.createdAt
+                    - u.updatedAt
+                    - u.enabled
+                from:
+                    - { table: %oro_user.entity.class%, alias: u }
+        columns:
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            createdAt:
+                label: oro.user.grid.users.columns.createdAt
+                frontend_type: datetime
+            updatedAt:
+                label: oro.user.grid.users.columns.updatedAt
+                frontend_type: datetime
+            enabled:
+                label: oro.user.grid.users.columns.enabled
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_user_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: oro_user_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: oro_api_delete_user
+                params:
+                    - id
+        sorters:
+            columns:
+                username:
+                    data_name: u.username
+                email:
+                    data_name: u.email
+                firstName:
+                    data_name: u.firstName
+                lastName:
+                    data_name: u.lastName
+                createdAt:
+                    data_name: u.createdAt
+                updatedAt:
+                    data_name: u.updatedAt
+                enabled:
+                    data_name: u.enabled
+            default:
+                username: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                createdAt:
+                    type: datetime
+                    data_name: u.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: u.updatedAt
+                enabled:
+                    type: choice
+                    data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                               - Inactive
+                               - Active
+
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          user
+                acl_resource:  oro_user_user_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_user_user_update
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  oro_user_user_delete

@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 
 /**
  * Test related class

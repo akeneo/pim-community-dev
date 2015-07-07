@@ -3,9 +3,8 @@
 namespace spec\Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 class WritableDirectoryValidatorSpec extends ObjectBehavior
 {

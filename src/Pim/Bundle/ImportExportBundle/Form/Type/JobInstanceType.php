@@ -2,15 +2,14 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\RemoveDuplicateJobConfigurationSubscriber;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Job instance form type
@@ -30,14 +29,19 @@ class JobInstanceType extends AbstractType
     /** @var EventSubscriberInterface[] */
     protected $subscribers = [];
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * Constructor
      *
-     * @param ConnectorRegistry $connectorRegistry
+     * @param ConnectorRegistry   $connectorRegistry
+     * @param TranslatorInterface $translator
      */
-    public function __construct(ConnectorRegistry $connectorRegistry)
+    public function __construct(ConnectorRegistry $connectorRegistry, TranslatorInterface $translator)
     {
         $this->connectorRegistry = $connectorRegistry;
+        $this->translator        = $translator;
     }
 
     /**
@@ -102,11 +106,11 @@ class JobInstanceType extends AbstractType
             ->add(
                 'connector',
                 'hidden',
-                array(
+                [
                     'required'     => true,
                     'by_reference' => false,
                     'mapped'       => false
-                )
+                ]
             );
 
         return $this;
@@ -134,15 +138,15 @@ class JobInstanceType extends AbstractType
             ->add(
                 'alias',
                 'choice',
-                array(
+                [
                     'choices'      => $choices,
                     'required'     => true,
                     'by_reference' => false,
                     'mapped'       => false,
-                    'empty_value'  => 'Select a job',
+                    'empty_value'  => $this->translator->trans('pim_import_export.list'),
                     'empty_data'   => null,
                     'label'        => 'Job'
-                )
+                ]
             );
 
         return $this;
@@ -161,10 +165,10 @@ class JobInstanceType extends AbstractType
             ->add(
                 'job',
                 'pim_import_export_job_configuration',
-                array(
+                [
                     'required'     => false,
                     'by_reference' => false,
-                )
+                ]
             )
             ->get('job')
             ->addEventSubscriber(new RemoveDuplicateJobConfigurationSubscriber());

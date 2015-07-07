@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Import controller
@@ -77,9 +77,19 @@ class ImportProfileController extends JobProfileController
      *
      * @AclAncestor("pim_importexport_import_profile_launch")
      */
-    public function launchAction(Request $request, $id)
+    public function launchAction($id)
     {
-        return parent::launchAction($request, $id);
+        return parent::launchAction($id);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @AclAncestor("pim_importexport_import_profile_launch")
+     */
+    public function launchUploadedAction($id)
+    {
+        return parent::launchUploadedAction($id);
     }
 
     /**

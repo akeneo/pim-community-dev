@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Helper;
 
-use Symfony\Component\Intl;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Intl;
 
 /**
  * LocaleHelper essentially allow to translate locale code to localized locale label
@@ -110,7 +110,7 @@ class LocaleHelper
      *
      * @param string $translateIn
      *
-     * @return string
+     * @return string[]
      */
     public function getCurrencyLabels($translateIn = null)
     {

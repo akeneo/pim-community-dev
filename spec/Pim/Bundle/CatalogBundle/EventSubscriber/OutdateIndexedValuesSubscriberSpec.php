@@ -2,11 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class OutdateIndexedValuesSubscriberSpec extends ObjectBehavior
 {
@@ -22,7 +21,7 @@ class OutdateIndexedValuesSubscriberSpec extends ObjectBehavior
 
     function it_marks_indexed_product_values_outdated_after_loading_a_product(
         LifecycleEventArgs $args,
-        AbstractProduct $entity
+        ProductInterface $entity
     ) {
         $args->getObject()->willReturn($entity);
 
@@ -33,8 +32,8 @@ class OutdateIndexedValuesSubscriberSpec extends ObjectBehavior
 
     function it_marks_indexed_product_values_outdated_after_loading_a_value(
         LifecycleEventArgs $args,
-        AbstractProductValue $value,
-        AbstractProduct $entity
+        ProductValueInterface $value,
+        ProductInterface $entity
     ) {
         $args->getObject()->willReturn($value);
         $value->getEntity()->willReturn($entity);

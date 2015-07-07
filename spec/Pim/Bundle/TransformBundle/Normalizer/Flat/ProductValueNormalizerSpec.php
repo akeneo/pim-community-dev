@@ -2,26 +2,18 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
-
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, Attribute $simpleAttribute) {
+    function let(SerializerInterface $serializer, AttributeInterface $simpleAttribute)
+    {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
 
@@ -36,12 +28,12 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_csv_normalization_of_product_value(AbstractProductValue $value)
+    function it_supports_csv_normalization_of_product_value(ProductValueInterface $value)
     {
         $this->supportsNormalization($value, 'csv')->shouldBe(true);
     }
 
-    function it_supports_flat_normalization_of_product(AbstractProductValue $value)
+    function it_supports_flat_normalization_of_product(ProductValueInterface $value)
     {
         $this->supportsNormalization($value, 'flat')->shouldBe(true);
     }
@@ -51,63 +43,71 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(1, 'csv')->shouldBe(false);
     }
 
-    function it_normalizes_a_value_with_null_data(AbstractProductValue $value, AbstractAttribute $simpleAttribute)
+    function it_normalizes_a_value_with_null_data(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
         $value->getData()->willReturn(null);
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '']);
     }
 
-    function it_normalizes_a_value_with_a_integer_data(AbstractProductValue $value, AbstractAttribute $simpleAttribute)
+    function it_normalizes_a_value_with_a_integer_data(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
         $value->getData()->willReturn(12);
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
     }
 
-    function it_normalizes_a_value_with_a_float_data(AbstractProductValue $value, AbstractAttribute $simpleAttribute)
+    function it_normalizes_a_value_with_a_float_data_with_decimals_allowed(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
-        $value->getData()->willReturn(12.25);
+        $value->getData()->willReturn('12.2500');
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('decimal');
+        $simpleAttribute->isDecimalsAllowed()->willReturn(true);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12.2500']);
     }
 
-    function it_normalizes_a_value_with_a_string_data(AbstractProductValue $value, AbstractAttribute $simpleAttribute)
+    function it_normalizes_a_value_with_a_float_data_with_decimals_not_allowed(ProductValueInterface $value, AttributeInterface $simpleAttribute)
+    {
+        $value->getData()->willReturn('12.0000');
+        $value->getAttribute()->willReturn($simpleAttribute);
+        $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('decimal');
+        $simpleAttribute->isDecimalsAllowed()->willReturn(false);
+        $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
+    }
+
+    function it_normalizes_a_value_with_a_string_data(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
         $value->getData()->willReturn('my data');
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('varchar');
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'my data']);
     }
 
-    function it_normalizes_a_value_with_a_boolean_data(AbstractProductValue $value,AbstractAttribute  $simpleAttribute)
+    function it_normalizes_a_value_with_a_boolean_data(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
-        $value->getData()->willReturn(false);
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('boolean');
+        
+        $value->getData()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '0']);
 
         $value->getData()->willReturn(true);
-        $value->getAttribute()->willReturn($simpleAttribute);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '1']);
     }
 
-    function it_normalizes_a_value_with_a_collection_data(AbstractProductValue $value, AbstractAttribute $simpleAttribute, SerializerInterface $serializer)
+    function it_normalizes_a_value_with_a_collection_data(ProductValueInterface $value, AttributeInterface $simpleAttribute, SerializerInterface $serializer)
     {
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();
         $collection = new ArrayCollection([$itemOne, $itemTwo]);
         $value->getData()->willReturn($collection);
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('prices');
 
@@ -115,14 +115,13 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
     }
 
-    function it_normalizes_a_value_with_an_array_data(AbstractProductValue $value, AbstractAttribute $simpleAttribute, SerializerInterface $serializer)
+    function it_normalizes_a_value_with_an_array_data(ProductValueInterface $value, AttributeInterface $simpleAttribute, SerializerInterface $serializer)
     {
         $itemOne = new \stdClass();
         $itemTwo = new \stdClass();
         $array = [$itemOne, $itemTwo];
         $value->getData()->willReturn($array);
         $value->getAttribute()->willReturn($simpleAttribute);
-        $value->getLocale()->willReturn('en_US');
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('prices');
 
@@ -131,11 +130,11 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_value_with_ordered_options_with_a_option_collection_data(
-        AbstractProductValue $value,
-        AbstractAttribute $multiColorAttribute,
+        ProductValueInterface $value,
+        AttributeInterface $multiColorAttribute,
         SerializerInterface $serializer,
-        AttributeOption $redOption,
-        AttributeOption $blueOption,
+        AttributeOptionInterface $redOption,
+        AttributeOptionInterface $blueOption,
         ArrayCollection $collection
     ) {
         $collection->toArray()->willReturn([$redOption, $blueOption]);

@@ -23,7 +23,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             orphanRemoval: false
     manyToMany:
         attributes:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             joinTable:
                 name: pim_catalog_group_attribute
                 schema: null
@@ -41,3 +41,14 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 - persist
                 - detach
                 - refresh
+    oneToOne:
+        productTemplate:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
+            cascade:
+                - persist
+                - remove
+                - detach
+            joinColumns:
+                product_template_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'

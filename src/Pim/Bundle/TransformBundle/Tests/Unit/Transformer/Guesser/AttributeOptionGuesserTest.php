@@ -59,7 +59,9 @@ class AttributeOptionGuesserTest extends GuesserTestCase
                 $this->returnValue(array('targetEntity' => 'target_entity', 'type' => $type))
             );
 
-        $repository = $this->getMock('Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface');
+        $repository = $this->getMock(
+            'Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface'
+        );
         $this->doctrine->expects($this->once())
             ->method('getRepository')
             ->with($this->equalTo('target_entity'))

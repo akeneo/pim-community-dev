@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
  * Product builder
@@ -18,77 +17,50 @@ use Pim\Bundle\CatalogBundle\Model\ProductPrice;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductBuilder
+class ProductBuilder implements ProductBuilderInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productValueClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productPriceClass;
 
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
+    /** @var ChannelRepository */
+    protected $channelRepository;
 
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    /** @var LocaleRepository */
+    protected $localeRepository;
 
-    /**
-     * @var LocaleManager
-     */
-    protected $localeManager;
-
-    /**
-     * @var CurrencyManager
-     */
-    protected $currencyManager;
+    /** @var CurrencyRepository */
+    protected $currencyRepository;
 
     /**
      * Constructor
      *
-     * @param ObjectManager   $objectManager   Storage manager
-     * @param ChannelManager  $channelManager  Channel Manager
-     * @param LocaleManager   $localeManager   Locale Manager
-     * @param CurrencyManager $currencyManager Currency manager
-     * @param array           $classes         Product, product value and price classes
+     * @param ChannelRepositoryInterface  $channelRepository  Channel repository
+     * @param LocaleRepositoryInterface   $localeRepository   Locale repository
+     * @param CurrencyRepositoryInterface $currencyRepository Currency repository
+     * @param array                       $classes            Product, product value and price classes
      */
     public function __construct(
-        ObjectManager $objectManager,
-        ChannelManager $channelManager,
-        LocaleManager $localeManager,
-        CurrencyManager $currencyManager,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
+        CurrencyRepositoryInterface $currencyRepository,
         array $classes
     ) {
-        $this->objectManager     = $objectManager;
-        $this->channelManager    = $channelManager;
-        $this->localeManager     = $localeManager;
-        $this->currencyManager   = $currencyManager;
-        $this->productClass      = $classes['product'];
-        $this->productValueClass = $classes['product_value'];
-        $this->productPriceClass = $classes['product_price'];
+        $this->channelRepository  = $channelRepository;
+        $this->localeRepository   = $localeRepository;
+        $this->currencyRepository = $currencyRepository;
+        $this->productClass       = $classes['product'];
+        $this->productValueClass  = $classes['product_value'];
+        $this->productPriceClass  = $classes['product_price'];
     }
 
     /**
-     * Add empty values for family and product-specific attributes for relevant scopes and locales
-     *
-     * It makes sure that if an attribute is localizable/scopable, then all values in the required locales/channels
-     * exist. If the attribute is not scopable or localizable, makes sure that a single value exists.
-     *
-     * @param ProductInterface $product
-     *
-     * @return null
+     * {@inheritdoc}
      */
     public function addMissingProductValues(ProductInterface $product)
     {
@@ -107,18 +79,13 @@ class ProductBuilder
             $this->addProductValue($product, $attributes[$value['attribute']], $value['locale'], $value['scope']);
         }
 
-        $this->addMissingPrices($product);
+        $this->addMissingPricesToProduct($product);
     }
 
     /**
-     * Creates required value(s) to add the attribute to the product
-     *
-     * @param ProductInterface  $product
-     * @param AbstractAttribute $attribute
-     *
-     * @return null
+     * {@inheritdoc}
      */
-    public function addAttributeToProduct(ProductInterface $product, AbstractAttribute $attribute)
+    public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute)
     {
         $requiredValues = $this->getExpectedValues(array($attribute));
 
@@ -128,14 +95,9 @@ class ProductBuilder
     }
 
     /**
-     * Deletes values that link an attribute to a product
-     *
-     * @param ProductInterface  $product
-     * @param AbstractAttribute $attribute
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
-    public function removeAttributeFromProduct(ProductInterface $product, AbstractAttribute $attribute)
+    public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute)
     {
         foreach ($product->getValues() as $value) {
             if ($attribute === $value->getAttribute()) {
@@ -147,12 +109,7 @@ class ProductBuilder
     }
 
     /**
-     * Add a product price with currency to the value
-     *
-     * @param ProductValueInterface $value
-     * @param string                $currency
-     *
-     * @return null|ProductPrice
+     * {@inheritdoc}
      */
     public function addPriceForCurrency(ProductValueInterface $value, $currency)
     {
@@ -164,10 +121,18 @@ class ProductBuilder
     }
 
     /**
-     * Remove extra prices that are not in the currencies passed in arguments
-     *
-     * @param ProductValueInterface $value
-     * @param array                 $currencies
+     * {@inheritdoc}
+     */
+    public function addPriceForCurrencyWithData(ProductValueInterface $value, $currency, $data)
+    {
+        $price = $this->addPriceForCurrency($value, $currency);
+        $price->setData($data);
+
+        return $price;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies)
     {
@@ -179,12 +144,92 @@ class ProductBuilder
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function addProductValue(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $locale = null,
+        $scope = null
+    ) {
+        $value = $this->createProductValue($attribute, $locale, $scope);
+
+        $product->addValue($value);
+
+        return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createProductValue(AttributeInterface $attribute, $locale = null, $scope = null)
+    {
+        $class = $this->getProductValueClass();
+
+        $value = new $class();
+        $value->setAttribute($attribute);
+        if ($attribute->isLocalizable()) {
+            if ($locale !== null) {
+                $value->setLocale($locale);
+            } else {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'A locale must be provided to create a value for the localizable attribute %s',
+                        $attribute->getCode()
+                    )
+                );
+            }
+        }
+
+        if ($attribute->isScopable()) {
+            if ($scope !== null) {
+                $value->setScope($scope);
+            } else {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'A scope must be provided to create a value for the scopable attribute %s',
+                        $attribute->getCode()
+                    )
+                );
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addMissingPrices(ProductValueInterface $value)
+    {
+        $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
+
+        if ('pim_catalog_price_collection' === $value->getAttribute()->getAttributeType()) {
+            $prices = $value->getPrices();
+
+            foreach ($activeCurrencyCodes as $currencyCode) {
+                if (null === $value->getPrice($currencyCode)) {
+                    $this->addPriceForCurrency($value, $currencyCode);
+                }
+            }
+
+            foreach ($prices as $price) {
+                if (!in_array($price->getCurrency(), $activeCurrencyCodes)) {
+                    $value->removePrice($price);
+                }
+            }
+        }
+
+        return $value;
+    }
+
+    /**
      * @param ProductValueInterface $value
      * @param string                $currency
      *
      * @return boolean
      */
-    private function hasPriceForCurrency(ProductValueInterface $value, $currency)
+    protected function hasPriceForCurrency(ProductValueInterface $value, $currency)
     {
         foreach ($value->getPrices() as $price) {
             if ($currency === $price->getCurrency()) {
@@ -199,15 +244,17 @@ class ProductBuilder
      * @param ProductValueInterface $value
      * @param string                $currency
      *
-     * @return null|ProductPrice
+     * @return null|ProductPriceInterface
      */
-    private function getPriceForCurrency(ProductValueInterface $value, $currency)
+    protected function getPriceForCurrency(ProductValueInterface $value, $currency)
     {
         foreach ($value->getPrices() as $price) {
             if ($currency === $price->getCurrency()) {
                 return $price;
             }
         }
+
+        return null;
     }
 
     /**
@@ -215,7 +262,7 @@ class ProductBuilder
      *
      * @param ProductInterface $product
      *
-     * @return AbstractAttribute[]
+     * @return AttributeInterface[]
      */
     protected function getExpectedAttributes(ProductInterface $product)
     {
@@ -235,18 +282,6 @@ class ProductBuilder
     }
 
     /**
-     * Create a product value
-     *
-     * @return ProductValueInterface
-     */
-    protected function createProductValue()
-    {
-        $class = $this->getProductValueClass();
-
-        return new $class();
-    }
-
-    /**
      * Get product value class
      *
      * @return string
@@ -254,35 +289,6 @@ class ProductBuilder
     protected function getProductValueClass()
     {
         return $this->productValueClass;
-    }
-
-    /**
-     * Add a missing value to the product
-     *
-     * @param ProductInterface  $product
-     * @param AbstractAttribute $attribute
-     * @param string            $locale
-     * @param string            $scope
-     *
-     * @return ProductValueInterface
-     */
-    public function addProductValue(
-        ProductInterface $product,
-        AbstractAttribute $attribute,
-        $locale = null,
-        $scope = null
-    ) {
-        // TODO : check isLocalizable, isScopable (not in 1.2 to avoid issues ?)
-        $value = $this->createProductValue();
-        if ($locale) {
-            $value->setLocale($locale);
-        }
-        $value->setScope($scope);
-        $value->setAttribute($attribute);
-
-        $product->addValue($value);
-
-        return $value;
     }
 
     /**
@@ -311,7 +317,7 @@ class ProductBuilder
      * Returns an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'scope' and 'locale' keys
      *
-     * @param AbstractAttribute[] $attributes
+     * @param AttributeInterface[] $attributes
      *
      * @return array:array
      */
@@ -338,19 +344,15 @@ class ProductBuilder
     /**
      * Filter expected values based on the locales available for the provided attribute
      *
-     * @param AbstractAttribute $attribute
-     * @param array             $values
+     * @param AttributeInterface $attribute
+     * @param array              $values
      *
      * @return array
      */
-    protected function filterExpectedValues(AbstractAttribute $attribute, array $values)
+    protected function filterExpectedValues(AttributeInterface $attribute, array $values)
     {
-        if ($attribute->getAvailableLocales()) {
-            $availableLocales = $attribute->getAvailableLocales()->map(
-                function ($locale) {
-                    return $locale->getCode();
-                }
-            )->toArray();
+        if ($attribute->isLocaleSpecific()) {
+            $availableLocales = $attribute->getLocaleSpecificCodes();
             foreach ($values as $index => $value) {
                 if ($value['locale'] && !in_array($value['locale'], $availableLocales)) {
                     unset($values[$index]);
@@ -368,45 +370,23 @@ class ProductBuilder
      *
      * @return null
      */
-    protected function addMissingPrices(ProductInterface $product)
+    protected function addMissingPricesToProduct(ProductInterface $product)
     {
-        $activeCurrencies = $this->currencyManager->getActiveCodes();
-
         foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $prices = $value->getPrices();
-
-                foreach ($activeCurrencies as $activeCurrency) {
-                    $hasPrice = $prices->filter(
-                        function ($price) use ($activeCurrency) {
-                            return $activeCurrency === $price->getCurrency();
-                        }
-                    )->count() > 0;
-
-                    if (!$hasPrice) {
-                        $this->addPriceForCurrency($value, $activeCurrency);
-                    }
-                }
-
-                foreach ($prices as $price) {
-                    if (!in_array($price->getCurrency(), $activeCurrencies)) {
-                        $value->removePrice($price);
-                    }
-                }
-            }
+            $this->addMissingPrices($value);
         }
     }
 
     /**
      * Return rows for available locales
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function getLocaleRows(AbstractAttribute $attribute)
+    protected function getLocaleRows(AttributeInterface $attribute)
     {
-        $locales = $this->localeManager->getActiveLocales();
+        $locales = $this->localeRepository->getActivatedLocales();
         $localeRows = array();
         foreach ($locales as $locale) {
             $localeRows[] = array(
@@ -420,13 +400,13 @@ class ProductBuilder
     /**
      * Return rows for available channels
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function getScopeRows(AbstractAttribute $attribute)
+    protected function getScopeRows(AttributeInterface $attribute)
     {
-        $channels = $this->channelManager->getChannels();
+        $channels = $this->channelRepository->findAll();
         $scopeRows = array();
         foreach ($channels as $channel) {
             $scopeRows[] = array(
@@ -440,13 +420,13 @@ class ProductBuilder
     /**
      * Return rows for available channels and theirs locales
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function getScopeToLocaleRows(AbstractAttribute $attribute)
+    protected function getScopeToLocaleRows(AttributeInterface $attribute)
     {
-        $channels = $this->channelManager->getChannels();
+        $channels = $this->channelRepository->findAll();
         $scopeToLocaleRows = array();
         foreach ($channels as $channel) {
             foreach ($channel->getLocales() as $locale) {

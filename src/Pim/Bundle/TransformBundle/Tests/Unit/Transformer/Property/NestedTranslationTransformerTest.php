@@ -74,6 +74,6 @@ class NestedTranslationTransformerTest extends \PHPUnit_Framework_TestCase
     public function testNoPropertyPath()
     {
         $columnInfo = $this->getMock('Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface');
-        $this->transformer->setValue(new \stdClass, $columnInfo, array());
+        $this->transformer->setValue(new \stdClass(), $columnInfo, []);
     }
 }

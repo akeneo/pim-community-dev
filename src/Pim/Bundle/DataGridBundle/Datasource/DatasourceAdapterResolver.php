@@ -7,6 +7,8 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 /**
  * Determine which datasource adapter class to use.
  *
+ * TODO : This resolver and related adapters should be removed after a filter system re-working
+ *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -17,19 +19,33 @@ class DatasourceAdapterResolver
     protected $supportResolver;
 
     /** @var string */
-    protected $ormAdapterClass;
+    protected $ormAdapter;
 
     /** @var string */
-    protected $mongodbAdapterClass;
+    protected $mongoAdapter;
+
+    /** @var string */
+    protected $productOrmAdapter;
+
+    /** @var string */
+    protected $productMongoAdapter;
+
+    /** @var array */
+    protected $productDatasources = [];
 
     /**
      * @param DatasourceSupportResolver $supportResolver
-     * @param string                    $ormAdapterClass
+     * @param string                    $ormAdapter
+     * @param string                    $productOrmAdapter
      */
-    public function __construct(DatasourceSupportResolver $supportResolver, $ormAdapterClass)
-    {
+    public function __construct(
+        DatasourceSupportResolver $supportResolver,
+        $ormAdapter,
+        $productOrmAdapter
+    ) {
         $this->supportResolver = $supportResolver;
-        $this->ormAdapterClass = $ormAdapterClass;
+        $this->ormAdapter = $ormAdapter;
+        $this->productOrmAdapter = $productOrmAdapter;
     }
 
     /**
@@ -44,24 +60,50 @@ class DatasourceAdapterResolver
         if (DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM ===
             $this->supportResolver->getSupport($datasourceType)
         ) {
-            return $this->ormAdapterClass;
-        } elseif (null === $this->mongodbAdapterClass) {
+            if (in_array($datasourceType, $this->productDatasources)) {
+                return $this->productOrmAdapter;
+            } else {
+                return $this->ormAdapter;
+            }
+        } elseif (null === $this->mongoAdapter) {
             throw new InvalidConfigurationException('The MongoDB adapter class should be registered.');
         }
 
         if (DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB ===
             $this->supportResolver->getSupport($datasourceType)) {
-            return $this->mongodbAdapterClass;
+            if (in_array($datasourceType, $this->productDatasources)) {
+                return $this->productMongoAdapter;
+            } else {
+                return $this->mongoAdapter;
+            }
         }
 
-        return $this->ormAdapterClass;
+        return $this->ormAdapter;
     }
 
     /**
-     * @param string $mongodbAdapterClass
+     * @param string $mongoAdapter
      */
-    public function setMongodbAdapterClass($mongodbAdapterClass)
+    public function setMongodbAdapterClass($mongoAdapter)
     {
-        $this->mongodbAdapterClass = $mongodbAdapterClass;
+        $this->mongoAdapter = $mongoAdapter;
+    }
+
+    /**
+     * @param string $productMongoAdapter
+     */
+    public function setProductMongodbAdapterClass($productMongoAdapter)
+    {
+        $this->productMongoAdapter = $productMongoAdapter;
+    }
+
+    /**
+     * Define a product datasource which should use the product adapter
+     *
+     * @param mixed $datasource
+     */
+    public function addProductDatasource($datasource)
+    {
+        $this->productDatasources[] = $datasource;
     }
 }

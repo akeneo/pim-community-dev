@@ -59,3 +59,14 @@ Feature: Associate a product
     Then I should see "1 products and 0 groups"
     And I visit the "Pack" group
     Then I should see "0 products and 0 groups"
+
+  Scenario: Sort associated products
+    Given I edit the "charcoal-boots" product
+    When I visit the "Associations" tab
+    And I visit the "Cross sell" group
+    And I check the row "shoelaces"
+    And I check the row "black-boots"
+    And I press the "Save" button
+    Then the row "shoelaces" should be checked
+    And the row "black-boots" should be checked
+    And I should be able to sort the rows by IS ASSOCIATED

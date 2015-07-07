@@ -45,27 +45,27 @@ Feature: Export products
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;weight;enabled
-    tshirt-white;tshirts;;men_2013,men_2014,men_2015;;white;;;;usa;;;;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";;;;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;10.00;9.00;15.00;;size_M;;;;1
-    tshirt-black;tshirts;;men_2013,men_2014,men_2015;;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt noir";;10.00;9.00;15.00;;size_L;;;;1
+    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;weight
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";;10.00;9.00;15.00;;size_M;;;
+    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt noir";;10.00;9.00;15.00;;size_L;;;
     """
     When I am on the "tablet_product_export" export job page
     And I launch the export job
     And I wait for the "tablet_product_export" job to finish
     Then exported file of "tablet_product_export" should contain:
     """
-    sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;datasheet;description-en_GB-tablet;description-en_US-tablet;handmade;image;legend-en_GB;legend-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;weight;enabled
-    tshirt-white;tshirts;;men_2013,men_2014,men_2015;;;;white;;usa;;;;;;;;;american_apparel;cotton;"White t-shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;;1
-    tshirt-black;tshirts;;men_2013,men_2014,men_2015;;;;black;;usa;;;;;;;;;american_apparel;cotton;"Black t-shirt";"Black t-shirt";;10.00;9.00;15.00;;size_L;;;;1
+    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;datasheet;description-en_GB-tablet;description-en_US-tablet;enabled;family;groups;handmade;image;legend-en_GB;legend-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;weight
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;1;tshirts;;;;;;american_apparel;cotton;"White t-shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;
+    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;1;tshirts;;;;;;american_apparel;cotton;"Black t-shirt";"Black t-shirt";;10.00;9.00;15.00;;size_L;;;
     """
     When I am on the "print_product_export" export job page
     And I launch the export job
     And I wait for the "print_product_export" job to finish
     Then exported file of "print_product_export" should contain:
     """
-    sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-print;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-print;description-en_US-print;handmade;image;legend-de_DE;legend-en_US;manufacturer;material;name-de_DE;name-en_US;number_in_stock-print;price-EUR;price-GBP;price-USD;release_date-print;size;thumbnail;washing_temperature;weight;enabled
-    tshirt-white;tshirts;;men_2013,men_2014,men_2015;;white;;;;usa;;;;;;"Ein sehr elegantes weißes T-Shirt";"A really stylish white t-shirt";;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;;1
-    tshirt-black;tshirts;;men_2013,men_2014,men_2015;;black;;;;usa;;;;;;"Ein sehr elegantes schwarzes T-Shirt";"A really stylish black t-shirt";;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";;10.00;9.00;15.00;;size_L;;;;1
+    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-print;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-print;description-en_US-print;enabled;family;groups;handmade;image;legend-de_DE;legend-en_US;manufacturer;material;name-de_DE;name-en_US;number_in_stock-print;price-EUR;price-GBP;price-USD;release_date-print;size;thumbnail;washing_temperature;weight
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein sehr elegantes weißes T-Shirt";"A really stylish white t-shirt";1;tshirts;;;;;;american_apparel;cotton;"Weißes T-Shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;
+    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein sehr elegantes schwarzes T-Shirt";"A really stylish black t-shirt";1;tshirts;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";;10.00;9.00;15.00;;size_L;;;
     """
 
   Scenario: Do not export products that are not classified
@@ -77,15 +77,15 @@ Feature: Export products
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |
       | tshirt-black | tshirts |                              | 10 EUR, 15 USD, 9 GBP | size_L | black | american_apparel | cotton   | usa                    |
     And the following product values:
-      | product      | attribute   | value                                | locale | scope     |
-      | tshirt-white | name        | White t-shirt                        | en_US  |           |
-      | tshirt-white | name        | White t-shirt                        | en_GB  |           |
-      | tshirt-white | name        | T-shirt blanc                        | fr_FR  |           |
-      | tshirt-white | name        | Weißes T-Shirt                       | de_DE  |           |
-      | tshirt-black | name        | Black t-shirt                        | en_US  |           |
-      | tshirt-black | name        | Black t-shirt                        | en_GB  |           |
-      | tshirt-black | name        | T-shirt noir                         | fr_FR  |           |
-      | tshirt-black | name        | Schwarzes T-Shirt                    | de_DE  |           |
+      | product      | attribute | value             | locale | scope |
+      | tshirt-white | name      | White t-shirt     | en_US  |       |
+      | tshirt-white | name      | White t-shirt     | en_GB  |       |
+      | tshirt-white | name      | T-shirt blanc     | fr_FR  |       |
+      | tshirt-white | name      | Weißes T-Shirt    | de_DE  |       |
+      | tshirt-black | name      | Black t-shirt     | en_US  |       |
+      | tshirt-black | name      | Black t-shirt     | en_GB  |       |
+      | tshirt-black | name      | T-shirt noir      | fr_FR  |       |
+      | tshirt-black | name      | Schwarzes T-Shirt | de_DE  |       |
     And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the "tablet_product_export" export job page
@@ -93,8 +93,8 @@ Feature: Export products
     And I wait for the "tablet_product_export" job to finish
     Then exported file of "tablet_product_export" should contain:
     """
-    sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;datasheet;description-en_GB-tablet;description-en_US-tablet;handmade;image;legend-en_GB;legend-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;weight;enabled
-    tshirt-white;tshirts;;men_2013,men_2014,men_2015;;;;white;;usa;;;;;;;;;american_apparel;cotton;"White t-shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;;1
+    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;datasheet;description-en_GB-tablet;description-en_US-tablet;enabled;family;groups;handmade;image;legend-en_GB;legend-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;weight
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;1;tshirts;;;;;;american_apparel;cotton;"White t-shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;
     """
 
   Scenario: Export only attributes with the locale specific
@@ -128,6 +128,74 @@ Feature: Export products
     And I wait for the "tablet_product_export" job to finish
     Then exported file of "tablet_product_export" should contain:
     """
-sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;datasheet;description-en_GB-tablet;description-en_US-tablet;handmade;image;legend-en_GB;legend-en_US;locale_specific_attribute-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;weight;enabled
-tshirt-white;tshirts;;men_2013,men_2014,men_2015;;white;;;;usa;;;;;;;;;"attribut specifique";american_apparel;cotton;"White t-shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;;1
+    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;datasheet;description-en_GB-tablet;description-en_US-tablet;enabled;family;groups;handmade;image;legend-en_GB;legend-en_US;locale_specific_attribute-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;weight
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;1;tshirts;;;;;;"attribut specifique";american_apparel;cotton;"White t-shirt";"White t-shirt";;10.00;9.00;15.00;;size_M;;;
+    """
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4182
+  Scenario: Export decimal attributes with the correct decimals formatting
+    Given an "apparel" catalog configuration
+    And the following job "ecommerce_product_export" configuration:
+      | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
+    And the following products:
+      | sku          | family  | categories                   | price                       | size   | color | manufacturer     | material | country_of_manufacture |
+      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP    | size_M | white | american_apparel | cotton   | usa                    |
+      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP    | size_L | black | american_apparel | cotton   | usa                    |
+    And the following product values:
+      | product      | attribute                | value                             | locale    | scope        |
+      | tshirt-white | name                     | T-shirt blanc                     | fr_FR     |              |
+      | tshirt-white | name                     | Weißes T-Shirt                    | de_DE     |              |
+      | tshirt-white | description              | Un T-shirt blanc élégant          | fr_FR     | ecommerce    |
+      | tshirt-white | description              | Ein elegantes weißes T-Shirt      | de_DE     | ecommerce    |
+      | tshirt-white | number_in_stock          | 186                               |           | ecommerce    |
+      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | fr_FR     |              |
+      | tshirt-black | name                     | T-shirt noir                      | fr_FR     |              |
+      | tshirt-black | name                     | Schwarzes T-Shirt                 | de_DE     |              |
+      | tshirt-black | description              | Un T-shirt noir élégant           | fr_FR     | ecommerce    |
+      | tshirt-black | description              | Ein elegantes schwarzes T-Shirt   | de_DE     | ecommerce    |
+      | tshirt-black | number_in_stock          | 98                                |           | ecommerce    |
+    And I launched the completeness calculator
+    And I am logged in as "Julia"
+    When I am on the "ecommerce_product_export" export job page
+    And I launch the export job
+    And I wait for the "ecommerce_product_export" job to finish
+    Then exported file of "ecommerce_product_export" should contain:
+    """
+    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;weight
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein elegantes weißes T-Shirt";;;"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";;;"T-shirt blanc";186;10.90;9.00;15.00;;size_M;;;
+    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";;;"Un T-shirt noir élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";;;"T-shirt noir";98;10.90;9.00;15.00;;size_L;;;
+    """
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4182
+  Scenario: Export metric attributes with the correct decimals formatting
+    Given an "apparel" catalog configuration
+    And the following job "ecommerce_product_export" configuration:
+      | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
+    And the following products:
+      | sku          | family  | categories                   | price                       | size   | color | manufacturer     | material | country_of_manufacture |
+      | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP    | size_M | white | american_apparel | cotton   | usa                    |
+      | tshirt-black | tshirts | men_2013, men_2014, men_2015 | 10.90 EUR, 15 USD, 9 GBP    | size_L | black | american_apparel | cotton   | usa                    |
+    And the following product values:
+      | product      | attribute                | value                             | locale    | scope        |
+      | tshirt-white | name                     | T-shirt blanc                     | fr_FR     |              |
+      | tshirt-white | name                     | Weißes T-Shirt                    | de_DE     |              |
+      | tshirt-white | description              | Un T-shirt blanc élégant          | fr_FR     | ecommerce    |
+      | tshirt-white | description              | Ein elegantes weißes T-Shirt      | de_DE     | ecommerce    |
+      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | fr_FR     |              |
+      | tshirt-white | washing_temperature      | 40 CELSIUS                        |           |              |
+      | tshirt-black | name                     | T-shirt noir                      | fr_FR     |              |
+      | tshirt-black | name                     | Schwarzes T-Shirt                 | de_DE     |              |
+      | tshirt-black | description              | Un T-shirt noir élégant           | fr_FR     | ecommerce    |
+      | tshirt-black | description              | Ein elegantes schwarzes T-Shirt   | de_DE     | ecommerce    |
+      | tshirt-black | washing_temperature      | 40 CELSIUS                        |           |              |
+    And I launched the completeness calculator
+    And I am logged in as "Julia"
+    When I am on the "ecommerce_product_export" export job page
+    And I launch the export job
+    And I wait for the "ecommerce_product_export" job to finish
+    Then exported file of "ecommerce_product_export" should contain:
+    """
+    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight
+    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein elegantes weißes T-Shirt";;;"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";;;"T-shirt blanc";;10.90;9.00;15.00;;size_M;;40;CELSIUS;
+    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";;;"Un T-shirt noir élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";;;"T-shirt noir";;10.90;9.00;15.00;;size_L;;40;CELSIUS;
     """

@@ -2,14 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValue;
-
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ExecutionContextInterface;
@@ -43,9 +41,10 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         UniqueValue $constraint
     ) {
+        $value->getData()->willReturn('a content');
         $productManager->valueExists($value)->willReturn(false);
         $this->validate("my_value", $constraint)->shouldReturn(null);
-        $context->addViolation()->shouldNotBeCalled();
+        $context->addViolation(Argument::any())->shouldNotBeCalled();
     }
 
     function it_adds_violation_with_non_unique_value(
@@ -54,6 +53,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         UniqueValue $constraint
     ) {
+        $value->getData()->willReturn('a content');
         $productManager->valueExists($value)->willReturn(true);
         $context->addViolation($constraint->message)->shouldBeCalled();
 
@@ -67,9 +67,9 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         Constraint $constraint
     ) {
         $this->initialize($emptyContext);
+        $emptyContext->getRoot()->willReturn(null);
         $productManager->valueExists($value)->shouldNotBeCalled();
-        $emptyContext->addViolation()->shouldNotBeCalled();
-        $emptyContext->getPropertyPath()->shouldBeCalled();
+        $emptyContext->addViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate("my_value", $constraint)->shouldReturn(null);
     }
@@ -81,7 +81,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         Constraint $constraint
     ) {
         $productManager->valueExists($value)->shouldNotBeCalled();
-        $context->addViolation()->shouldNotBeCalled();
+        $context->addViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate("", $constraint)->shouldReturn(null);
     }

@@ -2,10 +2,18 @@
 
 namespace Pim\Bundle\CatalogBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQuerySorterPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductUpdaterPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterQueryGeneratorsPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Pim Catalog Bundle
@@ -16,46 +24,20 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
  */
 class PimCatalogBundle extends Bundle
 {
-    /** @staticvar string */
-    const DOCTRINE_MONGODB = '\Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
-
-    /** @staticvar string */
-    const ODM_ENTITIES_TYPE = 'entities';
-
-    /** @staticvar string */
-    const ODM_ENTITY_TYPE = 'entity';
-
-    /**
-     * Register cuctom doctrine types
-     */
-    public function __construct()
-    {
-        if (class_exists('\Doctrine\ODM\MongoDB\Types\Type')) {
-
-            \Doctrine\ODM\MongoDB\Types\Type::registerType(
-                self::ODM_ENTITIES_TYPE,
-                'Pim\Bundle\CatalogBundle\MongoDB\Type\Entities'
-            );
-
-            \Doctrine\ODM\MongoDB\Types\Type::registerType(
-                self::ODM_ENTITY_TYPE,
-                'Pim\Bundle\CatalogBundle\MongoDB\Type\Entity'
-            );
-
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
-            ->addCompilerPass(new Compiler\ResolveDoctrineTargetRepositoriesPass())
-            ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
-            ->addCompilerPass(new Compiler\AddAttributeTypeCompilerPass())
-            ->addCompilerPass(new Compiler\RegisterQueryGeneratorsPass());
+            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+            ->addCompilerPass(new ResolveDoctrineTargetRepositoryPass('pim_repository'))
+            ->addCompilerPass(new RegisterAttributeConstraintGuessersPass())
+            ->addCompilerPass(new RegisterAttributeTypePass())
+            ->addCompilerPass(new RegisterQueryGeneratorsPass())
+            ->addCompilerPass(new RegisterProductQueryFilterPass())
+            ->addCompilerPass(new RegisterProductQuerySorterPass())
+            ->addCompilerPass(new RegisterProductUpdaterPass());
 
         $productMappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
@@ -64,28 +46,20 @@ class PimCatalogBundle extends Bundle
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $productMappings,
-                array('doctrine.orm.entity_manager'),
-                'pim_catalog.storage_driver.doctrine/orm'
+                ['doctrine.orm.entity_manager'],
+                'akeneo_storage_utils.storage_driver.doctrine/orm'
             )
         );
 
-        if (class_exists(self::DOCTRINE_MONGODB)) {
-            $mongoDBClass = self::DOCTRINE_MONGODB;
+        if (class_exists(AkeneoStorageUtilsBundle::DOCTRINE_MONGODB)) {
+            $mongoDBClass = AkeneoStorageUtilsBundle::DOCTRINE_MONGODB;
             $container->addCompilerPass(
                 $mongoDBClass::createYamlMappingDriver(
                     $productMappings,
-                    array('doctrine.odm.mongodb.document_manager'),
-                    'pim_catalog.storage_driver.doctrine/mongodb-odm'
+                    ['doctrine.odm.mongodb.document_manager'],
+                    'akeneo_storage_utils.storage_driver.doctrine/mongodb-odm'
                 )
             );
-
-            // TODO	(2014-05-09 19:42 by Gildas): Remove service registration when
-            // https://github.com/doctrine/DoctrineMongoDBBundle/pull/197 is merged
-            $definition = $container->register(
-                'doctrine_mongodb.odm.listeners.resolve_target_document',
-                'Doctrine\ODM\MongoDB\Tools\ResolveTargetDocumentListener'
-            );
-            $definition->addTag('doctrine_mongodb.odm.event_listener', array('event' => 'loadClassMetadata'));
         }
     }
 }

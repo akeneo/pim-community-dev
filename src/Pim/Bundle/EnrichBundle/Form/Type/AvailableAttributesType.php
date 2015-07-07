@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Symfony\Component\OptionsResolver\Options;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -22,7 +22,7 @@ class AvailableAttributesType extends AbstractType
     /** @var string */
     protected $attributeClass;
 
-    /** @var AttributeRepository */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var UserContext */
@@ -31,24 +31,30 @@ class AvailableAttributesType extends AbstractType
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var string */
+    protected $dataClass;
+
     /**
      * Constructor
      *
-     * @param string              $attributeClass
-     * @param AttributeRepository $attributeRepository
-     * @param UserContext         $userContext
-     * @param TranslatorInterface $translator
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param UserContext                  $userContext
+     * @param TranslatorInterface          $translator
+     * @param string                       $attributeClass
+     * @param string                       $dataClass
      */
     public function __construct(
-        $attributeClass,
-        AttributeRepository $attributeRepository,
+        AttributeRepositoryInterface $attributeRepository,
         UserContext $userContext,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        $attributeClass,
+        $dataClass
     ) {
         $this->attributeClass      = $attributeClass;
         $this->attributeRepository = $attributeRepository;
         $this->userContext         = $userContext;
         $this->translator          = $translator;
+        $this->dataClass           = $dataClass;
     }
 
     /**
@@ -62,7 +68,7 @@ class AvailableAttributesType extends AbstractType
             [
                 'repository' => $this->attributeRepository,
                 'repository_options' => [
-                    'excluded_attribute_ids' => $options['attributes'],
+                    'excluded_attribute_ids' => $options['excluded_attributes'],
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                 ],
                 'multiple' => true,
@@ -77,15 +83,15 @@ class AvailableAttributesType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AvailableAttributes',
-                'attributes' => array(),
-            )
+            [
+                'data_class'          => $this->dataClass,
+                'excluded_attributes' => [],
+            ]
         );
 
         $resolver->setNormalizers(
             [
-                'attributes' => function (Options $options, $value) {
+                'excluded_attributes' => function (Options $options, $value) {
                     foreach ($value as $key => $attribute) {
                         if (!$attribute instanceof $this->attributeClass) {
                             throw new \InvalidArgumentException(

@@ -12,17 +12,21 @@ namespace Pim\Bundle\DashboardBundle\Widget;
 class Registry
 {
     /** @var array */
-    protected $widgets = array();
+    protected $widgets = [];
 
     /**
      * Add a widget to the register
      *
-     * @param string          $alias
      * @param WidgetInterface $widget
+     * @param integer         $position
      */
-    public function add($alias, WidgetInterface $widget)
+    public function add(WidgetInterface $widget, $position)
     {
-        $this->widgets[$alias] = $widget;
+        if (!isset($this->widgets[$position])) {
+            $this->widgets[$position] = $widget;
+        } else {
+            $this->add($widget, ++$position);
+        }
     }
 
     /**
@@ -34,6 +38,22 @@ class Registry
      */
     public function get($alias)
     {
-        return isset($this->widgets[$alias]) ? $this->widgets[$alias] : null;
+        foreach ($this->widgets as $widget) {
+            if ($widget->getAlias() === $alias) {
+                return $widget;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * List available widgets
+     *
+     * @return WidgetInterface[]
+     */
+    public function getAll()
+    {
+        return $this->widgets;
     }
 }

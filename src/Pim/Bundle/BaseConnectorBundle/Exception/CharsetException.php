@@ -11,5 +11,4 @@ namespace Pim\Bundle\BaseConnectorBundle\Exception;
  */
 class CharsetException extends \Exception
 {
-
 }

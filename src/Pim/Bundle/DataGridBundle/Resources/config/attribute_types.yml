@@ -45,6 +45,8 @@ parameters:
             options:
                 field_options:
                     multiple: true
+                    attr:
+                        empty_choice: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_multiselect:
         column:
@@ -56,7 +58,9 @@ parameters:
             options:
                 field_options:
                     multiple: true
-        sorter:          product_value
+                    attr:
+                        empty_choice: true
+        sorter:          ~
     pim_datagrid.product.attribute_type.pim_catalog_number:
         column:
             type:        product_value_field
@@ -97,6 +101,13 @@ parameters:
             type:          product_value_file
             selector:      product_value_media
             frontend_type: string
+        filter:
+            type:        product_value_string
+            ftype:       string
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_image:
         column:
@@ -104,6 +115,13 @@ parameters:
             selector:      product_value_media
             frontend_type: html
             template:      PimDataGridBundle:Property:image.html.twig
+        filter:
+            type:        product_value_string
+            ftype:       string
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_price_collection:
         column:

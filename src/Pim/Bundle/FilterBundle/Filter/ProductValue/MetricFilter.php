@@ -2,19 +2,15 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-
-use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-
-use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Metric filter
@@ -29,11 +25,6 @@ class MetricFilter extends OroNumberFilter
      * @var TranslatorInterface $translator
      */
     protected $translator;
-
-    /**
-     * @var MeasureConverter $converter
-     */
-    protected $converter;
 
     /**
      * @var MeasureManager $measureManager
@@ -52,20 +43,17 @@ class MetricFilter extends OroNumberFilter
      * @param ProductFilterUtility $util
      * @param TranslatorInterface  $translator
      * @param MeasureManager       $measureManager
-     * @param MeasureConverter     $converter
      */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
         TranslatorInterface $translator,
-        MeasureManager $measureManager,
-        MeasureConverter $converter
+        MeasureManager $measureManager
     ) {
         parent::__construct($factory, $util);
 
         $this->translator     = $translator;
         $this->measureManager = $measureManager;
-        $this->converter      = $converter;
     }
 
     /**
@@ -99,19 +87,15 @@ class MetricFilter extends OroNumberFilter
         $operator = $this->getOperator($data['type']);
         $ds->generateParameterName($this->getName());
 
-        // Convert value to base unit
-        if ('EMPTY' !== $operator) {
-            $this->converter->setFamily($this->family);
-            $baseValue = $this->converter->convertBaseToStandard($data['unit'], $data['value']);
-        } else {
-            $baseValue = null;
-        }
+        $data['data'] = $data['value'];
+        unset($data['value']);
+        unset($data['type']);
 
-        $this->util->applyFilterByAttribute(
+        $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            $baseValue,
-            $operator
+            $operator,
+            $data
         );
 
         return true;

@@ -60,6 +60,18 @@ pim_enrich_product_add_to_groups:
     type: action
     label: pim_enrich.acl.product.add_to_groups
     group_name: pim_enrich.acl_group.product
+pim_enrich_product_add_to_variant_group:
+    type: action
+    label: pim_enrich.acl.product.add_to_variant_group
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_comment:
+    type: action
+    label: pim_enrich.acl.product.comment
+    group_name: pim_enrich.acl_group.product
+pim_enrich_product_history:
+    type: action
+    label: pim_enrich.acl.product.history
+    group_name: pim_enrich.acl_group.product
 
 # Mass edit action
 pim_enrich_mass_edit:
@@ -84,6 +96,10 @@ pim_enrich_category_remove:
     type: action
     label: pim_enrich.acl.category.remove
     group_name: pim_enrich.acl_group.category
+pim_enrich_category_history:
+    type: action
+    label: pim_enrich.acl.category.history
+    group_name: pim_enrich.acl_group.category
 
 # Channel
 pim_enrich_channel_index:
@@ -101,6 +117,10 @@ pim_enrich_channel_edit:
 pim_enrich_channel_remove:
     type: action
     label: pim_enrich.acl.channel.remove
+    group_name: pim_enrich.acl_group.channel
+pim_enrich_channel_history:
+    type: action
+    label: pim_enrich.acl.channel.history
     group_name: pim_enrich.acl_group.channel
 
 # Family
@@ -123,6 +143,10 @@ pim_enrich_family_edit_attributes:
 pim_enrich_family_remove:
     type: action
     label: pim_enrich.acl.family.remove
+    group_name: pim_enrich.acl_group.family
+pim_enrich_family_history:
+    type: action
+    label: pim_enrich.acl.family.history
     group_name: pim_enrich.acl_group.family
 
 # Attribute group
@@ -155,6 +179,10 @@ pim_enrich_attribute_group_remove_attribute:
     type: action
     label: pim_enrich.acl.attribute_group.remove_attribute
     group_name: pim_enrich.acl_group.attribute_group
+pim_enrich_attribute_group_history:
+    type: action
+    label: pim_enrich.acl.attribute_group.history
+    group_name: pim_enrich.acl_group.attribute_group
 
 # Attribute
 pim_enrich_attribute_index:
@@ -178,6 +206,10 @@ pim_enrich_attribute_sort:
     type: action
     label: pim_enrich.acl.attribute.sort
     group_name: pim_enrich.acl_group.attribute
+pim_enrich_attribute_history:
+    type: action
+    label: pim_enrich.acl.attribute.history
+    group_name: pim_enrich.acl_group.attribute
 
 # Group
 pim_enrich_group_index:
@@ -196,6 +228,44 @@ pim_enrich_group_remove:
     type: action
     label: pim_enrich.acl.group.remove
     group_name: pim_enrich.acl_group.group
+pim_enrich_group_history:
+    type: action
+    label: pim_enrich.acl.group.history
+    group_name: pim_enrich.acl_group.group
+
+# Variant group
+pim_enrich_variant_group_index:
+    type: action
+    label: pim_enrich.acl.variant_group.index
+    group_name: pim_enrich.acl_group.variant_group
+pim_enrich_variant_group_create:
+    type: action
+    label: pim_enrich.acl.variant_group.create
+    group_name: pim_enrich.acl_group.variant_group
+pim_enrich_variant_group_edit:
+    type: action
+    label: pim_enrich.acl.variant_group.edit
+    group_name: pim_enrich.acl_group.variant_group
+pim_enrich_variant_group_remove:
+    type: action
+    label: pim_enrich.acl.variant_group.remove
+    group_name: pim_enrich.acl_group.variant_group
+pim_enrich_variant_group_history:
+    type: action
+    label: pim_enrich.acl.variant_group.history
+    group_name: pim_enrich.acl_group.variant_group
+pim_enrich_variant_group_edit_attributes:
+    type: action
+    label: pim_enrich.acl.variant_group.edit_attributes
+    group_name: pim_enrich.acl_group.variant_group
+pim_enrich_variant_group_add_attributes:
+    type: action
+    label: pim_enrich.acl.variant_group.add_attributes
+    group_name: pim_enrich.acl_group.variant_group
+pim_enrich_variant_group_remove_attribute:
+    type: action
+    label: pim_enrich.acl.variant_group.remove_attribute
+    group_name: pim_enrich.acl_group.variant_group
 
 # Group type
 pim_enrich_group_type_index:
@@ -231,4 +301,8 @@ pim_enrich_association_type_edit:
 pim_enrich_association_type_remove:
     type: action
     label: pim_enrich.acl.association_type.remove
+    group_name: pim_enrich.acl_group.association_type
+pim_enrich_association_type_history:
+    type: action
+    label: pim_enrich.acl.association_type.history
     group_name: pim_enrich.acl_group.association_type

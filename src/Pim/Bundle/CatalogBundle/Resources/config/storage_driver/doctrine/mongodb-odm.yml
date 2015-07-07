@@ -7,8 +7,6 @@ parameters:
     pim_catalog.doctrine.index_creator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator
     pim_catalog.doctrine.index_purger.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger
     pim_catalog.doctrine.naming_utility.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility
-    pim_catalog.event_subscriber.mongodb.entities_type.class: Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber
-    pim_catalog.event_subscriber.mongodb.entity_type.class:   Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntityTypeSubscriber
     pim_catalog.mongodb.normalizer.family.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
     pim_catalog.mongodb.normalizer.group.class:             Pim\Bundle\CatalogBundle\MongoDB\Normalizer\GroupNormalizer
     pim_catalog.mongodb.normalizer.completeness.class:      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\CompletenessNormalizer
@@ -19,9 +17,6 @@ parameters:
     pim_catalog.mongodb.normalizer.media.class:             Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MediaNormalizer
     pim_catalog.mongodb.normalizer.metric.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MetricNormalizer
     pim_catalog.mongodb.normalizer.datetime.class:          Pim\Bundle\CatalogBundle\MongoDB\Normalizer\DateTimeNormalizer
-    pim_catalog.mongodb.mongo_objects_factory.class:        Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory
-    pim_catalog.doctrine.product_query_builder.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
-    pim_catalog.doctrine.smart_manager_registry.class:      Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
     pim_catalog.event_subscriber.mongodb.set_products.class:  Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetProductsSubscriber
 
     pim_catalog.event_subscriber.mongodb.set_normalized_product_data.class:    Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetNormalizedProductDataSubscriber
@@ -34,16 +29,37 @@ parameters:
 
     pim_catalog.mongodb_odm_query_generator.abstract_normalized_data.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AbstractQueryGenerator
     pim_catalog.mongodb_odm_query_generator.attribute_as_label_updated.class:    Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AttributeAsLabelUpdatedQueryGenerator
-    pim_catalog.mongodb_odm_query_generator.currency_deactivated.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\CurrencyDeactivatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.channel_deleted.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\ChannelDeletedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.family_label_updated.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyLabelUpdatedQueryGenerator
-    pim_catalog.mongodb_odm_query_generator.locale_detactivated.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\LocaleDeactivatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.option_code_updated.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionCodeUpdatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.option_deleted.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionDeletedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.option_value_updated.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\OptionValueUpdatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.multiple_option_code_updated.class:  Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionCodeUpdatedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.multiple_option_deleted.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionDeletedQueryGenerator
     pim_catalog.mongodb_odm_query_generator.multiple_option_value_updated.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\MultipleOptionValueUpdatedQueryGenerator
+
+    pim_catalog.doctrine.query.filter.number.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\NumberFilter
+    pim_catalog.doctrine.query.filter.string.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\StringFilter
+    pim_catalog.doctrine.query.filter.boolean.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BooleanFilter
+    pim_catalog.doctrine.query.filter.date.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter
+    pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter
+    pim_catalog.doctrine.query.filter.family.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\FamilyFilter
+    pim_catalog.doctrine.query.filter.groups.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter
+    pim_catalog.doctrine.query.filter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter
+    pim_catalog.doctrine.query.filter.option.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionFilter
+    pim_catalog.doctrine.query.filter.options.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\OptionsFilter
+    pim_catalog.doctrine.query.filter.metric.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter
+    pim_catalog.doctrine.query.filter.price.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter
+    pim_catalog.doctrine.query.filter.media.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MediaFilter
+
+    pim_catalog.doctrine.query.cursor.class:              Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\Cursor
+    pim_catalog.doctrine.cursor_factory.product.class:    Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\CursorFactory
+
+    pim_catalog.doctrine.query.sorter.base.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter
+    pim_catalog.doctrine.query.sorter.completeness.class:  Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter
+    pim_catalog.doctrine.query.sorter.family.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter
+    pim_catalog.doctrine.query.sorter.in_group.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter
+    pim_catalog.doctrine.query.sorter.is_associated.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter
 
 services:
     pim_catalog.object_manager.product:
@@ -57,16 +73,17 @@ services:
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
             - %pim_catalog.entity.product.class%
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.family'
 
     pim_catalog.doctrine.index_creator:
         class: %pim_catalog.doctrine.index_creator.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.doctrine.naming_utility'
+            - @pim_catalog.doctrine.smart_manager_registry
+            - @pim_catalog.doctrine.naming_utility
             - %pim_catalog.entity.product.class%
             - @logger
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.doctrine.naming_utility:
         class: %pim_catalog.doctrine.naming_utility.class%
@@ -77,31 +94,23 @@ services:
             - %pim_catalog.entity.attribute.class%
             - %pim_catalog.entity.currency.class%
 
-
     pim_catalog.doctrine.index_purger:
         class: %pim_catalog.doctrine.index_purger.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
 
+    # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.entities_type:
-        class: %pim_catalog.event_subscriber.mongodb.entities_type.class%
-        arguments:
-            - '@pim_catalog.factory.referenced_collection'
-        tags:
-            - { name: doctrine_mongodb.odm.event_subscriber }
+        alias: akeneo_storage_utils.event_subscriber.mongodb.entities_type
 
+    # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.resolve_target_repositories:
-        class: %pim_catalog.event_subscriber.resolve_target_repository.class%
-        tags:
-            - { name: doctrine_mongodb.odm.event_subscriber }
+        alias: akeneo_storage_utils.event_subscriber.mongodb.resolve_target_repository
 
+    # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.mongodb.entity_type:
-        class: %pim_catalog.event_subscriber.mongodb.entity_type.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: doctrine_mongodb.odm.event_subscriber }
+        alias: akeneo_storage_utils.event_subscriber.mongodb.entity_type
 
     # Normalizers
     pim_catalog.mongodb.normalizer.product:
@@ -169,7 +178,7 @@ services:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.mongodb.mongo_objects_factory:
-        class: %pim_catalog.mongodb.mongo_objects_factory.class%
+        alias: akeneo_storage_utils.mongodb.mongo_objects_factory
 
     pim_catalog.repository.product:
         class: %pim_catalog.repository.product.class%
@@ -177,7 +186,7 @@ services:
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product.class%]
         calls:
-            - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
+            - [setProductQueryBuilderFactory, ['@pim_catalog.query.product_query_builder_factory']]
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
             - [setFamilyRepository, ['@pim_catalog.repository.family']]
@@ -209,10 +218,7 @@ services:
             - '@pim_catalog.repository.product'
 
     pim_catalog.doctrine.smart_manager_registry:
-        class: %pim_catalog.doctrine.smart_manager_registry.class%
-        calls:
-            - [addRegistry, ['@doctrine']]
-            - [addRegistry, ['@doctrine_mongodb']]
+        alias: akeneo_storage_utils.doctrine.smart_manager_registry
 
     pim_catalog.event_subscriber.mongodb.set_normalized_product_data:
         class: %pim_catalog.event_subscriber.mongodb.set_normalized_product_data.class%
@@ -357,3 +363,33 @@ services:
             - '@pim_catalog.repository.association_type'
         tags:
             - { name: kernel.event_subscriber }
+
+    # PQB filters
+    pim_catalog.doctrine.query.filter.family:
+        class: %pim_catalog.doctrine.query.filter.family.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
+            - ['family.id', 'family.code']
+            - ['IN', 'NOT IN' ,'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.groups:
+        class: %pim_catalog.doctrine.query.filter.groups.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
+            - ['groups.id', 'groups.code']
+            - ['IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.factory.product_cursor:
+        class: %pim_catalog.doctrine.cursor_factory.product.class%
+        arguments:
+            - %pim_catalog.doctrine.query.cursor.class%
+
+    pim_catalog.doctrine.query.sorter.is_associated:
+        class: %pim_catalog.doctrine.query.sorter.is_associated.class%
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+

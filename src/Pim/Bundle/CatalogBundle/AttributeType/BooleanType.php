@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-
 /**
  * Boolean attribute type
  *
@@ -13,19 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class BooleanType extends AbstractAttributeType
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
-    {
-        return parent::defineCustomAttributeProperties($attribute) + [
-            'defaultValue' => [
-                'name'      => 'defaultValue',
-                'fieldType' => 'switch'
-            ]
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */

@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Family transformer
@@ -82,11 +82,11 @@ class FamilyTransformer extends NestedEntityTransformer
     /**
      * Sets the requirements
      *
-     * @param string $class
-     * @param Family $family
-     * @param array  $requirementsData
+     * @param string          $class
+     * @param FamilyInterface $family
+     * @param array           $requirementsData
      */
-    protected function setRequirements($class, Family $family, array $requirementsData)
+    protected function setRequirements($class, FamilyInterface $family, array $requirementsData)
     {
         foreach ($requirementsData as $channelCode => $attributeCodes) {
             $this->setChannelRequirements($class, $family, $channelCode, $attributeCodes);
@@ -96,12 +96,12 @@ class FamilyTransformer extends NestedEntityTransformer
     /**
      * Sets the requirements for a channel
      *
-     * @param string $class
-     * @param Family $family
-     * @param string $channelCode
-     * @param array  $attributeCodes
+     * @param string          $class
+     * @param FamilyInterface $family
+     * @param string          $channelCode
+     * @param array           $attributeCodes
      */
-    protected function setChannelRequirements($class, Family $family, $channelCode, $attributeCodes)
+    protected function setChannelRequirements($class, FamilyInterface $family, $channelCode, $attributeCodes)
     {
         foreach ($attributeCodes as $attributeCode) {
             $data = array(

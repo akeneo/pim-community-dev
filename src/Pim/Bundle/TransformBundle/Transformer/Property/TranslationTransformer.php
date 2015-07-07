@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Translation transformer
