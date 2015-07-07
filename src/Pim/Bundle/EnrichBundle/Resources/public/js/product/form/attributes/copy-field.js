@@ -23,7 +23,6 @@ define([
             template: _.template(template),
             selected: false,
             events: {
-                'change .copy-field-selector': 'selectionChanged',
                 'click': 'select'
             },
             initialize: function () {
@@ -38,7 +37,6 @@ define([
                     label: this.field.attribute.label[this.field.context.locale],
                     data: this.data,
                     config: this.field.config,
-                    context: this.field.context,
                     attribute: this.field.attribute,
                     selected: this.selected,
                     locale: this.locale,
@@ -67,9 +65,6 @@ define([
             },
             setField: function (field) {
                 this.field = field;
-            },
-            selectionChanged: function (event) {
-                this.selected = event.currentTarget.checked;
             },
             select: function () {
                 this.selected = !this.selected;
