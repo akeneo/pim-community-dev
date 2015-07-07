@@ -104,3 +104,4 @@ job_execution.summary:
     proposal_deleted: deleted proposal
     proposal_updated: updated proposal
     proposal_created: created proposal
+    proposal_skipped: skipped proposal (no differences)

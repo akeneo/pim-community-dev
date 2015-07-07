@@ -177,7 +177,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $jobInstance->getCode()->willReturn('csv_product_draft_import');
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
 
         $this
             ->shouldThrow(new InvalidItemException('No diff between current product and this proposal', $values['original_values']))

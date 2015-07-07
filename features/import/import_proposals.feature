@@ -177,7 +177,7 @@ Feature: Import proposals
     And I launch the import job
     And I wait for the "clothing_product_draft_import" job to finish
     Then there should be 0 proposal
-    And I should see "deleted 1"
+    And I should see "deleted proposal 1"
 
   Scenario: Update a proposal with same file format than product import
     Given I am logged in as "Mary"
