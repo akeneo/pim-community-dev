@@ -48,6 +48,10 @@ class MassEditActionController extends BaseMassEditActionController
         $products = $this->getObjects();
         $notEditable = [];
         foreach ($products as $product) {
+            if (is_array($product)) {
+                $product = $product[0];
+            }
+
             if ($this->securityContext->isGranted(Attributes::EDIT, $product) === false) {
                 $notEditable[] = $product->getIdentifier();
             }
