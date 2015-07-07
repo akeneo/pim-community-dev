@@ -12,9 +12,12 @@
                 'use strict';
                 $(function() {
                     $('.has-sidebar').sidebarize();
+
                 });
             }
         );
+
+        sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
     </script>
 {% endblock %}
 
@@ -56,5 +59,4 @@
             {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }) }}
         </div>
     </div>
-
 {% endblock %}

@@ -59,8 +59,18 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'oro/mediator', 'jquery.multiselect', 'jquery.multiselect.filter'],
-            function ($, _, Scopable, CurrencyField, datepicker, mediator) {
+            [
+                'jquery',
+                'underscore',
+                'pim/scopable',
+                'pim/currencyfield',
+                'datepicker',
+                'oro/mediator',
+                'routing',
+                'jquery.multiselect',
+                'jquery.multiselect.filter'
+            ],
+            function ($, _, Scopable, CurrencyField, datepicker, mediator, Routing) {
                 'use strict';
                 $(function () {
                     {% if form.operation.vars.groups is empty %}
@@ -99,6 +109,20 @@
                     };
                     opts.selectedText = opts.title;
                     opts.noneSelectedText = opts.title;
+
+                    mediator.on('hash_navigation_request:start', function (navigation) {
+                        if (navigation.url === Routing.generate('pim_enrich_product_index')) {
+                            sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
+                        }
+                    });
+
+                    if (!sessionStorage.getItem('mass_edit_selected_attributes')) {
+                        sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
+                    }
+                    $('#pim_enrich_mass_edit_action_operation_displayedAttributes').val(
+                        JSON.parse(sessionStorage.getItem('mass_edit_selected_attributes'))
+                    );
+
                     var $el = $('#{{ form.operation.displayedAttributes.vars.id }}')
                         .addClass('pimmultiselect')
                         .multiselect(opts)
@@ -106,7 +130,6 @@
                             label: false,
                             placeholder: opts.placeholder
                         });
-
                     var $menu = $('.ui-multiselect-menu.pimmultiselect').appendTo('#container');
                     var saveButton = '{{ "Select"|trans }}';
 
@@ -116,6 +139,8 @@
                         var checked = _.map($el.multiselect('getChecked'), function(el) {
                             return +el.value;
                         });
+
+                        sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify(checked));
                         $('div.attribute-field').each(function() {
                             var $field = $(this);
                             if (_.contains(checked, $field.data('attribute-id'))) {
