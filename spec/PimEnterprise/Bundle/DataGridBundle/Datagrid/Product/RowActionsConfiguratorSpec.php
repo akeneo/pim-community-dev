@@ -3,18 +3,18 @@
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class RowActionsConfiguratorSpec extends ObjectBehavior
 {
@@ -23,12 +23,12 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         ConfigurationRegistry $registry,
         SecurityContextInterface $securityContext,
         ProductRepository $productRepository,
-        LocaleRepository $localeRepository,
+        LocaleRepositoryInterface $localeRepository,
         TokenInterface $token,
         User $user,
         ResultRecordInterface $record,
-        Product $product,
-        Locale $locale
+        ProductInterface $product,
+        LocaleInterface $locale
     ) {
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -36,7 +36,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $record->getValue('id')->willReturn(42);
         $record->getValue('dataLocale')->willReturn('en_US');
         $localeRepository->findOneBy(['code' => 'en_US'])->willReturn($locale);
-        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+        $productRepository->findOneById(42)->willReturn($product);
 
         $this->beConstructedWith($registry, $securityContext, $productRepository, $localeRepository);
     }
@@ -89,8 +89,12 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         );
     }
 
-    function it_hides_actions_except_the_show_for_a_row_if_user_can_not_edit_the_product($record, $product, $securityContext, $locale)
-    {
+    function it_hides_actions_except_the_show_for_a_row_if_user_can_not_edit_the_product(
+        $record,
+        $product,
+        $securityContext,
+        $locale
+    ) {
         $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(false);
@@ -107,8 +111,12 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         );
     }
 
-    function it_hides_the_edit_categories_action_if_user_does_not_own_the_product($record, $product, $securityContext, $locale)
-    {
+    function it_hides_the_edit_categories_action_if_user_does_not_own_the_product(
+        $record,
+        $product,
+        $securityContext,
+        $locale
+    ) {
         $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $securityContext->isGranted(Attributes::OWN, $product)->willReturn(false);
         $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);

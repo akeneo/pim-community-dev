@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 /**
  * Published product value interface
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface PublishedProductValueInterface extends ProductValueInterface
 {

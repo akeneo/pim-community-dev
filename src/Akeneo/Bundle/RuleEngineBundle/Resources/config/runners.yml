@@ -1,0 +1,6 @@
+parameters:
+    akeneo_rule_engine.runner.chained.class: Akeneo\Bundle\RuleEngineBundle\Runner\ChainedRunner
+
+services:
+    akeneo_rule_engine.runner.chained:
+        class: %akeneo_rule_engine.runner.chained.class%

@@ -11,18 +11,18 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as BaseAvailableAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Override available attributes type to remove attributes where permissions are revoked
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AvailableAttributesType extends BaseAvailableAttributesType
 {
@@ -37,15 +37,24 @@ class AvailableAttributesType extends BaseAvailableAttributesType
      * @param UserContext                    $userContext
      * @param TranslatorInterface            $translator
      * @param AttributeGroupAccessRepository $attGroupAccessRepo
+     * @param string                         $attributeClass
+     * @param string                         $dataClass
      */
     public function __construct(
-        $attributeClass,
         AttributeRepository $attributeRepository,
         UserContext $userContext,
         TranslatorInterface $translator,
-        AttributeGroupAccessRepository $attGroupAccessRepo
+        AttributeGroupAccessRepository $attGroupAccessRepo,
+        $attributeClass,
+        $dataClass
     ) {
-        parent::__construct($attributeClass, $attributeRepository, $userContext, $translator);
+        parent::__construct(
+            $attributeRepository,
+            $userContext,
+            $translator,
+            $attributeClass,
+            $dataClass
+        );
 
         $this->attGroupAccessRepo = $attGroupAccessRepo;
     }
@@ -59,6 +68,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
             $this->userContext->getUser(),
             Attributes::VIEW_ATTRIBUTES
         );
+        $excludedAttributeIds = array_unique(array_merge($options['excluded_attributes'], $revokedAttributeIds));
 
         $builder->add(
             'attributes',
@@ -66,11 +76,11 @@ class AvailableAttributesType extends BaseAvailableAttributesType
             [
                 'repository' => $this->attributeRepository,
                 'repository_options' => [
-                    'excluded_attribute_ids' => array_unique(array_merge($options['attributes'], $revokedAttributeIds)),
+                    'excluded_attribute_ids' => $excludedAttributeIds,
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                     'default_group_label'    => $this->translator->trans(
                         'Other',
-                        array(),
+                        [],
                         null,
                         $this->userContext->getCurrentLocaleCode()
                     ),

@@ -15,7 +15,7 @@ namespace PimEnterprise\Bundle\BaseConnectorBundle\Processor;
  * Locale accesses import processor
  * Allows to bind data into a locale access and validate them
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class LocaleAccessProcessor extends AbstractAccessProcessor
 {

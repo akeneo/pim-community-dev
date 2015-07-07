@@ -62,7 +62,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
             column: scope_code
     manyToOne:
         attribute:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             joinColumns:
                 attribute_id:
                     referencedColumnName: id
@@ -119,6 +119,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
                 - remove
                 - persist
                 - refresh
+            inversedBy: value
             joinColumns:
                 metric_id:
                     referencedColumnName: id

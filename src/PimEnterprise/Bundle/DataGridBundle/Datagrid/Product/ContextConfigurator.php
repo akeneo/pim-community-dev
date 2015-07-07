@@ -11,19 +11,19 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as BaseContextConfigurator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as BaseContextConfigurator;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Override context configurator to apply permissions on attribute groups
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ContextConfigurator extends BaseContextConfigurator
 {

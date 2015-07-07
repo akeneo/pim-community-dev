@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 /**
  * Published product metric
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */
 class PublishedProductMetric extends AbstractMetric implements PublishedProductMetricInterface

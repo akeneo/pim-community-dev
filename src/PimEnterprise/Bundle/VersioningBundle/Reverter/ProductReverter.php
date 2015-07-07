@@ -11,18 +11,18 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Product version reverter that allow to revert a product to a previous snapshot
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductReverter
 {
@@ -32,28 +32,28 @@ class ProductReverter
     /** @var ManagerRegistry */
     protected $registry;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var SaverInterface */
+    protected $productSaver;
 
     /** @var ValidatorInterface */
     protected $validator;
 
     /**
-     * @param ManagerRegistry     $registry
-     * @param SerializerInterface $serializer
-     * @param ProductManager      $productManager
-     * @param ValidatorInterface  $validator
+     * @param ManagerRegistry       $registry
+     * @param DenormalizerInterface $denormalizer
+     * @param SaverInterface        $productSaver
+     * @param ValidatorInterface    $validator
      */
     public function __construct(
         ManagerRegistry $registry,
         DenormalizerInterface $denormalizer,
-        ProductManager $productManager,
+        SaverInterface $productSaver,
         ValidatorInterface $validator
     ) {
-        $this->registry       = $registry;
-        $this->denormalizer   = $denormalizer;
-        $this->productManager = $productManager;
-        $this->validator      = $validator;
+        $this->registry     = $registry;
+        $this->denormalizer = $denormalizer;
+        $this->productSaver = $productSaver;
+        $this->validator    = $validator;
     }
 
     /**
@@ -70,14 +70,38 @@ class ProductReverter
         $resourceId = $version->getResourceId();
 
         $currentObject = $this->registry->getRepository($class)->find($resourceId);
-        $revertedObject = $this->denormalizer->denormalize($data, $class, "csv", ['entity' => $currentObject]);
 
-        /** @var \Symfony\Component\Validator\ConstraintViolationList $violationsList */
-        $violationsList = $this->validator->validate($revertedObject);
-        if ($violationsList->count() > 0) {
-            throw new RevertException('This version can not be restored. Some errors occured during the validation.');
+        if ($this->isImpactedByVariantGroup($currentObject)) {
+            throw new RevertException(
+                'Product can not be reverted because it belongs to a variant group'
+            );
         }
 
-        $this->productManager->saveProduct($revertedObject);
+        $revertedObject = $this->denormalizer->denormalize(
+            $data,
+            $class,
+            'csv',
+            [
+                'entity'                  => $currentObject,
+                'use_relative_media_path' => true
+            ]
+        );
+
+        $violationsList = $this->validator->validate($revertedObject);
+        if ($violationsList->count() > 0) {
+            throw new RevertException('This version can not be restored. Some errors occurred during the validation.');
+        }
+
+        $this->productSaver->save($revertedObject);
+    }
+
+    /**
+     * @param mixed $object
+     *
+     * @return boolean
+     */
+    protected function isImpactedByVariantGroup($object)
+    {
+        return $object instanceof ProductInterface && null !== $object->getVariantGroup();
     }
 }

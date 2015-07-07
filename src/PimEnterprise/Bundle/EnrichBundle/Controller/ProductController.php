@@ -11,31 +11,26 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Product Controller
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ProductController extends BaseProductController
 {
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
     /**
@@ -60,6 +55,8 @@ class ProductController extends BaseProductController
 
             return $this->redirectToRoute('oro_default');
         }
+
+        $this->seqEditManager->removeByUser($this->getUser());
 
         return array(
             'locales'    => $this->getUserLocales(),
@@ -89,8 +86,7 @@ class ProductController extends BaseProductController
         if ($editProductGranted && $editLocaleGranted) {
             $parameters = $this->editAction($this->request, $id);
 
-            return $this->render('PimEnrichBundle:Product:edit.html.twig', $parameters);
-
+            return $this->render('PimEnterpriseEnrichBundle:Product:edit.html.twig', $parameters);
         } elseif ($this->securityContext->isGranted(Attributes::VIEW, $product)) {
             $parameters = $this->showAction($this->request, $id);
 
@@ -113,18 +109,26 @@ class ProductController extends BaseProductController
     public function showAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $locale = $this->userContext->getCurrentLocale();
+        $locale  = $this->userContext->getCurrentLocale();
+
         $viewLocaleGranted = $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale);
         if (!$viewLocaleGranted) {
             throw new AccessDeniedException();
         }
 
+        $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+        if ($sequentialEdit) {
+            $this->seqEditManager->findWrap($sequentialEdit, $product);
+        }
+
         return [
-            'product'    => $product,
-            'dataLocale' => $this->getDataLocaleCode(),
-            'locales'    => $this->getUserLocales(),
-            'created'    => $this->versionManager->getOldestLogEntry($product),
-            'updated'    => $this->versionManager->getNewestLogEntry($product),
+            'product'          => $product,
+            'dataLocale'       => $this->getDataLocaleCode(),
+            'locales'          => $this->getUserLocales(),
+            'comparisonLocale' => $this->getComparisonLocale(),
+            'created'          => $this->versionManager->getOldestLogEntry($product),
+            'updated'          => $this->versionManager->getNewestLogEntry($product),
+            'sequentialEdit'   => $sequentialEdit,
         ];
     }
 
@@ -169,27 +173,6 @@ class ProductController extends BaseProductController
                 'dataLocale' => $this->getDataLocaleCode()
             )
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAttributesAction(Request $request, $id)
-    {
-        $product             = $this->findProductOr404($id);
-        $availableAttributes = new AvailableAttributes();
-        $attributesForm      = $this->getAvailableAttributesForm(
-            $product->getAttributes(),
-            $availableAttributes
-        );
-        $attributesForm->submit($request);
-
-        $this->productManager->addAttributesToProduct($product, $availableAttributes);
-        $this->productManager->saveProduct($product, ['bypass_product_draft' => true]);
-
-        $this->addFlash('success', 'flash.product.attributes added');
-
-        return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $product->getId()));
     }
 
     /**
@@ -250,5 +233,23 @@ class ProductController extends BaseProductController
     protected function getProductCountByTree(ProductInterface $product)
     {
         return $this->productCatManager->getProductCountByGrantedTree($product);
+    }
+
+    /**
+     * Switch case to redirect after saving a product from the edit form
+     *
+     * {@inheritdoc}
+     */
+    protected function redirectAfterEdit($params)
+    {
+        if ($this->getRequest()->get('action') == self::SAVE_AND_NEXT) {
+            $route          = 'pimee_enrich_product_dispatch';
+            $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+            $params['id']   = $sequentialEdit->getNextId($params['id']);
+        } else {
+            return parent::redirectAfterEdit($params);
+        }
+
+        return $this->redirectToRoute($route, $params);
     }
 }

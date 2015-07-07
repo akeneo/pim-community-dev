@@ -11,13 +11,13 @@ Feature: Browse products I have access to
       | rangers |
       | loafer  |
     And the following categories:
-      | code         | label-en_US   | parent    |
-      | shoes        | Shoes         |           |
-      | vintage      | Vintage       | shoes     |
-      | trendy       | Trendy        | shoes     |
-      | classy       | Classy        | shoes     |
-      | boots        | Boots         |           |
-      | slippers     | Slippers      |           |
+      | code     | label-en_US | parent |
+      | shoes    | Shoes       |        |
+      | vintage  | Vintage     | shoes  |
+      | trendy   | Trendy      | shoes  |
+      | classy   | Classy      | shoes  |
+      | boots    | Boots       |        |
+      | slippers | Slippers    |        |
     #TODO:
     And the following category accesses:
       | category | user group | access |
@@ -31,4 +31,3 @@ Feature: Browse products I have access to
     And I select the "Shoes" tree
     Then I should see products rangers and loafer
     And I select the "Slippers" tree
-

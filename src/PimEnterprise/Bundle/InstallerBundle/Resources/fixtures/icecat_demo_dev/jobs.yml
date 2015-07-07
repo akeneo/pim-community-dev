@@ -91,6 +91,17 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    csv_variant_group_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_variant_group_import
+        label:     Demo variant group import
+        type:      import
+        configuration:
+            filePath:      /tmp/variant_group.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
     csv_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
@@ -101,6 +112,16 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/group.csv
+    csv_variant_group_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_variant_group_export
+        label:     Demo variant group export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/variant_group.csv
     csv_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -143,3 +164,19 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/option.csv
+    yml_rule_import:
+        connector: Akeneo Rule Engine Connector
+        alias:     yml_rule_import
+        label:     Demo rules import
+        type:      import
+        configuration:
+            filePath:      /tmp/rules.yml
+            uploadAllowed: true
+            multiple:      false
+    yml_rule_export:
+        connector: Akeneo Rule Engine Connector
+        alias:     yml_rule_export
+        label:     Demo rules export
+        type:      export
+        configuration:
+            filePath:      /tmp/rules.yml

@@ -1,7 +1,8 @@
 parameters:
     pimee_filter.product_draft_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter
-    pim_filter.product_category_filter.class:     PimEnterprise\Bundle\FilterBundle\Filter\Product\CategoryFilter
-    pimee_filter.product_permission_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter
+    pimee_filter.product_draft_date_filter.class:   Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
+    pim_filter.product_category_filter.class:       PimEnterprise\Bundle\FilterBundle\Filter\Product\CategoryFilter
+    pimee_filter.product_permission_filter.class:   PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter
 
 services:
     pimee_filter.product_draft_choice_filter:
@@ -11,6 +12,14 @@ services:
             - '@pimee_filter.product_draft_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_draft_choice }
+
+    pimee_filter.product_draft_date_filter:
+        class: %pimee_filter.product_draft_date_filter.class%
+        arguments:
+            - '@form.factory'
+            - '@pimee_filter.product_draft_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_draft_date }
 
     pimee_filter.product_permission_filter:
         class: %pimee_filter.product_permission_filter.class%
@@ -27,7 +36,7 @@ services:
         class: %pim_filter.product_category_filter.class%
         arguments:
             - '@form.factory'
-            - '@oro_filter.filter_utility'
+            - '@pim_filter.product_utility'
             - '@pim_catalog.manager.product_category'
             - '@security.context'
             - '@pimee_security.repository.category_access'
@@ -38,7 +47,7 @@ services:
         class: %pim_filter.product_category_filter.class%
         arguments:
             - '@form.factory'
-            - '@oro_filter.filter_utility'
+            - '@pim_filter.product_utility'
             - '@pimee_workflow.manager.published_product_category'
             - '@security.context'
             - '@pimee_security.repository.category_access'

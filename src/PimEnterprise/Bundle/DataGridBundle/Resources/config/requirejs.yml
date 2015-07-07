@@ -1,0 +1,3 @@
+config:
+    paths:
+        'oro/datagrid/expand-cell': 'bundles/pimenterprisedatagrid/js/datagrid/cell/expand-cell.js'

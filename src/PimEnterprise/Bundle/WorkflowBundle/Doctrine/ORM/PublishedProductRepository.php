@@ -11,21 +11,21 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Published products repository
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface
 {
@@ -97,7 +97,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForFamily(Family $family)
+    public function countPublishedProductsForFamily(FamilyInterface $family)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb
@@ -123,7 +123,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
+    public function countPublishedProductsForAttribute(AttributeInterface $attribute)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->innerJoin('pp.values', 'ppv', 'WITH', $qb->expr()->eq('ppv.attribute', $attribute->getId()));
@@ -134,7 +134,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForGroup(Group $group)
+    public function countPublishedProductsForGroup(GroupInterface $group)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb
@@ -147,7 +147,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAssociationType(AssociationType $associationType)
+    public function countPublishedProductsForAssociationType(AssociationTypeInterface $associationType)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb
@@ -161,7 +161,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAttributeOption(AttributeOption $option)
+    public function countPublishedProductsForAttributeOption(AttributeOptionInterface $option)
     {
         $qb = $this->createQueryBuilder('pp');
 
@@ -190,27 +190,5 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $qb->select(sprintf("COUNT(%s.id)", $rootAlias));
 
         return $qb->getQuery()->getSingleScalarResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAvailableAttributeIdsToExport(array $productIds)
-    {
-        $qb = $this->createQueryBuilder('pp');
-        $qb
-            ->select('a.id')
-            ->innerJoin('pp.values', 'v')
-            ->innerJoin('v.attribute', 'a')
-            ->where($qb->expr()->in('pp.id', $productIds))
-            ->groupBy('a.id');
-
-        $attributes = $qb->getQuery()->getArrayResult();
-        $attributeIds = array();
-        foreach ($attributes as $attribute) {
-            $attributeIds[] = $attribute['id'];
-        }
-
-        return $attributeIds;
     }
 }

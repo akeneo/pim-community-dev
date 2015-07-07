@@ -11,20 +11,20 @@
 
 namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter as BaseCategoryFilter;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter as BaseCategoryFilter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Override category filter to apply permissions on categories
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class CategoryFilter extends BaseCategoryFilter
 {
@@ -66,12 +66,10 @@ class CategoryFilter extends BaseCategoryFilter
         $qb = $ds->getQueryBuilder();
         $user = $this->securityContext->getToken()->getUser();
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
-        $productRepository = $this->manager->getProductCategoryRepository();
-
         if (count($grantedCategoryIds) > 0) {
-            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds);
+            $this->util->applyFilter($ds, 'categories.id', 'IN OR UNCLASSIFIED', $grantedCategoryIds);
         } else {
-            $productRepository->applyFilterByUnclassified($qb);
+            $this->util->applyFilter($ds, 'categories.id', 'UNCLASSIFIED', []);
         }
 
         return true;
@@ -85,21 +83,18 @@ class CategoryFilter extends BaseCategoryFilter
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
         $categoryRepository = $this->manager->getCategoryRepository();
-        $productRepository  = $this->manager->getProductCategoryRepository();
         $qb                 = $ds->getQueryBuilder();
 
         $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {
-            // categories of this tree
-            $categoryIds = $this->getAllChildrenIds($tree);
-            // we add a filter on categories not in this tree
-            $productRepository->applyFilterByCategoryIds($qb, $categoryIds, false);
+            // all categories of this tree (without permissions)
+            $currentTreeIds = $categoryRepository->getAllChildrenIds($tree);
+            $this->util->applyFilter($ds, 'categories.id', 'NOT IN', $currentTreeIds);
 
-            // granted categories
+            // we add a filter on granted categories
             $user = $this->securityContext->getToken()->getUser();
-            $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
-            // we filter on all granted and unclassified categories
-            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds);
+            $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+            $this->util->applyFilter($ds, 'categories.id', 'IN OR UNCLASSIFIED', $grantedIds);
 
             return true;
         }
@@ -127,23 +122,5 @@ class CategoryFilter extends BaseCategoryFilter
         );
 
         return $grantedIds;
-    }
-
-    /**
-     * Override to apply category permissions (not for unclassified)
-     *
-     * {@inheritdoc}
-     *
-     * @deprecated since version 1.0.3. Will be removed in 1.1. Please do not load all product ids for filtering.
-     */
-    protected function getProductIdsInCategory(CategoryInterface $category, $data)
-    {
-        if ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
-            $productIds = $this->manager->getProductIdsInCategory($category, $data['includeSub']);
-        } else {
-            $productIds = $this->manager->getProductIdsInGrantedCategory($category, $data['includeSub']);
-        }
-
-        return (empty($productIds)) ? [0] : $productIds;
     }
 }

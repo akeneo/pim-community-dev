@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 /**
  * Published product events
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class PublishedProductEvents
 {

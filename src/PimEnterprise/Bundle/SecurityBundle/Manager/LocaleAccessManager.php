@@ -14,14 +14,14 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
 
 /**
  * Locale access manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class LocaleAccessManager
 {
@@ -50,11 +50,11 @@ class LocaleAccessManager
     /**
      * Get user groups that have view access to a locale
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return Group[]
      */
-    public function getViewUserGroups(Locale $locale)
+    public function getViewUserGroups(LocaleInterface $locale)
     {
         return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::VIEW_PRODUCTS);
     }
@@ -62,11 +62,11 @@ class LocaleAccessManager
     /**
      * Get user groups that have edit access to a locale
      *
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return Group[]
      */
-    public function getEditUserGroups(Locale $locale)
+    public function getEditUserGroups(LocaleInterface $locale)
     {
         return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::EDIT_PRODUCTS);
     }
@@ -74,11 +74,11 @@ class LocaleAccessManager
     /**
      * Grant access on an attribute locale to specified user groups
      *
-     * @param Locale  $locale
-     * @param Group[] $viewUserGroups
-     * @param Group[] $editUserGroups
+     * @param LocaleInterface $locale
+     * @param Group[]         $viewUserGroups
+     * @param Group[]         $editUserGroups
      */
-    public function setAccess(Locale $locale, $viewUserGroups, $editUserGroups)
+    public function setAccess(LocaleInterface $locale, $viewUserGroups, $editUserGroups)
     {
         $grantedUserGroups = [];
         foreach ($editUserGroups as $group) {
@@ -100,11 +100,11 @@ class LocaleAccessManager
     /**
      * Grant specified access on an attribute locale for the provided user group
      *
-     * @param Locale $locale
-     * @param Group  $group
-     * @param string $accessLevel
+     * @param LocaleInterface $locale
+     * @param Group           $group
+     * @param string          $accessLevel
      */
-    public function grantAccess(Locale $locale, Group $group, $accessLevel)
+    public function grantAccess(LocaleInterface $locale, Group $group, $accessLevel)
     {
         $access = $this->getLocaleAccess($locale, $group);
         $access
@@ -118,12 +118,12 @@ class LocaleAccessManager
      * Revoke access to an attribute locale
      * If $excludedUserGroups are provided, access will not be revoked for user groups with them
      *
-     * @param Locale  $locale
-     * @param Group[] $excludedUserGroups
+     * @param LocaleInterface $locale
+     * @param Group[]         $excludedUserGroups
      *
      * @return integer
      */
-    protected function revokeAccess(Locale $locale, array $excludedUserGroups = [])
+    protected function revokeAccess(LocaleInterface $locale, array $excludedUserGroups = [])
     {
         return $this->getAccessRepository()->revokeAccess($locale, $excludedUserGroups);
     }
@@ -131,12 +131,12 @@ class LocaleAccessManager
     /**
      * Get LocaleAccess entity for a locale and user group
      *
-     * @param Locale $locale
-     * @param Group  $group
+     * @param LocaleInterface $locale
+     * @param Group           $group
      *
      * @return \PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess
      */
-    protected function getLocaleAccess(Locale $locale, Group $group)
+    protected function getLocaleAccess(LocaleInterface $locale, Group $group)
     {
         $access = $this->getAccessRepository()
             ->findOneBy(

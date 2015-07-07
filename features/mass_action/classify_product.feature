@@ -11,18 +11,18 @@ Feature: Classify many products at once for the tree I have access
       | rangers |
       | loafer  |
     And the following categories:
-      | code         | label-en_US   | parent    |
-      | shoes        | Shoes         |           |
-      | vintage      | Vintage       | shoes     |
-      | trendy       | Trendy        | shoes     |
-      | classy       | Classy        | shoes     |
-      | boots        | Boots         |           |
+      | code    | label-en_US | parent |
+      | shoes   | Shoes       |        |
+      | vintage | Vintage     | shoes  |
+      | trendy  | Trendy      | shoes  |
+      | classy  | Classy      | shoes  |
+      | boots   | Boots       |        |
     And the following category accesses:
-      | category        | user group | access |
-      | shoes           | Manager    | view   |
-      | vintage         | Manager    | view   |
-      | trendy          | Manager    | view   |
-      | classy          | Manager    | view   |
+      | category | user group | access |
+      | shoes    | Manager    | view   |
+      | vintage  | Manager    | view   |
+      | trendy   | Manager    | view   |
+      | classy   | Manager    | view   |
     And I am logged in as "Julia"
     And I am on the products page
 

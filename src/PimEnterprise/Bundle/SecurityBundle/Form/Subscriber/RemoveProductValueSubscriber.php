@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Form\Subscriber;
 
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Subscriber to remove product value when user has no right to at least see it
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class RemoveProductValueSubscriber implements EventSubscriberInterface
 {

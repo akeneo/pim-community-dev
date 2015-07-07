@@ -2,7 +2,7 @@
     <dl>
         {% for attribute, change in value['values'] %}
             <dt>{{ present_product_draft_attribute(change, attribute) }}</dt>
-            <dd>{{ present_product_draft_change(change, record.rootEntity) }}</dd>
+            <dd>{{ present_product_draft_change(change, record.rootEntity)|nl2br }}</dd>
         {% endfor %}
     </dl>
 {% endif %}

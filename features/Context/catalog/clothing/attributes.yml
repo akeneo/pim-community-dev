@@ -6,7 +6,6 @@ attributes:
         group: info
         required:            true
         unique:              true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
     name:
@@ -16,7 +15,6 @@ attributes:
         type:  pim_catalog_text
         group: info
         localizable:         true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
     manufacturer:
@@ -24,7 +22,6 @@ attributes:
             en_US: Manufacturer
         type:  pim_catalog_simpleselect
         group: info
-        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           3
         options:
@@ -49,7 +46,6 @@ attributes:
             en_US: Weather conditions
         type:  pim_catalog_multiselect
         group: info
-        useableAsGridColumn: false
         useableAsGridFilter: true
         sortOrder:           4
         options:
@@ -81,7 +77,6 @@ attributes:
         group: info
         localizable:         true
         scopable:            true
-        useableAsGridColumn: false
         useableAsGridFilter: true
         maxCharacters:       1000
         sortOrder:           5
@@ -90,7 +85,6 @@ attributes:
             en_US: Comment
         type:  pim_catalog_text
         group: other
-        useableAsGridColumn: false
         useableAsGridFilter: true
         maxCharacters:       255
     price:
@@ -98,7 +92,6 @@ attributes:
             en_US: Price
         type:  pim_catalog_price_collection
         group: marketing
-        useableAsGridColumn: true
         useableAsGridFilter: true
         numberMin:           1
         numberMax:           200
@@ -109,7 +102,6 @@ attributes:
             en_US: Rating
         type:  pim_catalog_simpleselect
         group: marketing
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
         options:
@@ -169,7 +161,6 @@ attributes:
             en_US: Size
         type:  pim_catalog_simpleselect
         group: sizes
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
         options:
@@ -202,7 +193,6 @@ attributes:
             en_US: Main color
         type:  pim_catalog_simpleselect
         group: colors
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           1
         options:
@@ -243,7 +233,6 @@ attributes:
             en_US: Secondary color
         type:  pim_catalog_simpleselect
         group: colors
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
         options:
@@ -271,6 +260,14 @@ attributes:
         sortOrder:   10
         metricFamily: Length
         defaultMetricUnit: CENTIMETER
+    width:
+        labels:
+            en_US: Width
+        type:  pim_catalog_metric
+        group: sizes
+        sortOrder:   10
+        metricFamily: Length
+        defaultMetricUnit: CENTIMETER
     number_in_stock:
         labels:
             en_US: Number in stock
@@ -280,7 +277,6 @@ attributes:
         type:  pim_catalog_number
         group: marketing
         scopable:            true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         numberMin:           1
         numberMax:           10000
@@ -295,8 +291,6 @@ attributes:
             de_DE: Handgefertigt
         type:  pim_catalog_boolean
         group: info
-        defaultValue:        false
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           3
     release_date:
@@ -308,7 +302,6 @@ attributes:
         type:  pim_catalog_date
         group: info
         scopable:            true
-        useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           3
     legacy_attribute:

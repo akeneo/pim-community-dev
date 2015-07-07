@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * Add the default user group to the entity of the generic event
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
 {
@@ -83,7 +83,7 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
     public function addDefaultUserGroupForAttributeGroup(GenericEvent $event)
     {
         $object = $event->getSubject();
-        if ($object instanceof AttributeGroup) {
+        if ($object instanceof AttributeGroupInterface) {
             $userGroup = $this->groupRepository->getDefaultUserGroup();
             $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_ATTRIBUTES, true);
         }

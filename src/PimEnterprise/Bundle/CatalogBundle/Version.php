@@ -14,13 +14,13 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 /**
  * PIM Enterprise Version
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.0.29';
+    const VERSION = '1.3.16';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Dandelion';
+    const VERSION_CODENAME = 'Strawberry';
 }

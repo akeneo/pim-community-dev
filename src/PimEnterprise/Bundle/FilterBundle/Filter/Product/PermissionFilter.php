@@ -11,19 +11,19 @@
 
 namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Allow to know if current user can review/publish, edit or view products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PermissionFilter extends OroChoiceFilter
 {
@@ -114,7 +114,7 @@ class PermissionFilter extends OroChoiceFilter
             return false;
         }
 
-        $data['type']= $mapping[$data['value']];
+        $data['type'] = $mapping[$data['value']];
 
         return $data;
     }

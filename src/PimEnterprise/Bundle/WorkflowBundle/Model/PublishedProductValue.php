@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * Published product value
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */
 class PublishedProductValue extends AbstractProductValue implements PublishedProductValueInterface

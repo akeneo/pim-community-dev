@@ -2,26 +2,29 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\Category;
-use PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Prophecy\Argument;
 
 class CategoryAccessManagerSpec extends ObjectBehavior
 {
-    function let(SmartManagerRegistry $registry, ObjectManager $objectManager, CategoryAccessRepository $accessRepository, CategoryRepository $categoryRepository)
-    {
+    function let(
+        SmartManagerRegistry $registry,
+        ObjectManager $objectManager,
+        CategoryAccessRepository $accessRepository,
+        CategoryRepositoryInterface $categoryRepository
+    ) {
         $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
 
         $accessClass = 'PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess';
-        $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\Category';
+        $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\CategoryInterface';
         $userGroupClass = 'Pim\Bundle\SecurityBundle\Entity\Group';
         $registry->getRepository($accessClass)->willReturn($accessRepository);
         $registry->getRepository($categoryClass)->willReturn($categoryRepository);
@@ -29,7 +32,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $this->beConstructedWith($registry, $accessClass, $categoryClass, $userGroupClass);
     }
 
-    function it_provides_user_groups_that_have_access_to_a_category(Category $category, $accessRepository)
+    function it_provides_user_groups_that_have_access_to_a_category(CategoryInterface $category, $accessRepository)
     {
         $accessRepository->getGrantedUserGroups($category, Attributes::VIEW_PRODUCTS)->willReturn(['foo', 'bar']);
         $accessRepository->getGrantedUserGroups($category, Attributes::EDIT_PRODUCTS)->willReturn(['bar']);
@@ -41,7 +44,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     }
 
     function it_grants_access_on_a_category_for_the_provided_user_groups(
-        Category $category,
+        CategoryInterface $category,
         $accessRepository,
         $objectManager,
         Group $user,
@@ -60,7 +63,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     }
 
     function it_grants_access_on_a_category_for_the_provided_user_groups_and_does_not_flush(
-        Category $category,
+        CategoryInterface $category,
         $accessRepository,
         $objectManager,
         Group $user,
@@ -78,7 +81,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     }
 
     function it_grants_access_on_a_new_category_for_the_provided_user_groups(
-        Category $category,
+        CategoryInterface $category,
         $accessRepository,
         $objectManager,
         Group $user,
@@ -95,14 +98,14 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     }
 
     function it_adds_accesses_on_a_category_children_for_the_provided_user_groups(
-        Category $parent,
-        Category $childOne,
-        Category $childTwo,
+        CategoryInterface $parent,
+        CategoryInterface $childOne,
+        CategoryInterface $childTwo,
         $categoryRepository,
         $accessRepository,
         Group $user,
         $objectManager
-    ) { 
+    ) {
         $addViewGroups = [$user];
         $addEditGroups = [];
         $addOwnGroups = [];
@@ -119,12 +122,18 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $this->updateChildrenAccesses(
-            $parent, $addViewGroups, $addEditGroups, $addOwnGroups, $removeViewGroups, $removeEditGroups, $removeOwnGroups
+            $parent,
+            $addViewGroups,
+            $addEditGroups,
+            $addOwnGroups,
+            $removeViewGroups,
+            $removeEditGroups,
+            $removeOwnGroups
         );
     }
 
     function it_updates_accesses_on_a_category_children_for_the_provided_user_groups(
-        Category $parent,
+        CategoryInterface $parent,
         CategoryAccess $accessOne,
         CategoryAccess $accessTwo,
         $categoryRepository,
@@ -143,7 +152,10 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $categoryRepository->getAllChildrenIds($parent)->willReturn($childrenIds);
         $accessRepository->getCategoryIdsWithExistingAccess([$user], $childrenIds)->willReturn($childrenIds);
 
-        $accessRepository->findBy(['category' => $childrenIds, 'userGroup' => $user])->willReturn([$accessOne, $accessTwo]);
+        $accessRepository
+            ->findBy(['category' => $childrenIds, 'userGroup' => $user])
+            ->willReturn([$accessOne, $accessTwo]);
+
         $accessOne->setViewProducts(true)->shouldBeCalled();
         $accessTwo->setViewProducts(true)->shouldBeCalled();
         $objectManager->persist($accessOne)->shouldBeCalled();
@@ -151,12 +163,18 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $this->updateChildrenAccesses(
-            $parent, $addViewGroups, $addEditGroups, $addOwnGroups, $removeViewGroups, $removeEditGroups, $removeOwnGroups
+            $parent,
+            $addViewGroups,
+            $addEditGroups,
+            $addOwnGroups,
+            $removeViewGroups,
+            $removeEditGroups,
+            $removeOwnGroups
         );
     }
 
     function it_removes_accesses_on_a_category_children_for_the_provided_user_groups(
-        Category $parent,
+        CategoryInterface $parent,
         CategoryAccess $accessOne,
         CategoryAccess $accessTwo,
         $categoryRepository,
@@ -175,13 +193,22 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $categoryRepository->getAllChildrenIds($parent)->willReturn($childrenIds);
         $accessRepository->getCategoryIdsWithExistingAccess([$manager], $childrenIds)->willReturn($childrenIds);
 
-        $accessRepository->findBy(['category' => $childrenIds, 'userGroup' => $manager])->willReturn([$accessOne, $accessTwo]);
+        $accessRepository
+            ->findBy(['category' => $childrenIds, 'userGroup' => $manager])
+            ->willReturn([$accessOne, $accessTwo]);
+
         $objectManager->remove($accessOne)->shouldBeCalled();
         $objectManager->remove($accessTwo)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $this->updateChildrenAccesses(
-            $parent, $addViewGroups, $addEditGroups, $addOwnGroups, $removeViewGroups, $removeEditGroups, $removeOwnGroups
+            $parent,
+            $addViewGroups,
+            $addEditGroups,
+            $addOwnGroups,
+            $removeViewGroups,
+            $removeEditGroups,
+            $removeOwnGroups
         );
     }
 }

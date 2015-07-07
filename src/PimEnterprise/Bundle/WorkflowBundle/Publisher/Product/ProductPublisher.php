@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 /**
  * Product publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ProductPublisher implements PublisherInterface
 {
@@ -69,7 +69,7 @@ class ProductPublisher implements PublisherInterface
         $this->copyCompletenesses($object, $published);
         $this->copyValues($object, $published);
         $this->setVersion($object, $published);
-        if ($options['with_associations'] === true) {
+        if (true === $options['with_associations']) {
             $this->copyAssociations($object, $published);
             $this->updateRelatedAssociations($published);
         }

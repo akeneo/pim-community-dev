@@ -5,7 +5,7 @@ services:
     pimee_versioning.reverter.product:
         class: %pimee_versioning.reverter.product.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '@pimee_versioning.serializer'
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.saver.product'
             - '@validator'

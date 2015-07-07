@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\SecurityBundle;
 /**
  * Security voter attributes
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 final class Attributes
 {
@@ -44,4 +44,7 @@ final class Attributes
 
     /** @staticvar string */
     const OWN_PRODUCTS = 'OWN_PRODUCTS';
+
+    /** @staticvar string */
+    const OWN_AT_LEAST_ONE_CATEGORY = 'OWN_AT_LEAST_ONE_CATEGORY';
 }

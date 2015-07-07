@@ -1,0 +1,29 @@
+parameters:
+    pimee_catalog_rule.view_element.common.from_smart.template: 'PimEnterpriseCatalogRuleBundle:Common:from-smart.js.twig'
+    pimee_catalog_attribute.view_element.common.from_modified.template: 'PimEnterpriseCatalogRuleBundle:Common:from-modified.js.twig'
+
+services:
+    pimee_catalog_rule.view_element.common.variant_attribute_from_smart:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_catalog_rule.product.tooltip.variant_attribute_affected_by_a_rule.content'
+            - %pimee_catalog_rule.view_element.common.from_smart.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_variant_edit.after_form_init, position: 100 }
+
+    pimee_catalog_rule.view_element.common.product_attribute_from_smart:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_catalog_rule.product.tooltip.product_attribute_affected_by_a_rule.content'
+            - %pimee_catalog_rule.view_element.common.from_smart.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_product_edit.after_form_init, position: 100 }
+            - { name: pim_enrich.view_element, type: pim_enrich_product_mass_edit.after_form_init, position: 100 }
+
+    pimee_catalog_attribute.view_element.common.product_attribute_from_modified:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_catalog_rule.product.tooltip.product_attribute_modified.content'
+            - %pimee_catalog_attribute.view_element.common.from_modified.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_product_edit.after_form_init, position: 100 }

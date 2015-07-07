@@ -7,6 +7,7 @@ services:
         class: %pim_import_export.form.type.job_instance.class%
         arguments:
             - '@akeneo_batch.connectors'
+            - '@translator'
         tags:
             - { name: form.type, alias: pim_import_export_job_instance }
         calls:

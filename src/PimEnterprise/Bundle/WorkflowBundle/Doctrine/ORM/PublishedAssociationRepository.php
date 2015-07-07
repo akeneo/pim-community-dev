@@ -11,22 +11,22 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
 
 /**
  * Published association repository
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class PublishedAssociationRepository extends EntityRepository implements PublishedAssociationRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function findOneByTypeAndOwner(AssociationType $type, $ownerId)
+    public function findOneByTypeAndOwner(AssociationTypeInterface $type, $ownerId)
     {
         return $this->findOneBy(
             [

@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use PhpSpec\ObjectBehavior;
 
 class AttributeGroupPermissionsTypeSpec extends ObjectBehavior
 {

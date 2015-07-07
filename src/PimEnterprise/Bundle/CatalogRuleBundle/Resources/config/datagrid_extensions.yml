@@ -1,0 +1,12 @@
+parameters:
+    pim_catalog_rule.datagrid.extension.selector.orm.attribute.is_smart.class: PimEnterprise\Bundle\CatalogRuleBundle\Datagrid\Extension\Selector\Orm\Attribute\IsSmartSelectorExtension
+
+services:
+    pim_catalog_rule.datagrid.extension.selector.orm.attribute.is_smart:
+        class: %pim_catalog_rule.datagrid.extension.selector.orm.attribute.is_smart.class%
+        arguments:
+            - %pim_catalog.entity.attribute.class%
+            - %pimee_catalog_rule.model.rule_relation.class%
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: oro_datagrid.extension }

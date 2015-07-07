@@ -1,0 +1,15 @@
+parameters:
+    pimee_enrich.view_element.tab.attributegroup_permission.template: 'PimEnrichBundle:AttributeGroup:Tab/permission.html.twig'
+
+services:
+    pimee_enrich.view_element.tab.attributegroup_permission:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_enrich.attribute_group.tab.permission'
+            - %pimee_enrich.view_element.tab.attributegroup_permission.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_enrich_attribute_group_edit_permissions'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form].children[permissions]'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_attribute_group_form.form_tab, position: 105}

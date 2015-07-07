@@ -11,27 +11,24 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Batch operation to publish products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class Publish extends AbstractMassEditAction
 {
-    /**
-     * @var PublishedProductManager
-     */
+    /** @var PublishedProductManager */
     protected $manager;
 
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
 
     /**
@@ -87,47 +84,23 @@ class Publish extends AbstractMassEditAction
      */
     public function perform()
     {
-        foreach ($this->objects as $key => $object) {
-            if (!$object instanceof ProductInterface) {
+        foreach ($this->objects as $key => $product) {
+            if (!$product instanceof ProductInterface) {
                 throw new \LogicException(
                     sprintf(
-                        'Cannot perform mass edit action "%s" on object of type "%s", '.
+                        'Cannot perform mass edit action "%s" on object of type "%s", ' .
                         'expecting "Pim\Bundle\CatalogBundle\Model\ProductInterface"',
                         __CLASS__,
-                        get_class($object)
+                        ClassUtils::getClass($product)
                     )
                 );
             }
 
-            try {
-                $this->doPerform($object);
-            } catch (\RuntimeException $e) {
+            if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
                 unset($this->objects[$key]);
             }
         }
 
-        // TODO : about refactoring of this one,
-        // we should provide a BulkPublishInterface and provide a BulkProductPublisher implementation which publish
-        // all products data and then, publish all associations where products appears in owner or owned side, it could
-        // make the code far more readable and decouple this logic from the mass edit operation
-
-        $this->manager->publishAssociations($this->objects);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function doPerform(ProductInterface $product)
-    {
-        if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Cannot publish product "%s" because current user does not own it',
-                    (string) $product
-                )
-            );
-        }
-
-        $this->manager->publish($product, ['with_associations' => false]);
+        $this->manager->publishAll($this->objects);
     }
 }

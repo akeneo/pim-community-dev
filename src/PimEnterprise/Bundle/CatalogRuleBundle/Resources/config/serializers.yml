@@ -1,0 +1,47 @@
+parameters:
+    pimee_catalog_rule.denormalizer.product_rule.chained.class:           Akeneo\Bundle\RuleEngineBundle\Denormalizer\ChainedDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.class:                   Akeneo\Bundle\RuleEngineBundle\Denormalizer\RuleDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.content.class:           PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.set_value_action.class:  PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\SetValueActionDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\CopyValueActionDenormalizer
+    pimee_catalog_rule.denormalizer.product_rule.condition.class:         PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ConditionDenormalizer
+
+services:
+    pimee_catalog_rule.denormalizer.product_rule.chained:
+        class: %pimee_catalog_rule.denormalizer.product_rule.chained.class%
+        calls:
+            - [addDenormalizer, ['@pimee_catalog_rule.denormalizer.product_rule.condition']]
+            - [addDenormalizer, ['@pimee_catalog_rule.denormalizer.product_rule.set_value_action']]
+            - [addDenormalizer, ['@pimee_catalog_rule.denormalizer.product_rule.copy_value_action']]
+            - [addDenormalizer, ['@pimee_catalog_rule.denormalizer.product_rule.content']]
+            - [addDenormalizer, ['@pimee_catalog_rule.denormalizer.product_rule']]
+
+    pimee_catalog_rule.denormalizer.product_rule:
+        class: %pimee_catalog_rule.denormalizer.product_rule.class%
+        arguments:
+            - %akeneo_rule_engine.model.rule.class%
+            - %akeneo_rule_engine.model.rule_definition.class%
+            - 'product'
+
+    pimee_catalog_rule.denormalizer.product_rule.content:
+        class: %pimee_catalog_rule.denormalizer.product_rule.content.class%
+        arguments:
+            - %akeneo_rule_engine.model.rule.class%
+            - %pimee_catalog_rule.model.product_condition.class%
+            - copy_value: %pimee_catalog_rule.model.copy_value_action.class%
+              set_value: %pimee_catalog_rule.model.set_value_action.class%
+
+    pimee_catalog_rule.denormalizer.product_rule.condition:
+        class: %pimee_catalog_rule.denormalizer.product_rule.condition.class%
+        arguments:
+            - %pimee_catalog_rule.model.product_condition.class%
+
+    pimee_catalog_rule.denormalizer.product_rule.set_value_action:
+        class: %pimee_catalog_rule.denormalizer.product_rule.set_value_action.class%
+        arguments:
+            - %pimee_catalog_rule.model.set_value_action.class%
+
+    pimee_catalog_rule.denormalizer.product_rule.copy_value_action:
+        class: %pimee_catalog_rule.denormalizer.product_rule.copy_value_action.class%
+        arguments:
+            - %pimee_catalog_rule.model.copy_value_action.class%

@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
@@ -71,7 +71,7 @@ class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
         $groupRepository,
         $attGrpAccessManager,
         GenericEvent $event,
-        AttributeGroup $attributeGroup,
+        AttributeGroupInterface $attributeGroup,
         Group $userGroup
     ) {
         $event->getSubject()->willReturn($attributeGroup);

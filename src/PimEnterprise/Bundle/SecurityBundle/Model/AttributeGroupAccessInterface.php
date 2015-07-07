@@ -11,30 +11,29 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 
 /**
  * Attribute group access interface
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 interface AttributeGroupAccessInterface extends AccessInterface
 {
     /**
      * Get attribute group
-     *
-     * @return AttributeGroup
+     * @return AttributeGroupInterface
      */
     public function getAttributeGroup();
 
     /**
      * Set attribute group
      *
-     * @param AttributeGroup $attributeGroup
+    * @param AttributeGroupInterface $attributeGroup
      *
      * @return AttributeGroupAccessInterface
      */
-    public function setAttributeGroup(AttributeGroup $attributeGroup);
+    public function setAttributeGroup(AttributeGroupInterface $attributeGroup);
 
     /**
      * Predicate for view attributes permission

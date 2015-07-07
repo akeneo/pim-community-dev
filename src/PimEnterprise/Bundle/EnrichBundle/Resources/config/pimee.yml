@@ -1,7 +1,26 @@
 imports:
-    - { resource: @PimEnrichBundle/Resources/config/pim.yml }
+    - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
+
+assetic:
+    bundles:
+        - OroAsseticBundle
+        - OroUIBundle
+        - OroUserBundle
+        - OroFilterBundle
+        - OroNavigationBundle
+        - OroWindowsBundle
+        - OroEntityExtendBundle
+        - OroSecurityBundle
+        - PimUIBundle
+        - PimCatalogBundle
+        - PimEnrichBundle
+        - PimEnterpriseEnrichBundle
 
 twig:
+    globals:
+        bap:
+            layout: PimEnterpriseEnrichBundle::base.html.twig
+            start_route: oro_default
     form:
         resources:
             - 'PimEnterpriseUIBundle:Form:pimee-fields.html.twig'
@@ -12,3 +31,11 @@ fos_rest:
             PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException: HTTP_CONFLICT
         messages:
             PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException: true
+
+doctrine_migrations:
+    dir_name: %doctrine_migrations_dir%
+    namespace: Pimee\Upgrade\Schema
+    name: PIM Enterprise Migrations
+
+parameters:
+    max_products_category_removal: 100

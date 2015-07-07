@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport;
 
+use Doctrine\Common\EventSubscriber as DoctrineEventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events as DoctrineEvents;
-use Doctrine\Common\EventSubscriber as DoctrineEventSubscriber;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
  * Add parent permission when a new category is created by an import
  * TODO: use a business event instead of a Doctrine one for this subscriber
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class AddCategoryPermissionsSubscriber implements DoctrineEventSubscriber
 {

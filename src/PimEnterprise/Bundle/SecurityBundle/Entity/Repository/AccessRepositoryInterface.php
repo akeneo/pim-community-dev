@@ -16,7 +16,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 /**
  * Interface for access repository
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 interface AccessRepositoryInterface
 {

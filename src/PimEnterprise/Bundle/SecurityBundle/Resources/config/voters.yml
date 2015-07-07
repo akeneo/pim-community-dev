@@ -3,10 +3,10 @@ parameters:
     pimee_security.voter.category.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter
     pimee_security.voter.product.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter
     pimee_security.voter.job_profile.class: PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter
-    pimee_security.voter.product_draft_ownership.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftOwnershipVoter
-    pimee_security.voter.product_draft_approval.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftApprovalVoter
+    pimee_security.voter.product_draft.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductDraftVoter
     pimee_security.voter.locale.class: PimEnterprise\Bundle\SecurityBundle\Voter\LocaleVoter
     pimee_security.voter.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Voter\DatagridViewVoter
+    pimee_security.voter.category_owner.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryOwnerVoter
 
 services:
     pimee_security.voter.attribute_group:
@@ -37,13 +37,8 @@ services:
         tags:
             - { name: security.voter }
 
-    pimee_security.voter.product_draft_ownership:
-        class: %pimee_security.voter.product_draft_ownership.class%
-        tags:
-            - { name: security.voter }
-
-    pimee_security.voter.product_draft_approval:
-        class: %pimee_security.voter.product_draft_approval.class%
+    pimee_security.voter.product_draft:
+        class: %pimee_security.voter.product_draft.class%
         arguments:
             - @pim_catalog.repository.attribute_group
             - @pimee_security.manager.attribute_group_access
@@ -61,5 +56,12 @@ services:
         class: %pimee_security.voter.datagrid_view.class%
         arguments:
             - '@pimee_security.manager.datagtrid_view_access'
+        tags:
+            - { name: security.voter }
+
+    pimee_security.voter.category_owner:
+        class: %pimee_security.voter.category_owner.class%
+        arguments:
+            - '@pimee_security.repository.category_access'
         tags:
             - { name: security.voter }

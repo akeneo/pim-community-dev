@@ -14,6 +14,18 @@ jobs:
             familyColumn:       family
             groupsColumn:       groups
             realTimeVersioning: true
+    clothing_rule_import:
+        connector: Akeneo Rule Engine Connector
+        alias:     yml_rule_import
+        label:     Clothing rule import
+        type:      import
+        configuration:
+            uploadAllowed: true
+    clothing_rule_export:
+        connector: Akeneo Rule Engine Connector
+        alias:     yml_rule_export
+        label:     Clothing rule export
+        type:      export
     clothing_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export

@@ -1,0 +1,9 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Datum
+      author: Autor
+      product: Produkt
+      review: Überprüfung
+      empty: Keine zu überprüfende Vorschläge
+      view_all: Alle anzeigen

@@ -1,0 +1,5 @@
+parameters:
+    pimee_catalog_rule.model.product_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition
+    pimee_catalog_rule.model.copy_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction
+    pimee_catalog_rule.model.set_value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction
+    pimee_catalog_rule.model.rule_relation.class: PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation

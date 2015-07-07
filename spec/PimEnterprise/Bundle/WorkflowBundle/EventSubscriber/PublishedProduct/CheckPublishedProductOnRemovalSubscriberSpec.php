@@ -3,22 +3,22 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Event;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 {
-    function let(PublishedProductRepositoryInterface $publishedRepository, CategoryRepository $categoryRepository)
+    function let(PublishedProductRepositoryInterface $publishedRepository, CategoryRepositoryInterface $categoryRepository)
     {
         $this->beConstructedWith($publishedRepository, $categoryRepository);
     }
@@ -38,7 +38,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_checks_if_a_product_is_not_published(
         $publishedRepository,
-        AbstractProduct $product,
+        ProductInterface $product,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($product);
@@ -50,7 +50,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_product_is_published(
         $publishedRepository,
-        AbstractProduct $product,
+        ProductInterface $product,
         PublishedProductInterface $published,
         GenericEvent $event
     ) {
@@ -65,7 +65,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_checks_if_the_family_is_linked_to_a_published_product(
         $publishedRepository,
-        Family $family,
+        FamilyInterface $family,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($family);
@@ -76,20 +76,22 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_family_is_linked_to_a_published_product(
         $publishedRepository,
-        Family $family,
+        FamilyInterface $family,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($family);
         $publishedRepository->countPublishedProductsForFamily($family)->willReturn(1);
 
         $this
-            ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove family linked to a published product'))
+            ->shouldThrow(
+                new PublishedProductConsistencyException('Impossible to remove family linked to a published product')
+            )
             ->duringCheckFamilyLinkedToPublishedProduct($event);
     }
 
     function it_checks_if_the_attribute_is_linked_to_a_published_product(
         $publishedRepository,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($attribute);
@@ -100,14 +102,16 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_attribute_is_linked_to_a_published_product(
         $publishedRepository,
-        AbstractAttribute $attribute,
+        AttributeInterface $attribute,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($attribute);
         $publishedRepository->countPublishedProductsForAttribute($attribute)->willReturn(1);
 
         $this
-            ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove attribute linked to a published product'))
+            ->shouldThrow(
+                new PublishedProductConsistencyException('Impossible to remove attribute linked to a published product')
+            )
             ->duringCheckAttributeLinkedToPublishedProduct($event);
     }
 
@@ -138,13 +142,15 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         $publishedRepository->countPublishedProductsForCategoryAndChildren([2, 3, 1])->willReturn(2);
 
         $this
-            ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove category linked to a published product'))
+            ->shouldThrow(
+                new PublishedProductConsistencyException('Impossible to remove category linked to a published product')
+            )
             ->duringCheckCategoryLinkedToPublishedProduct($event);
     }
 
     function it_checks_if_the_group_is_linked_to_a_published_product(
         $publishedRepository,
-        Group $group,
+        GroupInterface $group,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($group);
@@ -155,20 +161,22 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_group_is_linked_to_a_published_product(
         $publishedRepository,
-        Group $group,
+        GroupInterface $group,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($group);
         $publishedRepository->countPublishedProductsForGroup($group)->willReturn(1);
 
         $this
-            ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove group linked to a published product'))
+            ->shouldThrow(
+                new PublishedProductConsistencyException('Impossible to remove group linked to a published product')
+            )
             ->duringCheckGroupLinkedToPublishedProduct($event);
     }
 
     function it_checks_if_the_association_type_is_linked_to_a_published_product(
         $publishedRepository,
-        AssociationType $associationType,
+        AssociationTypeInterface $associationType,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($associationType);
@@ -179,7 +187,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_association_type_is_linked_to_a_published_product(
         $publishedRepository,
-        AssociationType $associationType,
+        AssociationTypeInterface $associationType,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($associationType);
@@ -187,7 +195,9 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new PublishedProductConsistencyException('Impossible to remove association type linked to a published product')
+                new PublishedProductConsistencyException(
+                    'Impossible to remove association type linked to a published product'
+                )
             )
             ->duringCheckAssociationTypeLinkedToPublishedProduct($event);
     }

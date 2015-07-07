@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 /**
  * Product value publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ValuePublisher implements PublisherInterface
 {
@@ -60,10 +60,8 @@ class ValuePublisher implements PublisherInterface
                     $copiedData->add($copiedObject);
                 }
             }
-
         } elseif (is_object($originalData)) {
             $copiedData = $this->publisher->publish($originalData, $options);
-
         } else {
             $copiedData = $originalData;
         }

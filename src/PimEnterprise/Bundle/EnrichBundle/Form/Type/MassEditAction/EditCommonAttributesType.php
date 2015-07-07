@@ -11,17 +11,18 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
-use Symfony\Component\Form\FormBuilderInterface;
+use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType as BaseEditCommonAttributesType;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductMassEditValuesSubscriber;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * Form type of the EditCommonAttributes operation
  * configured with a data collector subscriber
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class EditCommonAttributesType extends BaseEditCommonAttributesType
 {
@@ -29,20 +30,25 @@ class EditCommonAttributesType extends BaseEditCommonAttributesType
     protected $subscriber;
 
     /**
-     * @param ProductFormViewInterface       $productFormView
-     * @param LocaleHelper                   $localeHelper
-     * @param string                         $attributeClass
-     * @param CollectProductValuesSubscriber $subscriber
+     * @param ProductFormViewInterface               $productFormView
+     * @param LocaleHelper                           $localeHelper
+     * @param CollectProductMassEditValuesSubscriber $subscriber
+     * @param string                                 $attributeClass
+     * @param string                                 $className
+     * @param string                                 $dataClass
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
         LocaleHelper $localeHelper,
+        CollectProductMassEditValuesSubscriber $subscriber,
         $attributeClass,
-        CollectProductMassEditValuesSubscriber $subscriber
+        $className,
+        $dataClass
     ) {
-        parent::__construct($productFormView, $localeHelper, $attributeClass);
+        parent::__construct($productFormView, $localeHelper, $attributeClass, $className, $dataClass);
 
         $this->subscriber = $subscriber;
+        $this->className  = $className;
     }
 
     /**

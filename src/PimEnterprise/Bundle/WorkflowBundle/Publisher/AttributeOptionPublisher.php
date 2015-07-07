@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 
 /**
  * Attribute option publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AttributeOptionPublisher implements PublisherInterface
 {
@@ -33,6 +33,6 @@ class AttributeOptionPublisher implements PublisherInterface
      */
     public function supports($object)
     {
-        return $object instanceof AttributeOption;
+        return $object instanceof AttributeOptionInterface;
     }
 }

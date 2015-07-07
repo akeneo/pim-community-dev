@@ -1,0 +1,28 @@
+pimee_catalog_rule:
+    attribute:
+        tab:
+            rule.title: Rules
+        grid:
+            is_smart.label: Smart
+        acl:
+            rule.view_permissions: View rules
+    product:
+        tooltip:
+            product_attribute_affected_by_a_rule.content:         The value of this attribute can come from the rule(s) <strong>%rule%</strong>. That means if the conditions of the rule are valid, your modification will be overridden.
+            variant_attribute_affected_by_a_rule.content: Variant group's attributes have priority on the products attributes. This means that every attribute of this variant group will override the corresponding value in the contained products. The rule(s) <strong>%rule%</strong>, will not be applied on the products.
+            loading.title:                      Loading...
+        history: Applied rule "%rule%"
+    product_value:
+        tooltip:
+            affected_by.title: 'Affected by rule(s):'
+    jobs:
+        yml_rule_import:
+            title:        Rule import in YAML
+            import.title: Rule import
+        yml_rule_export:
+            title:        Rule export in YAML
+            export.title: Rule export
+    steps:
+        product_rule_definition_reader.title: Product rule import reader
+        rule_definition_processor.title:      Product rule import processor
+        product_rule_definition_writer.title: Product rule import writer

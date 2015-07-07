@@ -15,3 +15,69 @@
     display: inline-block;
   }
 }
+
+.proposal-changes {
+  width: 100%;
+  min-width: 400px;
+  position: relative;
+
+  &[data-collapsed="true"] {
+    .details {
+      max-height: 35px;
+      transition: max-height 0s;
+    }
+
+    .mask {
+      display: block;
+      height: 40px;
+    }
+  }
+
+  .mask {
+    position: absolute;
+    background: linear-gradient(RGBa(255,255,255,0), RGBa(255,255,255,0) 60%, RGBa(255,255,255,1) 87%);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 10%;
+    display: none;
+    cursor: pointer;
+  }
+
+  .details {
+    width: 90%;
+    max-height: 10000px;
+    overflow: hidden;
+    display: inline-block;
+    transition: max-height 1s ease-in-out;
+  }
+
+  .btn-more {
+    display: none;
+    width: 8%;
+    margin-left: 2%;
+  }
+}
+
+.table-hover tbody tr:hover > td {
+  .proposal-changes {
+    .mask {
+      background: linear-gradient(RGBa(242, 235, 248,0), RGBa(242, 235, 248,0) 60%, RGBa(242, 235, 248,1) 87%);
+    }
+
+    .btn-more {
+      display: inline-block;
+    }
+  }
+}
+
+.btn-transparent, .btn-transparent:hover {
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+.icon-code-fork.from-smart {
+  margin: 0;
+  padding: 0 5px;
+}

@@ -2,17 +2,16 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 
 class OptionsComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
+        Model\ProductValueInterface $value,
+        Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
     }
@@ -34,11 +33,11 @@ class OptionsComparatorSpec extends ObjectBehavior
 
     function it_detects_changes_when_changing_options_data(
         $value,
-        AttributeOption $red,
-        AttributeOption $blue,
-        AttributeOption $yellow,
-        AttributeOption $green
-    ){
+        AttributeOptionInterface $red,
+        AttributeOptionInterface $blue,
+        AttributeOptionInterface $yellow,
+        AttributeOptionInterface $green
+    ) {
         $submittedData = [
             'options' => '42,24,76',
         ];
@@ -63,10 +62,10 @@ class OptionsComparatorSpec extends ObjectBehavior
 
     function it_detects_no_changes_when_options_are_the_same(
         $value,
-        AttributeOption $red,
-        AttributeOption $blue,
-        AttributeOption $yellow,
-        AttributeOption $green
+        AttributeOptionInterface $red,
+        AttributeOptionInterface $blue,
+        AttributeOptionInterface $yellow,
+        AttributeOptionInterface $green
     ) {
         $submittedData = [
             'options' => '42,24,76,54',

@@ -11,32 +11,35 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify as BaseClassify;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Batch operation to classify products
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class Classify extends BaseClassify
 {
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
 
     /**
      * @param CategoryManager          $categoryManager
+     * @param BulkSaverInterface       $productSaver
      * @param SecurityContextInterface $securityContext
      */
-    public function __construct(CategoryManager $categoryManager, SecurityContextInterface $securityContext)
-    {
+    public function __construct(
+        CategoryManager $categoryManager,
+        BulkSaverInterface $productSaver,
+        SecurityContextInterface $securityContext
+    ) {
+        parent::__construct($categoryManager, $productSaver);
         $this->securityContext = $securityContext;
-        $this->categoryManager = $categoryManager;
         $this->trees           = $categoryManager->getAccessibleTrees($securityContext->getToken()->getUser());
         $this->categories      = [];
     }
@@ -77,19 +80,6 @@ class Classify extends BaseClassify
     public function setNotGrantedIdentifiers($notGranted)
     {
         return $this;
-    }
-
-    /**
-     * Override to bypass the creation of a product draft
-     *
-     * @return array
-     */
-    public function getSavingOptions()
-    {
-        $options = parent::getSavingOptions();
-        $options['bypass_product_draft'] = true;
-
-        return $options;
     }
 
     /**

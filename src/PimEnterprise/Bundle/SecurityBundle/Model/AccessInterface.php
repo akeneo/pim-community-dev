@@ -16,7 +16,7 @@ use Oro\Bundle\UserBundle\Entity\Group;
 /**
  * Base interface for all access entities
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 interface AccessInterface
 {

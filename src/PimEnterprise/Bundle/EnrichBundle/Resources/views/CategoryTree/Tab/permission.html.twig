@@ -1,0 +1,47 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'pimee/manage-permissions'],
+        function ($, managePermissions) {
+            'use strict';
+
+            $(function () {
+                {% if form.vars.value.hasChildren() == false %}
+                    $('#{{form.permissions.apply_on_children.vars.id}}').parent().parent().hide();
+                {% endif %}
+
+                var options = {
+                    elementId: '#{{form.permissions.vars.id}}',
+                    changeBlockLabel: '{{ 'Changes'|trans }}',
+                    grantMessage: 'permission-changes.category.grant',
+                    revokeMessage: 'permission-changes.category.revoke',
+                    update: {
+                        add: {
+                            '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.view.vars.id }}'],
+                            '{{ form.permissions.own.vars.id }}': ['{{ form.permissions.edit.vars.id }}']
+                        },
+                        remove: {
+                            '{{ form.permissions.view.vars.id }}': ['{{ form.permissions.edit.vars.id }}'],
+                            '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.own.vars.id }}']
+                        }
+                    }
+                };
+                managePermissions(options);
+            });
+        });
+</script>
+
+<div class="tab-pane tab-permission {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
+</div>
+{% if form.permissions is defined %}
+    <div class="tab-pane" id="permissions">
+        {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
+    </div>
+{% endif %}
+
+{% if form.vars.value.id and resource_granted('pim_enrich_category_history') %}
+    <div class="tab-pane" id="history">
+        {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+        {{ dataGrid.renderHistoryGrid(form.vars.value) }}
+    </div>
+{% endif %}

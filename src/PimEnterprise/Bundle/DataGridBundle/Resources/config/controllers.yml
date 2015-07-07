@@ -1,13 +1,10 @@
-parameters:
-    pimee_datagrid.controller.published_product_export.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductExportController
-
 services:
     pimee_datagrid.controller.published_product_export:
-        class: %pimee_datagrid.controller.published_product_export.class%
+        class: %pim_datagrid.controller.product_export.class%
         parent: pim_datagrid.controller.export
         scope: request
         arguments:
             - '@pimee_workflow.repository.published_product'
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.context.catalog'
-            - '@pimee_datagrid.extension.mass_action.util.published_product_fields_builder'
+            - '@pim_datagrid.extension.mass_action.util.product_fields_builder'

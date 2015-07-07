@@ -2,16 +2,15 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model;
 
 class PricesComparatorSpec extends ObjectBehavior
 {
     function let(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
+        Model\ProductValueInterface $value,
+        Model\AttributeInterface $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
     }
@@ -21,7 +20,8 @@ class PricesComparatorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
-    function it_supports_prices_collection_type($value, $attribute) {
+    function it_supports_prices_collection_type($value, $attribute)
+    {
         $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
 
         $this->supportsComparison($value)->shouldBe(true);

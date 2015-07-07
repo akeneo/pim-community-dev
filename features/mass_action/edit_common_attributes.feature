@@ -21,7 +21,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
 
   Scenario: Successfully display only attributes I have edit permissions access
     Given I mass-edit products highheels
-    And I choose the "Edit attributes" operation
+    And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I should not see available attributes SKU in group "Product information"
     And I should not see available attributes Price and Rating in group "Marketing"

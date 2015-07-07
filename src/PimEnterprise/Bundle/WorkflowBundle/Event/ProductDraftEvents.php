@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 /**
  * ProductDraft events
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftEvents
 {

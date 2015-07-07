@@ -17,7 +17,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             type: datetime
     manyToOne:
         family:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            targetEntity: Pim\Bundle\CatalogBundle\Model\FamilyInterface
             joinColumns:
                 family_id:
                     referencedColumnName: id
@@ -54,6 +54,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             cascade:
                 - persist
                 - refresh
+                - detach
         values:
             targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
             orphanRemoval: true
@@ -62,6 +63,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 - remove
                 - persist
                 - refresh
+                - detach
         completenesses:
             targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompletenessInterface
             mappedBy: product
@@ -69,6 +71,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 - remove
                 - persist
                 - refresh
+                - detach
     oneToOne:
         version:
             targetEntity: Pim\Bundle\VersioningBundle\Model\Version

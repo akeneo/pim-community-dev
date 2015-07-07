@@ -44,3 +44,14 @@ connector:
                         reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_base_connector.processor.locale_access
                         writer:    pim_base_connector.writer.doctrine
+
+        fixtures_rule_yml:
+            title: pim_installer.jobs.fixtures_locale_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_rule_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pimee_catalog_rule.processor.denormalization.rule_definition
+                        writer:    pimee_catalog_rule.writer.doctrine.rule_definition

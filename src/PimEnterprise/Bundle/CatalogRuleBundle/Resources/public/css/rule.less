@@ -1,0 +1,122 @@
+
+/* Rules */
+
+.rule-table {
+  width: 95%;
+  margin: 15px 2.5%;
+  border-collapse: separate;
+  border-spacing: 0px 8px;
+
+  col.code {
+    width: 150px;
+  }
+
+  th {
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  .rule-row {
+    .rule-cell {
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      vertical-align: top;
+
+      &:first-child {
+        border-left: 1px solid #ccc;
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+        vertical-align: middle;
+      }
+
+      &:last-child {
+        border-right: 1px solid #ccc;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-left: 1px solid #ccc;
+        padding: 0 5px;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      &.rule-code {
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: center;
+      }
+    }
+
+    .rule-item {
+      margin: 3px 3px 3px 0;
+      vertical-align: top;
+    }
+  }
+
+  .no-rule {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+}
+
+.rule-item {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  display: block;
+  line-height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  float: left;
+  clear: both;
+
+  & > span {
+    display: inline-block;
+    box-sizing: border-box;
+    border: none;
+    border-right: 1px solid #ddd;
+    padding: 0px 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    vertical-align: top; //Yeah there is no other choices, we have to do that
+
+    &:last-child {
+      border: none;
+    }
+  }
+
+  .rule-item-emphasize {
+    background-color: #F6F6F6;
+    color: #000;
+
+    &:first-child {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  }
+
+  .rule-item-context {
+    display: inline-block;
+    margin: 2px 5px 2px 12px;
+    border: 1px solid #E3E3E3;
+    line-height: 22px;
+    border-radius: 5px;
+
+    & > span {
+      padding: 0 5px;
+      display: inline-block;
+
+      &:not(:first-child) {
+        border-left: 1px solid #E3E3E3;
+      }
+
+      .flag {
+        position: relative;
+        margin: auto 3px auto auto;
+        display: inline-block;
+        top: 2px;
+      }
+    }
+  }
+}

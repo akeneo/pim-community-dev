@@ -1,0 +1,20 @@
+
+$('.from-smart[data-async-content]').on('mouseover', function () {
+    var $this = $(this);
+    var url = $this.data('async-content');
+
+    $this.attr('data-content', '{{ "pimee_catalog_rule.product.tooltip.loading.title"|trans }}');
+
+    $this.off('mouseover');
+    $.get(url, function (data) {
+        var codes = [];
+        for (var key in data) {
+            codes.push(data[key].code);
+        }
+
+        var message = "{{ viewElement.alias|trans|capitalize|raw }}";
+        message = message.replace('%rule%', codes.join(', '));
+
+        $this.attr('data-content', message).data('popover').setContent();
+    });
+});

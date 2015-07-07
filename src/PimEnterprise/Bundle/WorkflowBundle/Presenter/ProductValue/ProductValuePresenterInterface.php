@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 /**
  * Present product value in readable format
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 interface ProductValuePresenterInterface
 {

@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\ProductValuePresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue\ProductValuePresenterInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Twig extension to present a product value
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ProductValuePresenterExtension extends \Twig_Extension
 {

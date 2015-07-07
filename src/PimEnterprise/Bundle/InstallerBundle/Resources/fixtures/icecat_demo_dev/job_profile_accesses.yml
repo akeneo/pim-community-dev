@@ -23,7 +23,13 @@ job_profile_accesses:
     csv_group_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
+    csv_variant_group_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     csv_group_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
+    csv_variant_group_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
     csv_attribute_import:
@@ -36,5 +42,11 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
     csv_option_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    yml_rule_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    yml_rule_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]

@@ -1,0 +1,22 @@
+parameters: ~
+
+services:
+    pimee_workflow.doctrine.query.published_product_query_factory:
+        class: %pim_catalog.query.product_query_builder_factory.class%
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.object_manager.product'
+            - '%pimee_workflow.entity.published_product.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_cursor'
+
+    # PQB common filter definitions (implement either in ORM or MongoDB ODM)
+    pimee_workflow.doctrine.query.filter.original_product_id:
+        class: %pim_catalog.doctrine.query.filter.product_id.class%
+        arguments:
+            - ['originalProduct']
+            - ['=', 'IN']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }

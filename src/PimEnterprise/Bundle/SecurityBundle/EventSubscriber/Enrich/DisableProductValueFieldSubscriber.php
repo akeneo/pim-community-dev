@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
+use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\EnrichBundle\Event\ProductEvents;
-use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Disable the product value form
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class DisableProductValueFieldSubscriber implements EventSubscriberInterface
 {

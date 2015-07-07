@@ -17,7 +17,7 @@ use Pim\Bundle\VersioningBundle\Model\Version;
 /**
  * Published product interface
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface PublishedProductInterface extends ProductInterface
 {

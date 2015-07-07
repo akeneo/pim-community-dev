@@ -13,25 +13,25 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Locale access repository
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class LocaleAccessRepository extends EntityRepository
 {
     /**
      * Get group that have the specified access to a locale
      *
-     * @param Locale $locale
-     * @param string $accessLevel
+     * @param LocaleInterface $locale
+     * @param string          $accessLevel
      *
      * @return Group[]
      */
-    public function getGrantedUserGroups(Locale $locale, $accessLevel)
+    public function getGrantedUserGroups(LocaleInterface $locale, $accessLevel)
     {
         $accessField = $this->getAccessField($accessLevel);
         $qb = $this->createQueryBuilder('a');
@@ -49,12 +49,12 @@ class LocaleAccessRepository extends EntityRepository
      * Revoke access to a locales
      * If excluded user groups are provided, access will not be revoked for these groups
      *
-     * @param Locale $locale
-     * @param array  $excludedUserGroups
+     * @param LocaleInterface $locale
+     * @param array           $excludedUserGroups
      *
      * @return mixed
      */
-    public function revokeAccess(Locale $locale, array $excludedUserGroups = [])
+    public function revokeAccess(LocaleInterface $locale, array $excludedUserGroups = [])
     {
         $qb = $this->createQueryBuilder('a');
         $qb

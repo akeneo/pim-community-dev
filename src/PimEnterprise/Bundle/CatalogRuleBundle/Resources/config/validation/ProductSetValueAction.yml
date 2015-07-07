@@ -1,0 +1,24 @@
+PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction:
+    constraints:
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueAction: ~
+    properties:
+        field:
+           - Type:
+                type: string
+           - NotBlank: ~
+           - Length:
+               max: 255
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
+        value:
+           - NotBlank:
+                message: The key "value" is missing or empty.
+        scope:
+            - Type:
+                type: string
+            - Length:
+                max: 100
+        locale:
+            - Type:
+                type: string
+            - Length:
+                max: 100

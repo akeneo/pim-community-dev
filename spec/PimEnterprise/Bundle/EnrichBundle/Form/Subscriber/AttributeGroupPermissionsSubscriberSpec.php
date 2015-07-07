@@ -2,14 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
+use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
 {
@@ -18,7 +18,7 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
         SecurityFacade $securityFacade,
         FormEvent $event,
         Form $form,
-        AttributeGroup $group,
+        AttributeGroupInterface $group,
         Form $viewForm,
         Form $editForm
     ) {
@@ -81,7 +81,8 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
         $this->postSubmit($event);
     }
 
-    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid($event, $form, $manager) {
+    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid($event, $form, $manager)
+    {
         $form->isValid()->willReturn(false);
 
         $manager->setAccess(Argument::cetera())->shouldNotBeCalled();

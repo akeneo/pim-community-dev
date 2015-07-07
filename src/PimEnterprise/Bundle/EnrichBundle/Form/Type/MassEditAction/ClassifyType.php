@@ -18,10 +18,21 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Form type for the Classify operation to add not granted identifiers
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ClassifyType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,7 +48,7 @@ class ClassifyType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'PimEnterprise\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\Classify',
+                'data_class' => $this->dataClass,
             ]
         );
     }

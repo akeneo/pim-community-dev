@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener;
 
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 /**
  * Inject the product id for product draft datagrid
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class InjectProductForProductDraftSubscriber
 {

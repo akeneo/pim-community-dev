@@ -3,14 +3,14 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Prophecy\Argument;
 
 class MetadataSubscriberSpec extends ObjectBehavior
 {
@@ -29,8 +29,8 @@ class MetadataSubscriberSpec extends ObjectBehavior
 
     function it_adds_value_changeset_metadata(
         ChangeSetEvent $event,
-        AbstractProductValue $value,
-        AbstractAttribute $attribute
+        ProductValueInterface $value,
+        AttributeInterface $attribute
     ) {
         $event->getChangeSet()->willReturn([
             'varchar' => 'foo',

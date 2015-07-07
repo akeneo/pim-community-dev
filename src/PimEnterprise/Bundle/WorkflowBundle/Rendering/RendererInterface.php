@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Rendering;
 /**
  * A value diff renderer
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 interface RendererInterface
 {

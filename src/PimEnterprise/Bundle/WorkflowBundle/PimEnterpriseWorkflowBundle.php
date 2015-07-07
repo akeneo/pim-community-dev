@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * PIM Enterprise Workflow Bundle
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PimEnterpriseWorkflowBundle extends Bundle
 {
@@ -31,7 +31,7 @@ class PimEnterpriseWorkflowBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass());
+        $container->addCompilerPass(new Compiler\ResolveDoctrineTargetModelsPass());
 
         $mappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\WorkflowBundle\Model'
@@ -41,7 +41,7 @@ class PimEnterpriseWorkflowBundle extends Bundle
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $mappings,
                 array('doctrine.orm.entity_manager'),
-                'pim_catalog.storage_driver.doctrine/orm'
+                'akeneo_storage_utils.storage_driver.doctrine/orm'
             )
         );
 
@@ -51,7 +51,7 @@ class PimEnterpriseWorkflowBundle extends Bundle
                 $mongoDBClass::createYamlMappingDriver(
                     $mappings,
                     array('doctrine.odm.mongodb.document_manager'),
-                    'pim_catalog.storage_driver.doctrine/mongodb-odm'
+                    'akeneo_storage_utils.storage_driver.doctrine/mongodb-odm'
                 )
             );
         }

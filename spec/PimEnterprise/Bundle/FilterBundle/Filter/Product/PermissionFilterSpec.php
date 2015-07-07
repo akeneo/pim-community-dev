@@ -2,18 +2,17 @@
 
 namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
-use PhpSpec\ObjectBehavior;
-use Symfony\Component\Form\FormFactoryInterface;
-use Prophecy\Argument;
-use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Oro\Bundle\UserBundle\Entity\User;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\UserBundle\Entity\User;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class PermissionFilterSpec extends ObjectBehavior
 {

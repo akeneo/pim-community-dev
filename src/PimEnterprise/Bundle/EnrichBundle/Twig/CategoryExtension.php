@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
-use Pim\Bundle\EnrichBundle\Twig\CategoryExtension as BaseCategoryExtension;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\EnrichBundle\Twig\CategoryExtension as BaseCategoryExtension;
 
 /**
  * Overriden Twig extension to allow to count products or published products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class CategoryExtension extends BaseCategoryExtension
 {
@@ -32,11 +32,16 @@ class CategoryExtension extends BaseCategoryExtension
      *
      * @param ProductCategoryManager $manager
      * @param ProductCategoryManager $publishedManager
+     * @param int|null               $productsLimitForRemoval
      */
-    public function __construct(ProductCategoryManager $manager, ProductCategoryManager $publishedManager, $productsLimitForRemoval = null)
-    {
+    public function __construct(
+        ProductCategoryManager $manager,
+        ProductCategoryManager $publishedManager,
+        $productsLimitForRemoval = null
+    ) {
         parent::__construct($manager, $productsLimitForRemoval);
-        $this->publishedManager = $publishedManager;
+        $this->publishedManager        = $publishedManager;
+        $this->productsLimitForRemoval = $productsLimitForRemoval;
     }
 
     /**

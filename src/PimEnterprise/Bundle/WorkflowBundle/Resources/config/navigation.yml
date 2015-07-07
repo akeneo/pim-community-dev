@@ -7,15 +7,24 @@ oro_menu_config:
             extras:
                 routes: ['/^pimee_workflow_published_product_\w+$/']
                 position: 15
+        pimee_workflow_proposal:
+            label: pim_menu.item.proposal
+            route: pimee_workflow_proposal_index
+            aclResourceId: OWN_AT_LEAST_ONE_CATEGORY
+            extras:
+                routes: ['/^pimee_workflow_proposal_\w+$/']
+                position: 60
     tree:
         application_menu:
             children:
                 pim_enrich_tab:
                     children:
                         pimee_workflow_published_product: ~
+                        pimee_workflow_proposal: ~
 
 oro_titles:
     pimee_workflow_published_product_index: pim_title.published_product.index
     pimee_workflow_published_product_view:  pim_title.published_product.view
     pimee_enrich_product_dispatch:          pim_title.product.dispatch
     pimee_enrich_product_show:              pim_title.product.show
+    pimee_workflow_proposal_index:          pim_title.proposal.index

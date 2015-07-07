@@ -1,4 +1,4 @@
-@javascript @info More user-friendly validation to be done in the scope of @jira https://akeneo.atlassian.net/browse/PIM-2029
+@info More user-friendly validation to be done in the scope of @jira https://akeneo.atlassian.net/browse/PIM-2029
 Feature: Validate file attributes of a product
   In order to keep my data consistent
   As a regular user
@@ -11,7 +11,7 @@ Feature: Validate file attributes of a product
       | brief      | Brief       | file | no       | 0.01          | jpg                | info  |
       | attachment | Attachment  | file | yes      | 0.01          | jpg                | info  |
     And the following family:
-      | code | label-en_US | attributes                 |
+      | code | label-en_US | attributes             |
       | baz  | Baz         | sku, brief, attachment |
     And the following product:
       | sku | family | categories        |

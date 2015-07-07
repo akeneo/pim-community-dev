@@ -12,20 +12,20 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
 
 /**
  * Attribute Group Access entity
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AttributeGroupAccess implements AttributeGroupAccessInterface
 {
     /** @var integer */
     protected $id;
 
-    /** @var AttributeGroup */
+    /** @var AttributeGroupInterface */
     protected $attributeGroup;
 
     /** @var Group */
@@ -56,7 +56,7 @@ class AttributeGroupAccess implements AttributeGroupAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setAttributeGroup(AttributeGroup $attributeGroup)
+    public function setAttributeGroup(AttributeGroupInterface $attributeGroup)
     {
         $this->attributeGroup = $attributeGroup;
 

@@ -11,21 +11,21 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
- * Locale access interface
+ * LocaleInterface access interface
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 interface LocaleAccessInterface extends AccessInterface
 {
     /**
-     * @param Locale $locale
+     * @param LocaleInterface $locale
      *
      * @return LocaleAccessInterface
      */
-    public function setLocale(Locale $locale);
+    public function setLocale(LocaleInterface $locale);
 
     /**
      * @return Locale

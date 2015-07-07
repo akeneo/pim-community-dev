@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Rendering;
 /**
  * A \Diff instance factory
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class DiffFactory
 {

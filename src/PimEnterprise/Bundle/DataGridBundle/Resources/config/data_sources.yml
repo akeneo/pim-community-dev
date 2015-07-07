@@ -16,6 +16,7 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_datagrid.datasource.result_record.hydrator.product'
+            - '@pimee_workflow.doctrine.query.published_product_query_factory'
         calls:
             - [ setMassActionRepository, ['@pimee_workflow.repository.published_product_mass_action' ]]
         tags:
@@ -32,10 +33,22 @@ services:
     pim_datagrid.datasource.support_resolver:
         class: %pim_datagrid.datasource.support_resolver.class%
         arguments:
-            - %pim_catalog.storage_driver%
+            - %pim_catalog_product_storage_driver%
         calls:
             - [addSmartDatasource, ['pim_datasource_product']]
+            - [addSmartDatasource, ['pim_datasource_associated_product']]
             - [addSmartDatasource, ['pim_datasource_smart']]
             - [addSmartDatasource, ['pimee_datasource_product_history']]
             - [addSmartDatasource, ['pimee_datasource_published_product']]
             - [addSmartDatasource, ['pimee_datasource_product_draft']]
+
+    pim_datagrid.datasource.adapter_resolver:
+        class: %pim_datagrid.datasource.adapter_resolver.class%
+        arguments:
+            - '@pim_datagrid.datasource.support_resolver'
+            - %pim_filter.datasource.orm_adapter.class%
+            - %pim_filter.datasource.product_orm_adapter.class%
+        calls:
+            - [addProductDatasource, ['pim_datasource_product']]
+            - [addProductDatasource, ['pim_datasource_associated_product']]
+            - [addProductDatasource, ['pimee_datasource_published_product']]

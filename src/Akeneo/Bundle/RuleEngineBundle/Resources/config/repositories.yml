@@ -1,0 +1,11 @@
+parameters:
+    akeneo_rule_engine.repository.rule_definition.class: Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\Repository\RuleDefinitionRepository
+
+services:
+    akeneo_rule_engine.repository.rule_definition:
+        class: %akeneo_rule_engine.repository.rule_definition.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%akeneo_rule_engine.model.rule_definition.class%]
+        tags:
+            - { name: 'pim_repository' }

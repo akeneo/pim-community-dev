@@ -3,9 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class MediaComparatorSpec extends ObjectBehavior
 {
@@ -15,7 +13,7 @@ class MediaComparatorSpec extends ObjectBehavior
     }
 
     function it_get_changes_when_add_file(
-        AbstractProductValue $value
+        ProductValueInterface $value
     ) {
         $submittedData = [
             'id' => 1,
@@ -32,7 +30,7 @@ class MediaComparatorSpec extends ObjectBehavior
     }
 
     function it_get_changes_when_removing_file(
-        AbstractProductValue $value
+        ProductValueInterface $value
     ) {
         $submittedData = [
             'id' => 1,
@@ -44,7 +42,7 @@ class MediaComparatorSpec extends ObjectBehavior
     }
 
     function it_does_get_changes_when_no_info_is_available(
-        AbstractProductValue $value
+        ProductValueInterface $value
     ) {
         $submittedData = [
             'id' => 1,

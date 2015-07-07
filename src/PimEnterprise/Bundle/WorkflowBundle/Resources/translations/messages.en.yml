@@ -4,6 +4,8 @@ pimee_workflow:
         created: Proposed at
         changes: Changes
         locale:  Locale context
+        product:
+            label: Product label
         status:
             label: Status
             working_copy: Working copy
@@ -33,11 +35,13 @@ btn.publish: Publish
 btn.unpublish: Unpublish
 flash.product.published: The product has been successfully published.
 flash.product.unpublished: The product has been successfully unpublished.
-flash.product_draft.approve.success: The product draft has been applied successfully.
-flash.product_draft.approve.error: The product draft can't be applied due to the following error. %error%
+flash.product_draft.approve.success: The proposal has been applied successfully.
+flash.product_draft.approve.error: The proposal can't be applied due to the following error. %error%
+flash.product_draft.refuse.success: The proposal has been refused.
 pim_menu:
     item:
         published_product: Published products
+        proposal:          Proposals
 pim_title:
     published_product:
         index: Published products
@@ -45,9 +49,13 @@ pim_title:
     product:
         dispatch: "Products %product.sku%"
         show: "Products %product.sku% | Show"
+    proposal:
+        index: Proposals
 
 btn.editworkingcopy: Edit working copy
 confirmation:
     product:
         publish: Are you sure you want to publish this product ?
         unpublish: Are you sure you want to unpublish this product ?
+
+proposal.overview: Proposals

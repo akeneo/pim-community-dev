@@ -1,0 +1,11 @@
+parameters:
+    akeneo_rule_engine.event_subscriber.log_execution.class: Akeneo\Bundle\RuleEngineBundle\EventSubscriber\LogExecutionSubscriber
+    akeneo_rule_engine.event_subscriber.stop_watch.class:    Akeneo\Bundle\RuleEngineBundle\EventSubscriber\StopWatchSubscriber
+
+services:
+    akeneo_rule_engine.event_subscriber.log_exexution:
+        class: %akeneo_rule_engine.event_subscriber.log_execution.class%
+        arguments:
+            - '@logger'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -6,9 +6,9 @@ Feature: Expose product data via a REST API
   Background:
     Given a "clothing" catalog configuration
     And the following product:
-      | sku        | name-en_US | description-en_US-mobile | description-en_US-tablet | price-EUR | price-USD | categories   | legacy_attribute |
-      | sandals    | My sandals | My great sandals         | My great new sandals     | 20        | 30        | sandals      | old value        |
-      | oldsandals | My sandals | My great sandals         | My great new sandals     | 20        | 30        | old_sandals  | old value        |
+      | sku        | name-en_US | description-en_US-mobile | description-en_US-tablet | price-EUR | price-USD | categories  | legacy_attribute |
+      | sandals    | My sandals | My great sandals         | My great new sandals     | 20        | 30        | sandals     | old value        |
+      | oldsandals | My sandals | My great sandals         | My great new sandals     | 20        | 30        | old_sandals | old value        |
 
   @skip
   Scenario: Successfully retrieve a product by applying permissions on attribute groups

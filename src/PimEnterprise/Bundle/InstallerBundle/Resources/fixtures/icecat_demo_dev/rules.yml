@@ -1,0 +1,126 @@
+rules:
+    camera_set_canon_brand:
+        conditions:
+            - field:    family.code
+              operator: IN
+              value:
+                - camcorders
+            - field:    name
+              operator: CONTAINS
+              value:    Canon
+        actions:
+            - type:  set_value
+              field: camera_brand
+              value: canon_brand
+    camera_copy_name_to_model:
+        conditions:
+            - field:    family.code
+              operator: IN
+              value:
+                - camcorders
+        actions:
+            - type:       copy_value
+              from_field: name
+              to_field:   camera_model_name
+    camera_set_camera_type:
+        conditions:
+            - field:    family.code
+              operator: IN
+              value:
+                - camcorders
+            - field:    name
+              operator: CONTAINS
+              value:    Canon
+        actions:
+            - type:  set_value
+              field: camera_type
+              value: compact
+    camera_set_autofocus:
+        conditions:
+            - field:    family.code
+              operator: IN
+              value:
+                - camcorders
+            - field:    name
+              operator: CONTAINS
+              value:    Canon
+        actions:
+            - type:  set_value
+              field: auto_focus_lock
+              value: true
+    camera_set_autofocus_point:
+        conditions:
+            - field:    family.code
+              operator: IN
+              value:
+                - camcorders
+            - field:    name
+              operator: CONTAINS
+              value:    Canon
+        actions:
+            - type:  set_value
+              field: auto_focus_points
+              value: 4
+    copy_description_print_us_to_ecommerce_us:
+        conditions:
+            - field:    family.code
+              operator: IN
+              value:
+                - camcorders
+        actions:
+            - type:        copy_value
+              from_field:  description
+              from_locale: en_US
+              from_scope:  print
+              to_field:    description
+              to_locale:   en_US
+              to_scope:    ecommerce
+    set_purple_tshirt_ecommerce_description:
+        priority: 100
+        conditions:
+            - field:    sku
+              operator: CONTAINS
+              value:    AKNTS_PB
+            - field:    main_color.code
+              operator: IN
+              value:
+                - purple
+        actions:
+            - type:   set_value
+              field:  description
+              locale: en_US
+              scope:  ecommerce
+              value:  My very new description for purple tshirt
+    set_tshirt_price:
+        conditions:
+            - field:    sku
+              operator: CONTAINS
+              value:    AKNTS_PB
+        actions:
+            - type:  set_value
+              field: price
+              value:
+                  - data:     12
+                    currency: EUR
+    set_tshirt_weight:
+        conditions:
+            - field:    sku
+              operator: CONTAINS
+              value:    AKNTS_PB
+        actions:
+            - type:  set_value
+              field: weight
+              value:
+                   data: 0.5
+                   unit: KILOGRAM
+    set_tshirt_style:
+        conditions:
+            - field:    sku
+              operator: CONTAINS
+              value:    AKNTS_PB
+        actions:
+            - type:  set_value
+              field: tshirt_style
+              value:
+                - sportwear
+                - vneck

@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMedia;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Present images side by side
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ImagePresenter implements PresenterInterface
 {
@@ -38,7 +38,7 @@ class ImagePresenter implements PresenterInterface
      */
     public function supports($data, array $change)
     {
-        return $data instanceof AbstractProductValue
+        return $data instanceof ProductValueInterface
             && array_key_exists('media', $change)
             && (
                 $this->isImageMimeType($data->getMedia()) || $this->isImageMimeType($change['media'])
@@ -107,11 +107,9 @@ class ImagePresenter implements PresenterInterface
             case $data instanceof ProductMedia:
                 $mimeType = $data->getMimeType();
                 break;
-
             case is_array($data) && isset($data['mimeType']):
                 $mimeType = $data['mimeType'];
                 break;
-
             default:
                 $mimeType = null;
                 break;

@@ -3,3 +3,4 @@ pimee_enrich.acl.category.edit_permissions: Manage category permissions
 pimee_enrich.acl.attribute_group.edit_permissions: Manage attribute group permissions
 pimee_importexport.acl.export_profile.edit_permissions: Manage export profile permissions
 pimee_importexport.acl.import_profile.edit_permissions: Manage import profile permissions
+pimee_enrich.groups.label: Owner groups

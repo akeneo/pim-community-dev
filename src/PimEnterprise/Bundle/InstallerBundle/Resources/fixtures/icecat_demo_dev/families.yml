@@ -132,6 +132,27 @@ families:
             - optical_zoom
             - weight
             - power_requirements
+            - camera_brand
+            - camera_model_name
+            - short_description
+            - max_image_resolution
+            - image_resolutions
+            - supported_aspect_ratios
+            - supported_image_format
+            - lens_mount_interface
+            - focus
+            - focus_adjustement
+            - auto_focus_modes
+            - auto_focus_points
+            - auto_focus_lock
+            - auto_focus_assist_beam
+            - iso_sensitivity
+            - light_exposure_modes
+            - light_exposure_corrections
+            - light_metering
+            - auto_exposure
+            - iso_sensitivity_max
+            - iso_sensitivity_min
         requirements:
             print:
                 - sku
@@ -157,6 +178,27 @@ families:
                 - camera_type
                 - sensor_type
                 - total_megapixels
+                - camera_brand
+                - camera_model_name
+                - short_description
+                - max_image_resolution
+                - image_resolutions
+                - supported_aspect_ratios
+                - supported_image_format
+                - lens_mount_interface
+                - focus
+                - focus_adjustement
+                - auto_focus_modes
+                - auto_focus_points
+                - auto_focus_lock
+                - auto_focus_assist_beam
+                - iso_sensitivity
+                - light_exposure_modes
+                - light_exposure_corrections
+                - light_metering
+                - auto_exposure
+                - iso_sensitivity_max
+                - iso_sensitivity_min
     webcams:
         labels:
             en_US: Webcams

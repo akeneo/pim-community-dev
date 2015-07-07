@@ -11,20 +11,20 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * A collector of changes that a client is sending to a product edit form
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class CollectProductMassEditValuesSubscriber implements EventSubscriberInterface
 {
@@ -37,20 +37,20 @@ class CollectProductMassEditValuesSubscriber implements EventSubscriberInterface
     /** @var MediaFactory */
     protected $factory;
 
-    /** @var LocaleRepository */
+    /** @var LocaleRepositoryInterface */
     protected $repository;
 
     /**
-     * @param ChangesCollector $collector
-     * @param MediaManager     $mediaManager
-     * @param MediaFactory     $factory
-     * @param LocaleRepository $repository
+     * @param ChangesCollector          $collector
+     * @param MediaManager              $mediaManager
+     * @param MediaFactory              $factory
+     * @param LocaleRepositoryInterface $repository
      */
     public function __construct(
         ChangesCollector $collector,
         MediaManager $mediaManager,
         MediaFactory $factory,
-        LocaleRepository $repository
+        LocaleRepositoryInterface $repository
     ) {
         $this->collector = $collector;
         $this->mediaManager = $mediaManager;

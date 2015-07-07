@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * ProductDraft event
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftEvent extends Event
 {

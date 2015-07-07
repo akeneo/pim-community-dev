@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Behat\Context\Step;
+use Behat\Mink\Driver\Selenium2Driver;
 use Context\WebUser as BaseWebUser;
 
 /**
@@ -15,6 +16,8 @@ class EnterpriseWebUser extends BaseWebUser
 {
     /**
      * Override parent
+     *
+     * {@inheritdoc}
      */
     public function iChooseTheOperation($operation)
     {
@@ -36,7 +39,10 @@ class EnterpriseWebUser extends BaseWebUser
         new Step\Given('I should not see an "input" element');
     }
     /**
-    * @Then /^the view mode field (.*) should contain "([^"]*)"$/
+     * @param string $fieldName
+     * @param string $expected
+     *
+     * @Then /^the view mode field (.*) should contain "([^"]*)"$/
      */
     public function theProductViewModeFieldValueShouldBe($fieldName, $expected = '')
     {
@@ -50,6 +56,25 @@ class EnterpriseWebUser extends BaseWebUser
                     $fieldName,
                     $expected,
                     $actual
+                )
+            );
+        }
+    }
+
+    /**
+     * @Then /^I should see the smart attribute tooltip$/
+     */
+    public function iShouldSeeTheTooltip()
+    {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = 'return $(\'.icon-code-fork[data-async-content]\').length > 0';
+            $found = $this->getSession()->evaluateScript($script);
+            if ($found) {
+                return;
+            }
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to see smart attribute tooltip'
                 )
             );
         }

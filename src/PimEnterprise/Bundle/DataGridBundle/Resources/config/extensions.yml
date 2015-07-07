@@ -2,10 +2,11 @@ services:
     pim_datagrid.extension.selector.orm_selector:
         class: %pim_datagrid.extension.selector.orm_selector.class%
         arguments:
-            - %pim_catalog.storage_driver%
+            - %pim_catalog_product_storage_driver%
             - '@oro_datagrid.datagrid.request_params'
         calls:
             - [addEligibleDatasource, ['pim_datasource_product']]
+            - [addEligibleDatasource, ['pim_datasource_associated_product']]
             - [addEligibleDatasource, ['pimee_datasource_published_product']]
         tags:
              - { name: oro_datagrid.extension }

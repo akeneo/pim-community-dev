@@ -2,14 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
+use Prophecy\Argument;
 
 class JobProfileAccessManagerSpec extends ObjectBehavior
 {
@@ -49,7 +49,7 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         $this->setAccess($jobProfile, [$user, $admin], [$admin]);
     }
 
-    function it_should_not_revoke_access_to_a_job_profile_on_creation(
+    function it_does_not_revoke_access_to_a_job_profile_on_creation(
         JobInstance $jobProfile,
         $repository,
         $objectManager,

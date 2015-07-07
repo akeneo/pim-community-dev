@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 /**
  * Present a date value
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class DatePresenter implements ProductValuePresenterInterface
 {

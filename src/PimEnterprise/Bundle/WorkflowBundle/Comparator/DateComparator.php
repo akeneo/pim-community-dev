@@ -11,21 +11,21 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Comparator which calculate change set for dates
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  *
- * @see       PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
+ * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class DateComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(AbstractProductValue $value)
+    public function supportsComparison(ProductValueInterface $value)
     {
         return 'pim_catalog_date' === $value->getAttribute()->getAttributeType();
     }
@@ -33,7 +33,7 @@ class DateComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getChanges(ProductValueInterface $value, $submittedData)
     {
         if (!isset($submittedData['date'])) {
             return;

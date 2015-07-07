@@ -11,21 +11,21 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Published products repository
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface,
  PublishedAssociationRepositoryInterface
@@ -109,7 +109,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      *
      * TODO; find a way to do it efficiently
      */
-    public function findOneByTypeAndOwner(AssociationType $type, $ownerId)
+    public function findOneByTypeAndOwner(AssociationTypeInterface $type, $ownerId)
     {
         // retrieve the product that owns our published association
         $product = $this->find($ownerId);
@@ -182,7 +182,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForFamily(Family $family)
+    public function countPublishedProductsForFamily(FamilyInterface $family)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->field('family')->equals($family->getId());
@@ -204,7 +204,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
+    public function countPublishedProductsForAttribute(AttributeInterface $attribute)
     {
         return $this->createQueryBuilder('pp')
             ->field('values.attribute')->equals($attribute->getId())
@@ -215,7 +215,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForGroup(Group $group)
+    public function countPublishedProductsForGroup(GroupInterface $group)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->field('groupIds')->in([$group->getId()]);
@@ -226,7 +226,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAssociationType(AssociationType $associationType)
+    public function countPublishedProductsForAssociationType(AssociationTypeInterface $associationType)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->field('associations.associationType')->equals($associationType->getId());
@@ -237,7 +237,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForAttributeOption(AttributeOption $option)
+    public function countPublishedProductsForAttributeOption(AttributeOptionInterface $option)
     {
         $qb = $this->createQueryBuilder('pp');
 
@@ -248,21 +248,5 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         }
 
         return $qb->getQuery()->count();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAvailableAttributeIdsToExport(array $productIds)
-    {
-        $qb = $this->createQueryBuilder('pp');
-        $qb
-            ->field('_id')->in($productIds)
-            ->distinct('values.attribute')
-            ->hydrate(false);
-
-        $cursor = $qb->getQuery()->execute();
-
-        return $cursor->toArray();
     }
 }

@@ -25,7 +25,7 @@ Feature: Create product drafts for new attributes added to the product
       | code           | attributes                                                    |
       | security_vests | sku,name,length,price,side_view,video,size,weather_conditions |
     And I am logged in as "Mary"
-    And the following file to import:
+    And the following csv file to import:
       """
       sku;family;categories
       bullet_proof_vest;security_vests;jackets

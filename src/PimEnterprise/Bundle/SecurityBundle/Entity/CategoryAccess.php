@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 /**
  * Category Access entity
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryAccess implements CategoryAccessInterface
 {

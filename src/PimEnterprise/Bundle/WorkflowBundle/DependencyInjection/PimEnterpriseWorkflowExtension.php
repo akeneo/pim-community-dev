@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * PimEnterprise\Bundle\WorkflowBundle\DependencyInjection
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class PimEnterpriseWorkflowExtension extends Extension
 {
@@ -35,17 +35,17 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('presenters.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('managers.yml');
-        $loader->load('persisters.yml');
+        $loader->load('savers.yml');
         $loader->load('publishers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('helpers.yml');
         $loader->load('comparators.yml');
         $loader->load('factories.yml');
         $loader->load('controllers.yml');
-        $loader->load('repositories.yml');
+        $loader->load('query_builders.yml');
         $loader->load('twig.yml');
 
-        $storageDriver = $container->getParameter('pim_catalog.storage_driver');
+        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load(sprintf('storage_driver/%s.yml', $storageDriver));
     }

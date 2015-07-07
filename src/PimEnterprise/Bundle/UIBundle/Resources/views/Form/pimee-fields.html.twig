@@ -3,10 +3,27 @@
         {% if type is not defined or type != 'hidden' %}
             <div class="icons-container">
                 {% if help is defined %}
-                    <i class="icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
+                    <i class="icon-info-sign"
+                       data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
                 {% endif %}
                 {% if modified is defined %}
-                    <i class="icon-file-text-alt" data-trigger="hover" data-toggle="popover" data-placement="right" data-title="{{ 'Current value(s)'|trans }}" data-async-content="{{ modified }}" data-container="body"></i>
+                    <i class="icon-file-text-alt from-modified"
+                       data-trigger="hover" data-toggle="popover" data-placement="right"
+                       data-title="{{ 'Current value(s)'|trans }}" data-async-content="{{ modified }}"
+                       data-container="body"></i>
+                {% endif %}
+                {% if smart is defined and from_variant is not defined %}
+                    <i class="icon-code-fork from-smart"
+                       data-trigger="hover" data-toggle="popover" data-placement="right"
+                       data-title="{{ 'pimee_catalog_rule.product_value.tooltip.affected_by.title'|trans }}"
+                       data-async-content="{{ smart }}" data-container="body" data-html="true"></i>
+                {% endif %}
+                {% if from_variant is defined %}
+                    <i class="icon-lock"
+                       data-trigger="hover" data-toggle="popover" data-placement="right"
+                       data-title="{{ 'pim_enrich.product_value.tooltip.from_variant.title'|trans }}"
+                       data-content="{{ 'pim_enrich.product_value.tooltip.from_variant.content'|trans }} : {{ from_variant.code }}"
+                       data-container="body"></i>
                 {% endif %}
                 {{ form_errors(form) }}
             </div>

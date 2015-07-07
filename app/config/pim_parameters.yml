@@ -1,7 +1,7 @@
 # this file contains all non local parameters required by the PIM to work
 # if you need to override one of these parameter, you can do it directly in your own parameters.yml file
 parameters:
-    database_unix_socket: /var/run/mysqld/mysqld.sock
+    database_unix_socket: ~
 
     mailer_transport:     smtp
     mailer_host:          localhost
@@ -26,11 +26,12 @@ parameters:
 
     uservoice_key:                 ~
     mass_edit_limit:               1000
-    max_products_category_removal: 100
 
-    # Catalog storage driver can be doctrine/orm or doctrine/mongodb-odm
-    pim_catalog_storage_driver: doctrine/orm
+    # Product storage driver can be doctrine/orm or doctrine/mongodb-odm
+    pim_catalog_product_storage_driver: doctrine/orm
 
     ## Uncomment to configure mongodb
     # mongodb_server: 'mongodb://localhost:27017'
     # mongodb_database: akeneo_pim
+
+    doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema

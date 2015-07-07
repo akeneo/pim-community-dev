@@ -1,0 +1,14 @@
+parameters:
+    pimee_pdf_generator.renderer.product_pdf.class: PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer
+
+services:
+    pimee_pdf_generator.renderer.product_pdf:
+        class: %pimee_pdf_generator.renderer.product_pdf.class%
+        arguments:
+            - '@templating'
+            - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'
+            - '@pim_pdf_generator.builder.dompdf'
+            - '@pimee_workflow.helper.filter_product_values'
+            - %upload_dir%
+        tags:
+            - { name: pim_pdf_generator.renderer, priority: 100 }

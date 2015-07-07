@@ -1,0 +1,32 @@
+PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition:
+    constraints:
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueCondition: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueCondition: ~
+    properties:
+        # value is checked with \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueCondition
+        field:
+           - Type:
+                type: string
+           - NotBlank:
+                message: The key "field" is missing or empty.
+           - Length:
+                max: 255
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
+        operator:
+            - NotBlank:
+                message: The key "operator" is missing or empty.
+            - Type:
+                type: string
+            - Length:
+                max: 100
+        scope:
+            - Type:
+                type: string
+            - Length:
+                max: 100
+        locale:
+            - Type:
+                type: string
+            - Length:
+                max: 100

@@ -2,15 +2,15 @@
 
 namespace spec\PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
 {

@@ -21,11 +21,11 @@ Feature: Define permissions for a category
 
   Scenario: By default, update children when the parent's permissions are changed
     Given the following categories:
-      | code         | label-en_US   | parent    |
-      | shoes        | Shoes         |           |
-      | vintage      | Vintage       | shoes     |
-      | trendy       | Trendy        | shoes     |
-      | classy       | Classy        | shoes     |
+      | code    | label-en_US | parent |
+      | shoes   | Shoes       |        |
+      | vintage | Vintage     | shoes  |
+      | trendy  | Trendy      | shoes  |
+      | classy  | Classy      | shoes  |
     And I edit the "shoes" category
     And I visit the "Permissions" tab
     And I fill in the following information:

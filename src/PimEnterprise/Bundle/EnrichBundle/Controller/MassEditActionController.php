@@ -12,15 +12,13 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Pim\Bundle\EnrichBundle\Controller\MassEditActionController as BaseMassEditActionController;
-
-use Symfony\Component\HttpFoundation\Request;
-
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Mass edit operation controller
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class MassEditActionController extends BaseMassEditActionController
 {
@@ -35,7 +33,6 @@ class MassEditActionController extends BaseMassEditActionController
         $isValid = parent::isExecutable();
         if ($gridName !== 'product-grid') {
             return $isValid;
-
         } else {
             return $this->editableProducts();
         }

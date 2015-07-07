@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter;
 /**
  * Override filters configurator to add is owner filter in product grid
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class FiltersConfigurator extends BaseFiltersConfigurator
 {

@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
 
-use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 
 /**
  * Choice filter for product draft
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ChoiceFilter extends OroChoiceFilter
 {

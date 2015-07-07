@@ -1,12 +1,12 @@
 parameters:
-    pimee_dashboard.widget.product_draft.class: PimEnterprise\Bundle\DashboardBundle\Widget\ProductDraftWidget
+    pimee_dashboard.widget.proposal.class: PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget
 
 services:
-    pimee_dashboard.widget.product_draft:
-        class: %pimee_dashboard.widget.product_draft.class%
+    pimee_dashboard.widget.proposal:
+        class: %pimee_dashboard.widget.proposal.class%
         arguments:
-            - '@pimee_security.repository.category_access'
-            - '@pimee_workflow.repository.product_draft_ownership'
-            - '@pim_user.context.user'
+            - '@security.context'
+            - '@pimee_workflow.repository.product_draft'
+            - '@oro_user.manager'
         tags:
-            - { name: pim_dashboard.widget, alias: product_drafts }
+            - { name: pim_dashboard.widget, position: 100 }

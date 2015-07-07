@@ -11,18 +11,18 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
  * Locale voter, allows to know if products of a category can be edited or consulted by a
  * user depending on his groups
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class LocaleVoter implements VoterInterface
 {
@@ -52,7 +52,7 @@ class LocaleVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof Locale;
+        return $class instanceof LocaleInterface;
     }
 
     /**
@@ -82,8 +82,8 @@ class LocaleVoter implements VoterInterface
     /**
      * Get usr groups for specific attribute and object
      *
-     * @param string $attribute
-     * @param Locale $object
+     * @param string          $attribute
+     * @param LocaleInterface $object
      *
      * @return Group[]
      */
