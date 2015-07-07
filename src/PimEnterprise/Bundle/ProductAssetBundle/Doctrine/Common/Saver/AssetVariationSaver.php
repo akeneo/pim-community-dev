@@ -65,10 +65,9 @@ class AssetVariationSaver implements SaverInterface
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($variation);
-        if (true === $options['flush'] && true === $options['flush_only_object']) {
+
+        if (true === $options['flush']) {
             $this->objectManager->flush($variation);
-        } elseif (true === $options['flush']) {
-            $this->objectManager->flush();
         }
 
         if (true === $options['schedule']) {

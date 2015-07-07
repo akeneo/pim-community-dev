@@ -121,10 +121,10 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $variationFile     = $this->rawFileStorer->store($variationFileInfo, $this->filesystemAlias);
 
         $variationMetadata->setFile($variationFile);
-        $this->metadataSaver->save($variationMetadata, ['flush_only_object' => true]);
+        $this->metadataSaver->save($variationMetadata);
 
         $variation->setFile($variationFile);
-        $this->variationSaver->save($variation, ['flush_only_object' => true]);
+        $this->variationSaver->save($variation);
 
         $this->deleteFile($sourceFileInfo);
     }

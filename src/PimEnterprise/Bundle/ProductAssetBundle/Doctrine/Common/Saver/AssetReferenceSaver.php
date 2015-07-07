@@ -65,9 +65,8 @@ class AssetReferenceSaver implements SaverInterface
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($reference);
-        if (true === $options['flush'] && true === $options['flush_only_object']) {
-            $this->objectManager->flush($reference);
-        } elseif (true === $options['flush']) {
+
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
 
