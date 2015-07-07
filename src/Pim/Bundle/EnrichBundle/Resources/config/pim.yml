@@ -29,7 +29,7 @@ services:
          tags:
              - { name: twig.extension }
     doctrine.dbal.default.wrapped_connection:
-        factory_service:      doctrine.dbal.default_connection
+        factory_service:      doctrine.dbal.session_connection
         factory_method:       getWrappedConnection
         class:                PDO
     session.handler.pdo:

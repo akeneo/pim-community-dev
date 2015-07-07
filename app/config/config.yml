@@ -74,11 +74,20 @@ doctrine:
                 user:         "%database_user%"
                 password:     "%database_password%"
                 charset:      UTF8
+            session:
+                driver:       "%database_driver%"
+                host:         "%database_host%"
+                port:         "%database_port%"
+                unix_socket:  "%database_unix_socket%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
         types:
             datetime: Oro\Bundle\LocaleBundle\DoctrineExtensions\DBAL\Types\UTCDateTimeType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping:                true
+        auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
