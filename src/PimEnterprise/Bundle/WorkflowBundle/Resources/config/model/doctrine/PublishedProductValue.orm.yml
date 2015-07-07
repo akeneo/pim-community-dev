@@ -118,6 +118,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
                 - remove
                 - persist
                 - refresh
+            inversedBy: value
             joinColumns:
                 metric_id:
                     referencedColumnName: id

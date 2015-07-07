@@ -47,6 +47,11 @@
 - ValueActionValidator takes now ProductPropertySetterInterface and ProductPropertyCopierInterface as arguments and not anymore ProductUpdaterInterface
 - Replace argument ObjectManager by SaverInterface and RemoverInterface in `PimEnterprise\Bundle\DataGridBundle\Manager\DatagridViewManager` constructor
 
+# 1.3.x
+
+## Bug fixes
+- Fixed missing parameter in mapping
+
 # 1.3.16 (2015-06-08)
 
 # 1.3.15 (2015-06-05)
@@ -190,6 +195,11 @@
 - PIM-3548: Do not rely on the absolute file path of a media
 
 # 1.0.x
+
+# 1.0.29 (2015-07-06)
+- Update community-edition dependency to 1.2.36 version.
+
+# 1.0.28 (2015-05-29)
 
 ## Bug fixes
 - PIM-4227: Disable product versionning on category update (never used and very slow)
