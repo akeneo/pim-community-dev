@@ -30,7 +30,7 @@ class UserLoader extends LoadUserData
     {
         $this->om = $manager;
 
-        $configuration = Yaml::parse(realpath($this->getFilePath()));
+        $configuration = Yaml::parse(file_get_contents(realpath($this->getFilePath())));
 
         if (isset($configuration['users'])) {
             foreach ($configuration['users'] as $username => $data) {
