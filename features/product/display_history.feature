@@ -78,15 +78,15 @@ Feature: Display the product history
     And I should see history:
       | version | property   | value                                    |
       | 1       | categories | men_2014,men_2015_autumn,men_2015_winter |
-    When I edit the "men_2015" category
+    When I edit the "men_2015_autumn" category
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "boots" product
     When I open the history
     Then there should be 2 updates
     And I should see history:
-      | version | property   | value    |
-      | 2       | categories | men_2014 |
+      | version | property   | value                    |
+      | 2       | categories | men_2014,men_2015_winter |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when a linked attribute is removed
