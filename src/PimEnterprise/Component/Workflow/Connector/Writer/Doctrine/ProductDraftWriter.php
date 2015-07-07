@@ -69,10 +69,10 @@ class ProductDraftWriter extends BaseWriter
         foreach ($productDrafts as $productDraft) {
             if ($productDraft->getId()) {
                 $changes = $productDraft->getChanges();
-                $info = empty($changes) ? 'proposal_deleted' : 'update';
+                $info = empty($changes) ? 'proposal_deleted' : 'proposal_updated';
                 $this->stepExecution->incrementSummaryInfo($info);
             } else {
-                $this->stepExecution->incrementSummaryInfo('create');
+                $this->stepExecution->incrementSummaryInfo('proposal_created');
             }
         }
     }
