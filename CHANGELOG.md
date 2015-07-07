@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.17 (2015-07-07)
 
 ## Bug fixes
 - PIM-4494: Fix loading page when family has been sorted
