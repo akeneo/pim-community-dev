@@ -89,8 +89,8 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::POST_BIND    => 'postBind',
-            FormEvents::BIND         => 'bind'
+            FormEvents::POST_SUBMIT  => 'postSubmit',
+            FormEvents::SUBMIT       => 'submit'
         );
     }
 
@@ -131,11 +131,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * On bind event (validation)
+     * On submit event (validation)
      *
      * @param FormEvent $event
      */
-    public function bind(FormEvent $event)
+    public function submit(FormEvent $event)
     {
         $form = $event->getForm();
 
@@ -168,11 +168,11 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * On post bind event (after validation)
+     * On post submit event (after validation)
      *
      * @param FormEvent $event
      */
-    public function postBind(FormEvent $event)
+    public function postSubmit(FormEvent $event)
     {
         $form = $event->getForm();
         $data = $event->getData();
