@@ -41,8 +41,10 @@ pimee_workflow:
             view: View
     jobs:
         csv_product_draft_import:
-            title: Product draft import in CSV
-            import.title: Product draft import
+            title: Product proposal import in CSV
+            import.title: Product proposal import
+    steps:
+        product_draft_processor.title: Proposal processor
 btn.publish: Publish
 btn.unpublish: Unpublish
 

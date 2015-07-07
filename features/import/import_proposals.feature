@@ -203,3 +203,18 @@ Feature: Import proposals
     And I am on the proposals page
     Then the grid should contain 1 element
     And I should see entity my-jacket
+
+  Scenario: Skip a proposal when done on a non existing product
+    Given I am logged in as "Mary"
+    And the following CSV file to import:
+    """
+    sku;description-en_US-mobile;description-en_US-tablet;comment
+    unknow;My desc;My description;First comment
+    """
+    And the following job "clothing_product_draft_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_product_draft_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_product_draft_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "Product \"unknow\" does not exist"
