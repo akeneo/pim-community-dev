@@ -85,9 +85,9 @@ class CategoryRemover implements RemoverInterface
             $this->productSaver->saveAll(
                 $productsToUpdate,
                 [
-                    'flush' => $options['flush'],
+                    'flush'       => $options['flush'],
                     'recalculate' => false,
-                    'schedule' => false,
+                    'schedule'    => false,
                 ]
             );
         }
