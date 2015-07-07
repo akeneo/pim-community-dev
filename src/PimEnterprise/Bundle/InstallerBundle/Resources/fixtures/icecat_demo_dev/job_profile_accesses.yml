@@ -50,7 +50,7 @@ job_profile_accesses:
     yml_rule_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
-    csv_product_draft_import:
+    csv_product_proposal_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
     update_product_value:

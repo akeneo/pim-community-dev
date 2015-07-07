@@ -40,7 +40,7 @@ pimee_workflow:
             edit: Edit
             view: View
     jobs:
-        csv_product_draft_import:
+        csv_product_proposal_import:
             title: Product proposal import in CSV
             import.title: Product proposal import
         approve_product_draft:

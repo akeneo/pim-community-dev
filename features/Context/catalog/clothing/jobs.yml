@@ -144,7 +144,7 @@ jobs:
             withHeader: true
     clothing_product_draft_import:
         connector: Akeneo CSV Connector
-        alias:     csv_product_draft_import
+        alias:     csv_product_proposal_import
         label:     Demo product draft import
         type:      import
         configuration:
