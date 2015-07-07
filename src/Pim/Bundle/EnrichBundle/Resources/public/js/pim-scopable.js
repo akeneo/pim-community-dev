@@ -149,8 +149,8 @@ define(
 
                 this._reindexFields();
 
-                _.each(this.fields, function (field) {
-                    this._addField(field);
+                _.each(this.fields, function ($field) {
+                    this._addField($field);
                 }, this);
 
                 this.label = this.$el.find('.control-label').first().get(0).outerHTML;
@@ -217,8 +217,8 @@ define(
                 return this;
             },
 
-            _addField: function (field) {
-                this.fieldViews.push(new ScopableField({ el: field }));
+            _addField: function ($field) {
+                this.fieldViews.push(new ScopableField({ el: $field }));
 
                 return this;
             },
@@ -269,6 +269,16 @@ define(
                 return this;
             },
 
+            _refreshFieldsDisplay: function () {
+                _.each(this.fields, function ($field) {
+                    if (this.expanded || $field.hasClass('first')) {
+                        this._showField($field);
+                    } else {
+                        this._hideField($field);
+                    }
+                }, this);
+            },
+
             _toggle: function (e) {
                 if (e) {
                     e.preventDefault();
@@ -280,27 +290,26 @@ define(
                 this.skipUIInit = true;
                 this._toggle();
 
-                _.each(this.fields, function (field) {
-                    if ($(field).data('scope') === scope) {
-                        $(field).addClass('first');
-                        this._setFieldFirst(field);
-                    } else {
-                        $(field).removeClass('first');
-                    }
-                }, this);
-
-                this.skipUIInit = false;
-                this._toggle();
+                this._setFieldFirst(this.$el.find('[data-scope="' + scope + '"]:first'));
+                this._refreshFieldsDisplay();
+                this._initUI();
 
                 return this;
             },
 
             _reindexFields: function () {
-                this.fields = this.$el.find('[data-scope]');
+                this.fields = _.map(this.$el.find('[data-scope]'), function (field) {
+                    return $(field);
+                });
+
+                if (this.$el.find('[data-scope]').length) {
+                    _.first(this.fields).addClass('first');
+                }
             },
 
-            _setFieldFirst: function (field) {
-                var $field = $(field);
+            _setFieldFirst: function ($field) {
+                this.$el.find('[data-scope]').removeClass('first');
+                $field.addClass('first');
 
                 var $target = this.$el.find('>label');
                 if ($target.length) {
@@ -330,8 +339,8 @@ define(
             },
 
             _destroyUI: function () {
-                _.each(this.fields, function (field) {
-                    var $textarea = $(field).find('textarea.wysiwyg');
+                _.each(this.fields, function ($field) {
+                    var $textarea = $field.find('textarea.wysiwyg');
                     if ($textarea.length) {
                         wysiwyg.destroy($textarea);
                     }
@@ -342,8 +351,8 @@ define(
 
             _initUI: function () {
                 if (!this.skipUIInit) {
-                    _.each(this.fields, function (field) {
-                        var $textarea = $(field).find('textarea.wysiwyg');
+                    _.each(this.fields, function ($field) {
+                        var $textarea = $field.find('textarea.wysiwyg');
                         if ($textarea.length) {
                             wysiwyg.init($textarea);
                         }
