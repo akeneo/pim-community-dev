@@ -178,3 +178,28 @@ Feature: Import proposals
     And I wait for the "clothing_product_draft_import" job to finish
     Then there should be 0 proposal
     And I should see "deleted 1"
+
+  Scenario: Update a proposal with same file format than product import
+    Given I am logged in as "Mary"
+    And the following product drafts:
+      | product   | status | author                        | result                                                                   |
+      | my-jacket | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}]}} |
+    And the following CSV file to import:
+    """
+    sku;description-en_US-mobile;description-en_US-tablet;comment;family;groups;categories;enabled;PACK-groups;PACK-products
+    my-jacket;My desc;My description;First comment;jacket;mygroup;cat1,cat2;1;mygroup;myprod1,myprod2
+    """
+    And the following job "clothing_product_draft_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_product_draft_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_product_draft_import" job to finish
+    Then there should be 1 proposal
+    And I should get the following proposal:
+      | username                      | product   | result                                                                                                                                                                                                                                                                    |
+      | clothing_product_draft_import | my-jacket | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My jacket"}],"description":[{"locale":"en_US","scope":"mobile","data":"My desc"},{"locale":"en_US","scope":"tablet","data":"My description"}],"comment":[{"locale":null,"scope":null,"data":"First comment"}]}} |
+    When I logout
+    And I am logged in as "Julia"
+    And I am on the proposals page
+    Then the grid should contain 1 element
+    And I should see entity my-jacket
