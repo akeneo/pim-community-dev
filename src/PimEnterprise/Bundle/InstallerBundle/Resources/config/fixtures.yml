@@ -32,10 +32,3 @@ asset_categories:
     yml:
         reader:    pim_base_connector.reader.file.yaml_multiple
         processor: pimee_base_connector.processor.asset_category
-
-asset_tags:
-    order: 30
-    multiple: true
-    yml:
-        reader:    pim_base_connector.reader.file.yaml_multiple
-        processor: pimee_base_connector.processor.asset_tag

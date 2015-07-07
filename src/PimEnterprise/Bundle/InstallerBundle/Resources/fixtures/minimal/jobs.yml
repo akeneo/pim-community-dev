@@ -64,3 +64,14 @@ jobs:
         alias:     refuse_product_draft
         label:     Mass refuse product drafts
         type:      mass_edit
+    csv_asset_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_asset_import
+        label:     Demo asset import
+        type:      import
+        configuration:
+            filePath:      /tmp/assets.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'

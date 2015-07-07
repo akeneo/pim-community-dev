@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
-use Pim\Component\Classification\Model\TagInterface;
+use Pim\Component\Classification\Model\TagInterface as BaseTagInterface;
 
 /**
  * Product asset
@@ -51,7 +51,7 @@ class Asset implements AssetInterface
     /** @var \Datetime */
     protected $updatedAt;
 
-    /** @var ArrayCollection of TagInterface */
+    /** @var ArrayCollection of BaseTagInterface */
     protected $tags;
 
     public function __construct()
@@ -319,7 +319,7 @@ class Asset implements AssetInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTag(TagInterface $tag)
+    public function removeTag(BaseTagInterface $tag)
     {
         $this->tags->removeElement($tag);
 
@@ -329,7 +329,7 @@ class Asset implements AssetInterface
     /**
      * {@inheritdoc}
      */
-    public function addTag(TagInterface $tag)
+    public function addTag(BaseTagInterface $tag)
     {
         if (!$this->tags->contains($tag)) {
             $this->tags->add($tag);
