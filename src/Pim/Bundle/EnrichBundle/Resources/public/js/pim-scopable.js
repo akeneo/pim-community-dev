@@ -273,7 +273,7 @@ define(
                     return $(field);
                 });
 
-                if (!this.$el.find('[data-scope]').length) {
+                if (this.$el.find('[data-scope]').length) {
                     _.first(this.fields).addClass('first');
                 }
             },
