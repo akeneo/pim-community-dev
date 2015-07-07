@@ -57,6 +57,8 @@ class RawFileStorer implements RawFileStorerInterface
      */
     public function store(\SplFileInfo $localFile, $destFsAlias)
     {
+        //TODO: add some logs here
+
         $filesystem = $this->mountManager->getFilesystem($destFsAlias);
         $storageData = $this->pathGenerator->generate($localFile);
         $file = $this->factory->create($localFile, $storageData, $destFsAlias);

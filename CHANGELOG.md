@@ -26,6 +26,9 @@
 - PMI-4032: Fix wrong error message when deleting used attribute option by a published product
 
 ## BC breaks
+- Media classes `Pim\Bundle\CatalogBundle\Model\ProductMedia`, `Pim\Bundle\CatalogBundle\Model\AbstractProductMedia` and `Pim\Bundle\CatalogBundle\Model\ProductMediaInterface` have been removed
+- Change constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter` to remove `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and to add `Akeneo\Component\FileStorage\Repository\FileRepositoryInterface` and `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface`
+
 - `Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter` and `Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor` are deprecated
 - Change the constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`, removed `Pim\Bundle\VersioningBundle\Manager\VersionManager`
 - Rename method `onKernelRequest` to `findUsername` on `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`
@@ -1024,7 +1027,7 @@
 - Rename service `pim_datagrid.extension.pager.orm_pager` to `pim_datagrid.extension.pager`
 - Replace `Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource` by `Pim\Bundle\DataGridBundle\Datasource\Datasource`
 - Replace service `pim_datagrid.datasource.orm` by `pim_datagrid.datasource.default`
-- Delete `Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource`
+ - Delete `Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource`
 - Delete service `pim_datagrid.datasource.mongodb`
 - Remove the flush parameter from Pim\Bundle\CatalogBundle\Doctrine\MongoDB\CompletenessGenerator::generateMissingForProduct(), as it was not used properly anymore (completeness are directly pushed to MongoDB without using ODM)
 - Rename countForAttribute to countVariantGroupAxis in GroupRepository

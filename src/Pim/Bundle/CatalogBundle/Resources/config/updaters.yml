@@ -271,8 +271,8 @@ services:
         class: %pim_catalog.updater.setter.media_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - @pim_catalog.manager.media
-            - @pim_catalog.factory.media
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.repository.file'
             - ['pim_catalog_file', 'pim_catalog_image']
             - %upload_dir%
         tags:
