@@ -2,15 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -57,19 +56,16 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
     }
 
     function it_presents_product_draft_change_attribute_using_a_supporting_presenter(
-        $valueRepository,
         $attributeRepository,
         $attributePresenter,
-        $valuePresenter,
-        Model\AttributeInterface $attribute,
-        Model\ProductValueInterface $value
+        Model\AttributeInterface $attribute
     ) {
-        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
 
-        $attributePresenter->supports($attribute, ['__context__' => ['attribute' => 'description']])->willReturn(true);
-        $attributePresenter->present($attribute, ['__context__' => ['attribute' => 'description']])->willReturn('Name');
+        $attributePresenter->supports($attribute)->willReturn(true);
+        $attributePresenter->present($attribute, ['attribute' => 'description'])->willReturn('Name');
 
-        $this->presentAttribute(['__context__' => ['attribute' => 'description']], 'foo')->shouldReturn('Name');
+        $this->presentAttribute(['attribute' => 'description'], 'foo')->shouldReturn('Name');
     }
 
     function it_presents_product_draft_change_attribute_using_the_default_value_if_id_is_unavailable()
@@ -82,133 +78,116 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
     ) {
         $valueRepository->find(123)->willReturn(null);
 
-        $this->presentAttribute(['__context__' => ['attribute_id' => '123']], 'foo')->shouldReturn('foo');
+        $this->presentAttribute(['attribute_id' => '123'], 'foo')->shouldReturn('foo');
     }
 
     function it_presents_product_draft_using_a_supporting_presenter(
-        $valueRepository,
         $attributePresenter,
         $valuePresenter,
         Model\ProductValueInterface $value,
         Model\ProductInterface $product,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
 
         $change = [
-            'foo' => 'bar',
-            '__context__' => [
-                'attribute' => 'description',
-                'locale' => 'en_US',
-                'scope' => 'ecommerce',
-            ]
+            'value' => 'foo',
+            'locale' => 'en_US',
+            'scope' => 'ecommerce',
         ];
-        $attributePresenter->supports($value, $change)->willReturn(false);
-        $valuePresenter->supports($value, $change)->willReturn(true);
+        $attributePresenter->supports($value)->willReturn(false);
+        $valuePresenter->supports($value)->willReturn(true);
         $valuePresenter->present($value, $change)->willReturn('<b>changes</b>');
 
-        $this->presentChange($change, $productDraft)->shouldReturn('<b>changes</b>');
+        $this->presentChange($productDraft, $change, 'description')->shouldReturn('<b>changes</b>');
     }
 
     function it_injects_translator_in_translator_aware_presenter(
-        $valueRepository,
         $translator,
         $attributePresenter,
         $valuePresenter,
         Model\ProductValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $change = [
-            'foo' => 'bar',
-            '__context__' => [
-                'attribute' => 'description',
-                'locale' => 'en_US',
-                'scope' => 'ecommerce',
-            ]
+            'attribute' => 'description',
+            'locale' => 'en_US',
+            'scope' => 'ecommerce',
         ];
 
-        $attributePresenter->supports($value, $change)->willReturn(false);
-        $valuePresenter->supports($value, $change)->willReturn(false);
-        $presenter->supports($value, $change)->willReturn(true);
+        $attributePresenter->supports($value)->willReturn(false);
+        $valuePresenter->supports($value)->willReturn(false);
+        $presenter->supports($value)->willReturn(true);
         $presenter->present($value, $change)->willReturn('<b>changes</b>');
 
         $presenter->setTranslator($translator)->shouldBeCalled();
 
         $this->addPresenter($presenter, 0);
-        $this->presentChange($change, $productDraft);
+        $this->presentChange($productDraft, $change, 'description');
     }
 
     function it_injects_renderer_in_renderer_aware_presenter(
-        $valueRepository,
         $renderer,
         $attributePresenter,
         $valuePresenter,
         Model\ProductValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface');
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $change = [
-            'foo' => 'bar',
-            '__context__' => [
-                'attribute' => 'description',
-                'locale' => 'en_US',
-                'scope' => 'ecommerce',
-            ]
+            'attribute' => 'description',
+            'locale' => 'en_US',
+            'scope' => 'ecommerce',
         ];
 
-        $attributePresenter->supports($value, $change)->willReturn(false);
-        $valuePresenter->supports($value, $change)->willReturn(false);
-        $presenter->supports($value, $change)->willReturn(true);
+        $attributePresenter->supports($value)->willReturn(false);
+        $valuePresenter->supports($value)->willReturn(false);
+        $presenter->supports($value)->willReturn(true);
         $presenter->present($value, $change)->willReturn('<b>changes</b>');
 
         $presenter->setRenderer($renderer)->shouldBeCalled();
 
         $this->addPresenter($presenter, 0);
-        $this->presentChange($change, $productDraft);
+        $this->presentChange($productDraft, $change, 'description');
     }
 
     function it_injects_twig_in_twig_aware_presenter(
-        $valueRepository,
-        $renderer,
         $attributePresenter,
         $valuePresenter,
         Model\ProductValueInterface $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         \Twig_Environment $twig,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface');
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $change = [
-            'foo' => 'bar',
-            '__context__' => [
-                'attribute' => 'description',
-                'locale' => 'en_US',
-                'scope' => 'ecommerce',
-            ]
+            'attribute' => 'description',
+            'locale' => 'en_US',
+            'scope' => 'ecommerce',
         ];
 
-        $attributePresenter->supports($value, $change)->willReturn(false);
-        $valuePresenter->supports($value, $change)->willReturn(false);
-        $presenter->supports($value, $change)->willReturn(true);
+        $attributePresenter->supports($value)->willReturn(false);
+        $valuePresenter->supports($value)->willReturn(false);
+        $presenter->supports($value)->willReturn(true);
         $presenter->present($value, $change)->willReturn('<b>changes</b>');
 
         $presenter->setTwig($twig)->shouldBeCalled();
 
         $this->initRuntime($twig);
         $this->addPresenter($presenter, 0);
-        $this->presentChange($change, $productDraft);
+        $this->presentChange($productDraft, $change, 'description');
     }
 }

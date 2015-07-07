@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DraftViewUpdaterSpec extends ObjectBehavior
 {
-
     function let(ProductDraftChangesApplier $applier, UrlGeneratorInterface $urlGenerator)
     {
         $this->beConstructedWith($applier, $urlGenerator);

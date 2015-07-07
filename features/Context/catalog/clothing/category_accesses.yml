@@ -23,6 +23,14 @@ category_accesses:
         viewProducts: [IT support, Manager, Redactor]
         editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager]
+    pants:
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager]
+        ownProducts: [IT support, Manager]
+    tops:
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
+        ownProducts: [IT support, Manager, Redactor]
     tshirts:
         viewProducts: [IT support, Manager]
         editProducts: [IT support]

@@ -1,0 +1,8 @@
+parameters:
+    pimee_reference_data.publisher.reference_data.class: PimEnterprise\Bundle\ReferenceDataBundle\Publisher\ReferenceDataPublisher
+
+services:
+    pimee_reference_data.publisher.reference_data:
+        class: %pimee_reference_data.publisher.reference_data.class%
+        tags:
+            - { name: pimee_workflow.publisher }

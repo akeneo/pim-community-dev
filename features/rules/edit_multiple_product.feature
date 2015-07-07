@@ -1,4 +1,4 @@
-Feature: Read multiple products with applied rules
+Feature: Update multiple product by applying rules
   In order ease the enrichment of the catalog
   As a regular user
   I need that the relevant rules are executed and correctly applied to products
@@ -8,6 +8,7 @@ Feature: Read multiple products with applied rules
     And I add the "french" locale to the "mobile" channel
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Successfully execute a rule with a setter action on multiple products
     Given the following products:
     | sku         | family  |
@@ -17,14 +18,13 @@ Feature: Read multiple products with applied rules
     | a-fork      |         |
     | a-rangers   | sandals |
     And the following product values:
-    | product     | attribute | value                  | locale | scope  |
-    | a-my-loafer | name      | White loafer           | en_US  |        |
-    | a-my-loafer | name      | Mocassin blanc         | fr_FR  |        |
-    | a-my-loafer | name      | A stylish white loafer | en_US  | mobile |
-    | a-boot      | name      | Boots                  | en_US  | mobile |
-    | mug         | name      | Mug                    | en_US  | mobile |
-    | fork        | name      | Fork                   | en_US  | mobile |
-    | a-rangers   | name      | Rangers                | en_US  | mobile |
+    | product     | attribute | value                  | locale |
+    | a-my-loafer | name      | White loafer           | en_US  |
+    | a-my-loafer | name      | Mocassin blanc         | fr_FR  |
+    | a-boot      | name      | Boots                  | en_US  |
+    | mug         | name      | Mug                    | en_US  |
+    | fork        | name      | Fork                   | en_US  |
+    | a-rangers   | name      | Rangers                | en_US  |
     And the following product rules:
     | code     | priority |
     | set_name | 10       |
@@ -56,16 +56,16 @@ Feature: Read multiple products with applied rules
     | fork      |         |
     | rangers   | sandals |
     And the following product values:
-    | product   | attribute | value          | locale | scope  |
-    | my-loafer | name      | White loafer   | en_US  |        |
-    | my-loafer | name      | Mocassin blanc | fr_FR  |        |
-    | boot      | name      | Boots          | en_US  | mobile |
-    | mug       | name      | Mug            | en_US  | mobile |
-    | mug       | name      |                | fr_FR  | mobile |
-    | fork      | name      | Fork           | en_US  | mobile |
-    | fork      | name      |                | frFR   | mobile |
-    | rangers   | name      | Rangers        | en_US  | mobile |
-    | rangers   | name      |                | fr_FR  | mobile |
+    | product   | attribute | value          | locale |
+    | my-loafer | name      | White loafer   | en_US  |
+    | my-loafer | name      | Mocassin blanc | fr_FR  |
+    | boot      | name      | Boots          | en_US  |
+    | mug       | name      | Mug            | en_US  |
+    | mug       | name      |                | fr_FR  |
+    | fork      | name      | Fork           | en_US  |
+    | fork      | name      |                | fr_FR  |
+    | rangers   | name      | Rangers        | en_US  |
+    | rangers   | name      |                | fr_FR  |
     And the following product rules:
     | code      | priority |
     | copy_name | 10       |
@@ -77,17 +77,17 @@ Feature: Read multiple products with applied rules
       | copy_name | name       | name     | en_US       | fr_FR     |            |          |
     Given the product rule "copy_name" is executed
     And I am on the "my-loafer" product page
-    When I switch the locale to "French (France)"
+    When I switch the locale to "fr_FR"
     Then the product name should be "Mocassin blanc"
     When I am on the "boot" product page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     Then the product name should be "Boots"
     When I am on the "fork" product page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     Then the product name should be "Fork"
     When I am on the "rangers" product page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     Then the product name should be "Rangers"
     When I am on the "mug" product page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     Then the product name should be "Mug"

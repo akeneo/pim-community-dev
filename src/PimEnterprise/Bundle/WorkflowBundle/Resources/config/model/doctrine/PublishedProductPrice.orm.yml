@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice:
     type: entity
     table: pimee_workflow_published_product_value_price
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         value_currency_idx:
             columns:
@@ -13,8 +14,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice:
             generator:
                 strategy: AUTO
         data:
-            type: decimal
-            scale: 2
+            type: float
             nullable: true
         currency:
             type: string

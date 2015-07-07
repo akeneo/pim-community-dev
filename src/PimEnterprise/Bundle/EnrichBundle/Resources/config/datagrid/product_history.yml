@@ -22,13 +22,13 @@ datagrid:
             old:
                 label: Old values
                 type: twig
-                template: OroDataAuditBundle:Datagrid:Property/old.html.twig
+                template: PimVersioningBundle:Datagrid:Property/old.html.twig
                 frontend_type: html
                 data_name: changeset
             new:
                 label: New values
                 type: twig
-                template: OroDataAuditBundle:Datagrid:Property/new.html.twig
+                template: PimVersioningBundle:Datagrid:Property/new.html.twig
                 frontend_type: html
                 data_name: changeset
         properties:

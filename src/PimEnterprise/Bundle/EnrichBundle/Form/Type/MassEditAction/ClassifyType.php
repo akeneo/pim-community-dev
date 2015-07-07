@@ -1,71 +1,39 @@
 <?php
 
-/*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType as BaseClassifyType;
+use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Form type for the Classify operation to add not granted identifiers
+ * We override the ClassifyType because we want to show only the category tree
+ * the user has access to.
  *
- * @author Filips Alpe <filips@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ClassifyType extends AbstractType
+class ClassifyType extends BaseClassifyType
 {
-    /** @var string */
-    protected $dataClass;
+    /** @var SecurityContextInterface */
+    protected $securityContext;
 
     /**
-     * @param string $dataClass
+     * @param CategoryManager          $categoryManager
+     * @param SecurityContextInterface $securityContext
+     * @param string                   $categoryClass
+     * @param string                   $dataClass
      */
-    public function __construct($dataClass)
-    {
-        $this->dataClass = $dataClass;
-    }
+    public function __construct(
+        CategoryManager $categoryManager,
+        SecurityContextInterface $securityContext,
+        $categoryClass,
+        $dataClass
+    ) {
+        parent::__construct($categoryManager, $categoryClass, $dataClass);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('notGrantedIdentifiers', 'hidden');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(
-            [
-                'data_class' => $this->dataClass,
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pimee_enrich_mass_classify';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'pim_enrich_mass_classify';
+        $this->securityContext = $securityContext;
+        $this->trees = $categoryManager->getAccessibleTrees($this->securityContext->getToken()->getUser());
     }
 }

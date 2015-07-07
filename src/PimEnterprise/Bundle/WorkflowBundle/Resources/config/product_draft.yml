@@ -1,7 +1,5 @@
 parameters:
     pimee_workflow.applier.product_draft_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier
-    pimee_workflow.collector.product_submitted_changes.class: PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector
-    pimee_workflow.change_set_computer.class: PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputer
 
 services:
     pimee_workflow.applier.product_draft_changes_applier:
@@ -10,14 +8,3 @@ services:
         arguments:
             - '@form.factory'
             - '@event_dispatcher'
-
-
-    pimee_workflow.collector.product_submitted_changes:
-        class: %pimee_workflow.collector.product_submitted_changes.class%
-
-    pimee_workflow.change_set_computer:
-        class: %pimee_workflow.change_set_computer.class%
-        arguments:
-            - '@pimee_workflow.comparator.chained'
-            - '@event_dispatcher'
-            - '@pim_catalog.builder.product'

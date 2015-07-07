@@ -1,0 +1,20 @@
+parameters:
+    pimee_reference_data.workflow.presenter.reference_data.class:            PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter\ReferenceDataPresenter
+    pimee_reference_data.workflow.presenter.reference_data_collection.class: PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter\ReferenceDataCollectionPresenter
+
+services:
+    pimee_reference_data.workflow.presenter.reference_data:
+        class: %pimee_reference_data.workflow.presenter.reference_data.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_reference_data.repository_resolver'
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_reference_data.workflow.presenter.reference_data_collection:
+        class: %pimee_reference_data.workflow.presenter.reference_data_collection.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_reference_data.repository_resolver'
+        tags:
+            - { name: pimee_workflow.presenter }

@@ -1,0 +1,32 @@
+AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue:
+    type: entity
+    table: pim_workflow_published_product_value
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        myNewField:
+            type: string
+            length: 255
+            nullable: true
+            column: my_new_field
+    manyToOne:
+        color:
+            targetEntity: Acme\Bundle\AppBundle\Entity\Color
+            joinColumn:
+                name: color_id
+                referencedColumnName: id
+    manyToMany:
+        fabrics:
+            targetEntity: Acme\Bundle\AppBundle\Entity\Fabric
+            cascade:
+                - refresh
+            joinTable:
+                name: pim_published_catalog_product_value_fabric
+                joinColumns:
+                    value_id:
+                        referencedColumnName: id
+                        nullable: true
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    fabric_id:
+                        referencedColumnName: id
+                        nullable: false

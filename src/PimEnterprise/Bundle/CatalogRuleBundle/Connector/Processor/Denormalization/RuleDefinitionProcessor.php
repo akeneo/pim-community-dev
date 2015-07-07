@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -26,8 +26,20 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class RuleDefinitionProcessor extends AbstractProcessor
 {
+    /** @var DenormalizerInterface */
+    protected $denormalizer;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /** @var string rule class*/
     protected $ruleClass;
+
+    /** @var string */
+    protected $class;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
@@ -45,9 +57,12 @@ class RuleDefinitionProcessor extends AbstractProcessor
         $ruleDefinitionClass,
         $ruleClass
     ) {
-        parent::__construct($repository, $denormalizer, $validator, $detacher, $ruleDefinitionClass);
-
-        $this->ruleClass = $ruleClass;
+        parent::__construct($repository);
+        $this->denormalizer = $denormalizer;
+        $this->validator    = $validator;
+        $this->detacher     = $detacher;
+        $this->ruleClass    = $ruleClass;
+        $this->class        = $ruleDefinitionClass;
     }
 
     /**
@@ -107,5 +122,18 @@ class RuleDefinitionProcessor extends AbstractProcessor
         $ruleDefinition->setContent($rule->getContent());
 
         return $ruleDefinition;
+    }
+
+    /**
+     * Detaches the object from the unit of work
+     *
+     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
+     * skipped items or we should use an explicit persist strategy
+     *
+     * @param mixed $object
+     */
+    protected function detachObject($object)
+    {
+        $this->detacher->detach($object);
     }
 }

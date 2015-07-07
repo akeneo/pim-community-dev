@@ -1,0 +1,7 @@
+services:
+    pimee_workflow.remover.product_draft:
+        class: %pim_catalog.remover.base.class%
+        arguments:
+            - '@pimee_workflow.object_manager.product_draft'
+            - '@pim_catalog.remover.base_options_resolver'
+            - '%pimee_workflow.model.product_draft.class%'

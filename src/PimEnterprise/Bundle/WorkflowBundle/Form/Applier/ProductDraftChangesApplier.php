@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -54,12 +54,12 @@ class ProductDraftChangesApplier
     /**
      * Apply product draft to a product
      *
-     * @param ProductInterface $product
-     * @param ProductDraft     $productDraft
+     * @param ProductInterface      $product
+     * @param ProductDraftInterface $productDraft
      *
      * @throws ValidatorException
      */
-    public function apply(ProductInterface $product, ProductDraft $productDraft)
+    public function apply(ProductInterface $product, ProductDraftInterface $productDraft)
     {
         if ($this->dispatcher->hasListeners(ProductDraftEvents::PRE_APPLY)) {
             $event = $this->dispatcher->dispatch(
@@ -76,13 +76,13 @@ class ProductDraftChangesApplier
                 'values',
                 'pim_enrich_localized_collection',
                 [
-                    'type' => 'pim_product_value',
-                    'allow_add' => false,
-                    'allow_delete' => false,
-                    'by_reference' => false,
+                    'type'               => 'pim_product_value',
+                    'allow_add'          => false,
+                    'allow_delete'       => false,
+                    'by_reference'       => false,
                     'cascade_validation' => true,
-                    'currentLocale' => null,
-                    'comparisonLocale' => null,
+                    'currentLocale'      => null,
+                    'comparisonLocale'   => null,
                 ]
             )
             ->addEventListener(
@@ -114,7 +114,7 @@ class ProductDraftChangesApplier
      * @param array  $attribute The attribute as stored in the product form view
      * @param string $scope     The scope to check
      *
-     * @return boolean
+     * @return bool
      */
     public function isMarkedAsModified($attribute, $scope = null)
     {

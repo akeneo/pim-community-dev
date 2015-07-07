@@ -1,2 +1,2 @@
 parameters:
-    pim_catalog.repository.attribute.class: PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
+    pim_catalog.repository.attribute.class: PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository

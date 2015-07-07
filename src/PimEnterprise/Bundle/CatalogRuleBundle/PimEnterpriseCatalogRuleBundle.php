@@ -18,6 +18,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * PIM Enterprise Product Rule Bundle
+ *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class PimEnterpriseCatalogRuleBundle extends Bundle

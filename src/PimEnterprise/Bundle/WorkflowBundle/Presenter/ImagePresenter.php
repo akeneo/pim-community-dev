@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -36,13 +36,10 @@ class ImagePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($data, array $change)
+    public function supports($data)
     {
         return $data instanceof ProductValueInterface
-            && array_key_exists('media', $change)
-            && (
-                $this->isImageMimeType($data->getMedia()) || $this->isImageMimeType($change['media'])
-            );
+            && 'pim_catalog_image' === $data->getAttribute()->getAttributeType();
     }
 
     /**
@@ -50,8 +47,13 @@ class ImagePresenter implements PresenterInterface
      */
     public function present($data, array $change)
     {
+        $media = $data->getMedia();
+        if (!$this->isDiff($change, $media)) {
+            return '';
+        }
+
         $before = '';
-        if (null !== $media = $data->getMedia()) {
+        if (null !== $media) {
             if (null !== $media->getFilename() && null !== $media->getOriginalFilename()) {
                 $before = sprintf(
                     '<li class="base file">%s</li>',
@@ -61,10 +63,10 @@ class ImagePresenter implements PresenterInterface
         }
 
         $after = '';
-        if (isset($change['media']['filename']) && isset($change['media']['originalFilename'])) {
+        if (isset($change['data']['filename']) && isset($change['data']['originalFilename'])) {
             $after = sprintf(
                 '<li class="changed file">%s</li>',
-                $this->createImageElement($change['media']['filename'], $change['media']['originalFilename'])
+                $this->createImageElement($change['data']['filename'], $change['data']['originalFilename'])
             );
         }
 
@@ -87,7 +89,7 @@ class ImagePresenter implements PresenterInterface
                 'pim_enrich_media_show',
                 [
                     'filename' => $filename,
-                    'filter' => 'thumbnail',
+                    'filter'   => 'thumbnail',
                 ]
             ),
             $title
@@ -95,30 +97,25 @@ class ImagePresenter implements PresenterInterface
     }
 
     /**
-     * Check wether or not the given data represents an image
+     * Check diff between old and new file
      *
-     * @param array|ProductMedia $data
+     * @param array                 $change
+     * @param ProductMediaInterface $media
      *
-     * @return boolean
+     * @return bool
      */
-    protected function isImageMimeType($data)
+    protected function isDiff(array $change, ProductMediaInterface $media = null)
     {
-        switch (true) {
-            case $data instanceof ProductMedia:
-                $mimeType = $data->getMimeType();
-                break;
-            case is_array($data) && isset($data['mimeType']):
-                $mimeType = $data['mimeType'];
-                break;
-            default:
-                $mimeType = null;
-                break;
+        if (null !== $media && null !== $media->getFilename()) {
+            $data = sha1_file($this->generator->generate('pim_enrich_media_show', [
+                'filename' => $media->getFilename()
+            ], UrlGeneratorInterface::ABSOLUTE_URL));
+        } else {
+            $data = null;
         }
 
-        if (null === $mimeType) {
-            return false;
-        }
+        $change = isset($change['data']['filePath']) ? sha1_file($change['data']['filePath']) : null;
 
-        return 0 === strpos($mimeType, 'image');
+        return $data !== $change;
     }
 }

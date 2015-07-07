@@ -2,33 +2,35 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\ProductDraftSaver;
-use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class DelegatingProductSaverSpec extends ObjectBehavior
 {
     function let(
-        ProductSaver $workingCopySaver,
-        ProductDraftSaver $draftSaver,
+        SaverInterface $workingCopySaver,
+        SaverInterface $draftSaver,
         ObjectManager $objectManager,
         ProductSavingOptionsResolver $optionsResolver,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        ProductDraftBuilderInterface $productDraftBuilder
     ) {
         $this->beConstructedWith(
             $workingCopySaver,
             $draftSaver,
             $objectManager,
             $optionsResolver,
-            $securityContext
+            $securityContext,
+            $productDraftBuilder
         );
     }
 
@@ -49,13 +51,12 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $workingCopySaver
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled()
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $product->getId()->willReturn(42);
         $securityContext->isGranted(Attributes::OWN, $product)
-            ->shouldBeCalled()
             ->willReturn(true);
+        $securityContext->getToken()->willReturn('token');
 
         $workingCopySaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled();
@@ -69,7 +70,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $workingCopySaver
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled()
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $product->getId()->willReturn(null);
@@ -80,11 +80,43 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
     }
 
-    function it_delegates_to_draft_saver_when_user_is_not_the_owner_and_product_exists(
+    function it_delegates_to_draft_saver_when_user_is_not_the_owner_and_product_exists_without_changes(
         ProductInterface $product,
         $optionsResolver,
         $securityContext,
-        $draftSaver
+        $productDraftBuilder,
+        $draftSaver,
+        UsernamePasswordToken $token,
+        User $user
+    ) {
+        $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
+            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
+
+        $product->getId()->willReturn(42);
+        $securityContext->isGranted(Attributes::OWN, $product)
+            ->willReturn(false);
+
+        $user->getUsername()->willReturn('username');
+        $token->getUser()->willReturn($user);
+        $securityContext->getToken()->willReturn($token);
+
+        $productDraftBuilder->build($product, 'username')
+            ->willReturn(null)
+            ->shouldBeCalled();
+
+        $draftSaver->save()->shouldNotBeCalled();
+
+        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
+    }
+
+    function it_delegates_to_draft_saver_when_user_is_not_the_owner_and_product_exists_with_changes(
+        ProductInterface $product,
+        $optionsResolver,
+        $securityContext,
+        $productDraftBuilder,
+        $draftSaver,
+        UsernamePasswordToken $token,
+        User $user
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled()
@@ -94,21 +126,35 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $securityContext->isGranted(Attributes::OWN, $product)
             ->shouldBeCalled()
             ->willReturn(false);
+        $user->getUsername()->willReturn('username');
+        $token->getUser()->willReturn($user);
+        $securityContext->getToken()->willReturn($token);
 
-        $draftSaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
+        $productDraft = new ProductDraft();
+        $productDraftBuilder->build($product, 'username')
+            ->willReturn($productDraft)
             ->shouldBeCalled();
+
+        $draftSaver->save($productDraft, ['recalculate' => true, 'flush' => true, 'schedule' => true])->shouldBeCalled();
 
         $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
     }
 
-    function it_throws_an_exception_when_try_to_save_something_else_than_a_product(
-        $objectManager
+    function it_delegates_to_working_copy_saver_when_there_is_no_token_generated(
+        ProductInterface $product,
+        $optionsResolver,
+        $securityContext,
+        $workingCopySaver
     ) {
-        $otherObject = new \stdClass();
-        $objectManager->persist(Argument::any())->shouldNotBeCalled();
+        $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
+            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "stdClass" provided'))
-            ->duringSave($otherObject, ['recalculate' => false, 'flush' => false, 'schedule' => true]);
+        $product->getId()->willReturn(42);
+        $securityContext->getToken()->willReturn(null);
+
+        $workingCopySaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
+            ->shouldBeCalled();
+
+        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
     }
 }

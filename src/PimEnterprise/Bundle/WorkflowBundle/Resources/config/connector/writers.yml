@@ -1,0 +1,10 @@
+parameters:
+    pim_base_connector.writer.doctrine.product_draft.class: PimEnterprise\Component\Workflow\Connector\Writer\Doctrine\ProductDraftWriter
+
+services:
+    pim_base_connector.writer.doctrine.product_draft:
+        class: %pim_base_connector.writer.doctrine.product_draft.class%
+        arguments:
+            - '@pimee_workflow.saver.product_draft'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pimee_workflow.remover.product_draft'

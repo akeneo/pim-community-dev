@@ -107,7 +107,6 @@ class CategoryManagerSpec extends ObjectBehavior
         CategoryInterface $childTwo,
         $context
     ) {
-
         $categoryRepository->getPath($childTwo)->willReturn(
             [0 => $parent, 1 => $childOne, 2 => $childTwo]
         );

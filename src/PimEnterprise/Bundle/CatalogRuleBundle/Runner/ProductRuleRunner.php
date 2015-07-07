@@ -16,8 +16,8 @@ use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Product rule runner

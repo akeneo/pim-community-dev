@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
@@ -27,7 +28,8 @@ class ProductPublisherSpec extends ObjectBehavior
         PublisherInterface $publisher,
         RelatedAssociationPublisher $associationsPublisher,
         VersionManager $versionManager,
-        ProductInterface $product
+        ProductInterface $product,
+        CompletenessManager $completenessManager
     ) {
         $product->getGroups()->willReturn([]);
         $product->getCategories()->willReturn([]);
@@ -43,7 +45,8 @@ class ProductPublisherSpec extends ObjectBehavior
             'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
             $publisher,
             $associationsPublisher,
-            $versionManager
+            $versionManager,
+            $completenessManager
         );
     }
 
@@ -71,7 +74,7 @@ class ProductPublisherSpec extends ObjectBehavior
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
         $version->isPending()->willReturn(false);
 
-        $enableValues = array(true, false);
+        $enableValues = [true, false];
 
         foreach ($enableValues as $isEnabled) {
             $product->isEnabled()->willReturn($isEnabled);

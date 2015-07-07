@@ -8,7 +8,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class SmartViewUpdaterSpec extends ObjectBehavior
 {
-
     function let(RuleRelationManager $ruleRelationManager, UrlGeneratorInterface $urlGenerator)
     {
         $this->beConstructedWith($ruleRelationManager, $urlGenerator);

@@ -39,12 +39,13 @@ class CategoryTreeController extends BaseCategoryTreeController
     /**
      * Find a category from its id, trows an exception if not found or not granted
      *
-     * @param integer $categoryId the category id
-     * @param string  $context    the retrieving context
+     * @param int    $categoryId the category id
+     * @param string $context    the retrieving context
      *
-     * @return CategoryInterface
      * @throws NotFoundHttpException
      * @throws AccessDeniedException
+     *
+     * @return CategoryInterface
      */
     protected function findGrantedCategory($categoryId, $context)
     {

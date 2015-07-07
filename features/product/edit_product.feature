@@ -22,10 +22,11 @@ Feature: Edit a product I have access
       | classy          | Manager    | edit   |
       | boots           | Manager    | view   |
     And the following products:
-      | sku     | categories      | name-en |
-      | rangers | vintage, classy | rangers |
-      | boots   | boots           | boots   |
+      | sku     | categories      | name-en_US |
+      | rangers | vintage, classy | rangers    |
+      | boots   | boots           | boots      |
 
+  @javascript @skip-pef
   Scenario: Successfully create, edit and save a product I have access
     Given I am on the "rangers" product page
     And I fill in the following information:

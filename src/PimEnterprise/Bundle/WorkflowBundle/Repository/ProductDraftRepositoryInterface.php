@@ -13,10 +13,11 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * ProductDraft repository interface
+ * ProductDraftInterface repository interface
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
@@ -42,9 +43,9 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * Return product drafts that can be approved by the given user
      *
      * @param UserInterface $user
-     * @param integer       $limit
+     * @param int           $limit
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft[]
+     * @return ProductDraftInterface[]|null
      */
     public function findApprovableByUser(UserInterface $user, $limit = null);
 
@@ -52,7 +53,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * Apply the context of the datagrid to the query
      *
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
-     * @param integer|string                                                 $productId
+     * @param int|string                                                     $productId
      *
      * @return ProductDraftRepositoryInterface
      */
@@ -83,7 +84,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null
+     * @return ProductDraftInterface|null
      */
     public function findUserProductDraft(ProductInterface $product, $username);
 
@@ -92,7 +93,21 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      *
      * @param ProductInterface $product
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft[]|null
+     * @return ProductDraftInterface[]|null
      */
     public function findByProduct(ProductInterface $product);
+
+    /**
+     * Find all drafts corresponding to the specified ids
+     *
+     * @param array $ids
+     *
+     * @return ProductDraftInterface[]|null
+     */
+    public function findByIds(array $ids);
+
+    /**
+     * @return string[]
+     */
+    public function getDistinctAuthors();
 }

@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
  */
 class JobProfileAccess implements JobProfileAccessInterface
 {
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var JobInstance */
@@ -31,10 +31,10 @@ class JobProfileAccess implements JobProfileAccessInterface
     /** @var Group */
     protected $userGroup;
 
-    /** @var boolean */
+    /** @var bool */
     protected $executeJobProfile;
 
-    /** @var boolean */
+    /** @var bool */
     protected $editJobProfile;
 
     /**

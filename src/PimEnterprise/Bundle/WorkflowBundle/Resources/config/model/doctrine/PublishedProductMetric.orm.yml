@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric:
     type: entity
     table: pimee_workflow_published_product_metric
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
             type: integer
@@ -8,9 +9,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric:
             generator:
                 strategy: AUTO
         data:
-            type: decimal
-            precision: 14
-            scale: 4
+            type: float
             nullable: true
         unit:
             type: string

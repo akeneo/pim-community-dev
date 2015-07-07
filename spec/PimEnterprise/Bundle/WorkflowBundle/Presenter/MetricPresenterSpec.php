@@ -23,10 +23,9 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
     }
 
-    function it_supports_change_if_it_has_a_metric_key(
-        Model\ProductValueInterface $value
-    ) {
-        $this->supports($value, ['metric' => 'foo'])->shouldBe(true);
+    function it_supports_metric()
+    {
+        $this->supportsChange('pim_catalog_metric')->shouldBe(true);
     }
 
     function it_presents_metric_change_using_the_injected_renderer(
@@ -44,7 +43,7 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
         $this
-            ->present($value, ['metric' => ['unit' => 'MILLIMETER', 'data' => '123']])
+            ->present($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123']])
             ->shouldReturn('diff between two metrics');
     }
 
@@ -59,6 +58,6 @@ class MetricPresenterSpec extends ObjectBehavior
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->present($value, ['metric' => ['unit' => 'MILLIMETER', 'data' => '123']])->shouldReturn('a new metric');
+        $this->present($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123']])->shouldReturn('a new metric');
     }
 }

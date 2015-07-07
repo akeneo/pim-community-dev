@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Normalizer;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
-use PhpSpec\ObjectBehavior;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class RuleCollectionNormalizerSpec extends ObjectBehavior

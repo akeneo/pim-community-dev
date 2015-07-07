@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Context;
 
-use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -29,9 +29,9 @@ class UserContext extends BaseUserContext
     /**
      * Returns the current locale making sure that user has permissions for this locale
      *
-     * @return LocaleInterface
-     *
      * @throws \LogicException When there is no granted locale
+     *
+     * @return LocaleInterface
      */
     public function getCurrentGrantedLocale()
     {
@@ -77,8 +77,9 @@ class UserContext extends BaseUserContext
     /**
      * Get user category tree
      *
-     * @return CategoryInterface
      * @throws \LogicException
+     *
+     * @return CategoryInterface
      */
     public function getAccessibleUserTree()
     {

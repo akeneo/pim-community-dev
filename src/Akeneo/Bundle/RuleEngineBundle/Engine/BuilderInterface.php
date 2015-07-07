@@ -11,8 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Engine;
 
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 
 /**
  * Build a rule from a rule definition to be able to apply it.
@@ -24,9 +24,9 @@ interface BuilderInterface
     /**
      * @param RuleDefinitionInterface $definition
      *
-     * @return RuleInterface
-     *
      * @throws \Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException
+     *
+     * @return RuleInterface
      */
     public function build(RuleDefinitionInterface $definition);
 }

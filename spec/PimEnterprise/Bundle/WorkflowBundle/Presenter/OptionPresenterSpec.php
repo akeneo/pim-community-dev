@@ -20,10 +20,9 @@ class OptionPresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
     }
 
-    function it_supports_change_if_it_has_an_option_key(
-        Model\ProductValueInterface $value
-    ) {
-        $this->supports($value, ['option' => '1'])->shouldBe(true);
+    function it_supports_simpleselect()
+    {
+        $this->supportsChange('pim_catalog_simpleselect')->shouldBe(true);
     }
 
     function it_presents_option_change_using_the_injected_renderer(
@@ -33,7 +32,7 @@ class OptionPresenterSpec extends ObjectBehavior
         AttributeOptionInterface $blue,
         AttributeOptionInterface $red
     ) {
-        $repository->find('1')->willReturn($blue);
+        $repository->findOneBy(['code' => 'blue'])->willReturn($blue);
         $value->getData()->willReturn($red);
         $red->__toString()->willReturn('Red');
         $blue->__toString()->willReturn('Blue');
@@ -41,6 +40,6 @@ class OptionPresenterSpec extends ObjectBehavior
         $renderer->renderDiff('Red', 'Blue')->willReturn('diff between two options');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['option' => '1'])->shouldReturn('diff between two options');
+        $this->present($value, ['data' => 'blue'])->shouldReturn('diff between two options');
     }
 }

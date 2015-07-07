@@ -26,10 +26,6 @@ class UnpublishTypeSpec extends ObjectBehavior
     function it_has_view_and_edit_permission_fields(FormBuilderInterface $builder)
     {
         $this->buildForm($builder, []);
-
-        $builder
-            ->add('notGrantedIdentifiers', 'hidden')
-            ->shouldHaveBeenCalled();
     }
 
     function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolverInterface $resolver)

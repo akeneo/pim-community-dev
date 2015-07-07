@@ -27,8 +27,8 @@ class UploadedFileFactory
      * @param string  $path         The full temporary path to the file
      * @param string  $originalName The original file name
      * @param string  $mimeType     The type of the file as provided by PHP
-     * @param integer $size         The file size
-     * @param integer $error        The error constant of the upload (one of PHP's UPLOAD_ERR_XXX constants)
+     * @param int     $size         The file size
+     * @param int     $error        The error constant of the upload (one of PHP's UPLOAD_ERR_XXX constants)
      * @param Boolean $test         Whether the test mode is active
      *
      * @return UploadedFile|null

@@ -10,6 +10,7 @@ Feature: Enforce no permissions for an attribute group
       | foo | jackets |
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Successfully hide fields for an attribute group in the product edit form
     Given I am on the "info" attribute group page
     And I visit the "Permissions" tab

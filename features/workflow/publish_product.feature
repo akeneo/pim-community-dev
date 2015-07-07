@@ -37,10 +37,7 @@ Feature: Publish a product
 
   @javascript
   Scenario: Successfully publish a product containing attributes
-    Given the following product:
-      | sku       | family  | name-en_US |
-      | my-jacket | jackets | Jackets    |
-    And the following attributes:
+    Given the following attributes:
       | code      | label-en_US | type | scopable | unique | date_min   | date_max   | group |
       | release   | Release     | date | no       | yes    | 2013-01-01 | 2015-12-12 | info  |
       | available | Available   | date | yes      | no     | 2013-01-01 | 2015-12-12 | info  |
@@ -53,16 +50,19 @@ Feature: Publish a product
     And the following attributes:
       | code    | label-en_US | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
       | customs | Customs     | prices | yes      |                  | yes              | 10         | 100        | info  |
+    And the following product:
+      | sku       | family  | name-en_US |
+      | my-jacket | jackets | Jackets    |
     And the following family:
       | code | label-en_US | attributes                                               |
       | baz  | Baz         | sku, release, available, max_length, popularity, customs |
     And the following product values:
-      | product   | attribute  | value         | scope     |
-      | my-jacket | release    | 2013-02-02    |           |
-      | my-jacket | available  | 2013-02-02    | ecommerce |
-      | my-jacket | max_length | 25 CENTIMETER | ecommerce |
-      | my-jacket | popularity | 9             | ecommerce |
-      | my-jacket | customs    | 100 EUR       | ecommerce |
+      | product   | attribute  | value         | scope  |
+      | my-jacket | release    | 2013-02-02    |        |
+      | my-jacket | available  | 2013-02-02    | tablet |
+      | my-jacket | max_length | 25 CENTIMETER | tablet |
+      | my-jacket | popularity | 9             | tablet |
+      | my-jacket | customs    | 100 EUR       | tablet |
     And I edit the "my-jacket" product
     When I press the "Publish" button
     And I confirm the publishing
@@ -80,9 +80,10 @@ Feature: Publish a product
     And I should see "Customs"
     Then I should see "100.00 EUR"
     Given the following product values:
-      | product   | attribute  | value         | scope     |
-      | my-jacket | release    | 2014-03-25    |           |
+      | product   | attribute  | value         |
+      | my-jacket | release    | 2014-03-25    |
     And I edit the "my-jacket" product
+    And I save the product
     When I press the "Publish" button
     And I confirm the publishing
     And I am on the published index page
@@ -90,3 +91,24 @@ Feature: Publish a product
     And I should see product my-jacket
     And I am on the "my-jacket" published show page
     And I should see "March 25, 2014"
+
+  @skip-pef @javascript
+  Scenario: Fail to delete attribute options if it's used by a published product
+    Given the following attributes:
+      | code    | label   | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
+      | climate | Climate | multiselect | no       | no          |                   |               |                     |
+    And the following product:
+      | sku       | family  | name-en_US |
+      | my-jacket | jackets | Jackets    |
+    And the following "climate" attribute options: Hot and Cold
+    And the following product values:
+      | product   | attribute | value | locale | scope |
+      | my-jacket | climate   | Hot   |        |       |
+    And I edit the "my-jacket" product
+    When I press the "Publish" button
+    And I confirm the publishing
+    Then I edit the "climate" attribute
+    And I visit the "Values" tab
+    When I remove the "Hot" option
+    And I confirm the deletion
+    Then I should see "Impossible to remove an option that has been published in a product"

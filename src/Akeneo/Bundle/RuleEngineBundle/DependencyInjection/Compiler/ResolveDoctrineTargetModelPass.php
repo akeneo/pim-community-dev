@@ -16,8 +16,7 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolv
 /**
  * Resolves doctrine ORM Target entities
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelPass
 {
@@ -26,9 +25,10 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
      */
     protected function getParametersMapping()
     {
+        $class = 'akeneo_rule_engine.model.rule_definition.class';
+
         return [
-            'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface'
-                => 'akeneo_rule_engine.model.rule_definition.class',
+            'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface' => $class,
         ];
     }
 }

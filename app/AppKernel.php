@@ -25,7 +25,11 @@ class AppKernel extends Kernel
      */
     public function registerBundles()
     {
-        $bundles = array();
+        $bundles = [
+            // your app bundles should be registered here
+            new Acme\Bundle\AppBundle\AcmeAppBundle(),
+            new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle()
+        ];
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
@@ -34,13 +38,13 @@ class AppKernel extends Kernel
         }
 
         $bundles = array_merge(
-            $bundles,
             $this->getSymfonyBundles(),
             $this->getOroDependencies(),
             $this->getOroBundles(),
             $this->getPimDependenciesBundles(),
             $this->getPimBundles(),
-            $this->getPimEnterpriseBundles()
+            $this->getPimEnterpriseBundles(),
+            $bundles
         );
 
         return $bundles;
@@ -84,7 +88,6 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
             new PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle(),
-            new PimEnterprise\Bundle\TransformBundle\PimEnterpriseTransformBundle(),
             new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
         ];
     }
@@ -122,6 +125,9 @@ class AppKernel extends Kernel
             new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
             new Akeneo\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle(),
             new PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle(),
+            new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
+            new PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle(),
+            new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
         ];
     }
 
@@ -171,26 +177,15 @@ class AppKernel extends Kernel
     protected function getOroDependencies()
     {
         return [
-            new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
-            new BeSimple\SoapBundle\BeSimpleSoapBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\RestBundle\FOSRestBundle(),
-            new Genemu\Bundle\FormBundle\GenemuFormBundle(),
-            new JDare\ClankBundle\JDareClankBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
-
-            // the following bundles are disabled by the PIM
-            //
-            // new JMS\JobQueueBundle\JMSJobQueueBundle(),
         ];
     }
 
@@ -205,40 +200,18 @@ class AppKernel extends Kernel
             new Oro\Bundle\UIBundle\OroUIBundle(),
             new Oro\Bundle\AsseticBundle\OroAsseticBundle(),
             new Oro\Bundle\ConfigBundle\OroConfigBundle(),
-            new Oro\Bundle\DataAuditBundle\OroDataAuditBundle(),
             new Oro\Bundle\DataGridBundle\OroDataGridBundle(),
             new Oro\Bundle\DistributionBundle\OroDistributionBundle(),
-            new Oro\Bundle\EmailBundle\OroEmailBundle(),
             new Oro\Bundle\EntityBundle\OroEntityBundle(),
             new Oro\Bundle\EntityConfigBundle\OroEntityConfigBundle(),
-            new Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle($this),
             new Oro\Bundle\FilterBundle\OroFilterBundle(),
             new Oro\Bundle\FormBundle\OroFormBundle(),
-            new Oro\Bundle\HelpBundle\OroHelpBundle(),
-            new Oro\Bundle\ImapBundle\OroImapBundle(),
-            new Oro\Bundle\InstallerBundle\OroInstallerBundle(),
             new Oro\Bundle\LocaleBundle\OroLocaleBundle(),
             new Oro\Bundle\NavigationBundle\OroNavigationBundle(),
-            new Oro\Bundle\OrganizationBundle\OroOrganizationBundle(),
-            new Oro\Bundle\PlatformBundle\OroPlatformBundle(),
             new Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
             new Oro\Bundle\SecurityBundle\OroSecurityBundle(),
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
-            new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
-
-            // the following bundles are disabled by the PIM
-            //
-            // new Oro\Bundle\AddressBundle\OroAddressBundle(),
-            // new Oro\Bundle\CalendarBundle\OroCalendarBundle(),
-            // new Oro\Bundle\CronBundle\OroCronBundle(),
-            // new Oro\Bundle\NotificationBundle\OroNotificationBundle(),
-            // new Oro\Bundle\QueryDesignerBundle\OroQueryDesignerBundle(),
-            // new Oro\Bundle\SearchBundle\OroSearchBundle(),
-            // new Oro\Bundle\SoapBundle\OroSoapBundle(),
-            // new Oro\Bundle\SyncBundle\OroSyncBundle(),
-            // new Oro\Bundle\TagBundle\OroTagBundle(),
-            // new Oro\Bundle\WorkflowBundle\OroWorkflowBundle(),
         ];
     }
 }

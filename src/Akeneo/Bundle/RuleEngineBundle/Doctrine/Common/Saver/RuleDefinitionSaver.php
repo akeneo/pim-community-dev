@@ -11,14 +11,14 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Doctrine\Common\Saver;
 
+use Akeneo\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
-use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
-use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

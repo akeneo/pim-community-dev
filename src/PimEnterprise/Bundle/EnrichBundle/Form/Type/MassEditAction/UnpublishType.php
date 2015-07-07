@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -31,14 +30,6 @@ class UnpublishType extends AbstractType
     public function __construct($dataClass)
     {
         $this->dataClass = $dataClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('notGrantedIdentifiers', 'hidden');
     }
 
     /**

@@ -51,7 +51,6 @@ class ProductCategoryManagerSpec extends ObjectBehavior
         CategoryInterface $firstCat,
         CategoryInterface $secondCat
     ) {
-
         $product->getCategories()->willReturn([$firstCat, $secondCat]);
         $firstCat->getRoot()->willReturn(1);
         $firstTree->getId()->willReturn(1);

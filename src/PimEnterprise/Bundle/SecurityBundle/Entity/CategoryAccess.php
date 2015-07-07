@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
  */
 class CategoryAccess implements CategoryAccessInterface
 {
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var CategoryInterface */
@@ -31,13 +31,13 @@ class CategoryAccess implements CategoryAccessInterface
     /** @var Group */
     protected $userGroup;
 
-    /** @var boolean */
+    /** @var bool */
     protected $viewProducts;
 
-    /** @var boolean */
+    /** @var bool */
     protected $editProducts;
 
-    /** @var boolean */
+    /** @var bool */
     protected $ownProducts;
 
     /**

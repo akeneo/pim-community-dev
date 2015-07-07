@@ -46,23 +46,27 @@ Feature: Unpublish a product
     Then I should not see "Unpublish"
 
   @javascript
-  Scenario: Not being able to unpublish a product I am not owner anymore from the grid
+  Scenario: Being able to unpublish a product from the grid and view when I am the owner
     Given a "clothing" catalog configuration
     And the following published product:
-      | sku       | family  | categories    | name-en_US | number_in_stock-mobile | number_in_stock-tablet |
-      | my-jacket | jackets | jackets, tees | Jacket1    | 20                     | 30                     |
+      | sku       | family  | categories | name-en_US | number_in_stock-mobile | number_in_stock-tablet |
+      | my-jacket | jackets | jackets    | Jacket1    | 20                     | 30                     |
     And I am logged in as "Julia"
     And I am on the published index page
     Then the grid should contain 1 element
     And I should be able to view the "Unpublish the product" action of the row which contains "my-jacket"
     When I am on the "my-jacket" published show page
     Then I should see "Unpublish"
-    When I am on the "my-jacket" product page
-    And I visit the "Categories" tab
-    And I click on the "Jackets" category
-    And I save the product
+
+  @javascript
+  Scenario: Not being able to unpublish a product from the grid and view when I am not the owner
+    Given a "clothing" catalog configuration
+    And the following published product:
+      | sku       | family  | categories | name-en_US | number_in_stock-mobile | number_in_stock-tablet |
+      | my-jacket | jackets | tees       | Jacket1    | 20                     | 30                     |
+    And I am logged in as "Julia"
     And I am on the published index page
+    Then the grid should contain 1 element
     And I should not be able to view the "Unpublish the product" action of the row which contains "my-jacket"
     When I am on the "my-jacket" published show page
     Then I should not see "Unpublish"
-

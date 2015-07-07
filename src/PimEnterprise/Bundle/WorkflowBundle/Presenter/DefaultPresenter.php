@@ -21,7 +21,7 @@ class DefaultPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
         return true;
     }
@@ -39,10 +39,6 @@ class DefaultPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        if (isset($change['__context__'])) {
-            unset($change['__context__']);
-        }
-
         return array_pop($change);
     }
 }

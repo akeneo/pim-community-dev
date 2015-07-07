@@ -58,7 +58,7 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
      * @param JobInstance $jobProfile
      * @param Group[]     $excludedGroups
      *
-     * @return integer
+     * @return int
      */
     public function revokeAccess(JobInstance $jobProfile, array $excludedGroups = [])
     {

@@ -310,3 +310,52 @@ attributes:
         type:  pim_catalog_text
         group: legacy
         sortOrder:           30
+    lace_color:
+        labels:
+            en_US: Lace color
+        type:  pim_reference_data_simpleselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           30
+        properties:
+            reference_data_name: color
+    sleeve_color:
+        labels:
+            en_US: Sleeve color
+        type:  pim_reference_data_simpleselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           35
+        properties:
+            reference_data_name: color
+    zip_color:
+        labels:
+            en_US: Zip color
+        type:  pim_reference_data_simpleselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           35
+        properties:
+            reference_data_name: color
+        localizable:         true
+        scopable:            true
+    sleeve_fabric:
+        labels:
+            en_US: Sleeve fabric
+        type:  pim_reference_data_multiselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           40
+        properties:
+            reference_data_name: fabrics
+    neck_fabric:
+        labels:
+            en_US: Neck fabric
+        type:  pim_reference_data_multiselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           45
+        properties:
+            reference_data_name: fabrics
+        localizable:         true
+        scopable:            true

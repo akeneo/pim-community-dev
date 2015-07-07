@@ -78,6 +78,18 @@ class PublishedProductManager
     }
 
     /**
+     * Find the published product by its original product
+     *
+     * @param ProductInterface $product
+     *
+     * @return PublishedProductInterface
+     */
+    public function findPublishedProductByOriginalId($productId)
+    {
+        return $this->repository->findOneByOriginalProductId($productId);
+    }
+
+    /**
      * Find the published product by its original id
      *
      * @param ProductInterface $product
@@ -149,15 +161,21 @@ class PublishedProductManager
      * Un publish a product
      *
      * @param PublishedProductInterface $published
+     * @param array                     $publishOptions
      */
-    public function unpublish(PublishedProductInterface $published)
+    public function unpublish(PublishedProductInterface $published, array $publishOptions = [])
     {
         $product = $published->getOriginalProduct();
         $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $published);
         $this->unpublisher->unpublish($published);
         $this->getObjectManager()->remove($published);
-        $this->getObjectManager()->flush();
-        $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product);
+
+        $publishOptions = array_merge(['flush' => true], $publishOptions);
+
+        if (true === $publishOptions['flush']) {
+            $this->getObjectManager()->flush();
+            $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product);
+        }
     }
 
     /**
@@ -174,6 +192,20 @@ class PublishedProductManager
         $this->getObjectManager()->flush();
 
         $this->publishAssociations($products);
+    }
+
+    /**
+     * Bulk unpublish products
+     *
+     * @param array $publishedProducts
+     */
+    public function unpublishAll(array $publishedProducts)
+    {
+        foreach ($publishedProducts as $published) {
+            $this->unpublish($published, ['flush' => false]);
+        }
+
+        $this->getObjectManager()->flush();
     }
 
     /**

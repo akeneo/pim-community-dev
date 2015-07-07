@@ -56,15 +56,15 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         Group $user,
         Group $admin
     ) {
-            $jobProfile->getId()->willReturn(null);
-            $repository->findOneBy(Argument::any())->willReturn(array());
-            $repository->revokeAccess($jobProfile, Argument::any())->shouldNotBeCalled();
+        $jobProfile->getId()->willReturn(null);
+        $repository->findOneBy(Argument::any())->willReturn(array());
+        $repository->revokeAccess($jobProfile, Argument::any())->shouldNotBeCalled();
 
-            $objectManager
+        $objectManager
                 ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess'))
                 ->shouldBeCalledTimes(2);
-            $objectManager->flush()->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
-            $this->setAccess($jobProfile, [$user, $admin], [$admin]);
+        $this->setAccess($jobProfile, [$user, $admin], [$admin]);
     }
 }

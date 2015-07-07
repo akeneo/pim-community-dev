@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as BaseAvailableAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -74,7 +74,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
             'attributes',
             'light_entity',
             [
-                'repository' => $this->attributeRepository,
+                'repository'         => $this->attributeRepository,
                 'repository_options' => [
                     'excluded_attribute_ids' => $excludedAttributeIds,
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),

@@ -14,10 +14,9 @@ class PricesPresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
     }
 
-    function it_supports_change_if_it_is_a_value_instance_and_change_has_a_prices_key(
-        Model\ProductValueInterface $value
-    ) {
-        $this->supports($value, ['prices' => 'foo'])->shouldBe(true);
+    function it_supports_price()
+    {
+        $this->supportsChange('pim_catalog_price_collection')->shouldBe(true);
     }
 
     function it_presents_prices_change_using_the_injected_renderer(
@@ -42,16 +41,16 @@ class PricesPresenterSpec extends ObjectBehavior
         $gbp->getCurrency()->willReturn('GBP');
 
         $change = [
-            'prices' => [
-                'EUR' => [
+            'data' => [
+                [
                     'currency' => 'EUR',
                     'data' => '12',
                 ],
-                'GBP' => [
+                [
                     'currency' => 'GBP',
                     'data' => '25',
                 ],
-                'USD' => [
+                [
                     'currency' => 'USD',
                     'data' => '20',
                 ],

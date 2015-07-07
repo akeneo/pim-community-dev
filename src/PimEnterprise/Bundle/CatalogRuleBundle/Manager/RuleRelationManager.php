@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -10,15 +11,16 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Class RuleRelationManager
+ *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class RuleRelationManager
@@ -113,8 +115,8 @@ class RuleRelationManager
     /**
      * Get rules related to a resource
      *
-     * @param integer $resourceId
-     * @param string  $resourceName
+     * @param int    $resourceId
+     * @param string $resourceName
      *
      * @return RuleDefinitionInterface[]
      */
@@ -150,9 +152,9 @@ class RuleRelationManager
     /**
      * @param $resourceName
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     protected function resolveResourceName($resourceName)
     {

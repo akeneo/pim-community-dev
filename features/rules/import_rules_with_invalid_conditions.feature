@@ -51,7 +51,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
     And I should see "conditions[0]: Attribute or field \"name\" expects a string as data, \"integer\" given (for filter string)."
-    And I should see "actions[0]: Attribute or field \"name\" expects a string as data, \"integer\" given (for setter text)."
+    And I should see "actions[0]: Attribute or field \"name\" expects a string as data, \"integer\" given."
     When I am on the "name" attribute page
     And I visit the "Rules" tab
     Then I should see "Super Name"
@@ -103,7 +103,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
     And I should see "conditions[0]: Attribute or field \"description\" expects a string as data, \"integer\" given (for filter string)."
-    And I should see "actions[0]: Attribute or field \"description\" expects a string as data, \"integer\" given (for setter text)."
+    And I should see "actions[0]: Attribute or field \"description\" expects a string as data, \"integer\" given."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see "Another good description"
@@ -426,7 +426,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
     And I should see "conditions[0]: Attribute or field \"number_in_stock\" expects a numeric as data (for string filter)."
-    And I should see "actions[0]: Attribute or field \"number_in_stock\" expects a numeric as data (for string setter)."
+    And I should see "actions[0]: this value should be a valid number."
     When I am on the "number_in_stock" attribute page
     And I visit the "Rules" tab
     Then I should see "42"
@@ -470,7 +470,7 @@ Feature: Import rules
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
     And I should see "conditions[0]: Attribute or field \"handmade\" expects a boolean as data, \"string\" given (for filter boolean)."
-    And I should see "actions[0]: Attribute or field \"handmade\" expects a boolean as data, \"string\" given (for setter boolean)."
+    And I should see "actions[0]: Attribute or field \"handmade\" expects a boolean as data, \"string\" given."
     When I am on the "handmade" attribute page
     And I visit the "Rules" tab
     Then I should see "true"

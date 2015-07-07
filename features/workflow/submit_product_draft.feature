@@ -24,9 +24,12 @@ Feature: Submit a modification on a product draft
       | handmade                  | no                |
       | release_date-ecommerce    | 2014-05-14        |
       | length                    | 60 CENTIMETER     |
+      | datasheet                 |                   |
+      | side_view                 |                   |
     And I am logged in as "Mary"
     And I edit the "my-jacket" product
 
+  @skip-pef
   Scenario: Successfully propose an identifier attribute change
     When I change the "SKU" to "your-jacket"
     And I save the product
@@ -34,6 +37,7 @@ Feature: Submit a modification on a product draft
     But the field SKU should contain "your-jacket"
     And I should see that SKU is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a text attribute change
     When I change the "Name" to "Coat"
     And I save the product
@@ -41,6 +45,7 @@ Feature: Submit a modification on a product draft
     But the field Name should contain "Coat"
     And I should see that Name is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a textarea attribute change
     When I change the "mobile Description" to "An awesome coat"
     And I save the product
@@ -48,6 +53,7 @@ Feature: Submit a modification on a product draft
     But the field mobile Description should contain "An awesome coat"
     But I should see that mobile Description is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a number attribute change
     When I visit the "Marketing" group
     And I expand the "Number in stock" attribute
@@ -66,6 +72,7 @@ Feature: Submit a modification on a product draft
     And the field print Number in stock should contain "50"
     And I should see that print Number in stock is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a prices collection attribute change
     When I visit the "Marketing" group
     And I change the "$ Price" to "90"
@@ -80,6 +87,7 @@ Feature: Submit a modification on a product draft
     And the field Price in € should contain "150"
     And I should see that Price in € is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a simple select attribute change
     When I change the "Manufacturer" to "Nike"
     And I save the product
@@ -87,6 +95,7 @@ Feature: Submit a modification on a product draft
     But the field Manufacturer should contain "Nike"
     And I should see that Manufacturer is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a multi select attribute change
     When I change the "Weather conditions" to "Dry, Wet, Hot, Cold"
     And I save the product
@@ -97,6 +106,7 @@ Feature: Submit a modification on a product draft
     But the field Weather conditions should contain "Dry, Wet, Hot and Cold"
     And I should see that Weather conditions is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a file attribute change
     When I visit the "Media" group
     And I attach file "akeneo.txt" to "Datasheet"
@@ -105,6 +115,7 @@ Feature: Submit a modification on a product draft
     But the field Datasheet should contain "akeneo.txt"
     And I should see that Datasheet is a modified value
 
+  @skip-pef
   Scenario: Successfully propose an image attribute change
     When I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
@@ -113,6 +124,7 @@ Feature: Submit a modification on a product draft
     But the field Side view should contain "akeneo.jpg"
     And I should see that Side view is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a boolean attribute change
     When I check the "Handmade" switch
     And I save the product
@@ -120,7 +132,7 @@ Feature: Submit a modification on a product draft
     But the "Handmade" checkbox should be checked
     And I should see that Handmade is a modified value
 
-  @skip
+  @skip @skip-pef
   Scenario: Successfully accept a date attribute modification on a product draft
     When I change the "ecommerce Release date" to "2014-05-20"
     And I save the product
@@ -128,6 +140,7 @@ Feature: Submit a modification on a product draft
     But the field ecommerce Release date should contain "May 20, 2014"
     And I should see that ecommerce Release date is a modified value
 
+  @skip-pef
   Scenario: Successfully accept a metric attribute modification on a product draft
     When I visit the "Sizes" group
     And I change the "Length" to "40"
@@ -136,6 +149,7 @@ Feature: Submit a modification on a product draft
     But the field Length should contain "40"
     And I should see that Length is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a localized attribute change
     Given I switch the locale to "French (France)"
     When I change the "Nom" to "Tricot"
@@ -144,6 +158,7 @@ Feature: Submit a modification on a product draft
     But the field Nom should contain "Tricot"
     And I should see that Nom is a modified value
 
+  @skip-pef
   Scenario: Successfully propose a localized and scoped attribute change
     Given I switch the locale to "French (France)"
     When I change the "mobile Description" to "Un beau tricot"

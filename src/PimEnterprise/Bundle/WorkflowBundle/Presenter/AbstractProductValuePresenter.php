@@ -25,9 +25,13 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
     /**
      * {@inheritdoc}
      */
-    public function supports($data, array $change)
+    public function supports($data)
     {
-        return $data instanceof ProductValueInterface && $this->supportsChange($change);
+        if ($data instanceof ProductValueInterface) {
+            return $this->supportsChange($data->getAttribute()->getAttributeType());
+        }
+
+        return false;
     }
 
     /**
@@ -42,13 +46,13 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
     }
 
     /**
-     * Wether or not this class can present the provided change
+     * Whether or not this class can present the provided change
      *
-     * @param array $change
+     * @param string $attributeType
      *
-     * @return boolean
+     * @return bool
      */
-    abstract protected function supportsChange(array $change);
+    abstract protected function supportsChange($attributeType);
 
     /**
      * Normalize data

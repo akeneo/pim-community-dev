@@ -24,9 +24,9 @@ class DatePresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return array_key_exists('date', $change);
+        return 'pim_catalog_date' === $attributeType;
     }
 
     /**
@@ -42,6 +42,6 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return !empty($change['date']) ? (new \DateTime($change['date']))->format(self::DATE_FORMAT) : '';
+        return !empty($change['data']) ? (new \DateTime($change['data']))->format(self::DATE_FORMAT) : '';
     }
 }

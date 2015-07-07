@@ -25,7 +25,7 @@ interface ProductValuePresenterInterface
      *
      * @param ProductValueInterface $value
      *
-     * @return boolean
+     * @return bool
      */
     public function supports(ProductValueInterface $value);
 

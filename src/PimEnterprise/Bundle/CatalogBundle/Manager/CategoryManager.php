@@ -81,8 +81,8 @@ class CategoryManager extends BaseCategoryManager
     /**
      * Get only the granted direct children for a parent category id.
      *
-     * @param integer         $parentId
-     * @param integer|boolean $selectNodeId
+     * @param int      $parentId
+     * @param int|bool $selectNodeId
      *
      * @return ArrayCollection
      */

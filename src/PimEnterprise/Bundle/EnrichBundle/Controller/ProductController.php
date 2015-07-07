@@ -38,6 +38,7 @@ class ProductController extends BaseProductController
      *
      * @AclAncestor("pim_enrich_product_index")
      * @Template
+     *
      * @return Response|RedirectResponse
      */
     public function indexAction(Request $request)
@@ -68,11 +69,11 @@ class ProductController extends BaseProductController
      * Dispatch to product view or product edit when a user click on a product grid row
      *
      * @param Request $request
-     * @param integer $id
-     *
-     * @return RedirectResponse
+     * @param int     $id
      *
      * @throws AccessDeniedException
+     *
+     * @return RedirectResponse
      *
      * @AclAncestor("pim_enrich_product_index")
      */
@@ -80,13 +81,9 @@ class ProductController extends BaseProductController
     {
         $product = $this->findProductOr404($id);
         $editProductGranted = $this->securityContext->isGranted(Attributes::EDIT, $product);
-        $locale = $this->userContext->getCurrentLocale();
-        $editLocaleGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale);
 
-        if ($editProductGranted && $editLocaleGranted) {
-            $parameters = $this->editAction($this->request, $id);
-
-            return $this->render('PimEnterpriseEnrichBundle:Product:edit.html.twig', $parameters);
+        if ($editProductGranted) {
+            return $this->render('PimEnrichBundle:Product:edit.html.twig', ['productId' => $id]);
         } elseif ($this->securityContext->isGranted(Attributes::VIEW, $product)) {
             $parameters = $this->showAction($this->request, $id);
 
@@ -100,10 +97,11 @@ class ProductController extends BaseProductController
      * Show product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @Template
      * @AclAncestor("pim_enrich_product_index")
+     *
      * @return array
      */
     public function showAction(Request $request, $id)
@@ -160,7 +158,7 @@ class ProductController extends BaseProductController
      * Drafts of a product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -169,7 +167,7 @@ class ProductController extends BaseProductController
         return $this->render(
             'PimEnterpriseEnrichBundle:Product:_product_drafts.html.twig',
             array(
-                'product' => $this->findProductOr404($id),
+                'product'    => $this->findProductOr404($id),
                 'dataLocale' => $this->getDataLocaleCode()
             )
         );

@@ -31,11 +31,9 @@ class ClassifySpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify');
-    }
-
-    function it_is_a_product_mass_edit_operation()
-    {
-        $this->shouldHaveType('Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation');
+        $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
+        $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface');
+        $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface');
     }
 
     function it_extends_the_base_classify_operation()

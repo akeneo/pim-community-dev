@@ -49,7 +49,7 @@ class FilePresenter implements ProductValuePresenterInterface, TwigAwareInterfac
             return $this->twig->loadTemplate(static::TEMPLATE)->render(
                 [
                     'filename' => $filename,
-                    'title' => $title
+                    'title'    => $title
                 ]
             );
         }

@@ -22,6 +22,7 @@ interface AttributeGroupAccessInterface extends AccessInterface
 {
     /**
      * Get attribute group
+     *
      * @return AttributeGroupInterface
      */
     public function getAttributeGroup();
@@ -29,7 +30,7 @@ interface AttributeGroupAccessInterface extends AccessInterface
     /**
      * Set attribute group
      *
-    * @param AttributeGroupInterface $attributeGroup
+     * @param AttributeGroupInterface $attributeGroup
      *
      * @return AttributeGroupAccessInterface
      */
@@ -38,14 +39,14 @@ interface AttributeGroupAccessInterface extends AccessInterface
     /**
      * Predicate for view attributes permission
      *
-     * @return boolean
+     * @return bool
      */
     public function isViewAttributes();
 
     /**
      * Set view attributes permission
      *
-     * @param boolean $viewAttributes
+     * @param bool $viewAttributes
      *
      * @return AttributeGroupAccessInterface
      */
@@ -54,14 +55,14 @@ interface AttributeGroupAccessInterface extends AccessInterface
     /**
      * Predicate for edit attributes permission
      *
-     * @return boolean
+     * @return bool
      */
     public function isEditAttributes();
 
     /**
      * Set edit attributes permission
      *
-     * @param boolean $editAttributes
+     * @param bool $editAttributes
      *
      * @return AttributeGroupAccessInterface
      */

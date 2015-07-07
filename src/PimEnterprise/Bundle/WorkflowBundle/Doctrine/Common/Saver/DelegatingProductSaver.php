@@ -11,32 +11,27 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Delegating product saver, depending on context it delegates to other savers to deal with drafts or working copies
  *
- * CAUTION, it relies on security context to check permissions and collect data from form, it does not work from CLI,
- * it will be enhanced in a future version
- *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ProductSaver */
+    /** @var SaverInterface */
     protected $workingCopySaver;
 
-    /** @var ProductDraftSaver */
+    /** @var SaverInterface */
     protected $draftSaver;
 
     /** @var ObjectManager */
@@ -48,50 +43,50 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var SecurityContextInterface */
     protected $securityContext;
 
+    /** @var ProductDraftBuilderInterface */
+    protected $productDraftBuilder;
+
     /**
-     * @param ProductSaver                 $workingCopySaver
-     * @param ProductDraftSaver            $draftSaver
+     * @param SaverInterface               $workingCopySaver
+     * @param SaverInterface               $draftSaver
      * @param ObjectManager                $objectManager
      * @param ProductSavingOptionsResolver $optionsResolver
      * @param SecurityContextInterface     $securityContext
+     * @param ProductDraftBuilderInterface $productDraftBuilder
      */
     public function __construct(
-        ProductSaver $workingCopySaver,
-        ProductDraftSaver $draftSaver,
+        SaverInterface $workingCopySaver,
+        SaverInterface $draftSaver,
         ObjectManager $objectManager,
         ProductSavingOptionsResolver $optionsResolver,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        ProductDraftBuilderInterface $productDraftBuilder
     ) {
-        $this->workingCopySaver = $workingCopySaver;
-        $this->draftSaver = $draftSaver;
-        $this->objectManager = $objectManager;
-        $this->optionsResolver = $optionsResolver;
-        $this->securityContext = $securityContext;
+        $this->workingCopySaver    = $workingCopySaver;
+        $this->draftSaver          = $draftSaver;
+        $this->objectManager       = $objectManager;
+        $this->optionsResolver     = $optionsResolver;
+        $this->securityContext     = $securityContext;
+        $this->productDraftBuilder = $productDraftBuilder;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @throws Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException if not authenticated
+     * @throws AuthenticationCredentialsNotFoundException if not authenticated
      */
     public function save($product, array $options = [])
     {
-        if (!$product instanceof ProductInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
-                    ClassUtils::getClass($product)
-                )
-            );
-        }
-
         $options = $this->optionsResolver->resolveSaveOptions($options);
-        $isOwner = $this->isOwner($product);
+        $hasPermissions = $this->hasPermissions($product);
 
-        if ($isOwner) {
+        if ($hasPermissions) {
             $this->workingCopySaver->save($product, $options);
         } else {
-            $this->draftSaver->save($product, $options);
+            $productDraft = $this->productDraftBuilder->build($product, $this->getUsername());
+            if (null !== $productDraft) {
+                $this->draftSaver->save($productDraft, $options);
+            }
         }
     }
 
@@ -118,20 +113,28 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * Returns true if user is owner of the product or if the product does not exist yet
+     * Returns true if user is owner of the product or if the product does not exist yet or if the token does not exist
      *
      * @param ProductInterface $product
      *
-     * @return boolean
+     * @return bool
      */
-    protected function isOwner(ProductInterface $product)
+    protected function hasPermissions(ProductInterface $product)
     {
-        if (null === $product->getId()) {
+        if (null === $product->getId() || null === $this->securityContext->getToken()) {
             $isOwner = true;
         } else {
             $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
         }
 
         return $isOwner;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUsername()
+    {
+        return $this->securityContext->getToken()->getUser()->getUsername();
     }
 }

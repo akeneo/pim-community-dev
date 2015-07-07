@@ -24,4 +24,3 @@ Feature: On a product edit/show display impacted attributes
       | set_rule | name  | My loafer | en_US  |
     Then I am on the "my-loafer" product page
     And I should see that Name is a smart
-    Then I should see the smart attribute tooltip

@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -14,16 +14,16 @@ class BooleanPresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
     }
 
-    function it_supports_change_if_it_has_a_boolean_key(
-        Model\ProductValueInterface $value
-    ) {
-        $this->supports($value, ['boolean' => '1'])->shouldBe(true);
+    function it_supports_boolean_type()
+    {
+        $this->supportsChange('pim_catalog_boolean')->shouldBe(true);
+        $this->supportsChange('other')->shouldBe(false);
     }
 
     function it_presents_boolean_change_using_the_injected_renderer(
         RendererInterface $renderer,
         TranslatorInterface $translator,
-        Model\ProductValueInterface $value
+        ProductValueInterface $value
     ) {
         $translator->trans('Yes')->willReturn('Yes');
         $translator->trans('No')->willReturn('No');
@@ -34,6 +34,6 @@ class BooleanPresenterSpec extends ObjectBehavior
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->present($value, ['boolean' => '1'])->shouldReturn('diff between two booleans');
+        $this->present($value, ['data' => '1'])->shouldReturn('diff between two booleans');
     }
 }

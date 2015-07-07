@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
  */
 class AttributeGroupAccess implements AttributeGroupAccessInterface
 {
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var AttributeGroupInterface */
@@ -31,10 +31,10 @@ class AttributeGroupAccess implements AttributeGroupAccessInterface
     /** @var Group */
     protected $userGroup;
 
-    /** @var boolean */
+    /** @var bool */
     protected $viewAttributes;
 
-    /** @var boolean */
+    /** @var bool */
     protected $editAttributes;
 
     /**

@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Datagrid\Extension\Filter\Orm\Attribute;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -53,9 +53,9 @@ class IsSmartFilterSpec extends ObjectBehavior
 
         $qb->setParameter('attributeClass', 'Attribute')->shouldBeCalled();
 
-        $expr->isNotNull('rlr')->shouldBeCalled()->willReturn('rlr IS NOT NULL');
+        $expr->isNotNull('rlr.resourceId')->shouldBeCalled()->willReturn('rlr.resourceId IS NOT NULL');
 
-        $qb->andWhere('rlr IS NOT NULL')->shouldBeCalled();
+        $qb->andWhere('rlr.resourceId IS NOT NULL')->shouldBeCalled();
 
         $this->apply($ds, ['value' => 1]);
     }
@@ -74,9 +74,9 @@ class IsSmartFilterSpec extends ObjectBehavior
 
         $qb->setParameter('attributeClass', 'Attribute')->shouldBeCalled();
 
-        $expr->isNull('rlr')->shouldBeCalled()->willReturn('rlr IS NULL');
+        $expr->isNull('rlr.resourceId')->shouldBeCalled()->willReturn('rlr.resourceId IS NULL');
 
-        $qb->andWhere('rlr IS NULL')->shouldBeCalled();
+        $qb->andWhere('rlr.resourceId IS NULL')->shouldBeCalled();
 
         $this->apply($ds, ['value' => 2]);
     }

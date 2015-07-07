@@ -1,3 +1,2 @@
-formatter.name: pretty
 extensions:
     - Akeneo\SkipExampleExtension

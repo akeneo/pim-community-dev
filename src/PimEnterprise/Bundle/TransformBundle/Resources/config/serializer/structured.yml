@@ -1,9 +1,0 @@
-parameters:
-    pimee_transform.serializer.filter.granted_product_value.class: PimEnterprise\Bundle\TransformBundle\Normalizer\Filter\GrantedProductValueNormalizerFilter
-
-services:
-    # Filters
-    pimee_transform.serializer.filter.granted_product_value:
-        class: %pimee_transform.serializer.filter.granted_product_value.class%
-        arguments:
-            - '@security.context'

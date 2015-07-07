@@ -19,14 +19,13 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 interface PresenterInterface
 {
     /**
-     * Wether or not this class can present the provided change
+     * Whether or not this class can present the provided change
      *
      * @param mixed $data
-     * @param array $change
      *
-     * @return boolean
+     * @return bool
      */
-    public function supports($data, array $change);
+    public function supports($data);
 
     /**
      * Present the provided change into html

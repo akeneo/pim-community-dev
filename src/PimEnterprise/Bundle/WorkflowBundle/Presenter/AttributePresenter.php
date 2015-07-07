@@ -25,7 +25,7 @@ class AttributePresenter implements PresenterInterface, TwigAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($data, array $change)
+    public function supports($data)
     {
         return $data instanceof AttributeInterface;
     }
@@ -43,17 +43,17 @@ class AttributePresenter implements PresenterInterface, TwigAwareInterface
                 ->getExtension('pim_locale_extension')
                 ->flag(
                     $this->twig,
-                    $change['__context__']['locale'],
+                    $change['locale'],
                     false
                 );
         }
 
-        if ($data->isScopable() && isset($change['__context__']['scope'])) {
-            $parts[] = $change['__context__']['scope'];
+        if ($data->isScopable() && isset($change['scope'])) {
+            $parts[] = $change['scope'];
         }
 
         $parts[] = $data->getLabel();
 
-        return join(' - ', $parts);
+        return implode(' - ', $parts);
     }
 }

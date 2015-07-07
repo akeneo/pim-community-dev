@@ -48,3 +48,22 @@ job_profile_accesses:
     variant_group_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
+
+    update_product_value:
+        executeJobProfile: [IT support, Manager, Redactor]
+    add_product_value:
+        executeJobProfile: [IT support, Manager, Redactor]
+    add_product_value_with_permission:
+        executeJobProfile: [IT support, Manager, Redactor]
+    publish_product:
+        executeJobProfile: [IT support, Manager, Redactor]
+    unpublish_product:
+        executeJobProfile: [IT support, Manager, Redactor]
+    edit_common_attributes:
+        executeJobProfile: [IT support, Manager, Redactor]
+    add_to_variant_group:
+        executeJobProfile: [IT support, Manager, Redactor]
+    set_attribute_requirements:
+        executeJobProfile: [IT support, Manager, Redactor]
+    csv_product_quick_export:
+        executeJobProfile: [IT support, Manager, Redactor]

@@ -1,0 +1,21 @@
+{
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "indent": 4,
+  "latedef": true,
+  "newcap": true,
+  "nonew": true,
+  "quotmark": true,
+  "undef": true,
+  "unused": true,
+  "maxlen": 120,
+  "globalstrict": true,
+  "browser": true,
+  "globals": {
+    "Translator": true,
+    "require": true,
+    "define": true
+  }
+}

@@ -62,7 +62,7 @@ class DeleteCommand extends ContainerAwareCommand
     protected function confirmDeletion(OutputInterface $output, $code)
     {
         $question = null !== $code ?
-            sprintf('Are you sure you want to delete the rule "%s"?', $code):
+            sprintf('Are you sure you want to delete the rule "%s"?', $code) :
             'Are you sure you want to delete all the rules?';
 
         $dialog = $this->getHelper('dialog');

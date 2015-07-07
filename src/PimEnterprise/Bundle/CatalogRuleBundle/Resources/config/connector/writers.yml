@@ -1,0 +1,16 @@
+parameters:
+    # import rules
+    pimee_catalog_rule.writer.doctrine.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\Doctrine\RuleDefinitionWriter
+    # export rules
+    pimee_catalog_rule.writer.yaml_file.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\Writer\YamlFile\RuleDefinitionWriter
+
+services:
+    # import rules
+    pimee_catalog_rule.writer.doctrine.rule_definition:
+        class: %pimee_catalog_rule.writer.doctrine.rule_definition.class%
+        arguments:
+            - '@akeneo_rule_engine.saver.rule_definition'
+
+    # export rules
+    pimee_catalog_rule.writer.yaml_file.rule_definition:
+        class: %pimee_catalog_rule.writer.yaml_file.rule_definition.class%

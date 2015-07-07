@@ -14,7 +14,7 @@ use Context\Page\Base\Form;
 class Edit extends Form
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/configuration/locale/{id}/edit';
 }

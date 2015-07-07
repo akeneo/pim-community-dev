@@ -57,8 +57,9 @@ class AttributeGroupAccessManager
      * @param AttributeGroupInterface $group
      * @param string                  $permission
      *
-     * @return bool
      * @throws \LogicException
+     *
+     * @return bool
      */
     public function isUserGranted(UserInterface $user, AttributeGroupInterface $group, $permission)
     {
@@ -135,7 +136,7 @@ class AttributeGroupAccessManager
      * @param AttributeGroupInterface $attributeGroup
      * @param UserGroup               $userGroup
      * @param string                  $accessLevel
-     * @param boolean                 $flush
+     * @param bool                    $flush
      */
     public function grantAccess(
         AttributeGroupInterface $attributeGroup,
@@ -190,7 +191,7 @@ class AttributeGroupAccessManager
      * @param AttributeGroupInterface $attributeGroup
      * @param UserGroup[]             $excludedUserGroups
      *
-     * @return integer
+     * @return int
      */
     protected function revokeAccess(AttributeGroupInterface $attributeGroup, array $excludedUserGroups = [])
     {

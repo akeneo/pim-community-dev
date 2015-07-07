@@ -5,17 +5,20 @@ namespace Context;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Behat\Behat\Context\Step;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 
 /**
  * A context for creating entities
@@ -108,8 +111,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
-            $productDraft->setStatus($data['status'] === 'ready' ? ProductDraft::READY : ProductDraft::IN_PROGRESS);
+            $productDraft->setStatus($data['status'] === 'ready' ? ProductDraftInterface::READY : ProductDraftInterface::IN_PROGRESS);
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
+
+            if (isset($data['result'])) {
+                $productDraft->setChanges(json_decode($data['result'], true));
+            }
+
             $manager->persist($productDraft);
         }
         $manager->flush();
@@ -241,9 +249,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string $sku
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\Product
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
      */
     public function getPublished($sku)
     {
@@ -256,6 +264,35 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $this->refresh($published);
 
         return $published;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param string           $username
+     *
+     * @return ProductDraft
+     */
+    public function getProductDraft(ProductInterface $product, $username)
+    {
+        $productDraft = $this->getProposalRepository()->findUserProductDraft($product, $username);
+
+        if ($productDraft) {
+            $this->refresh($productDraft);
+        }
+
+        return $productDraft;
+    }
+
+    /**
+     * @param int $expectedTotal
+     *
+     * @Then /^there should be (\d+) proposals?$/
+     */
+    public function thereShouldBeProposals($expectedTotal)
+    {
+        $total = count($this->getProposalRepository()->findAll());
+
+        assertEquals($expectedTotal, $total);
     }
 
     /**
@@ -395,8 +432,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string $type
      * @param string $action
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     protected function getAccessLevelByAccessTypeAndAction($type, $action)
     {
@@ -468,7 +506,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         foreach ($table->getHash() as $data) {
             $rule = new RuleDefinition();
             $rule->setCode($data['code']);
-            $rule->setPriority((int)$data['priority']);
+            $rule->setPriority((int) $data['priority']);
             $rule->setType('product');
             // TODO : via EM to avoid validation
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($rule));
@@ -488,7 +526,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $data
             );
@@ -504,7 +542,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
 
             $condition = [
-                'field' => $data['field'],
+                'field'    => $data['field'],
                 'operator' => $data['operator'],
                 // TODO: replace this dirty fix to use the same class than ConditionNormalizer
                 'value' => $data['value'],
@@ -536,7 +574,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $data
             );
@@ -552,7 +590,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $value = $this->formatActionData($attribute, $data['value']);
 
             $action = [
-                'type' => 'set_value',
+                'type'  => 'set_value',
                 'field' => $code,
                 'value' => $value,
             ];
@@ -581,7 +619,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $data
             );
@@ -592,9 +630,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $content['actions'] = [];
             }
             $action = [
-                'type' => 'copy_value',
+                'type'       => 'copy_value',
                 'from_field' => $data['from_field'],
-                'to_field' => $data['to_field'],
+                'to_field'   => $data['to_field'],
             ];
             if ($data['from_locale'] !== null && $data['from_locale'] !== '') {
                 $action['from_locale'] = $data['from_locale'];
@@ -619,9 +657,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string $code
      *
-     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
      */
     public function getRule($code)
     {
@@ -664,6 +702,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             case 'pim_catalog_date':
             case 'pim_catalog_identifier':
             case 'pim_catalog_simpleselect':
+            case 'pim_reference_data_simpleselect':
                 $value = (string) $data;
                 break;
             case 'pim_catalog_number':
@@ -674,7 +713,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $value = ['unit' => $values[1], 'data' => $values[0]];
                 break;
             case 'pim_catalog_multiselect':
-                $value = explode(',', $data);
+            case 'pim_reference_data_multiselect':
+                $value = explode(',', str_replace(' ', '', $data));
                 break;
             case 'pim_catalog_price_collection':
                 $values = explode(',', $data);
@@ -693,5 +733,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         return $value;
+    }
+
+    /**
+     * @return ProductDraftRepositoryInterface
+     */
+    protected function getProposalRepository()
+    {
+        return $this->getContainer()->get('pimee_workflow.repository.product_draft');
     }
 }

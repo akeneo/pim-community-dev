@@ -15,7 +15,7 @@ use Context\Page\Base\Form;
 class Show extends Form
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/enrich/product/{id}/show';
 

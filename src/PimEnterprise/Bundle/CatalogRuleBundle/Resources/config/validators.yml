@@ -29,6 +29,9 @@ services:
     pimee_catalog_rule.validator.product_rule.value_action:
         class: %pimee_catalog_rule.validator.product_rule.value_action.class%
         arguments:
-            - '@pim_catalog.updater.product'
+            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.product_property_copier'
+            - '@pim_catalog.builder.product'
+            - '@pim_validator'
         tags:
             - { name: validator.constraint_validator, alias: pimee_constraint_value_action_validator }

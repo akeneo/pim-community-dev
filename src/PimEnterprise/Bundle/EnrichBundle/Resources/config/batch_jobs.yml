@@ -1,0 +1,48 @@
+connector:
+    name: Akeneo Mass Edit Connector
+    jobs:
+        publish_product:
+            title: publish_product
+            type:  mass_edit
+            steps:
+                perform:
+                    title: publish_product
+                    class: "%pim_connector.step.tasklet.class%"
+                    services:
+                        tasklet: pim_enrich.mass_edit_tasklet.publish_product
+        unpublish_product:
+            title: unpublish_product
+            type:  mass_edit
+            steps:
+                perform:
+                    title: unpublish_product
+                    class: "%pim_connector.step.tasklet.class%"
+                    services:
+                        tasklet: pim_enrich.mass_edit_tasklet.unpublish_product
+        add_product_value_with_permission:
+            title: add_product_value_with_permission
+            type:  mass_edit
+            steps:
+                perform:
+                    title: add_product_value_with_permission
+                    services:
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pimee_enrich.mass_edit.add_product_value.processor
+                        writer:    pim_connector.writer.doctrine.product
+        edit_common_attributes_with_permission:
+            title: edit_common_attributes_with_permission
+            type:  mass_edit
+            steps:
+                perform:
+                    title: edit_common_attributes_with_permission
+                    services:
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pim_enrich.connector.processor.mass_edit.product.edit_common_attributes
+                        writer:    pimee_enrich.connector.writer.mass_edit.product
+                    parameters:
+                        batch_size: 1000
+                clean:
+                    title: edit_common_attributes_clean
+                    class: "%pim_enrich.step.mass_edit.step.class%"
+                    services:
+                        cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner

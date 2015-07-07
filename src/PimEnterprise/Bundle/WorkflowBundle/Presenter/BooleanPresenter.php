@@ -29,9 +29,9 @@ class BooleanPresenter extends AbstractProductValuePresenter implements Translat
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return array_key_exists('boolean', $change);
+        return 'pim_catalog_boolean' === $attributeType;
     }
 
     /**
@@ -39,7 +39,7 @@ class BooleanPresenter extends AbstractProductValuePresenter implements Translat
      */
     protected function normalizeData($data)
     {
-        return $this->translator->trans($data ? self::YES : self::NO);
+        return $this->translator->trans($data['data'] ? self::YES : self::NO);
     }
 
     /**
@@ -47,6 +47,6 @@ class BooleanPresenter extends AbstractProductValuePresenter implements Translat
      */
     protected function normalizeChange(array $change)
     {
-        return $this->translator->trans($change['boolean'] ? self::YES : self::NO);
+        return $this->translator->trans($change['data'] ? self::YES : self::NO);
     }
 }

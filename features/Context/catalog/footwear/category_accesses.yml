@@ -14,7 +14,7 @@ category_accesses:
     winter_boots:
         viewProducts: [IT support, Manager, Redactor]
         editProducts: [IT support, Manager, Redactor]
-        ownProducts: [IT support, Manager, Redactor]
+        ownProducts: [IT support, Manager]
     sandals:
         viewProducts: [IT support, Manager, Redactor]
         editProducts: [IT support, Manager, Redactor]

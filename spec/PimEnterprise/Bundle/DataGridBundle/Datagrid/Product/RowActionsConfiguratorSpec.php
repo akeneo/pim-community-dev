@@ -6,10 +6,10 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
@@ -22,7 +22,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         DatagridConfiguration $datagridConfiguration,
         ConfigurationRegistry $registry,
         SecurityContextInterface $securityContext,
-        ProductRepository $productRepository,
+        ProductRepositoryInterface $productRepository,
         LocaleRepositoryInterface $localeRepository,
         TokenInterface $token,
         User $user,

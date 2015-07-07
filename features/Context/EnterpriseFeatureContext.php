@@ -22,11 +22,11 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('webUser', new EnterpriseWebUser($parameters['window_width'], $parameters['window_height']));
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new EnterpriseDataGridContext());
-        $this->useContext('command', new CommandContext());
         $this->useContext('navigation', new EnterpriseNavigationContext());
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
+        $this->useContext('command', new EnterpriseCommandContext());
     }
 
     /**
@@ -42,8 +42,10 @@ class EnterpriseFeatureContext extends FeatureContext
     /**
      * @param string $field
      *
-     * @return bool
      * @throws ExpectationException
+     *
+     * @return bool
+     *
      * @Then /^I should see that (.*) is a modified value$/
      */
     public function iShouldSeeThatFieldIsAModifiedValue($field)
@@ -61,15 +63,19 @@ class EnterpriseFeatureContext extends FeatureContext
     /**
      * @param string $attribute
      *
-     * @return bool
      * @throws ExpectationException
+     *
+     * @return bool
+     *
      * @Then /^I should see that (.*) is a smart$/
      */
     public function iShouldSeeThatAttributeIsASmart($attribute)
     {
+        $this->wait();
         $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
+
         foreach ($icons as $icon) {
-            if ($icon->hasClass('icon-code-fork')) {
+            if ($icon->getParent()->hasClass('from-smart')) {
                 return true;
             }
         }
@@ -103,7 +109,7 @@ class EnterpriseFeatureContext extends FeatureContext
             $condition = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $condition
             );
@@ -164,7 +170,7 @@ class EnterpriseFeatureContext extends FeatureContext
             $action = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $action
             );
@@ -228,7 +234,7 @@ class EnterpriseFeatureContext extends FeatureContext
             $action = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $action
             );
@@ -296,7 +302,6 @@ class EnterpriseFeatureContext extends FeatureContext
         }
 
         throw new \Exception(sprintf('No rule found with code %s', $code));
-
     }
 
     protected function checkRuleElementValue($element, $expectedValue, $mandatory = true, $firstElement = false)
@@ -428,13 +433,29 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeInThePopover($search)
     {
-        $this->wait();
-        $popoverContent = $this->getSession()->getPage()
-            ->find('css', sprintf('.popover .popover-content:contains("%s")', $search));
+        $popoverContent = $this->getMainContext()->spin(function () use ($search) {
+            return $this->getSession()->getPage()
+                ->find('css', sprintf('.popover .popover-content:contains("%s")', $search));
+        });
 
         if (!$popoverContent) {
             throw $this->createExpectationException(sprintf('The popover does not contain %s', $search));
         }
+    }
+
+    /**
+     * @When /^I revert the product version number (\d+)$/
+     */
+    public function iRevertTheProductVersionNumber($version)
+    {
+        $this->getSession()
+            ->getPage()
+            ->find('css', sprintf('tr[data-version="%s"]', $version))
+            ->find('css', 'td.actions .btn.restore')->click();
+        $this->wait();
+        $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
+
+        $this->wait();
     }
 
     protected function getAttributeIcon($iconSelector, $attributeLabel)

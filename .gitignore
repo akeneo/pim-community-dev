@@ -19,3 +19,4 @@ behat.yml
 .phpspec/*.tpl
 composer.phar
 composer.lock
+node_modules/

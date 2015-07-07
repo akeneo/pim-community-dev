@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
     type: entity
     table: pimee_workflow_published_product_value
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         value_idx:
             columns:
@@ -29,10 +30,8 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
             nullable: true
             column: value_integer
         decimal:
-            type: decimal
-            scale: 4
+            type: float
             nullable: true
-            precision: 14
             column: value_decimal
         boolean:
             type: boolean

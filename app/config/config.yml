@@ -79,7 +79,6 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping:                true
-        class_metadata_factory_name: Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -88,3 +87,20 @@ swiftmailer:
     username:                 "%mailer_user%"
     password:                 "%mailer_password%"
     spool:                    { type: memory }
+
+pim_reference_data:
+    fabrics:
+        class: Acme\Bundle\AppBundle\Entity\Fabric
+        type: multi
+    color:
+        class: Acme\Bundle\AppBundle\Entity\Color
+        type: simple
+
+akeneo_storage_utils:
+    mapping_overrides:
+        -
+            original: Pim\Bundle\CatalogBundle\Model\ProductValue
+            override: Acme\Bundle\AppBundle\Model\ProductValue
+        -
+            original: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+            override: AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue

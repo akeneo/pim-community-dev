@@ -12,14 +12,14 @@
     "autoload": {
         "psr-0": {
             "": "src/",
-            "Context": "features/",
-            "OroEmail\\": "app/emails/"
+            "Context": "features/"
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.3.x-dev@dev",
+        "akeneo/pim-community-dev": "dev-master",
+        "oro/platform": "dev-pim-1.4",
         "phpspec/php-diff": "1.0.2",
-        "doctrine/migrations": "1.0.*@dev",
+        "doctrine/migrations": "1.0.0-alpha3@alpha",
         "doctrine/doctrine-migrations-bundle": "1.0.0"
     },
     "require-dev": {

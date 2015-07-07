@@ -1,0 +1,23 @@
+parameters:
+    # import rules
+    pimee_catalog_rule.processor.denormalization.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization\RuleDefinitionProcessor
+    # export rules
+    pimee_catalog_rule.processor.normalization.rule_definition.class: PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization\RuleDefinitionProcessor
+
+services:
+    # import rules
+    pimee_catalog_rule.processor.denormalization.rule_definition:
+        class: %pimee_catalog_rule.processor.denormalization.rule_definition.class%
+        arguments:
+            - '@akeneo_rule_engine.repository.rule_definition'
+            - '@pimee_catalog_rule.denormalizer.product_rule.chained'
+            - '@validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - %akeneo_rule_engine.model.rule_definition.class%
+            - %akeneo_rule_engine.model.rule.class%
+
+    # export rules
+    pimee_catalog_rule.processor.normalization.rule_definition:
+        class: %pimee_catalog_rule.processor.normalization.rule_definition.class%
+        arguments:
+            - '@akeneo_rule_engine.normalizer.rule'

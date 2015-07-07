@@ -12,13 +12,13 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -56,6 +56,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
     /**
      * {@inheritdoc}
+     *
      * @see getProductCountByTree same logic but here we apply permisions and count only visible category (full path)
      */
     public function getProductCountByGrantedTree(ProductInterface $product)
@@ -66,7 +67,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
         foreach ($trees as $tree) {
             if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree)) {
                 $treeCount[] = [
-                    'tree' => $tree,
+                    'tree'         => $tree,
                     'productCount' => isset($count[$tree->getId()]) ? $count[$tree->getId()] : 0
                 ];
             }
@@ -77,6 +78,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
     /**
      * {@inheritdoc}
+     *
      * @see getProductsCountInCategory same logic with applying permissions
      */
     public function getProductsCountInGrantedCategory(

@@ -33,38 +33,38 @@ interface CategoryAccessInterface extends AccessInterface
     public function getCategory();
 
     /**
-     * @param boolean $editProducts
+     * @param bool $editProducts
      *
      * @return CategoryAccessInterface
      */
     public function setEditProducts($editProducts);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isEditProducts();
 
     /**
-     * @param boolean $viewProducts
+     * @param bool $viewProducts
      *
      * @return CategoryAccessInterface
      */
     public function setViewProducts($viewProducts);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isViewProducts();
 
     /**
-     * @param boolean $ownProducts
+     * @param bool $ownProducts
      *
      * @return CategoryAccessInterface
      */
     public function setOwnProducts($ownProducts);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isOwnProducts();
 }

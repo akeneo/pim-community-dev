@@ -2,7 +2,7 @@ services:
     # Normalizers
     pim_webservice.serializer.normalizer.granted_product:
         class: %pim_serializer.normalizer.product.class%
-        calls:
-            - [setFilters, [['@pim_serializer.filter.product_value', '@pimee_transform.serializer.filter.granted_product_value']]]
+        arguments:
+            - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 100 }

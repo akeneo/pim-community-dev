@@ -13,24 +13,16 @@ namespace PimEnterprise\Bundle\VersioningBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Product version controller
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class ProductVersionController extends AbstractDoctrineController
+class ProductVersionController
 {
     /** @var ProductReverter */
     protected $reverter;
@@ -39,51 +31,24 @@ class ProductVersionController extends AbstractDoctrineController
     protected $versionClass;
 
     /**
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param string                   $versionClass
      * @param ProductReverter          $reverter
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         $versionClass,
         ProductReverter $reverter
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $eventDispatcher,
-            $doctrine
-        );
-
+        $this->doctrine     = $doctrine;
         $this->versionClass = $versionClass;
-        $this->reverter = $reverter;
+        $this->reverter     = $reverter;
     }
 
     /**
      * Revert the entity to the current version
      *
-     * @param string|integer $id
+     * @param string|int $id
      *
      * @return RedirectResponse
      *
@@ -94,12 +59,30 @@ class ProductVersionController extends AbstractDoctrineController
         try {
             $version = $this->findOr404($this->versionClass, $id);
             $this->reverter->revert($version);
-
-            $this->addFlash('success', 'flash.version.revert.product');
         } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
+            return new JsonResponse(['error' => $e->getMessage()], 400);
         }
 
-        return $this->redirectToRoute('pim_enrich_product_edit', ['id' => $version->getResourceId()]);
+        return new JsonResponse([], 200);
+    }
+
+    /**
+     * Find an entity or throw a 404
+     *
+     * @param string  $className Example: 'PimCatalogBundle:Category'
+     * @param integer $id        The id of the entity
+     *
+     * @throws NotFoundHttpException
+     * @return object
+     */
+    protected function findOr404($className, $id)
+    {
+        $result = $this->doctrine->getRepository($className)->find($id);
+
+        if (!$result) {
+            throw NotFoundHttpException(sprintf('%s entity not found', $className));
+        }
+
+        return $result;
     }
 }

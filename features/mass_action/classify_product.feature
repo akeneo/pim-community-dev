@@ -6,10 +6,6 @@ Feature: Classify many products at once for the tree I have access
 
   Background:
     Given the "clothing" catalog configuration
-    And the following products:
-      | sku     |
-      | rangers |
-      | loafer  |
     And the following categories:
       | code    | label-en_US | parent |
       | shoes   | Shoes       |        |
@@ -23,6 +19,10 @@ Feature: Classify many products at once for the tree I have access
       | vintage  | Manager    | view   |
       | trendy   | Manager    | view   |
       | classy   | Manager    | view   |
+    And the following products:
+      | sku     | categories      |
+      | rangers | 2014_collection |
+      | loafer  | 2014_collection |
     And I am logged in as "Julia"
     And I am on the products page
 
@@ -36,6 +36,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "Vintage" category
     And I click on the "Classy" category
     And I move on to the next step
+    And I wait for the "classify" mass-edit job to finish
     And I am on the products page
     And I select the "Shoes" tree
     Then I should see "Vintage (2)"

@@ -2,13 +2,13 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Runner;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ProductRuleRunnerSpec extends ObjectBehavior

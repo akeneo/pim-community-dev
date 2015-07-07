@@ -5,10 +5,10 @@ namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -55,8 +55,8 @@ class ProposalWidgetSpec extends ObjectBehavior
         $user,
         $repository,
         $userManager,
-        ProductDraft $first,
-        ProductDraft $second,
+        ProductDraftInterface $first,
+        ProductDraftInterface $second,
         ProductInterface $firstProduct,
         ProductInterface $secondProduct,
         User $userJulia
@@ -105,8 +105,8 @@ class ProposalWidgetSpec extends ObjectBehavior
         $user,
         $repository,
         $userManager,
-        ProductDraft $first,
-        ProductDraft $second,
+        ProductDraftInterface $first,
+        ProductDraftInterface $second,
         ProductInterface $firstProduct,
         ProductInterface $secondProduct
     ) {

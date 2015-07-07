@@ -8,9 +8,10 @@ Feature: Ensure that a published product is safe
     Given a "clothing" catalog configuration
     And the following published products:
       | sku       | categories | family  | groups          | handmade | manufacturer | weather_conditions |
-      | my-jacket | jackets    | jackets | similar_jackets | yes      | Volcom       | dry                |
+      | my-jacket | jackets    | jackets | similar_jackets | 1        | Volcom       | dry                |
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Fail to remove a product that has been published
     Given I am on the "my-jacket" product page
     And I press the "Delete" button
@@ -115,6 +116,7 @@ Feature: Ensure that a published product is safe
     When I save the attribute
     Then the Options section should contain 5 options
 
+  @skip-pef
   Scenario: Successfully remove a multi-option not linked to a published product
     Given I am on the "weather_conditions" attribute page
     And I visit the "Values" tab

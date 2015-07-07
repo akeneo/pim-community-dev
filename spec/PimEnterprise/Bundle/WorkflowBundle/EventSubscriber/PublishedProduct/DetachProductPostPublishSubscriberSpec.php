@@ -2,17 +2,16 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
-use PhpSpec\ObjectBehavior;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
+use Doctrine\Common\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 
 class DetachProductPostPublishSubscriberSpec extends ObjectBehavior
 {

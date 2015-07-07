@@ -11,11 +11,11 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Normalizer;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Rule definition normalizer for internal api

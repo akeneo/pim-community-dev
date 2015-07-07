@@ -1,0 +1,13 @@
+parameters:
+    pimee_workflow.builder.draft.class: PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder
+
+services:
+    pimee_workflow.builder.draft:
+        class: %pimee_workflow.builder.draft.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_serializer'
+            - '@pim_catalog.comparator.registry'
+            - '@pim_catalog.repository.attribute'
+            - '@pimee_workflow.factory.product_draft'
+            - '@pimee_workflow.repository.product_draft'

@@ -2,15 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\ORM\Query;
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -47,7 +46,6 @@ class ProductRuleSelectorSpec extends ObjectBehavior
         ProductConditionInterface $condition,
         CursorInterface $cursor
     ) {
-
         $rule->getConditions()->willReturn([$condition]);
         $rule->getCode()->willReturn('therule');
         $condition->getField()->willReturn('field');

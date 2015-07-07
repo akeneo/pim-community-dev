@@ -11,8 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\EntityRepository;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Rule definition repository

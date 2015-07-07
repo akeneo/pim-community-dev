@@ -2,12 +2,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * This subscriber listen to post publish event in order to detach

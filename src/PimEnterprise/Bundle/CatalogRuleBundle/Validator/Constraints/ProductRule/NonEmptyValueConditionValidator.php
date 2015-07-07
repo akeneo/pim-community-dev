@@ -28,7 +28,7 @@ class NonEmptyValueConditionValidator extends ConstraintValidator
      */
     public function validate($productCondition, Constraint $constraint)
     {
-        /** @var ProductConditionInterface $productCondition */
+        /* @var ProductConditionInterface $productCondition */
         $value = $productCondition->getValue();
 
         if (Operators::IS_EMPTY !== $productCondition->getOperator() && null === $value) {

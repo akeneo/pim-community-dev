@@ -1,0 +1,2 @@
+parameters:
+    pimee_workflow.entity.published_product_value.class: AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue

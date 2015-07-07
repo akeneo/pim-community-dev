@@ -107,6 +107,7 @@ class PublishedProductController extends AbstractController
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      * @Template
+     *
      * @return array
      */
     public function indexAction(Request $request)
@@ -118,56 +119,17 @@ class PublishedProductController extends AbstractController
     }
 
     /**
-     * Publish a product
-     *
-     * @param Request        $request
-     * @param integer|string $id
-     *
-     * @Template
-     * @AclAncestor("pimee_workflow_published_product_index")
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     */
-    public function publishAction(Request $request, $id)
-    {
-        $product = $this->manager->findOriginalProduct($id);
-
-        $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
-        if (!$isOwner) {
-            throw new AccessDeniedException();
-        }
-
-        $this->manager->publish($product);
-
-        if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                [
-                    'successful' => true,
-                    'message' => $this->translator->trans('flash.product.published')
-                ]
-            );
-        }
-
-        $this->addFlash('success', 'flash.product.published');
-
-        return parent::redirectToRoute(
-            'pim_enrich_product_edit',
-            ['id' => $product->getId(), 'dataLocale' => $this->getDataLocale()]
-        );
-    }
-
-    /**
      * Unpublish a product
      *
-     * @param Request        $request
-     * @param integer|string $id
+     * @param Request    $request
+     * @param int|string $id
      *
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
      *
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     *
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function unpublishAction(Request $request, $id)
     {
@@ -184,7 +146,7 @@ class PublishedProductController extends AbstractController
             return new JsonResponse(
                 [
                     'successful' => true,
-                    'message' => $this->translator->trans('flash.product.unpublished')
+                    'message'    => $this->translator->trans('flash.product.unpublished')
                 ]
             );
         }
@@ -200,11 +162,12 @@ class PublishedProductController extends AbstractController
     /**
      * View a published product
      *
-     * @param Request        $request
-     * @param integer|string $id
+     * @param Request    $request
+     * @param int|string $id
      *
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
+     *
      * @return array
      */
     public function viewAction(Request $request, $id)
@@ -224,7 +187,7 @@ class PublishedProductController extends AbstractController
     /**
      * Displays completeness for a published product
      *
-     * @param integer|string $id
+     * @param int|string $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -255,11 +218,11 @@ class PublishedProductController extends AbstractController
     /**
      * Find a published product by its id or return a 404 response
      *
-     * @param integer|string $id
-     *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @param int|string $id
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
      */
     protected function findPublishedOr404($id)
     {

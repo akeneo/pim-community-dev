@@ -31,7 +31,7 @@ class SupportedOperatorCondition extends Constraint
         return self::CLASS_CONSTRAINT;
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function validatedBy()

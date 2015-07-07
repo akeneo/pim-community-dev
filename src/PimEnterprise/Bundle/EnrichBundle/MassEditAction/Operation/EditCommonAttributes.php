@@ -11,12 +11,11 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes as BaseEditCommonAttributes;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -36,62 +35,79 @@ class EditCommonAttributes extends BaseEditCommonAttributes
     /**
      * Constructor
      *
-     * @param ProductBuilder           $productBuilder
-     * @param ProductUpdaterInterface  $productUpdater
-     * @param UserContext              $userContext
-     * @param CatalogContext           $catalogContext
-     * @param ProductMassActionManager $massActionManager
-     * @param NormalizerInterface      $normalizer
-     * @param BulkSaverInterface       $productSaver
-     * @param SecurityContextInterface $securityContext
+     * @param ProductBuilder               $productBuilder
+     * @param UserContext                  $userContext
+     * @param CatalogContext               $catalogContext
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param NormalizerInterface          $normalizer
+     * @param MediaManager                 $mediaManager
+     * @param ProductMassActionManager     $massActionManager
+     * @param string                       $uploadDir
+     * @param SecurityContextInterface     $securityContext
      */
     public function __construct(
         ProductBuilder $productBuilder,
-        ProductUpdaterInterface $productUpdater,
         UserContext $userContext,
         CatalogContext $catalogContext,
-        ProductMassActionManager $massActionManager,
+        AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        BulkSaverInterface $productSaver,
+        MediaManager $mediaManager,
+        ProductMassActionManager $massActionManager,
+        $uploadDir,
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
             $productBuilder,
-            $productUpdater,
             $userContext,
             $catalogContext,
-            $massActionManager,
+            $attributeRepository,
             $normalizer,
-            $productSaver
+            $mediaManager,
+            $massActionManager,
+            $uploadDir
         );
 
         $this->securityContext = $securityContext;
     }
 
     /**
-     * Get form options
+     * {@inheritdoc}
      *
-     * @return array
+     * We override parent to keep only attributes the user can edit
      */
-    public function getFormOptions()
+    public function getAllAttributes()
     {
-        return array(
-            'locales'          => $this->userContext->getGrantedUserLocales(Attributes::EDIT_PRODUCTS),
-            'common_attributes' => $this->commonAttributes,
-            'current_locale' => $this->getLocale()->getCode()
-        );
+        $allAttributes = parent::getAllAttributes();
+        $grantedAttributes = [];
+
+        foreach ($allAttributes as $attribute) {
+            $canEditAttribute = $this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup());
+
+            if ($canEditAttribute) {
+                $grantedAttributes[] = $attribute;
+            }
+        }
+
+        return $grantedAttributes;
     }
 
     /**
      * {@inheritdoc}
-     *
-     * Prevent performing operation if current user does not own the product
-     * Otherwise, product is directly updated and propostion is also created
      */
-    protected function doPerform(ProductInterface $product)
+    public function getFormOptions()
     {
-        if ($this->securityContext->isGranted(Attributes::OWN, $product)) {
-            return parent::doPerform($product);
-        }
+        return [
+            'locales'        => $this->userContext->getGrantedUserLocales(Attributes::EDIT_PRODUCTS),
+            'all_attributes' => $this->getAllAttributes(),
+            'current_locale' => $this->getLocale()->getCode()
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchJobCode()
+    {
+        return 'edit_common_attributes_with_permission';
     }
 }

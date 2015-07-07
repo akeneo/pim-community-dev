@@ -18,15 +18,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ProductDraft
+class ProductDraft implements ProductDraftInterface
 {
-    /** @staticvar integer */
-    const IN_PROGRESS = 0;
-
-    /** @staticvar integer */
-    const READY = 1;
-
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var ProductInterface */
@@ -41,7 +35,7 @@ class ProductDraft
     /** @var array */
     protected $changes = [];
 
-    /** @var integer */
+    /** @var int */
     protected $status;
 
     /** @var array */
@@ -59,7 +53,7 @@ class ProductDraft
     }
 
     /**
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -67,9 +61,7 @@ class ProductDraft
     }
 
     /**
-     * @param ProductInterface $product
-     *
-     * @return ProductDraft
+     * {@inheritdoc}
      */
     public function setProduct(ProductInterface $product)
     {
@@ -79,7 +71,7 @@ class ProductDraft
     }
 
     /**
-     * @return ProductInterface
+     * {@inheritdoc}
      */
     public function getProduct()
     {
@@ -87,9 +79,7 @@ class ProductDraft
     }
 
     /**
-     * @param string $author
-     *
-     * @return ProductDraft
+     * {@inheritdoc}
      */
     public function setAuthor($author)
     {
@@ -99,7 +89,7 @@ class ProductDraft
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getAuthor()
     {
@@ -107,9 +97,7 @@ class ProductDraft
     }
 
     /**
-     * @param \DateTime $createdAt
-     *
-     * @return ProductDraft
+     * {@inheritdoc}
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
@@ -119,7 +107,7 @@ class ProductDraft
     }
 
     /**
-     * @return \DateTime
+     * {@inheritdoc}
      */
     public function getCreatedAt()
     {
@@ -127,9 +115,7 @@ class ProductDraft
     }
 
     /**
-     * @param array $changes
-     *
-     * @return ProductDraft
+     * {@inheritdoc}
      */
     public function setChanges(array $changes)
     {
@@ -139,7 +125,7 @@ class ProductDraft
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getChanges()
     {
@@ -147,9 +133,7 @@ class ProductDraft
     }
 
     /**
-     * Set status
-     *
-     * @param integer $status
+     * {@inheritdoc}
      */
     public function setStatus($status)
     {
@@ -157,9 +141,7 @@ class ProductDraft
     }
 
     /**
-     * Get status
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getStatus()
     {
@@ -167,9 +149,7 @@ class ProductDraft
     }
 
     /**
-     * Wether or not product draft is in progress
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isInProgress()
     {
@@ -177,10 +157,7 @@ class ProductDraft
     }
 
     /**
-     * Set the category ids
-     * NB: Only used with MongoDB
-     *
-     * @param array $categoryIds
+     * {@inheritdoc}
      */
     public function setCategoryIds(array $categoryIds)
     {
@@ -188,10 +165,7 @@ class ProductDraft
     }
 
     /**
-     * Get the product category ids
-     * NB: Only used with MongoDB
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getCategoryIds()
     {
@@ -199,9 +173,7 @@ class ProductDraft
     }
 
     /**
-     * Removes a category id
-     *
-     * @param integer $categoryId
+     * {@inheritdoc}
      */
     public function removeCategoryId($categoryId)
     {
@@ -214,9 +186,7 @@ class ProductDraft
     }
 
     /**
-     * @param string $dataLocale
-     *
-     * @return ProductDraft
+     * {@inheritdoc}
      */
     public function setDataLocale($dataLocale)
     {
@@ -226,7 +196,7 @@ class ProductDraft
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getDataLocale()
     {

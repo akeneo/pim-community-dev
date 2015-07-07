@@ -1,0 +1,58 @@
+extensions:
+    save:
+        module: pimee/product-edit-form/save
+
+    draft:
+        module: pimee/product-edit-form/draft
+        parent: product-edit-form
+        targetZone: buttons
+        insertAction: append
+        position: 85
+
+    smart-attribute:
+        module: pimee/product-edit-form/attributes/smart-attribute
+        parent: attributes
+        targetZone: self
+        position: 100
+
+    history-published:
+        module: pimee/product-edit-form/panel/history/published
+        parent: history
+        targetZone: self
+        position: 100
+
+    revert:
+        module: pimee/product-edit-form/panel/history/revert
+        parent: history
+        targetZone: self
+        position: 100
+
+    publish:
+        module: pimee/product-edit-form/publish
+        parent: product-edit-form
+        targetZone: buttons
+        position: 90
+
+    meta-published:
+        module: pimee/product-edit-form/meta/published
+        parent: product-edit-form
+        targetZone: meta
+        position: 100
+
+    meta-owner-group:
+        module: pimee/product-edit-form/meta/owner-groups
+        parent: product-edit-form
+        targetZone: meta
+        position: 120
+
+    read-only-locale:
+        module: pimee/product-edit-form/attributes/read-only-locale
+        parent: attributes
+        targetZone: self
+        position: 100
+
+    read-only-attribute-group:
+        module: pimee/product-edit-form/attributes/read-only-attribute-group
+        parent: attributes
+        targetZone: self
+        position: 100

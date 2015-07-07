@@ -9,3 +9,4 @@ services:
             - '@pimee_versioning.serializer'
             - '@pim_catalog.saver.product'
             - '@validator'
+            - '@translator'

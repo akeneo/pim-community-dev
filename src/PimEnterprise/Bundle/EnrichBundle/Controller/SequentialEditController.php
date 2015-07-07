@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -41,7 +50,7 @@ class SequentialEditController extends BaseSequentialEditController
                 'pim_enrich_product_edit',
                 [
                     'dataLocale' => $request->get('dataLocale'),
-                    'id' => current($sequentialEdit->getObjectSet())
+                    'id'         => current($sequentialEdit->getObjectSet())
                 ]
             )
         );

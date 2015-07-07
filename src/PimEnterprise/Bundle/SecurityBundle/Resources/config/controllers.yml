@@ -1,0 +1,11 @@
+parameters:
+    pimee_security.controller.permission_rest.class: PimEnterprise\Bundle\SecurityBundle\Controller\PermissionRestController
+
+services:
+    pimee_security.controller.permission_rest:
+        class: %pimee_security.controller.permission_rest.class%
+        arguments:
+            - '@security.context'
+            - '@pim_catalog.repository.attribute_group'
+            - '@pimee_security.repository.category_access'
+            - '@pim_user.context.user'

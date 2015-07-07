@@ -22,7 +22,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs as ORMLifecycleEventsArgs;
 use Doctrine\ORM\Events as ORMEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 
 /**
  * Keeps product draft categoryIds field synchronized with its related product's categories
@@ -71,8 +71,6 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      * Handle synchronization of propostion before product draft document insertion
      *
      * @param LifecycleEventArgs $event
-     *
-     * @return null
      */
     public function prePersist(LifecycleEventArgs $event)
     {
@@ -80,7 +78,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
             return;
         }
         $document = $event->getDocument();
-        if ($document instanceof ProductDraft) {
+        if ($document instanceof ProductDraftInterface) {
             $this->syncProductDraft($document);
         }
     }
@@ -89,8 +87,6 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      * Handle synchronization of propostion(s) before product draft or product document update
      *
      * @param LifecycleEventArgs $event
-     *
-     * @return null
      */
     public function preUpdate(LifecycleEventArgs $event)
     {
@@ -98,7 +94,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
             return;
         }
         $document = $event->getDocument();
-        if ($document instanceof ProductDraft) {
+        if ($document instanceof ProductDraftInterface) {
             $this->syncProductDraft($document);
         } elseif ($document instanceof ProductInterface && $event->hasChangedField('categoryIds')) {
             $this->syncProductDrafts(
@@ -112,8 +108,6 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      * Handle synchronization of propostion(s) before category entity removal
      *
      * @param LifecycleEventArgs $event
-     *
-     * @return null
      */
     public function preRemove(LifecycleEventArgs $event)
     {
@@ -135,11 +129,9 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     /**
      * Synchronize category ids of product draft
      *
-     * @param ProductDraft $productDraft
-     *
-     * @return null
+     * @param ProductDraftInterface $productDraft
      */
-    protected function syncProductDraft(ProductDraft $productDraft)
+    protected function syncProductDraft(ProductDraftInterface $productDraft)
     {
         $categoryIds = $productDraft
             ->getProduct()
@@ -158,8 +150,6 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      *
      * @param ProductInterface $product
      * @param UnitOfWork       $uow
-     *
-     * @return null
      */
     protected function syncProductDrafts(ProductInterface $product, UnitOfWork $uow)
     {

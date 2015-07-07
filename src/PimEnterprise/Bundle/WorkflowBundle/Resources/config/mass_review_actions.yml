@@ -1,0 +1,20 @@
+parameters:
+    pimee_workflow.mass_review_tasklet.approve_draft.class: PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet\ApproveTasklet
+    pimee_workflow.mass_review_tasklet.refuse_draft.class:  PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet\RefuseTasklet
+
+services:
+    pimee_workflow.mass_review_tasklet.approve_draft:
+        class: %pimee_workflow.mass_review_tasklet.approve_draft.class%
+        arguments:
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.manager.product_draft'
+            - '@pim_user.provider.user'
+            - '@security.context'
+
+    pimee_workflow.mass_review_tasklet.refuse_draft:
+        class: %pimee_workflow.mass_review_tasklet.refuse_draft.class%
+        arguments:
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.manager.product_draft'
+            - '@pim_user.provider.user'
+            - '@security.context'

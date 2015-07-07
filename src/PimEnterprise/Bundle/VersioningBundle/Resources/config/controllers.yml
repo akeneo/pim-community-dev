@@ -3,9 +3,8 @@ parameters:
 
 services:
     pimee_versioning.controller.product_version:
-        scope: request
         class: %pimee_versioning.controller.product_version.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_versioning.entity.version.class%
             - '@pimee_versioning.reverter.product'
