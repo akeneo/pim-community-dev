@@ -357,7 +357,7 @@ define(
                             wysiwyg.init($textarea);
                         }
 
-                        var $fileInput = $(field).find('input[type=file][id]');
+                        var $fileInput = $field.find('input[type=file][id]');
                         if ($fileInput.length) {
                             fileinput.init($fileInput.attr('id'));
                         }
