@@ -11,7 +11,7 @@ pimee_workflow:
             working_copy: Working copy
             in_progress: In progress
             ready: Waiting for approval
-            can_not_be_approved: Can't be approved or refused
+            can_not_be_approved: Can't be reviewed
             can_not_be_deleted: Can't be deleted
         status_message:
             can_not_be_approved: You can't approve or refuse this approval as it applies changes on values you can't edit. Please contact your administrator to change your rights.

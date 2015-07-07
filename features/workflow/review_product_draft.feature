@@ -235,7 +235,7 @@ Feature: Review a product draft
     When I visit the "Proposals" tab
     Then I should not be able to view the "Approve" action of the row which contains "Old attribute not used anymore"
     And I should not be able to view the "Refuse" action of the row which contains "Old attribute not used anymore"
-    And I should see "Can't be approved or refused"
+    And I should see "Can't be reviewed"
 
   @skip-pef
   Scenario: Not being able to delete a draft with values I can't edit
