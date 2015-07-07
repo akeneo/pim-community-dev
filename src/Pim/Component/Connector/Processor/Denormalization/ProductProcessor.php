@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -101,9 +102,7 @@ class ProductProcessor extends AbstractProcessor
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
             if (empty($filteredItem)) {
-                if ($this->stepExecution) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
-                }
+                $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
                 return null;
             }

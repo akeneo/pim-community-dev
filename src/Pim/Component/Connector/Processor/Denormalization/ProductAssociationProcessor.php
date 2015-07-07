@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -74,9 +75,7 @@ class ProductAssociationProcessor extends AbstractProcessor
         if ($this->getConfiguration()['enabledComparison']) {
             $convertedItem = $this->filterIdenticalData($product, $convertedItem);
             if (empty($convertedItem)) {
-                if ($this->stepExecution) {
-                    $this->stepExecution->incrementSummaryInfo('skip');
-                }
+                $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
                 return null;
             }
