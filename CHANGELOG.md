@@ -400,6 +400,11 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
+# 1.2.36 (2015-07-06)
+
+## Bug fixes
+- PIM-4494: Fix js memory leak on a product edit form with scopable attributes
+
 # 1.2.35 (2015-05-29)
 
 ## Bug fixes
