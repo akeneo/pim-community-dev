@@ -23,17 +23,6 @@ use PimEnterprise\Component\ProductAsset\Model\TagInterface;
  */
 class TagUpdater implements ObjectUpdaterInterface
 {
-    /** @var TagRepositoryInterface */
-    protected $tagRepository;
-
-    /**
-     * @param TagRepositoryInterface $tagRepository
-     */
-    public function __construct(TagRepositoryInterface $tagRepository)
-    {
-        $this->tagRepository = $tagRepository;
-    }
-
     /**
      * {@inheritdoc}
      *

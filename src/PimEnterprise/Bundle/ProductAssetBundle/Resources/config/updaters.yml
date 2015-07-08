@@ -31,8 +31,6 @@ services:
 
     pimee_product_asset.updater.tag:
         class: %pimee_product_asset.updater.tag.class%
-        arguments:
-            - '@pimee_product_asset.repository.tag'
 
     pimee_product_asset.updater.asset:
         class: %pimee_product_asset.updater.asset.class%

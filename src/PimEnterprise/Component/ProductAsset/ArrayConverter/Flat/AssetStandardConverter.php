@@ -32,22 +32,22 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *      'localized'     => 0,
      *      'description'   => 'My awesome description',
      *      'qualification' => 'dog,flowers,cities,animal,sunset'
-     *      'end_of_use_at' => 2018/02/01
+     *      'end_of_use_at' => '2018/02/01'
      * ]
      *
      * After:
      * [
-     *      'code'          => 'mycode',
-     *      'localized'     => false,
-     *      'description'   => 'My awesome description',
-     *      'tags         ' => [
+     *      'code'        => 'mycode',
+     *      'localized'   => false,
+     *      'description' => 'My awesome description',
+     *      'tags'        => [
      *          'dog',
      *          'flowers',
      *          'cities',
      *          'animal',
      *          'sunset'
      *      ],
-     *      'end_of_use_at' => 2018/02/01
+     *      'end_of_use_at' => '2018/02/01'
      * ]
      */
     public function convert(array $item, array $options = [])
