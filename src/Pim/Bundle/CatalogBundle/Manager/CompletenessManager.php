@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Completeness\Checker\ProductValueCompleteChecker;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
@@ -12,56 +13,41 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Manages completeness
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class CompletenessManager
 {
-    /**
-     * @var FamilyRepositoryInterface
-     */
+    /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
-    /**
-     * @var ChannelRepositoryInterface
-     */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /**
-     * @var LocaleRepositoryInterface
-     */
+    /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /**
-     * @var CompletenessGeneratorInterface
-     */
+    /** @var CompletenessGeneratorInterface */
     protected $generator;
 
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
+    /** @var ProductValueCompleteChecker */
+    protected $productValueCompleteCkecker;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $class;
 
     /**
-     * Constructor
-     *
      * @param FamilyRepositoryInterface      $familyRepository
      * @param ChannelRepositoryInterface     $channelRepository
      * @param LocaleRepositoryInterface      $localeRepository
      * @param CompletenessGeneratorInterface $generator
-     * @param ValidatorInterface             $validator
+     * @param ProductValueCompleteChecker    $productValueCompleteCkecker
      * @param string                         $class
      */
     public function __construct(
@@ -69,15 +55,15 @@ class CompletenessManager
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
-        ValidatorInterface $validator,
+        ProductValueCompleteChecker $productValueCompleteCkecker,
         $class
     ) {
-        $this->familyRepository  = $familyRepository;
-        $this->channelRepository = $channelRepository;
-        $this->localeRepository  = $localeRepository;
-        $this->generator         = $generator;
-        $this->validator         = $validator;
-        $this->class             = $class;
+        $this->familyRepository            = $familyRepository;
+        $this->channelRepository           = $channelRepository;
+        $this->localeRepository            = $localeRepository;
+        $this->generator                   = $generator;
+        $this->productValueCompleteCkecker = $productValueCompleteCkecker;
+        $this->class                       = $class;
     }
 
     /**
@@ -172,11 +158,12 @@ class CompletenessManager
                 $entities
             );
         };
+
         $channelCodes = $getCodes($channels);
         $localeCodes  = $getCodes($locales);
 
         $channelTemplate = [
-            'channels' => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
+            'channels' => array_fill_keys($channelCodes, ['completeness' => null, 'missing' => []]),
             'stats'    => [
                 'total'    => 0,
                 'complete' => 0
@@ -191,7 +178,7 @@ class CompletenessManager
 
         $allCompletenesses = $product->getCompletenesses();
         foreach ($allCompletenesses as $completeness) {
-            $locale = $completeness->getLocale();
+            $locale  = $completeness->getLocale();
             $channel = $completeness->getChannel();
 
             $compLocaleCode = $locale->getCode();
@@ -235,14 +222,15 @@ class CompletenessManager
         array $localeCodes
     ) {
         $attribute = $requirement->getAttribute();
-        $channel = $requirement->getChannel();
+        $channel   = $requirement->getChannel();
         foreach ($localeCodes as $localeCode) {
-            $constraint = new ProductValueComplete(array('channel' => $channel));
             $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
-            $missing = false;
+            $missing   = false;
             if (!isset($productValues[$valueCode])) {
                 $missing = true;
-            } elseif ($this->validator->validateValue($productValues[$valueCode], $constraint)->count()) {
+            } elseif (
+                !$this->productValueCompleteCkecker->isComplete($productValues[$valueCode], $channel, $localeCode)
+            ) {
                 $missing = true;
             }
             if ($missing) {

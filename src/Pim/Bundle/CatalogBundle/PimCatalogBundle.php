@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle;
 use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeCompleteCheckersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterComparatorsPass;
@@ -41,7 +42,8 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new RegisterProductQuerySorterPass())
             ->addCompilerPass(new RegisterProductUpdaterPass())
             ->addCompilerPass(new RegisterFilterPass())
-            ->addCompilerPass(new RegisterComparatorsPass());
+            ->addCompilerPass(new RegisterComparatorsPass())
+            ->addCompilerPass(new RegisterAttributeCompleteCheckersPass());
 
         $productMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
