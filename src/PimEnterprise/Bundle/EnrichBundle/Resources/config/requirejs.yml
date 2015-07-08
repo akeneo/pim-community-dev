@@ -19,6 +19,7 @@ config:
 
 
         # Form extensions
+        pimee/product-edit-form/attributes/copy:                      pimenterpriseenrich/js/product/form/attributes/copy
         pimee/product-edit-form/attributes/read-only-attribute-group: pimenterpriseenrich/js/product/form/attributes/read-only-attribute-group
         pimee/product-edit-form/attributes/read-only-locale:          pimenterpriseenrich/js/product/form/attributes/read-only-locale
         pimee/product-edit-form/attributes/smart-attribute:           pimenterpriseenrich/js/product/form/attributes/smart-attribute
