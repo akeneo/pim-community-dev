@@ -82,16 +82,16 @@ define([
                 throw new Error('You should implement your field template');
             },
             postRender: function () {},
-            renderCopyInput: function (context, locale, scope) {
-                context.value = AttributeManager.getValue(
-                    this.model.get('values'),
-                    this.attribute,
-                    locale,
-                    scope
-                );
-                context.editMode = 'view';
+            renderCopyInput: function (value) {
+                return this.getTemplateContext()
+                    .then(_.bind(function (context) {
+                        context.value = value;
+                        context.context.locale = value.locale;
+                        context.context.scope = value.scope;
+                        context.editMode = 'view';
 
-                return this.renderInput(context);
+                        return this.renderInput(context);
+                    }, this));
             },
             getTemplateContext: function () {
                 var deferred = $.Deferred();

@@ -19,7 +19,7 @@ define([
             field: null,
             locale: null,
             scope: null,
-            data: '',
+            value: {},
             template: _.template(template),
             selected: false,
             events: {
@@ -35,7 +35,6 @@ define([
                 var templateContext = {
                     type: this.field.attribute.field_type,
                     label: this.field.attribute.label[this.field.context.locale],
-                    data: this.data,
                     config: this.field.config,
                     attribute: this.field.attribute,
                     selected: this.selected,
@@ -45,17 +44,17 @@ define([
                 };
 
                 this.$el.html(this.template(templateContext));
-
-                this.field.getTemplateContext().done(_.bind(function (templateContext) {
-                    this.$('.field-input').html(this.field.renderCopyInput(templateContext, this.locale, this.scope));
-                }, this));
+                this.field.renderCopyInput(this.value)
+                    .then(_.bind(function (render) {
+                        this.$('.field-input').html(render);
+                    }, this));
 
                 this.delegateEvents();
 
                 return this;
             },
-            setData: function (data) {
-                this.data = data;
+            setValue: function (value) {
+                this.value = value;
             },
             setLocale: function (locale) {
                 this.locale = locale;

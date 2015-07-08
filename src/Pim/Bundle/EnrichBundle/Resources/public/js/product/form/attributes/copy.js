@@ -94,23 +94,23 @@ define(
              */
             addFieldExtension: function (event) {
                 var field = event.field;
-                var copyField = this.getCopyField(field);
-                if (copyField) {
-                    field.addElement('comparison', this.code, copyField);
-                }
+                event.promises.push(
+                    this.canBeCopied(field)
+                        .then(_.bind(function (canBeCopied) {
+                            if (canBeCopied) {
+                                field.addElement('comparison', this.code, this.getCopyField(field));
+                            }
+                        }, this))
+                );
             },
 
             /**
              * Get or create a copy field object corresponding to the specified field
              *
              * @param {Field} field
-             * @returns {CopyField|null}
+             * @returns {CopyField}
              */
             getCopyField: function (field) {
-                if (!this.canBeCopied(field)) {
-                    return null;
-                }
-
                 var code = field.attribute.code;
                 if (!_.has(this.copyFields, code)) {
                     var sourceData = this.getSourceData();
@@ -124,7 +124,7 @@ define(
                     var copyField = new CopyField();
                     copyField.setLocale(this.locale);
                     copyField.setScope(this.scope);
-                    copyField.setData(valueToCopy.data);
+                    copyField.setValue(valueToCopy);
                     copyField.setField(field);
 
                     this.copyFields[code] = copyField;
@@ -137,19 +137,21 @@ define(
              * Indicate if the specified field can be copied
              *
              * @param {Field} field
-             * @returns {Boolean}
+             * @returns {Promise}
              */
             canBeCopied: function (field) {
-                return field.attribute.localizable || field.attribute.scopable;
+                return $.Deferred().resolve(
+                    field.attribute.localizable || field.attribute.scopable
+                ).promise();
             },
 
             /**
-             * Launch the copy process of selected fields
+             * Launch the copy process for selected fields
              */
             copy: function () {
                 _.each(this.copyFields, function (copyField) {
                     if (copyField.selected && copyField.field && copyField.field.isEditable()) {
-                        copyField.field.setCurrentValue(copyField.data);
+                        copyField.field.setCurrentValue(copyField.value.data);
                         copyField.setSelected(false);
                     }
                 });
@@ -176,7 +178,7 @@ define(
             /**
              * Change the locale for copy context
              *
-             * @param {String} locale
+             * @param {string} locale
              */
             setLocale: function (locale) {
                 this.locale = locale;
@@ -186,7 +188,7 @@ define(
             /**
              * Get the current locale for copy
              *
-             * @returns {String}
+             * @returns {string}
              */
             getLocale: function () {
                 return this.locale;
@@ -195,7 +197,7 @@ define(
             /**
              * Change the scope for copy context
              *
-             * @param {String} scope
+             * @param {string} scope
              */
             setScope: function (scope) {
                 this.scope = scope;
@@ -205,12 +207,15 @@ define(
             /**
              * Get the current scope for copy
              *
-             * @returns {String}
+             * @returns {string}
              */
             getScope: function () {
                 return this.scope;
             },
 
+            /**
+             * Reset copy fields cache then trigger the context change event
+             */
             triggerContextChange: function () {
                 this.copyFields = {};
                 this.trigger('copy:context:change');
@@ -236,12 +241,22 @@ define(
              * @param {Field[]} fields
              */
             selectFields: function (fields) {
-                fields = _.filter(fields, this.canBeCopied);
+                var selectPromises = [];
                 _.each(fields, _.bind(function (field) {
-                    this.getCopyField(field).setSelected(true);
+                    selectPromises.push(
+                        this.canBeCopied(field)
+                            .then(_.bind(function (canBeCopied) {
+                                if (canBeCopied) {
+                                    this.getCopyField(field).setSelected(true);
+                                }
+                            }, this))
+                    );
                 }, this));
 
-                this.trigger('copy:select:after');
+                $.when.apply(this, selectPromises)
+                    .then(_.bind(function () {
+                        this.trigger('copy:select:after');
+                    }, this));
             }
         });
     }
