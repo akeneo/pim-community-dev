@@ -13,10 +13,10 @@ use Symfony\Component\DependencyInjection\Reference;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RegisterAttributeCompleteCheckersPass implements CompilerPassInterface
+class RegisterCompleteCheckerPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const REGISTRY = 'pim_catalog.completeness.checker.product_value';
+    const REGISTRY = 'pim_catalog.completeness.checker.registry';
 
     /** @staticvar string */
     const SERVICE_TAG = 'completeness.checker.attribute';
@@ -35,7 +35,7 @@ class RegisterAttributeCompleteCheckersPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds(self::SERVICE_TAG);
 
         foreach (array_keys($taggedServices) as $id) {
-            $service->addMethodCall('addAttributeChecker', [new Reference($id)]);
+            $service->addMethodCall('registerAttributeChecker', [new Reference($id)]);
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Completeness\Checker\Attribute;
+namespace spec\Pim\Component\Catalog\Completeness\Checker\Attribute;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;

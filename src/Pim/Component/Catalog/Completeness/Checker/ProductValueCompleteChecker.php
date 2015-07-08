@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Completeness\Checker;
+namespace Pim\Component\Catalog\Completeness\Checker;
 
-use Pim\Bundle\CatalogBundle\Completeness\Checker\Attribute\AttributeCompleteCheckerInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -13,8 +12,16 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  */
 class ProductValueCompleteChecker
 {
-    /** @var AttributeCompleteCheckerInterface[] */
-    protected $attributesCheckers;
+    /** @var CompleteCheckerRegistryInterface */
+    protected $attributeCheckerRegistry;
+
+    /**
+     * @param CompleteCheckerRegistryInterface $attributeCompleteCheckerRegistry
+     */
+    public function __construct(CompleteCheckerRegistryInterface $attributeCompleteCheckerRegistry)
+    {
+        $this->attributeCheckerRegistry = $attributeCompleteCheckerRegistry;
+    }
 
     /**
      * @param ProductValueInterface $value
@@ -37,7 +44,7 @@ class ProductValueCompleteChecker
             return false;
         }
 
-        foreach ((array) $this->attributesCheckers as $attributeChecker) {
+        foreach ($this->attributeCheckerRegistry->getAttributeCheckers() as $attributeChecker) {
             if ($attributeChecker->supportsAttribute($value->getAttribute())
                 && !$attributeChecker->isComplete($value, $channel, $localeCode)
             ) {
@@ -46,10 +53,5 @@ class ProductValueCompleteChecker
         }
 
         return true;
-    }
-
-    public function addAttributeChecker(AttributeCompleteCheckerInterface $attributeCompleteChecker)
-    {
-        $this->attributesCheckers[] = $attributeCompleteChecker;
     }
 }
