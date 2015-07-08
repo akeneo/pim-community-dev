@@ -24,14 +24,14 @@ class PricesComparatorSpec extends ObjectBehavior
 
     function it_get_changes_when_adding_price()
     {
-        $changes = ['value' => [
+        $changes = ['data' => [
             ['data' => '100', 'currency' => 'EUR'],
             ['data' => '120', 'currency' => 'USD'],
         ], 'locale' => null, 'scope' => null];
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn([
-            'value' => [
+            'data' => [
                 ['data' => '100', 'currency' => 'EUR'],
                 ['data' => '120', 'currency' => 'USD']
             ],
@@ -42,17 +42,17 @@ class PricesComparatorSpec extends ObjectBehavior
 
     function it_get_changes_when_changing_price()
     {
-        $changes = ['value' => [
+        $changes = ['data' => [
             ['data' => '100', 'currency' => 'EUR'],
             ['data' => '120', 'currency' => 'USD'],
         ], 'locale' => null, 'scope' => null];
-        $originals = ['value' => [
+        $originals = ['data' => [
             ['data' => '90', 'currency' => 'EUR'],
             ['data' => '110', 'currency' => 'USD'],
         ], 'locale' => null, 'scope' => null];
 
         $this->compare($changes, $originals)->shouldReturn([
-            'value' => [
+            'data' => [
                 ['data' => '100', 'currency' => 'EUR'],
                 ['data' => '120', 'currency' => 'USD']
             ],
@@ -63,11 +63,11 @@ class PricesComparatorSpec extends ObjectBehavior
 
     function it_returns_null_when_prices_are_the_same()
     {
-        $changes = ['value' => [
+        $changes = ['data' => [
             ['data' => '100', 'currency' => 'EUR'],
             ['data' => '120', 'currency' => 'USD'],
         ], 'locale' => null, 'scope' => null];
-        $originals = ['value' => [
+        $originals = ['data' => [
             ['data' => '100', 'currency' => 'EUR'],
             ['data' => '120', 'currency' => 'USD'],
         ], 'locale' => null, 'scope' => null];

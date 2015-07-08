@@ -1,6 +1,6 @@
-<div class="media-uploader <%= value.value && value.value.filePath ? 'has-file' : '' %>" >
+<div class="media-uploader <%= value.data && value.data.filePath ? 'has-file' : '' %>" >
     <div>
-        <% if (!value.value || value.value.filePath === null) { %>
+        <% if (!value.data || value.data.filePath === null) { %>
             <label class="file-uploader">
                 <input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'view' ? 'disabled' : '' %>/>
             </label>
@@ -16,7 +16,7 @@
                     <div class="file"><i class="icon icon-file"></i></div>
                 <% } %>
                 <div class="info">
-                    <span class="filename" title="<%= value.value.originalFilename %>"><%= value.value.originalFilename %></span>
+                    <span class="filename" title="<%= value.data.originalFilename %>"><%= value.data.originalFilename %></span>
                     <span class="actions">
                         <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
                             <span class="open-media"><i class="icon icon-eye-open"></i></span>

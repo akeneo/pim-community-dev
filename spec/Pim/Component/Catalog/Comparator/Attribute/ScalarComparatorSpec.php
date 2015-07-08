@@ -34,7 +34,7 @@ class ScalarComparatorSpec extends ObjectBehavior
 
     function it_get_changes_when_adding_value()
     {
-        $changes = ['value' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes = ['data' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
@@ -42,16 +42,16 @@ class ScalarComparatorSpec extends ObjectBehavior
 
     function it_get_changes_when_changing_value()
     {
-        $changes   = ['value' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['value' => 'other scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes   = ['data' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => 'other scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
     }
 
     function it_returns_null_when_values_are_the_same()
     {
-        $changes   = ['value' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['value' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes   = ['data' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }

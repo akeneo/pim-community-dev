@@ -13,12 +13,13 @@ define(
         'backbone',
         'underscore',
         'pim/form',
+        'oro/mediator',
         'pim/attribute-group-manager',
         'text!pim/template/product/tab/attribute/attribute-group-selector',
         'pim/user-context',
         'pim/i18n'
     ],
-    function ($, Backbone, _, BaseForm, AttributeGroupManager, template, UserContext, i18n) {
+    function ($, Backbone, _, BaseForm, mediator, AttributeGroupManager, template, UserContext, i18n) {
         return BaseForm.extend({
             tagName: 'ul',
             className: 'nav nav-tabs attribute-group-selector',
@@ -33,7 +34,38 @@ define(
                 this.listenTo(this.state, 'change', this.render);
                 this.badges = {};
 
+                this.stopListening(mediator, 'entity:action:validation_error');
+                this.listenTo(mediator, 'entity:action:validation_error', this.onValidationError);
+
+                this.stopListening(mediator, 'product:action:post_update');
+                this.listenTo(mediator, 'product:action:post_update', this.onPostUpdate);
+
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+            onValidationError: function (event) {
+                this.removeBadges();
+
+                var product = event.sentData;
+                var valuesErrors = event.response.values;
+                if (valuesErrors) {
+                    AttributeGroupManager.getAttributeGroupsForProduct(product)
+                        .then(_.bind(function (attributeGroups) {
+                            _.each(valuesErrors, _.bind(function (fieldError, attributeCode) {
+                                var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
+                                    attributeGroups,
+                                    attributeCode
+                                );
+                                this.addToBadge(attributeGroup, 'invalid');
+                            }, this));
+
+                            if (0 < valuesErrors.length) {
+                                mediator.trigger('show_attribute', {attribute: _.keys(valuesErrors)[0]});
+                            }
+                        }, this));
+                }
+            },
+            onPostUpdate: function () {
+                this.removeBadges();
             },
             render: function () {
                 this.$el.empty();

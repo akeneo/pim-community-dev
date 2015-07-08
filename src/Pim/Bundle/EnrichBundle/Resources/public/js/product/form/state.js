@@ -42,11 +42,8 @@ define(
             ),
             confirmationTitle: _.__('pim_enrich.confirmation.leave'),
             configure: function () {
-                _.bindAll(this, 'render', 'unbindEvents', 'linkClicked', 'beforeUnload');
-
-                this.listenTo(this.getRoot().model, 'all', _.bind(this.collectState, this));
-                this.listenTo(this.getRoot().model, 'all', _.bind(this.render, this));
-                this.listenTo(mediator, 'entity:form:edit:update_state', _.bind(this.render, this));
+                this.listenTo(this.getRoot().model, 'change', this.render);
+                this.listenTo(mediator, 'entity:form:edit:update_state', this.render);
 
                 mediator.on('product:action:post_update', _.bind(function (data) {
                     this.state = JSON.stringify(data);
@@ -81,7 +78,6 @@ define(
                 if (null === this.state || undefined === this.state) {
                     this.state = JSON.stringify(this.getRoot().model.toJSON());
                     this.bindEvents();
-                    this.stopListening(this.getRoot().model, 'all', this.collectState);
                 }
             },
             beforeUnload: function () {

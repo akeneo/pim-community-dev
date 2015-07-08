@@ -48,7 +48,9 @@ define([
             },
             render: function () {
                 this.setEditable(true);
-                var promises = [];
+                this.setValid(true);
+                this.elements = {};
+                var promises  = [];
                 mediator.trigger('field:extension:add', {'field': this, 'promises': promises});
 
                 $.when.apply($, promises)
@@ -173,7 +175,7 @@ define([
             setCurrentValue: function (value) {
                 var productValue = this.getCurrentValue();
 
-                productValue.value = value;
+                productValue.data = value;
                 mediator.trigger('entity:form:edit:update_state');
             }
         });

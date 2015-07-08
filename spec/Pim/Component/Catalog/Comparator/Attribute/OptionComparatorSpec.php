@@ -24,11 +24,11 @@ class OptionComparatorSpec extends ObjectBehavior
 
     function it_get_changes_when_adding_option_data()
     {
-        $changes   = ['value' => '42', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes   = ['data' => '42', 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn([
-            'value'  => '42',
+            'data'  => '42',
             'locale' => 'en_US',
             'scope'  => 'ecommerce',
         ]);
@@ -36,11 +36,11 @@ class OptionComparatorSpec extends ObjectBehavior
 
     function it_get_changes_when_changing_option_data()
     {
-        $changes   = ['value' => '42', 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['value' => '40'];
+        $changes   = ['data' => '42', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => '40'];
 
         $this->compare($changes, $originals)->shouldReturn([
-            'value'  => '42',
+            'data'  => '42',
             'locale' => 'en_US',
             'scope'  => 'ecommerce',
         ]);
@@ -48,8 +48,8 @@ class OptionComparatorSpec extends ObjectBehavior
 
     function it_returns_null_when_option_is_the_same()
     {
-        $changes   = ['value' => '42', 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['value' => '42', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes   = ['data' => '42', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => '42', 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }
