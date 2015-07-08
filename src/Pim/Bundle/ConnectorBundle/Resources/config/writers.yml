@@ -26,7 +26,6 @@ services:
     pim_connector.writer.doctrine.product:
         class: %pim_connector.writer.doctrine.product.class%
         arguments:
-            - '@pim_catalog.manager.media'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'

@@ -129,7 +129,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::setData(
+     * @deprecated will be removed in 1.5, please use PropertySetterInterface::setData
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null)
     {
@@ -143,7 +143,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::copyData(
+     * @deprecated will be removed in 1.5, please use PropertySetterInterface::copyData
      */
     public function copyValue(
         array $products,
