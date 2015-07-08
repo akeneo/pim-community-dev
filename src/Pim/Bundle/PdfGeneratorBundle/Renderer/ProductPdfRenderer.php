@@ -5,6 +5,7 @@ namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -37,17 +38,20 @@ class ProductPdfRenderer implements RendererInterface
      * @param string              $template
      * @param PdfBuilderInterface $pdfBuilder
      * @param string              $uploadDirectory
+     * @param ContainerInterface  $customFont
      */
     public function __construct(
         EngineInterface $templating,
         $template,
         PdfBuilderInterface $pdfBuilder,
-        $uploadDirectory
+        $uploadDirectory,
+        $customFont = null
     ) {
         $this->templating      = $templating;
         $this->template        = $template;
         $this->pdfBuilder      = $pdfBuilder;
         $this->uploadDirectory = $uploadDirectory;
+        $this->customFont      = $customFont;
     }
 
     /**
@@ -64,6 +68,7 @@ class ProductPdfRenderer implements RendererInterface
                 'product'           => $object,
                 'groupedAttributes' => $this->getGroupedAttributes($object, $context['locale']),
                 'imageAttributes'   => $this->getImageAttributes($object, $context['locale']),
+                'customFont'        => $this->customFont
             ]
         );
 
@@ -149,8 +154,9 @@ class ProductPdfRenderer implements RendererInterface
         $resolver->setDefaults(
             [
                 'groupedAttributes' => [],
-                'imageAttributes' => [],
-                'renderingDate' => new \DateTime()
+                'imageAttributes'   => [],
+                'renderingDate'     => new \DateTime(),
+                'customFont'        => null
             ]
         );
     }

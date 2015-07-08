@@ -35,4 +35,3 @@ parameters:
     # mongodb_database: akeneo_pim
 
     doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema
-
