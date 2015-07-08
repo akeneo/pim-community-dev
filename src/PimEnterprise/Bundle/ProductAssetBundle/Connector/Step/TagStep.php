@@ -22,14 +22,12 @@ use Akeneo\Bundle\BatchBundle\Step\ItemStep;
  */
 class TagStep extends ItemStep
 {
-
     /**
      * {@inheritdoc}
      */
     public function doExecute(StepExecution $stepExecution)
     {
-        $processedItems = [];
-        $writeCount     = 0;
+        $writeCount = 0;
 
         $this->initializeStepElements($stepExecution);
 
@@ -49,16 +47,12 @@ class TagStep extends ItemStep
 
             $processedItems = $this->process($readItem);
             if (null !== $processedItems) {
-                $writeCount++;
+                $writeCount = $writeCount + count($processedItems);
                 $this->write($processedItems);
-                $processedItems = [];
                 $this->getJobRepository()->updateStepExecution($stepExecution);
             }
         }
 
-        if (count($processedItems) > 0) {
-            $this->write($processedItems);
-        }
         $this->flushStepElements();
     }
 }
