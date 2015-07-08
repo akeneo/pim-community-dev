@@ -1,0 +1,8 @@
+parameters:
+    pim_catalog.completeness.checker.attribute.asset_collection.class: PimEnterprise\Bundle\CatalogBundle\Completeness\Checker\Attribute\AssetCollectionCompleteChecker
+
+services:
+    pim_catalog.completeness.checker.attribute.asset_collection:
+        class: %pim_catalog.completeness.checker.attribute.asset_collection.class%
+        tags:
+            - { name: completeness.checker.attribute }
