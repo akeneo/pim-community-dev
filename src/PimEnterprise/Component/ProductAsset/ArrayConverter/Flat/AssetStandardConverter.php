@@ -126,39 +126,11 @@ class AssetStandardConverter implements StandardArrayConverterInterface
                     )
                 );
             }
-
-            if (!in_array($item['localized'], ['0', '1'])) {
-                throw new \InvalidArgumentException(
-                    'Localized field contains invalid data only "0" or "1" is accepted'
-                );
-            }
-        }
-    }
-
-    /**
-     * @param array $item
-     *
-     * @throws ArrayConversionException
-     */
-    protected function validateTagField(array $item)
-    {
-        if (!in_array($requiredField, array_keys($item))) {
-            throw new ArrayConversionException(
-                sprintf(
-                    'Field "%s" is expected, provided fields are "%s"',
-                    $requiredField,
-                    implode(', ', array_keys($item))
-                )
-            );
         }
 
-        if ('' === $item[$requiredField]) {
-            throw new ArrayConversionException(
-                sprintf(
-                    'Field "%s" must be filled',
-                    $requiredField,
-                    implode(', ', array_keys($item))
-                )
+        if (!in_array($item['localized'], ['0', '1'])) {
+            throw new \InvalidArgumentException(
+                'Localized field contains invalid data only "0" or "1" is accepted'
             );
         }
     }
