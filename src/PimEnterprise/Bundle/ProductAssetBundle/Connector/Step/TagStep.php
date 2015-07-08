@@ -35,14 +35,12 @@ class TagStep extends ItemStep
 
         $stopExecution = false;
         while (!$stopExecution) {
-
             try {
                 $readItem = $this->reader->read();
                 if (null === $readItem) {
                     $stopExecution = true;
                     continue;
                 }
-
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($this->stepExecution, $this->reader, $e);
 
@@ -51,7 +49,6 @@ class TagStep extends ItemStep
 
             $processedItems = $this->process($readItem);
             if (null !== $processedItems) {
-
                 $writeCount++;
                 $this->write($processedItems);
                 $processedItems = [];

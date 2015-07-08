@@ -14,10 +14,10 @@ namespace PimEnterprise\Component\ProductAsset\Processor\Denormalization;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Factory\TagFactory;
-use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
+use PimEnterprise\Bundle\ProductAssetBundle\Factory\TagFactory;
+use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**

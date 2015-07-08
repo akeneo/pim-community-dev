@@ -27,4 +27,3 @@ services:
             - '@pimee_filter.product_asset_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_asset_tag }
-
