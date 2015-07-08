@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Factory;
 
-use PimEnterprise\Component\ProductAsset\Model\Asset;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
@@ -24,21 +24,48 @@ class AssetFactory
     /** @var string */
     protected $assetClass;
 
+    /** @var ReferenceFactory */
+    protected $referenceFactory;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
+
     /**
-     * @param string $assetClass
+     * @param ReferenceFactory          $referenceFactory
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param string                    $assetClass
      */
-    public function __construct($assetClass)
-    {
-        $this->assetClass = $assetClass;
+    public function __construct(
+        ReferenceFactory $referenceFactory,
+        LocaleRepositoryInterface $localeRepository,
+        $assetClass
+    ) {
+        $this->localeRepository = $localeRepository;
+        $this->referenceFactory = $referenceFactory;
+        $this->assetClass       = $assetClass;
     }
 
     /**
-     * Create a new empty Asset
+     * Create a new Asset with its Reference and Variation
+     *
+     * @param bool $isLocalized This parameter is used to know how to create Reference
      *
      * @return AssetInterface
      */
-    public function create()
+    public function create($isLocalized = false)
     {
-        return new $this->assetClass();
+        $asset = new $this->assetClass();
+        if ($isLocalized) {
+            foreach ($this->localeRepository->getActivatedLocales() as $locale) {
+                $reference = $this->referenceFactory->create($locale);
+                $reference->setAsset($asset);
+            }
+        } else {
+            $reference = $this->referenceFactory->create();
+            $reference->setAsset($asset);
+        }
+
+        return $asset;
     }
 }

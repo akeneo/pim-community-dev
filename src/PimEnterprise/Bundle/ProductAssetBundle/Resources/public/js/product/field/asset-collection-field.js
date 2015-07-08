@@ -35,9 +35,9 @@ define(
             getTemplateContext: function () {
                 return $.when(
                     Field.prototype.getTemplateContext.apply(this, arguments),
-                    FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.getCurrentValue().value)
+                    FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.getCurrentValue().data)
                 ).then(_.bind(function (templateContext, assets) {
-                    templateContext.assets = _.map(this.getCurrentValue().value, function (assetCode) {
+                    templateContext.assets = _.map(this.getCurrentValue().data, function (assetCode) {
                         return _.findWhere(assets, {code: assetCode});
                     });
                     templateContext.Routing = Routing;
@@ -86,7 +86,7 @@ define(
                     modal.$el.addClass('modal-asset');
                     form.setElement(modal.$('.modal-body'))
                         .render()
-                        .setAssets(this.getCurrentValue().value);
+                        .setAssets(this.getCurrentValue().data);
 
                     modal.on('cancel', deferred.reject);
                     modal.on('ok', _.bind(function () {

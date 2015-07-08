@@ -22,11 +22,9 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 interface FilesUpdaterInterface
 {
     /**
-     * @param RawFileStorerInterface   $rawFileStorer
+     * @param RawFileStorerInterface $rawFileStorer
      */
-    public function __construct(
-        RawFileStorerInterface $rawFileStorer
-    );
+    public function __construct(RawFileStorerInterface $rawFileStorer);
 
     /**
      * @param AssetInterface $asset

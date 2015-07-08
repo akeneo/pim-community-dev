@@ -10,9 +10,11 @@
     {% set title = 'pimee_product_asset.page_tab.title.index'|trans %}
 
     {% set buttons %}
-        <a class="btn btn-primary pull-right create-asset" href="javascript:void(0);" title="{{ 'btn.create.asset'|trans|capitalize }}" data-form-url="{{ path('pimee_product_asset_create')}}">
-            {{ 'btn.create.asset'|trans|capitalize }}
-        </a>
+        {% if resource_granted('pimee_product_asset_create') %}
+            <a class="btn btn-primary pull-right create-asset" href="javascript:void(0);" title="{{ 'btn.create.asset'|trans|capitalize }}" data-form-url="{{ path('pimee_product_asset_create')}}">
+                {{ 'btn.create.asset'|trans|capitalize }}
+            </a>
+        {% endif %}
     {% endset %}
 
     {{ elements.page_header(title, buttons) }}

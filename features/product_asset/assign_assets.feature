@@ -6,10 +6,6 @@ Feature: Assign assets to a product
 
   Background:
     Given the "clothing" catalog configuration
-    And the following assets:
-    | code       | tags             | description            | end of use at |
-    | blue_shirt | solid_color, men | A beautiful blue shirt | now           |
-    | red_shirt  | solid_color, men | A beautiful red shirt  | now           |
     And the following products:
       | sku   |
       | shirt |

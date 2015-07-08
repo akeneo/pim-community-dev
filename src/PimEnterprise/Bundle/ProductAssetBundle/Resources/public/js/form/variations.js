@@ -8,7 +8,7 @@ define(
         'oro/navigation',
         'pimee/productasset/uploader'
     ],
-    function ($, _, Backbone, DeleteConfirmation, t, Navigation, Uploader) {
+    function ($, _, Backbone, DeleteConfirmation, __, Navigation, Uploader) {
         'use strict';
 
         return Backbone.View.extend({
@@ -25,6 +25,7 @@ define(
                 event.preventDefault();
                 var button = event.currentTarget;
                 var targetUrl = $(button).data('href');
+                // TODO add a translation key
                 var confirmation = this.getConfirmDialog('Are you sure you want to delete this item ?', targetUrl);
                 confirmation.open();
             },
@@ -33,6 +34,7 @@ define(
                 var button = event.currentTarget;
                 var targetUrl = $(button).data('href');
                 var confirmation = this.getConfirmDialog(
+                    // TODO add a translation key
                     'Are you sure you want to reset all variations ?',
                     targetUrl,
                     'reset.variations'
@@ -41,10 +43,10 @@ define(
             },
             getConfirmDialog: function (message, targetUrl, title) {
                 var options = {
-                    content: t(message)
+                    content: __(message)
                 };
                 if (title) {
-                    options.title = t(title);
+                    options.title = __(title);
                 }
                 var confirmModal = new DeleteConfirmation(options);
                 confirmModal.on('ok', function () {

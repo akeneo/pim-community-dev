@@ -1,11 +1,6 @@
 define(
-    [
-        'jquery',
-        'underscore',
-        'backbone',
-        'oro/translator'
-    ],
-    function ($, _, Backbone, t) {
+    ['jquery', 'underscore', 'backbone', 'oro/translator'],
+    function ($, _, Backbone, __) {
         'use strict';
 
         var filePrompt = '<img src="/bundles/pimui/images/upload.png" alt="upload icon"><span><%= message %></span>';
@@ -42,7 +37,7 @@ define(
                     $label.append(_.template(fileInfo, {message: basename}));
                 } else {
                     $label.empty();
-                    $label.append(_.template(filePrompt, {message: t('pim_enrich.entity.product.media.upload')}));
+                    $label.append(_.template(filePrompt, {message: __('pim_enrich.entity.product.media.upload')}));
                 }
             },
 
@@ -55,10 +50,8 @@ define(
                 event.stopPropagation();
                 var $inputContainer = this.getUploaderContainer(event.currentTarget);
                 var file = $inputContainer.find('input');
-                console.log(file.val());
                 file.val('');
                 this.setFileInformations(file);
-                console.log(file.val());
             },
 
             /**

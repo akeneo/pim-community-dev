@@ -16,8 +16,6 @@ services:
 
     pimee_product_asset.form.type.create_asset:
         class: %pimee_product_asset.form.type.create_asset.class%
-        arguments:
-            - '@pimee_product_asset.form.type.asset_reference'
         tags:
             - { name: form.type, alias: pimee_product_asset_create }
 
