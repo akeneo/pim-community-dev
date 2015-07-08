@@ -1,10 +1,10 @@
 parameters:
-    pimee_product_asset.event_subscriber.mongodb.asset_mongo.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM\AssetEventSubscriber
+    pimee_product_asset.event_subscriber.mongodb.asset.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM\AssetEventSubscriber
     pimee_product_asset.repository.product_cascade_removal.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\MongoDBODM\Repository\ProductCascadeRemovalRepository
 
 services:
-    pimee_product_asset.event_subscriber.mongodb.asset_mongo:
-        class: %pimee_product_asset.event_subscriber.mongodb.asset_mongo.class%
+    pimee_product_asset.event_subscriber.mongodb.asset:
+        class: %pimee_product_asset.event_subscriber.mongodb.asset.class%
         arguments:
             - '@pimee_product_asset.repository.product_cascade_removal'
             - '@pim_catalog.repository.attribute'

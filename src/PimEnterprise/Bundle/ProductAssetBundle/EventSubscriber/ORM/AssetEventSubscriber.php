@@ -49,7 +49,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AssetEvent::PRE_REMOVE => 'isAssetRemovable'
+            AssetEvent::PRE_REMOVE => 'checkPublishedProductConsistency'
         ];
     }
 
@@ -62,7 +62,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
      *
      * @return GenericEvent
      */
-    public function isAssetRemovable(GenericEvent $event)
+    public function checkPublishedProductConsistency(GenericEvent $event)
     {
         $asset          = $event->getSubject();
         $attributeCodes = $this->attributeRepository->getAttributeCodesByType('pim_assets_collection');
@@ -70,7 +70,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
         foreach ($attributeCodes as $attributeCode) {
             $ppqb = $this->pqbFactory->create();
             $publishedProducts = $ppqb
-                ->addFilter($attributeCode, 'IN', [$asset->getId()])
+                ->addFilter($attributeCode . '.id', 'IN', [$asset->getId()])
                 ->execute();
 
             if ($publishedProducts->count() > 0) {

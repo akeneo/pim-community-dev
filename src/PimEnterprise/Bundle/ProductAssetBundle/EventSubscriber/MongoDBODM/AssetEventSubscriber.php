@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Repository\ProductCascadeRemovalRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Asset event subscriber for MongoDBODM
@@ -55,11 +56,11 @@ class AssetEventSubscriber implements EventSubscriberInterface
      * Updates product document when an asset related to a product is removed
      * Triggered by AssetEvent::POST_REMOVE
      *
-     * @param AssetEvent $event
+     * @param GenericEvent $event
      *
      * @return AssetEvent
      */
-    public function cascadeAssetRemove(AssetEvent $event)
+    public function cascadeAssetRemove(GenericEvent $event)
     {
         $asset = $event->getSubject();
         $attributeCodes = $this->attributeRepository->getAttributeCodesByType('pim_assets_collection');

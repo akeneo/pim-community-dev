@@ -370,7 +370,7 @@ class ProductAssetController extends Controller
 
         $this->assetRemover->remove($productAsset);
 
-        if ($this->getRequest()->isXmlHttpRequest()) {
+        if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
             return $this->redirect($this->generateUrl('pimee_product_asset_index'));
