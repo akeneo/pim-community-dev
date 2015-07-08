@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterAttributeCompleteCheckersPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const SERVICE_CHAINED = 'pim_catalog.completeness.checker.product_value';
+    const REGISTRY = 'pim_catalog.completeness.checker.product_value';
 
     /** @staticvar string */
     const SERVICE_TAG = 'completeness.checker.attribute';
@@ -26,11 +26,11 @@ class RegisterAttributeCompleteCheckersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(self::SERVICE_CHAINED)) {
+        if (!$container->hasDefinition(self::REGISTRY)) {
             return;
         }
 
-        $service = $container->getDefinition(self::SERVICE_CHAINED);
+        $service = $container->getDefinition(self::REGISTRY);
 
         $taggedServices = $container->findTaggedServiceIds(self::SERVICE_TAG);
 
