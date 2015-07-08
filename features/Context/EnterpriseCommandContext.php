@@ -76,9 +76,7 @@ class EnterpriseCommandContext extends CommandContext
             $commandOptions['-a'] = $assetCode;
         }
 
-        $commandTester->execute($commandOptions);
-
-        $result = $commandTester->getStatusCode();
+        $result = $commandTester->execute($commandOptions);
 
         if (0 !== $result) {
             throw new \Exception(
