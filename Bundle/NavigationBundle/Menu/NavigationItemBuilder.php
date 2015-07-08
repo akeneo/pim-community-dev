@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\NavigationBundle\Menu;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManager;
 use Knp\Menu\ItemInterface;
 use Oro\Bundle\NavigationBundle\Menu\BuilderInterface;
@@ -14,9 +14,9 @@ use Oro\Bundle\NavigationBundle\Entity\Repository\NavigationRepositoryInterface;
 class NavigationItemBuilder implements BuilderInterface
 {
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    private $securityContext;
+    private $tokenStorage;
 
     /**
      * @var EntityManager
@@ -29,13 +29,13 @@ class NavigationItemBuilder implements BuilderInterface
     private $factory;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param EntityManager            $em
-     * @param ItemFactory              $factory
+     * @param TokenStorageInterface $tokenStorage
+     * @param EntityManager         $em
+     * @param ItemFactory           $factory
      */
-    public function __construct(SecurityContextInterface $securityContext, EntityManager $em, ItemFactory $factory)
+    public function __construct(TokenStorageInterface $tokenStorage, EntityManager $em, ItemFactory $factory)
     {
-        $this->securityContext = $securityContext;
+        $this->tokenStorage = $tokenStorage;
         $this->em = $em;
         $this->factory = $factory;
     }
@@ -49,7 +49,7 @@ class NavigationItemBuilder implements BuilderInterface
      */
     public function build(ItemInterface $menu, array $options = array(), $alias = null)
     {
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $menu->setExtra('type', $alias);
         if (is_object($user)) {
             /** @var $entity NavigationItemInterface */

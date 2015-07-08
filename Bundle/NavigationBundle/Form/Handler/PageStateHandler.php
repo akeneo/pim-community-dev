@@ -4,7 +4,7 @@ namespace Oro\Bundle\NavigationBundle\Form\Handler;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -28,27 +28,27 @@ class PageStateHandler
     protected $manager;
 
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    protected $security;
+    protected $tokenStorage;
 
     /**
      *
-     * @param FormInterface            $form
-     * @param Request                  $request
-     * @param ObjectManager            $manager
-     * @param SecurityContextInterface $security
+     * @param FormInterface         $form
+     * @param Request               $request
+     * @param ObjectManager         $manager
+     * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
         FormInterface $form,
         Request $request,
         ObjectManager $manager,
-        SecurityContextInterface $security
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->form     = $form;
-        $this->request  = $request;
-        $this->manager  = $manager;
-        $this->security = $security;
+        $this->form         = $form;
+        $this->request      = $request;
+        $this->manager      = $manager;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -59,7 +59,7 @@ class PageStateHandler
      */
     public function process(PageState $entity)
     {
-        if ($this->security->getToken() && is_object($user = $this->security->getToken()->getUser())) {
+        if ($this->tokenStorage->getToken() && is_object($user = $this->tokenStorage->getToken()->getUser())) {
             $entity->setUser($user);
         }
 

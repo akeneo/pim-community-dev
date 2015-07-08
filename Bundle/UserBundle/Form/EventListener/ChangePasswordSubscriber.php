@@ -4,7 +4,7 @@ namespace Oro\Bundle\UserBundle\Form\EventListener;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
 use Oro\Bundle\UserBundle\Entity\User;

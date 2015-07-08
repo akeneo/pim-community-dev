@@ -59,4 +59,4 @@ services:
         class: %oro_user.change_password.subscriber.class%
         arguments:
             - @form.factory
-            - @security.context
+            - @security.token_storage

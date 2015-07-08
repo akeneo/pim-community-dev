@@ -7,8 +7,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Doctrine\ORM\EntityRepository;
 
@@ -19,9 +19,9 @@ use Oro\Bundle\UserBundle\Form\Type\EmailType;
 class UserType extends AbstractType
 {
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    protected $security;
+    protected $tokenStorage;
 
     /**
      * @var bool
@@ -29,15 +29,15 @@ class UserType extends AbstractType
     protected $isMyProfilePage;
 
     /**
-     * @param SecurityContextInterface $security        Security context
-     * @param Request $request         Request
+     * @param TokenStorageInterface $tokenStorage Token storage
+     * @param Request               $request      Request
      */
     public function __construct(
-        SecurityContextInterface $security,
+        TokenStorageInterface $tokenStorage,
         Request $request
     ) {
 
-        $this->security = $security;
+        $this->tokenStorage = $tokenStorage;
         if ($request->attributes->get('_route') == 'oro_user_profile_update') {
             $this->isMyProfilePage = true;
         } else {
@@ -58,14 +58,14 @@ class UserType extends AbstractType
     {
         // user fields
         $builder->addEventSubscriber(
-            new UserSubscriber($builder->getFormFactory(), $this->security)
+            new UserSubscriber($builder->getFormFactory(), $this->tokenStorage)
         );
         $this->setDefaultUserFields($builder);
         $builder
             ->add(
                 'rolesCollection',
                 'entity',
-                array(
+                [
                     'label'          => 'Roles',
                     'class'          => 'OroUserBundle:Role',
                     'property'       => 'label',
@@ -79,12 +79,12 @@ class UserType extends AbstractType
                     'required'       => !$this->isMyProfilePage,
                     'read_only'      => $this->isMyProfilePage,
                     'disabled'      => $this->isMyProfilePage,
-                )
+                ]
             )
             ->add(
                 'groups',
                 'entity',
-                array(
+                [
                     'class'          => 'OroUserBundle:Group',
                     'property'       => 'name',
                     'multiple'       => true,
@@ -92,17 +92,17 @@ class UserType extends AbstractType
                     'required'       => false,
                     'read_only'      => $this->isMyProfilePage,
                     'disabled'       => $this->isMyProfilePage
-                )
+                ]
             )
             ->add(
                 'plainPassword',
                 'repeated',
-                array(
+                [
                     'type'           => 'password',
                     'required'       => true,
-                    'first_options'  => array('label' => 'Password'),
-                    'second_options' => array('label' => 'Re-enter password'),
-                )
+                    'first_options'  => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Re-enter password'],
+                ]
             )
             ->add(
                 'change_password',
@@ -116,7 +116,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class'           => 'Oro\Bundle\UserBundle\Entity\User',
                 'intention'            => 'user',
                 'validation_groups'    => function ($form) {
@@ -129,15 +129,15 @@ class UserType extends AbstractType
                     }
 
                     return $user && $user->getId()
-                        ? array('User', 'Default')
-                        : array('Registration', 'User', 'Default');
+                        ? ['User', 'Default']
+                        : ['Registration', 'User', 'Default'];
                 },
                 'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
-                'error_mapping'        => array(
+                'error_mapping'        => [
                     'roles' => 'rolesCollection'
-                ),
+                ],
                 'cascade_validation'   => true
-            )
+            ]
         );
     }
 
@@ -160,73 +160,73 @@ class UserType extends AbstractType
             ->add(
                 'username',
                 'text',
-                array(
+                [
                     'required'       => true,
-                )
+                ]
             )
             ->add(
                 'email',
                 'email',
-                array(
+                [
                     'label'          => 'E-mail',
                     'required'       => true,
-                )
+                ]
             )
             ->add(
                 'namePrefix',
                 'text',
-                array(
+                [
                     'label'          => 'Name prefix',
                     'required'       => false,
-                )
+                ]
             )
             ->add(
                 'firstName',
                 'text',
-                array(
+                [
                     'label'          => 'First name',
                     'required'       => true,
-                )
+                ]
             )
             ->add(
                 'middleName',
                 'text',
-                array(
+                [
                     'label'          => 'Middle name',
                     'required'       => false,
-                )
+                ]
             )
             ->add(
                 'lastName',
                 'text',
-                array(
+                [
                      'label'          => 'Last name',
                      'required'       => true,
-                )
+                ]
             )
             ->add(
                 'nameSuffix',
                 'text',
-                array(
+                [
                     'label'          => 'Name suffix',
                     'required'       => false,
-                )
+                ]
             )
             ->add(
                 'birthday',
                 'oro_date',
-                array(
+                [
                     'label'          => 'Date of birth',
                     'required'       => false,
-                )
+                ]
             )
             ->add(
                 'imageFile',
                 'file',
-                array(
+                [
                     'label'          => 'Avatar',
                     'required'       => false,
-                )
+                ]
             );
     }
 }

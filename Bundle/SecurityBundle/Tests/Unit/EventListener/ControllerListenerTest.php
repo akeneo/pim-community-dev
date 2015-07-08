@@ -17,7 +17,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     protected $methodName = 'getId';
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $securityContext;
+    protected $tokenStorage;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $annotationProvider;
@@ -37,7 +37,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $logger = $this->getMock('Psr\Log\LoggerInterface');
-        $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
         $this->annotationProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider')
             ->disableOriginalConstructor()
             ->getMock();
@@ -49,7 +49,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
         $this->request->attributes->add(array('_route' => 'test'));
         $this->listener = new ControllerListener(
             new SecurityFacade(
-                $this->securityContext,
+                $this->tokenStorage,
                 $this->annotationProvider,
                 $this->objectIdentityFactory,
                 $logger
@@ -81,7 +81,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue(null));
 
-        $this->securityContext->expects($this->never())
+        $this->tokenStorage->expects($this->never())
             ->method('isGranted');
 
         $this->listener->onKernelController($event);
@@ -112,7 +112,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($methodAnnotation))
             ->will($this->returnValue($methodIdentity));
-        $this->securityContext->expects($this->at(0))
+        $this->tokenStorage->expects($this->at(0))
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
             ->will($this->returnValue(true));
@@ -127,7 +127,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($classAnnotation))
             ->will($this->returnValue($classIdentity));
-        $this->securityContext->expects($this->at(1))
+        $this->tokenStorage->expects($this->at(1))
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($classIdentity))
             ->will($this->returnValue(true));
@@ -160,7 +160,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($methodAnnotation))
             ->will($this->returnValue($methodIdentity));
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
             ->will($this->returnValue(true));
@@ -193,7 +193,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($methodAnnotation))
             ->will($this->returnValue($methodIdentity));
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
             ->will($this->returnValue(true));
@@ -238,7 +238,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($classAnnotation))
             ->will($this->returnValue($classIdentity));
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($classIdentity))
             ->will($this->returnValue(true));
@@ -274,7 +274,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($methodAnnotation))
             ->will($this->returnValue($methodIdentity));
-        $this->securityContext->expects($this->at(0))
+        $this->tokenStorage->expects($this->at(0))
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
             ->will($this->returnValue(true));
@@ -289,7 +289,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($classAnnotation))
             ->will($this->returnValue($classIdentity));
-        $this->securityContext->expects($this->at(1))
+        $this->tokenStorage->expects($this->at(1))
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($classIdentity))
             ->will($this->returnValue(false));
@@ -325,7 +325,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($methodAnnotation))
             ->will($this->returnValue($methodIdentity));
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($methodIdentity))
             ->will($this->returnValue(false));
@@ -360,7 +360,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($annotation))
             ->will($this->returnValue($identity));
 
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($identity))
             ->will($this->returnValue(false));
@@ -394,7 +394,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo($annotation))
             ->will($this->returnValue($identity));
 
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST'), $this->identicalTo($identity))
             ->will($this->returnValue(false));

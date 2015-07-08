@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
@@ -37,13 +37,13 @@ class ResponseHistoryListener
 
     public function __construct(
         ItemFactory $navigationItemFactory,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         EntityManager $entityManager,
         TitleServiceInterface $titleService
     ) {
         $this->navItemFactory = $navigationItemFactory;
-        $this->user = !$securityContext->getToken() ||  is_string($securityContext->getToken()->getUser())
-                      ? null : $securityContext->getToken()->getUser();
+        $this->user = !$tokenStorage->getToken() ||  is_string($tokenStorage->getToken()->getUser())
+                      ? null : $tokenStorage->getToken()->getUser();
         $this->em = $entityManager;
         $this->titleService = $titleService;
     }

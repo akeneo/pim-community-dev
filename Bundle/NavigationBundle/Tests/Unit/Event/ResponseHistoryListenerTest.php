@@ -18,9 +18,9 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
     protected $em;
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
      */
-    protected $securityContext;
+    protected $tokenStorage;
 
     /**
      * @var ResponseHistoryListener
@@ -55,7 +55,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->factory = $this->getMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
-        $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
 
         $user = new User();
         $user->setEmail('some@email.com');
@@ -65,7 +65,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue($user));
 
-        $this->securityContext->expects($this->any())
+        $this->tokenStorage->expects($this->any())
             ->method('getToken')
             ->will($this->returnValue($token));
 
@@ -81,7 +81,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
         $repository = $this->getDefaultRepositoryMock($this->item);
         $em = $this->getEntityManager($repository);
 
-        $listener = $this->getListener($this->factory, $this->securityContext, $em);
+        $listener = $this->getListener($this->factory, $this->tokenStorage, $em);
         $listener->onResponse($this->getEventMock($this->getRequest(), $response));
     }
 
@@ -95,7 +95,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
         $repository = $this->getDefaultRepositoryMock($this->item);
         $em = $this->getEntityManager($repository);
 
-        $listener = $this->getListener($this->factory, $this->securityContext, $em);
+        $listener = $this->getListener($this->factory, $this->tokenStorage, $em);
         $listener->onResponse($this->getEventMock($this->getRequest(), $response));
     }
 
@@ -111,7 +111,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
         $repository = $this->getDefaultRepositoryMock(null);
         $em = $this->getEntityManager($repository);
 
-        $listener = $this->getListener($this->factory, $this->securityContext, $em);
+        $listener = $this->getListener($this->factory, $this->tokenStorage, $em);
         $response = $this->getResponse();
 
         $listener->onResponse($this->getEventMock($this->getRequest(), $response));
@@ -140,7 +140,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
 
         $titleService = $this->getMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
 
-        $listener = new ResponseHistoryListener($this->factory, $this->securityContext, $em, $titleService);
+        $listener = new ResponseHistoryListener($this->factory, $this->tokenStorage, $em, $titleService);
         $listener->onResponse($event);
     }
 
@@ -226,13 +226,13 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param  \Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory   $factory
-     * @param  \Symfony\Component\Security\Core\SecurityContextInterface $securityContext
+     * @param  \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $tokenStorage
      * @param  \Doctrine\ORM\EntityManager                               $entityManager
      * @return ResponseHistoryListener
      */
-    private function getListener($factory, $securityContext, $entityManager)
+    private function getListener($factory, $tokenStorage, $entityManager)
     {
-        return new ResponseHistoryListener($factory, $securityContext, $entityManager, $this->getTitleService());
+        return new ResponseHistoryListener($factory, $tokenStorage, $entityManager, $this->getTitleService());
     }
 
     /**

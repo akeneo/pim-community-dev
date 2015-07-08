@@ -270,14 +270,14 @@ class User implements
     public function serialize()
     {
         return serialize(
-            array(
+            [
                 $this->password,
                 $this->salt,
                 $this->username,
                 $this->enabled,
                 $this->confirmationToken,
                 $this->id,
-            )
+            ]
         );
     }
 
@@ -841,10 +841,10 @@ class User implements
 
     /**
      * Never use this to check if this user has access to anything!
-     * Use the SecurityContext, or an implementation of AccessDecisionManager
+     * Use the AuthorizationChecker, or an implementation of AccessDecisionManager
      * instead, e.g.
      *
-     *         $securityContext->isGranted('ROLE_USER');
+     *         $authorizationChecker->isGranted('ROLE_USER');
      *
      * @param  Role|string               $role
      * @return boolean
@@ -961,7 +961,7 @@ class User implements
      */
     public function getGroupNames()
     {
-        $names = array();
+        $names = [];
 
         /** @var Group $group */
         foreach ($this->getGroups() as $group) {

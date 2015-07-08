@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -18,21 +18,21 @@ class UserSubscriber implements EventSubscriberInterface
     protected $factory;
 
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    protected $security;
+    protected $tokenStorage;
 
 
     /**
-     * @param FormFactoryInterface      $factory        Factory to add new form children
-     * @param SecurityContextInterface  $security       Security context
+     * @param FormFactoryInterface  $factory      Factory to add new form children
+     * @param TokenStorageInterface $tokenStorage Token storage
      */
     public function __construct(
         FormFactoryInterface $factory,
-        SecurityContextInterface $security
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->factory    = $factory;
-        $this->security   = $security;
+        $this->factory      = $factory;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -90,7 +90,7 @@ class UserSubscriber implements EventSubscriberInterface
      */
     protected function isCurrentUser(User $user)
     {
-        $token = $this->security->getToken();
+        $token = $this->tokenStorage->getToken();
         $currentUser = $token ? $token->getUser() : null;
         if ($user->getId() && is_object($currentUser)) {
             return $currentUser->getId() == $user->getId();

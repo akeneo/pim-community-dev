@@ -10,7 +10,7 @@ use Symfony\Component\Form\Test\FormIntegrationTestCase;
 class ChangePasswordSubscriberTest extends FormIntegrationTestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $securityContext;
+    protected $tokenStorage;
 
     /** @var  ChangePasswordSubscriber */
     protected $subscriber;
@@ -22,8 +22,8 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
     {
         parent::setUp();
 
-        $this->securityContext = $this->getMockForAbstractClass(
-            'Symfony\Component\Security\Core\SecurityContextInterface'
+        $this->tokenStorage = $this->getMockForAbstractClass(
+            'Symfony\Component\Security\Core\TokenStorageInterface'
         );
 
         $this->token = $this
@@ -31,7 +31,7 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->subscriber = new ChangePasswordSubscriber($this->factory, $this->securityContext);
+        $this->subscriber = new ChangePasswordSubscriber($this->factory, $this->tokenStorage);
     }
 
     /**
@@ -94,7 +94,7 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
             ->method('getUser')
             ->will($this->returnValue($currentUser));
 
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($this->token));
 
@@ -192,7 +192,7 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
             ->method('getUser')
             ->will($this->returnValue(null));
 
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($this->token));
 

@@ -3,7 +3,7 @@ namespace Oro\Bundle\NavigationBundle\Event;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ResponseHashnavListener
@@ -12,18 +12,18 @@ class ResponseHashnavListener
     const HASH_NAVIGATION_HEADER = 'x-oro-hash-navigation';
 
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    protected $security;
+    protected $tokenStorage;
 
     /**
      * @var EngineInterface
      */
     protected $templating;
 
-    public function __construct(SecurityContextInterface $security, EngineInterface $templating)
+    public function __construct(TokenStorageInterface $tokenStorage, EngineInterface $templating)
     {
-        $this->security = $security;
+        $this->tokenStorage = $tokenStorage;
         $this->templating = $templating;
     }
 
@@ -41,7 +41,7 @@ class ResponseHashnavListener
             $isFullRedirect = false;
             if ($response->isRedirect()) {
                 $location = $response->headers->get('location');
-                if (!is_object($this->security->getToken())) {
+                if (!is_object($this->tokenStorage->getToken())) {
                     $isFullRedirect = true;
                 }
             }

@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
@@ -21,9 +21,9 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
     protected $repository;
 
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    protected $security;
+    protected $tokenStorage;
 
     /**
      * @var array
@@ -42,14 +42,14 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
         $this->om = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->object = new UserConfigManager($this->om, $this->settings);
 
-        $this->security   = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
-        $this->group1     = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
-        $this->group2     = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
+        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
+        $this->group1       = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
+        $this->group2       = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
 
         $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $user  = new User();
 
-        $this->security
+        $this->tokenStorage
             ->expects($this->any())
             ->method('getToken')
             ->will($this->returnValue($token));
@@ -87,7 +87,7 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
         $object->expects($this->exactly(3))
             ->method('loadStoredSettings');
 
-        $object->setSecurity($this->security);
+        $object->setSecurity($this->tokenStorage);
 
         $this->assertEquals('user', $object->getScopedEntityName());
         $this->assertEquals(0, $object->getScopeId());

@@ -58,14 +58,14 @@ services:
     oro_user.form.type.user:
         scope: request
         class:                        %oro_user.form.type.user.class%
-        arguments:                    ["@security.context", "@request"]
+        arguments:                    ["@security.token_storage", "@request"]
         tags:
             - { name: form.type, alias: oro_user_user }
 
     oro_user.form.type.user.api:
         scope: request
         class:                        %oro_user.form.type.user.api.class%
-        arguments:                    ["@security.context", "@request"]
+        arguments:                    ["@security.token_storage", "@request"]
         tags:
             - { name: form.type, alias: user }
 
