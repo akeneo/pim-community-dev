@@ -1,8 +1,12 @@
 <?php
 
 /*
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace PimEnterprise\Bundle\CatalogBundle\Completeness\Checker\Attribute;
@@ -22,6 +26,9 @@ class AssetCollectionCompleteChecker implements AttributeCompleteCheckerInterfac
     /** @var AssetFinderInterface */
     protected $assetFinder;
 
+    /**
+     * {@inheritdoc}
+     */
     public function isComplete(
         ProductValueInterface $value,
         ChannelInterface $channel,
@@ -42,16 +49,21 @@ class AssetCollectionCompleteChecker implements AttributeCompleteCheckerInterfac
         return false;
     }
 
+    /**
+     * Check if asset is complete for a tuple channel/locale
+     *
+     * @param AssetInterface   $asset
+     * @param ChannelInterface $channel
+     * @param string|null      $localeCode
+     *
+     * @return bool
+     */
     protected function checkByAsset(AssetInterface $asset, ChannelInterface $channel, $localeCode = null)
     {
         $variations = $asset->getVariations();
 
         foreach ($variations as $variation) {
-            if ($channel->getCode() === $variation->getChannel()->getCode()
-                && ($localeCode === $variation->getReference()->getLocale()
-                    || null === $variation->getReference()->getLocale())
-                && null !== $variation->getFile()
-            ) {
+            if ($variation->isComplete($localeCode, $channel->getCode())) {
                 return true;
             }
         }
