@@ -58,3 +58,9 @@ extensions:
         parent: attributes
         targetZone: self
         position: 100
+
+    copy-source-switcher:
+        module: pimee/product-edit-form/source-switcher
+        parent: copy
+        targetZone: context-selectors
+        position: 120

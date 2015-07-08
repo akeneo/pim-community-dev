@@ -20,7 +20,7 @@ define(
         FetcherRegistry
     ) {
         return Copy.extend({
-            sources: ['workingCopy', 'draft'],
+            sources: ['working_copy', 'draft'],
             currentSource: '',
             workingCopy: {},
 
@@ -30,6 +30,9 @@ define(
             configure: function () {
                 this.currentSource = this.sources[0];
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
+
+                this.onExtensions('source_switcher:render:before', this.onSourceSwitcherRender);
+                this.onExtensions('source_switcher:source_change', this.onSourceChange);
 
                 return Copy.prototype.configure.apply(this, arguments);
             },
@@ -41,6 +44,32 @@ define(
             */
             onProductPostFetch: function (event) {
                 this.workingCopy = event.originalProduct;
+            },
+
+            /**
+             * Keep any source switcher uo-to-date for its rendering
+             *
+             * @param {Object} context
+             */
+            onSourceSwitcherRender: function (context) {
+                context.sources       = this.sources;
+                context.currentSource = this.currentSource;
+            },
+
+            /**
+             * Update the current source and re-render the extension
+             *
+             * @param {string} newSource
+             *
+             * @throws {Error} If specified source code is invalid
+             */
+            onSourceChange: function (newSource) {
+                if (-1 === this.sources.indexOf(newSource)) {
+                    throw new Error('Invalid source code "' + newSource + '"');
+                }
+
+                this.currentSource = newSource;
+                this.triggerContextChange();
             },
 
             /**
@@ -64,18 +93,20 @@ define(
 
             /**
             * @inheritdoc
+             *
+             * @throws {Error} If current source is not set or not valid
             */
             getSourceData: function () {
                 var data = {};
                 switch (this.currentSource) {
-                    case 'workingCopy':
+                    case 'working_copy':
                         data = this.workingCopy.values;
                         break;
                     case 'draft':
-                        data = this.getData();
+                        data = this.getData().values;
                         break;
                     default:
-                        throw new Error("No source is currently selected to copy from");
+                        throw new Error("No valid source is currently selected to copy from");
                 }
 
                 return data;

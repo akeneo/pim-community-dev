@@ -30,6 +30,7 @@ config:
         pimee/product-edit-form/panel/history/revert:                 pimenterpriseenrich/js/product/form/panel/history/revert
         pimee/product-edit-form/publish:                              pimenterpriseenrich/js/product/form/publish
         pimee/product-edit-form/save:                                 pimenterpriseenrich/js/product/form/save
+        pimee/product-edit-form/source-switcher:                      pimenterpriseenrich/js/product/form/source-switcher
 
         # Templates
         pimee/template/product/meta/owner-groups:                       pimenterpriseenrich/templates/product/meta/owner-groups.html
@@ -37,6 +38,7 @@ config:
         pimee/template/product/panel/history/published:                 pimenterpriseenrich/templates/product/panel/history/published.html
         pimee/template/product/panel/history/revert:                    pimenterpriseenrich/templates/product/panel/history/revert.html
         pimee/template/product/publish:                                 pimenterpriseenrich/templates/product/publish.html
+        pimee/template/product/source-switcher:                         pimenterpriseenrich/templates/product/source-switcher.html
         pimee/template/product/submit-draft:                            pimenterpriseenrich/templates/product/submit-draft.html
         pimee/template/product/tab/attribute/modified-by-draft:         pimenterpriseenrich/templates/product/tab/attributes/modified-by-draft.html
         pimee/template/product/tab/attribute/smart-attribute:           pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
