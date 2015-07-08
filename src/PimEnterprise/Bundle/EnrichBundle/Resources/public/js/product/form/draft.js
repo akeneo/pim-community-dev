@@ -1,5 +1,10 @@
 'use strict';
-
+/**
+ * Draft extension
+ *
+ * @author Filips Alpe <filips@akeneo.com>
+ * @author Yohan Blain <yohan.blain@akeneo.com>
+ */
 define(
     [
         'jquery',
@@ -8,7 +13,6 @@ define(
         'oro/mediator',
         'pim/form',
         'pim/fetcher-registry',
-        'pim/attribute-manager',
         'oro/messenger',
         'text!pimee/template/product/submit-draft',
         'text!pimee/template/product/tab/attribute/modified-by-draft'
@@ -20,7 +24,6 @@ define(
         mediator,
         BaseForm,
         FetcherRegistry,
-        AttributeManager,
         messenger,
         submitTemplate,
         modifiedByDraftTemplate
@@ -30,7 +33,6 @@ define(
             submitTemplate: _.template(submitTemplate),
             modifiedByDraftTemplate: _.template(modifiedByDraftTemplate),
             productId: null,
-            isOutdated: true,
             events: {
                 'click .submit-draft': 'submitDraft',
                 'click .modified-by-draft': 'showWorkingCopy'
@@ -60,7 +62,12 @@ define(
              */
             onProductPostFetch: function (event) {
                 this.productId = event.product.meta.id;
-                event.promises.push(this.applyDraft(event.product));
+                event.promises.push(
+                    this.getDraft()
+                        .then(function (draft) {
+                            draft.applyToProduct(event.product);
+                        })
+                );
             },
 
             /**
@@ -74,15 +81,16 @@ define(
              * Mark a field as "modified by draft" if necessary
              *
              * @param {Object} event
+             *
              * @returns {Object}
              */
             addFieldExtension: function (event) {
                 var field = event.field;
 
                 event.promises.push(
-                    this.isValueChanged(field)
-                        .then(_.bind(function (isValueChanged) {
-                            if (isValueChanged) {
+                    this.getDraft()
+                        .then(_.bind(function (draft) {
+                            if (draft.isValueChanged(field)) {
                                 var $element = this.modifiedByDraftTemplate();
                                 field.addElement('label', 'modified_by_draft', $element);
                             }
@@ -99,74 +107,15 @@ define(
              */
             getDraft: function () {
                 return FetcherRegistry.getFetcher('product-draft')
-                    .fetchForProduct(this.productId)
-                    .then(_.bind(function (draft) {
-                        // TODO: use a better way to trigger the rendering (e.g. an event on fetch)
-                        if (this.isOutdated) {
-                            this.render();
-                        }
-
-                        return draft;
-                    }, this));
+                    .fetchForProduct(this.productId);
             },
 
             /**
              * Clear draft fetcher's cache
              */
             clearDraftCache: function() {
-                this.isOutdated = true;
                 FetcherRegistry.getFetcher('product-draft')
                     .clear(this.productId);
-            },
-
-            /**
-             * Apply draft values on product values
-             * productData is modified by reference
-             *
-             * @param {Object} productData
-             * @returns {Promise}
-             */
-            applyDraft: function (productData) {
-                return this.getDraft()
-                    .then(_.bind(function (draft) {
-                        var changes = draft.changes;
-                        if (changes && changes.values) {
-                            _.each(changes.values, function (draftValues, attributeCode) {
-                                _.each(draftValues, function (draftValue) {
-                                    var productValue = _.findWhere(
-                                        productData.values[attributeCode],
-                                        {locale: draftValue.locale, scope: draftValue.scope}
-                                    );
-                                    productValue.data = draftValue.data;
-                                });
-                            });
-                        }
-                    }, this));
-            },
-
-            /**
-             * Check if the specified field's value has been modified in the current draft, in any locale or scope
-             *
-             * @param {Object} field
-             * @returns {Boolean}
-             */
-            isValueChanged: function (field) {
-                var attribute = field.attribute;
-
-                return this.getDraft()
-                    .then(function (draft) {
-                        var changes = draft.changes;
-                        if (!changes || !changes.values || !_.has(changes.values, attribute.code)) {
-                            return false;
-                        }
-
-                        return !_.isUndefined(AttributeManager.getValue(
-                            changes.values[attribute.code],
-                            attribute,
-                            field.context.locale,
-                            field.context.scope
-                        ));
-                    });
             },
 
             /**
@@ -177,10 +126,10 @@ define(
             render: function () {
                 this.getDraft()
                     .then(_.bind(function (draft) {
-                        if (!_.isUndefined(draft.status)) {
+                        if (draft.hasStatus()) {
                             this.$el.html(
                                 this.submitTemplate({
-                                    'submitted': draft.status !== 0
+                                    'submitted': draft.isReady()
                                 })
                             );
                             this.delegateEvents();
@@ -188,8 +137,6 @@ define(
                         } else {
                             this.$el.addClass('hidden');
                         }
-
-                        this.isOutdated = false;
                     }, this));
 
                 return this;
@@ -203,7 +150,7 @@ define(
             submitDraft: function () {
                 this.getDraft()
                     .then(function (draft) {
-                        return FetcherRegistry.getFetcher('product-draft').sendForApproval(draft);
+                        return draft.sendForApproval();
                     })
                     .then(function () {
                         messenger.notificationFlashMessage(
