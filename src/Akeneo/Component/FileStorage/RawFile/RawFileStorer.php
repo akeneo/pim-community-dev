@@ -39,6 +39,7 @@ class RawFileStorer implements RawFileStorerInterface
      * @param PathGeneratorInterface $pathGenerator
      * @param MountManager           $mountManager
      * @param SaverInterface         $saver
+     * @param FileFactoryInterface   $factory
      */
     public function __construct(
         PathGeneratorInterface $pathGenerator,

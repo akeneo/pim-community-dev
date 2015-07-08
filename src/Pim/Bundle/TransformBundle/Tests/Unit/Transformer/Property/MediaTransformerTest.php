@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
+use Akeneo\Component\FileStorage\Model\File;
 use Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer;
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Tests related class
@@ -15,12 +14,16 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class MediaTransformerTest extends \PHPUnit_Framework_TestCase
 {
+    protected $fileStorer;
+
+    protected $media;
+
     /**
      * Test related method
      */
     public function testTransform()
     {
-        $transformer = new MediaTransformer('Pim\Bundle\CatalogBundle\Model\ProductMedia');
+        $transformer = new MediaTransformer($this->fileStorer);
         $this->assertEquals(null, $transformer->transform(''));
         $this->assertEquals(null, $transformer->transform(' '));
         $d = tempnam('/tmp', 'pim-media-transformer-test');
@@ -29,7 +32,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
         $f = $d . '/file';
         touch($f);
         $this->assertEquals(null, $transformer->transform(' ' . $d . ' '));
-        $this->assertEquals(new File($f), $transformer->transform(' ' . $f . ' '));
+        $this->assertEquals(new File(), $transformer->transform(' ' . $f . ' '));
         unlink($f);
         rmdir($d);
     }
@@ -56,14 +59,14 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     public function testUpdateProductValue($hasFile, $mediaExists)
     {
         $f = tempnam('/tmp', 'pim-media-transformer-test');
-        $this->media = $mediaExists ? new ProductMedia() : null;
-        $file = $hasFile ? new File($f) : null;
-        $transformer = new MediaTransformer('Pim\Bundle\CatalogBundle\Model\ProductMedia');
+        $this->media = $mediaExists ? new File() : null;
+        $file = $hasFile ? new File() : null;
+        $transformer = new MediaTransformer($this->fileStorer);
         $productValue = $this->getValue($hasFile, $mediaExists);
         $columnInfo = $this->getMock('Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $transformer->setValue($productValue, $columnInfo, $file);
         if ($hasFile) {
-            $this->assertEquals($file, $this->media->getFile());
+            $this->assertEquals($file, $this->media);
         }
         unlink($f);
     }
@@ -73,8 +76,24 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnvalid()
     {
-        $transformer = new MediaTransformer('Pim\Bundle\CatalogBundle\Model\ProductMedia');
+        $transformer = new MediaTransformer($this->fileStorer);
         $transformer->transform('/bogus-file');
+    }
+
+    protected function setUp()
+    {
+        $this->fileStorer = $this
+            ->getMockBuilder('Akeneo\Component\FileStorage\RawFile\RawFileStorer')
+            ->disableOriginalConstructor()
+            ->setMethods(['store'])
+            ->getMock()
+        ;
+
+        $this->fileStorer
+            ->expects($this->any())
+            ->method('store')
+            ->will($this->returnValue(new File()))
+        ;
     }
 
     protected function getValue($hasFile, $mediaExists)
@@ -133,16 +152,12 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
             )
             ->getMock();
         if ($hasFile) {
-            $productValue
-                ->expects($this->once())
-                ->method('getMedia')
-                ->will($this->returnValue($this->media));
             if (!$mediaExists) {
                 $test = $this;
                 $productValue
                     ->expects($this->once())
                     ->method('setMedia')
-                    ->with($this->isInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductMedia'))
+                    ->with($this->isInstanceOf('Akeneo\Component\FileStorage\Model\FileInterface'))
                     ->will(
                         $this->returnCallback(
                             function ($createdMedia) use ($test) {
@@ -151,10 +166,6 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                         )
                     );
             }
-        } else {
-            $productValue
-                ->expects($this->never())
-                ->method('getMedia');
         }
 
         return $productValue;
