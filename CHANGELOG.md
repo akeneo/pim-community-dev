@@ -1,3 +1,8 @@
+# 1.3.*
+
+## Bug fixes
+- PIM-4528: Fix attribute field display on error during mass edit
+
 # 1.3.17 (2015-07-07)
 
 ## Bug fixes

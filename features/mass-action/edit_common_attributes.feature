@@ -259,3 +259,21 @@ Feature: Edit common attributes of many products at once
       | value |
       | dry   |
       | hot   |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4528
+  Scenario: See previously selected fields on mass edit error
+    Given I mass-edit products boots and sandals
+    And I choose the "Edit common attributes" operation
+    And I display the Weight and Name attribute
+    And I change the "Weight" to "Edith"
+    And I move on to the next step
+    Then I should see "Product information"
+    And I should see "Weight"
+    And I should see "Name"
+    When I am on the attributes page
+    And I am on the products page
+    And I mass-edit products boots and sandals
+    And I choose the "Edit common attributes" operation
+    Then I should not see "Product information"
+    And I should not see "Weight"
+    And I should not see "Name"
