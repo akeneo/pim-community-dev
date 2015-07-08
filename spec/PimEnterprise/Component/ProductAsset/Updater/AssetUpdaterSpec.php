@@ -52,7 +52,6 @@ class AssetUpdaterSpec extends ObjectBehavior
 
         $values = [
             'code'          => 'mycode',
-            'localized'     => false,
             'description'   => 'My awesome description',
             'tags'          => ['dog', 'flowers'],
             'end_of_use_at' => '2018-02-01',
@@ -72,7 +71,6 @@ class AssetUpdaterSpec extends ObjectBehavior
 
         $values = [
             'code'          => 'mycode',
-            'localized'     => false,
             'description'   => 'My awesome description',
             'tags'          => ['dog'],
             'end_of_use_at' => '2018-02-01',
@@ -103,7 +101,6 @@ class AssetUpdaterSpec extends ObjectBehavior
 
         $values = [
             'code'          => 'mycode',
-            'localized'     => false,
             'description'   => 'My awesome description',
             'tags'          => ['dog', 'flowers'],
             'end_of_use_at' => '2018/02/01',

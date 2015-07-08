@@ -129,7 +129,7 @@ class AssetStandardConverter implements StandardArrayConverterInterface
         }
 
         if (!in_array($item['localized'], ['0', '1'])) {
-            throw new \InvalidArgumentException(
+            throw new ArrayConversionException(
                 'Localized field contains invalid data only "0" or "1" is accepted'
             );
         }

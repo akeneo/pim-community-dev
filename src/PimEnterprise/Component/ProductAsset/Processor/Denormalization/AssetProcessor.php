@@ -45,8 +45,8 @@ class AssetProcessor extends AbstractProcessor
      * @param StandardArrayConverterInterface       $assetConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param ObjectUpdaterInterface                $assetUpdater
-     * @param ValidatorInterface                    $validator
      * @param AssetFactory                          $assetFactory
+     * @param ValidatorInterface                    $validator
      */
     public function __construct(
         StandardArrayConverterInterface $assetConverter,
@@ -68,9 +68,11 @@ class AssetProcessor extends AbstractProcessor
      */
     public function process($item)
     {
+        $convertedItem = $this->convertItemData($item);
+        $asset = $this->findOrCreateAsset($convertedItem);
+
         try {
-            $convertedItem = $this->convertItemData($item);
-            $asset = $this->findOrCreateAsset($convertedItem);
+            unset($item['localized']);
             $this->updateAsset($asset, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);

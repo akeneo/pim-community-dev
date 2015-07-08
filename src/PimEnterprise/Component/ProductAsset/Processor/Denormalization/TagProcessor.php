@@ -65,15 +65,13 @@ class TagProcessor extends AbstractProcessor
 
     /**
      * {@inheritdoc}
+     *
+     * Here the returned value is an array of tags.
+     * We use a custom Step in order to have only one job for the assets import
      */
     public function process($item)
     {
-        try {
-            $convertedItem = $this->convertItemData($item);
-        } catch (\InvalidArgumentException $exception) {
-            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-            return;
-        }
+        $convertedItem = $this->convertItemData($item);
 
         $tags = null;
         foreach ($convertedItem['tags'] as $tag) {

@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Exception\ArrayConversionException;
 
 class AssetStandardConverterSpec extends ObjectBehavior
 {
@@ -35,10 +36,8 @@ class AssetStandardConverterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_required_field_localized_is_not_in_array()
     {
-        $this->shouldThrow(new \LogicException('Field "localized" is expected, provided fields are "code, optional"'))->during(
-            'convert',
-            [['code' => 'mycode', 'optional' => 'value']]
-        );
+        $this->shouldThrow(new \LogicException('Field "localized" is expected, provided fields are "code, optional"'))
+            ->during('convert', [['code' => 'mycode', 'optional' => 'value']]);
     }
 
     function it_throws_an_exception_if_required_field_code_is_empty()
@@ -49,11 +48,22 @@ class AssetStandardConverterSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_if_required_field_localizable_does_not_contain_valid_value()
+    function it_throws_an_exception_if_required_field_localized_does_not_contain_valid_value()
     {
-        $this->shouldThrow(new \LogicException('Field "code" must be filled'))->during(
+        $fields = [
+            'code'          => 'mycode',
+            'localized'     => 'y',
+            'description'   => 'My awesome description',
+            'qualification' => 'dog,flowers',
+            'end_of_use_at' => '2018-02-01',
+        ];
+
+        $this->shouldThrow(
+            new ArrayConversionException('Localized field contains invalid data only "0" or "1" is accepted')
+        )
+            ->during(
             'convert',
-            [['code' => '']]
+            [$fields]
         );
     }
 }

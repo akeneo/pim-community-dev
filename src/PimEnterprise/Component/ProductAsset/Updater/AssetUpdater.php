@@ -54,7 +54,6 @@ class AssetUpdater implements ObjectUpdaterInterface
             );
         }
 
-        unset($data['localized']);
         foreach ($data as $field => $item) {
             $this->setData($asset, $field, $item);
         }
