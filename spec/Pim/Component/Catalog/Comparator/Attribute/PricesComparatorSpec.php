@@ -74,4 +74,18 @@ class PricesComparatorSpec extends ObjectBehavior
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }
+
+    function it_returns_null_when_prices_are_the_same_but_with_different_format()
+    {
+        $changes = ['data' => [
+            ['data' => '100', 'currency' => 'EUR'],
+            ['data' => '120.50', 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
+        $originals = ['data' => [
+            ['data' => '100.00', 'currency' => 'EUR'],
+            ['data' => '120.5000', 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
+
+        $this->compare($changes, $originals)->shouldReturn(null);
+    }
 }
