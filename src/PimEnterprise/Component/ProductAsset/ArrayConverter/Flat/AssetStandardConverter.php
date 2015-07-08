@@ -32,7 +32,7 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *      'localized'     => 0,
      *      'description'   => 'My awesome description',
      *      'qualification' => 'dog,flowers,cities,animal,sunset'
-     *      'end_of_use_at' => '2018/02/01'
+     *      'end_of_use_at' => '2018-02-01'
      * ]
      *
      * After:
@@ -47,7 +47,7 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *          'animal',
      *          'sunset'
      *      ],
-     *      'end_of_use_at' => '2018/02/01'
+     *      'end_of_use_at' => '2018-02-01'
      * ]
      */
     public function convert(array $item, array $options = [])
