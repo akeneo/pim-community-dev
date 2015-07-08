@@ -147,11 +147,12 @@ pim_connector:
             help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
 
 job_execution.summary:
-    read:   read
-    write:  written
-    skip:   skipped
-    create: created
-    update: updated
+    read:       read
+    read_lines: read lines
+    write:      written
+    skip:       skipped
+    create:     created
+    update:     updated
     update_products: updated products
     skip_products: skipped products
     displayed: first warnings displayed
