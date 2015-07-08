@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4528: Fix attribute field display on error during mass edit
+- PIM-4535: Fix font problems on pdf generation: you can now set a custom font by setting the %pim_pdf_generator_font% parameter.
 
 # 1.3.17 (2015-07-07)
 
