@@ -17,7 +17,7 @@ class TimezoneTypeTest extends \PHPUnit_Framework_TestCase
             ->with($this->isType('array'));
         $this->assertEquals('choice', $type->getParent(), 'Unexpected parent');
         $this->assertEquals('oro_locale_timezone', $type->getName(), 'Unexpected form type name');
-        $type->setDefaultOptions($resolver);
+        $type->configureOptions($resolver);
     }
 
     /**
@@ -56,7 +56,7 @@ class TimezoneTypeTest extends \PHPUnit_Framework_TestCase
         $resolver->expects($this->once())
             ->method('setDefaults')
             ->with(array('choices' => $timezones));
-        $type->setDefaultOptions($resolver);
+        $type->configureOptions($resolver);
     }
 
     /**
@@ -80,7 +80,7 @@ class TimezoneTypeTest extends \PHPUnit_Framework_TestCase
         $resolver->expects($this->once())
             ->method('setDefaults')
             ->with($this->isType('array'));
-        $type->setDefaultOptions($resolver);
+        $type->configureOptions($resolver);
     }
 
     public function testGetTimezones()

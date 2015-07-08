@@ -55,7 +55,7 @@ class AclPrivilegeTypeTest extends \PHPUnit_Framework_TestCase
                     'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
                 )
             );
-        $this->formType->setDefaultOptions($resolver);
+        $this->formType->configureOptions($resolver);
     }
 
     public function testBuildView()

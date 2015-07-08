@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BooleanFilterType extends AbstractChoiceType
 {
@@ -29,7 +29,7 @@ class BooleanFilterType extends AbstractChoiceType
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $fieldChoices = array(
             self::TYPE_YES => $this->translator->trans('oro.filter.form.label_type_yes'),

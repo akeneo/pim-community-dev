@@ -48,6 +48,6 @@ class AclRoleTypeTest extends \PHPUnit_Framework_TestCase
                     'intention'  => 'role'
                 )
             );
-        $this->formType->setDefaultOptions($resolver);
+        $this->formType->configureOptions($resolver);
     }
 }

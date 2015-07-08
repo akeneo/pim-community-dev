@@ -5,7 +5,7 @@ namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormTypeInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractTypeTestCase extends FormIntegrationTestCase
 {
@@ -86,7 +86,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
     }
 
     /**
-     * @dataProvider setDefaultOptionsDataProvider
+     * @dataProvider configureOptionsDataProvider
      * @param array $defaultOptions
      * @param array $requiredOptions
      */
@@ -102,7 +102,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
             $resolver->expects($this->once())->method('setRequired')->with($requiredOptions)->will($this->returnSelf());
         }
 
-        $this->getTestFormType()->setDefaultOptions($resolver);
+        $this->getTestFormType()->configureOptions($resolver);
     }
 
     /**
@@ -110,7 +110,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
      *
      * @return array
      */
-    abstract public function setDefaultOptionsDataProvider();
+    abstract public function configureOptionsDataProvider();
 
     /**
      * @dataProvider bindDataProvider
