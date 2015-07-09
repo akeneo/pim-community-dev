@@ -75,19 +75,22 @@ class TagProcessor extends AbstractProcessor
 
         $tags = null;
         foreach ($convertedItem['tags'] as $tag) {
-            $tagObject = $this->findOrCreateTag($tag);
-            try {
-                $this->updateTag($tagObject, ['code' => $tag]);
-            } catch (\InvalidArgumentException $exception) {
-                $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-            }
+            $tagObject = $this->createTag($tag);
 
-            $violations = $this->validateTag($tagObject);
-            if ($violations->count() > 0) {
-                $this->skipItemWithConstraintViolations($item, $violations);
-            }
+            if (null !== $tagObject) {
+                try {
+                    $this->updateTag($tagObject, ['code' => $tag]);
+                } catch (\InvalidArgumentException $exception) {
+                    $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
+                }
 
-            $tags[] = $tagObject;
+                $violations = $this->validateTag($tagObject);
+                if ($violations->count() > 0) {
+                    $this->skipItemWithConstraintViolations($item, $violations);
+                }
+
+                $tags[] = $tagObject;
+            }
         }
 
         return $tags;
@@ -110,14 +113,11 @@ class TagProcessor extends AbstractProcessor
      *
      * @return TagInterface
      */
-    protected function findOrCreateTag($tag)
+    protected function createTag($tag)
     {
         $tag = $this->findObject($this->repository, ['code' => $tag]);
-        if (null === $tag) {
-            $tag = $this->tagFactory->createTag();
-        }
 
-        return $tag;
+        return null === $tag ? $this->tagFactory->createTag() : null;
     }
 
     /**
