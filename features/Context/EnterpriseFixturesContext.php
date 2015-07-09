@@ -314,26 +314,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $code
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return AssetInterface
-     */
-    public function getProductAsset($code)
-    {
-        $asset = $this->getAssetRepository()->findOneByIdentifier($code);
-
-        if (null === $asset) {
-            throw new \InvalidArgumentException(sprintf('Could not find an asset with code "%s"', $code));
-        }
-
-        $this->refresh($asset);
-
-        return $asset;
-    }
-
-    /**
      * @param array|string $data
      *
      * @throws \Exception
