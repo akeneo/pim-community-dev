@@ -100,10 +100,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
             if ($driver instanceof Selenium2Driver) {
-                $dir = getenv('WORKSPACE');
-                $id  = getenv('BUILD_ID');
-                if (false !== $dir && false !== $id) {
-                    $dir = sprintf('%s/../builds/%s/screenshots', $dir, $id);
+                $dir      = getenv('WORKSPACE');
+                $buildUrl = getenv('BUILD_URL');
+                if (false !== $dir) {
+                    $dir = sprintf('%s/app/build/screenshots', $dir);
                 } else {
                     $dir = '/tmp/behat/screenshots';
                 }
@@ -116,11 +116,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
                 $fs->dumpFile($path, $driver->getScreenshot());
 
-                if ($id) {
+                if (false !== $dir) {
                     $path = sprintf(
-                        '/screenshots/%s/%s/screenshots/%s',
-                        getenv('JOB_NAME'),
-                        $id,
+                        '%s/artifact/app/build/screenshots/%s',
+                        $buildUrl,
                         $filename
                     );
                 }
