@@ -39,16 +39,22 @@ class MediaNormalizer implements NormalizerInterface
     {
         $file = $object->getFile();
         if (null !== $file && $file instanceof UploadedFile) {
+            //TODO: normally this part should be removed
             // happens in case of mass edition
             return [
                 'originalFilename' => $file->getClientOriginalName(),
                 'filePath' => $file->getPathname(),
             ];
+        } elseif (null !== $file) {
+            return [
+                'originalFilename' => $file->getOriginalFilename(),
+                'filePath' => $file->getKey(),
+            ];
         }
 
         return [
-            'originalFilename' => $object->getOriginalFilename(),
-            'filePath'         => $this->manager->getFilePath($object, false),
+            'originalFilename' => null,
+            'filePath'         => null,
         ];
     }
 

@@ -18,6 +18,7 @@ parameters:
     pim_serializer.normalizer.flat.option.class:            Pim\Bundle\TransformBundle\Normalizer\Flat\AttributeOptionNormalizer
     pim_serializer.normalizer.flat.price.class:             Pim\Bundle\TransformBundle\Normalizer\Flat\PriceNormalizer
     pim_serializer.normalizer.flat.reference_data.class:    Pim\Bundle\TransformBundle\Normalizer\Flat\ReferenceDataNormalizer
+    pim_serializer.normalizer.flat.file.class:              Pim\Bundle\TransformBundle\Normalizer\Flat\FileNormalizer
 
     pim_serializer.filter.flat_product_value.class:         Pim\Bundle\TransformBundle\Normalizer\Filter\FlatProductValueNormalizerFilter
 
@@ -123,6 +124,7 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
+    # TODO: should be deleted
     pim_serializer.normalizer.flat.media:
         class: %pim_serializer.normalizer.flat.media.class%
         arguments:
@@ -149,6 +151,11 @@ services:
         class: %pim_serializer.normalizer.flat.reference_data.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+#    pim_serializer.normalizer.flat.file:
+#        class: %pim_serializer.normalizer.flat.file.class%
+#        tags:
+#            - { name: pim_serializer.normalizer, priority: 90 }
 
     # Filters
     pim_serializer.filter.flat_product_value:
