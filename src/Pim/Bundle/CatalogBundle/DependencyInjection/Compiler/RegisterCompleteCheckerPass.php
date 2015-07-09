@@ -15,27 +15,47 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterCompleteCheckerPass implements CompilerPassInterface
 {
-    /** @staticvar string */
-    const REGISTRY = 'pim_catalog.completeness.checker.registry';
+    /** @staticvar int The default render type provider priority */
+    const DEFAULT_PRIORITY = 100;
 
     /** @staticvar string */
-    const SERVICE_TAG = 'completeness.checker.attribute';
+    const CHAINED = 'pim_catalog.completeness.checker.chained';
+
+    /** @staticvar string */
+    const SERVICE_TAG = 'pim_catalog.completeness.checker.product_value';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(self::REGISTRY)) {
+        if (!$container->hasDefinition(self::CHAINED)) {
             return;
         }
 
-        $service = $container->getDefinition(self::REGISTRY);
+        $service = $container->getDefinition(self::CHAINED);
 
         $taggedServices = $container->findTaggedServiceIds(self::SERVICE_TAG);
 
-        foreach (array_keys($taggedServices) as $id) {
-            $service->addMethodCall('registerAttributeChecker', [new Reference($id)]);
+        $services = [];
+
+        foreach ($taggedServices as $serviceId => $tags) {
+            foreach ($tags as $tag) {
+                $priority = isset($tag['priority']) ? $tag['priority'] : static::DEFAULT_PRIORITY;
+                if (!isset($services[$priority])) {
+                    $services[$priority] = [];
+                }
+
+                $services[$priority][] = $serviceId;
+            }
+        }
+
+        ksort($services);
+
+        foreach ($services as $priority => $unsortedServices) {
+            foreach ($unsortedServices as $serviceId) {
+                $service->addMethodCall('addProductValueChecker', [new Reference($serviceId)]);
+            }
         }
     }
 }

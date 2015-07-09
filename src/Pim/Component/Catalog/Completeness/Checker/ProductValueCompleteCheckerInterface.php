@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Component\Catalog\Completeness\Checker\Attribute;
+namespace Pim\Component\Catalog\Completeness\Checker;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -11,21 +11,25 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface AttributeCompleteCheckerInterface
+interface ProductValueCompleteCheckerInterface
 {
     /**
      * @param ProductValueInterface $productValue
      * @param ChannelInterface|null $channel
-     * @param string|null           $localeCode
+     * @param LocaleInterface|null  $locale
      *
      * @return bool
      */
-    public function isComplete(ProductValueInterface $productValue, ChannelInterface $channel, $localeCode = null);
+    public function isComplete(
+        ProductValueInterface $productValue,
+        ChannelInterface $channel = null,
+        LocaleInterface $locale = null
+    );
 
     /**
-     * @param AttributeInterface $attribute
+     * @param ProductValueInterface $productValue
      *
      * @return bool
      */
-    public function supportsAttribute(AttributeInterface $attribute);
+    public function supportsValue(ProductValueInterface $productValue);
 }

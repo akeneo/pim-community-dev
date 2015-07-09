@@ -1,30 +1,30 @@
 parameters:
-    pim_catalog.completeness.checker.registry.class:         Pim\Component\Catalog\Completeness\Checker\CompleteCheckerRegistry
-    pim_catalog.completeness.checker.product_value.class:    Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker
-    pim_catalog.completeness.checker.attribute.media.class:  Pim\Component\Catalog\Completeness\Checker\Attribute\MediaCompleteChecker
-    pim_catalog.completeness.checker.attribute.metric.class: Pim\Component\Catalog\Completeness\Checker\Attribute\MetricCompleteChecker
-    pim_catalog.completeness.checker.attribute.price.class:  Pim\Component\Catalog\Completeness\Checker\Attribute\PriceCompleteChecker
+    pim_catalog.completeness.checker.chained.class: Pim\Component\Catalog\Completeness\Checker\ChainedProductValueCompleteChecker
+    pim_catalog.completeness.checker.media.class:   Pim\Component\Catalog\Completeness\Checker\MediaCompleteChecker
+    pim_catalog.completeness.checker.metric.class:  Pim\Component\Catalog\Completeness\Checker\MetricCompleteChecker
+    pim_catalog.completeness.checker.price.class:   Pim\Component\Catalog\Completeness\Checker\PriceCompleteChecker
+    pim_catalog.completeness.checker.empty.class:   Pim\Component\Catalog\Completeness\Checker\EmptyChecker
 
 services:
-    pim_catalog.completeness.checker.registry:
-        class: %pim_catalog.completeness.checker.registry.class%
+    pim_catalog.completeness.checker.chained:
+        class: %pim_catalog.completeness.checker.chained.class%
 
-    pim_catalog.completeness.checker.product_value:
-        class: %pim_catalog.completeness.checker.product_value.class%
-        arguments:
-          - '@pim_catalog.completeness.checker.registry'
-
-    pim_catalog.completeness.checker.attribute.media:
-        class: %pim_catalog.completeness.checker.attribute.media.class%
+    pim_catalog.completeness.checker.empty:
+        class: %pim_catalog.completeness.checker.empty.class%
         tags:
-            - { name: completeness.checker.attribute }
+            - { name: pim_catalog.completeness.checker.product_value, priority: 80 }
 
-    pim_catalog.completeness.checker.attribute.metric:
-        class: %pim_catalog.completeness.checker.attribute.metric.class%
+    pim_catalog.completeness.checker.media:
+        class: %pim_catalog.completeness.checker.media.class%
         tags:
-            - { name: completeness.checker.attribute }
+            - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
 
-    pim_catalog.completeness.checker.attribute.price:
-        class: %pim_catalog.completeness.checker.attribute.price.class%
+    pim_catalog.completeness.checker.metric:
+        class: %pim_catalog.completeness.checker.metric.class%
         tags:
-            - { name: completeness.checker.attribute }
+            - { name: pim_catalog.completeness.checker.product_value, priority: 100 }
+
+    pim_catalog.completeness.checker.price:
+        class: %pim_catalog.completeness.checker.price.class%
+        tags:
+            - { name: pim_catalog.completeness.checker.product_value, priority: 100 }

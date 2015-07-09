@@ -147,7 +147,7 @@
 - Replace the argument ProductManager by ProductRepositoryInterface in the constructor of `Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator`
 - Add an argument BulkSaverInterface in the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\CategoryRemover`
 - Constructor of `Pim\Bundle/CatalogBundle/Manager/CompletenessManager` : removed dependency on `Symfony\Component\Validator\ValidatorInterface`
-- Constructor of `Pim\Bundle/CatalogBundle/Manager/CompletenessManager` : added dependency on `Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker`
+- Constructor of `Pim\Bundle/CatalogBundle/Manager/CompletenessManager` : added dependency on `Pim\Component\Catalog\Completeness\Checker\ChainedProductValueCompleteChecker`
 
 # 1.3.16 (2015-06-08)
 

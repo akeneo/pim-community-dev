@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
@@ -12,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteChecker;
+use Pim\Component\Catalog\Completeness\Checker\ProductValueCompleteCheckerInterface;
 
 /**
  * Manages completeness
@@ -36,26 +37,26 @@ class CompletenessManager
     /** @var CompletenessGeneratorInterface */
     protected $generator;
 
-    /** @var ProductValueCompleteChecker */
+    /** @var ProductValueCompleteCheckerInterface */
     protected $productValueCompleteCkecker;
 
     /** @var string */
     protected $class;
 
     /**
-     * @param FamilyRepositoryInterface      $familyRepository
-     * @param ChannelRepositoryInterface     $channelRepository
-     * @param LocaleRepositoryInterface      $localeRepository
-     * @param CompletenessGeneratorInterface $generator
-     * @param ProductValueCompleteChecker    $productValueCompleteCkecker
-     * @param string                         $class
+     * @param FamilyRepositoryInterface            $familyRepository
+     * @param ChannelRepositoryInterface           $channelRepository
+     * @param LocaleRepositoryInterface            $localeRepository
+     * @param CompletenessGeneratorInterface       $generator
+     * @param ProductValueCompleteCheckerInterface $productValueCompleteCkecker
+     * @param string                               $class
      */
     public function __construct(
         FamilyRepositoryInterface $familyRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
-        ProductValueCompleteChecker $productValueCompleteCkecker,
+        ProductValueCompleteCheckerInterface $productValueCompleteCkecker,
         $class
     ) {
         $this->familyRepository            = $familyRepository;
@@ -200,7 +201,7 @@ class CompletenessManager
         $productValues = $product->getValues();
         foreach ($requirements as $requirement) {
             if ($requirement->isRequired()) {
-                $this->addRequirementToCompleteness($completenesses, $requirement, $productValues, $localeCodes);
+                $this->addRequirementToCompleteness($completenesses, $requirement, $productValues, $locales);
             }
         }
 
@@ -213,23 +214,25 @@ class CompletenessManager
      * @param array                         &$completenesses
      * @param AttributeRequirementInterface $requirement
      * @param ArrayCollection               $productValues
-     * @param array                         $localeCodes
+     * @param Locale[]                      $locales
      */
     protected function addRequirementToCompleteness(
         array &$completenesses,
         AttributeRequirementInterface $requirement,
         ArrayCollection $productValues,
-        array $localeCodes
+        array $locales
     ) {
         $attribute = $requirement->getAttribute();
         $channel   = $requirement->getChannel();
-        foreach ($localeCodes as $localeCode) {
-            $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
-            $missing   = false;
-            if (!isset($productValues[$valueCode])) {
+        foreach ($locales as $locale) {
+            $localeCode   = $locale->getCode();
+            $valueCode    = $this->getValueCode($attribute, $localeCode, $channel->getCode());
+            $missing      = false;
+            $productValue = isset($productValues[$valueCode]) ? $productValues[$valueCode] : null;
+            if (null === $productValue) {
                 $missing = true;
-            } elseif (
-                !$this->productValueCompleteCkecker->isComplete($productValues[$valueCode], $channel, $localeCode)
+            } elseif ($this->productValueCompleteCkecker->supportsValue($productValue)
+                && !$this->productValueCompleteCkecker->isComplete($productValue, $channel, $locale)
             ) {
                 $missing = true;
             }
