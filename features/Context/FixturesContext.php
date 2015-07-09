@@ -126,6 +126,18 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function clearStorageFilesystem()
+    {
+        $mountManager = $this->getContainer()->get('oneup_flysystem.mount_manager');
+        $fs = $mountManager->getFilesystem('storage');
+        foreach ($fs->listContents() as $directory) {
+            $fs->deleteDir($directory['path']);
+        }
+    }
+
+    /**
      * Magic methods for getting and creating entities
      *
      * @param string $method
