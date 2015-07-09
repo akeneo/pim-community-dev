@@ -34,8 +34,7 @@ define(
             modifiedByDraftTemplate: _.template(modifiedByDraftTemplate),
             productId: null,
             events: {
-                'click .submit-draft': 'submitDraft',
-                'click .modified-by-draft': 'showWorkingCopy'
+                'click .submit-draft': 'submitDraft'
             },
 
             /**
@@ -91,7 +90,9 @@ define(
                     this.getDraft()
                         .then(_.bind(function (draft) {
                             if (draft.isValueChanged(field)) {
-                                var $element = this.modifiedByDraftTemplate();
+                                var $element = $(this.modifiedByDraftTemplate());
+                                $element.on('click', this.showWorkingCopy);
+
                                 field.addElement('label', 'modified_by_draft', $element);
                             }
                         }, this))

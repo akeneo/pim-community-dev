@@ -30,6 +30,7 @@ define(
             configure: function () {
                 this.currentSource = this.sources[0];
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
+                this.listenTo(mediator, 'draft:action:show_working_copy', this.showWorkingCopy);
 
                 this.onExtensions('source_switcher:render:before', this.onSourceSwitcherRender);
                 this.onExtensions('source_switcher:source_change', this.onSourceChange);
@@ -122,6 +123,14 @@ define(
                     ).then(_.bind(function (draft, canBeCopied) {
                         return draft.isValueChanged(field, this.locale, this.scope) || canBeCopied;
                     }, this));
+            },
+
+            /**
+             * Set the current source to "working copy" and enter in copy mode
+             */
+            showWorkingCopy: function () {
+                this.currentSource = 'working_copy';
+                this.startCopying();
             }
         });
     }
