@@ -10,8 +10,6 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Factory\TagFactory;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -41,21 +39,24 @@ class TagProcessorSpec extends ObjectBehavior
         $this->getConfigurationFields()->shouldReturn([]);
     }
 
-    function it_updates_an_existing_tag(
+    function it_creates_tags(
         $tagConverter,
         $repository,
         $tagUpdater,
         $validator,
+        $tagFactory,
         TagInterface $tag1,
         TagInterface $tag2,
         ConstraintViolationListInterface $violationList
     ) {
         $repository->getIdentifierProperties()->willReturn(['code']);
-        $repository->findOneByIdentifier('dog')->willReturn($tag1);
-        $repository->findOneByIdentifier('flowers')->willReturn($tag2);
+        $repository->findOneByIdentifier('dog')->willReturn(null);
+        $repository->findOneByIdentifier('flowers')->willReturn(null);
 
         $tag1->getId()->willReturn(42);
         $tag2->getId()->willReturn(22);
+
+        $tagFactory->createTag()->willReturn($tag1, $tag2);
 
         $values = $this->getValues();
 
@@ -88,49 +89,18 @@ class TagProcessorSpec extends ObjectBehavior
         $tagConverter,
         $repository,
         $tagUpdater,
-        $validator,
-        TagInterface $tag1,
-        ConstraintViolationListInterface $violationList
-    ) {
-        $repository->getIdentifierProperties()->willReturn(['code']);
-        $repository->findOneByIdentifier('dog')->willReturn($tag1);
-
-        $tag1->getId()->willReturn(42);
-
-        $values = $this->getValues();
-
-        $tagConverter
-            ->convert($values['original_values'])
-            ->willReturn($values['converted_values']);
-
-        $tagUpdater
-            ->update($tag1, ['code' => 'dog'])
-            ->willThrow(new \InvalidArgumentException());
-
-        $validator
-            ->validate($tag1)
-            ->willReturn($violationList);
-
-        $this
-            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
-            ->during(
-                'process',
-                [$values['original_values']]
-            );
-    }
-
-    function it_skips_a_tag_when_object_is_invalid(
-        $tagConverter,
-        $repository,
-        $tagUpdater,
+        $tagFactory,
         $validator,
         TagInterface $tag1,
         TagInterface $tag2,
         ConstraintViolationListInterface $violationList
     ) {
         $repository->getIdentifierProperties()->willReturn(['code']);
-        $repository->findOneByIdentifier('dog')->willReturn($tag1);
-        $repository->findOneByIdentifier('flowers')->willReturn($tag2);
+        $repository->findOneByIdentifier('dog')->willReturn(null);
+        $repository->findOneByIdentifier('flowers')->willReturn(null);
+
+        $tagFactory->createTag()->willReturn($tag1);
+        $tagFactory->createTag()->willReturn($tag2);
 
         $tag1->getId()->willReturn(42);
         $tag2->getId()->willReturn(22);
@@ -142,12 +112,8 @@ class TagProcessorSpec extends ObjectBehavior
             ->willReturn($values['converted_values']);
 
         $tagUpdater
-            ->update($tag1, ['code' => 'dog'])
-            ->shouldBeCalled();
-
-        $tagUpdater
-            ->update($tag2, ['code' => 'flowers'])
-            ->shouldBeCalled();
+            ->update($tag2, ['code' => 'dog'])
+            ->willThrow(new \InvalidArgumentException());
 
         $validator
             ->validate($tag1)
@@ -156,23 +122,6 @@ class TagProcessorSpec extends ObjectBehavior
         $validator
             ->validate($tag2)
             ->willReturn($violationList);
-
-        $this
-            ->process($values['original_values'])
-            ->shouldReturn([$tag1, $tag2]);
-
-        $tagUpdater
-            ->update($tag1, $values['converted_values'])
-            ->willThrow(new \InvalidArgumentException());
-
-        $tagUpdater
-            ->update($tag2, $values['converted_values'])
-            ->willThrow(new \InvalidArgumentException());
-
-        $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'code', 'mycode');
-        $violations = new ConstraintViolationList([$violation]);
-        $validator->validate($tag1)
-            ->willReturn($violations);
 
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
