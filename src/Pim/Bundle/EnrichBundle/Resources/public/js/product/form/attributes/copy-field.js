@@ -25,10 +25,21 @@ define([
             events: {
                 'click': 'onSelect'
             },
+
+            /**
+             * Initialize the view
+             */
             initialize: function () {
                 this.selected = false;
                 this.field    = null;
             },
+
+            /**
+             * Render the copy field view
+             * Delegates the render of the input itself to the Field.renderCopyInput() method
+             *
+             * @returns {Object}
+             */
             render: function () {
                 this.$el.empty();
 
@@ -53,22 +64,56 @@ define([
 
                 return this;
             },
+
+            /**
+             * Set the value to be displayed in the copy field
+             *
+             * @param {Object} value
+             */
             setValue: function (value) {
                 this.value = value;
             },
+
+            /**
+             * Set the locale
+             *
+             * @param {string} locale
+             */
             setLocale: function (locale) {
                 this.locale = locale;
             },
+
+            /**
+             * Set the scope
+             *
+             * @param {string} scope
+             */
             setScope: function (scope) {
                 this.scope = scope;
             },
+
+            /**
+             * Bound this copy field to the original field
+             *
+             * @param {Field} field
+             */
             setField: function (field) {
                 this.field = field;
             },
+
+            /**
+             * Callback called when the copy field is clicked, toggle the select checkbox state
+             */
             onSelect: function () {
                 this.selected = !this.selected;
                 this.$('.copy-field-selector').prop('checked', this.selected);
             },
+
+            /**
+             * Mark this copy field as selected or not
+             *
+             * @param {boolean} selected
+             */
             setSelected: function (selected) {
                 this.selected = selected;
             }
