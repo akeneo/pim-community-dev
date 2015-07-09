@@ -161,7 +161,7 @@ class Object implements \ArrayAccess, \IteratorAggregate
      */
     public function offsetSetByPath($path, $value)
     {
-        $this->accessor->setValue($this, $path, $value);
+        $this->accessor->setValue($this->params, $path, $value);
 
         return $this;
     }
