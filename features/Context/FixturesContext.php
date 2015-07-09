@@ -10,6 +10,8 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
+use League\Flysystem\FilesystemInterface;
+use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
@@ -132,9 +134,13 @@ class FixturesContext extends RawMinkContext
     {
         $mountManager = $this->getContainer()->get('oneup_flysystem.mount_manager');
         $fs = $mountManager->getFilesystem('storage');
+        echo 'FS content BEFORE deletion :' . PHP_EOL;
+        print_r($fs->listContents());
         foreach ($fs->listContents() as $directory) {
             $fs->deleteDir($directory['path']);
         }
+        echo 'FS content AFTER deletion :' . PHP_EOL;
+        print_r($fs->listContents());
     }
 
     /**
