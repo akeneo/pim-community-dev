@@ -62,7 +62,7 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
                 $messages[] = (string) $violation;
             }
 
-            throw new InvalidItemException(implode(', ', $messages), $item);
+            throw new InvalidItemException(implode(', ', $messages), [$item]);
         }
     }
 
