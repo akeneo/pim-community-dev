@@ -515,6 +515,26 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return TagInterface
+     */
+    public function getTag($code)
+    {
+        $tag = $this->getTagRepository()->findOneByIdentifier($code);
+
+        if (!$tag) {
+            throw new \InvalidArgumentException(sprintf('Could not find a tag with code "%s"', $code));
+        }
+
+        $this->refresh($tag);
+
+        return $tag;
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^I should see the following proposals:$/
@@ -904,6 +924,37 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         return $rule;
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following assets:$/
+     */
+    public function thereShouldBeTheFollowingAssets(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $asset = $this->getAsset($data['code']);
+            $this->refresh($asset);
+
+            assertEquals($data['code'], $asset->getCode());
+            assertEquals($data['description'], $asset->getDescription());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following tags:$/
+     */
+    public function thereShouldBeTheFollowingTags(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $tag = $this->getTag($data['code']);
+            $this->refresh($tag);
+
+            assertEquals($data['code'], $tag->getCode());
+        }
     }
 
     /**
