@@ -1143,6 +1143,26 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^the following random files:$/
+     */
+    public function theFollowingRandomFiles(TableNode $table)
+    {
+        $directory  = realpath(__DIR__ . '/fixtures/');
+        $characters = range('a', 'z');
+
+        foreach ($table->getHash() as $row) {
+            $filepath = $directory . DIRECTORY_SEPARATOR . $row['filename'];
+            $content = '';
+            for ($i = 0; $i < $row['size'] * 1024 * 1024; $i++) {
+                 $content .= $characters[rand(0, count($characters) - 1)];
+            }
+
+            touch($filepath);
+            file_put_contents($filepath, $content);
+        }
+    }
+
+    /**
      * @param TableNode $table
      *
      *
