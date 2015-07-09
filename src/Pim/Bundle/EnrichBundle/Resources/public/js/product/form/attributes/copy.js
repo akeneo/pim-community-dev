@@ -140,9 +140,7 @@ define(
              * @returns {Promise}
              */
             canBeCopied: function (field) {
-                return $.Deferred().resolve(
-                    field.attribute.localizable || field.attribute.scopable
-                ).promise();
+                return $.Deferred().resolve(field.attribute.localizable || field.attribute.scopable).promise();
             },
 
             /**
