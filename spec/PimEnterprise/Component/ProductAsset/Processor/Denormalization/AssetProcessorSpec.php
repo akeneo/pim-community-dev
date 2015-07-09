@@ -60,6 +60,8 @@ class AssetProcessorSpec extends ObjectBehavior
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
 
+        unset($values['converted_values']['localized']);
+
         $assetUpdater
             ->update($asset, $values['converted_values'])
             ->shouldBeCalled();
@@ -91,6 +93,8 @@ class AssetProcessorSpec extends ObjectBehavior
         $assetConverter
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
+
+        unset($values['converted_values']['localized']);
 
         $assetUpdater
             ->update($asset, $values['converted_values'])
@@ -126,6 +130,8 @@ class AssetProcessorSpec extends ObjectBehavior
         $assetConverter
             ->convert($values['original_values'])
             ->willReturn($values['converted_values']);
+
+        unset($values['converted_values']['localized']);
 
         $assetUpdater
             ->update($asset, $values['converted_values'])

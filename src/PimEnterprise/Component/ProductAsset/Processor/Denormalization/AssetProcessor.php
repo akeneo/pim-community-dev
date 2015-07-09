@@ -72,7 +72,7 @@ class AssetProcessor extends AbstractProcessor
         $asset = $this->findOrCreateAsset($convertedItem);
 
         try {
-            unset($item['localized']);
+            unset($convertedItem['localized']);
             $this->updateAsset($asset, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);

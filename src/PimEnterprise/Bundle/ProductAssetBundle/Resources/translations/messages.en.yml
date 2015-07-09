@@ -81,5 +81,9 @@ pimee_product_asset:
             not_empty: Code is required. It can not be empty.
             unique: Code must be unique.
             new_generation: We generated a new one for you.
+    jobs:
+        csv_asset_import.title: Asset import in csv
+        csv_tag_import.title: Tag import in csv
+
 btn.create.asset: Create
 btn.drag_or_upload: Drag and drop a file or click here

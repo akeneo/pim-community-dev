@@ -57,18 +57,18 @@ connector:
                         writer:    pimee_catalog_rule.writer.doctrine.rule_definition
 
         fixtures_asset_csv:
-            title: pim_installer.jobs.fixtures_asset_csv.title
+            title: pimee_base_connector.jobs.fixtures_asset_csv.title
             type:  fixtures
             steps:
                 import_tags:
-                    title: pimee_product_asset.jobs.csv_tag_import.import.title
+                    title: pimee_product_asset.jobs.csv_tag_import.title
                     class: %pimee_product_asset.step.tag.class%
                     services:
                         reader:    pimee_product_asset.reader.file.csv_tag
                         processor: pimee_product_asset.processor.denormalization.tag.flat
                         writer:    pimee_product_asset.writer.doctrine.tag
                 import_asset:
-                    title:         pimee_connector.jobs.csv_asset_import.import.title
+                    title:         pimee_product_asset.jobs.csv_asset_import.title
                     services:
                         reader:    pimee_product_asset.reader.file.csv_asset
                         processor: pimee_product_asset.processor.denormalization.asset.flat

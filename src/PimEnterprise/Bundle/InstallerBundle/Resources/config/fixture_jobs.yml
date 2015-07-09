@@ -50,7 +50,7 @@ jobs:
             multiple: false
 
     fixtures_asset_csv:
-        order:     1
+        order:     70
         connector: Data fixtures
         alias:     fixtures_asset_csv
         label:     assets data fixtures
