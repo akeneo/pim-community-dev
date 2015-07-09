@@ -12,6 +12,7 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Prophecy\Exception\Prediction\FailedPredictionException;
 
 class RawFileStorerSpec extends ObjectBehavior
 {
@@ -46,6 +47,40 @@ class RawFileStorerSpec extends ObjectBehavior
 
         $saver->save($file, ['flush_only_object' => true])->shouldBeCalled();
         $this->store($rawFile, 'destination');
+
+        if (!file_exists($localPathname)) {
+            throw new FailedPredictionException(sprintf('File "%s" should not have been deleted.', $localPathname));
+        }
+
+        unlink($localPathname);
+    }
+
+    function it_stores_a_raw_file_and_deletes_it_locally(
+        $pathGenerator,
+        $mountManager,
+        $factory,
+        $saver,
+        \SplFileInfo $rawFile,
+        Filesystem $fs,
+        FileInterface $file
+    ) {
+        $localPathname = __DIR__ . DIRECTORY_SEPARATOR . 'my file.php';
+        touch($localPathname);
+        $rawFile->getPathname()->willReturn($localPathname);
+        $fs->has(Argument::any())->willReturn(false);
+
+        $mountManager->getFilesystem('destination')->willReturn($fs);
+        $pathGenerator->generate($rawFile)->willReturn(['path_infos']);
+        $factory->create($rawFile, ['path_infos'], 'destination')->willReturn($file);
+
+        $fs->writeStream(Argument::any(), Argument::any())->shouldBeCalled();
+
+        $saver->save($file, ['flush_only_object' => true])->shouldBeCalled();
+        $this->store($rawFile, 'destination', true);
+
+        if (file_exists($localPathname)) {
+            throw new FailedPredictionException(sprintf('File "%s" should have been deleted.', $localPathname));
+        }
     }
 
     function it_throws_an_exception_if_the_file_can_not_be_writen_on_the_filesystem(
@@ -93,22 +128,6 @@ class RawFileStorerSpec extends ObjectBehavior
                 sprintf('Unable to move the file "%s" to the "destination" filesystem.', __FILE__)
             )
         )->during('store', [$rawFile, 'destination']);
-    }
-
-    public function getMatchers()
-    {
-        return [
-            'beFileLike' => function ($subject, $expected) {
-                return $subject instanceof FileInterface &&
-                $subject->getOriginalFilename() === $expected->getOriginalFilename() &&
-                $subject->getFilename() === $expected->getFilename() &&
-                $subject->getGuid() === $expected->getGuid() &&
-                $subject->getPath() === $expected->getPath() &&
-                $subject->getMimeType() === $expected->getMimeType() &&
-                $subject->getSize() === $subject->getSize() &&
-                $subject->getExtension() === $subject->getExtension();
-            },
-        ];
     }
 }
 

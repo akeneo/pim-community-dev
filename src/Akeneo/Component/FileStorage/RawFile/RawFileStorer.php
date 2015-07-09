@@ -56,7 +56,7 @@ class RawFileStorer implements RawFileStorerInterface
     /**
      * {@inheritdoc}
      */
-    public function store(\SplFileInfo $localFile, $destFsAlias)
+    public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
     {
         //TODO: add some logs here
 
@@ -85,7 +85,10 @@ class RawFileStorer implements RawFileStorerInterface
         }
 
         $this->saver->save($file, ['flush_only_object' => true]);
-        $this->deleteRawFile($localFile);
+
+        if (true === $deleteRawFile) {
+            $this->deleteRawFile($localFile);
+        }
 
         return $file;
     }

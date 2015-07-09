@@ -150,7 +150,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
             //TODO: find another way
             $rawFile = new UploadedFile($data['filePath'], $data['originalFilename']);
             //TODO: do not hardcode storage
-            $file = $this->storer->store($rawFile, 'storage');
+            $file = $this->storer->store($rawFile, 'storage', false);
         } catch (FileNotFoundException $e) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
