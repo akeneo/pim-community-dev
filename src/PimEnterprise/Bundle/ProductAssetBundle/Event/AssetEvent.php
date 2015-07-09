@@ -25,6 +25,26 @@ final class AssetEvent extends GenericEvent
     const POST_UPLOAD_FILES = 'pimee_product_asset.asset.files_upload.post';
 
     /**
+     * This event is thrown before an asset is removed.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_REMOVE = 'pimee_product_asset.pre_remove.asset';
+
+    /**
+     * This event is thrown after an asset has been removed.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_REMOVE = 'pimee_product_asset.post_remove.asset';
+
+    /**
      * @param AssetInterface $subject
      * @param array          $arguments
      */

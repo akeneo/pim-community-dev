@@ -1,3 +1,6 @@
+parameters:
+    pimee_product_asset.remover.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Remover\AssetRemover
+
 services:
     pimee_product_asset.remover.variation:
         class: %pim_catalog.remover.base.class%
@@ -13,8 +16,9 @@ services:
             - '@pim_catalog.remover.base_options_resolver'
             - %pimee_product_asset.model.channel_variations_configuration.class%
     pimee_product_asset.remover.asset:
-        class:  %pim_catalog.remover.base.class%
+        class:  %pimee_product_asset.remover.asset.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - %pimee_product_asset.model.asset.class%
+            - '@event_dispatcher'
