@@ -107,8 +107,8 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
 
         $fileMetadata->setFile($variationFile)->shouldBeCalled();
-        $metadataSaver->save($fileMetadata, ['flush_only_object' => true])->shouldBeCalled();
-        $variationSaver->save($variation, ['flush_only_object' => true])->shouldBeCalled();
+        $metadataSaver->save($fileMetadata)->shouldBeCalled();
+        $variationSaver->save($variation)->shouldBeCalled();
         $variation->setFile($variationFile)->shouldBeCalled();
 
         $this->generate($variation);
