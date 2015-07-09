@@ -31,8 +31,8 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *      'code'          => 'mycode',
      *      'localized'     => 0,
      *      'description'   => 'My awesome description',
-     *      'qualification' => 'dog,flowers,cities,animal,sunset'
-     *      'end_of_use_at' => '2018-02-01'
+     *      'qualification' => 'dog,flowers,cities,animal,sunset',
+     *      'end_of_use_at' => '2018-02-01',
      * ]
      *
      * After:
