@@ -23,7 +23,7 @@ define([
             template: _.template(template),
             selected: false,
             events: {
-                'click': 'select'
+                'click': 'onSelect'
             },
             initialize: function () {
                 this.selected = false;
@@ -65,10 +65,9 @@ define([
             setField: function (field) {
                 this.field = field;
             },
-            select: function () {
+            onSelect: function () {
                 this.selected = !this.selected;
-
-                this.field.render();
+                this.$('.copy-field-selector').prop('checked', this.selected);
             },
             setSelected: function (selected) {
                 this.selected = selected;
