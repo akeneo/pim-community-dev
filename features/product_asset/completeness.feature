@@ -5,43 +5,44 @@ Feature: Display the completeness of a product with assets
   I need to be able to display the completeness of a product with assets
 
   Background:
-    Given a "footwear" catalog configuration
-    And I add the "french" locale to the "tablet" channel
-    And I add the "french" locale to the "mobile" channel
+    Given the "clothing" catalog configuration
     And the following products:
-      | sku      | family   | manufacturer | weather_conditions | color | name-en_US | name-fr_FR  | price          | rating | size | lace_color  |
-      | sneakers | sneakers | Converse     | hot                | blue  | Sneakers   | Espadrilles | 69 EUR, 99 USD | 4      | 43   | laces_white |
-      | sandals  | sandals  |              |                    | white |            | Sandales    |                |        |      |             |
-    And the following product values:
-      | product  | attribute   | value                 | locale | scope  |
-      | sneakers | description | Great sneakers        | en_US  | mobile |
-      | sneakers | description | Really great sneakers | en_US  | tablet |
-      | sneakers | description | Grandes espadrilles   | fr_FR  | mobile |
-      | sandals  | description | Super sandales        | fr_FR  | tablet |
-      | sandals  | description | Super sandales        | fr_FR  | mobile |
+      | sku          | family  | categories                 | price          | size | main_color | manufacturer |
+      | jacket-white | jackets | jackets, winter_collection | 10 EUR, 15 USD | XL   | white      | Volcom       |
     And I am logged in as "Julia"
     And I launched the completeness calculator
 
+  @jira https://akeneo.atlassian.net/browse/PIM-4581
   Scenario: Successfully update the completeness at product save
-    Given I am on the "sneakers" product page
+    Given I am on the "jacket-white" product page
     When I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale | state   | missing_values        | ratio |
-      | mobile  | en_US  | success |                       | 100%  |
-      | mobile  | fr_FR  | success |                       | 100%  |
-      | tablet  | en_US  | warning | side_view             | 89%   |
-      | tablet  | fr_FR  | warning | description side_view | 78%   |
-    When I visit the "Attributes" tab
-    And I visit the "Media" group
-    And I attach file "SNKRS-1C-s.png" to "Side view"
+      | channel | locale | state   | missing_values                                                | ratio |
+      | mobile  | de_DE  | warning | name gallery                                                  | 67%   |
+      | mobile  | en_US  | warning | name gallery                                                  | 67%   |
+      | tablet  | de_DE  | warning | name description weather_conditions rating side_view gallery  | 40%   |
+      | tablet  | en_US  | warning | name description weather_conditions rating side_view gallery  | 40%   |
+    When I visit the "Media" group
+    And I start to manage assets for "gallery"
+    And I check the row "paint"
+    And I confirm the asset modification
     And I save the product
-    Then I should be on the product "sneakers" edit page
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale | state   | missing_values                                                | ratio |
+      | mobile  | de_DE  | warning | name gallery                                                  | 83%   |
+      | mobile  | en_US  | warning | name gallery                                                  | 83%   |
+      | tablet  | de_DE  | warning | name description weather_conditions rating side_view gallery  | 50%   |
+      | tablet  | en_US  | warning | name description weather_conditions rating side_view gallery  | 50%   |
+    Given I generate missing variations for asset paint
+    And I am on the "jacket-white" product page
     When I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale | state   | missing_values  | ratio |
-      | mobile  | en_US  | success |                 | 100%  |
-      | mobile  | fr_FR  | success |                 | 100%  |
-      | tablet  | en_US  | success |                 | 100%  |
-      | tablet  | fr_FR  | warning | description     | 89%   |
+      | channel | locale | state   | missing_values                                         | ratio |
+      | mobile  | de_DE  | success |                                                        | 100%   |
+      | mobile  | en_US  | success |                                                        | 100%   |
+      | tablet  | de_DE  | warning | name description weather_conditions rating side_view   | 60%   |
+      | tablet  | en_US  | warning | name description weather_conditions rating side_view   | 60%   |
+

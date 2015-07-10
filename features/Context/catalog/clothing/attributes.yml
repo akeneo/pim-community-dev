@@ -368,3 +368,12 @@ attributes:
         group: media
         useableAsGridFilter: false
         sortOrder:           50
+    gallery:
+        labels:
+            en_US: gallery
+        type:  pim_assets_collection
+        properties:
+            reference_data_name: assets
+        group: media
+        useableAsGridFilter: false
+        sortOrder:           50
