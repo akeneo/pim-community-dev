@@ -6,10 +6,9 @@ PimEnterprise\Component\ProductAsset\Model\Asset:
             - NotBlank: ~
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
-                message: pimee_product_asset.validation.code.alpha_numeric_plus_underscore
+                message: Attribute code may contain only letters, numbers and underscores.
         references:
             - Valid: ~
         description:
-            - NotNull: ~
             - Length:
                 max: 500

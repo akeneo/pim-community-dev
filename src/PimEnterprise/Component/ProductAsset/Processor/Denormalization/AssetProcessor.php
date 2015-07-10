@@ -79,6 +79,11 @@ class AssetProcessor extends AbstractProcessor
             return;
         }
 
+        $violations = $this->validateAsset($asset);
+        if ($violations->count() > 0) {
+            $this->skipItemWithConstraintViolations($item, $violations);
+        }
+
         return $asset;
     }
 

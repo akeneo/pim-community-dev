@@ -918,7 +918,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $this->refresh($asset);
 
             assertEquals($data['code'], $asset->getCode());
-            assertEquals($data['description'], $asset->getDescription());
+            if (array_key_exists('description', $data)) {
+                assertEquals($data['description'], $asset->getDescription());
+            }
+
+            if (array_key_exists('tags', $data)) {
+                assertEquals($data['tags'], $asset->getTagCodes());
+            }
         }
     }
 
