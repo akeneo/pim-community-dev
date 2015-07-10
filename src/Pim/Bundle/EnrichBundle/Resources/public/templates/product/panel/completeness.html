@@ -29,6 +29,9 @@
                                     <% }) %>
                                 </span>
                                 <% } %>
+                                <% if (0 === completeness.completeness.missing && completeness.missing.length > 0) { %>
+                                <span class="label label-important">Completeness error</span>
+                                <% } %>
                             </div>
                         </div>
                     <% }%>
