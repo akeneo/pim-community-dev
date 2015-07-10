@@ -2,11 +2,13 @@ extensions:
     save:
         module: pimee/product-edit-form/save
 
+    copy:
+        module: pimee/product-edit-form/attributes/copy
+
     draft:
         module: pimee/product-edit-form/draft
         parent: product-edit-form
         targetZone: buttons
-        insertAction: append
         position: 85
 
     smart-attribute:
@@ -56,3 +58,9 @@ extensions:
         parent: attributes
         targetZone: self
         position: 100
+
+    copy-source-switcher:
+        module: pimee/product-edit-form/source-switcher
+        parent: copy
+        targetZone: context-selectors
+        position: 120
