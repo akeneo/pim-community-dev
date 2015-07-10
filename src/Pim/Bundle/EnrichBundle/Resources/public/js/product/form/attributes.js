@@ -70,6 +70,7 @@ define(
                 this.onExtensions('add-attribute:add', _.bind(this.addAttributes, this));
                 this.onExtensions('copy:copy-fields:after', _.bind(this.render, this));
                 this.onExtensions('copy:select:after', _.bind(this.render, this));
+                this.onExtensions('copy:context:change', _.bind(this.render, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

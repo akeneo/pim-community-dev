@@ -49,14 +49,7 @@ define([
 
                 return null;
             },
-            renderCopyInput: function (context, locale, scope) {
-                context.value = AttributeManager.getValue(
-                    this.model.get('values'),
-                    this.attribute,
-                    locale,
-                    scope
-                );
-
+            renderCopyInput: function (context) {
                 context.mediaUrl = this.getMediaUrl(context.value.data);
 
                 return Field.prototype.renderCopyInput.apply(this, arguments);
