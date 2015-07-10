@@ -5,7 +5,7 @@ services:
     pim_user.context.user:
         class: %pim_user.context.user.class%
         arguments:
-            - '@security.context'
+            - '@security.token_storage'
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.category'

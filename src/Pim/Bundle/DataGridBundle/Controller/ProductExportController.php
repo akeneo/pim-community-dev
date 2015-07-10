@@ -10,7 +10,7 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Products quick export
@@ -33,8 +33,8 @@ class ProductExportController
     /** @var JobInstanceRepository */
     protected $jobInstanceRepo;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var JobLauncherInterface */
     protected $jobLauncher;
@@ -47,7 +47,7 @@ class ProductExportController
      * @param MassActionDispatcher       $massActionDispatcher
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param JobInstanceRepository      $jobInstanceRepo
-     * @param SecurityContextInterface   $securityContext
+     * @param TokenStorageInterface      $tokenStorage
      * @param JobLauncherInterface       $jobLauncher
      * @param DataGridManager            $datagridManager
      */
@@ -56,7 +56,7 @@ class ProductExportController
         MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
         JobInstanceRepository $jobInstanceRepo,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
         DataGridManager $datagridManager
     ) {
@@ -64,7 +64,7 @@ class ProductExportController
         $this->massActionDispatcher = $massActionDispatcher;
         $this->gridFilterAdapter    = $gridFilterAdapter;
         $this->jobInstanceRepo      = $jobInstanceRepo;
-        $this->securityContext      = $securityContext;
+        $this->tokenStorage         = $tokenStorage;
         $this->jobLauncher          = $jobLauncher;
         $this->datagridManager      = $datagridManager;
     }
@@ -101,7 +101,7 @@ class ProductExportController
      */
     protected function getUser()
     {
-        $token = $this->securityContext->getToken();
+        $token = $this->tokenStorage->getToken();
         if (null === $token || !is_object($user = $token->getUser())) {
             return null;
         }

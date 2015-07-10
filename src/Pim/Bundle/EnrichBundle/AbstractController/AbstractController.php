@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -27,44 +27,28 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractController
 {
-    /**
-     * @var Request
-     */
+    /** @var Request */
     protected $request;
 
-    /**
-     * @var EngineInterface
-     */
+    /** @var EngineInterface */
     protected $templating;
 
-    /**
-     * @var RouterInterface
-     */
+    /** @var RouterInterface */
     protected $router;
 
-    /**
-     * @var SecurityContextInterface
-     */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
-    /**
-     * @var FormFactoryInterface
-     */
+    /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /**
-     * @var ValidatorInterface
-     */
+    /** @var ValidatorInterface */
     protected $validator;
 
-    /**
-     * @var TranslatorInterface
-     */
+    /** @var TranslatorInterface */
     protected $translator;
 
-    /**
-     * @var EventDispatcherInterface
-     */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
@@ -73,7 +57,7 @@ abstract class AbstractController
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -83,7 +67,7 @@ abstract class AbstractController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -92,7 +76,7 @@ abstract class AbstractController
         $this->request         = $request;
         $this->templating      = $templating;
         $this->router          = $router;
-        $this->securityContext = $securityContext;
+        $this->tokenStorage    = $tokenStorage;
         $this->formFactory     = $formFactory;
         $this->validator       = $validator;
         $this->translator      = $translator;
@@ -130,13 +114,13 @@ abstract class AbstractController
     }
 
     /**
-     * Returns the security cotnext service
+     * Returns the token storage service
      *
-     * @return SecurityContextInterface
+     * @return TokenStorageInterface
      */
-    protected function getSecurityContext()
+    protected function getTokenStorage()
     {
-        return $this->securityContext;
+        return $this->tokenStorage;
     }
 
     /**
@@ -180,7 +164,7 @@ abstract class AbstractController
      *
      * @see UrlGeneratorInterface
      */
-    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->router->generate($route, $parameters, $referenceType);
     }
@@ -206,7 +190,7 @@ abstract class AbstractController
      *
      * @return string The rendered view
      */
-    protected function renderView($view, array $parameters = array())
+    protected function renderView($view, array $parameters = [])
     {
         return $this->templating->render($view, $parameters);
     }
@@ -220,7 +204,7 @@ abstract class AbstractController
      *
      * @return Response A Response instance
      */
-    public function render($view, array $parameters = array(), Response $response = null)
+    public function render($view, array $parameters = [], Response $response = null)
     {
         return $this->templating->renderResponse($view, $parameters, $response);
     }
@@ -234,7 +218,7 @@ abstract class AbstractController
      */
     public function getUser()
     {
-        if (null === $token = $this->securityContext->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 
@@ -252,7 +236,7 @@ abstract class AbstractController
      * @param string $message    the flash message
      * @param array  $parameters the flash message parameters
      */
-    protected function addFlash($type, $message, array $parameters = array())
+    protected function addFlash($type, $message, array $parameters = [])
     {
         $this->request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
     }
@@ -266,7 +250,7 @@ abstract class AbstractController
      *
      * @return RedirectResponse
      */
-    protected function redirectToRoute($route, $parameters = array(), $status = 302)
+    protected function redirectToRoute($route, $parameters = [], $status = 302)
     {
         return $this->redirect($this->generateUrl($route, $parameters), $status);
     }
@@ -297,7 +281,7 @@ abstract class AbstractController
      *
      * @return \Symfony\Component\Form\Form
      */
-    public function createForm($type, $data = null, array $options = array())
+    public function createForm($type, $data = null, array $options = [])
     {
         return $this->formFactory->create($type, $data, $options);
     }
@@ -310,7 +294,7 @@ abstract class AbstractController
      *
      * @return FormBuilder
      */
-    public function createFormBuilder($data = null, array $options = array())
+    public function createFormBuilder($data = null, array $options = [])
     {
         return $this->formFactory->createBuilder('form', $data, $options);
     }

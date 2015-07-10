@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -22,8 +22,8 @@ class UserContext
     /** @staticvar string */
     const REQUEST_LOCALE_PARAM = 'dataLocale';
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var LocaleManager */
     protected $localeManager;
@@ -44,20 +44,20 @@ class UserContext
     protected $defaultLocale;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param LocaleManager            $localeManager
-     * @param ChannelManager           $channelManager
-     * @param CategoryManager          $categoryManager
-     * @param string                   $defaultLocale
+     * @param TokenStorageInterface $tokenStorage
+     * @param LocaleManager         $localeManager
+     * @param ChannelManager        $channelManager
+     * @param CategoryManager       $categoryManager
+     * @param string                $defaultLocale
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
         $defaultLocale
     ) {
-        $this->securityContext = $securityContext;
+        $this->tokenStorage    = $tokenStorage;
         $this->localeManager   = $localeManager;
         $this->channelManager  = $channelManager;
         $this->categoryManager = $categoryManager;
@@ -256,13 +256,13 @@ class UserContext
      */
     protected function getUserOption($optionName)
     {
-        $token = $this->securityContext->getToken();
+        $token = $this->tokenStorage->getToken();
 
         if ($token !== null) {
             $user   = $token->getUser();
             $method = sprintf('get%s', ucfirst($optionName));
 
-            if ($user && is_callable(array($user, $method))) {
+            if ($user && is_callable([$user, $method])) {
                 $value = $user->$method();
                 if ($value) {
                     return $value;
@@ -280,7 +280,7 @@ class UserContext
      */
     public function getUser()
     {
-        if (null === $token = $this->securityContext->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 

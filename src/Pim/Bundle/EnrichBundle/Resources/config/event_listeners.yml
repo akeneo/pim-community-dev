@@ -8,7 +8,7 @@ services:
     stof_doctrine_extensions.event_listener.locale:
         class: %pim_enrich.event_listener.user_context.class%
         arguments:
-            - '@security.context'
+            - '@security.token_storage'
             - '@pim_translation.listener.add_locale'
             - '@pim_catalog.context.catalog'
             - '@pim_user.context.user'
