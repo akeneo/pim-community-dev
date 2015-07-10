@@ -18,6 +18,7 @@ class ProductAssetLoader
      * Load data fixtures with the passed EntityManager
      *
      * @param ObjectManager $manager
+     * @param string        $environment
      */
     public function load(ObjectManager $manager, $environment)
     {

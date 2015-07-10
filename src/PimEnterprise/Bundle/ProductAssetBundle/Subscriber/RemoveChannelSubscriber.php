@@ -47,7 +47,7 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ChannelEvents::PRE_REMOVE => 'preRemoveChannel',
+            ChannelEvents::PRE_REMOVE => 'removeChannelLinkedEntities',
         ];
     }
 
@@ -56,7 +56,7 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
      *
      * @return GenericEvent
      */
-    public function preRemoveChannel(GenericEvent $event)
+    public function removeChannelLinkedEntities(GenericEvent $event)
     {
         $channel = $event->getSubject();
 

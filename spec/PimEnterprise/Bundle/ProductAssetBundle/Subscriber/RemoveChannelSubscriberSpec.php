@@ -31,7 +31,7 @@ class RemoveChannelSubscriberSpec extends ObjectBehavior
     function it_returns_the_events_it_subscribed_to()
     {
         $this::getSubscribedEvents()->shouldReturn([
-            ChannelEvents::PRE_REMOVE => 'preRemoveChannel',
+            ChannelEvents::PRE_REMOVE => 'removeChannelLinkedEntities',
         ]);
     }
 
@@ -58,13 +58,13 @@ class RemoveChannelSubscriberSpec extends ObjectBehavior
         $channelConfigRemover->remove($webChannelConfig)->shouldBeCalled();
         $channelConfigRemover->remove($mobChannelConfig)->shouldBeCalled();
 
-        $this->preRemoveChannel($event)->shouldReturn($event);
+        $this->removeChannelLinkedEntities($event)->shouldReturn($event);
     }
 
     function it_throws_an_exception_if_the_channel_does_not_have_the_right_inteface(GenericEvent $event)
     {
         $event->getSubject()->willReturn(new \stdClass);
 
-        $this->shouldThrow('\InvalidArgumentException')->during('preRemoveChannel', [$event]);
+        $this->shouldThrow('\InvalidArgumentException')->during('removeChannelLinkedEntities', [$event]);
     }
 }
