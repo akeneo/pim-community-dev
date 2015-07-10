@@ -1,8 +1,8 @@
 parameters:
-    pim_catalog.completeness.checker.attribute.asset_collection.class: PimEnterprise\Component\ProductAsset\Completeness\Checker\Attribute\AssetCollectionCompleteChecker
+    pim_catalog.completeness.checker.asset_collection.class: PimEnterprise\Component\ProductAsset\Completeness\Checker\AssetCollectionCompleteChecker
 
 services:
-    pim_catalog.completeness.checker.attribute.asset_collection:
-        class: %pim_catalog.completeness.checker.attribute.asset_collection.class%
+    pim_catalog.completeness.checker.asset_collection:
+        class: %pim_catalog.completeness.checker.asset_collection.class%
         tags:
-            - { name: completeness.checker.attribute }
+            - { name: pim_catalog.completeness.checker.product_value, priority: 110 }

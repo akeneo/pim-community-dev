@@ -60,7 +60,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
      */
     protected function generate(array $criteria = [])
     {
-        $this->prepareCompleteAssets();
+        $this->prepareCompleteAssets($criteria);
         parent::generate($criteria);
     }
 
@@ -95,9 +95,11 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
      * An assets collection is complete on a locale/channel
      * if there is at least one varaition file for the locale/channel tuple
      *
+     * @param string[] $criteria
+     *
      * @throws \Doctrine\DBAL\DBALException
      */
-    protected function prepareCompleteAssets()
+    protected function prepareCompleteAssets(array $criteria)
     {
         $cleanupSql  = "DROP TABLE IF EXISTS " . self::COMPLETE_ASSETS_TABLE . PHP_EOL;
         $cleanupStmt = $this->connection->prepare($cleanupSql);
@@ -107,38 +109,45 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
             FROM
             (
                 SELECT av.value_id, cl.locale_id , v.channel_id, v.file_id
-
                 FROM pim_catalog_product_value_asset av
-
+                JOIN pim_catalog_product_value pv ON av.value_id = pv.id
                 JOIN pimee_product_asset_asset a ON av.asset_id = a.id
                 JOIN pimee_product_asset_reference r ON r.asset_id = a.id
                 JOIN pimee_product_asset_variation v ON v.reference_id = r.id
                 JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id
-
                 WHERE r.locale_id IS NULL
+                %product_value_conditions%
+                %channel_conditions%
 
-            UNION ALL
+                UNION ALL
 
                 SELECT av.value_id, r.locale_id , v.channel_id, v.file_id
-
                 FROM pim_catalog_product_value_asset av
-
+                JOIN pim_catalog_product_value pv ON av.value_id = pv.id
                 JOIN pimee_product_asset_asset a ON av.asset_id = a.id
                 JOIN pimee_product_asset_reference r ON r.asset_id = a.id
                 JOIN pimee_product_asset_variation v ON v.reference_id = r.id
-
                 WHERE r.locale_id IS NOT NULL
+                %product_value_conditions%
+                %channel_conditions%
             ) AS unionTable
 
             GROUP BY value_id, locale_id, channel_id
 
             HAVING COUNT(file_id) > 0';
 
-        $createPattern = 'CREATE TEMPORARY TABLE %s (value_id INT, locale_id INT, channel_id INT) %s';
+        $selectSql = $this->applyCriteria($selectSql, $criteria);
+
+        $createPattern = 'CREATE TABLE %s (value_id INT, locale_id INT, channel_id INT) %s';
 
         $createSql = sprintf($createPattern, self::COMPLETE_ASSETS_TABLE, $selectSql);
 
         $stmt = $this->connection->prepare($createSql);
+
+        foreach ($criteria as $placeholder => $value) {
+            $stmt->bindValue($placeholder, $value);
+        }
+
         $stmt->execute();
     }
 
@@ -189,5 +198,23 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
         foreach ($products as $product) {
             $this->schedule($product);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyCriteria($sql, $criteria)
+    {
+        $sql = parent::applyCriteria($sql, $criteria);
+
+        $productValueCondition = '';
+
+        if (array_key_exists('productId', $criteria)) {
+            $productValueCondition = 'AND pv.entity_id = :productId';
+        }
+
+        $sql = str_replace('%product_value_conditions%', $productValueCondition, $sql);
+
+        return $sql;
     }
 }
