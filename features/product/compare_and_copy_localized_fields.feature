@@ -31,22 +31,22 @@ Feature: Compare and copy localized fields
     And I visit the "Media" group
     And the product Legend should be "Vue de face"
 
-  @skip-pef
   Scenario: Successfully copy current tab compared product localized values
     Given I am on the "tshirt" product page
-    When I compare values with the "French (France)" translation
-    And I select current tab translations
+    When I compare values with the "fr_FR" translation
+    And I select all visible translations
     And I copy selected translations
     Then the product Name should be "Floup"
-    And the product ecommerce Description should be "Chaussures de ville"
+    And the product Description for scope "ecommerce" should be "Chaussures de ville"
+    And I visit the "Media" group
     And the product Legend should be "Front view"
 
-  @skip-pef
   Scenario: Successfully copy manually selected compared product localized values
     Given I am on the "tshirt" product page
-    When I compare values with the "French (France)" translation
+    When I compare values with the "fr_FR" translation
     And I select translations for "Name"
     And I copy selected translations
     Then the product Name should be "Floup"
-    And the product ecommerce Description should be "City shoes"
+    And the product Description for scope "ecommerce" should be "City shoes"
+    And I visit the "Media" group
     And the product Legend should be "Front view"

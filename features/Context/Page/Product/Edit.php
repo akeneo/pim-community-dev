@@ -266,7 +266,7 @@ class Edit extends Form
             return $this->findCompoundField($name, 0, $currency);
         }
 
-        $container = $this->findFieldContainer($name)->getParent();
+        $container = $this->findFieldContainer($name);
 
         $field = $this->spin(function () use ($container) {
             return $container->find('css', '.field-input input, .field-input textarea');
@@ -291,7 +291,7 @@ class Edit extends Form
             throw new ElementNotFoundException($this->getSession(), 'label ', 'value', $label);
         }
 
-        $container = $labelNode->getParent()->getParent();
+        $container = $labelNode->getParent()->getParent()->getParent();
         if (!$container) {
             throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $label);
         }
@@ -1153,12 +1153,19 @@ class Edit extends Form
     /**
      * Manually select translation given the specified field label
      *
-     * @param string $field
+     * @param string $name
+     *
+     * @throws ElementNotFoundException
      */
-    public function manualSelectTranslation($field)
+    public function manualSelectTranslation($name)
     {
-        $this
-            ->find('css', sprintf('tr:contains("%s") .comparisonSelection', $field))
+        $label = $this->find('css', sprintf('.copy-container header label:contains("%s")', $name));
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'copy field', 'label', $name);
+        }
+
+        $label->getParent()->getParent()->getParent()
+            ->find('css', '.copy-field-selector')
             ->check();
     }
 
