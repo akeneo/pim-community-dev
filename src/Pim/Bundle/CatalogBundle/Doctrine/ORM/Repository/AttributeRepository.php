@@ -434,4 +434,18 @@ class AttributeRepository extends EntityRepository implements
 
         return $attributes;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeCodesByType($type)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->select('a.code')
+            ->where($qb->expr()->eq('a.attributeType', ':type'))
+            ->setParameter(':type', $type);
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }

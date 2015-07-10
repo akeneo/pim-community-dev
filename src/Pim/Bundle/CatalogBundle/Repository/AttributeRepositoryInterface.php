@@ -145,4 +145,13 @@ interface AttributeRepositoryInterface extends
      * @return array
      */
     public function getAttributeTypeByCodes(array $codes);
+
+    /**
+     * Get attribute codes by attribute type
+     *
+     * @param string $type
+     *
+     * @return array
+     */
+    public function getAttributeCodesByType($type);
 }
