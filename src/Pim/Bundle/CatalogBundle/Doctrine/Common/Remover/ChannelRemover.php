@@ -63,7 +63,10 @@ class ChannelRemover implements RemoverInterface
         $this->eventDispatcher->dispatch(ChannelEvents::PRE_REMOVE, new GenericEvent($channel));
 
         $this->objectManager->remove($channel);
-        if (true === $options['flush']) {
+
+        if (isset($options['flush_only_object']) && true === $options['flush_only_object']) {
+            $this->objectManager->flush($channel);
+        } elseif (true === $options['flush']) {
             $this->objectManager->flush();
         }
     }
