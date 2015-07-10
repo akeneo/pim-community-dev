@@ -48,6 +48,6 @@ class EnterpriseCatalogConfigurationContext extends CatalogConfigurationContext
         parent::loadCatalog($files);
 
         $productAssetLoader = new ProductAssetLoader();
-        $productAssetLoader->load($this->getEntityManager());
+        $productAssetLoader->load($this->getEntityManager(), $this->getContainer()->getParameter('kernel.environment'));
     }
 }

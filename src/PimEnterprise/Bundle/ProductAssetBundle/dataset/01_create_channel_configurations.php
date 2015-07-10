@@ -6,8 +6,8 @@ require_once __DIR__ . '/Helper.php';
 
 $environment = 'dev';
 
-if (isset($argv[1]) && 'behat' === $argv[1]) {
-    $environment = 'behat';
+if (isset($argv[1])) {
+    $environment = $argv[1];
 }
 
 $kernel = new AppKernel($environment, true);
