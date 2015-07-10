@@ -13,7 +13,6 @@ namespace PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Classification\Repository\TagRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 
 /**
@@ -58,10 +57,8 @@ class TagUpdater implements ObjectUpdaterInterface
      */
     protected function setData(TagInterface $tag, $field, $data)
     {
-        switch ($field) {
-            case 'code':
-                $this->setCode($tag, $data);
-                break;
+        if ('code' === $field) {
+            $this->setCode($tag, $data);
         }
     }
 

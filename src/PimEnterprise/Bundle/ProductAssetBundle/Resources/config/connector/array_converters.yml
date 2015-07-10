@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.array_converter.flat.asset.class: PimEnterprise\Component\ProductAsset\ArrayConverter\Flat\AssetStandardConverter
+    pimee_product_asset.array_converter.flat.asset.class: PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\AssetStandardConverter
 
 services:
     pimee_product_asset.array_converter.flat.asset:

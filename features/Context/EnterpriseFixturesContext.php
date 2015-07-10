@@ -485,7 +485,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         $asset = $this->getAssetRepository()->findOneByIdentifier($code);
 
-        if (!$asset) {
+        if (null === $asset) {
             throw new \InvalidArgumentException(sprintf('Could not find a product asset with code "%s"', $code));
         }
 
@@ -505,7 +505,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         $tag = $this->getTagRepository()->findOneByIdentifier($code);
 
-        if (!$tag) {
+        if (null === $tag) {
             throw new \InvalidArgumentException(sprintf('Could not find a tag with code "%s"', $code));
         }
 
@@ -909,7 +909,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Then /^there should be the following assets:$/
+     * @Then /^there should be the following assets?:$/
      */
     public function thereShouldBeTheFollowingAssets(TableNode $table)
     {
@@ -931,7 +931,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Then /^there should be the following tags:$/
+     * @Then /^there should be the following tags?:$/
      */
     public function thereShouldBeTheFollowingTags(TableNode $table)
     {

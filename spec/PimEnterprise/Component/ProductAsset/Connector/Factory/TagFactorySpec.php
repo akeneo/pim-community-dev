@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Factory;
+namespace spec\PimEnterprise\Component\ProductAsset\Connector\Factory;
 
 use PhpSpec\ObjectBehavior;
 
@@ -15,7 +15,7 @@ class TagFactorySpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Factory\TagFactory');
+        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Connector\Factory\TagFactory');
     }
 
     function it_creates_a_tag()

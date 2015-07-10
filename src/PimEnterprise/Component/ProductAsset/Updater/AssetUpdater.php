@@ -74,7 +74,7 @@ class AssetUpdater implements ObjectUpdaterInterface
             case 'tags':
                 $this->setTags($asset, $data);
                 break;
-            case 'end_of_use_at':
+            case 'end_of_use':
                 $this->validateDateFormat($data);
                 $asset->setEndOfUseAt(new \DateTime($data));
                 break;
@@ -93,9 +93,7 @@ class AssetUpdater implements ObjectUpdaterInterface
             if (null !== $tag = $this->tagRepository->findOneByIdentifier($tagCode)) {
                 $asset->addTag($tag);
             } else {
-                throw new \InvalidArgumentException(
-                    sprintf('Tag with "%s" code does not exist', $tagCode)
-                );
+                throw new \InvalidArgumentException(sprintf('Tag with "%s" code does not exist', $tagCode));
             }
         }
     }

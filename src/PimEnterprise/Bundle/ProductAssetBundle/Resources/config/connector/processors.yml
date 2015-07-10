@@ -1,6 +1,6 @@
 parameters:
-    pimee_product_asset.processor.denormalization.tag.class:   PimEnterprise\Component\ProductAsset\Processor\Denormalization\TagProcessor
-    pimee_product_asset.processor.denormalization.asset.class: PimEnterprise\Component\ProductAsset\Processor\Denormalization\AssetProcessor
+    pimee_product_asset.processor.denormalization.tag.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor
+    pimee_product_asset.processor.denormalization.asset.class: PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\AssetProcessor
 
 services:
     pimee_product_asset.processor.denormalization.tag.flat:

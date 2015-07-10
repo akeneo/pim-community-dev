@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Processor\Denormalization;
+namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -18,6 +18,7 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -76,7 +77,8 @@ class AssetProcessor extends AbstractProcessor
             $this->updateAsset($asset, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
-            return;
+
+            return null;
         }
 
         $violations = $this->validateAsset($asset);
@@ -130,12 +132,10 @@ class AssetProcessor extends AbstractProcessor
      *
      * @throws InvalidItemException
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
+     * @return ConstraintViolationListInterface
      */
     protected function validateAsset(AssetInterface $asset)
     {
-        $violations = $this->validator->validate($asset);
-
-        return $violations;
+        return $this->validator->validate($asset);
     }
 }

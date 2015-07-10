@@ -9,15 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Processor\Denormalization;
+namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
-use PimEnterprise\Bundle\ProductAssetBundle\Factory\TagFactory;
+use PimEnterprise\Component\ProductAsset\Connector\Factory\TagFactory;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -45,8 +46,8 @@ class TagProcessor extends AbstractProcessor
      * @param StandardArrayConverterInterface       $tagConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param ObjectUpdaterInterface                $tagUpdater
-     * @param ValidatorInterface                    $validator
      * @param TagFactory                            $tagFactory
+     * @param ValidatorInterface                    $validator
      */
     public function __construct(
         StandardArrayConverterInterface $tagConverter,
@@ -117,7 +118,7 @@ class TagProcessor extends AbstractProcessor
     {
         $tag = $this->findObject($this->repository, ['code' => $tag]);
 
-        return null === $tag ? $this->tagFactory->createTag() : null;
+        return (null === $tag ? $this->tagFactory->createTag() : null);
     }
 
     /**
@@ -136,12 +137,10 @@ class TagProcessor extends AbstractProcessor
      *
      * @throws InvalidItemException
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
+     * @return ConstraintViolationListInterface
      */
     protected function validateTag(TagInterface $tag)
     {
-        $violations = $this->validator->validate($tag);
-
-        return $violations;
+        return $this->validator->validate($tag);
     }
 }

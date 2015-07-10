@@ -1,14 +1,14 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Connector\Step;
+namespace spec\PimEnterprise\Component\ProductAsset\Connector\Step;
 
 use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Component\Connector\Reader\File\CsvReader;
 use Pim\Component\Connector\Writer\Doctrine\BaseWriter;
+use PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
-use PimEnterprise\Component\ProductAsset\Processor\Denormalization\TagProcessor;
 
 class TagStepSpec extends ObjectBehavior
 {
@@ -19,7 +19,7 @@ class TagStepSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\PimEnterprise\Bundle\ProductAssetBundle\Connector\Step\TagStep');
+        $this->shouldHaveType('\PimEnterprise\Component\ProductAsset\Connector\Step\TagStep');
     }
 
     function it_is_a_step()
@@ -41,7 +41,7 @@ class TagStepSpec extends ObjectBehavior
             'localized' => 0,
             'description' => 'My awesome description',
             'qualification' => 'dog,flowers,cities,animal,sunset',
-            'end_of_use_at' => '2018-02-01',
+            'end_of_use' => '2018-02-01',
         ];
 
         $csvReader->read()->willReturn($value, null);

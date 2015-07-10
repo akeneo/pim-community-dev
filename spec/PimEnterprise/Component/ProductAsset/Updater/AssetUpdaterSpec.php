@@ -10,11 +10,11 @@ use Prophecy\Argument;
 
 class AssetUpdaterSpec extends ObjectBehavior
 {
-    function let(
-        TagRepositoryInterface $repository
-    ) {
+    function let(TagRepositoryInterface $repository)
+    {
         $this->beConstructedWith($repository);
     }
+
     function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Updater\AssetUpdater');
@@ -51,10 +51,10 @@ class AssetUpdaterSpec extends ObjectBehavior
         $asset->getId()->willReturn(null);
 
         $values = [
-            'code'          => 'mycode',
-            'description'   => 'My awesome description',
-            'tags'          => ['dog', 'flowers'],
-            'end_of_use_at' => '2018-02-01',
+            'code'        => 'mycode',
+            'description' => 'My awesome description',
+            'tags'        => ['dog', 'flowers'],
+            'end_of_use'  => '2018-02-01',
         ];
 
         $this->update($asset, $values, []);
@@ -70,10 +70,10 @@ class AssetUpdaterSpec extends ObjectBehavior
         $asset->getId()->willReturn(null);
 
         $values = [
-            'code'          => 'mycode',
-            'description'   => 'My awesome description',
-            'tags'          => ['dog'],
-            'end_of_use_at' => '2018-02-01',
+            'code'        => 'mycode',
+            'description' => 'My awesome description',
+            'tags'        => ['dog'],
+            'end_of_use'  => '2018-02-01',
         ];
 
         $this
@@ -100,10 +100,10 @@ class AssetUpdaterSpec extends ObjectBehavior
         $asset->getId()->willReturn(null);
 
         $values = [
-            'code'          => 'mycode',
-            'description'   => 'My awesome description',
-            'tags'          => ['dog', 'flowers'],
-            'end_of_use_at' => '2018/02/01',
+            'code'        => 'mycode',
+            'description' => 'My awesome description',
+            'tags'        => ['dog', 'flowers'],
+            'end_of_use'  => '2018/02/01',
         ];
 
         $this

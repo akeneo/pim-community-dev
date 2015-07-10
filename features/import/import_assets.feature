@@ -9,7 +9,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;localized;description;qualification;end_of_use_at
+    code;localized;description;qualification;end_of_use
     car;0;Photo of a car.;car,cities;2006-05-12
     landscape;1;This is a beautiful landscape!;landscape,cities,flowers;
     """
@@ -37,7 +37,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;localized;description;qualification;end_of_use_at
+    code;localized;description;qualification;end_of_use
     paint;0;New description of my paint.;car,cities,vintage,awesome;2006-05-12
     akene;1;Beautiful akene;cities,flowers,akeneo;
     """
@@ -59,7 +59,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    localized;description;qualification;end_of_use_at
+    localized;description;qualification;end_of_use
     0;New description of my paint.;car,cities;2006-05-12
     1;Beautiful akene;cities,flowers,akeneo;
     """
@@ -68,14 +68,14 @@ Feature: Import assets
     When I am on the "clothing_asset_import" import job page
     And I launch the import job
     And I wait for the "clothing_asset_import" job to finish
-    And I should see "Field \"code\" is expected, provided fields are \"localized, description, qualification, end_of_use_at\""
+    And I should see "Field \"code\" is expected, provided fields are \"localized, description, qualification, end_of_use\""
 
   Scenario: Import asset file with missing required localized header
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;description;qualification;end_of_use_at
+    code;description;qualification;end_of_use
     paint;New description of my paint.;car,cities;2006-05-12
     akene;Beautiful akene;cities,flowers,akeneo;
     """
@@ -84,14 +84,14 @@ Feature: Import assets
     When I am on the "clothing_asset_import" import job page
     And I launch the import job
     And I wait for the "clothing_asset_import" job to finish
-    And I should see "Field \"localized\" is expected, provided fields are \"code, description, qualification, end_of_use_at\""
+    And I should see "Field \"localized\" is expected, provided fields are \"code, description, qualification, end_of_use\""
 
   Scenario: Import asset with missing value for code field
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;localized;description;qualification;end_of_use_at
+    code;localized;description;qualification;end_of_use
     ;0;New description of my paint.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -106,7 +106,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;localized;description;qualification;end_of_use_at
+    code;localized;description;qualification;end_of_use
     invliad#$%;0;New description of my paint.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -121,7 +121,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;localized;description;qualification;end_of_use_at
+    code;localized;description;qualification;end_of_use
     code;;New description of my paint.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -136,7 +136,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;localized;description;qualification;end_of_use_at
+    code;localized;description;qualification;end_of_use
     code;Y;New description of my paint.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -151,7 +151,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;localized;description;qualification;end_of_use_at
+    code;localized;description;qualification;end_of_use
     code;0;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer venenatis pulvinar accumsan. Nam in leo ut turpis molestie ultricies. Fusce eget nulla fermentum turpis laoreet feugiat vel dapibus massa. Aenean nisi arcu, pulvinar ac dolor non, porttitor faucibus nulla. Maecenas mattis mauris in nulla tincidunt consectetur. Cras sem nisl, aliquet eu quam quis, euismod iaculis mauris. Fusce luctus sodales sodales. Phasellus non purus quis neque tristique tristique sed sit amet est. Mauris at lacus posuere.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -168,7 +168,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;localized;description;qualification;end_of_use_at
+    code;localized;description;qualification;end_of_use
     code;0;New description of my paint.;car,cities;2006/05/12
     """
     And the following job "clothing_asset_import" configuration:

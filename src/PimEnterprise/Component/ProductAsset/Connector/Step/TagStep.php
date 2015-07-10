@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Connector\Step;
+namespace PimEnterprise\Component\ProductAsset\Connector\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
@@ -47,7 +47,7 @@ class TagStep extends ItemStep
 
             $processedItems = $this->process($readItem);
             if (null !== $processedItems) {
-                $writeCount = $writeCount + count($processedItems);
+                $writeCount += count($processedItems);
                 $this->write($processedItems);
                 $this->getJobRepository()->updateStepExecution($stepExecution);
             }

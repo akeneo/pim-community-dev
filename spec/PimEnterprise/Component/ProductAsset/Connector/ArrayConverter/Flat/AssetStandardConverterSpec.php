@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\ArrayConverter\Flat;
+namespace spec\PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Exception\ArrayConversionException;
@@ -14,15 +14,15 @@ class AssetStandardConverterSpec extends ObjectBehavior
             'localized'     => 0,
             'description'   => 'My awesome description',
             'qualification' => 'dog,flowers',
-            'end_of_use_at' => '2018-02-01',
+            'end_of_use'    => '2018-02-01',
         ];
 
         $this->convert($fields)->shouldReturn([
-            'tags'          => ['dog', 'flowers'],
-            'code'          => 'mycode',
-            'localized'     => false,
-            'description'   => 'My awesome description',
-            'end_of_use_at' => '2018-02-01',
+            'tags'        => ['dog', 'flowers'],
+            'code'        => 'mycode',
+            'localized'   => false,
+            'description' => 'My awesome description',
+            'end_of_use'  => '2018-02-01',
         ]);
     }
 
@@ -55,15 +55,11 @@ class AssetStandardConverterSpec extends ObjectBehavior
             'localized'     => 'y',
             'description'   => 'My awesome description',
             'qualification' => 'dog,flowers',
-            'end_of_use_at' => '2018-02-01',
+            'end_of_use'    => '2018-02-01',
         ];
 
         $this->shouldThrow(
             new ArrayConversionException('Localized field contains invalid data only "0" or "1" is accepted')
-        )
-            ->during(
-            'convert',
-            [$fields]
-        );
+        )->during('convert',[$fields]);
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\Processor\Denormalization;
+namespace spec\PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Factory\TagFactory;
+use PimEnterprise\Component\ProductAsset\Connector\Factory\TagFactory;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -139,14 +139,14 @@ class TagProcessorSpec extends ObjectBehavior
                 'localized'     => 0,
                 'description'   => 'My awesome description',
                 'qualification' => 'dog,flowers',
-                'end_of_use_at' => '2018/02/01',
+                'end_of_use'    => '2018/02/01',
             ],
             'converted_values' => [
-                'code'          => 'mycode',
-                'localized'     => false,
-                'description'   => 'My awesome description',
-                'tags'          => ['dog', 'flowers'],
-                'end_of_use_at' => '2018/02/01',
+                'code'        => 'mycode',
+                'localized'   => false,
+                'description' => 'My awesome description',
+                'tags'        => ['dog', 'flowers'],
+                'end_of_use'  => '2018/02/01',
             ],
         ];
     }

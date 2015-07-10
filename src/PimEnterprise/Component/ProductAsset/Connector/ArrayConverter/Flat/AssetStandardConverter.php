@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\ArrayConverter\Flat;
+namespace PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
@@ -32,7 +32,7 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *      'localized'     => 0,
      *      'description'   => 'My awesome description',
      *      'qualification' => 'dog,flowers,cities,animal,sunset',
-     *      'end_of_use_at' => '2018-02-01',
+     *      'end_of_use'    => '2018-02-01',
      * ]
      *
      * After:
@@ -47,7 +47,7 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *          'animal',
      *          'sunset'
      *      ],
-     *      'end_of_use_at' => '2018-02-01'
+     *      'end_of_use'  => '2018-02-01'
      * ]
      */
     public function convert(array $item, array $options = [])
@@ -71,12 +71,12 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *
      * @return array
      */
-    protected function convertField($convertedItem, $field, $data)
+    protected function convertField(array $convertedItem, $field, $data)
     {
         switch ($field) {
             case 'code':
             case 'description':
-            case 'end_of_use_at':
+            case 'end_of_use':
                 $convertedItem[$field] = (string) $data;
                 break;
             case 'localized':

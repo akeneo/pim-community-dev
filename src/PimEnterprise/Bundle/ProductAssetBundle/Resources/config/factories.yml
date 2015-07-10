@@ -2,7 +2,7 @@ parameters:
     pimee_product_asset.factory.asset.class:     PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory
     pimee_product_asset.factory.reference.class: PimEnterprise\Bundle\ProductAssetBundle\Factory\ReferenceFactory
     pimee_product_asset.factory.variation.class: PimEnterprise\Bundle\ProductAssetBundle\Factory\VariationFactory
-    pimee_product_asset.factory.tag.class:       PimEnterprise\Bundle\ProductAssetBundle\Factory\TagFactory
+    pimee_product_asset.factory.tag.class:       PimEnterprise\Component\ProductAsset\Connector\Factory\TagFactory
 
 services:
     pimee_product_asset.factory.asset:

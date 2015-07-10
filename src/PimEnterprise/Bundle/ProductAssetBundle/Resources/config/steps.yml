@@ -1,2 +1,2 @@
 parameters:
-    pimee_product_asset.step.tag.class: PimEnterprise\Bundle\ProductAssetBundle\Connector\Step\TagStep
+    pimee_product_asset.step.tag.class: PimEnterprise\Component\ProductAsset\Connector\Step\TagStep
