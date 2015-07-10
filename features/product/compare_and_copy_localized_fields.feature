@@ -28,6 +28,7 @@ Feature: Compare and copy localized fields
     And I copy selected translations
     Then the product Name should be "Floup"
     And the product Description for scope "ecommerce" should be "Chaussures de ville"
+    And I visit the "Media" group
     And the product Legend should be "Vue de face"
 
   @skip-pef
