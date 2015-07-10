@@ -18,24 +18,27 @@ class ProductAssetLoader
      * Load data fixtures with the passed EntityManager
      *
      * @param ObjectManager $manager
+     * @param string        $environment
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager, $environment)
     {
         $pathFinder = new PhpExecutableFinder();
 
         exec(
             sprintf(
-                '%s %s/01_create_channel_configurations.php behat',
+                '%s %s/01_create_channel_configurations.php %s',
                 $pathFinder->find(),
-                __DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'
+                realpath(__DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'),
+                $environment
             )
         );
 
         exec(
             sprintf(
-                '%s %s/02_create_assets.php behat',
+                '%s %s/02_create_assets.php %s',
                 $pathFinder->find(),
-                __DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'
+                realpath(__DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'),
+                $environment
             )
         );
 

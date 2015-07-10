@@ -9,6 +9,7 @@ Feature: Filter product assets
     And I am logged in as "Julia"
     And I am on the assets page
 
+  @skip
   Scenario: Successfully sort product assets
     And I should be able to use the following filters:
       | filter      | value                             | result                                                                                                      |
