@@ -67,6 +67,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
+            - '@pim_catalog.saver.product'
 
     pim_catalog.remover.family:
         class: %pim_catalog.remover.family.class%

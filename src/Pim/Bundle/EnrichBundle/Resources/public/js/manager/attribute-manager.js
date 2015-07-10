@@ -64,7 +64,7 @@ define([
             },
 
             /**
-             * Get the value in the given collection for the given lcoale and scope
+             * Get the value in the given collection for the given locale and scope
              * @param Array  values
              * @param Object attribute
              * @param String locale

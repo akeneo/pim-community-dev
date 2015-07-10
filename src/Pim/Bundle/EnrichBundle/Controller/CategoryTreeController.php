@@ -336,14 +336,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $category = $this->findCategory($id);
         $parent = $category->getParent();
         $params = ($parent !== null) ? ['node' => $parent->getId()] : [];
-
-        $this->categoryRemover->remove($category, ['flush' => false]);
-        // TODO: In case of MongoDB storage for products, we need to flush both managers,
-        // we should move this logic in remover
-        foreach ($this->doctrine->getManagers() as $manager) {
-            $manager->flush();
-        }
-
+        $this->categoryRemover->remove($category, ['flush' => true]);
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {

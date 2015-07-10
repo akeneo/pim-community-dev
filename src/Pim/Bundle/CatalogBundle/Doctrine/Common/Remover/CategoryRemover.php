@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
@@ -31,19 +32,25 @@ class CategoryRemover implements RemoverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var BulkSaverInterface */
+    protected $productSaver;
+
     /**
      * @param ObjectManager                    $objectManager
      * @param RemovingOptionsResolverInterface $optionsResolver
      * @param EventDispatcherInterface         $eventDispatcher
+     * @param BulkSaverInterface               $productSaver
      */
     public function __construct(
         ObjectManager $objectManager,
         RemovingOptionsResolverInterface $optionsResolver,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        BulkSaverInterface $productSaver
     ) {
-        $this->objectManager = $objectManager;
+        $this->objectManager   = $objectManager;
         $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
+        $this->productSaver    = $productSaver;
     }
 
     /**
@@ -65,13 +72,26 @@ class CategoryRemover implements RemoverInterface
         $eventName = $category->isRoot() ? CategoryEvents::PRE_REMOVE_TREE : CategoryEvents::PRE_REMOVE_CATEGORY;
         $this->eventDispatcher->dispatch($eventName, new GenericEvent($category));
 
+        $productsToUpdate = [];
         foreach ($category->getProducts() as $product) {
             $product->removeCategory($category);
+            $productsToUpdate[] = $product;
         }
 
         $this->objectManager->remove($category);
         if (true === $options['flush']) {
             $this->objectManager->flush();
+        }
+
+        if (count($productsToUpdate) > 0) {
+            $this->productSaver->saveAll(
+                $productsToUpdate,
+                [
+                    'flush'       => $options['flush'],
+                    'recalculate' => false,
+                    'schedule'    => false,
+                ]
+            );
         }
     }
 }

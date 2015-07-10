@@ -44,7 +44,7 @@ define(
         Dialog,
         messenger
     ) {
-        var FormView = BaseForm.extend({
+        return BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tabbable tabs-left product-attributes',
             events: {
@@ -59,8 +59,8 @@ define(
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
+                this.listenTo(mediator, 'entity:action:validation_error', this.render);
                 mediator.on('product:action:post_update', _.bind(this.postSave, this));
-                mediator.on('product:action:post_validation_error', _.bind(this.postValidationError, this));
                 mediator.on('show_attribute', _.bind(this.showAttribute, this));
                 window.addEventListener('resize', _.bind(this.resize, this));
                 FieldManager.clearFields();
@@ -93,12 +93,12 @@ define(
                             this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
                         );
 
-                        var fieldPromisses = [];
+                        var fieldPromises = [];
                         _.each(productValues, _.bind(function (productValue, attributeCode) {
-                            fieldPromisses.push(this.renderField(product, attributeCode, productValue, families));
+                            fieldPromises.push(this.renderField(product, attributeCode, productValue, families));
                         }, this));
 
-                        $.when.apply($, fieldPromisses).done(_.bind(function () {
+                        $.when.apply($, fieldPromises).done(_.bind(function () {
                             var $productValuesPanel = this.$('.product-values');
                             $productValuesPanel.empty();
 
@@ -250,41 +250,9 @@ define(
             getLocale: function () {
                 return UserContext.get('catalogLocale');
             },
-            postValidationError: function () {
-                this.render();
-                this.extensions['attribute-group-selector'].removeBadges();
-                var invalidField = _.reduce(FieldManager.getFields(), function (invalidField, field) {
-                    return !field.isValid() ? field : invalidField;
-                }, null);
-
-                if (invalidField) {
-                    mediator.trigger('show_attribute', {attribute: invalidField.attribute.code});
-                }
-
-                this.updateAttributeGroupBadges();
-            },
             postSave: function () {
                 FieldManager.fields = {};
-                this.extensions['attribute-group-selector'].removeBadges();
-
                 this.render();
-            },
-            updateAttributeGroupBadges: function () {
-                var fields = FieldManager.getFields();
-
-                AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
-                    .done(_.bind(function (attributeGroups) {
-                        _.each(fields, _.bind(function (field) {
-                            var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
-                                attributeGroups,
-                                field.attribute.code
-                            );
-
-                            if (!field.isValid()) {
-                                this.extensions['attribute-group-selector'].addToBadge(attributeGroup, 'invalid');
-                            }
-                        }, this));
-                    }, this));
             },
             showAttribute: function (event) {
                 AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
@@ -324,7 +292,5 @@ define(
                 this.$el[open ? 'addClass' : 'removeClass']('comparison-mode');
             }
         });
-
-        return FormView;
     }
 );
