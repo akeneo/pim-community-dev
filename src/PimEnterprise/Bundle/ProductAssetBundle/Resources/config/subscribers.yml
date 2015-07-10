@@ -1,0 +1,13 @@
+parameters:
+    pimee_product_asset.event_subscriber.catalog.remove_channel.class: PimEnterprise\Bundle\ProductAssetBundle\Subscriber\RemoveChannelSubscriber
+
+services:
+    pimee_product_asset.event_subscriber.catalog.remove_channel:
+        class: %pimee_product_asset.event_subscriber.catalog.remove_channel.class%
+        arguments:
+            - '@pimee_product_asset.repository.variation'
+            - '@pimee_product_asset.repository.channel_configuration'
+            - '@pimee_product_asset.remover.variation'
+            - '@pimee_product_asset.remover.channel_configuration'
+        tags:
+            - { name: kernel.event_subscriber }

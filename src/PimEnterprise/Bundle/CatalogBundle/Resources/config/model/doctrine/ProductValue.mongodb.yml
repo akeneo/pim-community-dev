@@ -4,7 +4,7 @@ PimEnterprise\Bundle\CatalogBundle\Model\ProductValue:
         assets:
             notSaved: true
             type: entities
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\AssetInterface
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\Asset
             idsField: assetIds
         assetIds:
             type: collection

@@ -6,8 +6,8 @@ require_once __DIR__ . '/Helper.php';
 
 $environment = 'dev';
 
-if (isset($argv[1]) && 'behat' === $argv[1]) {
-    $environment = 'behat';
+if (isset($argv[1])) {
+    $environment = $argv[1];
 }
 
 $kernel = new AppKernel($environment, true);
@@ -22,10 +22,21 @@ foreach (getReferenceFilesConf() as $assetCode => $referenceFiles) {
     echo "Creating asset $assetCode...\n";
     $asset = createNewAsset($assetCode, $environment);
     foreach ($referenceFiles as $localeCode => $filename) {
-        copy(__DIR__ . '/' . $filename, '/tmp/' . $filename);
-        $file       = new \SplFileInfo('/tmp/' . $filename);
+        $currentFilePath = __DIR__ . '/' . $filename;
+        $tmpFileDir = '/tmp/' . $environment;
+        $tmpFilePath = $tmpFileDir . '/' . $filename;
+
+        if (!file_exists($tmpFileDir)) {
+            mkdir($tmpFileDir);
+        }
+
+        copy($currentFilePath, $tmpFilePath);
+
+        $file       = new \SplFileInfo($tmpFilePath);
         $localeCode = is_int($localeCode) ? null : $localeCode;
+
         echo "Adding reference (locale=$localeCode)...\n";
+
         addReferenceToAsset($asset, $file, $localeCode);
     }
     $helper->getEm()->persist($asset);
@@ -89,11 +100,11 @@ function truncateTables()
 {
     global $helper;
 
-    $helper->truncateTable('akeneo_file_storage_file');
     $helper->truncateTable('pimee_product_asset_variation');
-    $helper->truncateTable('pimee_product_asset_asset');
     $helper->truncateTable('pimee_product_asset_reference');
+    $helper->truncateTable('pimee_product_asset_asset');
     $helper->truncateTable('pimee_product_asset_file_metadata');
+    $helper->truncateTable('akeneo_file_storage_file');
 }
 
 function generateEmptyVariationsForReference(
