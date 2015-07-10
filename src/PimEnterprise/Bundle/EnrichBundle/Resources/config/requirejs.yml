@@ -31,6 +31,7 @@ config:
 
         # Templates
         pimee/template/product/tab/attribute/smart-attribute:           pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
+        pimee/template/product/tab/attribute/modified-by-draft:         pimenterpriseenrich/templates/product/tab/attributes/modified-by-draft.html
         pimee/template/product/panel/history/published:                 pimenterpriseenrich/templates/product/panel/history/published.html
         pimee/template/product/panel/history/revert:                    pimenterpriseenrich/templates/product/panel/history/revert.html
         pimee/template/product/publish:                                 pimenterpriseenrich/templates/product/publish.html

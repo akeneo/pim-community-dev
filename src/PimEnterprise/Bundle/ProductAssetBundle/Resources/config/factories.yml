@@ -1,11 +1,27 @@
 parameters:
-    pimee_product_asset.factory.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory
+    pimee_product_asset.factory.asset.class:     PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory
+    pimee_product_asset.factory.reference.class: PimEnterprise\Bundle\ProductAssetBundle\Factory\ReferenceFactory
+    pimee_product_asset.factory.variation.class: PimEnterprise\Bundle\ProductAssetBundle\Factory\VariationFactory
 
 services:
     pimee_product_asset.factory.asset:
         class: %pimee_product_asset.factory.asset.class%
         arguments:
+            - '@pimee_product_asset.factory.reference'
+            - '@pim_catalog.repository.locale'
             - %pimee_product_asset.model.asset.class%
+
+    pimee_product_asset.factory.reference:
+        class: %pimee_product_asset.factory.reference.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pimee_product_asset.factory.variation'
+            - %pimee_product_asset.model.reference.class%
+
+    pimee_product_asset.factory.variation:
+        class: %pimee_product_asset.factory.variation.class%
+        arguments:
+            - %pimee_product_asset.model.variation.class%
             
     pimee_product_asset.factory.category:
         class: %pim_classification.factory.category.class%

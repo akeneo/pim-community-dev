@@ -11,7 +11,9 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
+use Akeneo\Component\FileStorage\FileFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
@@ -22,6 +24,7 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
@@ -84,6 +87,9 @@ class ProductAssetController extends Controller
     /** @var AssetFactory */
     protected $assetFactory;
 
+    /** @var FileFactoryInterface */
+    protected $fileFactory;
+
     /**
      * @param AssetRepositoryInterface        $assetRepository
      * @param ReferenceRepositoryInterface    $referenceRepository
@@ -97,6 +103,7 @@ class ProductAssetController extends Controller
      * @param SaverInterface                  $variationSaver
      * @param EventDispatcherInterface        $eventDispatcher
      * @param AssetFactory                    $assetFactory
+     * @param FileFactoryInterface            $fileFactory
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -110,7 +117,8 @@ class ProductAssetController extends Controller
         SaverInterface $referenceSaver,
         SaverInterface $variationSaver,
         EventDispatcherInterface $eventDispatcher,
-        AssetFactory $assetFactory
+        AssetFactory $assetFactory,
+        FileFactoryInterface $fileFactory
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -124,6 +132,7 @@ class ProductAssetController extends Controller
         $this->variationSaver         = $variationSaver;
         $this->eventDispatcher        = $eventDispatcher;
         $this->assetFactory           = $assetFactory;
+        $this->fileFactory            = $fileFactory;
     }
 
     /**
@@ -185,10 +194,11 @@ class ProductAssetController extends Controller
      * Create an asset
      *
      * @Template
+     * @AclAncestor("pimee_product_asset_create")
      *
      * @param Request $request
      *
-     * @return array
+     * @return array|RedirectResponse
      */
     public function createAction(Request $request)
     {
@@ -196,13 +206,62 @@ class ProductAssetController extends Controller
             return $this->redirect($this->generateUrl('pimee_product_asset_index'));
         }
 
-        $asset = $this->assetFactory->create();
-        $form  = $this->createForm('pimee_product_asset_create', $asset);
-
+        $form = $this->createForm('pimee_product_asset_create');
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            // TODO PIM-4060
+            $uploadedFile = $form->get('reference_file')->get('uploadedFile')->getData();
+            $isLocalized  = $form->get('isLocalized')->getData();
+
+            $asset = $this->assetFactory->create($isLocalized);
+            $asset->setCode($form->get('code')->getData());
+
+            try {
+                if (!$isLocalized && null !== $uploadedFile) {
+                    $reference = $asset->getReference();
+                    $file = $this->fileFactory->create(
+                        $uploadedFile,
+                        ['path' => '', 'file_name' => '', 'guid' => ''],
+                        ProductAssetFileSystems::FS_STORAGE
+                    );
+                    $file->setUploadedFile($uploadedFile);
+                    $reference->setFile($file);
+                    $this->assetFilesUpdater->updateAssetFiles($asset);
+                    $this->assetSaver->save($asset);
+                    $this->eventDispatcher->dispatch(
+                        AssetEvent::POST_UPLOAD_FILES,
+                        new AssetEvent($asset)
+                    );
+                } else {
+                    $this->assetSaver->save($asset);
+                }
+
+                $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.create.success');
+
+                $route  = 'pimee_product_asset_edit';
+                $params = ['id' => $asset->getId()];
+            } catch (\Exception $e) {
+                $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.create.error');
+
+                $route  = 'pimee_product_asset_index';
+                $params = [];
+            }
+
+            return $this->redirect($this->generateUrl($route, $params));
+        } elseif (!$form->isValid() && $form->isSubmitted()) {
+            $uploadedFile = $form->get('reference_file')->get('uploadedFile');
+            $errors = $uploadedFile->getErrors();
+            if (!empty($errors)) {
+                $message = '';
+                foreach ($errors as $error) {
+                    $message .= $error->getMessage() . ' ';
+                }
+                $this->addFlash($request, 'error', $message);
+            } else {
+                $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.create.error');
+            }
+
+            return $this->redirect($this->generateUrl('pimee_product_asset_index'));
         }
 
         return [
@@ -222,7 +281,8 @@ class ProductAssetController extends Controller
 
         if (!empty($codes)) {
             $nextId = 1;
-            while (in_array(sprintf('%s_%d', $code, $nextId), $codes)) {
+            $code = substr($code, 0, strlen($code));
+            while (in_array($code . '_' . $nextId, $codes)) {
                 $nextId++;
             }
 
@@ -255,8 +315,7 @@ class ProductAssetController extends Controller
             $locale = null;
         }
 
-        $assetForm    = $this->createForm('pimee_product_asset', $productAsset);
-
+        $assetForm = $this->createForm('pimee_product_asset', $productAsset);
         $assetForm->handleRequest($request);
 
         if ($assetForm->isValid()) {

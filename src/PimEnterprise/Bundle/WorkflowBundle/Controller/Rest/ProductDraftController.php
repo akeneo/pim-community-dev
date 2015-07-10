@@ -73,6 +73,9 @@ class ProductDraftController
     }
 
     /**
+     * Get the draft corresponding to the specified product and the current user.
+     * Does not return anything if the user owns the product, even if the draft exists.
+     *
      * @param int|string $id
      *
      * @return JsonResponse
@@ -81,7 +84,7 @@ class ProductDraftController
     {
         $productDraft = $this->findDraftForProduct($id);
 
-        if (null === $productDraft) {
+        if (null === $productDraft || $this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             return new JsonResponse();
         }
 

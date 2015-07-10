@@ -1,7 +1,7 @@
 PimEnterprise\Bundle\CatalogBundle\Model\ProductValue:
     type: embeddedDocument
     fields:
-        asset:
+        assets:
             notSaved: true
             type: entities
             targetEntity: PimEnterprise\Component\ProductAsset\Model\AssetInterface

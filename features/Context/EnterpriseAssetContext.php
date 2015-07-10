@@ -57,7 +57,7 @@ class EnterpriseAssetContext extends RawMinkContext
      * @Then /^I should see the reference upload zone$/
      * @Then /^I should see the (\S+) variation upload zone$/
      *
-     * @param null $channel
+     * @param null|string $channel
      *
      * @throws ElementNotFoundException
      */
@@ -108,6 +108,55 @@ class EnterpriseAssetContext extends RawMinkContext
     public function iUploadTheVariationFile($channel, $file)
     {
         $this->iUploadTheAssetFile($file, $channel);
+    }
+
+    /**
+     * @Given /^I switch localizable button to (\yes|no|Yes|No)$/
+     */
+    public function iSwitchLocalizableButtonTo($isLocalizable)
+    {
+        if ('yes' === strtolower($isLocalizable)) {
+            $isLocalizable = 'on';
+        } else {
+            $isLocalizable = 'off';
+        }
+
+        $this->getCurrentPage()->changeLocalizableSwitch($isLocalizable);
+    }
+
+    /**
+     * @Given /^I fill the code with (\S+)(| and wait for validation)$/
+     */
+    public function iFillTheCodeWith($value, $wait)
+    {
+        $dialog = $this->getCurrentPage()->getDialog();
+        $code   = $dialog->findField('Code');
+        $code->setValue($value);
+
+        if (!empty($wait)) {
+            $iconContainer = $code->getParent()->find('css', '.icons-container');
+            $this->getMainContext()->spin(function () use ($iconContainer) {
+                $tooltip = $iconContainer->find('css', 'i.validation-tooltip');
+                return $tooltip ? true : false;
+            });
+        }
+    }
+
+    /**
+     * @Then /^removing "([^"]+)" permissions should hide "([^"]+)" button on "([^"]+)" page$/
+     */
+    public function removingPermissionsShouldHideButtonOnPage($permission, $button, $page)
+    {
+        $steps = [];
+
+        $steps[] = new Step\Then('I am on the "Administrator" role page');
+        $steps[] = new Step\Then(sprintf('I remove rights to %s', $permission));
+        $steps[] = new Step\Then('I save the role');
+        $steps[] = new Step\Then(sprintf('I am on the %s page', $page));
+        $steps[] = new Step\Then(sprintf('I should not see the "%s" button', $button));
+        $steps[] = new Step\Then('I reset the "Administrator" rights');
+
+        return $steps;
     }
 
     /**

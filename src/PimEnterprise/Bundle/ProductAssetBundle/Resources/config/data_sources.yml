@@ -5,7 +5,7 @@ services:
     pimee_datagrid.datasource.asset:
         class: %pimee_datagrid.datasource.asset.class%
         arguments:
-            - '@pim_catalog.object_manager.product'
+            - '@doctrine.orm.entity_manager'
             - '@pim_datagrid.datasource.result_record.hydrator.default'
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_asset }

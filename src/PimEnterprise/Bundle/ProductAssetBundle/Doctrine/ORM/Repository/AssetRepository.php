@@ -76,15 +76,14 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
-     * @param string $code
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function findSimilarCodes($code)
     {
-        $qb = $this->createQueryBuilder($this->getAlias());
+        $qb = $this->_em->createQueryBuilder();
         $qb
             ->select(sprintf('%s.code', $this->getAlias()))
+            ->from($this->_entityName, $this->getAlias(), sprintf('%s.code', $this->getAlias()))
             ->andWhere(sprintf('%s.code LIKE :pattern', $this->getAlias()))
             ->orWhere(sprintf('%s.code = :code', $this->getAlias()))
             ->setParameters([
@@ -92,7 +91,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
                 ':code'    => $code
             ]);
 
-        return $qb->getQuery()->getScalarResult();
+        return array_keys($qb->getQuery()->getArrayResult());
     }
 
     /**

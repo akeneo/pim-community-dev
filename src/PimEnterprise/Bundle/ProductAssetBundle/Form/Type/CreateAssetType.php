@@ -21,17 +21,6 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class CreateAssetType extends AbstractType
 {
-    /** @var ReferenceType */
-    protected $referenceType;
-
-    /**
-     * @param ReferenceType $referenceType
-     */
-    public function __construct(ReferenceType $referenceType)
-    {
-        $this->referenceType = $referenceType;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -45,7 +34,7 @@ class CreateAssetType extends AbstractType
                 'label'  => 'pimee_product_asset.popin.create.is_localized'
             ]
         );
-        $builder->add('reference', $this->referenceType, ['required' => false]);
+        $builder->add('reference_file', 'akeneo_file_storage_file');
         $builder->add('code', 'text', ['required' => true]);
     }
 

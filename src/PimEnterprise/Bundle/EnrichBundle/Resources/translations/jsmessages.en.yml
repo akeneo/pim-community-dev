@@ -54,8 +54,10 @@ pimee_enrich:
             info:
                 update_successful: Product draft has been successfully saved
                 update_failed: Product draft could not be updated
+                value_modified: This value is modified by the current draft
             flash:
                 sent_for_approval: Product draft sent for approval
+                draft_not_sendable: You cannot send this draft for approval
             btn:
                 send_for_approval: Send for approval
                 sent_for_approval: Sent for approval

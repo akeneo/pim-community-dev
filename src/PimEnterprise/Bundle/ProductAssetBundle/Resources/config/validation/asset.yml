@@ -7,3 +7,5 @@ PimEnterprise\Component\ProductAsset\Model\Asset:
             - Regex:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: pimee_product_asset.validation.code.alpha_numeric_plus_underscore
+        references:
+            - Valid: ~
