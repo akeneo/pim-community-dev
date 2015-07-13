@@ -1,23 +1,16 @@
 <?php
-/**
- *
- *
- * @author    Yohan Blain <yohan.blain@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
+
 namespace Pim\Bundle\NotificationBundle\Manager;
 
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-
 /**
- * User notification manager
+ * User notification manager interface
  *
- * @author    Willy Mesnage <willy.mesnage@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Yohan Blain <yohan.blain@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface NotificationManagerInterface

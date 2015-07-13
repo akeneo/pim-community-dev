@@ -6,7 +6,6 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-
 /**
  * UserNotification factory interface
  *

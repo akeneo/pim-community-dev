@@ -4,7 +4,6 @@ namespace Pim\Bundle\NotificationBundle\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
-
 /**
  * UserNotification interface
  *

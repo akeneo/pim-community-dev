@@ -5,7 +5,6 @@ namespace Pim\Bundle\NotificationBundle\Factory;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 
-
 /**
  * Job notification factory interface
  *

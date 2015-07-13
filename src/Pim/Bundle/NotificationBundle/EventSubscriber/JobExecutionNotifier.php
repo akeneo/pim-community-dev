@@ -83,8 +83,8 @@ class JobExecutionNotifier implements EventSubscriberInterface
      */
     protected function createNotification(JobExecution $jobExecution)
     {
-        $type = $jobExecution->getJobInstance()->getType();
-        $factory = $this->factoryRegistry->getJobNotificationFactory($type);
+        $type         = $jobExecution->getJobInstance()->getType();
+        $factory      = $this->factoryRegistry->getJobNotificationFactory($type);
         $notification = $factory->createNotification($jobExecution);
 
         return $notification;
