@@ -32,8 +32,6 @@ class NotificationManager implements NotificationManagerInterface
     protected $userProvider;
 
     /**
-     * Construct
-     *
      * @param EntityManager                       $em
      * @param UserNotificationRepositoryInterface $repository
      * @param UserNotificationFactoryInterface    $userNotifFactory
