@@ -26,4 +26,11 @@ interface PathGeneratorInterface
      * @return array
      */
     public function generate(\SplFileInfo $file);
+
+    /**
+     * @param string $fileName
+     *
+     * @return string
+     */
+    public function generateUuid($fileName);
 }

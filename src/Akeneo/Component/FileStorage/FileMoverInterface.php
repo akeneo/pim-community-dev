@@ -20,6 +20,8 @@ interface FileMoverInterface
      * @param string        $destFsAlias
      *
      * @throws FileTransferException
+     *
+     * @return FileInterface the file that has been moved
      */
     public function move(FileInterface $file, $srcFsAlias, $destFsAlias);
 }

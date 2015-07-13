@@ -15,10 +15,18 @@ interface FileFactoryInterface
 {
     /**
      * @param \SplFileInfo $rawFile     the raw file to create a File with
-     * @param array        $pathInfo    the path infos of the file returned by a PathGeneratorInterface
      * @param string       $destFsAlias the filesystem alias where the file will be stored
      *
      * @return FileInterface
      */
-    public function create(\SplFileInfo $rawFile, array $pathInfo, $destFsAlias);
+    public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias);
+
+    /**
+     * @param FileInterface $file
+     * @param string        $destFsAlias
+     * @param string        $key
+     *
+     * @return FileInterface
+     */
+    public function createFromFile(FileInterface $file, $destFsAlias, $key = null);
 }

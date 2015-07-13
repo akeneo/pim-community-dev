@@ -2,6 +2,7 @@
 
 namespace Akeneo\Component\FileStorage;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -14,22 +15,29 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class FileFactory implements FileFactoryInterface
 {
+    /** @var PathGeneratorInterface */
+    protected $pathGenerator;
+
     /** @var string */
     protected $fileClass;
 
     /**
-     * @param string $fileClass
+     * @param PathGeneratorInterface    $pathGenerator
+     * @param string                    $fileClass
      */
-    public function __construct($fileClass)
+    public function __construct(PathGeneratorInterface $pathGenerator, $fileClass)
     {
+        $this->pathGenerator = $pathGenerator;
         $this->fileClass = $fileClass;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(\SplFileInfo $rawFile, array $pathInfo, $destFsAlias)
+    public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias)
     {
+        $pathInfo = $this->pathGenerator->generate($rawFile);
+
         if ($rawFile instanceof UploadedFile) {
             $size = $rawFile->getClientSize();
             $mimeType = $rawFile->getMimeType();
@@ -52,5 +60,25 @@ class FileFactory implements FileFactoryInterface
         $file->setStorage($destFsAlias);
 
         return $file;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createFromFile(FileInterface $file, $destFsAlias, $key = null)
+    {
+        $uuid = $this->pathGenerator->generateUuid($file->getOriginalFilename());
+        $key = null !== $key ? $key : $file->getKey();
+
+        $newFile = new $this->fileClass();
+        $newFile->setGuid($uuid);
+        $newFile->setMimeType($file->getMimeType());
+        $newFile->setOriginalFilename($file->getOriginalFilename());
+        $newFile->setSize($file->getSize());
+        $newFile->setExtension($file->getExtension());
+        $newFile->setStorage($destFsAlias);
+        $newFile->setKey($key);
+
+       return $newFile;
     }
 }

@@ -4,7 +4,6 @@ namespace Akeneo\Component\FileStorage;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\Model\FileInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
 
 /**
@@ -19,17 +18,12 @@ class FileMover implements FileMoverInterface
     /** @var MountManager */
     protected $mountManager;
 
-    /** @var SaverInterface */
-    protected $saver;
-
     /**
-     * @param MountManager   $mountManager
-     * @param SaverInterface $saver
+     * @param MountManager $mountManager
      */
-    public function __construct(MountManager $mountManager, SaverInterface $saver)
+    public function __construct(MountManager $mountManager)
     {
         $this->mountManager = $mountManager;
-        $this->saver = $saver;
     }
 
     /**
@@ -54,6 +48,7 @@ class FileMover implements FileMoverInterface
         }
 
         $file->setStorage($destFsAlias);
-        $this->saver->save($file);
+
+        return $file;
     }
 }
