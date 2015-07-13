@@ -5,7 +5,7 @@ namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Model\JobExecution;
-use Akeneo\Component\Batch\Model\JobInstance;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -109,11 +109,6 @@ class JobExecutionNotifier implements EventSubscriberInterface
     protected function generateNotification(JobExecution $jobExecution, $user, $type, $status)
     {
         switch ($type) {
-            case JobInstance::TYPE_EXPORT:
-            case JobInstance::TYPE_IMPORT:
-                $this->generateExportImportNotify($jobExecution, $user, $type, $status);
-                break;
-
             case self::TYPE_MASS_EDIT:
             case self::QUICK_EXPORT:
                 $this->generateMassEditNotify($jobExecution, $user, $type, $status);
@@ -125,33 +120,6 @@ class JobExecutionNotifier implements EventSubscriberInterface
                 );
                 break;
         }
-    }
-
-    /**
-     * @param JobExecution         $jobExecution
-     * @param string|UserInterface $user
-     * @param string               $type
-     * @param string               $status
-     */
-    protected function generateExportImportNotify(JobExecution $jobExecution, $user, $type, $status)
-    {
-        $this->manager->notify(
-            [$user],
-            sprintf('pim_import_export.notification.%s.%s', $type, $status),
-            $status,
-            [
-                'route'         => sprintf('pim_importexport_%s_execution_show', $type),
-                'routeParams'   => [
-                    'id' => $jobExecution->getId()
-                ],
-                'messageParams' => [
-                    '%label%' => $jobExecution->getJobInstance()->getLabel()
-                ],
-                'context' => [
-                    'actionType' => $type
-                ]
-            ]
-        );
     }
 
     /**
