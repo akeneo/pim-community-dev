@@ -5,11 +5,9 @@ namespace spec\Pim\Bundle\NotificationBundle\Manager;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 use Prophecy\Argument;
@@ -20,18 +18,14 @@ class NotificationManagerSpec extends ObjectBehavior
 {
     function let(
         UserNotificationRepositoryInterface $repository,
-        NotificationFactoryInterface $notificationFactory,
         UserNotificationFactory $userNotificationFactory,
         UserProviderInterface $userProvider,
-        UserNotificationFactory $userNotificationFactory,
         SaverInterface $notifSaver,
         BulkSaverInterface $userNotifsSaver,
-        RemoverInterface $userNotifRemover,
-        UserNotificationFactoryInterface $userNotificationFactory
+        RemoverInterface $userNotifRemover
     ) {
         $this->beConstructedWith(
             $repository,
-            $notificationFactory,
             $userNotificationFactory,
             $userProvider,
             $notifSaver,
@@ -45,19 +39,14 @@ class NotificationManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Manager\NotificationManager');
     }
 
-    function it_can_create_a_notification(
+    function it_can_save_a_notification(
         UserInterface $user,
         NotificationInterface $notification,
         UserNotificationInterface $userNotification,
-        $notificationFactory,
         $userNotificationFactory,
         $notifSaver,
         $userNotifsSaver
     ) {
-        $notificationFactory
-            ->createNotification('Some message', 'success', Argument::any())
-            ->shouldBeCalled()
-            ->willReturn($notification);
         $userNotificationFactory
             ->createUserNotification($notification, $user)
             ->shouldBeCalled()
@@ -66,22 +55,18 @@ class NotificationManagerSpec extends ObjectBehavior
         $notifSaver->save($notification)->shouldBeCalled();
         $userNotifsSaver->saveAll([$userNotification])->shouldBeCalled();
 
-        $this->notify([$user], 'Some message');
+        $this->notify([$user], $notification);
     }
 
-    function it_can_create_multiple_notifications(
+    function it_can_save_several_notifications(
         UserInterface $user,
         UserInterface $user2,
         NotificationInterface $notification,
         UserNotificationInterface $userNotification,
-        $notificationFactory,
         $userNotificationFactory,
         $notifSaver,
         $userNotifsSaver
     ) {
-        $notificationFactory
-            ->createNotification('Some message', 'success', Argument::any())
-            ->willReturn($notification);
         $userNotificationFactory
             ->createUserNotification(
                 $notification,
@@ -92,7 +77,7 @@ class NotificationManagerSpec extends ObjectBehavior
         $notifSaver->save($notification)->shouldBeCalled();
         $userNotifsSaver->saveAll([$userNotification, $userNotification])->shouldBeCalled();
 
-        $this->notify([$user, $user2], 'Some message');
+        $this->notify([$user, $user2], $notification);
     }
 
     function it_can_return_all_notifications_for_a_user(

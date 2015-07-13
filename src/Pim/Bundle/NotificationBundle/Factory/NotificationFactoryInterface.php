@@ -4,7 +4,6 @@ namespace Pim\Bundle\NotificationBundle\Factory;
 
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 
-
 /**
  * Notification factory interface
  *
