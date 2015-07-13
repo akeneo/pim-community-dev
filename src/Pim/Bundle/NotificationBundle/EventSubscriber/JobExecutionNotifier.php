@@ -78,6 +78,8 @@ class JobExecutionNotifier implements EventSubscriberInterface
      *
      * @param JobExecution $jobExecution
      *
+     * @throws \LogicException
+     *
      * @return NotificationInterface
      */
     protected function createNotification(JobExecution $jobExecution)
