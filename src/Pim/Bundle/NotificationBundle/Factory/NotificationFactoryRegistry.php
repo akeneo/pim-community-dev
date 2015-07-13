@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\NotificationBundle\Factory;
 
-use Symfony\Component\Intl\Exception\NotImplementedException;
-
 /**
  * Registry for notification factories
  *
@@ -37,8 +35,6 @@ class NotificationFactoryRegistry implements NotificationFactoryRegistryInterfac
             }
         }
 
-        throw new NotImplementedException(
-            sprintf('No notification factory found for the "%s" job type')
-        );
+        return null;
     }
 }

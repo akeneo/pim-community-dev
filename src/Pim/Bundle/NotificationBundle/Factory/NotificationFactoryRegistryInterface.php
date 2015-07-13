@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\NotificationBundle\Factory;
 
-use Symfony\Component\Intl\Exception\NotImplementedException;
-
 /**
  * Registry interface for notification factories
  *
@@ -25,9 +23,7 @@ interface NotificationFactoryRegistryInterface
      *
      * @param string $jobType
      *
-     * @throws NotImplementedException If no factory is found
-     *
-     * @return JobNotificationFactoryInterface
+     * @return JobNotificationFactoryInterface|null
      */
     public function getJobNotificationFactory($jobType);
 }

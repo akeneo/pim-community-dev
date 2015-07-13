@@ -79,12 +79,19 @@ class JobExecutionNotifier implements EventSubscriberInterface
      *
      * @param JobExecution $jobExecution
      *
+     * @throws \LogicException
+     *
      * @return NotificationInterface
      */
     protected function createNotification(JobExecution $jobExecution)
     {
-        $type         = $jobExecution->getJobInstance()->getType();
-        $factory      = $this->factoryRegistry->getJobNotificationFactory($type);
+        $type    = $jobExecution->getJobInstance()->getType();
+        $factory = $this->factoryRegistry->getJobNotificationFactory($type);
+
+        if (!$factory) {
+            throw new \LogicException(sprintf('No notification factory found for the "%s" job type', $type));
+        }
+
         $notification = $factory->createNotification($jobExecution);
 
         return $notification;
