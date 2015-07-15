@@ -61,7 +61,7 @@ class ProductAssociationWriterSpec extends ObjectBehavior
         $association2->getGroups()->willReturn([$group1, $group2]);
         $association2->getId()->willReturn(null);
 
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalledTimes(4);
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(4);
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalledTimes(4);
 
         $this->write([$association1, $association2]);
