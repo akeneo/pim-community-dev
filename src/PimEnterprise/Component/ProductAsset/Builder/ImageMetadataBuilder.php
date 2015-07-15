@@ -87,13 +87,13 @@ class ImageMetadataBuilder implements MetadataBuilderInterface
     }
 
     /**
-     * Returns a human readable resolution metadata with the given $metadata.
+     * Returns a human readable resolution metadata with the given $metadata and null if not available.
      *
      * exif.IFD0.XResolution => '300/1' | '72/1'
      *
      * @param FileMetadataBagInterface $metadata
      *
-     * @return string
+     * @return string|null
      */
     protected function getHumanReadableResolution(FileMetadataBagInterface $metadata)
     {
@@ -108,6 +108,10 @@ class ImageMetadataBuilder implements MetadataBuilderInterface
 
         $exifResolution = $metadata->get('exif.IFD0.XResolution');
         $exifResolutionUnits = $metadata->get('exif.IFD0.ResolutionUnit');
+
+        if (null === $exifResolution && null === $exifResolutionUnits) {
+            return null;
+        }
 
         if (null !== $exifResolution && false !== strpos($exifResolution, '/')) {
             $resolution = explode('/', $exifResolution)[0];

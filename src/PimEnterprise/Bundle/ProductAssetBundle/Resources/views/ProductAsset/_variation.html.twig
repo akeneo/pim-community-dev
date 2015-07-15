@@ -15,7 +15,6 @@
                             <th>{{ 'pimee_product_asset.enrich_asset.view.width'|trans }}</th>
                             <th>{{ 'pimee_product_asset.enrich_asset.view.height'|trans }}</th>
                             <th>{{ 'pimee_product_asset.enrich_asset.view.resolution'|trans }}</th>
-                            {#<th>{{'pimee_product_asset.enrich_asset.view.colors'|trans}}</th>#}
                         {% endif %}
                         <th>{{ 'pimee_product_asset.enrich_asset.view.filesize'|trans }}</th>
                         <th>{{ 'pimee_product_asset.enrich_asset.view.filetype'|trans }}</th>
@@ -25,10 +24,9 @@
                     <tbody>
                     <tr>
                         {% if 'image' in variationModel.file.mimeType and metadata.variations[variationModel.id] %}
-                            <td>{{ metadata.variations[variationModel.id].exifSizeWidth }} px</td>
-                            <td>{{ metadata.variations[variationModel.id].exifSizeHeight }} px</td>
-                            <td>{{ metadata.variations[variationModel.id].exifResolution }}</td>
-                            {#<td>{{ metadata.variations[variationModel.id].exifColorSpace }}</td>#}
+                            <td>{{ metadata.variations[variationModel.id].exifSizeWidth ? metadata.variations[variationModel.id].exifSizeWidth ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}</td>
+                            <td>{{ metadata.variations[variationModel.id].exifSizeHeight ? metadata.variations[variationModel.id].exifSizeHeight ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}</td>
+                            <td>{{ metadata.variations[variationModel.id].exifResolution ? metadata.variations[variationModel.id].exifResolution : 'pimee_product_asset.notAvailable.label'|trans }}</td>
                         {% endif %}
                         <td>{{ variationModel.file.size|number_format(0, '.', ' ') }} ko</td>
                         <td>{{ variationModel.file.mimeType }}</td>
