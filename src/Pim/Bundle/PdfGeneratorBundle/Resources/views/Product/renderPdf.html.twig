@@ -4,9 +4,18 @@
         <title>{{ product.identifier }} - {{ renderingDate|date }}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <style type="text/css">
+            {% if (null != customFont) %}
+                @font-face {
+                    font-family: 'Custom font';
+                    font-style: normal;
+                    font-weight: 400;
+                    src: url({{ customFont }}) format('truetype');
+                }
+            {% endif %}
+
             * {
-                font-family: Helvetica;
-                font-weight: 100;
+                font-family: 'Custom font', Helvetica;
+                font-weight: 400 !important;
             }
 
             .header {

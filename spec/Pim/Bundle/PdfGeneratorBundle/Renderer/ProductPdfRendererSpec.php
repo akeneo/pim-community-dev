@@ -52,6 +52,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imageAttributes'   => [],
             'uploadDir'         => $path . DIRECTORY_SEPARATOR,
+            'customFont'        => null
         ])->shouldBeCalled();
 
         $this->render(
@@ -85,6 +86,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
                 'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
                 'imageAttributes'   => ['main_image' => $mainImage],
                 'uploadDir'         => $path . DIRECTORY_SEPARATOR,
+                'customFont'        => null
             ]
         )->shouldBeCalled();
 
