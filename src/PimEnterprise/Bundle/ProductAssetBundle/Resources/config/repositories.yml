@@ -65,7 +65,7 @@ services:
     pimee_product_asset.repository.asset_category:
         class: %pimee_product_asset.repository.asset_category.class%
         arguments:
-            - '@pim_catalog.object_manager.product'
+            - '@doctrine.orm.entity_manager'
             - %pimee_product_asset.model.asset.class%
 
     pimee_product_asset.repository.tag:
