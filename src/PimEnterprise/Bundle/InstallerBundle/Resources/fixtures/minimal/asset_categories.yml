@@ -1,4 +1,4 @@
 asset_categories:
-    master:
+    asset_main_catalog:
         labels:
-            en_US: Master catalog
+            en_US: Asset main catalog
