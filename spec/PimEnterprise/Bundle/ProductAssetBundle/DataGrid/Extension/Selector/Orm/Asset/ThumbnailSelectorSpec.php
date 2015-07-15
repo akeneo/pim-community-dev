@@ -14,7 +14,7 @@ class ThumbnailSelectorSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface');
     }
 
-    function it_applies_filter_to_query_builder(
+    function it_applies_extra_join_to_query_builder(
         Datasource $datasource,
         DatagridConfiguration $config,
         QueryBuilder $qb
