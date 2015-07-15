@@ -108,26 +108,17 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
         $selectSql = 'SELECT value_id, locale_id, channel_id
             FROM
             (
-                SELECT av.value_id, cl.locale_id , v.channel_id, v.file_id
+                SELECT av.value_id,
+                IF (r.locale_id IS NOT NULL, r.locale_id, cl.locale_id) AS locale_id,
+                v.channel_id,
+                v.file_id, a.code
                 FROM pim_catalog_product_value_asset av
                 JOIN pim_catalog_product_value pv ON av.value_id = pv.id
                 JOIN pimee_product_asset_asset a ON av.asset_id = a.id
                 JOIN pimee_product_asset_reference r ON r.asset_id = a.id
                 JOIN pimee_product_asset_variation v ON v.reference_id = r.id
-                JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id
-                WHERE r.locale_id IS NULL
-                %product_value_conditions%
-                %channel_conditions%
-
-                UNION ALL
-
-                SELECT av.value_id, r.locale_id , v.channel_id, v.file_id
-                FROM pim_catalog_product_value_asset av
-                JOIN pim_catalog_product_value pv ON av.value_id = pv.id
-                JOIN pimee_product_asset_asset a ON av.asset_id = a.id
-                JOIN pimee_product_asset_reference r ON r.asset_id = a.id
-                JOIN pimee_product_asset_variation v ON v.reference_id = r.id
-                WHERE r.locale_id IS NOT NULL
+                LEFT JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id AND r.locale_id IS NULL
+                WHERE 1 = 1
                 %product_value_conditions%
                 %channel_conditions%
             ) AS unionTable
@@ -138,7 +129,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
 
         $selectSql = $this->applyCriteria($selectSql, $criteria);
 
-        $createPattern = 'CREATE TABLE %s (value_id INT, locale_id INT, channel_id INT) %s';
+        $createPattern = 'CREATE TEMPORARY TABLE %s (value_id INT, locale_id INT, channel_id INT) %s';
 
         $createSql = sprintf($createPattern, self::COMPLETE_ASSETS_TABLE, $selectSql);
 
