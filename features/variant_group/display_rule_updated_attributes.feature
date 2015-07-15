@@ -24,6 +24,7 @@ Feature: Display warning message on attributes coming from rules on variant attr
     And I am on the "tshirts" variant group page
     And I visit the "Attributes" tab
 
+  @unstable
   Scenario: Successfully see the rule icon
     Then I should see the Name and Description fields
     Then I should see the smart icon for the attribute "Description"
