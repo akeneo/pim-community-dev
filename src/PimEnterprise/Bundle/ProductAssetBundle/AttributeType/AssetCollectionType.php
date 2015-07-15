@@ -74,7 +74,12 @@ class AssetCollectionType extends AbstractAttributeType
     {
         $attributes = parent::defineCustomAttributeProperties($attribute);
 
-        unset($attributes['availableLocales'], $attributes['unique']);
+        unset(
+            $attributes['availableLocales'],
+            $attributes['unique'],
+            $attributes['localizable'],
+            $attributes['scopable']
+        );
 
         return $attributes + [
             'reference_data_name' => [
@@ -83,7 +88,25 @@ class AssetCollectionType extends AbstractAttributeType
                 'options'   => [
                     'data' => 'assets',
                 ],
-            ]
+            ],
+            'scopable' => [
+                'name'      => 'scopable',
+                'fieldType' => 'pim_enrich_scopable',
+                'options'   => [
+                    'data'      => false,
+                    'disabled'  => true,
+                    'read_only' => true
+                ]
+            ],
+            'localizable' => [
+                'name'      => 'localizable',
+                'fieldType' => 'switch',
+                'options'   => [
+                    'data'      => false,
+                    'disabled'  => true,
+                    'read_only' => true
+                ]
+            ],
         ];
     }
 
