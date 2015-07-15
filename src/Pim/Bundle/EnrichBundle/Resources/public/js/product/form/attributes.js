@@ -105,9 +105,11 @@ define(
 
                             FieldManager.clearVisibleFields();
                             _.each(arguments, _.bind(function (field) {
-                                field.render();
-                                FieldManager.addVisibleField(field.attribute.code);
-                                $productValuesPanel.append(field.$el);
+                                if (field.canBeSeen()) {
+                                    field.render();
+                                    FieldManager.addVisibleField(field.attribute.code);
+                                    $productValuesPanel.append(field.$el);
+                                }
                             }, this));
                             this.rendering = false;
                         }, this));

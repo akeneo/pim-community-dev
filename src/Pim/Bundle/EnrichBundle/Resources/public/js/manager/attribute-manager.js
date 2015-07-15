@@ -126,7 +126,6 @@ define([
                         if ('pim_catalog_price_collection' === attribute.type) {
                             newValue.data = this.generateMissingPrices(newValue.data, currencies);
                         }
-
                     }, this));
                 }, this));
 
