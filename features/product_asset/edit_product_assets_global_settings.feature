@@ -21,19 +21,6 @@ Feature: Edit product assets global settings
     And I visit the "Global settings" tab
     And the field Description should contain "My new description"
 
-  Scenario: Successfully edit the description of an asset and back to grid
-    Given I am on the "blue_shirt" asset page
-    And I visit the "Global settings" tab
-    When I fill in the following information:
-      | Description | My new description |
-    And I press "Save and back to grid" on the "Save" dropdown button
-    Then I should be on the assets page
-    And I should see assets blue_shirt
-    And the row "blue_shirt" should contain:
-      | column      | value              |
-      | code        | blue_shirt         |
-      | description | My new description |
-
   Scenario: Successfully add tags to an asset
     Given I am on the "blue_shirt" asset page
     And I visit the "Global settings" tab
