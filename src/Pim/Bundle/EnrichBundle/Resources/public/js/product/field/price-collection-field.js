@@ -18,7 +18,7 @@ define([
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
-            'change .field-input input[type="text"]': 'updateModel'
+            'change .field-input:first input[type="text"]': 'updateModel'
         },
         renderInput: function (context) {
             context.value.data = _.sortBy(context.value.data, 'currency');
@@ -27,14 +27,14 @@ define([
         },
         updateModel: function () {
             var data = [];
-            var $elements = this.$('.field-input .price-input');
-            _.each($elements, _.bind(function (element) {
-                var $input = $(element).children('input');
-
+            var inputs = this.$('.field-input:first .price-input input');
+            _.each(inputs, _.bind(function (input) {
+                var $input = $(input);
                 var inputData = $input.val();
-                if ('' !== inputData) {
-                    data.push({'data': inputData, 'currency': $input.data('currency')});
-                }
+                data.push({
+                    'data': '' === inputData ? null : inputData,
+                    'currency': $input.data('currency')
+                });
             }, this));
 
             this.setCurrentValue(data);

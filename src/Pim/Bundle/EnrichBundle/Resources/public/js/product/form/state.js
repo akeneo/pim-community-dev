@@ -70,8 +70,6 @@ define(
                     })
                 ).css('opacity', this.hasModelChanged() ? 1 : 0);
 
-                this.getRoot().$el.one('change', _.bind(this.render, this));
-
                 return this;
             },
             collectState: function () {

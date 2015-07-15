@@ -74,25 +74,25 @@ class Edit extends Form
     }
 
     /**
-     * @param string $locale locale code
-     * @param string $locale locale label
-     * @param string $flag   class of the flag icon
-     * @param bool   $copy   search in copy panel or main panel
+     * @param string $localeCode locale code
+     * @param string $label      locale label
+     * @param string $flag       class of the flag icon
+     * @param bool   $copy       search in copy panel or main panel
      *
      * @throws ElementNotFoundException
      *
      * @return NodeElement|null
      */
-    public function findLocaleLink($locale, $label = null, $flag = null, $copy = false)
+    public function findLocaleLink($localeCode, $label = null, $flag = null, $copy = false)
     {
         $dropdown = $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown');
         $dropdown->find('css', '.dropdown-toggle')->click();
-        $link = $dropdown->find('css', sprintf('a[data-locale="%s"]', $locale));
+        $link = $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
 
         if (!$link) {
             throw new ElementNotFoundException(
                 $this->getSession(),
-                sprintf('Locale %s link', $locale)
+                sprintf('Locale %s link', $localeCode)
             );
         }
 
@@ -101,7 +101,7 @@ class Edit extends Form
             if (!$flagElement) {
                 throw new ElementNotFoundException(
                     $this->getSession(),
-                    sprintf('Flag not found for locale %s link', $locale)
+                    sprintf('Flag not found for locale %s link', $localeCode)
                 );
             }
             if (strpos($flagElement->getAttribute('class'), $flag) === false) {
@@ -214,7 +214,7 @@ class Edit extends Form
         $isLabel = false;
 
         try {
-            $fieldContainer = $this->findFieldContainer($label, $element);
+            $fieldContainer = $this->findFieldContainer($label);
         } catch (ElementNotFoundException $e) {
             $isLabel = true;
             $fieldContainer = $this->extractLabelElement($label, $element);
@@ -479,16 +479,18 @@ class Edit extends Form
     }
 
     /**
-     * Fills a select2 multi-select field with $values, identified by its $label.
+     * Fills a select2 multi-select field with $values
      *
      * @param NodeElement $fieldContainer
      * @param string      $values
      */
     protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
     {
+        $field = $fieldContainer->find('css', '.form-field');
+
         // clear multi select first
-        $containerClasses = $fieldContainer->getAttribute('class');
-        if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $containerClasses, $matches)) {
+        $fieldClasses = $field->getAttribute('class');
+        if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $fieldClasses, $matches)) {
             $select2Selector = sprintf('.%s div.field-input > input', $matches[0]);
             $script = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
             $this->getSession()->executeScript($script);
@@ -503,11 +505,12 @@ class Edit extends Form
 
         foreach ($this->listToArray($values) as $value) {
             $link->click();
-            $this->getSession()->wait(1000);
-
             $item = $this->spin(function () use ($value) {
-                return $this->find('css', sprintf('.select2-drop li:contains("%s"):not(.select2-selected)', $value));
-            });
+                return $this->find(
+                    'css',
+                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
+                );
+            }, 5);
 
             // Select the value in the displayed dropdown
             if (null !== $item) {
@@ -567,14 +570,14 @@ class Edit extends Form
     }
 
     /**
-     * Fills a metric field with $value, identified by its $label.
+     * Fills a metric field with $value
      *
-     * @param NodeElement $label
+     * @param NodeElement $fieldContainer
      * @param string      $value
      *
      * @throws \InvalidArgumentException
      */
-    protected function fillMetricField(NodeElement $label, $value)
+    protected function fillMetricField(NodeElement $fieldContainer, $value)
     {
         if (false !== strpos($value, ' ')) {
             list($text, $select) = explode(' ', $value);
@@ -583,14 +586,14 @@ class Edit extends Form
             $select = null;
         }
 
-        $field = $label->getParent()->find('css', 'div.field-input');
+        $field = $fieldContainer->find('css', '.field-input');
         if (null !== $select) {
             if (null !== $link = $field->find('css', 'a.select2-choice')) {
                 $link->click();
 
                 $item = $this->spin(function () use ($select) {
                     return $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
-                });
+                }, 5);
             }
 
             if (!$item) {
@@ -602,7 +605,7 @@ class Edit extends Form
             $item->click();
         }
 
-        $this->fillTextField($label, $text);
+        $this->fillTextField($fieldContainer, $text);
     }
 
     /**
@@ -1113,18 +1116,18 @@ class Edit extends Form
     }
 
     /**
-     * @param string $locale
+     * @param string $localeCode
      *
      * @throws \InvalidArgumentException
      */
-    public function compareWith($locale)
+    public function compareWith($localeCode)
     {
         $this->startCopy();
         try {
-            $link = $this->findLocaleLink($locale, null, null, true);
+            $link = $this->findLocaleLink($localeCode, null, null, true);
         } catch (ElementNotFoundException $e) {
             throw new \InvalidArgumentException(
-                sprintf('Locale "%s" is not available for comparison', $locale)
+                sprintf('Locale "%s" is not available for comparison', $localeCode)
             );
         }
 
@@ -1153,15 +1156,15 @@ class Edit extends Form
     /**
      * Manually select translation given the specified field label
      *
-     * @param string $name
+     * @param string $fieldLabel
      *
      * @throws ElementNotFoundException
      */
-    public function manualSelectTranslation($name)
+    public function manualSelectTranslation($fieldLabel)
     {
-        $label = $this->find('css', sprintf('.copy-container header label:contains("%s")', $name));
+        $label = $this->find('css', sprintf('.copy-container header label:contains("%s")', $fieldLabel));
         if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'copy field', 'label', $name);
+            throw new ElementNotFoundException($this->getSession(), 'copy field', 'label', $fieldLabel);
         }
 
         $label->getParent()->getParent()->getParent()

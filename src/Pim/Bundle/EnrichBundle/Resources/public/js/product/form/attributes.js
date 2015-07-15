@@ -186,10 +186,6 @@ define(
                         return;
                     }
 
-                    /* jshint sub:true */
-                    /* jscs:disable requireDotNotation */
-                    this.extensions['copy'].generateCopyFields();
-
                     this.setData(product);
                     this.getRoot().model.trigger('change');
                 }, this));
@@ -222,9 +218,6 @@ define(
 
                                 delete product.values[attributeCode];
                                 delete fields[attributeCode];
-                                /* jshint sub:true */
-                                this.extensions['copy'].generateCopyFields();
-                                /* jscs:enable requireDotNotation */
 
                                 this.setData(product);
 

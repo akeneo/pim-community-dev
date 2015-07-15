@@ -51,9 +51,8 @@ Feature: Edit a product
     When I am on the "sandal" product page
     Then the english ecommerce other_name of "sandal" should be "My awesome sandals"
 
+  # Working well in application but scenario fails
   @skip-pef
-  # Working well in application but scenario fails because context is kept only in regular hash navigation, behat
-  # reloads the completely the page
   Scenario: Successfully preserve channel filter between datagrid and edit form
     Given I am logged in as "Sandra"
     And I am on the "sandal" product page

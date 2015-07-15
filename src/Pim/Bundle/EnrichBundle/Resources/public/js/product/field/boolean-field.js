@@ -22,7 +22,7 @@ define(
             this.$('.switch').bootstrapSwitch();
         },
         updateModel: function () {
-            var data = this.$('.field-input input[type="checkbox"]').get(0).checked;
+            var data = this.$('.field-input:first input[type="checkbox"]').prop('checked');
 
             this.setCurrentValue(data);
         }
