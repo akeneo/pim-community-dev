@@ -120,3 +120,4 @@ pimee_enrich:
         empty: none
 
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
+edit_common_attributes_with_permission: Edit common attributes with permission
