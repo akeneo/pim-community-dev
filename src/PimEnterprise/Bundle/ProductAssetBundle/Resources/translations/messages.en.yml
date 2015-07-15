@@ -85,6 +85,8 @@ pimee_product_asset:
         csv_tag_import.title: Tag import in csv
     notAvailable:
         label: not available
+    asset:
+        title: Asset
 
 btn.create.asset: Create an asset
 btn.drag_or_upload: Drag and drop a file or click here
