@@ -125,8 +125,7 @@
                                                                 {% if 'image' in variation.entity.file.mimeType %}
                                                                     <th>{{'pimee_product_asset.enrich_asset.view.width'|trans}}</th>
                                                                     <th>{{'pimee_product_asset.enrich_asset.view.height'|trans}}</th>
-                                                                    {#<th>{{'pimee_product_asset.enrich_asset.view.resolution'|trans}}</th>#}
-                                                                    {#<th>{{'pimee_product_asset.enrich_asset.view.colors'|trans}}</th>#}
+                                                                    <th>{{'pimee_product_asset.enrich_asset.view.resolution'|trans}}</th>
                                                                 {% endif %}
                                                                 <th>{{'pimee_product_asset.enrich_asset.view.filesize'|trans}}</th>
                                                                 <th>{{'pimee_product_asset.enrich_asset.view.filetype'|trans}}</th>
@@ -137,10 +136,9 @@
                                                             <tr>
                                                                 <td>{{ variation.entity.file.originalFilename }}</td>
                                                                 {% if 'image' in variation.entity.file.mimeType %}
-                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifSizeWidth }} px{% endif %}</td>
-                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifSizeHeight }} px{% endif %}</td>
-                                                                    {#<td>{% if variation.metadata %}{{ variation.metadata.exifResolution }}{% endif %}</td>#}
-                                                                    {#<td>{% if variation.metadata %}{{ variation.metadata.exifColorSpace }}{% endif %}</td>#}
+                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifSizeWidth ? variation.metadata.exifSizeWidth ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}{% endif %}</td>
+                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifSizeHeight ? variation.metadata.exifSizeHeight ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}{% endif %}</td>
+                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifResolution ? variation.metadata.exifResolution : 'pimee_product_asset.notAvailable.label'|trans }}{% endif %}</td>
                                                                 {% endif %}
                                                                 <td>{{ variation.entity.file.size|number_format(0, '.', ' ') }} ko</td>
                                                                 <td>{{ variation.entity.file.mimeType }}</td>
