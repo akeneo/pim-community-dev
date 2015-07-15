@@ -119,5 +119,5 @@ pimee_enrich:
         label: owner groups
         empty: none
 
-add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Cannot add product information without permission
 edit_common_attributes_with_permission: Edit common attributes with permission
