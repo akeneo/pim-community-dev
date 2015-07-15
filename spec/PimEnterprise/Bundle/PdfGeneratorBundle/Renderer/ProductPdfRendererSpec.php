@@ -53,6 +53,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imageAttributes'   => [],
             'uploadDir'         => $uploadDirectory . DIRECTORY_SEPARATOR,
+            'customFont'        => null
         ])->shouldBeCalled();
 
         $this->render($blender, 'plain', ['locale' => 'en_US', 'scope' => 'ecommerce']);
@@ -87,6 +88,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
             'imageAttributes'   => ['main_image' => $mainImage],
             'uploadDir'         => $uploadDirectory . DIRECTORY_SEPARATOR,
+            'customFont'        => null
         ])->shouldBeCalled();
 
         $this->render($blender, 'plain', ['locale' => 'en_US', 'scope' => 'ecommerce']);
