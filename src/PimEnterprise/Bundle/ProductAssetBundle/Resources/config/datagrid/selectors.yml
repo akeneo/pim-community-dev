@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.extension.selector.orm.product_asset.class:   Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Selector\ORM\ReferenceDataSelector
+    pimee_product_asset.extension.selector.orm.product_asset.class:   PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Extension\Selector\Orm\ProductValue\AssetsSelector
 
 services:
     pimee_product_asset.extension.selector.orm.product_asset:
