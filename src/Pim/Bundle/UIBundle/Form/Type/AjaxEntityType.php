@@ -107,7 +107,9 @@ class AjaxEntityType extends AbstractType
                 'route_parameters'      => [],
                 'data_class'            => null,
                 'error_bubbling'        => false,
-                'minimum_input_length'  => 0
+                'minimum_input_length'  => 0,
+                'locale'                => null,
+                'url'                   => null,
             ]
         );
         $resolver
