@@ -21,34 +21,26 @@ Feature: Validate textarea attributes of a product
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
-  @skip-pef
   Scenario: Validate the max characters constraint of textarea attribute
     Given I change the Info to "information"
     And I save the product
-    Then I should see validation tooltip "This value is too long. It should have 5 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is too long. It should have 5 characters or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the max characters constraint of scopable textarea attribute
-    Given I change the "mobile Description" to "information"
+    Given I change the Description for scope mobile to "information"
     And I save the product
-    Then I should see validation tooltip "This value is too long. It should have 5 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is too long. It should have 5 characters or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the max characters constraint of textarea attribute with WYSIWYG
-    Given I change the "Longinfo" to "information"
+    Given I change the Longinfo to "information"
     And I save the product
-    Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is too long. It should have 10 characters or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the max characters constraint of scopable textarea attribute with WYSIWYG
-    Given I change the "mobile Longdescription" to "information"
+    Given I change the Longdescription for scope mobile to "information"
     And I save the product
-    Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is too long. It should have 10 characters or less."
+    And there should be 1 error in the "Product information" tab

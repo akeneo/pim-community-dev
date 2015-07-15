@@ -1,10 +1,10 @@
-@javascript @info https://akeneo.atlassian.net/browse/PIM-3331
+@javascript @jira https://akeneo.atlassian.net/browse/PIM-3331
 Feature: Create product drafts for new attributes added to the product
   In order to be able to propose changes to product data for new attributes
   As a redactor
   I need to be able to propose changes to a newly added attribute to the product's family
 
-  @skip-pef
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4513
   Scenario: Create product draft for a new attribute of the family
     Given a "clothing" catalog configuration
     And the following product:
@@ -20,7 +20,7 @@ Feature: Create product drafts for new attributes added to the product
     And I save the product
     Then I should see "Send for approval"
 
-  @skip-pef
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4513
   Scenario: Save a product draft with empty custom attribute values
     Given a "clothing" catalog configuration
     And the following family:

@@ -12,16 +12,13 @@ Feature: Validate identifier attribute of a product
       | bar | summer_collection |
     And I am logged in as "Mary"
 
-  @skip-pef
   Scenario: Validate the unique constraint of identifier attribute
     Given I am on the "foo" product page
     And I change the SKU to "bar"
     And I save the product
-    Then I should see validation tooltip "The value bar is already set on another product for the unique attribute sku"
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "The value bar is already set on another product for the unique attribute sku"
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the max characters constraint of identifier attribute
     Given I edit the "sku" attribute
     And I change the "Max characters" to "10"
@@ -29,11 +26,9 @@ Feature: Validate identifier attribute of a product
     When I am on the "foo" product page
     And I change the SKU to "sku-0000000"
     And I save the product
-    Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is too long. It should have 10 characters or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the regexp validation rule constraint of identifier attribute
     Given I edit the "sku" attribute
     And I change the "Validation rule" to "Regular expression"
@@ -42,6 +37,5 @@ Feature: Validate identifier attribute of a product
     When I am on the "foo" product page
     And I change the SKU to "001"
     And I save the product
-    Then I should see validation tooltip "This value is not valid."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is not valid."
+    And there should be 1 error in the "Product information" tab
