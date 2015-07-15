@@ -42,7 +42,7 @@ class MediaNormalizer implements NormalizerInterface
             // happens in case of mass edition
             return [
                 'originalFilename' => $file->getClientOriginalName(),
-                'filePath' => $file->getPathname(),
+                'filePath'         => $file->getPathname(),
             ];
         }
 

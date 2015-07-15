@@ -36,4 +36,20 @@ Feature: Browse families
     And I sort by "code" value ascending
     When I refresh current page
     And I wait 3 seconds
-    Then the rows should be sorted ascending by Code
+    Then the rows should be sorted ascending by code
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4494
+  Scenario: Successfully sort families and use them for mass edit
+    Given a "footwear" catalog configuration
+    And the following product:
+      | sku         | family   |
+      | caterpillar | boots    |
+      | dr-martens  | boots    |
+      | tbs         | sneakers |
+      | vans        | sneakers |
+    And I am logged in as "Julia"
+    And I am on the products page
+    And I sort by "family" value ascending
+    And the rows should be sorted ascending by family
+    Then I mass-edit products caterpillar and dr-martens
+    And I should see "Mass Edit (2 products)"

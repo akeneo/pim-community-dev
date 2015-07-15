@@ -40,7 +40,6 @@ class TechnicalContext extends RawMinkContext
                         ['attribute' => $attribute]
                     );
                     $newData = $serializer->normalize($createdValue, 'json', ['entity' => 'product']);
-
                     assertSame(
                         $valueData,
                         $newData,

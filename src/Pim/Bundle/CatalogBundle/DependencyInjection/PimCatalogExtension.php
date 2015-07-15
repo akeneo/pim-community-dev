@@ -25,6 +25,7 @@ class PimCatalogExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
+        $loader->load('comparators.yml');
         $loader->load('context.yml');
         $loader->load('doctrine.yml');
         $loader->load('entities.yml');
@@ -47,13 +48,12 @@ class PimCatalogExtension extends Extension
     }
 
     /**
-     * Loads the validation files
+     * Loads the validation files from all bundles
      *
      * @param ContainerBuilder $container
      */
     protected function loadValidationFiles(ContainerBuilder $container)
     {
-        // load validation files
         $dirs = array();
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
@@ -67,12 +67,13 @@ class PimCatalogExtension extends Extension
         foreach ($finder->files()->in($dirs) as $file) {
             $mappingFiles[$file->getBasename('.yml')] = $file->getRealPath();
         }
+        $mappingFiles = array_merge(
+            $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files'),
+            array_values($mappingFiles)
+        );
         $container->setParameter(
             'validator.mapping.loader.yaml_files_loader.mapping_files',
-            array_merge(
-                $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files'),
-                array_values($mappingFiles)
-            )
+            $mappingFiles
         );
     }
 

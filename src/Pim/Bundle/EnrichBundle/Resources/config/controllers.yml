@@ -88,6 +88,7 @@ services:
             - '@pim_enrich.form.handler.channel'
             - '@pim_enrich.form.channel'
             - '@pim_catalog.remover.channel'
+            - '@pim_catalog.saver.locale'
 
     pim_enrich.controller.currency:
         scope: request
@@ -176,7 +177,7 @@ services:
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-            - '@pim_base_connector.launcher.simple_job_launcher'
+            - '@pim_connector.launcher.simple_job_launcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.connectors'
             - '@pim_enrich.mass_edit_action.operation.registry'
@@ -361,7 +362,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.updater.product'
+            - '@pim_catalog.updater.product_property_setter'
             - '@pim_catalog.saver.product'
             - '@pim_internal_api_serializer'
             - '@pim_validator'
@@ -384,7 +385,7 @@ services:
             - '@form.factory'
             - '@pim_catalog.repository.product'
             - '@pim_comment.repository.comment'
-            - '@pim_catalog.saver.comment'
+            - '@pim_comment.saver.comment'
             - '@pim_comment.builder.comment'
             - '@pim_serializer'
             - '@validator'

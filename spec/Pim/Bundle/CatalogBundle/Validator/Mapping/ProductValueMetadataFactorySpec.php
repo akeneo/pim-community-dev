@@ -56,6 +56,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getBackendType()->willReturn('varchar');
+        $attribute->getCode()->willReturn('myCode');
         $guesser->guessConstraints($attribute)->willReturn([$unique, $validNumber]);
 
         $unique->getTargets()->willReturn(Constraint::PROPERTY_CONSTRAINT);
@@ -80,6 +81,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getBackendType()->willReturn('varchar');
+        $attribute->getCode()->willReturn('myCode');
         $guesser->guessConstraints($attribute)->willReturn([$property]);
 
         $property->getTargets()->willReturn(Constraint::PROPERTY_CONSTRAINT);
@@ -100,6 +102,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getBackendType()->willReturn('varchar');
+        $attribute->getCode()->willReturn('myCode');
         $guesser->guessConstraints($attribute)->willReturn([$class]);
 
         $class->getTargets()->willReturn(Constraint::CLASS_CONSTRAINT);
@@ -120,6 +123,7 @@ class ProductValueMetadataFactorySpec extends ObjectBehavior
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getBackendType()->willReturn('varchar');
+        $attribute->getCode()->willReturn('myCode');
         $guesser->guessConstraints($attribute)->willReturn([$multiTargets]);
 
         $multiTargets->getTargets()->willReturn([Constraint::PROPERTY_CONSTRAINT, Constraint::CLASS_CONSTRAINT]);

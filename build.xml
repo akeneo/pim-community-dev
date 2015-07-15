@@ -10,9 +10,23 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
+    <target name="build-behat-deprecated" depends="prepare-deprecated-behat,prepare,composer,vendors,install-all-behat,behat"/>
+
     <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
-    <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
+    <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,php-cs-fixer,phpcpd,phpdoc"/>
+
+    <target name="prepare-deprecated-behat" description="Build deprecated behats">
+        <!--
+            In order to keep old import behats with deprecated processor, writer, and reader, we delete
+            the new config file and replace this one with the old one, and we also delete the one in
+            connector bundle to avoid this one to be also called.
+        -->
+        <delete file="${basedir}/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
+        <delete file="${basedir}/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/features/Context/fixtures/base_connector_deprecated_batch_jobs.yml" tofile="${basedir}/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/features/Context/fixtures/connector_deprecated_batch_jobs.yml" tofile="${basedir}/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
+    </target>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
@@ -146,6 +160,26 @@
             <arg value="--extensions=php" />
             <arg path="${basedir}/src" />
             <arg path="${basedir}/features" />
+        </exec>
+    </target>
+
+    <target name="php-cs-fixer" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
+        <exec executable="bash">
+            <arg value="-c"/>
+            <arg value="curl http://get.sensiolabs.org/php-cs-fixer.phar -o ${basedir}/bin/php-cs-fixer"/>
+        </exec>
+
+        <exec executable="bash">
+            <arg value="-c"/>
+            <arg value="chmod a+x ${basedir}/bin/php-cs-fixer"/>
+        </exec>
+
+        <exec executable="${basedir}/bin/php-cs-fixer" failonerror="true">
+            <arg value="fix" />
+            <arg path="${basedir}/src" />
+            <arg value="-v" />
+            <arg value="--config-file=${basedir}/.php_cs.local.php" />
+            <arg value="--dry-run" />
         </exec>
     </target>
 

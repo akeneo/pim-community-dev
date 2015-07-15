@@ -8,9 +8,9 @@ connector:
                 perform:
                     title: update_product_value
                     services:
-                        reader:    pim_enrich.mass_edit.filtered.reader
-                        processor: pim_enrich.mass_edit.update_product_value.processor
-                        writer:    pim_base_connector.writer.doctrine.product
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pim_enrich.connector.processor.mass_edit.product.update_value
+                        writer:    pim_connector.writer.doctrine.product
                     parameters:
                         batch_size: 1000
         add_product_value:
@@ -20,9 +20,9 @@ connector:
                 perform:
                     title: add_product_value
                     services:
-                        reader:    pim_enrich.mass_edit.filtered.reader
-                        processor: pim_enrich.mass_edit.add_product_value.processor
-                        writer:    pim_base_connector.writer.doctrine.product
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pim_enrich.connector.processor.mass_edit.product.add_value
+                        writer:    pim_connector.writer.doctrine.product
                     parameters:
                         batch_size: 1000
         edit_common_attributes:
@@ -32,16 +32,16 @@ connector:
                 perform:
                     title: edit_common_attributes
                     services:
-                        reader:    pim_enrich.mass_edit.filtered.reader
-                        processor: pim_enrich.mass_edit.edit_common_attributes.processor
-                        writer:    pim_base_connector.writer.doctrine.product
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pim_enrich.connector.processor.mass_edit.product.edit_common_attributes
+                        writer:    pim_connector.writer.doctrine.product
                     parameters:
                         batch_size: 1000
                 clean:
                     title: edit_common_attributes_clean
                     class: "%pim_enrich.step.mass_edit.step.class%"
                     services:
-                        cleaner: pim_enrich.mass_edit.temporary_file.cleaner
+                        cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner
         set_attribute_requirements:
             title: set_attribute_requirements
             type:  mass_edit
@@ -49,8 +49,8 @@ connector:
                 perform:
                     title: set_attribute_requirements
                     services:
-                        reader:    pim_enrich.mass_edit.family.reader
-                        processor: pim_enrich.mass_edit.set_attribute_requirements.processor
+                        reader:    pim_enrich.connector.reader.mass_edit.family
+                        processor: pim_enrich.connector.processor.mass_edit.family.set_requirements
                         writer:    pim_base_connector.writer.doctrine
                     parameters:
                         batch_size: 1000
@@ -61,8 +61,8 @@ connector:
                 perform:
                     title: csv_product_quick_export
                     services:
-                        reader:    pim_enrich.mass_edit.filtered.reader
-                        processor: pim_enrich.mass_edit.product_to_flat_array.processor
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pim_enrich.connector.processor.quick_export.product_to_flat_array
                         writer:    pim_base_connector.writer.file.csv_product
                     parameters:
                         batch_size: 1000
@@ -74,12 +74,12 @@ connector:
                     title: add_to_variant_group_clean
                     class: "%pim_enrich.step.mass_edit.step.class%"
                     services:
-                        cleaner: pim_enrich.mass_edit.add_to_variant.cleaner
+                        cleaner: pim_enrich.connector.item.mass_edit.variant_group_cleaner
                 perform:
                     title: add_to_variant_group
                     services:
-                        reader:    pim_enrich.mass_edit.filtered.reader
-                        processor: pim_enrich.mass_edit.add_product_to_variant_group.processor
-                        writer:    pim_base_connector.writer.doctrine.product
+                        reader:    pim_enrich.connector.reader.mass_edit.product
+                        processor: pim_enrich.connector.processor.mass_edit.product.add_to_variant_group
+                        writer:    pim_connector.writer.doctrine.product
                     parameters:
                         batch_size: 1000

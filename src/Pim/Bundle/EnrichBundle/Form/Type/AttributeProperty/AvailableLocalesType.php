@@ -30,10 +30,10 @@ class AvailableLocalesType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'required' => false,
-                'multiple' => true,
-                'select2' => true,
-                'class' => 'Pim\Bundle\CatalogBundle\Entity\Locale',
+                'required'      => false,
+                'multiple'      => true,
+                'select2'       => true,
+                'class'         => 'Pim\Bundle\CatalogBundle\Entity\Locale',
                 'query_builder' => function (LocaleRepositoryInterface $repository) {
                     return $repository->getActivatedLocalesQB();
                 }

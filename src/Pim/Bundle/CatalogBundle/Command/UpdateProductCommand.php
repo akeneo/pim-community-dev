@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,9 +30,9 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $updatesExample = [
             [
-                'type' => 'set_data',
+                'type'  => 'set_data',
                 'field' => 'name',
-                'data' => 'My name'
+                'data'  => 'My name'
             ],
             [
                 'type'        => 'copy_data',
@@ -43,7 +46,7 @@ class UpdateProductCommand extends ContainerAwareCommand
             [
                 'type'  => 'add_data',
                 'field' => 'categories',
-                'data' => ['tshirt']
+                'data'  => ['tshirt']
             ],
         ];
 
@@ -178,7 +181,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function applySetData(ProductInterface $product, array $update)
     {
-        $updater = $this->getUpdater();
+        $updater = $this->getProductPropertySetter();
         $updater->setData(
             $product,
             $update['field'],
@@ -193,7 +196,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function applyCopyData(ProductInterface $product, array $update)
     {
-        $updater = $this->getUpdater();
+        $updater = $this->getProductPropertyCopier();
         $updater->copyData(
             $product,
             $product,
@@ -201,9 +204,9 @@ class UpdateProductCommand extends ContainerAwareCommand
             $update['to_field'],
             [
                 'from_locale' => $update['from_locale'],
-                'to_locale' => $update['to_locale'],
-                'from_scope' => $update['from_scope'],
-                'to_scope' => $update['to_scope']
+                'to_locale'   => $update['to_locale'],
+                'from_scope'  => $update['from_scope'],
+                'to_scope'    => $update['to_scope']
             ]
         );
     }
@@ -214,7 +217,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function applyAddData(ProductInterface $product, array $update)
     {
-        $updater = $this->getUpdater();
+        $updater = $this->getProductPropertyAdder();
         $updater->addData(
             $product,
             $update['field'],
@@ -229,7 +232,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function applyRemoveData(ProductInterface $product, array $update)
     {
-        $updater = $this->getUpdater();
+        $updater = $this->getProductPropertyRemover();
         $updater->removeData(
             $product,
             $update['field'],
@@ -239,11 +242,35 @@ class UpdateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ProductUpdaterInterface
+     * @return PropertySetterInterface
      */
-    protected function getUpdater()
+    protected function getProductPropertySetter()
     {
-        return $this->getContainer()->get('pim_catalog.updater.product');
+        return $this->getContainer()->get('pim_catalog.updater.product_property_setter');
+    }
+
+    /**
+     * @return PropertyAdderInterface
+     */
+    protected function getProductPropertyAdder()
+    {
+        return $this->getContainer()->get('pim_catalog.updater.product_property_adder');
+    }
+
+    /**
+     * @return PropertyRemoverInterface
+     */
+    protected function getProductPropertyRemover()
+    {
+        return $this->getContainer()->get('pim_catalog.updater.product_property_remover');
+    }
+
+    /**
+     * @return PropertyCopierInterface
+     */
+    protected function getProductPropertyCopier()
+    {
+        return $this->getContainer()->get('pim_catalog.updater.product_property_copier');
     }
 
     /**

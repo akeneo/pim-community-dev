@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
@@ -24,8 +24,8 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     /** @var DenormalizerInterface */
     protected $valueDenormalizer;
 
-    /** @var FieldNameBuilder */
-    protected $fieldNameBuilder;
+    /** @var AttributeColumnInfoExtractor */
+    protected $fieldExtractor;
 
     /** @var string */
     protected $valueClass;
@@ -34,17 +34,17 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     protected $supportedFormats = array('csv');
 
     /**
-     * @param DenormalizerInterface $valueDenormalizer
-     * @param FieldNameBuilder      $fieldNameBuilder
-     * @param string                $valueClass
+     * @param DenormalizerInterface        $valueDenormalizer
+     * @param AttributeColumnInfoExtractor $fieldExtractor
+     * @param string                       $valueClass
      */
     public function __construct(
         DenormalizerInterface $valueDenormalizer,
-        FieldNameBuilder $fieldNameBuilder,
+        AttributeColumnInfoExtractor $fieldExtractor,
         $valueClass
     ) {
         $this->valueDenormalizer = $valueDenormalizer;
-        $this->fieldNameBuilder  = $fieldNameBuilder;
+        $this->fieldExtractor  = $fieldExtractor;
         $this->valueClass        = $valueClass;
     }
 
@@ -55,7 +55,7 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     {
         $productValues = [];
         foreach ($data as $attFieldName => $dataValue) {
-            $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
+            $attributeInfos = $this->fieldExtractor->extractColumnInfo($attFieldName);
 
             if (null !== $attributeInfos) {
                 $attribute = $attributeInfos['attribute'];

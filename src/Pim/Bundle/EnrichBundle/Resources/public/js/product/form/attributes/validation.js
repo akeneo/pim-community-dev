@@ -4,6 +4,7 @@
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @author    Filips Alpe <filips@akeneo.com>
+ * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -21,50 +22,46 @@ define(
     ],
     function ($, _, Backbone, BaseForm, mediator, messenger, FieldManager, ValidationError, UserContext) {
         return BaseForm.extend({
+            validationErrors: {},
             initialize: function () {
-                mediator.off(null, null, 'context:product:form:validation');
-                mediator.on('validation_error', _.bind(this.validationError, this), 'form:product:validation');
-                mediator.on(
-                    'product:action:post_update',
-                    _.bind(this.removeValidationErrors, this),
-                    'context:product:form:validation'
-                );
+                this.stopListening(mediator, 'product:action:post_update');
+                this.listenTo(mediator, 'product:action:post_update', this.onPostUpdate);
+
+                this.stopListening(mediator, 'entity:action:validation_error');
+                this.listenTo(mediator, 'entity:action:validation_error', this.onValidationError);
+
+                this.stopListening(mediator, 'field:extension:add');
+                this.listenTo(mediator, 'field:extension:add', this.addExtension);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
-            validationError: function (validationErrors) {
-                this.removeValidationErrors();
-                this.addValidationErrors(validationErrors).then(function () {
-                    mediator.trigger('product:action:post_validation_error');
-                });
+            onPostUpdate: function () {
+                this.validationErrors = {};
             },
-            removeValidationErrors: function () {
-                var fields = FieldManager.getFields();
+            onValidationError: function (event) {
+                this.validationErrors = event.response;
 
-                _.each(fields, function (field) {
-                    field.setValid(true);
-                    field.removeElement('footer', 'validation');
-                });
-            },
-            addValidationErrors: function (data) {
                 // Global errors with an empty property path
-                if (data[''] && data[''].message) {
-                    messenger.notificationFlashMessage('error', data[''].message);
+                if (this.validationErrors[''] && this.validationErrors[''].message) {
+                    messenger.notificationFlashMessage('error', this.validationErrors[''].message);
                 }
+            },
+            addExtension: function (event) {
+                var field = event.field;
+                var valuesErrors = this.validationErrors.values;
 
-                return $.when.apply($, _.map(data.values, _.bind(function (fieldErrors, attributeCode) {
-                    return FieldManager.getField(attributeCode)
-                        .done(_.bind(function (field) {
-                            field.addElement(
-                                'footer',
-                                'validation',
-                                new ValidationError(fieldErrors, this)
-                            );
+                if (valuesErrors && _.has(valuesErrors, field.attribute.code)) {
+                    this.addErrorsToField(field, valuesErrors[field.attribute.code]);
+                }
+            },
+            addErrorsToField: function (field, fieldErrors) {
+                field.addElement(
+                    'footer',
+                    'validation',
+                    new ValidationError(fieldErrors, this)
+                );
 
-                            field.setValid(false);
-                        }, this)
-                    );
-                }, this)));
+                field.setValid(false);
             },
             changeContext: function (locale, scope) {
                 if (locale) {

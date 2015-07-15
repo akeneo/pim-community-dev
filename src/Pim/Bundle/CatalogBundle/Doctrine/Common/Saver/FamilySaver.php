@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -16,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilySaver implements SaverInterface
+class FamilySaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -63,6 +64,28 @@ class FamilySaver implements SaverInterface
         }
         if (true === $options['schedule']) {
             $this->completenessManager->scheduleForFamily($family);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $families, array $options = [])
+    {
+        if (empty($families)) {
+            return;
+        }
+
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+        $itemOptions = $allOptions;
+        $itemOptions['flush'] = false;
+
+        foreach ($families as $family) {
+            $this->save($family, $itemOptions);
+        }
+
+        if (true === $allOptions['flush']) {
+            $this->objectManager->flush();
         }
     }
 }

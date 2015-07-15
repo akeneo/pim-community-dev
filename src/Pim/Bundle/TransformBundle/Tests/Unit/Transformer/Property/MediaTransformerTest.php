@@ -41,9 +41,9 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'no_file_no_media' => array(false, false),
-            'file_no_media' => array(true, false),
-            'no_file_media' => array(false, true),
-            'file_media' => array(true, true),
+            'file_no_media'    => array(true, false),
+            'no_file_media'    => array(false, true),
+            'file_media'       => array(true, true),
         );
     }
 
@@ -126,6 +126,8 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                     'getDatetime',
                     'setEntity',
                     'getInteger',
+                    'getProduct',
+                    'setProduct',
                     '__toString'
                 ]
             )

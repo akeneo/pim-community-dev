@@ -371,6 +371,7 @@ class ProductBuilder implements ProductBuilderInterface
         foreach ($values as $value) {
             $existingValues[] = array(
                 'attribute' => $value->getAttribute()->getCode(),
+                'type'      => $value->getAttribute()->getAttributeType(),
                 'locale'    => $value->getLocale(),
                 'scope'     => $value->getScope()
             );

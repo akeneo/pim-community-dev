@@ -1,6 +1,7 @@
 Acme\Bundle\AppBundle\Model\ProductValue:
     type: entity
     table: pim_catalog_product_value
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         myNewField:
             type: string

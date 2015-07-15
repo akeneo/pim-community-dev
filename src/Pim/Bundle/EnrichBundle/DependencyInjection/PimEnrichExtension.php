@@ -32,9 +32,11 @@ class PimEnrichExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_icons.yml');
-        $loader->load('cleaners.yml');
         $loader->load('colors.yml');
         $loader->load('command.yml');
+        $loader->load('connector/cleaners.yml');
+        $loader->load('connector/processors.yml');
+        $loader->load('connector/readers.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
@@ -49,9 +51,8 @@ class PimEnrichExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('mass_actions.yml');
         $loader->load('normalizers.yml');
-        $loader->load('processors.yml');
         $loader->load('providers.yml');
-        $loader->load('readers.yml');
+        $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('resolvers.yml');
         $loader->load('savers.yml');

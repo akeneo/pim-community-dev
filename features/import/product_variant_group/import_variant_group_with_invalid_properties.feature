@@ -15,8 +15,8 @@ Feature: Execute an import
   Scenario: Stop the import if variant group code column is not provided
     Given the following CSV file to import:
       """
-      name-en_US;axis;description-en_US-tablet;color
-      My sandal;color;My sandal description for locale en_US and channel tablet;white
+      type;name-en_US;axis;description-en_US-tablet;color
+      VARIANT;My sandal;color;My sandal description for locale en_US and channel tablet;white
       """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
@@ -24,21 +24,24 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see "No identifier column"
+    And I should see:
+    """
+    Field "code" is expected, provided fields are "type, name-en_US, axis, description-en_US-tablet, color"
+    """
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to replace the axis color by manufacturer)
     Given the following CSV file to import:
-    """
-    code;axis;label-en_US
-    SANDAL;manufacturer,size;"Sandal"
-    """
+      """
+      code;type;axis;label-en_US
+      SANDAL;VARIANT;manufacturer,size;"Sandal"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Attributes: This property cannot be changed."
-    And I should see "Read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
@@ -47,17 +50,17 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to remove the axis size)
     Given the following CSV file to import:
-    """
-    code;axis;label-en_US
-    SANDAL;color;"Sandal"
-    """
+      """
+      code;type;axis;label-en_US
+      SANDAL;VARIANT;color;"Sandal"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Attributes: This property cannot be changed."
-    And I should see "Read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
@@ -66,17 +69,17 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter a new variant group with no axis
     Given the following CSV file to import:
-    """
-    code;axis;label-en_US
-    NO_AXIS;;"My VG with no axis"
-    """
+      """
+      code;type;axis;label-en_US
+      NO_AXIS;VARIANT;;"My VG with no axis"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Variant group \"NO_AXIS\" must be defined with at least one axis"
-    And I should see "Read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
@@ -85,17 +88,17 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter an existing group which is not a variant group
     Given the following CSV file to import:
-    """
-    code;axis;label-en_US
-    NOT_VG;;"My standard not updatable group"
-    """
+      """
+      code;type;axis;label-en_US
+      NOT_VG;VARIANT;;"My standard not updatable group"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Cannot process group \"NOT_VG\", only variant groups are accepted"
-    And I should see "Read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |

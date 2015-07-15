@@ -2,6 +2,7 @@ Acme\Bundle\AppBundle\Entity\Color:
     repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
     type: entity
     table: acme_reference_data_color
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
             type: integer

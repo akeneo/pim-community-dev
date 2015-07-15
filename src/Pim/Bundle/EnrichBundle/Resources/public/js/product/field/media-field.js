@@ -33,7 +33,7 @@ define([
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
-                        templateContext.mediaUrl = this.getMediaUrl(templateContext.value.value);
+                        templateContext.mediaUrl = this.getMediaUrl(templateContext.value.data);
                         templateContext.inUpload = !this.isReady();
                         return templateContext;
                     }, this));
@@ -49,15 +49,8 @@ define([
 
                 return null;
             },
-            renderCopyInput: function (context, locale, scope) {
-                context.value = AttributeManager.getValue(
-                    this.model.get('values'),
-                    this.attribute,
-                    locale,
-                    scope
-                );
-
-                context.mediaUrl = this.getMediaUrl(context.value.value);
+            renderCopyInput: function (context) {
+                context.mediaUrl = this.getMediaUrl(context.value.data);
 
                 return Field.prototype.renderCopyInput.apply(this, arguments);
             },
@@ -123,7 +116,7 @@ define([
                 }
             },
             previewImage: function () {
-                var mediaUrl = this.getMediaUrl(this.getCurrentValue().value);
+                var mediaUrl = this.getMediaUrl(this.getCurrentValue().data);
                 if (mediaUrl) {
                     $.slimbox(mediaUrl, '', {overlayOpacity: 0.3});
                 }
@@ -136,7 +129,7 @@ define([
                     this.uploadContext.scope
                 );
 
-                productValue.value = value;
+                productValue.data = value;
                 mediator.trigger('entity:form:edit:update_state');
             }
         });

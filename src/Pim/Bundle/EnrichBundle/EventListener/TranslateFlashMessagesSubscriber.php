@@ -39,7 +39,7 @@ class TranslateFlashMessagesSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => ['translate', 128],
+            KernelEvents::VIEW     => ['translate', 128],
             KernelEvents::RESPONSE => ['translate', 128],
         ];
     }
@@ -51,6 +51,10 @@ class TranslateFlashMessagesSubscriber implements EventSubscriberInterface
      */
     public function translate(KernelEvent $event)
     {
+        if (!$event->getRequest()->hasSession()) {
+            return;
+        }
+
         $bag = $event->getRequest()->getSession()->getFlashBag();
         $messages = [];
         foreach ($bag->all() as $type => $flashes) {

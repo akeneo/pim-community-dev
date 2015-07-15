@@ -2,40 +2,22 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Adder\AttributeAdderInterface;
-use Pim\Bundle\CatalogBundle\Updater\Adder\FieldAdderInterface;
-use Pim\Bundle\CatalogBundle\Updater\Copier\AttributeCopierInterface;
-use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Copier\FieldCopierInterface;
-use Pim\Bundle\CatalogBundle\Updater\Remover\AttributeRemoverInterface;
-use Pim\Bundle\CatalogBundle\Updater\Remover\FieldRemoverInterface;
-use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Setter\AttributeSetterInterface;
-use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
-use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
-use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepositoryInterface $attributeRepository,
-        SetterRegistryInterface $setterRegistry,
-        CopierRegistryInterface $copierRegistry,
-        AdderRegistryInterface $adderRegistry,
-        RemoverRegistryInterface $removerRegistry
+        PropertySetterInterface $propertySetter,
+        PropertyCopierInterface $propertyCopier,
+        ProductTemplateUpdaterInterface $templateUpdater,
+        ValidatorInterface $validator
     ) {
-        $this->beConstructedWith(
-            $attributeRepository,
-            $setterRegistry,
-            $copierRegistry,
-            $adderRegistry,
-            $removerRegistry
-        );
+        $this->beConstructedWith($propertySetter, $propertyCopier, $templateUpdater, $validator);
     }
 
     function it_is_initializable()
@@ -43,214 +25,73 @@ class ProductUpdaterSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\ProductUpdater');
     }
 
-    function it_sets_a_value(
-        $setterRegistry,
-        $attributeRepository,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        AttributeInterface $attribute,
-        AttributeSetterInterface $setter
-    ) {
+    function it_is_a_updater()
+    {
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+    }
+
+    function it_throws_an_exception_when_trying_to_update_anything_else_than_a_product()
+    {
+        $this->shouldThrow(new \InvalidArgumentException('Expects a "Pim\Bundle\CatalogBundle\Model\ProductInterface", "stdClass" provided.'))->during(
+            'update', [new \stdClass(), []]
+        );
+    }
+
+    function it_updates_a_product($propertySetter, ProductInterface $product)
+    {
+        $propertySetter
+            ->setData($product, 'groups', ['related1', 'related2'])
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData($product, 'name', 'newname', ['locale' => null, 'scope' => null])
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData($product, 'desc', 'newdescUS', ['locale' => 'en_US', 'scope' => null])
+            ->shouldBeCalled();
+
+        $updates = [
+            'groups' => ['related1', 'related2'],
+            'name' => [['data' => 'newname', 'locale' => null, 'scope' => null]],
+            'desc' => [['data' => 'newdescUS', 'locale' => 'en_US', 'scope' => null]],
+        ];
+
+        $this->update($product, $updates, []);
+    }
+
+    function it_sets_a_value($propertySetter, ProductInterface $product1, ProductInterface $product2)
+    {
         $products = [$product1, $product2];
 
-        $attributeRepository->findOneBy(['code' => 'field'])->willReturn($attribute);
-        $setterRegistry->getAttributeSetter($attribute)->willReturn($setter);
-        $setter->setAttributeData($product1, $attribute, 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
-        $setter->setAttributeData($product2, $attribute, 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])->shouldBeCalled();
+        $propertySetter
+            ->setData($product1, 'field', 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData($product2, 'field', 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])
+            ->shouldBeCalled();
 
         $this->setValue($products, 'field', 'data', 'fr_FR', 'ecommerce');
     }
 
-    function it_throws_an_exception_when_it_sets_an_unknown_field($attributeRepository, ProductInterface $product)
-    {
-        $attributeRepository->findOneBy(Argument::any())->willReturn(null);
-        $this->shouldThrow(new \LogicException('No setter found for field "unknown_field"'))->during(
-            'setValue', [[$product], 'unknown_field', 'data', 'fr_FR', 'ecommerce']
-        );
-    }
-
     function it_copies_a_value(
-        $copierRegistry,
-        $attributeRepository,
+        $propertyCopier,
         ProductInterface $product1,
-        ProductInterface $product2,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        AttributeCopierInterface $copier
+        ProductInterface $product2
     ) {
         $products = [$product1, $product2];
+        $options = [
+            'from_locale' => 'from_locale',
+            'to_locale' => 'to_locale',
+            'from_scope' => 'from_scope',
+            'to_scope' => 'to_scope',
+        ];
 
-        $attributeRepository->findOneBy(['code' => 'from_field'])->willReturn($fromAttribute);
-        $attributeRepository->findOneBy(['code' => 'to_field'])->willReturn($toAttribute);
-        $copierRegistry->getAttributeCopier($fromAttribute, $toAttribute)->willReturn($copier);
-        foreach ($products as $product) {
-            $copier
-                ->copyAttributeData(
-                    $product,
-                    $product,
-                    $fromAttribute,
-                    $toAttribute,
-                    [
-                        'from_locale' => 'from_locale',
-                        'to_locale' => 'to_locale',
-                        'from_scope' => 'from_scope',
-                        'to_scope' => 'to_scope'
-                    ]
-                )
-                ->shouldBeCalled();
-        }
+        $propertyCopier
+            ->copyData($product1, $product1, 'from_field', 'to_field', $options)
+            ->shouldBeCalled();
+        $propertyCopier
+            ->copyData($product2, $product2, 'from_field', 'to_field', $options)
+            ->shouldBeCalled();
 
         $this->copyValue($products, 'from_field', 'to_field', 'from_locale', 'to_locale', 'from_scope', 'to_scope');
-    }
-
-    function it_throws_an_exception_when_it_copies_an_unknown_field($attributeRepository, ProductInterface $product)
-    {
-        $attributeRepository->findOneBy(Argument::any())->willReturn(null);
-        $this->shouldThrow(new \LogicException('No copier found for fields "unknown_field" and "to_field"'))->during(
-            'copyValue', [[$product], 'unknown_field', 'to_field', 'from_locale', 'to_locale', 'from_scope', 'to_scope']
-        );
-    }
-
-    function it_sets_a_data_to_a_product_attribute(
-        $setterRegistry,
-        $attributeRepository,
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        AttributeSetterInterface $setter
-    ) {
-        $attributeRepository->findOneBy(['code' => 'name'])->willReturn($attribute);
-        $setterRegistry->getAttributeSetter($attribute)->willReturn($setter);
-        $setter
-            ->setAttributeData($product, $attribute, 'my name', [])
-            ->shouldBeCalled();
-
-        $this->setData($product, 'name', 'my name', []);
-    }
-
-    function it_sets_a_data_to_a_product_field(
-        $setterRegistry,
-        $attributeRepository,
-        ProductInterface $product,
-        FieldSetterInterface $setter
-    ) {
-        $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
-        $setterRegistry->getFieldSetter('category')->willReturn($setter);
-        $setter
-            ->setFieldData($product, 'category', ['tshirt'], [])
-            ->shouldBeCalled();
-
-        $this->setData($product, 'category', ['tshirt'], []);
-    }
-
-    function it_adds_a_data_to_a_product_attribute(
-        $adderRegistry,
-        $attributeRepository,
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        AttributeAdderInterface $adder
-    ) {
-        $attributeRepository->findOneBy(['code' => 'color'])->willReturn($attribute);
-        $adderRegistry->getAttributeAdder($attribute)->willReturn($adder);
-        $adder
-            ->addAttributeData($product, $attribute, ['red', 'blue'], [])
-            ->shouldBeCalled();
-
-        $this->addData($product, 'color', ['red', 'blue'], []);
-    }
-
-    function it_adds_a_data_to_a_product_field(
-        $adderRegistry,
-        $attributeRepository,
-        ProductInterface $product,
-        FieldAdderInterface $adder
-    ) {
-        $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
-        $adderRegistry->getFieldAdder('category')->willReturn($adder);
-        $adder
-            ->addFieldData($product, 'category', 'tshirt', [])
-            ->shouldBeCalled();
-
-        $this->addData($product, 'category', 'tshirt', []);
-    }
-
-    function it_copies_a_data_to_a_product_attribute(
-        $copierRegistry,
-        $attributeRepository,
-        ProductInterface $product,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        AttributeCopierInterface $copier
-    ) {
-        $attributeRepository->findOneBy(['code' => 'color_one'])->willReturn($fromAttribute);
-        $attributeRepository->findOneBy(['code' => 'color_two'])->willReturn($toAttribute);
-        $copierRegistry->getAttributeCopier($fromAttribute, $toAttribute)->willReturn($copier);
-        $copier
-            ->copyAttributeData($product, $product, $fromAttribute, $toAttribute, [])
-            ->shouldBeCalled();
-
-        $this->copyData($product, $product, 'color_one', 'color_two');
-    }
-
-    function it_copies_a_data_to_a_product_field(
-        $copierRegistry,
-        $attributeRepository,
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        FieldCopierInterface $copier
-    ) {
-        $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
-        $copierRegistry->getFieldCopier('category', 'category')->willReturn($copier);
-        $copier
-            ->copyFieldData($fromProduct, $toProduct, 'category', 'category', [])
-            ->shouldBeCalled();
-
-        $this->copyData($fromProduct, $toProduct, 'category', 'category');
-    }
-
-    function it_removes_a_data_to_a_product_attribute(
-        $removerRegistry,
-        $attributeRepository,
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        AttributeRemoverInterface $remover
-    ) {
-        $attributeRepository->findOneBy(['code' => 'name'])->willReturn($attribute);
-        $removerRegistry->getAttributeRemover($attribute)->willReturn($remover);
-        $remover
-            ->removeAttributeData($product, $attribute, 'my name', [])
-            ->shouldBeCalled();
-
-        $this->removeData($product, 'name', 'my name', []);
-    }
-
-    function it_removes_a_data_to_a_product_field(
-        $removerRegistry,
-        $attributeRepository,
-        ProductInterface $product,
-        FieldRemoverInterface $remover
-    ) {
-        $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
-        $removerRegistry->getFieldRemover('category')->willReturn($remover);
-        $remover
-            ->removeFieldData($product, 'category', ['tshirt'], [])
-            ->shouldBeCalled();
-
-        $this->removeData($product, 'category', ['tshirt'], []);
-    }
-
-    function it_throws_an_exception_when_it_removes_an_unknown_field(
-        $attributeRepository,
-        $removerRegistry,
-        ProductInterface $product
-    ) {
-        $attributeRepository->findOneBy(Argument::any())->willReturn(null);
-
-        $removerRegistry->getFieldRemover(Argument::any())->willReturn(null);
-
-        $this->shouldThrow(new \LogicException('No remover found for field "unknown_field"'))->during(
-            'removeData', [$product, 'unknown_field', 'code']
-        );
     }
 }

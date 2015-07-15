@@ -275,13 +275,7 @@ class Edit extends Form
             return $this->findCompoundField($name, 0, $currency);
         }
 
-        $labelNode = $this->find('css', sprintf('.form-field > header > label:contains("%s")', $name));
-
-        if (!$labelNode) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-
-        $container = $labelNode->getParent()->getParent()->getParent();
+        $container = $this->findFieldContainer($name)->getParent();
 
         $field = $this->spin(function () use ($container) {
             return $container->find('css', 'div.field-input input');
@@ -294,6 +288,29 @@ class Edit extends Form
         }
 
         return $field;
+    }
+
+    /**
+     * Find field container
+     *
+     * @param  [type] $label [description]
+     * @return [type]        [description]
+     */
+    public function findFieldContainer($label)
+    {
+        $labelNode = $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
+        if (!$labelNode) {
+            throw new ElementNotFoundException($this->getSession(), 'label ', 'value', $label);
+        }
+
+        $container = $labelNode->getParent()->getParent();
+        if (!$container) {
+            throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $label);
+        }
+
+        $container->name = $label;
+
+        return $container;
     }
 
     /**
@@ -401,23 +418,6 @@ class Edit extends Form
         }
 
         return $input;
-    }
-
-    protected function findFieldContainer($label)
-    {
-        $labelNode = $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
-        if (!$labelNode) {
-            throw new ElementNotFoundException($this->getSession(), 'label ', 'value', $label);
-        }
-
-        $container = $labelNode->getParent()->getParent();
-        if (!$container) {
-            throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $label);
-        }
-
-        $container->name = $label;
-
-        return $container;
     }
 
     /**

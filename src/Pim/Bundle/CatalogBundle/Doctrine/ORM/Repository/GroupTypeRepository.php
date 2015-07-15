@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\UnexpectedResultException;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
 /**
@@ -53,9 +54,27 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
     /**
      * {@inheritdoc}
      */
+    public function getTypeByGroup($code)
+    {
+        try {
+            return $this->createQueryBuilder('group_type')
+                ->innerJoin('group_type.groups', 'g')
+                ->select('group_type.variant')
+                ->where('g.code = :code')
+                ->setParameter('code', $code)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (UnexpectedResultException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -63,6 +82,6 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 }

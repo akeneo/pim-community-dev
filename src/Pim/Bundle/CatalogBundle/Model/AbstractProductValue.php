@@ -248,9 +248,27 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
+    public function getProduct()
+    {
+        return $this->entity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setEntity(ProductInterface $entity = null)
     {
         $this->entity = $entity;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProduct(ProductInterface $product = null)
+    {
+        $this->entity = $product;
 
         return $this;
     }

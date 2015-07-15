@@ -48,7 +48,9 @@ define([
             },
             render: function () {
                 this.setEditable(true);
-                var promises = [];
+                this.setValid(true);
+                this.elements = {};
+                var promises  = [];
                 mediator.trigger('field:extension:add', {'field': this, 'promises': promises});
 
                 $.when.apply($, promises)
@@ -80,16 +82,17 @@ define([
                 throw new Error('You should implement your field template');
             },
             postRender: function () {},
-            renderCopyInput: function (context, locale, scope) {
-                context.value = AttributeManager.getValue(
-                    this.model.get('values'),
-                    this.attribute,
-                    locale,
-                    scope
-                );
-                context.editMode = 'view';
+            renderCopyInput: function (value) {
+                return this.getTemplateContext()
+                    .then(_.bind(function (context) {
+                        var copyContext = $.extend(true, {}, context);
+                        copyContext.value = value;
+                        copyContext.context.locale = value.locale;
+                        copyContext.context.scope = value.scope;
+                        copyContext.editMode = 'view';
 
-                return this.renderInput(context);
+                        return this.renderInput(copyContext);
+                    }, this));
             },
             getTemplateContext: function () {
                 var deferred = $.Deferred();
@@ -173,7 +176,7 @@ define([
             setCurrentValue: function (value) {
                 var productValue = this.getCurrentValue();
 
-                productValue.value = value;
+                productValue.data = value;
                 mediator.trigger('entity:form:edit:update_state');
             }
         });

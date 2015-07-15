@@ -5,7 +5,8 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
 /**
  * Product flat denormalizer
@@ -28,8 +29,11 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /** @staticvar string */
     const FIELD_GROUPS       = 'groups';
 
-    /** @var string */
-    protected $fieldNameBuilder;
+    /** @var AttributeColumnInfoExtractor */
+    protected $attrFieldExtractor;
+
+    /** @var AssociationColumnsResolver */
+    protected $assocFieldResolver;
 
     /** @var ProductBuilder */
     protected $productBuilder;
@@ -50,21 +54,23 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     protected $productValueClass;
 
     /**
-     * @param ManagerRegistry  $managerRegistry
-     * @param string           $entityClass
-     * @param ProductBuilder   $productBuilder
-     * @param FieldNameBuilder $fieldNameBuilder
-     * @param string           $associationClass
-     * @param string           $categoryClass
-     * @param string           $familyClass
-     * @param string           $groupClass
-     * @param string           $productValueClass
+     * @param ManagerRegistry              $managerRegistry
+     * @param string                       $entityClass
+     * @param ProductBuilder               $productBuilder
+     * @param AttributeColumnInfoExtractor $attFieldExtractor
+     * @param AssociationColumnsResolver   $assocFieldResolver
+     * @param string                       $associationClass
+     * @param string                       $categoryClass
+     * @param string                       $familyClass
+     * @param string                       $groupClass
+     * @param string                       $productValueClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
         ProductBuilder $productBuilder,
-        FieldNameBuilder $fieldNameBuilder,
+        AttributeColumnInfoExtractor $attFieldExtractor,
+        AssociationColumnsResolver $assocFieldResolver,
         $associationClass,
         $categoryClass,
         $familyClass,
@@ -73,14 +79,14 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     ) {
         parent::__construct($managerRegistry, $entityClass);
 
-        $this->productBuilder    = $productBuilder;
-        $this->fieldNameBuilder  = $fieldNameBuilder;
-
-        $this->associationClass  = $associationClass;
-        $this->categoryClass     = $categoryClass;
-        $this->familyClass       = $familyClass;
-        $this->groupClass        = $groupClass;
-        $this->productValueClass = $productValueClass;
+        $this->productBuilder     = $productBuilder;
+        $this->attFieldExtractor  = $attFieldExtractor;
+        $this->assocFieldResolver = $assocFieldResolver;
+        $this->associationClass   = $associationClass;
+        $this->categoryClass      = $categoryClass;
+        $this->familyClass        = $familyClass;
+        $this->groupClass         = $groupClass;
+        $this->productValueClass  = $productValueClass;
     }
 
     /**
@@ -189,7 +195,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param array            $context
      * @param ProductInterface $product
      *
-     * @throws RevertException
+     * @throws \RuntimeException
      */
     protected function denormalizeAssociations(&$data, $format, array $context, ProductInterface $product)
     {
@@ -204,7 +210,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         // Get association field names and add associations
-        $assocFieldNames  = $this->fieldNameBuilder->getAssociationFieldNames();
+        $assocFieldNames  = $this->assocFieldResolver->resolveAssociationColumns();
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
                 if (strlen($data[$assocFieldName]) > 0) {
@@ -216,9 +222,9 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                         $this->associationClass,
                         $format,
                         [
-                            'entity' => $association,
+                            'entity'                => $association,
                             'association_type_code' => $associationTypeCode,
-                            'part' => $part
+                            'part'                  => $part
                         ] + $context
                     );
 
@@ -232,8 +238,8 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         foreach (array_keys($data) as $fieldName) {
-            if (null !== $matches = $this->fieldNameBuilder->extractAssociationFieldNameInfos($fieldName)) {
-                throw new RevertException(
+            if (null !== $matches = $this->extractAssociationFieldNameInfos($fieldName)) {
+                throw new \RuntimeException(
                     sprintf('Association type "%s" does not exist anymore', $matches['assoc_type_code'])
                 );
             }
@@ -255,7 +261,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         foreach ($data as $attFieldName => $dataValue) {
-            $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
+            $attributeInfos = $this->attFieldExtractor->extractColumnInfo($attFieldName);
             $attribute = $attributeInfos['attribute'];
             unset($attributeInfos['attribute']);
 
@@ -279,6 +285,28 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                     'entity'  => $productValue
                 ] + $attributeInfos + $context
             );
+        }
+    }
+
+    /**
+     * Extract field name information from a potential association field name
+     *
+     * Returned array like:
+     * [
+     *     "assoc_type_code"   => <assoc_type_code>,
+     *     "part" => "groups"|"products",
+     * ]
+     *
+     * @param string $fieldName
+     *
+     * @return string[]|null
+     */
+    protected function extractAssociationFieldNameInfos($fieldName)
+    {
+        $matches = [];
+        $regex = '/^([a-zA-Z0-9_]+)-(groups|products)$/';
+        if (preg_match($regex, $fieldName, $matches)) {
+            return ['assoc_type_code' => $matches[1], 'part' => $matches[2]];
         }
     }
 }
