@@ -20,7 +20,8 @@ Feature: Show a product
       | rangers | shoes      | Classic rangers | 120 EUR, 125 USD | L    | black      |
       | boots   | boots      | Party boots     | 80 EUR, 90 USD   | M    | blue       |
 
-  @javascript
+  # TODO: Un-skip this scenario in PIM-4251
+  @javascript @skip
   Scenario: Seeing the view actions on the product grid
     Given I am on the products page
     And I select the "Shoes" tree
@@ -29,13 +30,16 @@ Feature: Show a product
     And I should not be able to view the "Classify the product" action of the row which contains "rangers"
     And I should not be able to view the "Delete the product" action of the row which contains "rangers"
 
-  @skip-pef @javascript
+  # TODO: Un-skip this scenario in PIM-4251
+  @skip-pef @javascript @skip
   Scenario: Being able to view a product I can not edit
     Given I am on the products page
     And I should be able to access the show "boots" product page
     Then I should not be able to access the edit "boots" product page
     And I should be able to access the edit "rangers" product page
 
+  # TODO: Un-skip this scenario in PIM-4251
+  @skip
   Scenario: View a product in read only mode
     When I am on the "boots" product show page
     Then the view mode field SKU should contain "boots"

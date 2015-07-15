@@ -26,6 +26,8 @@ Feature: Classify many products at once for the tree I have access
     And I am logged in as "Julia"
     And I am on the products page
 
+  # TODO: Un-skip this scenario in PIM-4251
+  @skip
   Scenario: Classify many products at once
     Given I mass-edit products rangers and loafer
     And I choose the "Classify products in categories" operation
