@@ -45,7 +45,7 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "read lines 1"
-    And I should see "Updated 1"
+    And I should see "Processed 1"
     And there should be the following groups:
       | code   | label-en_US  | label-fr_FR | axis       | type    |
       | SANDAL | My new label |             | color,size | VARIANT |

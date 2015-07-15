@@ -34,7 +34,7 @@ Feature: Execute an import
     And I wait for the "footwear_variant_group_import" job to finish
     Then there should be 6 products
     And I should see "read lines 2"
-    And I should see "Updated 2"
+    And I should see "Processed 2"
     And I should see "Updated products 3"
     And the product "sandal-white-37" should have the following value:
       | name-en_US | My new name |

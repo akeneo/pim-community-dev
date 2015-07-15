@@ -30,7 +30,7 @@ Feature: Import groups
     And I wait for the "footwear_group_import" job to finish
     Then I should see "read lines 4"
     And I should see "Created 2"
-    And I should see "Updated 2"
+    And I should see "Processed 2"
     And I should not see "Skip"
     Then there should be the following groups:
       | code          | label-en_US    | label-fr_FR | type    | axis       |
