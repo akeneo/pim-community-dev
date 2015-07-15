@@ -33,7 +33,8 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             [
-                'Locales dropdown'        => ['css' => '.locale-switcher'],
+                'Locales dropdown'        => ['css' => '.attribute-edit-actions .locale-switcher'],
+                'Copy locales dropdown'   => ['css' => '.attribute-copy-actions .locale-switcher'],
                 'Locales selector'        => ['css' => '#pim_product_locales'],
                 'Channel dropdown'        => ['css' => '.scope-switcher'],
                 'Status switcher'         => ['css' => '.status-switcher'],
@@ -42,8 +43,8 @@ class Edit extends Form
                 'Category pane'           => ['css' => '#product-categories'],
                 'Category tree'           => ['css' => '#trees'],
                 'Comparison dropdown'     => ['css' => '.attribute-copy-actions'],
-                'Copy selection dropdown' => ['css' => '#copy-selection-switcher'],
-                'Copy translations link'  => ['css' => 'a#copy-se-edit-formlection'],
+                'Copy selection dropdown' => ['css' => '.attribute-copy-actions .selection-dropdown'],
+                'Copy translations link'  => ['css' => '.attribute-copy-actions .copy'],
                 'Comment threads'         => ['css' => '.comment-threads'],
             ]
         );
@@ -60,30 +61,38 @@ class Edit extends Form
     }
 
     /**
+     * @param bool $copy search in copy panel or main panel
+     *
      * @return int
      */
-    public function countLocaleLinks()
+    public function countLocaleLinks($copy = false)
     {
-        return count($this->getElement('Locales dropdown')->findAll('css', 'li a'));
+        return count(
+            $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown')
+                ->findAll('css', 'a[data-locale]')
+        );
     }
 
     /**
-     * @param string $locale locale code
-     * @param string $locale locale label
-     * @param string $flag   class of the flag icon
+     * @param string $localeCode locale code
+     * @param string $label      locale label
+     * @param string $flag       class of the flag icon
+     * @param bool   $copy       search in copy panel or main panel
      *
      * @throws ElementNotFoundException
      *
      * @return NodeElement|null
      */
-    public function findLocaleLink($locale, $label, $flag = null)
+    public function findLocaleLink($localeCode, $label = null, $flag = null, $copy = false)
     {
-        $link = $this->getElement('Locales dropdown')->find('css', sprintf('a[data-locale="%s"]', $locale));
+        $dropdown = $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown');
+        $dropdown->find('css', '.dropdown-toggle')->click();
+        $link = $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
 
         if (!$link) {
             throw new ElementNotFoundException(
                 $this->getSession(),
-                sprintf('Locale %s link', $locale)
+                sprintf('Locale %s link', $localeCode)
             );
         }
 
@@ -92,7 +101,7 @@ class Edit extends Form
             if (!$flagElement) {
                 throw new ElementNotFoundException(
                     $this->getSession(),
-                    sprintf('Flag not found for locale %s link', $locale)
+                    sprintf('Flag not found for locale %s link', $localeCode)
                 );
             }
             if (strpos($flagElement->getAttribute('class'), $flag) === false) {
@@ -129,24 +138,6 @@ class Edit extends Form
             throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
         }
         $elt->click();
-    }
-
-    /**
-     * @param string $locale
-     * @param string $label
-     *
-     * @return NodeElement
-     */
-    public function findLocale($locale, $label)
-    {
-        return $this->getElement('Locales dropdown')->find(
-            'css',
-            sprintf(
-                'a:contains("%s"):contains("%s")',
-                strtoupper($locale),
-                $label
-            )
-        );
     }
 
     /**
@@ -223,7 +214,7 @@ class Edit extends Form
         $isLabel = false;
 
         try {
-            $fieldContainer = $this->findFieldContainer($label, $element);
+            $fieldContainer = $this->findFieldContainer($label);
         } catch (ElementNotFoundException $e) {
             $isLabel = true;
             $fieldContainer = $this->extractLabelElement($label, $element);
@@ -275,17 +266,11 @@ class Edit extends Form
             return $this->findCompoundField($name, 0, $currency);
         }
 
-        $container = $this->findFieldContainer($name)->getParent();
+        $container = $this->findFieldContainer($name);
 
         $field = $this->spin(function () use ($container) {
-            return $container->find('css', 'div.field-input input');
-        });
-        if (!$field) {
-            $field = $container->find('css', 'div.field-input textarea');
-            if (!$field) {
-                throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
-            }
-        }
+            return $container->find('css', '.field-input input, .field-input textarea');
+        }, 10);
 
         return $field;
     }
@@ -293,8 +278,11 @@ class Edit extends Form
     /**
      * Find field container
      *
-     * @param  [type] $label [description]
-     * @return [type]        [description]
+     * @param string $label
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return NodeElement
      */
     public function findFieldContainer($label)
     {
@@ -303,7 +291,7 @@ class Edit extends Form
             throw new ElementNotFoundException($this->getSession(), 'label ', 'value', $label);
         }
 
-        $container = $labelNode->getParent()->getParent();
+        $container = $labelNode->getParent()->getParent()->getParent();
         if (!$container) {
             throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $label);
         }
@@ -491,16 +479,18 @@ class Edit extends Form
     }
 
     /**
-     * Fills a select2 multi-select field with $values, identified by its $label.
+     * Fills a select2 multi-select field with $values
      *
      * @param NodeElement $fieldContainer
      * @param string      $values
      */
     protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
     {
+        $field = $fieldContainer->find('css', '.form-field');
+
         // clear multi select first
-        $containerClasses = $fieldContainer->getAttribute('class');
-        if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $containerClasses, $matches)) {
+        $fieldClasses = $field->getAttribute('class');
+        if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $fieldClasses, $matches)) {
             $select2Selector = sprintf('.%s div.field-input > input', $matches[0]);
             $script = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
             $this->getSession()->executeScript($script);
@@ -515,11 +505,12 @@ class Edit extends Form
 
         foreach ($this->listToArray($values) as $value) {
             $link->click();
-            $this->getSession()->wait(1000);
-
             $item = $this->spin(function () use ($value) {
-                return $this->find('css', sprintf('.select2-drop li:contains("%s"):not(.select2-selected)', $value));
-            });
+                return $this->find(
+                    'css',
+                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
+                );
+            }, 5);
 
             // Select the value in the displayed dropdown
             if (null !== $item) {
@@ -579,14 +570,14 @@ class Edit extends Form
     }
 
     /**
-     * Fills a metric field with $value, identified by its $label.
+     * Fills a metric field with $value
      *
-     * @param NodeElement $label
+     * @param NodeElement $fieldContainer
      * @param string      $value
      *
      * @throws \InvalidArgumentException
      */
-    protected function fillMetricField(NodeElement $label, $value)
+    protected function fillMetricField(NodeElement $fieldContainer, $value)
     {
         if (false !== strpos($value, ' ')) {
             list($text, $select) = explode(' ', $value);
@@ -595,14 +586,14 @@ class Edit extends Form
             $select = null;
         }
 
-        $field = $label->getParent()->find('css', 'div.field-input');
+        $field = $fieldContainer->find('css', '.field-input');
         if (null !== $select) {
             if (null !== $link = $field->find('css', 'a.select2-choice')) {
                 $link->click();
 
                 $item = $this->spin(function () use ($select) {
                     return $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
-                });
+                }, 5);
             }
 
             if (!$item) {
@@ -614,7 +605,7 @@ class Edit extends Form
             $item->click();
         }
 
-        $this->fillTextField($label, $text);
+        $this->fillTextField($fieldContainer, $text);
     }
 
     /**
@@ -1116,46 +1107,31 @@ class Edit extends Form
     }
 
     /**
-     * Find comparison language labels
-     *
-     * @return string[]
+     * Enter in copy mode
      */
-    public function getComparisonLanguages()
+    public function startCopy()
     {
         $this->getElement('Comparison dropdown')->find('css', 'div.start-copying')->click();
-        $localeSwitcher = $this
-            ->getElement('Comparison dropdown')
-            ->find('css', 'div.locale-switcher');
-        $localeSwitcher->find('css', 'a.dropdown-toggle')->click();
-        $languages = $localeSwitcher
-            ->findAll('css', 'ul.dropdown-menu li a');
-
-        return array_map(
-            function ($language) {
-                return $language->getText();
-            },
-            $languages
-        );
+        $this->getSession()->wait(500);
     }
 
     /**
-     * @param string $language
+     * @param string $localeCode
      *
      * @throws \InvalidArgumentException
      */
-    public function compareWith($language)
+    public function compareWith($localeCode)
     {
-        $this->getElement('Comparison dropdown')->find('css', 'button:contains("Translate")')->click();
-        if (!in_array($language, $this->getComparisonLanguages())) {
+        $this->startCopy();
+        try {
+            $link = $this->findLocaleLink($localeCode, null, null, true);
+        } catch (ElementNotFoundException $e) {
             throw new \InvalidArgumentException(
-                sprintf('Language "%s" is not available for comparison', $language)
+                sprintf('Locale "%s" is not available for comparison', $localeCode)
             );
         }
 
-        $this->getElement('Comparison dropdown')->find(
-            'css',
-            sprintf('ul.dropdown-menu a:contains("%s")', $language)
-        )->click();
+        $link->click();
     }
 
     /**
@@ -1165,17 +1141,13 @@ class Edit extends Form
      */
     public function autoSelectTranslations($mode)
     {
-        $this
-            ->getElement('Copy selection dropdown')
-            ->find('css', 'button:contains("Select")')
-            ->click();
+        $dropdown = $this->getElement('Copy selection dropdown');
+        $dropdown->find('css', '.dropdown-toggle')->click();
 
-        $selector = $this
-            ->getElement('Copy selection dropdown')
-            ->find('css', sprintf('a:contains("%s")', $mode));
+        $selector = $dropdown->find('css', sprintf('a:contains("%s")', $mode));
 
         if (!$selector) {
-            throw new \InvalidArgumentException(sprintf('Translation copy mode "%s" not found', $mode));
+            throw new \InvalidArgumentException(sprintf('Copy selection mode "%s" not found', $mode));
         }
 
         $selector->click();
@@ -1184,12 +1156,19 @@ class Edit extends Form
     /**
      * Manually select translation given the specified field label
      *
-     * @param string $field
+     * @param string $fieldLabel
+     *
+     * @throws ElementNotFoundException
      */
-    public function manualSelectTranslation($field)
+    public function manualSelectTranslation($fieldLabel)
     {
-        $this
-            ->find('css', sprintf('tr:contains("%s") .comparisonSelection', $field))
+        $label = $this->find('css', sprintf('.copy-container header label:contains("%s")', $fieldLabel));
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'copy field', 'label', $fieldLabel);
+        }
+
+        $label->getParent()->getParent()->getParent()
+            ->find('css', '.copy-field-selector')
             ->check();
     }
 

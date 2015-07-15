@@ -147,12 +147,21 @@ define(
              * Launch the copy process for selected fields
              */
             copy: function () {
-                _.each(this.copyFields, function (copyField) {
+                _.each(this.copyFields, _.bind(function (copyField) {
                     if (copyField.selected && copyField.field && copyField.field.isEditable()) {
-                        copyField.field.setCurrentValue(copyField.value.data);
+                        var sourceData = this.getSourceData();
+                        var oldValue = AttributeManager.getValue(
+                            sourceData[copyField.field.attribute.code],
+                            copyField.field.attribute,
+                            UserContext.get('catalogLocale'),
+                            UserContext.get('catalogScope')
+                        );
+
+                        oldValue.data = copyField.value.data;
+                        mediator.trigger('entity:form:edit:update_state');
                         copyField.setSelected(false);
                     }
-                });
+                }, this));
 
                 this.trigger('copy:copy-fields:after');
             },
@@ -223,7 +232,15 @@ define(
              * Mark all fields (from all attribute groups) as selected
              */
             selectAll: function () {
-                this.selectFields(FieldManager.getFields());
+                var fieldPromises = [];
+                _.each(this.getSourceData(), _.bind(function (value, attributeCode) {
+                    fieldPromises.push(FieldManager.getField(attributeCode));
+                }, this));
+
+                $.when.apply(this, fieldPromises)
+                    .then(_.bind(function () {
+                        this.selectFields(arguments);
+                    }, this));
             },
 
             /**

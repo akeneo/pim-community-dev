@@ -352,15 +352,16 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      * @param string    $productPage
+     * @param bool      $copy
      *
      * @Then /^the locale switcher should contain the following items:$/
      *
      * @throws ExpectationException
      */
-    public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table, $productPage = 'edit')
+    public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table, $productPage = 'edit', $copy = false)
     {
         $pageName          = sprintf('Product %s', $productPage);
-        $linkCount         = $this->getPage($pageName)->countLocaleLinks();
+        $linkCount         = $this->getPage($pageName)->countLocaleLinks($copy);
         $expectedLinkCount = count($table->getHash());
 
         if ($linkCount !== $expectedLinkCount) {
@@ -370,7 +371,7 @@ class WebUser extends RawMinkContext
         }
 
         foreach ($table->getHash() as $data) {
-            if (!$this->getPage($pageName)->findLocaleLink($data['locale'], $data['language'], $data['flag'])) {
+            if (!$this->getPage($pageName)->findLocaleLink($data['locale'], $data['language'], $data['flag'], $copy)) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Could not find locale "%s %s" in the locale switcher',
@@ -380,6 +381,18 @@ class WebUser extends RawMinkContext
                 );
             }
         }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^the copy locale switcher should contain the following items:$/
+     *
+     * @throws ExpectationException
+     */
+    public function theCopyLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
+    {
+        $this->theLocaleSwitcherShouldContainTheFollowingItems($table, 'edit', true);
     }
 
     /**
@@ -547,19 +560,83 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^the product ([^"]*) for locale "([^"]*)" should be empty$/
+     * @Then /^the product ([^"]*) for locale "([^"]*)" should be "([^"]*)"$/
+     * @Then /^the field ([^"]*) for locale "([^"]*)" should contain "([^"]*)"$/
+     *
+     * @return Then[]
+     */
+    public function theProductLocalizableFieldValueShouldBe($fieldName, $locale, $expected = '')
+    {
+        $steps = [new Step\Then(sprintf('I switch the locale to "%s"', $locale))];
+        if ('' === $expected) {
+            $steps[] = new Step\Then(sprintf('the product %s should be empty', $fieldName));
+        } else {
+            $steps[] = new Step\Then(sprintf('the product %s should be "%s"', $fieldName, $expected));
+        }
+
+        return $steps;
+    }
+
+    /**
+     * @Then /^the product ([^"]*) for scope "([^"]*)" should be empty$/
+     * @Then /^the product ([^"]*) for scope "([^"]*)" should be "([^"]*)"$/
+     * @Then /^the field ([^"]*) for scope "([^"]*)" should contain "([^"]*)"$/
+     *
+     * @return Then[]
+     */
+    public function theProductScopableFieldValueShouldBe($fieldName, $scope, $expected = '')
+    {
+        $steps = [new Step\Then(sprintf('I switch the scope to "%s"', $scope))];
+        if ('' === $expected) {
+            $steps[] = new Step\Then(sprintf('the product %s should be empty', $fieldName));
+        } else {
+            $steps[] = new Step\Then(sprintf('the product %s should be "%s"', $fieldName, $expected));
+        }
+
+        return $steps;
+    }
+
+    /**
+     * @Then /^the product ([^"]*) for locale "([^"]*)" and scope "([^"]*)" should be empty$/
+     * @Then /^the product ([^"]*) for locale "([^"]*)" and scope "([^"]*)" should be "([^"]*)"$/
+     * @Then /^the field ([^"]*) for locale "([^"]*)" and scope "([^"]*)" should contain "([^"]*)"$/
+     *
+     * @return Then[]
+     */
+    public function theProductLocalizableAndScopableFieldValueShouldBe($fieldName, $locale, $scope, $expected = '')
+    {
+        $steps = [
+            new Step\Then(sprintf('I switch the locale to "%s"', $locale)),
+            new Step\Then(sprintf('I switch the scope to "%s"', $scope))
+        ];
+
+        if ('' === $expected) {
+            $steps[] = new Step\Then(sprintf('the product %s should be empty', $fieldName));
+        } else {
+            $steps[] = new Step\Then(sprintf('the product %s should be "%s"', $fieldName, $expected));
+        }
+
+        return $steps;
+    }
+
+    /**
      * @param string $fieldName
      * @param string $expected
      *
-     * @Then /^the product (.*) should be empty$/
-     * @Then /^the product (.*) should be "([^"]*)"$/
+     * @Then /^the product ([^"]*) should be empty$/
+     * @Then /^the product ([^"]*) should be "([^"]*)"$/
      * @Then /^the field ([^"]*) should contain "([^"]*)"$/
+     *
+     * @throws \LogicException
+     * @throws ExpectationException
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
         $this->wait();
         $field = $this->getCurrentPage()->findField($fieldName);
-        $class = $field->getAttribute('class');
-        if (strpos($class, 'select2-focusser') !== false) {
+
+        if ($field->hasClass('select2-focusser')) {
             for ($i = 0; $i < 2; ++$i) {
                 if (!$field->getParent()) {
                     break;
@@ -571,7 +648,7 @@ class WebUser extends RawMinkContext
             } else {
                 $actual = trim($field->find('css', '.select2-chosen')->getHtml());
             }
-        } elseif (strpos($class, 'select2-input') !== false) {
+        } elseif ($field->hasClass('select2-input')) {
             for ($i = 0; $i < 4; ++$i) {
                 if (!$field->getParent()) {
                     break;
@@ -584,7 +661,7 @@ class WebUser extends RawMinkContext
                 $options = $field->findAll('css', 'li.select2-search-choice div');
             }
 
-            $actual  = [];
+            $actual = [];
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
             }
@@ -593,7 +670,7 @@ class WebUser extends RawMinkContext
             sort($expected);
             $actual   = implode(', ', $actual);
             $expected = implode(', ', $expected);
-        } elseif (strpos($class, 'datepicker') !== false) {
+        } elseif ($field->hasClass('datepicker')) {
             $actual = $field->getAttribute('value');
         } elseif ((null !== $parent = $field->getParent()) && $parent->hasClass('upload-zone')) {
             // We are dealing with an upload field
@@ -2002,24 +2079,21 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $language
-     *
-     * @When /^I compare values with the "([^"]*)" translation$/
+     * @When /^I start the copy$/
      */
-    public function iCompareValuesWithTheTranslation($language)
+    public function iStartTheCopy()
     {
-        $this->getCurrentPage()->compareWith($language);
-        $this->wait();
+        $this->getCurrentPage()->startCopy();
     }
 
     /**
-     * @param string $languages
+     * @param string $locale
      *
-     * @Then /^I should see comparison languages "([^"]*)"$/
+     * @When /^I compare values with the "([^"]*)" translation$/
      */
-    public function iShouldSeeComparisonLanguages($languages)
+    public function iCompareValuesWithTheTranslation($locale)
     {
-        assertEquals($this->listToArray($languages), $this->getCurrentPage()->getComparisonLanguages());
+        $this->getCurrentPage()->compareWith($locale);
     }
 
     /**

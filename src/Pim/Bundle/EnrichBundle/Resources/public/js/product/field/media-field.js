@@ -49,10 +49,18 @@ define([
 
                 return null;
             },
-            renderCopyInput: function (context) {
-                context.mediaUrl = this.getMediaUrl(context.value.data);
+            renderCopyInput: function (value) {
+                return this.getTemplateContext()
+                    .then(_.bind(function (context) {
+                        var copyContext = $.extend(true, {}, context);
+                        copyContext.value = value;
+                        copyContext.mediaUrl = this.getMediaUrl(value.data);
+                        copyContext.context.locale = value.locale;
+                        copyContext.context.scope = value.scope;
+                        copyContext.editMode = 'view';
 
-                return Field.prototype.renderCopyInput.apply(this, arguments);
+                        return this.renderInput(copyContext);
+                    }, this));
             },
             updateModel: function () {
                 if (!this.isReady()) {
