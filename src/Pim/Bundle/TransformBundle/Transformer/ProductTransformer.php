@@ -9,13 +9,13 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Pim\Bundle\TransformBundle\Cache\AttributeCache;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\SkipTransformer;
+use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**

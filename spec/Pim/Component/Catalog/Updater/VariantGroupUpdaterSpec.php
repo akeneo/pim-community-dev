@@ -79,7 +79,7 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
 
         $productTemplate->getValuesData()->willReturn([]);
         $productTemplate->setValues(Argument::any())->shouldBeCalled();
-        $productTemplate->setValuesData(['main_color' => [['locale' => null, 'scope' => null, 'value' => 'white']]])
+        $productTemplate->setValuesData(['main_color' => [['locale' => null, 'scope' => null, 'data' => 'white']]])
             ->shouldBeCalled();
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();

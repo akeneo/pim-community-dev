@@ -114,8 +114,6 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * @param string $value
      *
      * @throws \InvalidArgumentException
-     *
-     * @return null
      */
     protected function checkIfReferenceDataExists($value)
     {
@@ -131,7 +129,5 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 );
             }
         }
-
-        return null;
     }
 }

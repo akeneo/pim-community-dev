@@ -133,8 +133,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $dataToValue = $this->convertDataToValue($filteredData);
-        $productFilter->filter($product, $dataToValue)->willReturn($filteredData);
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
@@ -206,7 +205,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $filteredData = [
+        $preFilteredData = $filteredData = [
             'family' => 'Tshirt',
             'name' => [
                 [
@@ -229,9 +228,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $dataToValue = $this->convertDataToValue($filteredData);
         unset($filteredData['family'], $filteredData['name'][1]);
-        $productFilter->filter($product, $dataToValue)->willReturn($filteredData);
+        $productFilter->filter($product, $preFilteredData)->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
@@ -424,8 +422,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $dataToValue = $this->convertDataToValue($filteredData);
-        $productFilter->filter($product, $dataToValue)->willReturn($dataToValue);
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
@@ -521,8 +518,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $dataToValue = $this->convertDataToValue($filteredData);
-        $productFilter->filter($product, $dataToValue)->willReturn($dataToValue);
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
@@ -620,8 +616,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $dataToValue = $this->convertDataToValue($filteredData);
-        $productFilter->filter($product, $dataToValue)->willReturn($dataToValue);
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
@@ -723,8 +718,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $dataToValue = $this->convertDataToValue($filteredData);
-        $productFilter->filter($product, $dataToValue)->willReturn([]);
+        $productFilter->filter($product, $filteredData)->willReturn([]);
 
         $productUpdater
             ->update($product, $filteredData)->shouldNotBeCalled();
@@ -732,17 +726,5 @@ class ProductProcessorSpec extends ObjectBehavior
         $this
             ->process($originalData)
             ->shouldReturn(null);
-    }
-
-    function convertDataToValue($filteredData)
-    {
-        $dataToValue = $filteredData;
-        $dataToValue['name'][0]['value'] = $dataToValue['name'][0]['data'];
-        $dataToValue['name'][1]['value'] = $dataToValue['name'][1]['data'];
-        $dataToValue['description'][0]['value'] = $dataToValue['description'][0]['data'];
-
-        unset($dataToValue['name'][0]['data'], $dataToValue['name'][1]['data'], $dataToValue['description'][0]['data']);
-
-        return $dataToValue;
     }
 }

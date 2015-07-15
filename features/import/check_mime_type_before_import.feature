@@ -8,6 +8,7 @@ Feature:
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @unstable
   Scenario: Import a file that is not a csv file
     Given I am on the "footwear_product_import" import job edit page
     And I fill in the following information:

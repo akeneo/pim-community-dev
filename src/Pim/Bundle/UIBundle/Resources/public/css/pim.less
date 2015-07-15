@@ -716,7 +716,7 @@ h3.tab-header {
 
 .comparison-mode {
   .comparison-elements-container {
-    .display-flex();
+    display: block;
   }
 
   .attribute-edit-actions {
@@ -1053,10 +1053,6 @@ h3.tab-header {
       min-width: @min-field-width - @copy-field-selector-width;
     }
   }
-
-  .field-input {
-    padding-top: 3px;
-  }
 }
 
 .field-context {
@@ -1204,6 +1200,12 @@ h3.tab-header {
       .switch-right {
         background-color: #f0f0f0;
       }
+    }
+  }
+
+  &.akeneo-media-uploader-field.view {
+    .clear-field {
+      display: none;
     }
   }
 }

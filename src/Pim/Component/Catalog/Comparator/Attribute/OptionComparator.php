@@ -37,10 +37,10 @@ class OptionComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        $default = ['locale' => null, 'scope' => null, 'value' => null];
+        $default = ['locale' => null, 'scope' => null, 'data' => null];
         $originals = array_merge($default, $originals);
 
-        if ($data['value'] === $originals['value']) {
+        if ($data['data'] === $originals['data']) {
             return null;
         }
 

@@ -40,15 +40,15 @@ class MediaComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        $default = ['locale' => null, 'scope' => null, 'value' => ['filePath' => null]];
+        $default = ['locale' => null, 'scope' => null, 'data' => ['filePath' => null]];
         $originals = array_merge($default, $originals);
 
-        if ($this->getHashFile($data['value']['filePath']) === $this->getHashFile($originals['value']['filePath'])) {
+        if ($this->getHashFile($data['data']['filePath']) === $this->getHashFile($originals['data']['filePath'])) {
             return null;
         }
 
-        $filename = strrchr($data['value']['filePath'], DIRECTORY_SEPARATOR);
-        $data['value']['filename'] = str_replace(DIRECTORY_SEPARATOR, '', $filename);
+        $filename = strrchr($data['data']['filePath'], DIRECTORY_SEPARATOR);
+        $data['data']['filename'] = str_replace(DIRECTORY_SEPARATOR, '', $filename);
 
         return $data;
     }

@@ -212,14 +212,6 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         $mergedValuesData = $this->mergeValuesData($originalValues, $newValues);
         $mergedValues = $this->transformArrayToValues($mergedValuesData);
 
-        // TODO: remove it when normalizers & setters will be uniformized (PIM-4246)
-        foreach ($mergedValuesData as $code => $data) {
-            foreach ($data as $index => $value) {
-                $mergedValuesData[$code][$index]['value'] = $value['data'];
-                unset($mergedValuesData[$code][$index]['data']);
-            }
-        }
-
         $template->setValues($mergedValues);
         $template->setValuesData($mergedValuesData);
 

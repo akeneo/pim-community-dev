@@ -16,5 +16,5 @@ Feature: Update media fields
       | product | attribute  | value                 |
       | AKN_MUG | front_view | %fixtures%/akeneo.jpg |
     Then I should get the following products after apply the following updater to it:
-      | product | actions                                                                      | result                                                                     |
-      | AKN_MUG | [{"type": "copy_data", "from_field": "front_view", "to_field": "side_view"}] | {"values": {"side_view": [{"value": {"originalFilename": "akeneo.jpg"}}]}} |
+      | product | actions                                                                      | result                                                                    |
+      | AKN_MUG | [{"type": "copy_data", "from_field": "front_view", "to_field": "side_view"}] | {"values": {"side_view": [{"data": {"originalFilename": "akeneo.jpg"}}]}} |

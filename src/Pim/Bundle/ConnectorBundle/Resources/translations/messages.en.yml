@@ -145,3 +145,18 @@ pim_connector:
         enabledComparison:
             label: Compare values
             help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+
+job_execution.summary:
+    read:       read
+    read_lines: read lines
+    write:      written
+    skip:       skipped
+    create:     created
+    update:     updated
+    update_products: updated products
+    skip_products: skipped products
+    displayed: first warnings displayed
+    charset_validator:
+        title: File encoding:
+        skipped: skipped, extension in white list
+    product_skipped_no_diff: skipped product (no differences)

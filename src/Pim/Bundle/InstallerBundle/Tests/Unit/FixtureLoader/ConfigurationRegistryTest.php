@@ -21,8 +21,8 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
 
     protected $configuration = array(
         'default' => array(
-            'order' => 100,
-            'class' => 'default_class',
+            'order'   => 100,
+            'class'   => 'default_class',
             'format1' => array(
                 'reader'            => 'default_format1_reader',
                 'reader_options'    => array('key' => 'default_format1_reader_option'),
@@ -37,8 +37,8 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
             ),
         ),
         'entity1' => array(
-            'order' => 150,
-            'class' => 'entity1_class',
+            'order'   => 150,
+            'class'   => 'entity1_class',
             'format1' => array(
                 'reader'            => 'entity1_format1_reader',
                 'reader_options'    => array('key' => 'entity1_format1_reader_option'),
@@ -53,10 +53,10 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
             ),
         ),
         'entity1.step2' => array(
-            'order' => 90,
+            'order'     => 90,
             'file_name' => 'entity1',
-            'class' => 'entity1_class',
-            'format1' => array(
+            'class'     => 'entity1_class',
+            'format1'   => array(
                 'reader'            => 'entity1_format1_reader2',
                 'reader_options'    => array('key' => 'entity1_format1_reader_option2'),
                 'processor'         => 'entity1_format1_processor2',

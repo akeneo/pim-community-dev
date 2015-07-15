@@ -26,6 +26,7 @@
 - PMI-4032: Fix wrong error message when deleting used attribute option by a published product
 
 ## BC breaks
+- `normalize` method of `Pim\Bundle\TransformBundle\Normalizer\Structured\ProductValueNormalizer` returns an array with a "data" key instead of "value" key
 - `Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter` and `Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor` are deprecated
 - Change the constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`, removed `Pim\Bundle\VersioningBundle\Manager\VersionManager`
 - Rename method `onKernelRequest` to `findUsername` on `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`
@@ -142,6 +143,12 @@
 - Constructor of `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` has been changed
 - Depreciate and change constructor of `Pim\Bundle\TransformBundle\Builder\FieldNameBuilder`
 - Replace the argument ProductManager by ProductRepositoryInterface in the constructor of `Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator`
+- Add an argument BulkSaverInterface in the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\CategoryRemover`
+
+# 1.3.x
+
+## Bug fixes
+- PIM-4494: Fix loading page when family has been sorted
 
 # 1.3.16 (2015-06-08)
 
@@ -543,6 +550,11 @@
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
+
+# 1.2.36 (2015-07-06)
+
+## Bug fixes
+- PIM-4494: Fix js memory leak on a product edit form with scopable attributes
 
 # 1.2.35 (2015-05-29)
 

@@ -62,7 +62,7 @@ class NestedTranslationTransformerTest extends \PHPUnit_Framework_TestCase
         $this->transformer->setValue(
             $object,
             $columnInfo,
-            array('locale1' => 'value1', 'locale2' => 'value2'),
+            array('locale1'      => 'value1', 'locale2' => 'value2'),
             array('propertyPath' => 'key')
         );
     }

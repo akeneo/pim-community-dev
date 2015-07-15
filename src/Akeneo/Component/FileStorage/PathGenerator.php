@@ -39,14 +39,14 @@ class PathGenerator implements PathGeneratorInterface
             $sanitized = sprintf('%s.%s', substr($sanitized, 0, 95), $file->getExtension());
         }
 
-        $fileName = $guid.'_'.$sanitized;
+        $fileName = $guid . '_' . $sanitized;
         $path = sprintf('%s/%s/%s/%s/', $guid[0], $guid[1], $guid[2], $guid[3]);
         $pathName = $path.$fileName;
 
         return [
-            'guid' => $guid,
+            'guid'      => $guid,
             'file_name' => $fileName,
-            'path' => $path,
+            'path'      => $path,
             'path_name' => $pathName,
         ];
     }

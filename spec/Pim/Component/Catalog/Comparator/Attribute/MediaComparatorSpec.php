@@ -26,19 +26,19 @@ class MediaComparatorSpec extends ObjectBehavior
     function it_gets_changes_when_add_file()
     {
         $file = new \SplFileInfo(__FILE__);
-        $changes   = ['value' => ['filePath' => $file->getPath()]];
-        $originals = ['value' => ['filePath' => null]];
+        $changes   = ['data' => ['filePath' => $file->getPath()]];
+        $originals = ['data' => ['filePath' => null]];
 
         $return = $changes;
-        $return['value']['filename'] = 'Attribute';
+        $return['data']['filename'] = 'Attribute';
         $this->compare($changes, $originals)->shouldReturn($return);
     }
 
     function it_does_not_change_not_updated_file()
     {
         $file = new \SplFileInfo(__FILE__);
-        $changes   = ['value' => ['filePath' => $file->getPath()]];
-        $originals = ['value' => ['filePath' => $file->getPath()]];
+        $changes   = ['data' => ['filePath' => $file->getPath()]];
+        $originals = ['data' => ['filePath' => $file->getPath()]];
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }
