@@ -87,7 +87,22 @@ class AssetCategoryRepository implements AssetCategoryRepositoryInterface
      */
     public function getItemIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
     {
-        // TODO: Implement getItemIdsInCategory() method.
+        $qb = $this->em->createQueryBuilder();
+        $qb->select('DISTINCT a.id');
+        $qb->from($this->entityName, 'a', 'a.id');
+        $qb->join('a.categories', 'node');
+
+        if (null === $categoryQb) {
+            $qb->where('node.id = :nodeId');
+            $qb->setParameter('nodeId', $category->getId());
+        } else {
+            $qb->where($categoryQb->getDqlPart('where'));
+            $qb->setParameters($categoryQb->getParameters());
+        }
+
+        $assets = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
+
+        return array_keys($assets);
     }
 
     /**
@@ -139,6 +154,7 @@ class AssetCategoryRepository implements AssetCategoryRepositoryInterface
         if ($include) {
             $qb->leftJoin($rootAlias.'.categories', $alias);
             $qb->andWhere($qb->expr()->in($alias.'.id', ':' . $filterCatIds));
+            $qb->groupBy($rootAlias.'.id');
         } else {
             $rootAliasIn = uniqid($rootAlias);
             $rootEntity = current($qb->getRootEntities());
@@ -150,6 +166,7 @@ class AssetCategoryRepository implements AssetCategoryRepositoryInterface
                 ->where($qbIn->expr()->in($alias . '.id', ':' . $filterCatIds));
 
             $qb->andWhere($qb->expr()->notIn($rootAlias . '.id', $qbIn->getDQL()));
+            $qb->groupBy($rootAlias.'.id');
         }
         $qb->setParameter($filterCatIds, $categoryIds);
     }
