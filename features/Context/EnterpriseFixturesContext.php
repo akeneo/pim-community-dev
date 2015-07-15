@@ -35,7 +35,8 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 class EnterpriseFixturesContext extends BaseFixturesContext
 {
     protected $enterpriseEntities = [
-        'Published' => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+        'Published'     => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+        'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
     ];
 
     /**
@@ -369,7 +370,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             if (isset($data['categories'])) {
                 $categories = explode(',', $data['categories']);
                 foreach ($categories as $code) {
-                    $category = $this->getCategoryRepository()->findOneByIdentifier(trim($code));
+                    $category = $this->getAssetCategoryRepository()->findOneByIdentifier(trim($code));
                     if (null === $category) {
                         throw new \Exception("\"$code\" category not found");
                     }
@@ -632,9 +633,17 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @return CategoryRepositoryInterface
      */
-    protected function getCategoryRepository()
+    protected function getProductCategoryRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.category');
+    }
+
+    /**
+     * @return CategoryRepositoryInterface
+     */
+    protected function getAssetCategoryRepository()
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.category');
     }
 
     /**
