@@ -314,26 +314,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param string $code
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return AssetInterface
-     */
-    public function getProductAsset($code)
-    {
-        $asset = $this->getAssetRepository()->findOneByIdentifier($code);
-
-        if (null === $asset) {
-            throw new \InvalidArgumentException(sprintf('Could not find an asset with code "%s"', $code));
-        }
-
-        $this->refresh($asset);
-
-        return $asset;
-    }
-
-    /**
      * @param array|string $data
      *
      * @throws \Exception
@@ -505,13 +485,33 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         $asset = $this->getAssetRepository()->findOneByIdentifier($code);
 
-        if (!$asset) {
+        if (null === $asset) {
             throw new \InvalidArgumentException(sprintf('Could not find a product asset with code "%s"', $code));
         }
 
         $this->refresh($asset);
 
         return $asset;
+    }
+
+    /**
+     * @param $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return TagInterface
+     */
+    public function getTag($code)
+    {
+        $tag = $this->getTagRepository()->findOneByIdentifier($code);
+
+        if (null === $tag) {
+            throw new \InvalidArgumentException(sprintf('Could not find a tag with code "%s"', $code));
+        }
+
+        $this->refresh($tag);
+
+        return $tag;
     }
 
     /**
@@ -904,6 +904,43 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         return $rule;
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following assets?:$/
+     */
+    public function thereShouldBeTheFollowingAssets(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $asset = $this->getAsset($data['code']);
+            $this->refresh($asset);
+
+            assertEquals($data['code'], $asset->getCode());
+            if (array_key_exists('description', $data)) {
+                assertEquals($data['description'], $asset->getDescription());
+            }
+
+            if (array_key_exists('tags', $data)) {
+                assertEquals($data['tags'], $asset->getTagCodes());
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following tags?:$/
+     */
+    public function thereShouldBeTheFollowingTags(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $tag = $this->getTag($data['code']);
+            $this->refresh($tag);
+
+            assertEquals($data['code'], $tag->getCode());
+        }
     }
 
     /**

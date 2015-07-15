@@ -1,0 +1,6 @@
+services:
+    pimee_product_asset.reader.file.csv_tag:
+        alias: pim_connector.reader.file.csv
+
+    pimee_product_asset.reader.file.csv_asset:
+        alias: pim_connector.reader.file.csv

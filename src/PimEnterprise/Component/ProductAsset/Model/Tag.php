@@ -18,6 +18,6 @@ use Pim\Component\Classification\Model\Tag as BaseTag;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class Tag extends BaseTag
+class Tag extends BaseTag implements TagInterface
 {
 }

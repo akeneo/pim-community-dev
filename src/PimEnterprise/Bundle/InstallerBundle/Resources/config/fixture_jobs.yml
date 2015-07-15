@@ -48,3 +48,13 @@ jobs:
         configuration:
             filePath: rules.yml
             multiple: false
+
+    fixtures_asset_csv:
+        order:     150
+        connector: Data fixtures
+        alias:     fixtures_asset_csv
+        label:     assets data fixtures
+        type:      fixtures
+        configuration:
+            filePath: assets.csv
+            multiple: false
