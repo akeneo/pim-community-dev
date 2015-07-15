@@ -1,9 +1,2 @@
 {{ elements.backLink(path('pimee_product_asset_index')) }}
-
-{% set saveOptions = {
-'' : {'text': 'btn.save' },
-'Create': { 'text': 'btn.save and create' },
-'BackGrid': { 'text': 'btn.save and back' }
-} %}
-
-{{ elements.submitDropdownBtn(saveOptions) }}
+{{ elements.submitBtn() }}

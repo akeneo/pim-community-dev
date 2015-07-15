@@ -9,12 +9,12 @@ Feature: Create product assets
 
   Scenario: Successfully hide entity creation and deletion buttons when user doesn't have the rights
     Given I am logged in as "Peter"
-    Then removing "Create an asset" permissions should hide "Create" button on "asset index" page
+    Then removing "Create an asset" permissions should hide "Create an asset" button on "asset index" page
 
   Scenario: Create a localized asset
     Given I am logged in as "Julia"
     And I am on the assets page
-    And I press the "Create" button
+    And I press the "Create an asset" button
     Then I should see a dialog with the following content:
       | title | Create a new asset |
     And I switch localizable button to yes
@@ -29,7 +29,7 @@ Feature: Create product assets
   Scenario: Create a not localized asset
     Given I am logged in as "Julia"
     And I am on the assets page
-    And I press the "Create" button
+    And I press the "Create an asset" button
     Then I should see a dialog with the following content:
       | title | Create a new asset |
     And I switch localizable button to no
@@ -43,7 +43,7 @@ Feature: Create product assets
   Scenario: Create a not localized asset with a picture
     Given I am logged in as "Julia"
     And I am on the assets page
-    And I press the "Create" button
+    And I press the "Create an asset" button
     Then I should see a dialog with the following content:
       | title | Create a new asset |
     And I switch localizable button to no
