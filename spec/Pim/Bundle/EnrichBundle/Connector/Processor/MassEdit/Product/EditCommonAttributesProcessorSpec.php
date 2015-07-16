@@ -79,7 +79,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
         $family->hasAttribute($attribute)->willReturn(true);
         $product->getFamily()->willReturn($family);
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('processed')->shouldBeCalled();
 
         $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
 

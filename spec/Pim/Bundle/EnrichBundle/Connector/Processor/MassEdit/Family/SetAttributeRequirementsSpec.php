@@ -85,7 +85,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         $factory->createAttributeRequirement($attributeColor, $channelMobile, true)->willReturn($attrReqColorMobile);
         $factory->createAttributeRequirement($attributeColor, $channelEcommerce, false)->willReturn($attrReqColorEcom);
 
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('processed')->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
 
