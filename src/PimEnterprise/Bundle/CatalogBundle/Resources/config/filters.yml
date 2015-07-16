@@ -86,4 +86,4 @@ services:
             - '@security.context'
             - '@pimee_security.repository.category_access'
         tags:
-            - { name: pim_catalog.filter.object, type: pim.internal_api.product_category.view }
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.product_category.view }

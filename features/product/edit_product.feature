@@ -13,21 +13,20 @@ Feature: Edit a product I have access
       | trendy  | Trendy      | shoes  |
       | classy  | Classy      | shoes  |
       | boots   | Boots       |        |
-    And the following category accesses:
-      | category        | user group | access |
-      | 2014_collection | Manager    |        |
-      | shoes           | Manager    | edit   |
-      | vintage         | Manager    | edit   |
-      | trendy          | Manager    | edit   |
-      | classy          | Manager    | edit   |
-      | boots           | Manager    | view   |
+    And the following product category accesses:
+      | product category | user group | access |
+      | 2014_collection  | Manager    |        |
+      | shoes            | Manager    | edit   |
+      | vintage          | Manager    | edit   |
+      | trendy           | Manager    | edit   |
+      | classy           | Manager    | edit   |
+      | boots            | Manager    | view   |
     And the following products:
       | sku     | categories      | name-en_US |
       | rangers | vintage, classy | rangers    |
       | boots   | boots           | boots      |
 
-  # TODO: Un-skip this scenario in PIM-4251
-  @javascript @skip-pef @skip
+  @javascript @skip-pef
   Scenario: Successfully create, edit and save a product I have access
     Given I am on the "rangers" product page
     And I fill in the following information:
@@ -36,8 +35,7 @@ Feature: Edit a product I have access
     Then I should be on the product "rangers" edit page
     Then the product Name should be "My Rangers"
 
-  # TODO: Un-skip this scenario in PIM-4251
-  @javascript @skip
+  @javascript
   Scenario: Seeing the edit actions on the product grid
     Given I am on the products page
     And I select the "Boots" tree

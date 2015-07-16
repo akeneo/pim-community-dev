@@ -228,11 +228,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following category accesses:$/
+     * @Given /^the following (.*) category accesses:$/
      */
-    public function theFollowingCategoryAccesses(TableNode $table)
+    public function theFollowingCategoryAccesses($categoryType, TableNode $table)
     {
-        $this->createAccesses($table, 'category');
+        $this->createAccesses($table, sprintf('%s category', $categoryType));
     }
 
     /**
@@ -619,6 +619,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function getAccessManager($type)
     {
+        if ('product category' === $type) {
+            $type = 'category';
+        }
+
         return $this->getContainer()->get(sprintf('pimee_security.manager.%s_access', str_replace(' ', '_', $type)));
     }
 
@@ -690,7 +694,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             return ($action === 'edit') ? Attributes::EDIT_ATTRIBUTES : Attributes::VIEW_ATTRIBUTES;
         }
 
-        if ('category' === $type || 'locale' === $type) {
+        if ('product category' === $type || 'locale' === $type) {
             return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
         }
 

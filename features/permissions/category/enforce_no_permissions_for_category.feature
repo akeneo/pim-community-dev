@@ -11,8 +11,7 @@ Feature: Enforce no permissions for a category
       | grantedTwo | winter_collection |            |      |
       | notGranted | summer_collection | white      | L    |
 
-  # TODO: Un-skip this scenario in PIM-4251
-  @skip
+  @javascript
   Scenario: Redirect users from the product page to the dashboard when they can't see products in any tree
     Given I am logged in as "Mary"
     And I am on the "2014_collection" category page
