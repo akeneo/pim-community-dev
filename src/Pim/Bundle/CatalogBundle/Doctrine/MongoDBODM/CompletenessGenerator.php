@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
@@ -146,22 +147,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $dataFields = array_keys($normalizedData);
 
         foreach ($missingComps as $missingComp) {
-            $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
-            $pricesReqs = $normalizedReqs[$missingComp]['reqs']['prices'];
-            $requiredCount = count($attributesReqs) + count($pricesReqs);
-
-            $missingAttributes = array_diff($attributesReqs, $dataFields);
-
-            $missingPricesCount = count($pricesReqs);
-
-            foreach ($pricesReqs as $priceField => $currencies) {
-                if (isset($normalizedData[$priceField]) &&
-                    count(array_diff($currencies, array_keys($normalizedData[$priceField]))) === 0) {
-                    $missingPricesCount--;
-                }
-            }
-
-            $missingCount = count($missingAttributes) + $missingPricesCount;
+            $requiredCount = $this->getRequiredCount($normalizedReqs, $missingComp);
+            $missingCount  = $this->getMissingCount($normalizedReqs, $missingComp, $normalizedData, $dataFields);
 
             $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
 
@@ -180,6 +167,47 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         }
 
         return ['completenesses' => $completenesses, 'all' => $allCompletenesses];
+    }
+
+    /**
+     * @param array  $normalizedReqs
+     * @param string $missingComp
+     *
+     * @return int
+     */
+    protected function getRequiredCount(array $normalizedReqs, $missingComp)
+    {
+        $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
+        $pricesReqs     = $normalizedReqs[$missingComp]['reqs']['prices'];
+
+        return count($attributesReqs) + count($pricesReqs);
+    }
+
+    /**
+     * @param array  $normalizedReqs
+     * @param string $missingComp
+     * @param array  $normalizedData
+     * @param array  $dataFields
+     *
+     * @return int
+     */
+    protected function getMissingCount(array $normalizedReqs, $missingComp, array $normalizedData, array $dataFields)
+    {
+        $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
+        $pricesReqs     = $normalizedReqs[$missingComp]['reqs']['prices'];
+
+        $missingAttributes = array_diff($attributesReqs, $dataFields);
+
+        $missingPricesCount = count($pricesReqs);
+
+        foreach ($pricesReqs as $priceField => $currencies) {
+            if (isset($normalizedData[$priceField]) &&
+                count(array_diff($currencies, array_keys($normalizedData[$priceField]))) === 0) {
+                $missingPricesCount--;
+            }
+        }
+
+        return count($missingAttributes) + $missingPricesCount;
     }
 
     /**
@@ -294,7 +322,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 foreach ($familyReqs[$channel->getCode()] as $requirement) {
                     $fieldName = $this->getNormalizedFieldName($requirement->getAttribute(), $channel, $locale);
 
-                    if ('prices' === $requirement->getAttribute()->getBackendType()) {
+                    if (AbstractAttributeType::BACKEND_TYPE_PRICE === $requirement->getAttribute()->getBackendType()) {
                         $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = [];
                         foreach ($channel->getCurrencies() as $currency) {
                             $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
