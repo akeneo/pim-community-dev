@@ -17,7 +17,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator as CommunityCompletenessGenerator;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
@@ -100,7 +99,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
     /**
      * {@inheritdoc}
      */
-    protected function getRequiredCount(array $normalizedReqs, array $missingComp)
+    protected function getRequiredCount(array $normalizedReqs, $missingComp)
     {
         $requiredCount = parent::getRequiredCount($normalizedReqs, $missingComp);
         $assetsReqs    = $normalizedReqs[$missingComp]['reqs']['assets'];
