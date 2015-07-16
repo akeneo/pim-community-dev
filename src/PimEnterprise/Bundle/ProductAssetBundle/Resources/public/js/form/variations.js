@@ -25,8 +25,11 @@ define(
                 event.preventDefault();
                 var button = event.currentTarget;
                 var targetUrl = $(button).data('href');
-                // TODO add a translation key
-                var confirmation = this.getConfirmDialog('Are you sure you want to delete this item ?', targetUrl);
+                var confirmation = this.getConfirmDialog(
+                    'pimee_product_asset.enrich_variation.popin.delete.message',
+                    targetUrl,
+                    'pimee_product_asset.enrich_variation.popin.delete.title'
+                );
                 confirmation.open();
             },
             confirmResetVariations: function (event) {
@@ -34,10 +37,9 @@ define(
                 var button = event.currentTarget;
                 var targetUrl = $(button).data('href');
                 var confirmation = this.getConfirmDialog(
-                    // TODO add a translation key
-                    'Are you sure you want to reset all variations ?',
+                    'pimee_product_asset.enrich_variation.popin.reset.message',
                     targetUrl,
-                    'reset.variations'
+                    'pimee_product_asset.enrich_variation.popin.reset.title'
                 );
                 confirmation.open();
             },
