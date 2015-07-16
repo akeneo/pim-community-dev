@@ -288,7 +288,8 @@ class WebUser extends RawMinkContext
                 sprintf('Tab "%s" not found', $name)
             );
         }
-        $badge = $tab->find('css', 'span.invalid-badge');
+
+        $badge = $tab->find('css', '.invalid-badge');
         if (!$badge) {
             throw $this->createExpectationException(
                 sprintf(
@@ -298,6 +299,7 @@ class WebUser extends RawMinkContext
                 )
             );
         }
+
         $errors = $badge->getText();
         if ($errors != $number) {
             throw $this->createExpectationException(
@@ -560,6 +562,10 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $fieldName
+     * @param string $locale
+     * @param string $expected
+     *
      * @Then /^the product ([^"]*) for locale "([^"]*)" should be empty$/
      * @Then /^the product ([^"]*) for locale "([^"]*)" should be "([^"]*)"$/
      * @Then /^the field ([^"]*) for locale "([^"]*)" should contain "([^"]*)"$/
@@ -579,6 +585,10 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $fieldName
+     * @param string $scope
+     * @param string $expected
+     *
      * @Then /^the product ([^"]*) for scope "([^"]*)" should be empty$/
      * @Then /^the product ([^"]*) for scope "([^"]*)" should be "([^"]*)"$/
      * @Then /^the field ([^"]*) for scope "([^"]*)" should contain "([^"]*)"$/
@@ -598,6 +608,11 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $fieldName
+     * @param string $locale
+     * @param string $scope
+     * @param string $expected
+     *
      * @Then /^the product ([^"]*) for locale "([^"]*)" and scope "([^"]*)" should be empty$/
      * @Then /^the product ([^"]*) for locale "([^"]*)" and scope "([^"]*)" should be "([^"]*)"$/
      * @Then /^the field ([^"]*) for locale "([^"]*)" and scope "([^"]*)" should contain "([^"]*)"$/
@@ -692,6 +707,59 @@ class WebUser extends RawMinkContext
                 )
             );
         }
+    }
+
+    /**
+     * @param string $field
+     * @param string $scope
+     * @param string $value
+     *
+     * @When /^I change the (\w+) for scope (\w+) to "([^"]*)"$/
+     *
+     * @return Step\When[]
+     */
+    public function iChangeTheValueForScope($field, $scope, $value)
+    {
+        return [
+            new Step\When(sprintf('I switch the scope to "%s"', $scope)),
+            new Step\When(sprintf('I change the %s to "%s"', $field, $value))
+        ];
+    }
+
+    /**
+     * @param string $field
+     * @param string $locale
+     * @param string $value
+     *
+     * @When /^I change the (\w+) for locale (\w+) to "([^"]*)"$/
+     *
+     * @return Step\When[]
+     */
+    public function iChangeTheValueForLocale($field, $locale, $value)
+    {
+        return [
+            new Step\When(sprintf('I switch the locale to "%s"', $locale)),
+            new Step\When(sprintf('I change the %s to "%s"', $field, $value))
+        ];
+    }
+
+    /**
+     * @param string $field
+     * @param string $scope
+     * @param string $locale
+     * @param string $value
+     *
+     * @When /^I change the (\w+) for scope (\w+) and locale (\w+) to "([^"]*)"$/
+     *
+     * @return Step\When[]
+     */
+    public function iChangeTheValueForScopeAndLocale($field, $scope, $locale, $value)
+    {
+        return [
+            new Step\When(sprintf('I switch the scope to "%s"', $scope)),
+            new Step\When(sprintf('I switch the locale to "%s"', $locale)),
+            new Step\When(sprintf('I change the %s to "%s"', $field, $value))
+        ];
     }
 
     /**
