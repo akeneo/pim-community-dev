@@ -17,5 +17,5 @@ services:
             - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.product_value.class%
             - %pim_catalog.entity.attribute.class%
+            - @pimee_product_asset.repository.asset
             - %pimee_product_asset.model.asset.class%
-            - @pimee_product_asset.finder.asset

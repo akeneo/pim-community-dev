@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator as CommunityCompletenessGenerator;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
-use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
  * Enterprise completeness generator
@@ -30,29 +30,29 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
     /** @var string FQCN of asset */
     protected $assetClass;
 
-    /** @var AssetFinderInterface */
-    protected $assetFinder;
+    /** @var AssetRepositoryInterface */
+    protected $assetRepository;
 
     /**
-     * @param EntityManagerInterface $manager
-     * @param string                 $productClass
-     * @param string                 $productValueClass
-     * @param string                 $attributeClass
-     * @param string                 $assetClass
-     * @param AssetFinderInterface   $assetFinder
+     * @param EntityManagerInterface   $manager
+     * @param string                   $productClass
+     * @param string                   $productValueClass
+     * @param string                   $attributeClass
+     * @param AssetRepositoryInterface $assetRepository
+     * @param string                   $assetClass
      */
     public function __construct(
         EntityManagerInterface $manager,
         $productClass,
         $productValueClass,
         $attributeClass,
-        $assetClass,
-        AssetFinderInterface $assetFinder
+        AssetRepositoryInterface $assetRepository,
+        $assetClass
     ) {
         parent::__construct($manager, $productClass, $productValueClass, $attributeClass);
 
-        $this->assetClass  = $assetClass;
-        $this->assetFinder = $assetFinder;
+        $this->assetRepository = $assetRepository;
+        $this->assetClass      = $assetClass;
     }
 
     /**
@@ -184,7 +184,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
      */
     public function scheduleForAsset(AssetInterface $asset)
     {
-        $products = $this->assetFinder->retrieveAssetProducts($asset);
+        $products = $this->assetRepository->findProducts($asset);
 
         foreach ($products as $product) {
             $this->schedule($product);
