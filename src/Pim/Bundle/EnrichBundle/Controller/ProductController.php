@@ -444,7 +444,7 @@ class ProductController extends AbstractDoctrineController
     public function listCategoriesAction(Request $request, $id, $categoryId)
     {
         $product = $this->findProductOr404($id);
-        $parent = $this->findOr404($this->categoryFactory->create(), $categoryId);
+        $parent = $this->findOr404($this->categoryFactory->getCategoryClass(), $categoryId);
         $categories = null;
 
         $includeParent = $request->get('include_parent', false);

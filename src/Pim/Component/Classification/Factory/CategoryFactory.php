@@ -12,7 +12,7 @@ use Pim\Component\Classification\Model\CategoryInterface;
 class CategoryFactory
 {
     /** @var string */
-    protected $categoryClass;
+    protected $className;
 
     /**
      * @param string $categoryClass
@@ -28,5 +28,13 @@ class CategoryFactory
     public function create()
     {
         return new $this->className();
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategoryClass()
+    {
+        return $this->className;
     }
 }
