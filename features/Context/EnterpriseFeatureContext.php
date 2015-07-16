@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 
 /**
  * A context for creating entities
@@ -40,7 +41,7 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
-     * @param string $field
+     * @param string $label
      *
      * @throws ExpectationException
      *
@@ -48,16 +49,16 @@ class EnterpriseFeatureContext extends FeatureContext
      *
      * @Then /^I should see that (.*) is a modified value$/
      */
-    public function iShouldSeeThatFieldIsAModifiedValue($field)
+    public function iShouldSeeThatFieldIsAModifiedValue($label)
     {
-        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($field);
+        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($label);
         foreach ($icons as $icon) {
-            if ($icon->hasClass('icon-file-text-alt')) {
+            if ($icon->hasClass('modified-by-draft')) {
                 return true;
             }
         }
 
-        throw $this->createExpectationException('Modified value icon was not found');
+        throw $this->createExpectationException(sprintf('Field "%s" should be marked as modified by draft', $label));
     }
 
     /**

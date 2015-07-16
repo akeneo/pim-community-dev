@@ -20,7 +20,6 @@ Feature: Unpublish many products at once
       | yellow-sneakers | Yellow     | Nylon                   |
     And I am logged in as "Julia"
 
-  @skip-pef
   Scenario: Successfully unpublish several products with reference data
     And I am on the published page
     Then the grid should contain 3 elements

@@ -1,3 +1,4 @@
+@javascript
 Feature: Publish a product
   In order to froze the product data I would use to export
   As a product manager
@@ -7,7 +8,6 @@ Feature: Publish a product
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully publish a product
     Given the following product:
       | sku       | family  | name-en_US |
@@ -35,7 +35,6 @@ Feature: Publish a product
     And I am on the "my-tee" published show page
     Then I should not see "Edit working copy"
 
-  @javascript
   Scenario: Successfully publish a product containing attributes
     Given the following attributes:
       | code      | label-en_US | type | scopable | unique | date_min   | date_max   | group |
@@ -92,7 +91,6 @@ Feature: Publish a product
     And I am on the "my-jacket" published show page
     And I should see "March 25, 2014"
 
-  @skip-pef @javascript
   Scenario: Fail to delete attribute options if it's used by a published product
     Given the following attributes:
       | code    | label   | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |

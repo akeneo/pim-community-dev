@@ -12,7 +12,6 @@ Feature: Unpublish many products at once
       | jackadi   | jackets | Jackadi    | jackets    |
       | teafortwo | tees    | My tee     | tees       |
 
-  @skip-pef
   Scenario: Successfully unpublish all products
     Given I am logged in as "Julia"
     And I am on the published page
@@ -24,7 +23,6 @@ Feature: Unpublish many products at once
     And I am on the published page
     Then I should not see products unionjack and jackadi
 
-  @skip-pef
   Scenario: Only unpublish products on which user is the owner
     Given I am logged in as "Julia"
     And I am on the published page
@@ -37,7 +35,6 @@ Feature: Unpublish many products at once
     When I am on the published index page
     Then the grid should contain 1 elements
 
-  @skip-pef
   Scenario: Unpublish nothing if the user is the owner of no product
     Given I am logged in as "Mary"
     And I am on the published page
