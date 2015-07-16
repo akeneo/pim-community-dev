@@ -6,7 +6,9 @@
             <li data-asset="<%= asset.code %>">
                 <div class="asset-thumbnail" style="background-image: url('<%= Routing.generate('pim_enrich_media_show', { filename: _.first(asset.references).file, filter: 'thumbnail'}) %>')"></div>
                 <div class="asset-description">
-                    <%= asset.description.substring(0, 120) %><%= asset.description.length > 120 ? '...' : '' %>
+                    <% if (asset.description) { %>
+                        <%= asset.description.substring(0, 120) %><%= asset.description.length > 120 ? '...' : '' %>
+                    <% } %>
                 </div>
                 <div class="asset-action"><i class="icon-trash remove-asset" data-asset="<%= asset.code %>"></i></div>
             </li>

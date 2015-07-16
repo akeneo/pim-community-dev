@@ -10,8 +10,6 @@ pimee_product_asset:
             delete: Delete
             generate_from_reference: Generate from reference
             reset_variations: Reset variations
-        grid:
-            edit: Edit properties of the asset
         view:
             title: Product asset
             code: Code
@@ -85,6 +83,8 @@ pimee_product_asset:
         csv_tag_import.title: Tag import in csv
     notAvailable:
         label: not available
+    asset:
+        title: Asset
 
 btn.create.asset: Create an asset
 btn.drag_or_upload: Drag and drop a file or click here
