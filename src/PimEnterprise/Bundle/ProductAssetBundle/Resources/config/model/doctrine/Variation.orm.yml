@@ -1,6 +1,7 @@
 PimEnterprise\Component\ProductAsset\Model\Variation:
     type: entity
     table: pimee_product_asset_variation
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
             type: integer

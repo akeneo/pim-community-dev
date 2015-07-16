@@ -1,5 +1,6 @@
 PimEnterprise\Component\ProductAsset\Model\ImageMetadata:
     type: entity
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         exifResolution:
             type: string

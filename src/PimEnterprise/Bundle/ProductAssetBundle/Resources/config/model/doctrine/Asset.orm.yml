@@ -1,7 +1,8 @@
 PimEnterprise\Component\ProductAsset\Model\Asset:
     type: entity
-    repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
     table: pimee_product_asset_asset
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
     fields:
         id:
             type: integer
@@ -25,9 +26,15 @@ PimEnterprise\Component\ProductAsset\Model\Asset:
         createdAt:
             type: datetime
             column: created_at
+            gedmo:
+                timestampable:
+                    on: create
         updatedAt:
             type: datetime
             column: updated_at
+            gedmo:
+                timestampable:
+                    on: update
     oneToMany:
         references:
             targetEntity: PimEnterprise\Component\ProductAsset\Model\ReferenceInterface
