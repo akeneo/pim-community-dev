@@ -302,24 +302,23 @@ class Edit extends Form
     }
 
     /**
-     * @param string $name
+     * @param string $label
      *
      * @throws ElementNotFoundException
      *
      * @return NodeElement
      */
-    public function findField($name)
+    public function findField($label)
     {
-        $currency = null;
-        if (1 === preg_match('/in (.{1,3})$/', $name)) {
+        if (1 === preg_match('/in (.{1,3})$/', $label)) {
             // Price in EUR
-            list($name, $currency) = explode(' in ', $name);
-            $fieldContainer = $this->findFieldContainer($name);
+            list($label, $currency) = explode(' in ', $label);
+            $fieldContainer = $this->findFieldContainer($label);
 
             return $this->findCompoundField($fieldContainer, $currency);
         }
 
-        $fieldContainer = $this->findFieldContainer($name);
+        $fieldContainer = $this->findFieldContainer($label);
         $field = $this->spin(function () use ($fieldContainer) {
             return $fieldContainer->find('css', '.field-input input, .field-input textarea');
         }, 10);
@@ -338,6 +337,11 @@ class Edit extends Form
      */
     public function findFieldContainer($label)
     {
+        if (1 === preg_match('/in (.{1,3})$/', $label)) {
+            // Price in EUR
+            $label = explode(' in ', $label)[0];
+        }
+
         $labelNode = $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
         if (!$labelNode) {
             throw new ElementNotFoundException($this->getSession(), 'label ', 'value', $label);
@@ -771,15 +775,15 @@ class Edit extends Form
     }
 
     /**
-     * @param string $name
+     * @param string $label
      *
      * @return NodeElement[]
      */
-    public function findFieldIcons($name)
+    public function findFieldIcons($label)
     {
-        $field = $this->findFieldContainer($name);
+        $field = $this->findFieldContainer($label);
 
-        return $field->getParent()->findAll('css', '.footer-elements-container i');
+        return $field->findAll('css', 'i[class*="icon-"]');
     }
 
     /**
