@@ -7,7 +7,9 @@
         <li data-asset="<%= asset.code %>">
             <div class="asset-thumbnail" style="background-image: url('<%= Routing.generate('pim_enrich_media_show', { filename: _.first(asset.references).file, filter: 'thumbnail'}) %>')"></div>
             <footer>
-                <%= asset.description.substring(0, 30) %><%= asset.description.length > 30 ? '...' : '' %>
+                <% if (asset.description) { %>
+                    <%= asset.description.substring(0, 30) %><%= asset.description.length > 30 ? '...' : '' %>
+                <% } %>
             </footer>
         </li>
     <% }); %>
