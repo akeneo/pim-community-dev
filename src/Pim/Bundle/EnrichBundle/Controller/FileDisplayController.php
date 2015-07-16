@@ -78,6 +78,8 @@ class FileDisplayController extends Controller
             }
         } catch (FileNotFoundException $e) {
             $imageResponse = $this->getFallbackImageResponse($filter);
+        } catch (\LogicException $e) {
+            $imageResponse = $this->getFallbackImageResponse($filter);
         }
 
         return $imageResponse;
@@ -98,7 +100,7 @@ class FileDisplayController extends Controller
      */
     protected function getFallbackImageResponse($filter = null)
     {
-        $path = realpath(__DIR__ . '/../' . self::FALLBACK_IMAGE_PATH);
+        $path = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . self::FALLBACK_IMAGE_PATH);
         $content = file_get_contents($path);
 
         $binary = new Binary($content, 'image/png');
