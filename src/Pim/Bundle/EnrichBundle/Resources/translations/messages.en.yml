@@ -959,6 +959,8 @@ update_product_value.steps.update_product_value_processor.title: Update product 
 add_to_variant_group_clean.steps.excluded.title: Excluded product
 add_to_variant_group_clean.steps.duplicated.title: Duplicated Axis
 add_to_variant_group.steps.cleaner.warning.description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
+edit_common_attributes: Edit common attributes
+edit_common_attributes_clean: Clean files for common attributes
 
 mass_edit report:
     overview: Mass edit reports
