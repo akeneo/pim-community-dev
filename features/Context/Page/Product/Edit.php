@@ -252,6 +252,56 @@ class Edit extends Form
     }
 
     /**
+     * Check if the specified field is set to the expected value, raise an exception if not
+     *
+     * @param string $label
+     * @param string $expected
+     *
+     * @throws ExpectationException
+     */
+    public function compareFieldValue($label, $expected)
+    {
+        $fieldContainer = $this->findFieldContainer($label);
+        $fieldType      = $this->getFieldType($fieldContainer);
+
+        switch ($fieldType) {
+            case 'textArea':
+                $actual = $this->getTextAreaFieldValue($fieldContainer);
+                break;
+            case 'metric':
+                $actual = $this->getMetricFieldValue($fieldContainer);
+                break;
+            case 'multiSelect':
+                $actual = $this->getMultiSelectFieldValue($fieldContainer);
+                $expected = $this->listToArray($expected);
+                sort($actual);
+                sort($expected);
+                break;
+            case 'select':
+                $actual = $this->getSelectFieldValue($fieldContainer);
+                break;
+            case 'text':
+            case 'date':
+            case 'number':
+            case 'price':
+            default:
+                $actual = $this->findField($label)->getValue();
+                break;
+        }
+
+        if ($expected != $actual) {
+            throw new ExpectationException(
+                sprintf(
+                    'Expected product field "%s" to contain "%s", but got "%s".',
+                    $label,
+                    $expected,
+                    $actual
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $name
      *
      * @throws ElementNotFoundException
@@ -264,14 +314,14 @@ class Edit extends Form
         if (1 === preg_match('/in (.{1,3})$/', $name)) {
             // Price in EUR
             list($name, $currency) = explode(' in ', $name);
+            $fieldContainer = $this->findFieldContainer($name);
 
-            return $this->findCompoundField($name, 0, $currency);
+            return $this->findCompoundField($fieldContainer, $currency);
         }
 
-        $container = $this->findFieldContainer($name);
-
-        $field = $this->spin(function () use ($container) {
-            return $container->find('css', '.field-input input, .field-input textarea');
+        $fieldContainer = $this->findFieldContainer($name);
+        $field = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.field-input input, .field-input textarea');
         }, 10);
 
         return $field;
@@ -390,21 +440,23 @@ class Edit extends Form
     /**
      * Find a compound field
      *
-     * @param string $name
-     * @param        $value
-     * @param        $currency
+     * @param NodeElement $fieldContainer
+     * @param             $currency
      *
      * @throws ElementNotFoundException
      *
      * @return NodeElement
      */
-    protected function findCompoundField($name, $value, $currency)
+    protected function findCompoundField($fieldContainer, $currency)
     {
-        $container = $this->findFieldContainer($name);
-
-        $input = $container->find('css', sprintf('input[data-currency=%s]', $currency));
+        $input = $fieldContainer->find('css', sprintf('input[data-currency=%s]', $currency));
         if (!$input) {
-            throw new ElementNotFoundException($this->getSession(), 'compound field ', 'id|name|label|value', $name);
+            throw new ElementNotFoundException(
+                $this->getSession(),
+                'compound field',
+                'id|name|label|value',
+                $fieldContainer->name
+            );
         }
 
         return $input;
@@ -433,7 +485,7 @@ class Edit extends Form
     }
 
     /**
-     * Fills a textarea field element with $value, identified by its container or label.
+     * Fills a textarea field element with $value
      *
      * @param NodeElement $fieldContainer
      * @param string      $value
@@ -450,12 +502,34 @@ class Edit extends Form
 
             $field->setValue($value);
 
-            return ($field->getValue() === $value || $field->getHTML() === $value);
+            return ($field->getValue() === $value || $field->getHtml() === $value);
         });
     }
 
     /**
-     * Fills a simple select2 field with $value, identified by its $label.
+     * Return the current value of a textarea
+     * Handles both simple textarea and wysiwyg editor
+     *
+     * @param NodeElement $fieldContainer
+     *
+     * @return string
+     */
+    protected function getTextAreaFieldValue(NodeElement $fieldContainer)
+    {
+        $field = $fieldContainer->find('css', '.field-input textarea');
+
+        if (!$field || !$field->isVisible()) {
+            // the textarea can be hidden (display=none) when using WYSIWYG
+            $div = $fieldContainer->find('css', '.note-editor > .note-editable');
+
+            return $div->getHtml();
+        } else {
+            return $field->getValue();
+        }
+    }
+
+    /**
+     * Fills a simple select2 field with $value
      *
      * @param NodeElement $fieldContainer
      * @param string      $value
@@ -486,6 +560,22 @@ class Edit extends Form
             sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()),
             $this->getSession()
         );
+    }
+
+    /**
+     * Return the current value of a select field
+     *
+     * @param NodeElement $fieldContainer
+     *
+     * @return string
+     */
+    protected function getSelectFieldValue(NodeElement $fieldContainer)
+    {
+        $widget = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.select2-container');
+        }, 5);
+
+        return $widget->find('css', '.select2-chosen')->getText();
     }
 
     /**
@@ -534,6 +624,27 @@ class Edit extends Form
     }
 
     /**
+     * Return the current values of a multi-select field
+     *
+     * @param NodeElement $fieldContainer
+     *
+     * @return array
+     */
+    protected function getMultiselectFieldValue(NodeElement $fieldContainer)
+    {
+        $widget = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.select2-container');
+        }, 5);
+
+        $values = [];
+        foreach ($widget->findAll('css', '.select2-search-choice > div') as $choices) {
+            $values[] = $choices->getText();
+        }
+
+        return $values;
+    }
+
+    /**
      * Transform a list to array
      *
      * @param string $list
@@ -559,7 +670,7 @@ class Edit extends Form
      */
     protected function fillCompoundField(NodeElement $fieldContainer, $value)
     {
-        $amount = null;
+        $amount   = null;
         $currency = null;
 
         if (false !== strpos($value, ' ')) {
@@ -570,12 +681,12 @@ class Edit extends Form
             throw new \InvalidArgumentException(
                 sprintf(
                     'The "%s" field is compound but the sub label was not provided',
-                    $amount
+                    $fieldContainer->name
                 )
             );
         }
 
-        $field = $this->findCompoundField($fieldContainer->name, $amount, $currency);
+        $field = $this->findCompoundField($fieldContainer, $currency);
         $field->setValue($amount);
     }
 
@@ -616,6 +727,27 @@ class Edit extends Form
         }
 
         $this->fillTextField($fieldContainer, $text);
+    }
+
+    /**
+     * Return the current formatted value of a metric field (e.g.: '4 KILOGRAM')
+     *
+     * @param NodeElement $fieldContainer
+     *
+     * @return string
+     */
+    protected function getMetricFieldValue(NodeElement $fieldContainer)
+    {
+        $input  = $fieldContainer->find('css', '.data');
+        $select = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.select2-container');
+        }, 5);
+
+        return sprintf(
+            '%s %s',
+            $input->getValue(),
+            $select->find('css', '.select2-chosen')->getText()
+        );
     }
 
     /**

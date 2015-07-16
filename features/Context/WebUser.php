@@ -636,20 +636,35 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $fieldName
+     * @param string $label
      * @param string $expected
      *
      * @Then /^the product ([^"]*) should be empty$/
      * @Then /^the product ([^"]*) should be "([^"]*)"$/
-     * @Then /^the field ([^"]*) should contain "([^"]*)"$/
      *
      * @throws \LogicException
      * @throws ExpectationException
      */
-    public function theProductFieldValueShouldBe($fieldName, $expected = '')
+    public function theProductFieldValueShouldBe($label, $expected = '')
+    {
+        $this->getCurrentPage()->compareFieldValue($label, $expected);
+    }
+
+    /**
+     * @param string $label
+     * @param string $expected
+     *
+     * @Then /^the field ([^"]*) should contain "([^"]*)"$/
+     *
+     * @throws \LogicException
+     * @throws ExpectationException
+     *
+     * TODO: should be moved to a page context and theProductFieldValueShouldBe() method should be merged with this one
+     */
+    public function theFieldShouldContain($label, $expected)
     {
         $this->wait();
-        $field = $this->getCurrentPage()->findField($fieldName);
+        $field = $this->getCurrentPage()->findField($label);
 
         if ($field->hasClass('select2-focusser')) {
             for ($i = 0; $i < 2; ++$i) {
@@ -701,7 +716,7 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(
                 sprintf(
                     'Expected product field "%s" to contain "%s", but got "%s".',
-                    $fieldName,
+                    $label,
                     $expected,
                     $actual
                 )
