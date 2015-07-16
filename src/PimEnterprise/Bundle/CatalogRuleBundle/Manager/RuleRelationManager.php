@@ -143,10 +143,7 @@ class RuleRelationManager
      */
     protected function getRuleRelationsForResource($resourceId, $resourceName)
     {
-        return $this->ruleRelationRepo->findBy([
-            'resourceId'   => $resourceId,
-            'resourceName' => $resourceName
-        ]);
+        return $this->ruleRelationRepo->findBy(['resourceId' => $resourceId, 'resourceName' => $resourceName]);
     }
 
     /**
