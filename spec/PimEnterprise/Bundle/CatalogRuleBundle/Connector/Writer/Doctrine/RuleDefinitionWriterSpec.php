@@ -31,7 +31,7 @@ class RuleDefinitionWriterSpec extends ObjectBehavior
         $items = [$rule1, $rule2];
 
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalledTimes(1);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(1);
 
         $this->setStepExecution($stepExecution);
 
