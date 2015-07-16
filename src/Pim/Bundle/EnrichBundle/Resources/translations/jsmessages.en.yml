@@ -215,7 +215,8 @@ pim_enrich:
                 completeness:
                     title: Completeness
                     info:
-                        no_family: No family defined
+                        no_family: No family defined. Please define a family to calculate the completeness of this product.
+                        no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
                 history:
                     title: History
             switch:

@@ -50,10 +50,6 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             save: function (options) {
-                _.each(FieldManager.getFields(), function (field) {
-                    field.updateModel();
-                });
-
                 var product = $.extend(true, {}, this.getData());
                 var productId = product.meta.id;
 

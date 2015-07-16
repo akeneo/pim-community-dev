@@ -38,7 +38,8 @@ define(
 
                 mediator.on('product:action:post_update', _.bind(this.update, this));
 
-                this.listenTo(this.getRoot().model, 'change:family', this.onChangeFamily);
+                this.stopListening(mediator, 'change-family:change:after');
+                this.listenTo(mediator, 'change-family:change:after', _.bind(this.onChangeFamily, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -49,13 +50,16 @@ define(
             render: function () {
                 if (this.getRoot().model.get('meta')) {
                     $.when(
-                        FetcherRegistry.getFetcher('completeness').fetchForProduct(this.getRoot().model.get('meta').id),
+                        FetcherRegistry.getFetcher('completeness').fetchForProduct(
+                            this.getRoot().model.get('meta').id,
+                            this.getRoot().model.get('family')
+                        ),
                         FetcherRegistry.getFetcher('locale').fetchAll()
-                    ).done(_.bind(function (completenesses, locales) {
+                    ).then(_.bind(function (completeness, locales) {
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getRoot().model.get('family') !== null,
-                                completenesses: completenesses,
+                                completenesses: completeness.completenesses,
                                 i18n: i18n,
                                 locales: locales
                             })
@@ -110,11 +114,9 @@ define(
 
             /**
              * On family change listener
-             *
-             * @param Model model the current product model
              */
-            onChangeFamily: function (model) {
-                if (!_.isEmpty(model._previousAttributes)) {
+            onChangeFamily: function () {
+                if (!_.isEmpty(this.getRoot().model._previousAttributes)) {
                     this.render();
                 }
             }

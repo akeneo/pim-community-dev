@@ -57,11 +57,13 @@ define(
                     label: _.__('pim_enrich.form.product.tab.attributes.title')
                 });
 
-                this.listenTo(this.getRoot().model, 'change', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(mediator, 'entity:action:validation_error', this.render);
-                mediator.on('product:action:post_update', _.bind(this.postSave, this));
-                mediator.on('show_attribute', _.bind(this.showAttribute, this));
+                this.listenTo(mediator, 'change-family:change:after', this.render);
+                this.listenTo(mediator, 'attributes:add-attribute:after', this.render);
+                this.listenTo(mediator, 'product:action:post_update', this.postSave);
+                this.listenTo(mediator, 'show_attribute', this.showAttribute);
+
                 window.addEventListener('resize', _.bind(this.resize, this));
                 FieldManager.clearFields();
 
@@ -182,7 +184,8 @@ define(
                     );
 
                     this.setData(product);
-                    this.getRoot().model.trigger('change');
+
+                    mediator.trigger('attributes:add-attribute:after');
                 }, this));
             },
             removeAttribute: function (event) {
