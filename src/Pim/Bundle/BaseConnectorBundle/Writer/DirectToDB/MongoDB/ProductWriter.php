@@ -222,7 +222,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
                 '_id' => $doc['_id']
             ];
             $this->collection->update($criteria, $doc);
-            $this->stepExecution->incrementSummaryInfo('update');
+            $this->stepExecution->incrementSummaryInfo('process');
         }
     }
 

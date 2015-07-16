@@ -41,7 +41,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
 
         $variantGroupTwo->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
         $variantGroupOne->getProductTemplate()->willReturn(null);
         $variantGroupOne->getProducts()->willReturn([]);
@@ -61,7 +61,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution
     ) {
         $variantGroup->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $productTemplate->getValuesData()->willReturn(['something']);
@@ -89,7 +89,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution
     ) {
         $variantGroup->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $productTemplate->getValuesData()->willReturn(['something']);
@@ -119,7 +119,7 @@ class VariantGroupWriterSpec extends ObjectBehavior
         $stepExecution
     ) {
         $variantGroup->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $productTemplate->getValuesData()->willReturn([]);
