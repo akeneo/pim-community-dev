@@ -11,20 +11,20 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**
  * Saver for an asset
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class AssetSaver implements SaverInterface
+class AssetSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -74,5 +74,23 @@ class AssetSaver implements SaverInterface
         if (true === $options['schedule']) {
             $this->completenessGenerator->scheduleForAsset($asset);
         }
+    }
+
+    /**
+     * @param AssetInterface[] $assets
+     * @param array $options
+     */
+    public function saveAll(array $assets, array $options = [])
+    {
+        $options = [
+            'flush'    => false,
+            'schedule' => true,
+        ];
+
+        foreach ($assets as $asset) {
+            $this->save($asset, $options);
+        }
+
+        $this->objectManager->flush();
     }
 }

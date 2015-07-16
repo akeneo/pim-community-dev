@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -65,6 +66,19 @@ interface AssetRepositoryInterface extends
      * @return string[] Array with codes inside
      */
     public function findSimilarCodes($code);
+
+    /**
+     * Count complete assets among the given asset ids
+     *
+     * @param int[] $assetIds
+     * @param int   $localeId
+     * @param int   $channelId
+     *
+     * @throws \Doctrine\DBAL\DBALException
+     *
+     * @return int
+     */
+    public function countCompleteAssets(array $assetIds, $localeId, $channelId);
 
     /**
      * Retrieve products linked to an asset

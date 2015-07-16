@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -23,7 +24,7 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class AssetVariationSaver implements SaverInterface
+class AssetVariationSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -73,5 +74,25 @@ class AssetVariationSaver implements SaverInterface
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+    }
+
+    /**
+     * Save many objects
+     *
+     * @param VariationInterface[] $variations
+     * @param array                $options The saving options
+     */
+    public function saveAll(array $variations, array $options = [])
+    {
+        $options = [
+            'flush'    => false,
+            'schedule' => true,
+        ];
+
+        foreach ($variations as $variation) {
+            $this->save($variation, $options);
+        }
+
+        $this->objectManager->flush();
     }
 }

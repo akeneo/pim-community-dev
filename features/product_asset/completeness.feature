@@ -33,16 +33,16 @@ Feature: Display the completeness of a product with assets
       | channel | locale | state   | missing_values                                                | ratio |
       | mobile  | de_DE  | warning | name gallery                                                  | 83%   |
       | mobile  | en_US  | warning | name gallery                                                  | 83%   |
-      | tablet  | de_DE  | warning | name description weather_conditions rating side_view gallery  | 50%   |
-      | tablet  | en_US  | warning | name description weather_conditions rating side_view gallery  | 50%   |
+      | tablet  | de_DE  | warning | name description weather_conditions rating side_view gallery  | 60%   |
+      | tablet  | en_US  | warning | name description weather_conditions rating side_view gallery  | 60%   |
     Given I generate missing variations for asset paint
     And I am on the "jacket-white" product page
     When I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
       | channel | locale | state   | missing_values                                         | ratio |
-      | mobile  | de_DE  | success |                                                        | 100%   |
-      | mobile  | en_US  | success |                                                        | 100%   |
+      | mobile  | de_DE  | warning | name                                                   | 83%   |
+      | mobile  | en_US  | warning | name                                                   | 83%   |
       | tablet  | de_DE  | warning | name description weather_conditions rating side_view   | 60%   |
       | tablet  | en_US  | warning | name description weather_conditions rating side_view   | 60%   |
 

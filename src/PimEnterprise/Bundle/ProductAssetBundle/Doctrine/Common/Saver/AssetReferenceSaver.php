@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -23,7 +24,7 @@ use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class AssetReferenceSaver implements SaverInterface
+class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -73,5 +74,25 @@ class AssetReferenceSaver implements SaverInterface
         if (true === $options['schedule']) {
             $this->completenessGenerator->scheduleForAsset($reference->getAsset());
         }
+    }
+
+    /**
+     * Save many objects
+     *
+     * @param ReferenceInterface[] $references
+     * @param array                $options The saving options
+     */
+    public function saveAll(array $references, array $options = [])
+    {
+        $options = [
+            'flush'    => false,
+            'schedule' => true,
+        ];
+
+        foreach ($references as $reference) {
+            $this->save($reference, $options);
+        }
+
+        $this->objectManager->flush();
     }
 }

@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator as CommunityCompletenessGenerator;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
@@ -59,7 +60,10 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
     }
 
     /**
-     * {@inheritdoc}
+     * @param ChannelInterface[] $channels
+     * @param array $familyReqs
+     *
+     * @return array
      */
     protected function getFieldsNames(array $channels, array $familyReqs)
     {
@@ -120,7 +124,14 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
 
         $completeAttributes = 0;
         foreach ($assetsReqs as $attributeCode) {
-            $completeAttributes += $this->countCompleteAssetsForAttribute($attributeCode, $localeId, $channelId);
+            if (!isset($normalizedData[$attributeCode])) {
+                continue;
+            }
+            $assetIds       = $this->getAssetsIdsFromAttribute($normalizedData, $attributeCode);
+            $completeAssets = $this->assetRepository->countCompleteAssets($assetIds, $localeId, $channelId);
+            if ($completeAssets > 0) {
+                $completeAttributes += 1;
+            }
         }
 
         $missingAssetsCount = count($assetsReqs) - $completeAttributes;
@@ -129,44 +140,20 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
     }
 
     /**
+     * @param array  $normalizedData
      * @param string $attributeCode
-     * @param int    $localeId
-     * @param int    $channelId
      *
-     * @throws \Doctrine\DBAL\DBALException
-     *
-     * @return int
+     * @return array
      */
-    protected function countCompleteAssetsForAttribute($attributeCode, $localeId, $channelId)
+    protected function getAssetsIdsFromAttribute(array $normalizedData, $attributeCode)
     {
-        $selectSql = 'SELECT av.value_id,
-            IF (r.locale_id IS NOT NULL, r.locale_id, cl.locale_id) AS locale_id,
-            v.channel_id
+        $assetsIds = [];
 
-            FROM pim_catalog_product_value_asset av
-            JOIN pim_catalog_product_value pv ON av.value_id = pv.id
-            JOIN pim_catalog_attribute att ON att.id = pv.attribute_id AND att.code = :attributeCode
-            JOIN pimee_product_asset_asset a ON av.asset_id = a.id
-            JOIN pimee_product_asset_reference r ON r.asset_id = a.id
-            JOIN pimee_product_asset_variation v ON v.reference_id = r.id
-            LEFT JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id AND r.locale_id IS NULL
+        foreach ($normalizedData[$attributeCode] as $assetValues) {
+            $assetsIds[] = $assetValues['id'];
+        }
 
-            WHERE (r.locale_id = :localeId OR cl.locale_id = :localeId)
-            AND v.channel_id = :channelId
-
-            GROUP BY value_id, locale_id, channel_id
-
-            HAVING COUNT(v.file_id) > 0';
-
-        $stmt = $this->connection->prepare($selectSql);
-
-        $stmt->bindValue(':attributeCode', $attributeCode);
-        $stmt->bindValue(':localeId', $localeId);
-        $stmt->bindValue(':channelId', $channelId);
-
-        $stmt->execute();
-
-        return $stmt->rowCount();
+        return $assetsIds;
     }
 
     /**

@@ -33,9 +33,6 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
      * @param LocaleInterface|null  $locale
      *
      * @return bool
-     * @internal param ProductValueInterface $value
-     * @internal param null $localeCode
-     *
      */
     public function isComplete(
         ProductValueInterface $productValue,
