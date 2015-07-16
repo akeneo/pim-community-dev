@@ -61,7 +61,7 @@ class AddProductValueProcessor extends AbstractProcessor
             return null;
         }
 
-        $this->stepExecution->incrementSummaryInfo('processed');
+        $this->stepExecution->incrementSummaryInfo('process');
 
         return $product;
     }

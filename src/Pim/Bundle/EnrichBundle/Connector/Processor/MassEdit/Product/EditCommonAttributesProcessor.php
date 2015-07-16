@@ -74,7 +74,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         }
 
         if (null !== $product) {
-            $this->stepExecution->incrementSummaryInfo('processed');
+            $this->stepExecution->incrementSummaryInfo('process');
         }
 
         return $product;
