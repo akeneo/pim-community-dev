@@ -244,6 +244,8 @@ define(
             showAttribute: function (event) {
                 AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
                     .done(_.bind(function (attributeGroups) {
+                        mediator.trigger('form-tabs:change:tab', this.code);
+
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,
                             event.attribute
