@@ -123,7 +123,7 @@ pim_enrich:
                 disable: Disable
                 disabled: Disabled
                 download_pdf: PDF
-                copy: Copy
+                copy: Compare / Translate
                 delete: Delete
                 save: Save
                 save_and_back: Save and back to grid
