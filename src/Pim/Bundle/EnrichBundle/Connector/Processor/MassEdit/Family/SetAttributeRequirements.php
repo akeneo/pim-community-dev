@@ -75,7 +75,7 @@ class SetAttributeRequirements extends AbstractProcessor
             );
         }
 
-        $this->stepExecution->incrementSummaryInfo('processed');
+        $this->stepExecution->incrementSummaryInfo('process');
 
         return $family;
     }
