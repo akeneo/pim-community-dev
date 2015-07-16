@@ -31,6 +31,10 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
+        $loader->load('connector/array_converters.yml');
+        $loader->load('connector/processors.yml');
+        $loader->load('connector/readers.yml');
+        $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
         $loader->load('data_sources.yml');
         $loader->load('datagrid/attribute_types.yml');
@@ -55,6 +59,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('selectors.yml');
         $loader->load('services.yml');
         $loader->load('subscribers.yml');
+        $loader->load('steps.yml');
         $loader->load('twig_extension.yml');
         $loader->load('updaters.yml');
         $loader->load('writers.yml');

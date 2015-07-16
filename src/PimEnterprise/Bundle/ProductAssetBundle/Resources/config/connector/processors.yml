@@ -1,0 +1,22 @@
+parameters:
+    pimee_product_asset.processor.denormalization.tag.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor
+    pimee_product_asset.processor.denormalization.asset.class: PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\AssetProcessor
+
+services:
+    pimee_product_asset.processor.denormalization.tag.flat:
+        class: %pimee_product_asset.processor.denormalization.tag.class%
+        arguments:
+            - '@pimee_product_asset.array_converter.flat.asset'
+            - '@pimee_product_asset.repository.tag'
+            - '@pimee_product_asset.updater.tag'
+            - '@pimee_product_asset.factory.tag'
+            - '@pim_catalog.validator.product'
+
+    pimee_product_asset.processor.denormalization.asset.flat:
+        class: %pimee_product_asset.processor.denormalization.asset.class%
+        arguments:
+            - '@pimee_product_asset.array_converter.flat.asset'
+            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.updater.asset'
+            - '@pimee_product_asset.factory.asset'
+            - '@pim_catalog.validator.product'
