@@ -52,7 +52,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         );
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('processed')->shouldBeCalled();
 
         $propertySetter->setData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
 

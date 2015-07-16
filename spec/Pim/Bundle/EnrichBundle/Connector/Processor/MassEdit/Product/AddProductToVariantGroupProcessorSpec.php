@@ -63,7 +63,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $templateUpdater->update($variantGroup->getProductTemplate(), [$product]);
 
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled($productTemplate);
+        $stepExecution->incrementSummaryInfo('processed')->shouldBeCalled($productTemplate);
 
         $this->setStepExecution($stepExecution);
 

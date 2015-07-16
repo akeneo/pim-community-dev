@@ -74,7 +74,7 @@ class AddProductToVariantGroupProcessor extends AbstractProcessor
             return null;
         }
 
-        $this->stepExecution->incrementSummaryInfo('mass_edited');
+        $this->stepExecution->incrementSummaryInfo('processed');
 
         return $product;
     }
