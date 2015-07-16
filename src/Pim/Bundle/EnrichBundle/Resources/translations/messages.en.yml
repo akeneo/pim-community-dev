@@ -115,14 +115,14 @@ pim_enrich:
             label:          Change status (enable / disable)
             description:    The selected products will be enabled or disabled.
             success_flash:  Product(s) status have been changed
-            launched_flash: The job updating product(s) status is currently running
+            launched_flash: The bulk action "change status" has been launched. You will be notified when it is done.
 
         edit-common-attributes:
             label:         Edit attributes
             description:   The selected product's attributes will be edited with following data for the chosen locale.
             empty:         Please select the attribute(s) you want to edit
             success_flash: The job updating product(s) status is currently running
-            launched_flash: The job updating product(s) common attributes is currently running
+            launched_flash: The bulk action "edit common attributes" has been launched. You will be notified when it is done.
             message:
                 warning: There is no attribute in common for the selected products. Please change your selection.
                 invalid_attribute: Attribute with code "attribute_code" is not common to selected products, attribute skipped.
@@ -132,19 +132,19 @@ pim_enrich:
             label:          Classify products in categories
             description:    The products will be positioned into following categories, the existing placement is kept.
             success_flash:  Product(s) have been classified into selected categories
-            launched_flash: The job updating product(s) categories is currently running
+            launched_flash: The bulk action "classify" has been launched. You will be notified when it is done.
 
         change-family:
             label:          Change the family of products
             description:    The family of the selected products will be changed to the chosen family
             success_flash:  The family of selected product(s) has been successfully changed
-            launched_flash: The job updating product(s) family is currently running
+            launched_flash: The bulk action "change family" has been launched. You will be notified when it is done.
 
         add-to-groups:
             label:          Add to groups
             description:    Select the groups in which to add the selected products
             success_flash:  Products were successfully added to the selected groups
-            launched_flash: The job updating product(s) group(s) is currently running
+            launched_flash: The bulk action "add to groups" has been launched. You will be notified when it is done.
             no_group:       No group for now. Please start by creating a group.
 
         add-to-variant-group:
@@ -155,13 +155,13 @@ pim_enrich:
             no_variant_group:                      No variant group for now. Please start by creating a variant group.
             no_valid_variant_group:                No variant group is sharing attributes with selected products.
             some_variant_groups_are_skipped:       The following variant groups have been skipped because they don't share attributes with selected products : %groups%
-            launched_flash:                        The job updating product(s) variant group is currently running
+            launched_flash:                        The bulk action "add to variant group" has been launched. You will be notified when it is done.
 
         set-attribute-requirements:
             label:         Set attribute requirements
             description:   The following attribute requirements will be applied to the selected families
             success_flash: Attribute requirements were applied to the selected families
-            launched_flash: The job updating families attribute requirements is currently running
+            launched_flash: The bulk action "set attribute requirements" is launched. You will be notified when it will be done.
 
         mass_action:
             quick_export:
