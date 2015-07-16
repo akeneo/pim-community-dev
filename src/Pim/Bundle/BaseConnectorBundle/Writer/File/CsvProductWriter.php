@@ -132,7 +132,7 @@ class CsvProductWriter extends CsvWriter
             if (!is_dir($destinationDir)) {
                 $this->localFs->mkdir($destinationDir);
             }
-            $this->localFs->copy($source, $destination);
+            $this->localFs->copy($source, $destination, true);
         } catch (IOException $e) {
             return false;
         }
@@ -154,7 +154,7 @@ class CsvProductWriter extends CsvWriter
             if (!is_dir($destinationDir)) {
                 $this->localFs->mkdir($destinationDir);
             }
-            $this->localFs->rename($source, $destination);
+            $this->localFs->rename($source, $destination, true);
         } catch (IOException $e) {
             return false;
         }

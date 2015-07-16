@@ -31,6 +31,10 @@
 - Change constructor of `Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer` to remove media class parameter and to add ``Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface``
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor` to remove the upload directory parameter 
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Writer\File\CsvProductWriter` to add `Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface`, `League\Flysystem\MountManager` and remove the upload directory parameter
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver` to remove the archive directory parameter
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver` to remove the archive directory parameter
+- Change method `createZip` of `Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory` to return a `League\Flysystem\Filesystem`
+- Change method `getArchive` of `Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface` to return a `resource`
 
 - `Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter` and `Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor` are deprecated
 - Change the constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`, removed `Pim\Bundle\VersioningBundle\Manager\VersionManager`
