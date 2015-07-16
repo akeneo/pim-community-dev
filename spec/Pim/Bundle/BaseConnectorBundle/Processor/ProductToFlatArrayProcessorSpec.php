@@ -2,23 +2,22 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Akeneo\Component\FileStorage\Model\FileInterface;
+use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
-    function let(Serializer $serializer, ChannelManager $channelManager)
+    function let(Serializer $serializer, ChannelManager $channelManager, Filesystem $filesystem)
     {
-        $this->beConstructedWith($serializer, $channelManager, 'upload/path/');
+        $this->beConstructedWith($serializer, $channelManager, $filesystem);
     }
 
     function it_is_initializable()
@@ -35,18 +34,20 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     {
         $channelManager->getChannelChoices()->willReturn(['mobile', 'magento']);
 
-        $this->getConfigurationFields()->shouldReturn([
-            'channel' => [
-                'type'    => 'choice',
-                'options' => [
-                    'choices'  => ['mobile', 'magento'],
-                    'required' => true,
-                    'select2'  => true,
-                    'label'    => 'pim_base_connector.export.channel.label',
-                    'help'     => 'pim_base_connector.export.channel.help'
+        $this->getConfigurationFields()->shouldReturn(
+            [
+                'channel' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => ['mobile', 'magento'],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.channel.label',
+                        'help'     => 'pim_base_connector.export.channel.help'
+                    ]
                 ]
             ]
-        ]);
+        );
     }
 
     function it_is_configurable()
@@ -59,33 +60,43 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_media(
-        ChannelInterface $channel,
+        $filesystem,
         $channelManager,
+        ChannelInterface $channel,
         ProductInterface $product,
-        ProductMediaInterface $media1,
-        ProductMediaInterface $media2,
+        FileInterface $media1,
+        FileInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
         AttributeInterface $attribute,
+        ProductValueInterface $identifierValue,
+        AttributeInterface $identifierAttribute,
         $serializer
     ) {
-        $media1->getFilename()->willReturn('media_name');
-        $media1->getOriginalFilename()->willReturn('media_original_name');
-
-        $media2->getFilename()->willReturn('media_name');
-        $media2->getOriginalFilename()->willReturn('media_original_name');
+        $media1->getKey()->willReturn('key/to/media1.jpg');
+        $media2->getKey()->willReturn('key/to/media2.jpg');
 
         $value1->getAttribute()->willReturn($attribute);
-        $value1->getData()->willReturn($media1);
+        $value1->getMedia()->willReturn($media1);
         $value2->getAttribute()->willReturn($attribute);
-        $value2->getData()->willReturn($media2);
+        $value2->getMedia()->willReturn($media2);
         $attribute->getAttributeType()->willReturn('pim_catalog_image');
-        $product->getValues()->willReturn([$value1, $value2]);
+        $product->getValues()->willReturn([$value1, $value2, $identifierValue]);
+
+        $identifierValue->getAttribute()->willReturn($identifierAttribute);
+        $identifierAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $product->getIdentifier()->willReturn($identifierValue);
+        $identifierValue->getData()->willReturn('data');
+
+        $filesystem->has('key/to/media1.jpg')->willReturn(true);
+        $filesystem->has('key/to/media2.jpg')->willReturn(true);
 
         $serializer
-            ->normalize([$media1, $media2], 'flat', ['field_name' => 'media', 'prepare_copy' => true])
-            ->willReturn(['normalized_media1', 'normalized_media2']);
-
+            ->normalize($media1, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value1])
+            ->willReturn(['normalized_media1']);
+        $serializer
+            ->normalize($media2, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value2])
+            ->willReturn(['normalized_media2']);
         $serializer
             ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
             ->willReturn(['normalized_product']);
@@ -93,7 +104,12 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
 
         $this->setChannel('foobar');
-        $this->process($product)->shouldReturn(['media' => ['normalized_media1', 'normalized_media2'], 'product' => ['normalized_product']]);
+        $this->process($product)->shouldReturn(
+            [
+                'media' => [['normalized_media1'], ['normalized_media2']],
+                'product' => ['normalized_product']
+            ]
+        );
     }
 
     function it_returns_flat_data_without_media(
@@ -113,54 +129,4 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->setChannel('foobar');
         $this->process($product)->shouldReturn(['media' => [], 'product' => ['normalized_product']]);
     }
-
-    function it_throws_an_exception_if_something_goes_wrong_with_media_normalization(
-        $serializer,
-        ProductInterface $product,
-        ProductMediaInterface $media,
-        ProductValueInterface $value,
-        ProductValueInterface $value2,
-        AttributeInterface $attribute
-    ) {
-        $product->getValues()->willReturn([$value]);
-        $product->getIdentifier()->willReturn($value2);
-
-        $value->getAttribute()->willReturn($attribute);
-        $value->getData()->willReturn($media);
-        $value2->getData()->willReturn(23);
-
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
-
-        $serializer->normalize([$media], Argument::cetera())->willThrow(new FileNotFoundException('upload/path/img.jpg'));
-
-        $this->shouldThrow(
-            new InvalidItemException(
-                'The file "upload/path/img.jpg" does not exist',
-                [ 'item' => 23, 'uploadDirectory' => 'upload/path/']
-            )
-        )->duringProcess($product);
-    }
-    function it_throws_an_exception_if_no_file_is_found(
-        ChannelInterface $channel,
-        ProductInterface $product,
-        ChannelManager $channelManager,
-        Serializer $serializer,
-        ProductValueInterface $productValue,
-        AttributeInterface $attribute
-    ) {
-        $product->getValues()->willReturn([$productValue]);
-        $productValue->getAttribute()->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_catalog_image');
-        $product->getIdentifier()->willReturn($productValue);
-        $productValue->getData()->willReturn('data');
-        $this->setChannel('foobar');
-        $channelManager->getChannelByCode('foobar')->willReturn($channel);
-
-        $serializer
-            ->normalize(['data'], 'flat', ['field_name' => 'media', 'prepare_copy' => true])
-            ->willThrow('Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException');
-
-        $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('process', [$product]);
-    }
-
 }

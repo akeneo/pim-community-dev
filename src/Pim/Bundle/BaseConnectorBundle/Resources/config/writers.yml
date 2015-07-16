@@ -28,7 +28,8 @@ services:
     pim_base_connector.writer.file.csv_product:
         class: %pim_base_connector.writer.file.csv_product.class%
         arguments:
-            - '@pim_catalog.manager.media'
+            - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.file_storage.raw_file.fetcher'
 
     pim_base_connector.writer.file.csv_variant_group:
         class: %pim_base_connector.writer.file.csv_variant_group.class%

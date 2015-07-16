@@ -28,7 +28,9 @@
 ## BC breaks
 - Media classes `Pim\Bundle\CatalogBundle\Model\ProductMedia`, `Pim\Bundle\CatalogBundle\Model\AbstractProductMedia` and `Pim\Bundle\CatalogBundle\Model\ProductMediaInterface` have been removed
 - Change constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter` to remove `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and to add `Akeneo\Component\FileStorage\Repository\FileRepositoryInterface` and `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface`
-- Change constructor of `Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer` to remove media class and to add ``Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface``
+- Change constructor of `Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer` to remove media class parameter and to add ``Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface``
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor` to remove the upload directory parameter 
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Writer\File\CsvProductWriter` to add `Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface`, `League\Flysystem\MountManager` and remove the upload directory parameter
 
 - `Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter` and `Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor` are deprecated
 - Change the constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`, removed `Pim\Bundle\VersioningBundle\Manager\VersionManager`

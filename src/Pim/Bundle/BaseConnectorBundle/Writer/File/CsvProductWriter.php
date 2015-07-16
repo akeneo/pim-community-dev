@@ -2,8 +2,14 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
+use League\Flysystem\MountManager;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
+
 /**
- * Write product data into a csv file on the filesystem
+ * Write product data into a csv file on the local filesystem
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -11,6 +17,26 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
  */
 class CsvProductWriter extends CsvWriter
 {
+    /** @var RawFileFetcherInterface */
+    protected $fileFetcher;
+
+    /** @var MountManager */
+    protected $mountManager;
+
+    /** @var Filesystem */
+    protected $localFs;
+
+    /**
+     * @param MountManager            $mountManager
+     * @param RawFileFetcherInterface $fileFetcher
+     */
+    public function __construct(MountManager $mountManager, RawFileFetcherInterface $fileFetcher)
+    {
+        $this->mountManager = $mountManager;
+        $this->fileFetcher = $fileFetcher;
+        $this->localFs = new Filesystem();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -18,15 +44,16 @@ class CsvProductWriter extends CsvWriter
     {
         $products = [];
 
-        if (!is_dir(dirname($this->getPath()))) {
-            mkdir(dirname($this->getPath()), 0777, true);
+        $exportDirectory = dirname($this->getPath());
+        if (!is_dir($exportDirectory)) {
+            $this->localFs->mkdir($exportDirectory);
         }
 
         foreach ($items as $item) {
             $products[] = $item['product'];
             foreach ($item['media'] as $media) {
                 if ($media && isset($media['filePath']) && $media['filePath']) {
-                    $this->copyMedia($media);
+                    $this->copyMedia($media, $exportDirectory);
                 }
             }
         }
@@ -35,42 +62,103 @@ class CsvProductWriter extends CsvWriter
     }
 
     /**
-     * @param array $media
+     * @param array  $media
+     * @param string $exportDirectory
      */
-    protected function copyMedia(array $media)
+    protected function copyMedia(array $media, $exportDirectory)
     {
-        $target = sprintf('%s/%s', dirname($this->getPath()), $media['exportPath']);
+        $rawFile = $this->fetchMediaFile($media);
 
-        if (!is_dir(dirname($target))) {
-            mkdir(dirname($target), 0777, true);
-        }
-        if (is_file($media['filePath'])) {
-            $this->copyFile($media, $target);
-        } else {
-            $this->stepExecution->addWarning(
-                $this->getName(),
-                'The media has not been found or is not currently available',
-                [],
-                $media
-            );
+        if (null !== $rawFile) {
+            $exportPathname = $exportDirectory . DIRECTORY_SEPARATOR . $media['exportPath'];
+            if ($this->copyFile($rawFile->getPathname(), $exportPathname)) {
+                $this->writtenFiles[$exportPathname] = $media['exportPath'];
+            } else {
+                $this->stepExecution->addWarning(
+                    $this->getName(),
+                    'The media has not been copied',
+                    [],
+                    $media
+                );
+            }
+            //TODO: files should be available in the archive folder to be able to generate the ZIP file
+//            $this->moveFile($rawFile->getPathname(), 'ARCHIVE/' . $media['exportPath']);
         }
     }
 
     /**
-     * @param array  $media
-     * @param string $target
+     * @param array $media
+     *
+     * @return null|\SplFileInfo
      */
-    protected function copyFile(array $media, $target)
+    protected function fetchMediaFile(array $media)
     {
-        if (copy($media['filePath'], $target)) {
-            $this->writtenFiles[$target] = $media['exportPath'];
-        } else {
+        $rawFile = null;
+        $storageFs = $this->mountManager->getFilesystem($media['storageAlias']);
+
+        try {
+            $rawFile = $this->fileFetcher->fetch($media['filePath'], $storageFs);
+        } catch (\LogicException $e) {
             $this->stepExecution->addWarning(
                 $this->getName(),
-                'The media has not been copied',
+                'The media has not been found on the file storage',
+                [],
+                $media
+            );
+        } catch (FileTransferException $e) {
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                'Impossible to copy the media from the file storage',
                 [],
                 $media
             );
         }
+
+        return $rawFile;
+    }
+
+
+    /**
+     * @param string $source
+     * @param string $destination
+     *
+     * @return bool
+     */
+    protected function copyFile($source, $destination)
+    {
+        $destinationDir = dirname($destination);
+
+        try {
+            if (!is_dir($destinationDir)) {
+                $this->localFs->mkdir($destinationDir);
+            }
+            $this->localFs->copy($source, $destination);
+        } catch (IOException $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param string $source
+     * @param string $destination
+     *
+     * @return bool
+     */
+    protected function moveFile($source, $destination)
+    {
+        $destinationDir = dirname($destination);
+
+        try {
+            if (!is_dir($destinationDir)) {
+                $this->localFs->mkdir($destinationDir);
+            }
+            $this->localFs->rename($source, $destination);
+        } catch (IOException $e) {
+            return false;
+        }
+
+        return true;
     }
 }
