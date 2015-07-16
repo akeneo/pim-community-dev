@@ -48,7 +48,6 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         );
 
         $propertyAdder->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo('processed')->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
 
