@@ -26,6 +26,7 @@ define(
                 'click header': 'switchLocale',
                 'click .missing-attributes span': 'showAttribute'
             },
+
             /**
              * {@inheritdoc}
              */
@@ -41,6 +42,7 @@ define(
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
             /**
              * {@inheritdoc}
              */
@@ -64,6 +66,7 @@ define(
 
                 return this;
             },
+
             /**
              * Toggle the current locale
              *
@@ -77,6 +80,7 @@ define(
                     $completenessBlock.attr('data-closed', 'false');
                 }
             },
+
             /**
              * Set focus to the attribute given by the event
              *
@@ -92,6 +96,7 @@ define(
                     }
                 );
             },
+
             /**
              * Update the completeness by fetching it from the backend
              */
@@ -102,6 +107,7 @@ define(
 
                 this.render();
             },
+
             /**
              * On family change listener
              *

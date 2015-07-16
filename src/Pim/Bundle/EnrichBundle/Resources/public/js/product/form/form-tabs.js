@@ -79,9 +79,19 @@ define(
                 this.setCurrentTab(event.currentTarget.dataset.tab);
             },
             setCurrentTab: function (tab) {
+                var needRender = false;
+
                 if (this.state.get('currentTab') !== tab) {
                     this.state.set('currentTab', tab, {silent: true});
+                    needRender = true;
+                }
+
+                if (this.state.get('fullPanel')) {
                     this.state.set('fullPanel', false, {silent: true});
+                    needRender = true;
+                }
+
+                if (needRender) {
                     this.state.trigger('change');
                 }
 
