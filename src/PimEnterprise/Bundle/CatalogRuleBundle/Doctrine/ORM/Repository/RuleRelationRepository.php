@@ -34,10 +34,7 @@ class RuleRelationRepository extends EntityRepository implements RuleRelationRep
             ->from($this->getClassName(), 'rlr')
             ->where('rlr.resourceName = :resource_name AND rlr.resourceId = :resource_id')
             ->setMaxResults(1)
-            ->setParameters([
-                ':resource_name' => $resourceName,
-                ':resource_id'   => $resourceId
-            ]);
+            ->setParameters([':resource_name' => $resourceName, ':resource_id' => $resourceId]);
 
         return null !== $qb->getQuery()->getOneOrNullResult();
     }

@@ -50,7 +50,12 @@
 
 # 1.3.x
 
+# 1.3.18 (2015-07-09)
+
+# 1.3.17 (2015-07-07)
+
 ## Bug fixes
+- PIM-4494: Fix loading page when family has been sorted
 - Fixed missing parameter in mapping
 
 # 1.3.16 (2015-06-08)
