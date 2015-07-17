@@ -46,6 +46,8 @@ class Edit extends Form
                 'Copy selection dropdown' => ['css' => '.attribute-copy-actions .selection-dropdown'],
                 'Copy translations link'  => ['css' => '.attribute-copy-actions .copy'],
                 'Comment threads'         => ['css' => '.comment-threads'],
+                'Meta zone'               => ['css' => '.baseline > .meta'],
+                'Modal'                   => ['css' => '.modal'],
             ]
         );
     }
@@ -462,6 +464,14 @@ class Edit extends Form
      */
     protected function fillSelectField(NodeElement $fieldContainer, $value)
     {
+        if ('' === $value || null === $value) {
+            $emptyLink = $this->spin(function () use ($fieldContainer) {
+                return $fieldContainer->find('css', '.select2-search-choice-close');
+            });
+
+            return $emptyLink->click();
+        }
+
         if (null !== $link = $fieldContainer->find('css', 'a.select2-choice')) {
             $link->click();
 
@@ -750,7 +760,10 @@ class Edit extends Form
      */
     public function findCompletenessContent()
     {
-        $completenessContent = $this->getElement('Completeness')->getParent();
+        $completenessContent = $this->spin(function () {
+            return $this->getElement('Completeness')->getParent();
+        });
+
         if (!$completenessContent) {
             throw new \InvalidArgumentException('Completeness content not found !!!');
         }
@@ -1178,6 +1191,36 @@ class Edit extends Form
     public function copySelectedTranslations()
     {
         $this->getElement('Copy translations link')->click();
+    }
+
+    /**
+     * Change the family of the current product
+     *
+     * @param string $family
+     */
+    public function changeFamily($family)
+    {
+        $changeLink = $this->spin(function () {
+            return $this->getElement('Meta zone')->find('css', '.family > .change-family');
+        });
+
+        $changeLink->click();
+
+        $selectContainer = $this->spin(function () {
+            return $this->getElement('Modal')->find('css', '.select2-container');
+        });
+
+        $this->fillSelectField($selectContainer, $family);
+
+        $validationButton = $this->spin(function () {
+            return $this->find('css', '.modal .btn.ok');
+        });
+
+        $validationButton->click();
+
+        return $this->spin(function () use ($family) {
+            return $this->getElement('Meta zone')->find('css', '.family .product-family')->getHTML();
+        });
     }
 
     /**

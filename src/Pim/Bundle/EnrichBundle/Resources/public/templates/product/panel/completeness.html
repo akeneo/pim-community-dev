@@ -1,4 +1,12 @@
-<% if (hasFamily) { %>
+<% if (!hasFamily) { %>
+    <p>
+        <%= _.__('pim_enrich.form.product.panel.completeness.info.no_family') %>
+    </p>
+<% } else if (_.isEmpty(completenesses)) { %>
+    <p>
+        <%= _.__('pim_enrich.form.product.panel.completeness.info.no_completeness') %>
+    </p>
+<% } else { %>
     <% _.each(completenesses, function(channels, locale) { %>
         <% var ratio = (channels['stats']['complete'] / channels['stats']['total']) * 100; %>
         <div class="completeness-block" data-closed="<%= 100 === ratio ? 'true' : 'false' %>">
@@ -39,8 +47,4 @@
             </div>
         </div>
     <% }); %>
-<% } else { %>
-    <p>
-        <%= _.__('pim_enrich.form.product.panel.completeness.info.no_family') %>
-    </p>
 <% } %>

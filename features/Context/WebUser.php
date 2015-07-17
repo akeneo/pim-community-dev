@@ -2317,6 +2317,14 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I change the family of the product to "([^"]*)"$/
+     */
+    public function iChangeTheFamilyOfTheProductTo($family)
+    {
+        $this->getCurrentPage()->changeFamily($family);
+    }
+
+    /**
      * Clear the Unit of Work
      */
     public function clearUOW()
