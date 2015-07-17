@@ -79,7 +79,7 @@ define(
              * @returns {number}
              */
             getProductId: function () {
-                return this.getData().meta.id;
+                return this.getFormData().meta.id;
             },
 
             /**
@@ -104,7 +104,7 @@ define(
                         data = this.workingCopy.values;
                         break;
                     case 'draft':
-                        data = this.getData().values;
+                        data = this.getFormData().values;
                         break;
                     default:
                         throw new Error("No valid source is currently selected to copy from");
