@@ -449,11 +449,13 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iRevertTheProductVersionNumber($version)
     {
-        $this->getSession()
-            ->getPage()
-            ->find('css', sprintf('tr[data-version="%s"]', $version))
-            ->find('css', 'td.actions .btn.restore')->click();
-        $this->wait();
+        $button = $this->spin(function () use ($version) {
+            return $this->getSession()->getPage()
+                ->find('css', sprintf('tr[data-version="%s"]', $version))
+                ->find('css', 'td.actions .btn.restore');
+        });
+
+        $button->click();
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
 
         $this->wait();
