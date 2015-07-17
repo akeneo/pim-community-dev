@@ -48,7 +48,7 @@ class CategoryExtension extends BaseCategoryExtension
         ItemCategoryRepositoryInterface $itemPublishedCatRepo,
         $productsLimitForRemoval = null
     ) {
-        parent::__construct($productCategoryRepo, $itemProductCatRepo, $assetCategoryRepo);
+        parent::__construct($productCategoryRepo, $itemProductCatRepo, $productsLimitForRemoval);
 
         $this->assetCategoryRepo    = $assetCategoryRepo;
         $this->itemAssetCatRepo     = $itemAssetCatRepo;
