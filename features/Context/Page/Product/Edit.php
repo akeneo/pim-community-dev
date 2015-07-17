@@ -280,6 +280,13 @@ class Edit extends Form
             case 'select':
                 $actual = $this->getSelectFieldValue($fieldContainer);
                 break;
+            case 'media':
+                $actual = $this->getMediaFieldValue($fieldContainer);
+                break;
+            case 'switch':
+                $actual = $this->isSwitchFieldChecked($fieldContainer);
+                $expected = ('on' === $expected);
+                break;
             case 'text':
             case 'date':
             case 'number':
@@ -296,7 +303,8 @@ class Edit extends Form
                     $label,
                     $expected,
                     $actual
-                )
+                ),
+                $this->getSession()
             );
         }
     }
@@ -436,6 +444,10 @@ class Edit extends Form
             $formFieldWrapper->hasClass('akeneo-wysiwyg-field')
         ) {
             return 'textArea';
+        } elseif ($formFieldWrapper->hasClass('akeneo-media-uploader-field')) {
+            return 'media';
+        } elseif ($formFieldWrapper->hasClass('akeneo-switch-field')) {
+            return 'switch';
         } else {
             return parent::getFieldType($fieldContainer);
         }
@@ -646,6 +658,49 @@ class Edit extends Form
         }
 
         return $values;
+    }
+
+    /**
+     * Return the current filename uploaded in a media field
+     *
+     * @param NodeElement $fieldContainer
+     *
+     * @return string
+     */
+    protected function getMediaFieldValue(NodeElement $fieldContainer)
+    {
+        $widget = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.field-input .media-uploader');
+        }, 5);
+
+        $filenameNode = $widget->find('css', '.filename');
+
+        return $filenameNode ? $filenameNode->getText() : '';
+    }
+
+    /**
+     * Return the state of a switch field
+     *
+     * @param NodeElement $fieldContainer
+     *
+     * @throws \LogicException
+     *
+     * @return bool
+     */
+    protected function isSwitchFieldChecked(NodeElement $fieldContainer)
+    {
+        $widget = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', '.field-input .switch.has-switch');
+        }, 5);
+
+        if ($widget->find('css', '.switch-on')) {
+            return true;
+        }
+        if ($widget->find('css', '.switch-off')) {
+            return false;
+        }
+
+        throw new \LogicException(sprintf('Switch "%s" is in an undefined state', $fieldContainer->name));
     }
 
     /**
