@@ -150,7 +150,7 @@ define([
 
                 });
 
-                return prices;
+                return _.sortBy(prices, 'currency');
             }
         };
     }

@@ -26,18 +26,18 @@ define([
             return this.fieldTemplate(context);
         },
         updateModel: function () {
-            var data = [];
+            var prices = [];
             var inputs = this.$('.field-input:first .price-input input');
             _.each(inputs, _.bind(function (input) {
                 var $input = $(input);
                 var inputData = $input.val();
-                data.push({
-                    'data': '' === inputData ? null : inputData,
-                    'currency': $input.data('currency')
+                prices.push({
+                    data: '' === inputData ? null : inputData,
+                    currency: $input.data('currency')
                 });
             }, this));
 
-            this.setCurrentValue(data);
+            this.setCurrentValue(_.sortBy(prices, 'currency'));
         },
         getTemplateContext: function () {
             return $.when(
