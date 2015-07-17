@@ -23,9 +23,13 @@ define(
             className: 'panel-pane',
             code: 'completeness',
             events: {
-                'click header': 'switchChannel',
+                'click header': 'switchLocale',
                 'click .missing-attributes span': 'showAttribute'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('panel:register', {
                     code: this.code,
@@ -38,6 +42,10 @@ define(
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (this.getRoot().model.get('meta')) {
                     $.when(
@@ -58,7 +66,13 @@ define(
 
                 return this;
             },
-            switchChannel: function (event) {
+
+            /**
+             * Toggle the current locale
+             *
+             * @param Event event
+             */
+            switchLocale: function (event) {
                 var $completenessBlock = $(event.currentTarget).parents('.completeness-block');
                 if ($completenessBlock.attr('data-closed') === 'false') {
                     $completenessBlock.attr('data-closed', 'true');
@@ -66,6 +80,12 @@ define(
                     $completenessBlock.attr('data-closed', 'false');
                 }
             },
+
+            /**
+             * Set focus to the attribute given by the event
+             *
+             * @param Event event
+             */
             showAttribute: function (event) {
                 mediator.trigger(
                     'show_attribute',
@@ -76,6 +96,10 @@ define(
                     }
                 );
             },
+
+            /**
+             * Update the completeness by fetching it from the backend
+             */
             update: function () {
                 if (this.getRoot().model.get('meta')) {
                     FetcherRegistry.getFetcher('completeness').clear(this.getRoot().model.get('meta').id);
@@ -83,6 +107,12 @@ define(
 
                 this.render();
             },
+
+            /**
+             * On family change listener
+             *
+             * @param Model model the current product model
+             */
             onChangeFamily: function (model) {
                 if (!_.isEmpty(model._previousAttributes)) {
                     this.render();

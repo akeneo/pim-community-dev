@@ -164,7 +164,6 @@ define(
                 ).then(_.bind(function (attributes, locales, channels, currencies) {
                     var product = this.getData();
 
-                    var hasRequiredValues = true;
                     _.each(attributeCodes, function (attributeCode) {
                         var attribute = _.findWhere(attributes, {code: attributeCode});
                         if (!product.values[attribute.code]) {
@@ -175,18 +174,12 @@ define(
                                 channels,
                                 currencies
                             );
-                            hasRequiredValues = false;
                         }
                     });
 
                     this.extensions['attribute-group-selector'].setCurrent(
                         _.findWhere(attributes, {code: _.first(attributeCodes)}).group
                     );
-
-                    if (hasRequiredValues) {
-                        this.getRoot().model.trigger('change');
-                        return;
-                    }
 
                     this.setData(product);
                     this.getRoot().model.trigger('change');
@@ -253,6 +246,8 @@ define(
             showAttribute: function (event) {
                 AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
                     .done(_.bind(function (attributeGroups) {
+                        mediator.trigger('form-tabs:change:tab', this.code);
+
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,
                             event.attribute

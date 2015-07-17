@@ -97,7 +97,7 @@ define(
                 event.promises.push(
                     this.canBeCopied(field)
                         .then(_.bind(function (canBeCopied) {
-                            if (canBeCopied) {
+                            if (canBeCopied && this.copying) {
                                 field.addElement('comparison', this.code, this.getCopyField(field));
                             }
                         }, this))
