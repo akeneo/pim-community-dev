@@ -729,7 +729,7 @@ class WebUser extends RawMinkContext
      * @param string $scope
      * @param string $value
      *
-     * @When /^I change the (\w+) for scope (\w+) to "([^"]*)"$/
+     * @When /^I change the ([^"]+) for scope (\w+) to "([^"]*)"$/
      *
      * @return Step\When[]
      */
@@ -737,7 +737,7 @@ class WebUser extends RawMinkContext
     {
         return [
             new Step\When(sprintf('I switch the scope to "%s"', $scope)),
-            new Step\When(sprintf('I change the %s to "%s"', $field, $value))
+            new Step\When(sprintf('I change the "%s" to "%s"', $field, $value))
         ];
     }
 
@@ -746,7 +746,7 @@ class WebUser extends RawMinkContext
      * @param string $locale
      * @param string $value
      *
-     * @When /^I change the (\w+) for locale (\w+) to "([^"]*)"$/
+     * @When /^I change the ([^"]+) for locale (\w+) to "([^"]*)"$/
      *
      * @return Step\When[]
      */
@@ -764,7 +764,7 @@ class WebUser extends RawMinkContext
      * @param string $locale
      * @param string $value
      *
-     * @When /^I change the (\w+) for scope (\w+) and locale (\w+) to "([^"]*)"$/
+     * @When /^I change the ([^"]+) for scope (\w+) and locale (\w+) to "([^"]*)"$/
      *
      * @return Step\When[]
      */
