@@ -2,6 +2,7 @@ PimEnterprise\Component\ProductAsset\Model\FileMetadata:
     type: entity
     inheritanceType: SINGLE_TABLE
     table: pimee_product_asset_file_metadata
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
             type: integer

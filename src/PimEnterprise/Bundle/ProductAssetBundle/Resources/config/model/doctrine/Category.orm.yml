@@ -1,6 +1,7 @@
 PimEnterprise\Component\ProductAsset\Model\Category:
     type: entity
     table: pimee_product_asset_category
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
     uniqueConstraints:
         pimee_product_asset_category_code_uc:

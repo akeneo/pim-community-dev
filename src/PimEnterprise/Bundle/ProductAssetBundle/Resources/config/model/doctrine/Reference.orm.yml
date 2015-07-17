@@ -1,6 +1,7 @@
 PimEnterprise\Component\ProductAsset\Model\Reference:
     type: entity
     table: pimee_product_asset_reference
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
             type: integer
