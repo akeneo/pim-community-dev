@@ -148,7 +148,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         foreach ($missingComps as $missingComp) {
             $requiredCount = $this->getRequiredCount($normalizedReqs, $missingComp);
-            $missingCount  = $this->getMissingCount($normalizedReqs, $missingComp, $normalizedData, $dataFields);
+            $missingCount  = $this->getMissingCount($normalizedReqs, $normalizedData, $dataFields, $missingComp);
 
             $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
 
@@ -185,13 +185,13 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * @param array  $normalizedReqs
-     * @param string $missingComp
      * @param array  $normalizedData
      * @param array  $dataFields
+     * @param string $missingComp
      *
      * @return int
      */
-    protected function getMissingCount(array $normalizedReqs, $missingComp, array $normalizedData, array $dataFields)
+    protected function getMissingCount(array $normalizedReqs, array $normalizedData, array $dataFields, $missingComp)
     {
         $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
         $pricesReqs     = $normalizedReqs[$missingComp]['reqs']['prices'];
@@ -301,8 +301,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * to be defined as complete for channels and family
      * Familyreqs must be indexed by channel code
      *
-     * @param array $channels
-     * @param array $familyReqs
+     * @param ChannelInterface[] $channels
+     * @param array              $familyReqs
      *
      * @return array
      */
