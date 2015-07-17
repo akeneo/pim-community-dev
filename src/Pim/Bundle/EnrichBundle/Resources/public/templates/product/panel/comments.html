@@ -20,7 +20,7 @@
                         <li class="comment-topic">
                             <div class="row-fluid">
                                 <div class="span1 text-right">
-                                    <img width="35" src="/bundles/pimui/img/info-user.png" alt="<%= comment.author.username %>"/>
+                                    <img width="35" src="<%= comment.author.profile_picture ? comment.author.profile_picture : '/bundles/pimui/img/info-user.png' %>" alt="<%= comment.author.username %>"/>
                                 </div>
                                 <div class="span11">
                                     <div class="comment-meta">
@@ -41,7 +41,7 @@
                         <% _.each(comment.replies, function(reply) { %>
                             <li class="row-fluid comment-reply">
                                 <div class="span1 text-right">
-                                    <img width="25" src="/bundles/pimui/img/info-user.png" alt="<%= reply.author.username %>">
+                                    <img width="25" src="<%= reply.author.profile_picture ? reply.author.profile_picture : '/bundles/pimui/img/info-user.png' %>" alt="<%= reply.author.username %>">
                                 </div>
                                 <div class="span11">
                                     <div class="comment-meta">
