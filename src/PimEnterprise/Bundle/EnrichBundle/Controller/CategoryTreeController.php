@@ -185,17 +185,21 @@ class CategoryTreeController extends BaseCategoryTreeController
      *
      * Override parent to use only granted categories
      */
-    protected function getChildren($parentId, $selectNodeId = false, $relatedEntity = 'product')
+    protected function getChildrenCategories(Request $request, $selectNode)
     {
-        $categories = parent::getChildren($parentId, $selectNodeId);
+        $categories = parent::getChildrenCategories($request, $selectNode);
 
-        return $this->chainedFilter->filterCollection(
-            $categories,
-            sprintf('pim.internal_api.%s_category.view', $relatedEntity)
-        );
+        $context = $request->get('context', false);
+        $relatedEntity = $request->get('related_entity', 'product');
+        $editGranted = $this->securityFacade->isGranted('pim_enrich_product_category_edit');
 
-        // TODO: In PIM-4292, check the right permissions depending on $context
-        // $context = $this->request->get('context', false);
-        // $this->securityFacade->isGranted('pim_enrich_category_edit')
+        if ($editGranted && self::CONTEXT_MANAGE === $context) {
+            return $categories;
+        } else {
+            return $this->chainedFilter->filterCollection(
+                $categories,
+                sprintf('pim.internal_api.%s_category.view', $relatedEntity)
+            );
+        }
     }
 }
