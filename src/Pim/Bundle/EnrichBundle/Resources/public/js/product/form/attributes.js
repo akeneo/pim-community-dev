@@ -82,7 +82,6 @@ define(
                 }
 
                 this.rendering = true;
-
                 this.getConfig().done(_.bind(function () {
                     this.$el.html(this.template({}));
                     this.resize();
@@ -90,7 +89,7 @@ define(
                     $.when(
                         FetcherRegistry.getFetcher('family').fetchAll(),
                         ProductManager.getValues(product)
-                    ).done(_.bind(function (families, values) {
+                    ).then(_.bind(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
                             this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
@@ -101,19 +100,20 @@ define(
                             fieldPromises.push(this.renderField(product, attributeCode, productValue, families));
                         }, this));
 
-                        $.when.apply($, fieldPromises).done(_.bind(function () {
-                            var $productValuesPanel = this.$('.product-values');
-                            $productValuesPanel.empty();
+                        this.rendering = false;
 
-                            FieldManager.clearVisibleFields();
-                            _.each(arguments, _.bind(function (field) {
-                                if (field.canBeSeen()) {
-                                    field.render();
-                                    FieldManager.addVisibleField(field.attribute.code);
-                                    $productValuesPanel.append(field.$el);
-                                }
-                            }, this));
-                            this.rendering = false;
+                        return $.when.apply($, fieldPromises);
+                    }, this)).then(_.bind(function () {
+                        var $productValuesPanel = this.$('.product-values');
+                        $productValuesPanel.empty();
+
+                        FieldManager.clearVisibleFields();
+                        _.each(arguments, _.bind(function (field) {
+                            if (field.canBeSeen()) {
+                                field.render();
+                                FieldManager.addVisibleField(field.attribute.code);
+                                $productValuesPanel.append(field.$el);
+                            }
                         }, this));
                     }, this));
                     this.delegateEvents();
@@ -150,8 +150,6 @@ define(
                 var product = this.getFormData();
 
                 promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
-
-                this.triggerExtensions('add-attribute:update:available-attributes');
 
                 return $.when.apply($, promises).promise();
             },
