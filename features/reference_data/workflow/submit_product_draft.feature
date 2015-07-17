@@ -22,6 +22,7 @@ Feature: Submit a modification on reference data for a product draft
     And I edit the "my-vans" product
     And I visit the "Other" group
 
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose an simple select reference data change
     Given I change the "Sole color" to "[green]"
     And I save the product
@@ -30,6 +31,7 @@ Feature: Submit a modification on reference data for a product draft
     But the field Sole color should contain "[green]"
     And I should see that Sole color is a modified value
 
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a multi reference data change
     Given I change the "Sole fabric" to "[kevlar], [wool]"
     And I save the product
