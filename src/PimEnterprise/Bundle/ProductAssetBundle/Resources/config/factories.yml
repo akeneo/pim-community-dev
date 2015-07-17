@@ -28,3 +28,8 @@ services:
         class: %pimee_product_asset.factory.tag.class%
         arguments:
             - %pimee_product_asset.model.tag.class%
+            
+    pimee_product_asset.factory.category:
+        class: %pim_classification.factory.category.class%
+        arguments:
+            - %pimee_product_asset.model.category.class%

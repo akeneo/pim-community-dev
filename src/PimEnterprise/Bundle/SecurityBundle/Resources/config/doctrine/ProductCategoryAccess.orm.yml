@@ -1,0 +1,46 @@
+PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess:
+    type: entity
+    table: pimee_security_product_category_access
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository
+    uniqueConstraints:
+        category_user_group_idx:
+            columns:
+                - category_id
+                - user_group_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        viewItems:
+            type: boolean
+            column: view_items
+            options:
+                default: false
+        editItems:
+            type: boolean
+            column: edit_items
+            options:
+                default: false
+        ownItems:
+            type: boolean
+            column: own_items
+            options:
+                default: false
+    manyToOne:
+        category:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            joinColumns:
+                category_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        userGroup:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Group
+            joinColumns:
+                user_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

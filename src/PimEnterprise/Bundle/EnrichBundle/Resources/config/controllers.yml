@@ -24,6 +24,7 @@ services:
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.factory.category'
 
     pim_enrich.controller.rest.product:
         class: %pim_enrich.controller.rest.product.class%
@@ -45,3 +46,18 @@ services:
             - '@pimee_catalog_rule.repository.rule_relation'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.resolver.fqcn'
+
+    # overidden to filter categories with a chained filter that handles permissions
+    pim_enrich.controller.category_tree:
+        scope: request
+        class: %pim_enrich.controller.category_tree.class%
+        parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@pim_catalog.manager.category'
+            - '@pim_user.context.user'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.filter.chained'

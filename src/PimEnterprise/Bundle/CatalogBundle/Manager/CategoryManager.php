@@ -15,6 +15,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Classification\Factory\CategoryFactory;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,6 +27,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Category manager
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
+ *
+ * @deprecated Will be removed in 1.5
  */
 class CategoryManager extends BaseCategoryManager
 {
@@ -34,26 +38,34 @@ class CategoryManager extends BaseCategoryManager
     /* @var SecurityContextInterface */
     protected $securityContext;
 
+    /** @var CategoryRepositoryInterface */
+    protected $assetCategoryRepo;
+
     /**
-     * Constructor
-     *
-     * @param ObjectManager            $om
-     * @param string                   $categoryClass
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param CategoryAccessRepository $categoryAccessRepo
-     * @param SecurityContextInterface $securityContext
+     * @param ObjectManager               $om
+     * @param string                      $categoryClass
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param CategoryAccessRepository    $categoryAccessRepo
+     * @param SecurityContextInterface    $securityContext
+     * @param CategoryRepositoryInterface $productCategoryRepo
+     * @param CategoryRepositoryInterface $assetCategoryRepo
+     * @param CategoryFactory             $categoryFactory
      */
     public function __construct(
         ObjectManager $om,
+        CategoryRepositoryInterface $productCategoryRepo,
+        CategoryFactory $categoryFactory,
         $categoryClass,
         EventDispatcherInterface $eventDispatcher,
         CategoryAccessRepository $categoryAccessRepo,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        CategoryRepositoryInterface $assetCategoryRepo
     ) {
-        parent::__construct($om, $categoryClass, $eventDispatcher);
+        parent::__construct($om, $productCategoryRepo, $categoryFactory, $categoryClass);
 
         $this->categoryAccessRepo = $categoryAccessRepo;
-        $this->securityContext = $securityContext;
+        $this->securityContext    = $securityContext;
+        $this->assetCategoryRepo  = $assetCategoryRepo;
     }
 
     /**
@@ -64,15 +76,23 @@ class CategoryManager extends BaseCategoryManager
      *
      * @return array
      */
-    public function getAccessibleTrees(UserInterface $user, $accessLevel = Attributes::VIEW_PRODUCTS)
-    {
-        $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
-
+    public function getAccessibleTrees(
+        UserInterface $user,
+        $accessLevel = Attributes::VIEW_PRODUCTS,
+        $relatedEntity = 'product'
+    ) {
         $trees = [];
-        foreach ($this->getTrees() as $tree) {
-            if (in_array($tree->getId(), $grantedCategoryIds)) {
-                $trees[] = $tree;
+
+        if ('product' === $relatedEntity) {
+            $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
+
+            foreach ($this->productCategoryRepo->getTrees() as $tree) {
+                if (in_array($tree->getId(), $grantedCategoryIds)) {
+                    $trees[] = $tree;
+                }
             }
+        } elseif ('asset' === $relatedEntity) {
+            $trees = $this->assetCategoryRepo->getTrees();
         }
 
         return $trees;

@@ -12,16 +12,34 @@ connector:
                         processor: pimee_base_connector.processor.attribute_group_access
                         writer:    pim_base_connector.writer.doctrine
 
-        fixtures_category_access_yml:
-            title: pim_installer.jobs.fixtures_category_access_yml.title
+        fixtures_product_category_access_yml:
+            title: pim_installer.jobs.fixtures_product_category_access_yml.title
             type:  fixtures
             steps:
                 import:
-                    title:     pim_installer.jobs.fixtures_category_access_yml.import.title
+                    title:     pim_installer.jobs.fixtures_product_category_access_yml.import.title
                     services:
                         reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_base_connector.processor.category_access
                         writer:    pim_base_connector.writer.doctrine
+
+        fixtures_asset_category_csv:
+            title: pim_installer.jobs.fixtures_asset_category_csv.title
+            type:  fixtures
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.fixtures_asset_category_csv.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_installer.jobs.fixtures_asset_category_csv.import.title
+                    services:
+                        reader:    pim_connector.reader.file.csv_category
+                        processor: pimee_product_asset.processor.denormalization.category.flat
+                        writer:    pimee_product_asset.writer.doctrine.category
+                    parameters:
+                        batchSize: 1
 
         fixtures_job_profile_access_yml:
             title: pim_installer.jobs.fixtures_job_profile_yml.title

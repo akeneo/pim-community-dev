@@ -1,8 +1,7 @@
-PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess:
+PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess:
     type: entity
-    table: pimee_security_category_access
-    changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository
+    table: pimee_security_asset_category_access
+    repositoryClass: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryAccessRepository # TODO: Change namespace
     uniqueConstraints:
         category_user_group_idx:
             columns:
@@ -14,24 +13,24 @@ PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess:
             id: true
             generator:
                 strategy: AUTO
-        viewProducts:
+        viewItems:
             type: boolean
-            column: view_products
+            column: view_items
             options:
                 default: false
-        editProducts:
+        editItems:
             type: boolean
-            column: edit_products
+            column: edit_items
             options:
                 default: false
-        ownProducts:
+        ownItems:
             type: boolean
-            column: own_products
+            column: own_items
             options:
                 default: false
     manyToOne:
         category:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\Category
             joinColumns:
                 category_id:
                     referencedColumnName: id

@@ -1,2 +1,16 @@
 parameters:
     pim_user.context.user.class: PimEnterprise\Bundle\UserBundle\Context\UserContext
+
+services:
+    pim_user.context.user:
+        class: %pim_user.context.user.class%
+        arguments:
+            - '@security.context'
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.category'
+            - '@pimee_product_asset.repository.category'
+            - '@pim_catalog.filter.chained'
+            - %locale%
+        calls:
+            - [ setRequest, ['@?request='] ]

@@ -4,6 +4,17 @@
 {% block head_script %}
     {{ parent() }}
     {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_create-js-handler.html.twig' %}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'jquery.sidebarize'],
+            function ($) {
+                'use strict';
+                $(function() {
+                    $('.has-sidebar').sidebarize();
+                });
+            }
+        );
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -19,5 +30,14 @@
 
     {{ elements.page_header(title, buttons) }}
 
-    {{ dataGrid.renderGrid('asset-grid', { dataLocale: locale_code(), currentUser: app.user }) }}
+    {% set categoriesGranted = true %}
+    <div class="row-fluid {{ categoriesGranted ? 'has-sidebar': '' }}">
+        {% if categoriesGranted %}
+            <div id="tree" data-datalocale="{{ locale_code() }}" data-relatedentity="asset"></div>
+        {% endif %}
+        <div id="product-grid">
+            {{ dataGrid.renderStatefulGrid('asset-grid', { dataLocale: locale_code(), currentUser: app.user }, {}, 'pimee_asset_categorytree') }}
+        </div>
+    </div>
+
 {% endblock %}

@@ -9,15 +9,30 @@ jobs:
             filePath: attribute_groups_accesses.yml
             multiple: false
 
-    fixtures_category_access_yml:
+    fixtures_product_category_access_yml:
         order: 150
         connector: Data fixtures
-        alias:     fixtures_category_access_yml
-        label:     Category accesses data fixtures
+        alias:     fixtures_product_category_access_yml
+        label:     Product category accesses data fixtures
         type:      fixtures
         configuration:
-            filePath: category_accesses.yml
+            filePath: product_category_accesses.yml
             multiple: false
+
+    fixtures_asset_category_csv:
+        order: 30
+        connector: Data fixtures
+        alias:     fixtures_asset_category_csv
+        label:     Asset categories data fixtures
+        type:      fixtures
+        configuration:
+            filePath: asset_categories.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+            escape: '\'
+            circularRefsChecked: true
+            uploadAllowed: true
 
     fixtures_job_profile_access_yml:
         order:     150

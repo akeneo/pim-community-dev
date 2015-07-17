@@ -29,6 +29,7 @@ Feature: Revert a product to a previous version
     Given an enabled "shirt" product
     And I am on the "shirt" product page
     And I disable the product
+    And the history of the product "shirt" has been built
     And I open the history
     When I revert the product version number 1
     Then product "shirt" should be enabled
@@ -37,6 +38,7 @@ Feature: Revert a product to a previous version
     Given a disabled "shirt" product
     And I am on the "shirt" product page
     And I enable the product
+    And the history of the product "shirt" has been built
     And I open the history
     When I revert the product version number 1
     Then product "shirt" should be disabled
@@ -53,6 +55,7 @@ Feature: Revert a product to a previous version
     And I wait for the "change-family" mass-edit job to finish
     Then the family of product "jean" should be "jackets"
     And I am on the "jean" product page
+    And the history of the product "jean" has been built
     And I open the history
     When I revert the product version number 1
     Then the family of product "jean" should be "pants"
@@ -68,6 +71,7 @@ Feature: Revert a product to a previous version
     And I click on the "Winter collection" category
     And I click on the "Summer collection" category
     And I press the "Save" button
+    And the history of the product "sandals" has been built
     Then I open the history
     When I revert the product version number 1
     Then the category of "sandals" should be "winter_collection"
@@ -79,6 +83,7 @@ Feature: Revert a product to a previous version
     Given I am on the "jean" product page
     And I change the Manufacturer to "Desigual"
     Then I save the product
+    And the history of the product "jean" has been built
     And I open the history
     When I revert the product version number 1
     Then I should see a flash message "Product successfully reverted"
@@ -94,6 +99,7 @@ Feature: Revert a product to a previous version
       | en   | Extremely wet |
     And I press the "Add" button in the popin
     And I save the product
+    And the history of the product "jean" has been built
     And I open the history
     When I revert the product version number 1
     Then I should see a flash message "Product successfully reverted"
@@ -108,6 +114,7 @@ Feature: Revert a product to a previous version
     And I fill in the following information:
       | Name | Really nice jeans |
     And I save the product
+    And the history of the product "jeans" has been built
     And I open the history
     When I revert the product version number 1
     And I visit the "Attributes" tab
@@ -125,6 +132,7 @@ Feature: Revert a product to a previous version
     And I switch the scope to "tablet"
     And I change the "Number in stock" to "100"
     And I save the product
+    And the history of the product "jeans" has been built
     And I open the history
     When I revert the product version number 1
     And I save the product
@@ -139,6 +147,7 @@ Feature: Revert a product to a previous version
     Given I am on the "jeans" product page
     When I uncheck the "Handmade" switch
     And I save the product
+    And the history of the product "jeans" has been built
     And I open the history
     When I revert the product version number 1
     Then the product "jeans" should have the following values:
@@ -148,6 +157,7 @@ Feature: Revert a product to a previous version
     And I add available attributes Handmade
     When I check the "Handmade" switch
     And I save the product
+    And the history of the product "short" has been built
     And I open the history
     When I revert the product version number 1
     And the product "short" should have the following values:
@@ -162,6 +172,7 @@ Feature: Revert a product to a previous version
     And I switch the scope to "mobile"
     And I change the "Release date" to "2014-05-20"
     And I save the product
+    And the history of the product "akeneo-jacket" has been built
     And I open the history
     When I revert the product version number 1
     And the product "akeneo-jacket" should have the following values:
@@ -175,6 +186,7 @@ Feature: Revert a product to a previous version
     And I switch the scope to "mobile"
     When I change the "Release date" to "2001-01-01"
     And I save the product
+    And the history of the product "akeneo-jacket" has been built
     And I open the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
@@ -188,6 +200,7 @@ Feature: Revert a product to a previous version
     And I switch the scope to "mobile"
     When I change the "Release date" to "2001-01-01"
     And I save the product
+    And the history of the product "akeneo-jacket" has been built
     And I open the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
@@ -200,6 +213,7 @@ Feature: Revert a product to a previous version
     Given I am on the "jeans" product page
     When I change the "SKU" to "pantalon"
     And I save the product
+    And the history of the product "pantalon" has been built
     And I open the history
     When I revert the product version number 1
     Then the product "jeans" should have the following values:
@@ -214,6 +228,7 @@ Feature: Revert a product to a previous version
     And I visit the "Sizes" group
     When I change the "Length" to ""
     And I save the product
+    And the history of the product "t-shirt" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
@@ -224,6 +239,7 @@ Feature: Revert a product to a previous version
     And I visit the "Sizes" group
     When I change the "Length" to "120"
     And I save the product
+    And the history of the product "marcel" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
@@ -237,6 +253,7 @@ Feature: Revert a product to a previous version
     Given I am on the "t-shirt" product page
     And I change the "Weather conditions" to ""
     And I save the product
+    And the history of the product "t-shirt" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
@@ -246,6 +263,7 @@ Feature: Revert a product to a previous version
     Then I add available attributes Weather conditions
     And I change the "Weather conditions" to "Hot, Wet"
     And I save the product
+    And the history of the product "marcel" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
@@ -261,6 +279,7 @@ Feature: Revert a product to a previous version
     And I switch the scope to "tablet"
     And I change the "Number in stock" to "42"
     And I save the product
+    And the history of the product "t-shirt" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
@@ -275,6 +294,7 @@ Feature: Revert a product to a previous version
     And I visit the "Marketing" group
     And I change the "Price" to "39 EUR"
     And I save the product
+    And the history of the product "t-shirt" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
@@ -284,6 +304,7 @@ Feature: Revert a product to a previous version
     And I visit the "Marketing" group
     And I change the "Price" to "19.99 EUR"
     And I save the product
+    And the history of the product "marcel" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
@@ -298,6 +319,7 @@ Feature: Revert a product to a previous version
     And I visit the "Marketing" group
     And I change the "Rating" to "2"
     And I save the product
+    And the history of the product "t-shirt" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
@@ -309,6 +331,7 @@ Feature: Revert a product to a previous version
     And I visit the "Marketing" group
     And I change the "Rating" to "5"
     And I save the product
+    And the history of the product "marcel" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
@@ -323,6 +346,7 @@ Feature: Revert a product to a previous version
     And I visit the "Other" group
     And I change the "Comment" to "This is not a comment anymore."
     And I save the product
+    And the history of the product "t-shirt" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
@@ -335,6 +359,7 @@ Feature: Revert a product to a previous version
     And I visit the "Other" group
     And I change the "Comment" to "New comment."
     And I save the product
+    And the history of the product "marcel" has been built
     When I open the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
@@ -349,6 +374,7 @@ Feature: Revert a product to a previous version
     And I switch the scope to "tablet"
     And I change the "Description" to "A really nice t-shirt !"
     And I save the product
+    And the history of the product "t-shirt" has been built
     When I open the history
     And I revert the product version number 1
     Then the product "t-shirt" should have the following values:
@@ -360,6 +386,7 @@ Feature: Revert a product to a previous version
     And I switch the scope to "tablet"
     And I change the "Description" to "One does not simply fill a description."
     And I save the product
+    And the history of the product "marcel" has been built
     When I open the history
   When I revert the product version number 1
     Then the product "marcel" should have the following values:
@@ -379,6 +406,7 @@ Feature: Revert a product to a previous version
     And I visit the "Media" group
     When I remove the "Side view" file
     And I save the product
+    And the history of the product "t-shirt" has been built
     When I open the history
     When I revert the product version number 2
     Then the product "t-shirt" should have the following values:
@@ -399,6 +427,7 @@ Feature: Revert a product to a previous version
     And I visit the "Media" group
     When I remove the "Datasheet" file
     And I save the product
+    And the history of the product "t-shirt" has been built
     When I open the history
     When I revert the product version number 2
     Then the product "t-shirt" should have the following values:
@@ -421,6 +450,7 @@ Feature: Revert a product to a previous version
     # TODO: see with @nidup => temporary fix (broken since the deferred explicit persist of Doctrine)
     And I press the "Save" button
     Then I am on the "helly-hansen" product page
+    And the history of the product "helly-hansen" has been built
     And I open the history
     When I revert the product version number 1
     Then I should see a flash message "Product can not be reverted because it belongs to a variant group"

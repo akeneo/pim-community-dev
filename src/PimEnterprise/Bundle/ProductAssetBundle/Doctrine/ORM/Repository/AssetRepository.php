@@ -111,12 +111,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
-     * Apply tag filter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $field
-     * @param string       $operator
-     * @param mixed        $value
+     * {@inheritdoc}
      */
     public function applyTagFilter(QueryBuilder $qb, $field, $operator, $value)
     {

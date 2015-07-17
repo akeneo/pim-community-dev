@@ -50,6 +50,7 @@ PimEnterprise\Component\ProductAsset\Model\Category:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach
         children:
             targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
             mappedBy: parent

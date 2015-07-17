@@ -1,5 +1,0 @@
-category_accesses:
-    master:
-        viewProducts: [IT support, Manager, Redactor]
-        editProducts: [IT support, Manager]
-        ownProducts: [IT support, Manager]

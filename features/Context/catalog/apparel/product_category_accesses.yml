@@ -1,0 +1,69 @@
+product_category_accesses:
+    2013_collection:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    2014_collection:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    2015_collection:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    men_2013:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    women_2013:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    men_2014:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    women_2014:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    men_2015:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    women_2015:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    men_2015_spring:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    men_2015_summer:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    men_2015_autumn:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    men_2015_winter:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    women_2015_spring:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    women_2015_summer:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    women_2015_autumn:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    women_2015_winter:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]

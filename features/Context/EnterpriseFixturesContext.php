@@ -35,7 +35,8 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 class EnterpriseFixturesContext extends BaseFixturesContext
 {
     protected $enterpriseEntities = [
-        'Published' => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+        'Published'     => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+        'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
     ];
 
     /**
@@ -227,11 +228,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following category accesses:$/
+     * @Given /^the following (.*) category accesses:$/
      */
-    public function theFollowingCategoryAccesses(TableNode $table)
+    public function theFollowingCategoryAccesses($categoryType, TableNode $table)
     {
-        $this->createAccesses($table, 'category');
+        $this->createAccesses($table, sprintf('%s category', $categoryType));
     }
 
     /**
@@ -349,7 +350,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             if (isset($data['categories'])) {
                 $categories = explode(',', $data['categories']);
                 foreach ($categories as $code) {
-                    $category = $this->getCategoryRepository()->findOneByIdentifier(trim($code));
+                    $category = $this->getAssetCategoryRepository()->findOneByIdentifier(trim($code));
                     if (null === $category) {
                         throw new \Exception("\"$code\" category not found");
                     }
@@ -618,6 +619,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function getAccessManager($type)
     {
+        if ('product category' === $type) {
+            $type = 'category';
+        }
+
         return $this->getContainer()->get(sprintf('pimee_security.manager.%s_access', str_replace(' ', '_', $type)));
     }
 
@@ -632,9 +637,17 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @return CategoryRepositoryInterface
      */
-    protected function getCategoryRepository()
+    protected function getProductCategoryRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.category');
+    }
+
+    /**
+     * @return CategoryRepositoryInterface
+     */
+    protected function getAssetCategoryRepository()
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.category');
     }
 
     /**
@@ -681,7 +694,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             return ($action === 'edit') ? Attributes::EDIT_ATTRIBUTES : Attributes::VIEW_ATTRIBUTES;
         }
 
-        if ('category' === $type || 'locale' === $type) {
+        if ('product category' === $type || 'locale' === $type) {
             return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
         }
 

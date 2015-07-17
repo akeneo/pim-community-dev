@@ -1,0 +1,15 @@
+pimee_asset_categorytree_listtree:
+    path: /list-tree.{_format}
+    defaults: { _controller: pimee_product_asset.controller.category_tree:listTreeAction }
+    requirements:
+        _format: json
+
+pimee_asset_categorytree_children:
+    path: /children.{_format}
+    defaults: { _controller: pimee_product_asset.controller.category_tree:childrenAction }
+    requirements:
+        _format: json
+
+pimee_asset_categorytree_index:
+    path: /
+    defaults: { _controller: pimee_product_asset.controller.category_tree:indexAction }

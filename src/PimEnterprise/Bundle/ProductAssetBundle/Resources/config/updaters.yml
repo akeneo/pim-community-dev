@@ -36,3 +36,8 @@ services:
         class: %pimee_product_asset.updater.asset.class%
         arguments:
             - '@pimee_product_asset.repository.tag'
+
+    pimee_product_asset.updater.category:
+        class: %pim_classification.updater.category.class%
+        arguments:
+            - '@pimee_product_asset.repository.category'

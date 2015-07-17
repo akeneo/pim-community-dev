@@ -13,12 +13,12 @@ Feature: Classify many products at once for the tree I have access
       | trendy  | Trendy      | shoes  |
       | classy  | Classy      | shoes  |
       | boots   | Boots       |        |
-    And the following category accesses:
-      | category | user group | access |
-      | shoes    | Manager    | view   |
-      | vintage  | Manager    | view   |
-      | trendy   | Manager    | view   |
-      | classy   | Manager    | view   |
+    And the following product category accesses:
+      | product category | user group | access |
+      | shoes            | Manager    | view   |
+      | vintage          | Manager    | view   |
+      | trendy           | Manager    | view   |
+      | classy           | Manager    | view   |
     And the following products:
       | sku     | categories      |
       | rangers | 2014_collection |

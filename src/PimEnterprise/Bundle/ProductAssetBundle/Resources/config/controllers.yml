@@ -27,3 +27,17 @@ services:
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_serializer'
+
+    pimee_product_asset.controller.category_tree:
+        scope: request
+        class: %pim_enrich.controller.category_tree.class%
+        parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@pim_catalog.manager.category'
+            - '@pim_user.context.user'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.category'
+            - '@pimee_product_asset.factory.category'
+            - '@pimee_product_asset.repository.category'
+            - '@pim_catalog.filter.chained'

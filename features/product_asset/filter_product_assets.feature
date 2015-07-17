@@ -10,7 +10,7 @@ Feature: Filter product assets
     And I am on the assets page
 
   @skip
-  Scenario: Successfully sort product assets
+  Scenario: Successfully filter product assets
     And I should be able to use the following filters:
       | filter      | value                             | result                                                                                                      |
       | Code        | contains ma                       | man-wall, machine                                                                                           |
@@ -23,3 +23,20 @@ Feature: Filter product assets
       | End of use  | less than 2030-01-01              | dog, autumn, paint, akene                                                                                   |
       | Description | contains animal                   | dog, mouette                                                                                                |
       | Description | does not contain water            | paint, chicagoskyline, akene, dog, eagle, machine, minivan, mouette, mountain, mugs, photo, tiger, man-wall |
+
+  Scenario: Successfully filter product assets by category
+    When I select the "Asset main catalog" tree
+    Then the grid should contain 15 elements
+    When I uncheck the "Include sub-categories" switch
+    And I expand the "images" category
+    Then I should be able to use the following filters:
+      | filter         | value  | result                                          |
+      | asset category | images | paint, chicagoskyline, akene, autumn and bridge |
+      | asset category | autre  | autumn, bridge, dog, eagle and machine          |
+      | asset category | situ   | paint, man-wall, minivan, mouette and mountain  |
+    When I check the "Include sub-categories" switch
+    Then I should be able to use the following filters:
+      | filter         | value  | result                                                                                                     |
+      | asset category | images | paint, chicagoskyline, akene, autumn, bridge, dog, eagle, machine, man-wall, minivan, mouette and mountain |
+    When I filter by "asset category" with value "unclassified"
+    Then I should see assets mugs, photo and tiger

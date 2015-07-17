@@ -20,6 +20,22 @@ class Index extends Grid
     protected $path = '/enrich/asset/';
 
     /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            [
+                'Category tree' => ['css' => '#tree'],
+                'Tree select'   => ['css' => '#tree_select'],
+            ]
+        );
+    }
+
+    /**
      * @return NodeElement|mixed|null
      */
     public function getDialog()
@@ -73,5 +89,83 @@ class Index extends Grid
         }
 
         return $uploadZone;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return Index
+     */
+    public function selectTree($category)
+    {
+        $this->getElement('Tree select')->selectOption($category);
+
+        return $this;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @throws \Exception
+     */
+    public function clickCategoryFilterLink($category)
+    {
+        $elt = $this
+            ->getElement('Category tree')
+            ->find('css', sprintf('#node_%s a', $category->getId()));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
+        }
+
+        $elt->click();
+    }
+
+    /**
+     * Filter by unclassified products
+     */
+    public function clickUnclassifiedCategoryFilterLink()
+    {
+        $elt = $this
+            ->getElement('Category tree')
+            ->find('css', sprintf('#node_-1 a'));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find unclassified category filter.'));
+        }
+
+        $elt->click();
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return CategoryView
+     */
+    public function expandCategory($category)
+    {
+        $category = $this->findCategoryInTree($category)->getParent();
+        if ($category->hasClass('jstree-closed')) {
+            $category->getParent()->find('css', 'ins')->click();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return NodeElement
+     */
+    public function findCategoryInTree($category)
+    {
+        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
+        if (!$elt) {
+            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
+        }
+
+        return $elt;
     }
 }

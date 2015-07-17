@@ -13,14 +13,14 @@ Feature: Edit a product I have access
       | trendy  | Trendy      | shoes  |
       | classy  | Classy      | shoes  |
       | boots   | Boots       |        |
-    And the following category accesses:
-      | category        | user group | access |
-      | 2014_collection | Manager    |        |
-      | shoes           | Manager    | edit   |
-      | vintage         | Manager    | edit   |
-      | trendy          | Manager    | edit   |
-      | classy          | Manager    | edit   |
-      | boots           | Manager    | view   |
+    And the following product category accesses:
+      | product category | user group | access |
+      | 2014_collection  | Manager    |        |
+      | shoes            | Manager    | edit   |
+      | vintage          | Manager    | edit   |
+      | trendy           | Manager    | edit   |
+      | classy           | Manager    | edit   |
+      | boots            | Manager    | view   |
     And the following products:
       | sku     | categories      | name-en_US |
       | rangers | vintage, classy | rangers    |
