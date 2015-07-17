@@ -93,7 +93,7 @@ define(
                 $footerContainer.append($saveButton);
                 $menu.append($footerContainer);
 
-                var $openButton = $('button.pimmultiselect').addClass('btn btn-group');
+                var $openButton = $select.next().addClass('btn btn-group');
                 $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
 
                 $menu.find('input[type="search"]').width(200);

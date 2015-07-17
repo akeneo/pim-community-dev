@@ -82,7 +82,6 @@ define(
                 }
 
                 this.rendering = true;
-
                 this.getConfig().done(_.bind(function () {
                     this.$el.html(this.template({}));
                     this.resize();
@@ -116,7 +115,7 @@ define(
                                 $productValuesPanel.append(field.$el);
                             }
                         }, this));
-                    }, this));;
+                    }, this));
                     this.delegateEvents();
 
                     this.renderExtensions();
@@ -151,8 +150,6 @@ define(
                 var product = this.getData();
 
                 promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
-
-                this.triggerExtensions('add-attribute:update:available-attributes');
 
                 return $.when.apply($, promises).promise();
             },
