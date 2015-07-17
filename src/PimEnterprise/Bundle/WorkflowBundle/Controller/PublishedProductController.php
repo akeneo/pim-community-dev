@@ -26,8 +26,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -53,26 +54,30 @@ class PublishedProductController extends AbstractController
     /** @var ChannelManager */
     protected $channelManager;
 
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
     /**
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param UserContext              $userContext
-     * @param PublishedProductManager  $manager
-     * @param VersionManager           $versionManager
-     * @param CompletenessManager      $completenessManager
-     * @param ChannelManager           $channelManager
+     * @param Request                       $request
+     * @param EngineInterface               $templating
+     * @param RouterInterface               $router
+     * @param TokenStorageInterface         $tokenStorage
+     * @param FormFactoryInterface          $formFactory
+     * @param ValidatorInterface            $validator
+     * @param TranslatorInterface           $translator
+     * @param EventDispatcherInterface      $eventDispatcher
+     * @param UserContext                   $userContext
+     * @param PublishedProductManager       $manager
+     * @param VersionManager                $versionManager
+     * @param CompletenessManager           $completenessManager
+     * @param ChannelManager                $channelManager
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -81,23 +86,26 @@ class PublishedProductController extends AbstractController
         PublishedProductManager $manager,
         VersionManager $versionManager,
         CompletenessManager $completenessManager,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
             $eventDispatcher
         );
-        $this->userContext         = $userContext;
-        $this->manager             = $manager;
-        $this->versionManager      = $versionManager;
-        $this->completenessManager = $completenessManager;
-        $this->channelManager      = $channelManager;
+
+        $this->userContext          = $userContext;
+        $this->manager              = $manager;
+        $this->versionManager       = $versionManager;
+        $this->completenessManager  = $completenessManager;
+        $this->channelManager       = $channelManager;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -135,7 +143,7 @@ class PublishedProductController extends AbstractController
     {
         $published = $this->findPublishedOr404($id);
 
-        $isOwner = $this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct());
+        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $published->getOriginalProduct());
         if (!$isOwner) {
             throw new AccessDeniedException();
         }
@@ -206,12 +214,12 @@ class PublishedProductController extends AbstractController
 
         return $this->templating->renderResponse(
             'PimEnrichBundle:Completeness:_completeness.html.twig',
-            array(
+            [
                 'product'        => $published,
                 'channels'       => $channels,
                 'locales'        => $locales,
                 'completenesses' => $completenesses
-            )
+            ]
         );
     }
 

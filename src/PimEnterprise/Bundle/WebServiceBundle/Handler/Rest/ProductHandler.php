@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\WebServiceBundle\Handler\Rest\ProductHandler as BaseProductHandler;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -28,17 +28,17 @@ class ProductHandler extends BaseProductHandler
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
-     * @param SerializerInterface      $serializer
-     * @param SecurityContextInterface $securityContext
+     * @param SerializerInterface           $serializer
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SerializerInterface $serializer, SecurityContextInterface $securityContext)
+    public function __construct(SerializerInterface $serializer, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->serializer = $serializer;
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -55,7 +55,7 @@ class ProductHandler extends BaseProductHandler
      */
     public function get(ProductInterface $product, $channels, $locales, $url)
     {
-        if (false === $this->securityContext->isGranted(Attributes::VIEW, $product)) {
+        if (false === $this->authorizationChecker->isGranted(Attributes::VIEW, $product)) {
             throw new AccessDeniedException(sprintf('Access denied to the product "%s"', $product->getIdentifier()));
         }
 

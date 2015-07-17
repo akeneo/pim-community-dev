@@ -16,7 +16,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Permission controller
@@ -26,8 +26,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class PermissionRestController
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var AttributeGroupRepositoryInterface */
     protected $attributeGroupRepo;
@@ -39,21 +39,21 @@ class PermissionRestController
     protected $userContext;
 
     /**
-     * @param SecurityContextInterface          $securityContext
+     * @param AuthorizationCheckerInterface     $authorizationChecker
      * @param AttributeGroupRepositoryInterface $attributeGroupRepo
      * @param CategoryAccessRepository          $categoryAccessRepo
      * @param UserContext                       $userContext
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         AttributeGroupRepositoryInterface $attributeGroupRepo,
         CategoryAccessRepository $categoryAccessRepo,
         UserContext $userContext
     ) {
-        $this->securityContext    = $securityContext;
-        $this->attributeGroupRepo = $attributeGroupRepo;
-        $this->categoryAccessRepo = $categoryAccessRepo;
-        $this->userContext        = $userContext;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->attributeGroupRepo   = $attributeGroupRepo;
+        $this->categoryAccessRepo   = $categoryAccessRepo;
+        $this->userContext          = $userContext;
     }
 
     /**
@@ -61,25 +61,25 @@ class PermissionRestController
      */
     public function permissionsAction()
     {
-        $securityContext = $this->securityContext;
+        $authorizationChecker = $this->authorizationChecker;
 
         $locales = array_map(
-            function ($locale) use ($securityContext) {
+            function ($locale) use ($authorizationChecker) {
                 return [
                     'code' => $locale->getCode(),
-                    'view' => $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale),
-                    'edit' => $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)
+                    'view' => $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale),
+                    'edit' => $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)
                 ];
             },
             $this->userContext->getUserLocales()
         );
 
         $attributeGroups = array_map(
-            function ($group) use ($securityContext) {
+            function ($group) use ($authorizationChecker) {
                 return [
                     'code' => $group->getCode(),
-                    'view' => $securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $group),
-                    'edit' => $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $group)
+                    'view' => $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $group),
+                    'edit' => $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $group)
                 ];
             },
             $this->attributeGroupRepo->findAll()

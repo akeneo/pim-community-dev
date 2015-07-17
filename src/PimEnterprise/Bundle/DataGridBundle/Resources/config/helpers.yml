@@ -8,22 +8,22 @@ services:
     pimee_datagrid.datagrid.product_draft.grid_helper:
         class: %pimee_datagrid.datagrid.product_draft.grid_helper.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
 
     pimee_datagrid.datagrid.proposal.grid_helper:
         class: %pimee_datagrid.datagrid.proposal.grid_helper.class%
         arguments:
             - '@pimee_workflow.repository.product_draft'
-            - '@security.context'
+            - '@security.authorization_checker'
 
     pimee_datagrid.datagrid.published_product.grid_helper:
         class: %pimee_datagrid.datagrid.published_product.grid_helper.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pimee_workflow.repository.published_product'
 
     pimee_datagrid.datagrid.product_history.grid_helper:
         class: %pimee_datagrid.datagrid.product_history.grid_helper.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pim_catalog.repository.product'

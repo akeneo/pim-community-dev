@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Product Controller
@@ -34,8 +34,8 @@ class ProductController extends BaseController
     /** @var RendererRegistry */
     protected $rendererRegistry;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var UserContext */
     protected $userContext;
@@ -43,21 +43,21 @@ class ProductController extends BaseController
     /**
      * Constructor
      *
-     * @param ProductManager           $productManager
-     * @param RendererRegistry         $rendererRegistry
-     * @param SecurityContextInterface $securityContext
-     * @param UserContext              $userContext
+     * @param ProductManager                $productManager
+     * @param RendererRegistry              $rendererRegistry
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param UserContext                   $userContext
      */
     public function __construct(
         ProductManager $productManager,
         RendererRegistry $rendererRegistry,
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         UserContext $userContext
     ) {
         parent::__construct($productManager, $rendererRegistry);
 
-        $this->securityContext = $securityContext;
-        $this->userContext     = $userContext;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->userContext          = $userContext;
     }
 
     /**
@@ -68,7 +68,7 @@ class ProductController extends BaseController
     public function downloadPdfAction(Request $request, $id)
     {
         $locale = $this->userContext->getCurrentLocale();
-        $viewLocaleGranted = $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale);
+        $viewLocaleGranted = $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale);
         if (!$viewLocaleGranted) {
             throw new AccessDeniedException();
         }

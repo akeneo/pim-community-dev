@@ -17,8 +17,9 @@ services:
         arguments:
             - '@pimee_workflow.repository.published_product_category'
             - '@pim_catalog.repository.category'
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
 
     pimee_workflow.manager.product_draft:
         class: %pimee_workflow.manager.product_draft.class%

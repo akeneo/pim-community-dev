@@ -6,4 +6,4 @@ services:
         class: %pimee_webservice.handler.rest.product.class%
         arguments:
             - '@pim_webservice.serializer'
-            - '@security.context'
+            - '@security.authorization_checker'

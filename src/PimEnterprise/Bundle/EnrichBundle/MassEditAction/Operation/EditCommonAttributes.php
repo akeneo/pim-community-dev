@@ -19,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes as BaseEditCommonAttributes;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -29,21 +29,21 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class EditCommonAttributes extends BaseEditCommonAttributes
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
      * Constructor
      *
-     * @param ProductBuilder               $productBuilder
-     * @param UserContext                  $userContext
-     * @param CatalogContext               $catalogContext
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param NormalizerInterface          $normalizer
-     * @param MediaManager                 $mediaManager
-     * @param ProductMassActionManager     $massActionManager
-     * @param string                       $uploadDir
-     * @param SecurityContextInterface     $securityContext
+     * @param ProductBuilder                $productBuilder
+     * @param UserContext                   $userContext
+     * @param CatalogContext                $catalogContext
+     * @param AttributeRepositoryInterface  $attributeRepository
+     * @param NormalizerInterface           $normalizer
+     * @param MediaManager                  $mediaManager
+     * @param ProductMassActionManager      $massActionManager
+     * @param string                        $uploadDir
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         ProductBuilder $productBuilder,
@@ -54,7 +54,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         MediaManager $mediaManager,
         ProductMassActionManager $massActionManager,
         $uploadDir,
-        SecurityContextInterface $securityContext
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
             $productBuilder,
@@ -67,7 +67,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
             $uploadDir
         );
 
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -81,7 +81,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         $grantedAttributes = [];
 
         foreach ($allAttributes as $attribute) {
-            $canEditAttribute = $this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup());
+            $canEditAttribute = $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup());
 
             if ($canEditAttribute) {
                 $grantedAttributes[] = $attribute;

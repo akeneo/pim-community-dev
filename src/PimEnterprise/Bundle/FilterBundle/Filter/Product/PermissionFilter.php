@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Allow to know if current user can review/publish, edit or view products
@@ -36,8 +36,8 @@ class PermissionFilter extends OroChoiceFilter
     /** @staticvar string */
     const VIEW = 1;
 
-    /* @var SecurityContextInterface */
-    protected $securityContext;
+    /* @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var ProductCategoryRepositoryInterface $repository */
     protected $productRepository;
@@ -50,21 +50,22 @@ class PermissionFilter extends OroChoiceFilter
      *
      * @param FormFactoryInterface               $factory
      * @param FilterUtility                      $util
-     * @param SecurityContextInterface           $securityContext
+     * @param TokenStorageInterface              $tokenStorage
      * @param ProductCategoryRepositoryInterface $productRepository
      * @param CategoryAccessRepository           $accessRepository
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         ProductCategoryRepositoryInterface $productRepository,
         CategoryAccessRepository $accessRepository
     ) {
         parent::__construct($factory, $util);
-        $this->securityContext = $securityContext;
+
+        $this->tokenStorage      = $tokenStorage;
         $this->productRepository = $productRepository;
-        $this->accessRepository = $accessRepository;
+        $this->accessRepository  = $accessRepository;
     }
 
     /**
@@ -80,7 +81,7 @@ class PermissionFilter extends OroChoiceFilter
         }
 
         $level = $data['type'];
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $qb = $ds->getQueryBuilder();
 
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, $level);

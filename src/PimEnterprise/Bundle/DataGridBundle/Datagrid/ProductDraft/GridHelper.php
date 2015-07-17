@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Helper for product draft datagrid
@@ -23,15 +23,15 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class GridHelper
 {
-    /** @var SecurityContextInterface  */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface  */
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -42,8 +42,8 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            if (null !== $this->securityContext &&
-                false === $this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $record->getRootEntity())
+            if (null !== $this->authorizationChecker &&
+                false === $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $record->getRootEntity())
             ) {
                 return ['approve' => false, 'refuse' => false, 'remove' => false];
             }

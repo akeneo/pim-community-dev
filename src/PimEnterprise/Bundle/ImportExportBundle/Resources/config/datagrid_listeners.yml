@@ -3,7 +3,7 @@ services:
         class: %pimee_datagrid.event_listener.add_permissions_to_grid.class%
         arguments:
             - '@pimee_security.repository.job_profile_access'
-            - '@security.context'
+            - '@security.token_storage'
             - 'EXECUTE_JOB_PROFILE'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-profile-grid, method: onBuildAfter }
@@ -14,7 +14,7 @@ services:
     pimee_import_export.event_listener.configure_job_profile_grid:
         class: %pimee_datagrid.event_listener.configure_job_profile_grid_listener.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.export-profile-grid, method: onBuildBefore }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.import-profile-grid, method: onBuildBefore }

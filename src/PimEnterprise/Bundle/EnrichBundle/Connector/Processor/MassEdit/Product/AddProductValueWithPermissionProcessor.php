@@ -10,8 +10,9 @@ use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValue
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -23,25 +24,30 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class AddProductValueWithPermissionProcessor extends BaseProcessor
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var UserManager */
     protected $userManager;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /**
      * @param PropertyAdderInterface              $propertyAdder
      * @param ValidatorInterface                  $validator
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param UserManager                         $userManager
-     * @param SecurityContextInterface            $securityContext
+     * @param AuthorizationCheckerInterface       $authorizationChecker
+     * @param TokenStorageInterface               $tokenStorage
      */
     public function __construct(
         PropertyAdderInterface $propertyAdder,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
-        SecurityContextInterface $securityContext
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage
     ) {
         BaseProcessor::__construct(
             $propertyAdder,
@@ -49,8 +55,9 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
             $jobConfigurationRepo
         );
 
-        $this->securityContext = $securityContext;
-        $this->userManager     = $userManager;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->tokenStorage         = $tokenStorage;
+        $this->userManager          = $userManager;
     }
 
     /**
@@ -79,7 +86,7 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
         $user = $this->userManager->findUserByUsername($username);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->securityContext->setToken($token);
+        $this->tokenStorage->setToken($token);
     }
 
     /**
@@ -89,7 +96,7 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
      */
     protected function hasRight(ProductInterface $product)
     {
-        $isAuthorized = $this->securityContext->isGranted(Attributes::OWN, $product);
+        $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 
         if (!$isAuthorized) {
             $this->stepExecution->addWarning(

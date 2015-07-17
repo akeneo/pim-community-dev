@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Override product mass action manager
@@ -25,14 +25,10 @@ use Symfony\Component\Security\Core\SecurityContext;
  */
 class ProductMassActionManager extends BaseProductMassActionManager
 {
-    /**
-     * @var SecurityContext
-     */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
-    /**
-     * @var AttributeGroupAccessRepository
-     */
+    /** @var AttributeGroupAccessRepository */
     protected $attGroupAccessRepo;
 
     /**
@@ -41,18 +37,18 @@ class ProductMassActionManager extends BaseProductMassActionManager
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
      * @param AttributeGroupAccessRepository       $attGroupAccessRepo
-     * @param SecurityContext                      $securityContext
+     * @param TokenStorageInterface                $tokenStorage
      */
     public function __construct(
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         AttributeGroupAccessRepository $attGroupAccessRepo,
-        SecurityContext $securityContext
+        TokenStorageInterface $tokenStorage
     ) {
         parent::__construct($massActionRepository, $attributeRepository);
 
         $this->attGroupAccessRepo = $attGroupAccessRepo;
-        $this->securityContext    = $securityContext;
+        $this->tokenStorage       = $tokenStorage;
     }
 
     /**
@@ -68,16 +64,16 @@ class ProductMassActionManager extends BaseProductMassActionManager
 
         $subQB = $this
             ->attGroupAccessRepo
-            ->getGrantedAttributeGroupQB($this->securityContext->getToken()->getUser(), Attributes::EDIT_ATTRIBUTES);
+            ->getGrantedAttributeGroupQB($this->tokenStorage->getToken()->getUser(), Attributes::EDIT_ATTRIBUTES);
 
         return $this
             ->attributeRepository
             ->findWithGroups(
                 array_unique($attributeIds),
-                array(
+                [
                     'conditions' => ['unique' => 0],
                     'filters'    => ['g.id'   => $subQB]
-                )
+                ]
             );
     }
 }

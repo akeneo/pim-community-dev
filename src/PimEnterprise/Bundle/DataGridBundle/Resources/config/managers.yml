@@ -9,4 +9,4 @@ services:
             - '@oro_datagrid.datagrid.manager'
             - '@pim_datagrid.saver.datagrid_view'
             - '@pim_datagrid.remover.datagrid_view'
-            - '@security.context'
+            - '@security.authorization_checker'

@@ -13,7 +13,7 @@ services:
     pim_catalog.filter.attribute_view_right:
         class: %pim_catalog.filter.attribute_view_right.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute.view }
             - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.view }
@@ -21,7 +21,7 @@ services:
     pim_catalog.filter.attribute_edit_right:
         class: %pim_catalog.filter.attribute_edit_right.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute.edit }
             - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.edit }
@@ -29,7 +29,7 @@ services:
     pim_catalog.filter.attribute_group_view_right:
         class: %pim_catalog.filter.attribute_group_view_right.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute_group.view }
             - { name: pim_catalog.filter.object, type: pim.internal_api.attribute_group.view }
@@ -37,7 +37,7 @@ services:
     pim_catalog.filter.product_value_attribute_group_right:
         class: %pim_catalog.filter.product_value_attribute_group_right.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
@@ -45,7 +45,7 @@ services:
     pim_catalog.filter.product_value_locale_right:
         class: %pim_catalog.filter.product_value_locale_right.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pim_catalog.manager.locale'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
@@ -54,27 +54,27 @@ services:
     pim_catalog.filter.product_right_view:
         class: %pim_catalog.filter.product_right_view.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: pim_catalog.filter.object, type: pim.internal_api.product.view }
 
     pim_catalog.filter.product_right_edit:
         class: %pim_catalog.filter.product_right_edit.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: pim_catalog.filter.object, type: pim.internal_api.product.edit }
 
     pim_catalog.filter.locale_view_right:
         class: %pim_catalog.filter.locale_view_right.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.locale.view }
 
     pim_catalog.filter.locale_edit_right:
         class: %pim_catalog.filter.locale_edit_right.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: pim_catalog.filter.object, type: pim.internal_api.locale.edit }

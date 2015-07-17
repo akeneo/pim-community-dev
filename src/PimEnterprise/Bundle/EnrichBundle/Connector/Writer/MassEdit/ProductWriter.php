@@ -18,7 +18,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Connector\Writer\Doctrine\ProductWriter as BaseProductWriter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 
 /**
  * Product writer
@@ -27,26 +28,26 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ProductWriter extends BaseProductWriter
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
-     * @param MediaManager                $mediaManager
-     * @param VersionManager              $versionManager
-     * @param BulkSaverInterface          $productSaver
-     * @param BulkObjectDetacherInterface $detacher
-     * @param SecurityContextInterface    $securityContext
+     * @param MediaManager                   $mediaManager
+     * @param VersionManager                 $versionManager
+     * @param BulkSaverInterface             $productSaver
+     * @param BulkObjectDetacherInterface    $detacher
+     * @param AuthorizationCheckerInterface  $authorizationChecker
      */
     public function __construct(
         MediaManager $mediaManager,
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkObjectDetacherInterface $detacher,
-        SecurityContextInterface $securityContext
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         BaseProductWriter::__construct($mediaManager, $versionManager, $productSaver, $detacher);
 
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -58,10 +59,11 @@ class ProductWriter extends BaseProductWriter
      */
     protected function hasPermissions(ProductInterface $product)
     {
-        if (null === $product->getId() || null === $this->securityContext->getToken()) {
+        try {
+            $hasRight = (null === $product->getId())
+                ? true : $this->authorizationChecker->isGranted(Attributes::OWN, $product);
+        } catch (AuthenticationCredentialsNotFoundException $e) {
             $hasRight = true;
-        } else {
-            $hasRight = $this->securityContext->isGranted(Attributes::OWN, $product);
         }
 
         return $hasRight;

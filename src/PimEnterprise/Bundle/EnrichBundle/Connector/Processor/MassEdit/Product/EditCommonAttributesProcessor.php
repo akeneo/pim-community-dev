@@ -9,8 +9,8 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -20,8 +20,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class EditCommonAttributesProcessor extends BaseProcessor
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var UserManager */
     protected $userManager;
@@ -33,7 +33,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param AttributeRepositoryInterface         $attributeRepository
      * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      * @param UserManager                          $userManager
-     * @param SecurityContextInterface             $securityContext
+     * @param TokenStorageInterface                $tokenStorage
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
@@ -42,7 +42,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
-        SecurityContextInterface $securityContext
+        TokenStorageInterface $tokenStorage
     ) {
         BaseProcessor::__construct(
             $propertySetter,
@@ -52,8 +52,8 @@ class EditCommonAttributesProcessor extends BaseProcessor
             $jobConfigurationRepo
         );
 
-        $this->securityContext = $securityContext;
-        $this->userManager     = $userManager;
+        $this->tokenStorage = $tokenStorage;
+        $this->userManager  = $userManager;
     }
 
     /**
@@ -79,6 +79,6 @@ class EditCommonAttributesProcessor extends BaseProcessor
         $user = $this->userManager->findUserByUsername($username);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->securityContext->setToken($token);
+        $this->tokenStorage->setToken($token);
     }
 }

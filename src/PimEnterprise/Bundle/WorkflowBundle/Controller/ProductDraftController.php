@@ -32,8 +32,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -69,27 +70,31 @@ class ProductDraftController extends AbstractController
     /** @var MassActionParametersParser */
     protected $gridParameterParser;
 
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
     /**
-     * @param Request                        $request
-     * @param EngineInterface                $templating
-     * @param RouterInterface                $router
-     * @param SecurityContextInterface       $securityContext
-     * @param FormFactoryInterface           $formFactory
-     * @param ValidatorInterface             $validator
-     * @param TranslatorInterface            $translator
-     * @param EventDispatcherInterface       $eventDispatcher
-     * @param ObjectRepository               $repository
-     * @param ProductDraftManager            $manager
-     * @param UserContext                    $userContext
-     * @param JobLauncherInterface           $simpleJobLauncher
-     * @param JobInstanceRepository          $jobInstanceRepository
-     * @param MassActionParametersParser     $gridParameterParser
+     * @param Request                       $request
+     * @param EngineInterface               $templating
+     * @param RouterInterface               $router
+     * @param TokenStorageInterface         $tokenStorage
+     * @param FormFactoryInterface          $formFactory
+     * @param ValidatorInterface            $validator
+     * @param TranslatorInterface           $translator
+     * @param EventDispatcherInterface      $eventDispatcher
+     * @param ObjectRepository              $repository
+     * @param ProductDraftManager           $manager
+     * @param UserContext                   $userContext
+     * @param JobLauncherInterface          $simpleJobLauncher
+     * @param JobInstanceRepository         $jobInstanceRepository
+     * @param MassActionParametersParser    $gridParameterParser
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -99,24 +104,27 @@ class ProductDraftController extends AbstractController
         UserContext $userContext,
         JobLauncherInterface $simpleJobLauncher,
         JobInstanceRepository $jobInstanceRepository,
-        MassActionParametersParser $gridParameterParser
+        MassActionParametersParser $gridParameterParser,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
             $eventDispatcher
         );
+
         $this->repository            = $repository;
         $this->manager               = $manager;
         $this->userContext           = $userContext;
         $this->simpleJobLauncher     = $simpleJobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->gridParameterParser   = $gridParameterParser;
+        $this->authorizationChecker  = $authorizationChecker;
     }
 
     /**
@@ -130,7 +138,7 @@ class ProductDraftController extends AbstractController
      */
     public function indexAction()
     {
-        if (!$this->securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)) {
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)) {
             throw new AccessDeniedException();
         }
 
@@ -157,11 +165,11 @@ class ProductDraftController extends AbstractController
             throw new \LogicException('A product draft that is not ready can not be approved');
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -214,11 +222,11 @@ class ProductDraftController extends AbstractController
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        if (!$this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 

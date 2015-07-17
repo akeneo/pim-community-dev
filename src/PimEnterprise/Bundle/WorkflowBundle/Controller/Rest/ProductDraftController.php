@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -30,8 +30,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductDraftController
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var ProductDraftRepositoryInterface */
     protected $repository;
@@ -49,7 +49,7 @@ class ProductDraftController
     protected $userContext;
 
     /**
-     * @param SecurityContextInterface        $securityContext
+     * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftRepositoryInterface $repository
      * @param ProductDraftManager             $manager
      * @param ProductRepositoryInterface      $productRepository
@@ -57,19 +57,19 @@ class ProductDraftController
      * @param UserContext                     $userContext
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftRepositoryInterface $repository,
         ProductDraftManager $manager,
         ProductRepositoryInterface $productRepository,
         NormalizerInterface $normalizer,
         UserContext $userContext
     ) {
-        $this->securityContext   = $securityContext;
-        $this->repository        = $repository;
-        $this->manager           = $manager;
-        $this->productRepository = $productRepository;
-        $this->normalizer        = $normalizer;
-        $this->userContext       = $userContext;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->repository           = $repository;
+        $this->manager              = $manager;
+        $this->productRepository    = $productRepository;
+        $this->normalizer           = $normalizer;
+        $this->userContext          = $userContext;
     }
 
     /**
@@ -84,7 +84,7 @@ class ProductDraftController
     {
         $productDraft = $this->findDraftForProduct($id);
 
-        if (null === $productDraft || $this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (null === $productDraft || $this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             return new JsonResponse();
         }
 
@@ -107,7 +107,7 @@ class ProductDraftController
             throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 

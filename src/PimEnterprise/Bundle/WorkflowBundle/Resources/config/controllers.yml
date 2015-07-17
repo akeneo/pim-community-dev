@@ -16,6 +16,7 @@ services:
             - '@pim_connector.launcher.simple_job_launcher'
             - '@pim_import_export.repository.job_instance'
             - '@oro_datagrid.mass_action.parameters_parser'
+            - '@security.authorization_checker'
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%
@@ -27,18 +28,19 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.manager.channel'
+            - '@security.authorization_checker'
 
     pimee_workflow.controller.published_product_rest:
         class: %pimee_workflow.controller.published_product_rest.class%
         scope: request
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pimee_workflow.manager.published_product'
 
     pimee_workflow.controller.product_draft_rest:
         class: %pimee_workflow.controller.product_draft_rest.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
             - '@pim_catalog.repository.product'

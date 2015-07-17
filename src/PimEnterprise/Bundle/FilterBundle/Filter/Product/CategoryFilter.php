@@ -19,7 +19,8 @@ use Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter as BaseCategoryFilter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Override category filter to apply permissions on categories
@@ -28,32 +29,38 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class CategoryFilter extends BaseCategoryFilter
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var CategoryAccessRepository */
     protected $accessRepository;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
      * Constructor
      *
-     * @param FormFactoryInterface     $factory         Form factory
-     * @param FilterUtility            $util            Filter utility
-     * @param ProductCategoryManager   $manager         Product category manager
-     * @param SecurityContextInterface $securityContext Security context
-     * @param CategoryAccessRepository $accessRepo      Category access repository
+     * @param FormFactoryInterface          $factory              Form factory
+     * @param FilterUtility                 $util                 Filter utility
+     * @param ProductCategoryManager        $manager              Product category manager
+     * @param AuthorizationCheckerInterface $authorizationChecker Authorization checker
+     * @param CategoryAccessRepository      $accessRepo           Category access repository
+     * @param TokenStorageInterface         $tokenStorage         Token storage
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
         ProductCategoryManager $manager,
-        SecurityContextInterface $securityContext,
-        CategoryAccessRepository $accessRepo
+        AuthorizationCheckerInterface $authorizationChecker,
+        CategoryAccessRepository $accessRepo,
+        TokenStorageInterface $tokenStorage
     ) {
         parent::__construct($factory, $util, $manager);
 
-        $this->securityContext = $securityContext;
-        $this->accessRepository = $accessRepo;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->accessRepository     = $accessRepo;
+        $this->tokenStorage         = $tokenStorage;
     }
 
     /**
@@ -63,7 +70,7 @@ class CategoryFilter extends BaseCategoryFilter
      */
     protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
         if (count($grantedCategoryIds) > 0) {
             $this->util->applyFilter($ds, 'categories.id', 'IN OR UNCLASSIFIED', $grantedCategoryIds);
@@ -90,7 +97,7 @@ class CategoryFilter extends BaseCategoryFilter
             $this->util->applyFilter($ds, 'categories.id', 'NOT IN', $currentTreeIds);
 
             // we add a filter on granted categories
-            $user = $this->securityContext->getToken()->getUser();
+            $user = $this->tokenStorage->getToken()->getUser();
             $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
             $this->util->applyFilter($ds, 'categories.id', 'IN OR UNCLASSIFIED', $grantedIds);
 
@@ -107,13 +114,13 @@ class CategoryFilter extends BaseCategoryFilter
      */
     protected function getAllChildrenIds(CategoryInterface $category)
     {
-        if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+        if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
             return [];
         }
 
         $childrenIds = parent::getAllChildrenIds($category);
 
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $grantedIds = $this->accessRepository->getCategoryIdsWithExistingAccess(
             $user->getGroups()->toArray(),
             $childrenIds

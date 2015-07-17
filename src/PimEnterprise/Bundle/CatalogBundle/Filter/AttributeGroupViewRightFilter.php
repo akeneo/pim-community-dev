@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Attribute group filter
@@ -25,15 +25,15 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class AttributeGroupViewRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -45,7 +45,7 @@ class AttributeGroupViewRightFilter extends AbstractFilter implements Collection
             throw new \LogicException('This filter only handles objects of type "AttributeGroupInterface"');
         }
 
-        return !$this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup);
+        return !$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup);
     }
 
     /**

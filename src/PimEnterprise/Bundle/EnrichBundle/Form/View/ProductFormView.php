@@ -17,7 +17,7 @@ use Pim\Bundle\EnrichBundle\Form\View\ProductFormView as BaseProductFormView;
 use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Extending product form view adding permissions
@@ -26,22 +26,22 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ProductFormView extends BaseProductFormView
 {
-    /**
-     * @var SecurityContextInterface
-     */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
      * Construct
      *
-     * @param ViewUpdaterRegistry      $viewUpdaterRegistry
-     * @param SecurityContextInterface $securityContext
+     * @param ViewUpdaterRegistry           $viewUpdaterRegistry
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(ViewUpdaterRegistry $viewUpdaterRegistry, SecurityContextInterface $securityContext)
-    {
+    public function __construct(
+        ViewUpdaterRegistry $viewUpdaterRegistry,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
         parent::__construct($viewUpdaterRegistry);
 
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -52,7 +52,7 @@ class ProductFormView extends BaseProductFormView
         $attributeView = parent::prepareAttributeView($attribute, $value, $view);
 
         $attributeView['allowValueCreation'] = $attributeView['allowValueCreation']
-            && $this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup());
+            && $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup());
 
         return $attributeView;
     }

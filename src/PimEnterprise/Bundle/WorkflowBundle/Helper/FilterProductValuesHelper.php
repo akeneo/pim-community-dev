@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Helper;
 
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Helper for filtering product values
@@ -21,15 +21,15 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class FilterProductValuesHelper
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -53,7 +53,7 @@ class FilterProductValuesHelper
                 continue;
             }
 
-            if (true === $this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute->getGroup())) {
+            if (true === $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute->getGroup())) {
                 $filteredValues[] = $value;
             }
         }

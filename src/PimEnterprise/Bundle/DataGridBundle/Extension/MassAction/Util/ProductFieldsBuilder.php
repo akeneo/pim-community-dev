@@ -19,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Override to apply permissions on attribute groups
@@ -31,8 +31,8 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
     /** @var AttributeGroupAccessRepository */
     protected $accessRepository;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /**
      * Constructor
@@ -43,7 +43,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
      * @param AssociationTypeManager         $assocTypeManager
      * @param CatalogContext                 $catalogContext
      * @param AttributeGroupAccessRepository $accessRepository
-     * @param SecurityContextInterface       $securityContext
+     * @param TokenStorageInterface          $tokenStorage
      */
     public function __construct(
         ProductManager $productManager,
@@ -52,11 +52,12 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
         AssociationTypeManager $assocTypeManager,
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
-        SecurityContextInterface $securityContext
+        TokenStorageInterface $tokenStorage
     ) {
         parent::__construct($productManager, $localeManager, $currencyManager, $assocTypeManager, $catalogContext);
+
         $this->accessRepository = $accessRepository;
-        $this->securityContext = $securityContext;
+        $this->tokenStorage     = $tokenStorage;
     }
 
     /**
@@ -71,7 +72,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
         $this->attributeIds = $this
             ->accessRepository
             ->getGrantedAttributeIds(
-                $this->securityContext->getToken()->getUser(),
+                $this->tokenStorage->getToken()->getUser(),
                 Attributes::VIEW_ATTRIBUTES,
                 $this->attributeIds
             );
