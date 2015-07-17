@@ -165,6 +165,15 @@ define([
                     return 'view';
                 }
             },
+            canBeSeen: function () {
+                if (this.attribute.localizable &&
+                    this.attribute.is_locale_specific &&
+                    !_.contains(this.attribute.locale_specific_codes, this.context.locale)) {
+                    return false;
+                }
+
+                return true;
+            },
             getCurrentValue: function () {
                 return AttributeManager.getValue(
                     this.model.get('values'),

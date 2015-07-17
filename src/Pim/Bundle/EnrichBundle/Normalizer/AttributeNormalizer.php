@@ -49,10 +49,12 @@ class AttributeNormalizer implements NormalizerInterface
     public function normalize($attribute, $format = null, array $context = [])
     {
         $normalizedAttribute = $this->normalizer->normalize($attribute, 'json', $context) + [
-            'id'              => $attribute->getId(),
-            'wysiwyg_enabled' => $attribute->isWysiwygEnabled(),
-            'empty_value'     => $this->emptyValueProvider->getEmptyValue($attribute),
-            'field_type'      => $this->fieldProvider->getField($attribute)
+            'id'                    => $attribute->getId(),
+            'wysiwyg_enabled'       => $attribute->isWysiwygEnabled(),
+            'empty_value'           => $this->emptyValueProvider->getEmptyValue($attribute),
+            'field_type'            => $this->fieldProvider->getField($attribute),
+            'is_locale_specific'    => (int) $attribute->isLocaleSpecific(),
+            'locale_specific_codes' => $attribute->getLocaleSpecificCodes()
         ];
 
         return $normalizedAttribute;
