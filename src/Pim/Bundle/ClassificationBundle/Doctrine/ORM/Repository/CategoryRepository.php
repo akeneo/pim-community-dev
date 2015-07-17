@@ -293,6 +293,14 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getTrees()
+    {
+        return $this->getChildren(null, true, 'created', 'DESC');
+    }
+
+    /**
      * Create a query builder with just a link to the category passed in parameter
      *
      * @param CategoryInterface $category
@@ -306,5 +314,18 @@ class CategoryRepository extends NestedTreeRepository implements
             ->setParameter('nodeId', $category->getId());
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    {
+        $sameRoot = $parentNode->getRoot() === $childNode->getRoot();
+
+        $isAncestor = $childNode->getLeft() > $parentNode->getLeft()
+            && $childNode->getRight() < $parentNode->getRight();
+
+        return $sameRoot && $isAncestor;
     }
 }

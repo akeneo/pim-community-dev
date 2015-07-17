@@ -80,6 +80,8 @@ services:
             - '@oro_security.security_facade'
             - '@pim_catalog.saver.category'
             - '@pim_catalog.remover.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.repository.category'
 
     pim_enrich.controller.channel:
         scope: request
@@ -162,6 +164,7 @@ services:
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.factory.category'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%

@@ -6,7 +6,10 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -22,6 +25,9 @@ class UserContext
     /** @staticvar string */
     const REQUEST_LOCALE_PARAM = 'dataLocale';
 
+    /** @staticvar string */
+    const USER_PRODUCT_CATEGORY_TYPE = 'product';
+
     /** @var SecurityContextInterface */
     protected $securityContext;
 
@@ -31,37 +37,37 @@ class UserContext
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var CategoryManager */
-    protected $categoryManager;
-
     /** @var Request */
     protected $request;
 
     /** @var array */
     protected $userLocales;
 
+    /** @var CategoryRepositoryInterface */
+    protected $productCategoryRepo;
+
     /** @var string */
     protected $defaultLocale;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param LocaleManager            $localeManager
-     * @param ChannelManager           $channelManager
-     * @param CategoryManager          $categoryManager
-     * @param string                   $defaultLocale
+     * @param SecurityContextInterface    $securityContext
+     * @param LocaleManager               $localeManager
+     * @param ChannelManager              $channelManager
+     * @param CategoryRepositoryInterface $productCategoryRepo
+     * @param string                      $defaultLocale
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
-        CategoryManager $categoryManager,
+        CategoryRepositoryInterface $productCategoryRepo,
         $defaultLocale
     ) {
-        $this->securityContext = $securityContext;
-        $this->localeManager   = $localeManager;
-        $this->channelManager  = $channelManager;
-        $this->categoryManager = $categoryManager;
-        $this->defaultLocale   = $defaultLocale;
+        $this->securityContext     = $securityContext;
+        $this->localeManager       = $localeManager;
+        $this->channelManager      = $channelManager;
+        $this->defaultLocale       = $defaultLocale;
+        $this->productCategoryRepo = $productCategoryRepo;
     }
 
     /**
@@ -184,13 +190,41 @@ class UserContext
     /**
      * Get user category tree
      *
-     * @return CategoryInterface
+     * @return CatalogCategoryInterface
+     *
+     * @deprecated Will be removed in 1.5. Please use getUserProductCategoryTree() instead.
      */
     public function getUserTree()
     {
+        return $this->getUserProductCategoryTree();
+    }
+
+    /**
+     * For the given $relatedEntity of category asked, return the default user category.
+     *
+     * @param string $relatedEntity
+     *
+     * @return CategoryInterface|null
+     */
+    public function getUserCategoryTree($relatedEntity)
+    {
+        if (static::USER_PRODUCT_CATEGORY_TYPE === $relatedEntity) {
+            return $this->getUserProductCategoryTree();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get user product category tree
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\CategoryInterface
+     */
+    public function getUserProductCategoryTree()
+    {
         $defaultTree = $this->getUserOption('defaultTree');
 
-        return $defaultTree ?: current($this->categoryManager->getTrees());
+        return $defaultTree ?: current($this->productCategoryRepo->getTrees());
     }
 
     /**

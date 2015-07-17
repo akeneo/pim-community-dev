@@ -57,7 +57,7 @@
             <div id="tree" data-datalocale="{{ dataLocale.code }}" data-relatedentity="product"></div>
         {% endif %}
         <div id="product-grid">
-            {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }) }}
+            {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
         </div>
     </div>
 
