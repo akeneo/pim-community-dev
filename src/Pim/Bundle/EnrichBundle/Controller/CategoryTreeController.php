@@ -211,11 +211,11 @@ class CategoryTreeController extends AbstractDoctrineController
             $selectNode = null;
         }
 
+        $categories = $this->getChildrenCategories($request, $selectNode);
+
         if (null === $selectNode) {
-            $categories = $this->getChildren($parent->getId());
             $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
         } else {
-            $categories = $this->getChildren($parent->getId(), $selectNode->getId());
             $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
         }
 
@@ -377,17 +377,19 @@ class CategoryTreeController extends AbstractDoctrineController
     }
 
     /**
-     * @param int      $parentId
-     * @param int|bool $selectNodeId
+     * @param Request                $request
+     * @param CategoryInterface|null $selectNode
      *
      * @return array|ArrayCollection
      */
-    protected function getChildren($parentId, $selectNodeId = false)
+    protected function getChildrenCategories(Request $request, $selectNode)
     {
-        if (false !== $selectNodeId) {
-            $categories = $this->categoryRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
+        $parent = $this->findCategory($request->get('id'));
+
+        if (null !== $selectNode) {
+            $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId());
         } else {
-            $categories = $this->categoryRepository->getChildrenByParentId($parentId);
+            $categories = $this->categoryRepository->getChildrenByParentId($parent->getId());
         }
 
         return $categories;
