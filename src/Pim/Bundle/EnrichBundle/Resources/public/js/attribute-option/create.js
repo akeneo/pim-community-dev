@@ -55,7 +55,7 @@ define(
                                 'pim_enrich_attributeoption_create',
                                 { attributeId: this.attribute.id }
                             ),
-                            data: JSON.stringify(form.getData())
+                            data: JSON.stringify(form.getFormData())
                         }).done(function (option) {
                             modal.close();
                             messenger.notificationFlashMessage(

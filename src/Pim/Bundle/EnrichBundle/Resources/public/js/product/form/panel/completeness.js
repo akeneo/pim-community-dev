@@ -48,17 +48,17 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (this.getRoot().model.get('meta')) {
+                if (this.getFormData().meta) {
                     $.when(
                         FetcherRegistry.getFetcher('completeness').fetchForProduct(
-                            this.getRoot().model.get('meta').id,
-                            this.getRoot().model.get('family')
+                            this.getFormData().meta.id,
+                            this.getFormData().family
                         ),
                         FetcherRegistry.getFetcher('locale').fetchAll()
                     ).then(_.bind(function (completeness, locales) {
                         this.$el.html(
                             this.template({
-                                hasFamily: this.getRoot().model.get('family') !== null,
+                                hasFamily: this.getFormData().family !== null,
                                 completenesses: completeness.completenesses,
                                 i18n: i18n,
                                 locales: locales
@@ -105,8 +105,8 @@ define(
              * Update the completeness by fetching it from the backend
              */
             update: function () {
-                if (this.getRoot().model.get('meta')) {
-                    FetcherRegistry.getFetcher('completeness').clear(this.getRoot().model.get('meta').id);
+                if (this.getFormData().meta) {
+                    FetcherRegistry.getFetcher('completeness').clear(this.getFormData().meta.id);
                 }
 
                 this.render();

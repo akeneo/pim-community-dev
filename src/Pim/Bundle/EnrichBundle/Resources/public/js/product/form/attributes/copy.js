@@ -66,7 +66,7 @@ define(
              * @returns {Object}
              */
             getSourceData: function () {
-                return this.getData().values;
+                return this.getFormData().values;
             },
 
             /**

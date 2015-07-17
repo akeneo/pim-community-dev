@@ -63,8 +63,11 @@ define(
 
                 return this;
             },
-            getData: function () {
+            getFormData: function () {
                 return this.getRoot().model.toJSON();
+            },
+            getFormModel: function () {
+                return this.getRoot().model;
             },
             render: function () {
                 if (!this.configured) {

@@ -50,7 +50,7 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             save: function (options) {
-                var product = $.extend(true, {}, this.getData());
+                var product = $.extend(true, {}, this.getFormData());
                 var productId = product.meta.id;
 
                 delete product.variant_group;

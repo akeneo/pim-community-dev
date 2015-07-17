@@ -48,7 +48,7 @@ define(
                 this.loadTrees().done(_.bind(function (trees) {
                     this.$el.html(
                         this.template({
-                            product: this.getData(),
+                            product: this.getFormData(),
                             locale: UserContext.get('catalogLocale'),
                             state: this.state.toJSON(),
                             trees: trees
@@ -63,7 +63,7 @@ define(
             },
             loadTrees: function () {
                 return $.getJSON(
-                    Routing.generate('pim_enrich_product_category_rest_list', {id: this.getData().meta.id })
+                    Routing.generate('pim_enrich_product_category_rest_list', {id: this.getFormData().meta.id })
                 ).then(_.bind(function (data) {
                     _.each(data.categories, _.bind(function (category) {
                         this.cache[category.id] = category.code;
@@ -86,7 +86,7 @@ define(
                 this.state.set('selectedCategories', selectedIds);
                 var categoryCodes = _.map(selectedIds, _.bind(this.getCategoryCode, this));
 
-                this.getRoot().model.set('categories', categoryCodes);
+                this.getFormModel().set('categories', categoryCodes);
             },
             getCategoryCode: function (id) {
                 if (!this.cache[id]) {

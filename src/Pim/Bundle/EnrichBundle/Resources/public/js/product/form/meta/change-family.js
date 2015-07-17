@@ -40,7 +40,7 @@ define(
                         title: _.__('pim_enrich.form.product.change_family.modal.title'),
                         content: this.modalTemplate({
                             families: families,
-                            product:  this.getData(),
+                            product:  this.getFormData(),
                             locale:   UserContext.get('catalogLocale')
                         })
                     });
@@ -48,14 +48,13 @@ define(
                     familyModal.on('ok', _.bind(function () {
                         var selectedFamily = familyModal.$('select').select2('val') || null;
 
-                        this.getRoot().model.set('family', selectedFamily);
-                        ProductManager.generateMissing(this.getRoot().model.attributes).then(_.bind(function (product) {
+                        this.getFormModel().set('family', selectedFamily);
+                        ProductManager.generateMissing(this.getFormData()).then(_.bind(function (product) {
                             this.setData(product);
 
                             mediator.trigger('change-family:change:after');
                             familyModal.close();
                         }, this));
-
                     }, this));
 
                     familyModal.open();

@@ -43,7 +43,7 @@ define(
                     this.template({
                         locale: UserContext.get('catalogLocale'),
                         i18n: i18n,
-                        option: this.getData()
+                        option: this.getFormData()
                     })
                 );
 
