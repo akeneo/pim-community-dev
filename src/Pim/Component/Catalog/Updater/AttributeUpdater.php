@@ -7,6 +7,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -21,7 +22,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 class AttributeUpdater implements ObjectUpdaterInterface
 {
     /** @var AttributeGroupRepositoryInterface */
-    protected $attributeGroupRepository;
+    protected $attrGroupRepo;
 
     /** @var PropertyAccessor */
     protected $accessor;
@@ -32,20 +33,26 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var array */
     protected $referenceDataType;
 
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /**
-     * @param AttributeGroupRepositoryInterface $attributeGroupRepository
+     * @param AttributeGroupRepositoryInterface $attrGroupRepo
      * @param array                             $referenceDataType
+     * @param LocaleRepositoryInterface         $localeRepository
      * @param ConfigurationRegistryInterface    $registry
      */
     public function __construct(
-        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        AttributeGroupRepositoryInterface $attrGroupRepo,
         array $referenceDataType,
+        LocaleRepositoryInterface $localeRepository,
         ConfigurationRegistryInterface $registry = null
     ) {
-        $this->attributeGroupRepository = $attributeGroupRepository;
-        $this->accessor                 = PropertyAccess::createPropertyAccessor();
-        $this->registry                 = $registry;
-        $this->referenceDataType        = $referenceDataType;
+        $this->attrGroupRepo     = $attrGroupRepo;
+        $this->accessor          = PropertyAccess::createPropertyAccessor();
+        $this->registry          = $registry;
+        $this->referenceDataType = $referenceDataType;
+        $this->localeRepository  = $localeRepository;
     }
 
     /**
@@ -80,21 +87,26 @@ class AttributeUpdater implements ObjectUpdaterInterface
      */
     protected function setData(AttributeInterface $attribute, $field, $data)
     {
-        if ('labels' === $field) {
-            foreach ($data as $localeCode => $label) {
-                $attribute->setLocale($localeCode);
-                $translation = $attribute->getTranslation();
-                $translation->setLabel($label);
-            }
-        } elseif ('group' === $field) {
-            $attributeGroup = $this->findAttributeGroup($data);
-            if (null !== $attributeGroup) {
-                $attribute->setGroup($attributeGroup);
-            } else {
-                throw new \InvalidArgumentException(sprintf('AttributeGroup "%s" does not exist', $data));
-            }
-        } else {
-            $this->accessor->setValue($attribute, $field, $data);
+        switch ($field) {
+            case 'labels':
+                $this->setLabels($attribute, $data);
+                break;
+            case 'group':
+                $this->setGroup($attribute, $data);
+                break;
+            case 'available_locales':
+                $this->setAvailableLocales($attribute, $data);
+                break;
+            case 'date_min':
+                $this->validateDateFormat($data);
+                $attribute->setDateMin(new \DateTime($data));
+                break;
+            case 'date_max':
+                $this->validateDateFormat($data);
+                $attribute->setDateMax(new \DateTime($data));
+                break;
+            default:
+                $this->accessor->setValue($attribute, $field, $data);
         }
     }
 
@@ -105,7 +117,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
      */
     protected function findAttributeGroup($code)
     {
-        $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($code);
+        $attributeGroup = $this->attrGroupRepo->findOneByIdentifier($code);
 
         return $attributeGroup;
     }
@@ -128,6 +140,64 @@ class AttributeUpdater implements ObjectUpdaterInterface
                     )
                 );
             }
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param array              $data
+     */
+    protected function setLabels(AttributeInterface $attribute, array $data)
+    {
+        foreach ($data as $localeCode => $label) {
+            $attribute->setLocale($localeCode);
+            $translation = $attribute->getTranslation();
+            $translation->setLabel($label);
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param array              $data
+     */
+    protected function setAvailableLocales(AttributeInterface $attribute, array $data)
+    {
+        foreach ($data as $localeCode) {
+            if (!in_array($localeCode, $attribute->getLocaleSpecificCodes())) {
+                $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+                $attribute->addAvailableLocale($locale);
+            }
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $data
+     */
+    protected function setGroup(AttributeInterface $attribute, $data)
+    {
+        $attributeGroup = $this->findAttributeGroup($data);
+        if (null !== $attributeGroup) {
+            $attribute->setGroup($attributeGroup);
+        } else {
+            throw new \InvalidArgumentException(sprintf('AttributeGroup "%s" does not exist', $data));
+        }
+    }
+
+    /**
+     * @param string $data
+     */
+    protected function validateDateFormat($data)
+    {
+        $dateValues = explode('-', $data);
+
+        if (count($dateValues) !== 3
+            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
+            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
+        ) {
+            throw new \InvalidArgumentException(
+                sprintf('Attribute expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
+            );
         }
     }
 }
