@@ -114,12 +114,4 @@ class AssetFinder implements AssetFinderInterface
 
         return $variation;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function retrieveAssetProducts(AssetInterface $asset)
-    {
-        return $this->assetRepository->findProducts($asset);
-    }
 }

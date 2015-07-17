@@ -26,6 +26,25 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
  */
 class AssetRepository extends EntityRepository implements AssetRepositoryInterface
 {
+    /** @var string */
+    protected $productClass;
+
+    /**
+     * @return string
+     */
+    public function getProductClass()
+    {
+        return $this->productClass;
+    }
+
+    /**
+     * @param string $productClass
+     */
+    public function setProductClass($productClass)
+    {
+        $this->productClass = $productClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -185,7 +204,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
         $qb = $this->_em->createQueryBuilder();
 
         $qb->select('p')
-            ->from('Pim\Bundle\CatalogBundle\Model\Product', 'p')
+            ->from($this->getProductClass(), 'p')
             ->join('p.values', 'v')
             ->join('v.assets', 'a')
             ->where('a.id = :assetId')

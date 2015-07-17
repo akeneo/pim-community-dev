@@ -14,25 +14,26 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 {
     public function let(
         EntityManagerInterface $manager,
-        $productClass,
         $productValueClass,
         $attributeClass,
         AssetRepositoryInterface $assetRepository,
         $assetClass
     ) {
+        $productClass = 'Pim\Bundle\CatalogBundle\Model\ProductInterface';
+
         $this->beConstructedWith(
             $manager,
+            $assetRepository,
             $productClass,
             $productValueClass,
             $attributeClass,
-            $assetRepository,
             $assetClass
         );
     }
 
     public function it_is_an_enterpriseCompletenessGenerator()
     {
-        $this->shouldImplement('PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface');
+        $this->shouldImplement('PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface');
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator');
     }
 

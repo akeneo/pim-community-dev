@@ -11,13 +11,13 @@ services:
             - '@pim_catalog.repository.family'
             - '@pimee_workflow.repository.published_product'
 
-
     pim_catalog.doctrine.completeness_generator:
         class: %pim_catalog.doctrine.completeness_generator.class%
         arguments:
-            - @doctrine.odm.mongodb.document_manager
+            - '@doctrine.odm.mongodb.document_manager'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.family'
+            - '@pimee_product_asset.repository.asset'
+            - '@pim_catalog.repository.attribute'
+            - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.product.class%
-            - @pim_catalog.repository.channel
-            - @pim_catalog.repository.family
-            - @pimee_product_asset.repository.asset
-            - @doctrine.orm.entity_manager

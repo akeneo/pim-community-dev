@@ -16,7 +16,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
@@ -32,18 +32,18 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
     /** @var SavingOptionsResolverInterface */
     protected $optionsResolver;
 
-    /** @var EnterpriseCompletenessGeneratorInterface */
+    /** @var CompletenessGeneratorInterface */
     protected $completenessGenerator;
 
     /**
-     * @param ObjectManager                            $objectManager
-     * @param SavingOptionsResolverInterface           $optionsResolver
-     * @param EnterpriseCompletenessGeneratorInterface $completenessGenerator
+     * @param ObjectManager                  $objectManager
+     * @param SavingOptionsResolverInterface $optionsResolver
+     * @param CompletenessGeneratorInterface $completenessGenerator
      */
     public function __construct(
         ObjectManager $objectManager,
         SavingOptionsResolverInterface $optionsResolver,
-        EnterpriseCompletenessGeneratorInterface $completenessGenerator
+        CompletenessGeneratorInterface $completenessGenerator
     ) {
         $this->objectManager         = $objectManager;
         $this->optionsResolver       = $optionsResolver;
@@ -78,13 +78,13 @@ class AssetSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param AssetInterface[] $assets
-     * @param array $options
+     * @param array            $options
      */
     public function saveAll(array $assets, array $options = [])
     {
         $options = [
             'flush'    => false,
-            'schedule' => true,
+            'schedule' => false,
         ];
 
         foreach ($assets as $asset) {

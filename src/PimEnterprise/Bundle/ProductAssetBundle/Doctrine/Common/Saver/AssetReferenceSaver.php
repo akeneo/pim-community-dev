@@ -16,7 +16,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**
@@ -32,18 +32,18 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
     /** @var SavingOptionsResolverInterface */
     protected $optionsResolver;
 
-    /** @var EnterpriseCompletenessGeneratorInterface */
+    /** @var CompletenessGeneratorInterface */
     protected $completenessGenerator;
 
     /**
-     * @param ObjectManager                            $objectManager
-     * @param SavingOptionsResolverInterface           $optionsResolver
-     * @param EnterpriseCompletenessGeneratorInterface $completenessGenerator
+     * @param ObjectManager                  $objectManager
+     * @param SavingOptionsResolverInterface $optionsResolver
+     * @param CompletenessGeneratorInterface $completenessGenerator
      */
     public function __construct(
         ObjectManager $objectManager,
         SavingOptionsResolverInterface $optionsResolver,
-        EnterpriseCompletenessGeneratorInterface $completenessGenerator
+        CompletenessGeneratorInterface $completenessGenerator
     ) {
         $this->objectManager         = $objectManager;
         $this->optionsResolver       = $optionsResolver;
@@ -86,7 +86,7 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
     {
         $options = [
             'flush'    => false,
-            'schedule' => true,
+            'schedule' => false,
         ];
 
         foreach ($references as $reference) {

@@ -40,7 +40,11 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
         LocaleInterface $locale = null
     ) {
         if (!$productValue instanceof EnterpriseProductValueInterface) {
-            throw new \InvalidArgumentException('Product value must implement %s');
+            $message = sprintf('Product value must implement %s, %s provided',
+                'PimEnterprise\\Bundle\\CatalogBundle\\Model\\ProductValueInterface',
+                get_class($productValue)
+            );
+            throw new \InvalidArgumentException($message);
         }
         $assets = $productValue->getAssets();
 
@@ -49,7 +53,7 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
         }
 
         foreach ($assets as $asset) {
-            if (true === $this->checkByAsset($asset, $channel, $locale)) {
+            if (true === $this->checkAssetByLocaleAndChannel($asset, $channel, $locale)) {
                 return true;
             }
         }
@@ -66,8 +70,11 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
      *
      * @return bool
      */
-    protected function checkByAsset(AssetInterface $asset, ChannelInterface $channel, LocaleInterface $locale = null)
-    {
+    protected function checkAssetByLocaleAndChannel(
+        AssetInterface $asset,
+        ChannelInterface $channel,
+        LocaleInterface $locale = null
+    ) {
         $variations = $asset->getVariations();
 
         foreach ($variations as $variation) {

@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator as CommunityCompletenessGenerator;
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator as BaseCompletenessGenerator;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
@@ -22,7 +22,7 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class CompletenessGenerator extends CommunityCompletenessGenerator implements EnterpriseCompletenessGeneratorInterface
+class CompletenessGenerator extends BaseCompletenessGenerator implements CompletenessGeneratorInterface
 {
     /** @staticvar string */
     const COMPLETE_ASSETS_TABLE = 'complete_asset';
@@ -35,24 +35,36 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
 
     /**
      * @param EntityManagerInterface   $manager
+     * @param AssetRepositoryInterface $assetRepository
      * @param string                   $productClass
      * @param string                   $productValueClass
      * @param string                   $attributeClass
-     * @param AssetRepositoryInterface $assetRepository
      * @param string                   $assetClass
      */
     public function __construct(
         EntityManagerInterface $manager,
+        AssetRepositoryInterface $assetRepository,
         $productClass,
         $productValueClass,
         $attributeClass,
-        AssetRepositoryInterface $assetRepository,
         $assetClass
     ) {
         parent::__construct($manager, $productClass, $productValueClass, $attributeClass);
 
         $this->assetRepository = $assetRepository;
         $this->assetClass      = $assetClass;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scheduleForAsset(AssetInterface $asset)
+    {
+        $products = $this->assetRepository->findProducts($asset);
+
+        foreach ($products as $product) {
+            $this->schedule($product);
+        }
     }
 
     /**
@@ -65,35 +77,9 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function getForeignKeysFromMappings($mappings)
-    {
-        $index = 0;
-
-        $productForeignKeys = array_reduce(
-            $mappings,
-            function ($fields, $mapping) use (&$index) {
-                $index++;
-                if ($mapping['targetEntity'] == $this->assetClass) {
-                    return $fields;
-                }
-
-                return array_merge(
-                    $fields,
-                    $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
-                );
-            },
-            []
-        );
-
-        return $productForeignKeys;
-    }
-
-    /**
      * Create temporary table for complete assets collection attributes
      * An assets collection is complete on a locale/channel
-     * if there is at least one varaition file for the locale/channel tuple
+     * if there is at least one variation file for the locale/channel tuple
      *
      * @param string[] $criteria
      *
@@ -145,6 +131,50 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
     /**
      * {@inheritdoc}
      */
+    protected function applyCriteria($sql, $criteria)
+    {
+        $sql = parent::applyCriteria($sql, $criteria);
+
+        $productValueCondition = '';
+
+        if (array_key_exists('productId', $criteria)) {
+            $productValueCondition = 'AND pv.entity_id = :productId';
+        }
+
+        $sql = str_replace('%product_value_conditions%', $productValueCondition, $sql);
+
+        return $sql;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getForeignKeysFromMappings($mappings)
+    {
+        $index = 0;
+
+        $productForeignKeys = array_reduce(
+            $mappings,
+            function ($fields, $mapping) use (&$index) {
+                $index++;
+                if ($mapping['targetEntity'] == $this->assetClass) {
+                    return $fields;
+                }
+
+                return array_merge(
+                    $fields,
+                    $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
+                );
+            },
+            []
+        );
+
+        return $productForeignKeys;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getSkippedMappings()
     {
         $skippedByParent = parent::getSkippedMappings();
@@ -177,35 +207,5 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements En
         $extraConditions  = array_merge(parent::getExtraConditions(), [$assetsConditions]);
 
         return $extraConditions;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function scheduleForAsset(AssetInterface $asset)
-    {
-        $products = $this->assetRepository->findProducts($asset);
-
-        foreach ($products as $product) {
-            $this->schedule($product);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function applyCriteria($sql, $criteria)
-    {
-        $sql = parent::applyCriteria($sql, $criteria);
-
-        $productValueCondition = '';
-
-        if (array_key_exists('productId', $criteria)) {
-            $productValueCondition = 'AND pv.entity_id = :productId';
-        }
-
-        $sql = str_replace('%product_value_conditions%', $productValueCondition, $sql);
-
-        return $sql;
     }
 }
