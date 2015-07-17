@@ -94,7 +94,7 @@ define(
                             mediator.trigger('product:action:post_update', data);
                         }
                     }, this))
-                    .fail(function (response) {
+                    .fail(_.bind(function (response) {
                         switch (response.status) {
                             case 400:
                                 mediator.trigger(
@@ -114,7 +114,7 @@ define(
                             'error',
                             this.updateFailureMessage
                         );
-                    }).always(function () {
+                    }, this)).always(function () {
                         loadingMask.hide().$el.remove();
                     });
             }
