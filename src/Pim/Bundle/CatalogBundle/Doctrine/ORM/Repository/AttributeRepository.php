@@ -446,6 +446,12 @@ class AttributeRepository extends EntityRepository implements
             ->where($qb->expr()->eq('a.attributeType', ':type'))
             ->setParameter(':type', $type);
 
-        return $qb->getQuery()->getArrayResult();
+        $result = $qb->getQuery()->getScalarResult();
+
+        if (null === $result) {
+            return [];
+        } else {
+            return array_map('current', $qb->getQuery()->getScalarResult());
+        }
     }
 }
