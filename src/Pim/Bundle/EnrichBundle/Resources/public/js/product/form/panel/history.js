@@ -51,7 +51,7 @@ define(
                     return this;
                 }
 
-                if (this.getRoot().model.get('meta')) {
+                if (this.getFormData().meta) {
 
                     this.$el.html(
                         this.template({
@@ -83,12 +83,12 @@ define(
                     return;
                 }
                 this.loading = true;
-                if (this.getRoot().model.get('meta')) {
+                if (this.getFormData().meta) {
                     $.getJSON(
                         Routing.generate(
                             'pim_enrich_product_history_rest_get',
                             {
-                                entityId: this.getData().meta.id
+                                entityId: this.getFormData().meta.id
                             }
                         )
                     ).done(_.bind(function (versions) {

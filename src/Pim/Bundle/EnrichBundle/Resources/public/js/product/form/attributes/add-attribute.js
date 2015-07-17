@@ -115,7 +115,7 @@ define(
                 this.trigger('add-attribute:add', {codes: attributeCodes});
             },
             getAvailableAttributes: function () {
-                return AttributeManager.getAvailableOptionalAttributes(this.getData());
+                return AttributeManager.getAvailableOptionalAttributes(this.getFormData());
             },
             loadAttributeGroups: function () {
                 return FetcherRegistry.getFetcher('attributeGroup').fetchAll().done(_.bind(function (attributeGroups) {

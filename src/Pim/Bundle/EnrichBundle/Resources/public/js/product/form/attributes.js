@@ -86,7 +86,7 @@ define(
                 this.getConfig().done(_.bind(function () {
                     this.$el.html(this.template({}));
                     this.resize();
-                    var product = this.getData();
+                    var product = this.getFormData();
                     $.when(
                         FetcherRegistry.getFetcher('family').fetchAll(),
                         ProductManager.getValues(product)
@@ -147,7 +147,7 @@ define(
             },
             getConfig: function () {
                 var promises = [];
-                var product = this.getData();
+                var product = this.getFormData();
 
                 promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
 
@@ -164,7 +164,7 @@ define(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('currency').fetchAll()
                 ).then(_.bind(function (attributes, locales, channels, currencies) {
-                    var product = this.getData();
+                    var product = this.getFormData();
 
                     _.each(attributeCodes, function (attributeCode) {
                         var attribute = _.findWhere(attributes, {code: attributeCode});
@@ -184,7 +184,6 @@ define(
                     );
 
                     this.setData(product);
-
                     mediator.trigger('attributes:add-attribute:after');
                 }, this));
             },
@@ -193,7 +192,7 @@ define(
                     return;
                 }
                 var attributeCode = event.currentTarget.dataset.attribute;
-                var product = this.getData();
+                var product = this.getFormData();
                 var fields = FieldManager.getFields();
 
                 Dialog.confirm(
@@ -206,7 +205,7 @@ define(
                                 url: Routing.generate(
                                     'pim_enrich_product_remove_attribute_rest',
                                     {
-                                        productId: this.getData().meta.id,
+                                        productId: this.getFormData().meta.id,
                                         attributeId: attribute.id
                                     }
                                 ),
@@ -219,7 +218,7 @@ define(
 
                                 this.setData(product);
 
-                                this.getRoot().model.trigger('change');
+                                this.getFormModel().trigger('change');
                             }, this)).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',
@@ -247,7 +246,7 @@ define(
                 this.render();
             },
             showAttribute: function (event) {
-                AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
+                AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
                     .done(_.bind(function (attributeGroups) {
                         mediator.trigger('form-tabs:change:tab', this.code);
 

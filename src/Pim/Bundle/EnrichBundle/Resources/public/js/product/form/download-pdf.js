@@ -31,7 +31,7 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                if (!this.getRoot().model.get('meta')) {
+                if (!this.getFormData().meta) {
                     return;
                 }
 
@@ -40,7 +40,7 @@ define(
                         path: Routing.generate(
                             'pim_pdf_generator_download_product_pdf',
                             {
-                                id:         this.getRoot().model.get('meta').id,
+                                id:         this.getFormData().meta.id,
                                 dataLocale: UserContext.get('catalogLocale'),
                                 dataScope:  UserContext.get('catalogScope')
                             }
