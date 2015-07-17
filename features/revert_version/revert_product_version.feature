@@ -53,6 +53,7 @@ Feature: Revert a product to a previous version
     And I wait for the "change-family" mass-edit job to finish
     Then the family of product "jean" should be "jackets"
     And I am on the "jean" product page
+    And the history of the product "jean" has been built
     And I open the history
     When I revert the product version number 1
     Then the family of product "jean" should be "pants"
@@ -200,6 +201,7 @@ Feature: Revert a product to a previous version
     Given I am on the "jeans" product page
     When I change the "SKU" to "pantalon"
     And I save the product
+    And the history of the product "pantalon" has been built
     And I open the history
     When I revert the product version number 1
     Then the product "jeans" should have the following values:
