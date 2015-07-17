@@ -57,8 +57,8 @@ define(
                             }
                         ).done(
                             _.bind(function () {
-                                ProductManager.clear(this.getData().meta.id);
-                                ProductManager.get(this.getData().meta.id).done(_.bind(function (product) {
+                                ProductManager.clear(this.getFormData().meta.id);
+                                ProductManager.get(this.getFormData().meta.id).done(_.bind(function (product) {
                                     this.getRoot().setData(product);
 
                                     navigation.addFlashMessage(
