@@ -1016,7 +1016,10 @@ class FixturesContext extends RawMinkContext
             foreach ($table->getHash() as $price) {
                 $productPrice = $productValue->getPrice($price['currency']);
                 if ('' === trim($price['amount'])) {
-                    assertNull($productPrice);
+                    assertThat(null, logicalOr(
+                        $productPrice,
+                        $productPrice->getData()
+                    ));
                 } else {
                     assertEquals($price['amount'], $productPrice->getData());
                 }
