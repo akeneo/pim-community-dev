@@ -69,7 +69,7 @@ define(
                                     loadingMask.hide().$el.remove();
 
                                     this.setData(product);
-                                    mediator.trigger('product:action:post_revert', product);
+                                    mediator.trigger('pim_enrich:form:entity:post_revert', product);
                                 }, this));
                             }, this)
                         ).fail(

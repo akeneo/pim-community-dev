@@ -43,6 +43,7 @@ Feature: Send a product draft for approval
     Given I change the "Name" to "Baggy"
     And I save the product
     And I change the "Name" to "Extra large baggy"
+    Then I should see the text "There are unsaved changes."
     When I press the "Send for approval" button
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to send this draft?                                                                    |

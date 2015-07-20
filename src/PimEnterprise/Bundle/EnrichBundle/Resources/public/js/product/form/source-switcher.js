@@ -36,10 +36,7 @@ define(
                 };
 
                 this.trigger('source_switcher:render:before', context);
-                this.$el.html(
-                    this.template(context)
-                );
-
+                this.$el.html(this.template(context));
                 this.delegateEvents();
 
                 return this;

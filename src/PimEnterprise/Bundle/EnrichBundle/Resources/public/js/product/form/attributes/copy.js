@@ -26,7 +26,7 @@ define(
              */
             configure: function () {
                 this.currentSource = _.first(this.sources);
-                this.listenTo(mediator, 'draft:action:show_working_copy', this.showWorkingCopy);
+                this.listenTo(mediator, 'pim_enrich:form:draft:show_working_copy', this.showWorkingCopy);
 
                 this.onExtensions('source_switcher:render:before', this.onSourceSwitcherRender);
                 this.onExtensions('source_switcher:source_change', this.onSourceChange);

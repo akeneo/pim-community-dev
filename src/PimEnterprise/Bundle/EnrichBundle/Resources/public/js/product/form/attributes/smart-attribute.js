@@ -14,12 +14,7 @@ define(
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {
-                mediator.off(null, null, 'context:product:form:attribute:smart-attribute');
-                mediator.on(
-                    'field:extension:add',
-                    _.bind(this.addExtension, this),
-                    'context:product:form:attribute:smart-attribute'
-                );
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments),

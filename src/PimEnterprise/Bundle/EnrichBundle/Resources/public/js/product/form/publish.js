@@ -37,7 +37,7 @@ define(
                 'click .unpublish-product': 'unpublish'
             },
             configure: function () {
-                mediator.on('product:action:post_update', _.bind(this.render, this));
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
 
                 return $.when(
                     PermissionManager.getPermissions().then(_.bind(function (permissions) {
@@ -92,7 +92,6 @@ define(
                 // TODO: We shouldn't force product fetching, we should use request response (cf. send for approval)
                 method(productId)
                     .done(_.bind(function () {
-                        ProductManager.clear(this.getFormData().meta.id);
                         ProductManager.get(this.getFormData().meta.id).done(_.bind(function (product) {
                             navigation.addFlashMessage(
                                 'success',
@@ -105,7 +104,7 @@ define(
                             loadingMask.hide().$el.remove();
 
                             this.setData(product);
-                            mediator.trigger('product:action:post_publish', product);
+                            mediator.trigger('pim_enrich:form:entity:post_publish', product);
                         }, this));
                     }, this))
                     .fail(function () {
