@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class AssetEventMongoDBSubscriber implements EventSubscriberInterface
+class AssetEventSubscriber implements EventSubscriberInterface
 {
     /** @var ProductCascadeRemovalRepositoryInterface  */
     protected $cascadeRemovalRepository;

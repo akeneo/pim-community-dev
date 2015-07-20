@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.event_subscriber.catalog.remove_channel.class: PimEnterprise\Bundle\ProductAssetBundle\Subscriber\RemoveChannelSubscriber
+    pimee_product_asset.event_subscriber.catalog.remove_channel.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriberSubscriber\ORM\RemoveChannelSubscriber
 
 services:
     pimee_product_asset.event_subscriber.catalog.remove_channel:

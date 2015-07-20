@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.event_subscriber.mongodb.asset_mongo.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM\AssetEventMongoDBSubscriber
+    pimee_product_asset.event_subscriber.mongodb.asset_mongo.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\MongoDBODM\AssetEventSubscriber
     pimee_product_asset.repository.product_cascade_removal.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\MongoDBODM\Repository\ProductCascadeRemovalRepository
 
 services:
