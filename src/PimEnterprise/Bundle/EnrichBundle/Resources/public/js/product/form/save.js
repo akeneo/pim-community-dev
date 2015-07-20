@@ -23,7 +23,7 @@ define(
                 );
             },
             render: function () {
-                var categories = this.getData().categories;
+                var categories = this.getFormData().categories;
                 var isOwner = !categories.length ||
                     !!_.intersection(this.permissions.categories.OWN_PRODUCTS, categories).length;
 

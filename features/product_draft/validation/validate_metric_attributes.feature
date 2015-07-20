@@ -21,74 +21,56 @@ Feature: Validate metric attributes of a product
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
-  @skip-pef
   Scenario: Validate the negative allowed constraint of metric attribute
     Given I change the Area to "-10"
     And I save the product
-    Then I should see validation tooltip "This value should be 0 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 0 or more."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the negative allowed constraint of scopable metric attribute
-    Given I change the "mobile Length" to "-10"
+    Given I change the Length for scope mobile to "-10"
     And I save the product
-    Then I should see validation tooltip "This value should be 0 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 0 or more."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the decimals allowed constraint of metric attribute
     Given I change the Area to "2.7"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should not be a decimal."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the decimals allowed constraint of scopable metric attribute
-    Given I change the "mobile Length" to "4.9"
+    Given I change the Length for scope mobile to "4.9"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should not be a decimal."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the number min constraint of metric attribute
     Given I change the Power to "-250"
     And I save the product
-    Then I should see validation tooltip "This value should be -200 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be -200 or more."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the number min constraint of scopable metric attribute
-    Given I change the "mobile Speed" to "-5.5"
+    Given I change the Speed for scope mobile to "-5.5"
     And I save the product
-    Then I should see validation tooltip "This value should be 5 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 5 or more."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the number max constraint of metric attribute
     Given I change the Power to "10"
     And I save the product
-    Then I should see validation tooltip "This value should be -100 or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be -100 or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the number max constraint of scopable metric attribute
-    Given I change the "mobile Speed" to "111.1"
+    Given I change the Speed for scope mobile to "111.1"
     And I save the product
-    Then I should see validation tooltip "This value should be 100 or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 100 or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the type constraint of metric attribute
     Given I change the Power to "bar"
     And I save the product
-    Then I should see validation tooltip "This value should be a valid number."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be a valid number."
+    And there should be 1 error in the "Product information" tab

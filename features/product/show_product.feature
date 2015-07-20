@@ -1,3 +1,4 @@
+@javascript
 Feature: Show a product
   In order to consult the catalog
   As a product manager
@@ -20,7 +21,6 @@ Feature: Show a product
       | rangers | shoes      | Classic rangers | 120 EUR, 125 USD | L    | black      |
       | boots   | boots      | Party boots     | 80 EUR, 90 USD   | M    | blue       |
 
-  @javascript
   Scenario: Seeing the view actions on the product grid
     Given I am on the products page
     And I select the "Shoes" tree
@@ -29,7 +29,7 @@ Feature: Show a product
     And I should not be able to view the "Classify the product" action of the row which contains "rangers"
     And I should not be able to view the "Delete the product" action of the row which contains "rangers"
 
-  @skip-pef @javascript
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4591
   Scenario: Being able to view a product I can not edit
     Given I am on the products page
     And I should be able to access the show "boots" product page

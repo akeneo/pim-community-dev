@@ -57,6 +57,7 @@ datagrid:
                 label: pimee_workflow.product_draft.action.refuse
                 icon: remove
                 link: refuse_link
+        action_configuration: '@pimee_datagrid.datagrid.proposal.grid_helper->getActionConfigurationClosure'
         mass_actions:
             mass_approve:
                 type: redirect

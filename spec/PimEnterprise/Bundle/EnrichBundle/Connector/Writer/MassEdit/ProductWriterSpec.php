@@ -122,7 +122,7 @@ class ProductWriterSpec extends ObjectBehavior
 
         $securityContext->isGranted(Attributes::OWN, Argument::any())->willReturn(false);
 
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalledTimes(2);
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('proposal')->shouldBeCalledTimes(2);
 
         $this->setStepExecution($stepExecution);

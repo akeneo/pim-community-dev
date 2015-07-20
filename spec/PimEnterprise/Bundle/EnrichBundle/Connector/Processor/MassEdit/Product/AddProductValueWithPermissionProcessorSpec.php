@@ -63,8 +63,6 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
 
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
-
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 
         $userManager->findUserByUsername('julia')->willReturn($userJulia);
@@ -93,8 +91,6 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
-
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldNotBeCalled();
         $stepExecution->addWarning(
             'add_product_value_with_permission_processor',
             'pim_enrich.mass_edit_action.edit_common_attributes.message.error',

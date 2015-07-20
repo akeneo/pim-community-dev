@@ -21,75 +21,57 @@ Feature: Validate price attributes of a product
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
-  @skip-pef
   Scenario: Validate the negative allowed constraint of price attribute
-    Given I change the "$ Cost" to "-10"
+    Given I change the Cost to "-10 USD"
     And I save the product
-    Then I should see validation tooltip "This value should be 0 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 0 or more."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the negative allowed constraint of scopable price attribute
-    Given I change the "$ Price" to "-10"
+    Given I change the Price to "-10 USD"
     And I save the product
-    Then I should see validation tooltip "This value should be 0 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 0 or more."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the decimals allowed constraint of price attribute
-    Given I change the "$ Cost" to "2.7"
+    Given I change the Cost to "2.7 USD"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should not be a decimal."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the decimals allowed constraint of scopable price attribute
-    Given I change the "$ Price" to "4.9"
+    Given I change the Price to "4.9 USD"
     And I save the product
-    Then I should see validation tooltip "This value should not be a decimal."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should not be a decimal."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the number min constraint of price attribute
-    Given I change the "$ Tax" to "5.5"
+    Given I change the Tax to "5.5 USD"
     And I save the product
-    Then I should see validation tooltip "This value should be 10 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 10 or more."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the number min constraint of scopable price attribute
-    Given I change the "$ Customs" to "9.9"
+    Given I change the Customs to "9.9 USD"
     And I save the product
-    Then I should see validation tooltip "This value should be 10 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 10 or more."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the number max constraint of price attribute
-    Given I change the "$ Tax" to "110"
+    Given I change the Tax to "110 USD"
     And I save the product
-    Then I should see validation tooltip "This value should be 100 or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 100 or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the number max constraint of scopable price attribute
-    Given I change the "$ Customs" to "222.2"
+    Given I change the Customs to "222.2 USD"
     And I save the product
-    Then I should see validation tooltip "This value should be 100 or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be 100 or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the type constraint of price attribute
-    Given I change the "$ Tax" to "bar"
-    And I change the "€ Tax" to "qux"
+    Given I change the Tax to "bar USD"
+    And I change the Tax to "qux EUR"
     And I save the product
-    Then I should see validation tooltip "This value should be a valid number.; This value should be a valid number."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value should be a valid number."
+    And there should be 1 error in the "Product information" tab

@@ -50,6 +50,10 @@ pimee_enrich:
                     content: Are you sure you want to unpublish this product?
             info:
                 update_successful: Product working copy has been updated
+            copy:
+                source:
+                    working_copy: Working copy
+                    draft: Draft
         product_draft:
             info:
                 update_successful: Product draft has been successfully saved

@@ -35,8 +35,7 @@ class GridHelper
     }
 
     /**
-     * Returns callback that will disable approve and refuse buttons
-     * given product draft status
+     * Returns callback that will disable approve and refuse buttons given product draft status and permissions
      *
      * @return callable
      */

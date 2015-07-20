@@ -87,9 +87,9 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
-        $productDraftBuilder->build($product, 'csv_product_draft_import')->willReturn($productDraft);
+        $productDraftBuilder->build($product, 'csv_product_proposal_import')->willReturn($productDraft);
 
-        $jobInstance->getCode()->willReturn('csv_product_draft_import');
+        $jobInstance->getCode()->willReturn('csv_product_proposal_import');
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
@@ -172,12 +172,12 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
-        $productDraftBuilder->build($product, 'csv_product_draft_import')->willReturn(null);
+        $productDraftBuilder->build($product, 'csv_product_proposal_import')->willReturn(null);
 
-        $jobInstance->getCode()->willReturn('csv_product_draft_import');
+        $jobInstance->getCode()->willReturn('csv_product_proposal_import');
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
 
         $this
             ->shouldThrow(new InvalidItemException('No diff between current product and this proposal', $values['original_values']))
@@ -215,7 +215,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $validator->validate($product)
             ->willReturn($violations);
 
-        $jobInstance->getCode()->willReturn('csv_product_draft_import');
+        $jobInstance->getCode()->willReturn('csv_product_proposal_import');
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();

@@ -11,7 +11,7 @@ pimee_workflow:
             working_copy: Working copy
             in_progress: In progress
             ready: Waiting for approval
-            can_not_be_approved: Can't be approved or refused
+            can_not_be_approved: Can't be reviewed
             can_not_be_deleted: Can't be deleted
         status_message:
             can_not_be_approved: You can't approve or refuse this approval as it applies changes on values you can't edit. Please contact your administrator to change your rights.
@@ -40,9 +40,17 @@ pimee_workflow:
             edit: Edit
             view: View
     jobs:
-        csv_product_draft_import:
-            title: Product draft import in CSV
-            import.title: Product draft import
+        csv_product_proposal_import:
+            title: Product proposal import in CSV
+            import.title: Product proposal import
+        approve_product_draft:
+            title: Approve proposal
+            perform.title: Approve proposal
+        refuse_product_draft:
+            title: Refuse proposals
+            perform.title: Refuse proposals
+    steps:
+        product_draft_processor.title: Proposal processor
 btn.publish: Publish
 btn.unpublish: Unpublish
 
@@ -90,3 +98,10 @@ approve_product_draft.steps.refuse.title: Refuse proposal
 job_execution.summary:
     approved: approved
     refused: refused
+    mass_published: Product published
+    mass_unpublished: Product unpublished
+    proposal: Proposal created
+    proposal_deleted: deleted proposal
+    proposal_updated: updated proposal
+    proposal_created: created proposal
+    proposal_skipped: skipped proposal (no differences)

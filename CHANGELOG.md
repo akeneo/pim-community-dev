@@ -51,6 +51,17 @@
 - In `PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface`, rename methods `setEditProducts` to `setEditItems`, `isEditProducts` to `isEditItems`, `setViewProducts` to `setViewItems`, `isViewProducts` to `isViewItems`, `setOwnProducts` to `setOwnItems` and `isOwnProducts` to `isOwnItems`
 - `PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface` now handles `Pim\Component\Classification\Model\CategoryInterface` instead of `Pim\Bundle\CatalogBundle\Model\CategoryInterface`
 - Rename class `pimee_security.entity.category_access.class` to `pimee_security.entity.product_category_access.class`
+- Add argument `Symfony\Component\Security\Core\SecurityContextInterface` in constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper`
+
+# 1.3.x
+
+# 1.3.18 (2015-07-09)
+
+# 1.3.17 (2015-07-07)
+
+## Bug fixes
+- PIM-4494: Fix loading page when family has been sorted
+- Fixed missing parameter in mapping
 
 # 1.3.16 (2015-06-08)
 
@@ -195,6 +206,11 @@
 - PIM-3548: Do not rely on the absolute file path of a media
 
 # 1.0.x
+
+# 1.0.29 (2015-07-06)
+- Update community-edition dependency to 1.2.36 version.
+
+# 1.0.28 (2015-05-29)
 
 ## Bug fixes
 - PIM-4227: Disable product versionning on category update (never used and very slow)

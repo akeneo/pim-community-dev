@@ -30,34 +30,26 @@ Feature: Validate date attributes of a draft
 #    And I should see validation tooltip "There are errors in this tab!"
 #    And the "Attributes" tab should be red
 
-  @skip-pef
   Scenario: Validate the date min constraint of date attribute
     Given I change the Release to "2011-01-01"
     And I save the product
-    Then I should see validation tooltip "This date should be 2013-01-01 or after."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This date should be 2013-01-01 or after."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the date min constraint of scopable date attribute
-    Given I change the "tablet Available" to "2012-01-01"
+    Given I change the Available for scope tablet to "2012-01-01"
     And I save the product
     Then I should see validation tooltip "This date should be 2013-01-01 or after."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the date max constraint of date attribute
     Given I change the Release to "2016-01-01"
     And I save the product
     Then I should see validation tooltip "This date should be 2015-12-12 or before."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the date max constraint of scopable date attribute
-    Given I change the "tablet Available" to "2017-03-03"
+    Given I change the Available for scope tablet to "2017-03-03"
     And I save the product
     Then I should see validation tooltip "This date should be 2015-12-12 or before."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Product information" tab
