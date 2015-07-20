@@ -162,8 +162,9 @@ class AttributeUpdater implements ObjectUpdaterInterface
      */
     protected function setAvailableLocales(AttributeInterface $attribute, array $data)
     {
+        $localeSpecificCodes = $attribute->getLocaleSpecificCodes();
         foreach ($data as $localeCode) {
-            if (!in_array($localeCode, $attribute->getLocaleSpecificCodes())) {
+            if (!in_array($localeCode, $localeSpecificCodes)) {
                 $locale = $this->localeRepository->findOneByIdentifier($localeCode);
                 $attribute->addAvailableLocale($locale);
             }
@@ -173,6 +174,8 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /**
      * @param AttributeInterface $attribute
      * @param string             $data
+     *
+     * @throws \InvalidArgumentException
      */
     protected function setGroup(AttributeInterface $attribute, $data)
     {
@@ -186,17 +189,20 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
     /**
      * @param string $data
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validateDateFormat($data)
     {
-        $dateValues = explode('-', $data);
-
-        if (count($dateValues) !== 3
-            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
-            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
-        ) {
+        if (!preg_match('/(\d{4})-(\d{2})-(\d{2})/', $data, $dateValues)) {
             throw new \InvalidArgumentException(
                 sprintf('Attribute expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
+            );
+        }
+
+        if (!checkdate($dateValues[2], $dateValues[3], $dateValues[1])) {
+            throw new \InvalidArgumentException(
+                sprintf('Invalid date, "%s" given', $data)
             );
         }
     }

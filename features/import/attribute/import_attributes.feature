@@ -180,6 +180,24 @@ Feature: Import attributes
     Then I should see "skipped 1"
     Then I should see "Attribute expects a string with the format \"yyyy-mm-dd\" as data, \"2000/12/12\" given"
 
+  Scenario: Fail to import attribute with invalid date
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+      """
+      type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;available_locales;sort_order;max_characters;validation_rule;validation_regexp;wysiwyg_enabled;number_min;number_max;decimals_allowed;negative_allowed;date_min;date_max;metric_family;default_metric_unit;max_file_size;allowed_extensions
+      pim_catalog_simpleselect;manufacturer;Meine große Code;My awesome code;Mon super code;marketing;0;1;;family;;;0;0;en_US,fr_FR;3;300;validation_rule;;1;3;5;true;true;2000-99-12;2015/08/08;;EUR;452;jpg
+
+      """
+    And the following job "footwear_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_attribute_import" job to finish
+    Then I should see "read lines 1"
+    Then I should see "skipped 1"
+    Then I should see "Invalid date, \"2000-99-12\" given"
+
   Scenario: Fail to import attribute with invalid data
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
