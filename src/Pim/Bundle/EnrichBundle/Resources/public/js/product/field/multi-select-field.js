@@ -22,7 +22,7 @@ define(
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             events: {
-                'change .field-input input.select-field': 'updateModel',
+                'change .field-input:first input.select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
             },
             getTemplateContext: function () {
@@ -89,7 +89,7 @@ define(
                 ).promise();
             },
             updateModel: function () {
-                var data = this.$('.field-input input.select-field').get(0).value.split(',');
+                var data = this.$('.field-input:first input.select-field').val().split(',');
                 if (1 === data.length && '' === data[0]) {
                     data = [];
                 }

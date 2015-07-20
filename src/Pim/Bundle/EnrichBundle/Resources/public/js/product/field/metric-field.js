@@ -18,7 +18,7 @@ define([
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
-            'change .field-input .data, .field-input .unit': 'updateModel'
+            'change .field-input:first .data, .field-input:first .unit': 'updateModel'
         },
         renderInput: function (context) {
             var $element = $(this.fieldTemplate(context));
@@ -40,17 +40,14 @@ define([
             this.$('.data:first').focus();
         },
         updateModel: function () {
-            var data = this.$('.field-input .data').val();
+            var data = this.$('.field-input:first .data').val();
+            var numericValue = -1 !== data.indexOf('.') ? parseFloat(data) : parseInt(data);
 
-            if ('' !== data) {
-                var numericValue = -1 !== data.indexOf('.') ? parseFloat(data) : parseInt(data);
-
-                if (!isNaN(numericValue)) {
-                    data = numericValue;
-                }
+            if (!_.isNaN(numericValue)) {
+                data = numericValue;
             }
 
-            var unit = this.$('.field-input .unit option:selected').val();
+            var unit = this.$('.field-input:first .unit').val();
 
             this.setCurrentValue({
                 unit: '' !== unit ? unit : this.attribute.default_metric_unit,

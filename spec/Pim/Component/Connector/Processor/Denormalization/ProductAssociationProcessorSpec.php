@@ -367,7 +367,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->update($product, $filteredData)
             ->shouldNotBeCalled();
 
-        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('product_skipped_no_diff')->shouldBeCalled();
         $this->setStepExecution($stepExecution);
 
         $this->process($originalData)

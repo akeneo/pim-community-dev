@@ -74,6 +74,9 @@ define(
             addVisibleField: function (attributeCode) {
                 visibleFields[attributeCode] = fields[attributeCode];
             },
+            getVisibleFields: function () {
+                return visibleFields;
+            },
             getVisibleField: function (attributeCode) {
                 return visibleFields[attributeCode];
             },

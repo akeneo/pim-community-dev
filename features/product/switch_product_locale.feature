@@ -15,9 +15,9 @@ Feature: Switch product locale
   Scenario: Successfully display and edit a product in the default locale
     Then the locale switcher should contain the following items:
       | language | flag    | locale |
-      | English  | flag-us | en_US  |
-      | English  | flag-gb | en_GB  |
       | German   | flag-de | de_DE  |
+      | English  | flag-gb | en_GB  |
+      | English  | flag-us | en_US  |
       | French   | flag-fr | fr_FR  |
     And the product Name should be "My jacket"
     When I change the Name to "My cool jacket"

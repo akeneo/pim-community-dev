@@ -24,6 +24,7 @@ define(
             if (!attributeGroup) {
                 return matchingValues;
             }
+
             _.each(attributeGroup.attributes, function (attributeCode) {
                 if (values[attributeCode]) {
                     matchingValues[attributeCode] = values[attributeCode];

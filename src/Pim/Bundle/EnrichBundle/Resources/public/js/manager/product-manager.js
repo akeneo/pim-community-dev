@@ -26,7 +26,11 @@ define([
                         }, this))
                         .then(function (product) {
                             var promises = [];
-                            mediator.trigger('product:action:post_fetch', {promises: promises, product: product});
+                            mediator.trigger('product:action:post_fetch', {
+                                promises: promises,
+                                product: product,
+                                originalProduct: $.extend(true, {}, product)
+                            });
 
                             return $.when.apply($, promises).then(function () {
                                 return product;

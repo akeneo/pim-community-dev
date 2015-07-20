@@ -174,4 +174,4 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "skipped 1"
+    And I should see "skipped product (no differences) 1"

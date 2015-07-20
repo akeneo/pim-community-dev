@@ -153,7 +153,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
         if (null === $group->getId()) {
             $this->stepExecution->incrementSummaryInfo('create');
         } else {
-            $this->stepExecution->incrementSummaryInfo('update');
+            $this->stepExecution->incrementSummaryInfo('process');
         }
     }
 

@@ -45,9 +45,6 @@ define(
                 data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);
-            },
-            setFocus: function () {
-                this.$('.field-input:first textarea:first').summernote('focus');
             }
         });
     }

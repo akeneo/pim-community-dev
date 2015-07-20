@@ -12,19 +12,21 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/product/form-tabs'
+        'text!pim/template/product/form-tabs',
+        'oro/mediator'
     ],
-    function (_, Backbone, BaseForm, template) {
+    function (_, Backbone, BaseForm, template, mediator) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'tabbable tabs-top',
             events: {
-                'click header ul.nav-tabs li': 'changeTab'
+                'click header ul.nav-tabs li': 'selectTab'
             },
             initialize: function () {
                 this.state = new Backbone.Model();
 
                 this.listenTo(this.state, 'change', this.render);
+                this.listenTo(mediator, 'form-tabs:change:tab', _.bind(this.setCurrentTab, this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -73,10 +75,30 @@ define(
 
                 return this;
             },
-            changeTab: function (event) {
-                this.state.set('currentTab', event.currentTarget.dataset.tab, {silent: true});
-                this.state.set('fullPanel', false, {silent: true});
-                this.state.trigger('change');
+            selectTab: function (event) {
+                this.setCurrentTab(event.currentTarget.dataset.tab);
+            },
+            setCurrentTab: function (tab) {
+                var needRender = false;
+
+                if (this.state.get('currentTab') !== tab) {
+                    this.state.set('currentTab', tab, {silent: true});
+                    needRender = true;
+                }
+
+                if (this.state.get('fullPanel')) {
+                    this.state.set('fullPanel', false, {silent: true});
+                    needRender = true;
+                }
+
+                if (needRender) {
+                    this.state.trigger('change');
+                }
+
+                return this;
+            },
+            getCurrentTab: function () {
+                return this.state.get('currentTab');
             }
         });
     }

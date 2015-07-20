@@ -55,7 +55,7 @@ define(
                         name: 'association-product-grid',
                         getInitialParams: _.bind(function (associationType) {
                             var params = {
-                                product: this.getRoot().model.get('meta').id
+                                product: this.getFormData().meta.id
                             };
                             var paramValue = this.datagrids.products.getParamValue(associationType);
                             params[this.datagrids.products.paramName] = paramValue;
@@ -81,7 +81,7 @@ define(
                         },
                         paramName: 'associatedIds',
                         getParamValue: _.bind(function (associationType) {
-                            var associations = this.getRoot().model.get('meta').associations;
+                            var associations = this.getFormData().meta.associations;
                             return associations[associationType] ? associations[associationType].groupIds : [];
                         }, this),
                         getModelIdentifier: function (model) {
@@ -145,7 +145,7 @@ define(
                     this.identifierAttribute = identifierAttribute;
                     this.$el.html(
                         this.template({
-                            product:          this.getData(),
+                            product:          this.getFormData(),
                             locale:           UserContext.get('catalogLocale'),
                             state:            this.state.toJSON(),
                             associationTypes: associationTypes
@@ -185,7 +185,7 @@ define(
                 return FetcherRegistry.getFetcher('association-type').fetchAll();
             },
             setAssociationCount: function (associationTypes) {
-                var associations = this.getData().associations;
+                var associations = this.getFormData().associations;
 
                 _.each(associationTypes, function (assocType) {
                     var association = associations[assocType.code];
@@ -276,10 +276,10 @@ define(
             getCurrentAssociations: function () {
                 var assocType = this.state.get('currentAssociationType');
                 var assocTarget = this.state.get('associationTarget');
-                var associations = this.getRoot().model.get('associations');
+                var associations = this.getFormData().associations;
                 if (_.isArray(associations)) {
                     associations = {};
-                    this.getRoot().model.set('associations', associations, {silent: true});
+                    this.getFormModel().set('associations', associations, {silent: true});
                 }
                 associations[assocType] = associations[assocType] || {};
                 associations[assocType][assocTarget] = associations[assocType][assocTarget] || [];

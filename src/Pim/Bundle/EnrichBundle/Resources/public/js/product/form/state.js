@@ -42,7 +42,7 @@ define(
             ),
             confirmationTitle: _.__('pim_enrich.confirmation.leave'),
             configure: function () {
-                this.listenTo(this.getRoot().model, 'change', this.render);
+                this.listenTo(this.getFormModel(), 'change', this.render);
                 this.listenTo(mediator, 'entity:form:edit:update_state', this.render);
 
                 mediator.on('product:action:post_update', _.bind(function (data) {
@@ -70,13 +70,11 @@ define(
                     })
                 ).css('opacity', this.hasModelChanged() ? 1 : 0);
 
-                this.getRoot().$el.one('change', _.bind(this.render, this));
-
                 return this;
             },
             collectState: function () {
                 if (null === this.state || undefined === this.state) {
-                    this.state = JSON.stringify(this.getRoot().model.toJSON());
+                    this.state = JSON.stringify(this.getFormData());
                     this.bindEvents();
                 }
             },
@@ -102,13 +100,13 @@ define(
                 return false;
             },
             hasModelChanged: function () {
-                if (this.state !== JSON.stringify(this.getRoot().model.toJSON())) {
+                if (this.state !== JSON.stringify(this.getFormData())) {
                     /*global console: true */
                     console.log(this.state);
-                    console.log(JSON.stringify(this.getRoot().model.toJSON()));
+                    console.log(JSON.stringify(this.getFormData()));
                 }
 
-                return this.state !== JSON.stringify(this.getRoot().model.toJSON());
+                return this.state !== JSON.stringify(this.getFormData());
             }
         });
     }
