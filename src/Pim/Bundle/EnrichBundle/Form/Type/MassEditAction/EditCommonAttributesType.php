@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -95,6 +96,10 @@ class EditCommonAttributesType extends AbstractType
                     'multiple' => true,
                     'expanded' => false,
                     'group_by' => 'group.label',
+                    'choice_value' => function (AttributeInterface $attribute) {
+                        // Cast id to string to be compatible with ChoiceView
+                        return (string) $attribute->getId();
+                    }
                 ]
             );
     }
