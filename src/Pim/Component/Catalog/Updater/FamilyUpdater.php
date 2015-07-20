@@ -42,10 +42,10 @@ class FamilyUpdater implements ObjectUpdaterInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface $familyRepository
-     * @param FamilyFactory $familyFactory
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ChannelRepositoryInterface $channelRepository
-     * @param AttributeRequirementFactory $attrRequiFactory
+     * @param FamilyFactory                         $familyFactory
+     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param ChannelRepositoryInterface            $channelRepository
+     * @param AttributeRequirementFactory           $attrRequiFactory
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,

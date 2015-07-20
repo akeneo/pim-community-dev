@@ -58,21 +58,21 @@
                             function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
-                                        $.when(
-                                            FormBuilder.build('pim/product-edit-form'),
-                                            ProductManager.get('{{ productId }}')
-                                        ).done(function(form, product) {
-                                            document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
-                                            form.setData(product, {silent: true});
-                                            form.setElement('#product-edit-form').render();
-                                        }).fail(function(response, textStatus, errorThrown) {
-                                            switch (response.status) {
-                                                case 400:
-                                                case 403:
-                                                    Dialog.alert(_.__('pim_enrich.alert.not_allowed'));
-                                                    break;
-                                            }
-                                        });
+                                        FormBuilder.build('pim/product-edit-form')
+                                            .done(function (form) {
+                                                ProductManager.get('{{ productId }}').done(function (product) {
+                                                    document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
+                                                    form.setData(product, {silent: true});
+                                                    form.setElement('#product-edit-form').render();
+                                                });
+                                            }).fail(function(response, textStatus, errorThrown) {
+                                                switch (response.status) {
+                                                    case 400:
+                                                    case 403:
+                                                        Dialog.alert(_.__('pim_enrich.alert.not_allowed'));
+                                                        break;
+                                                }
+                                            });
                                     })
                                 });
                             });

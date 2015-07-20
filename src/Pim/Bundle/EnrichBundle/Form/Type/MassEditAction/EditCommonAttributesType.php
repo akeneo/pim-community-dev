@@ -65,7 +65,7 @@ class EditCommonAttributesType extends AbstractType
                 'values',
                 'pim_enrich_localized_collection',
                 [
-                    'type' => 'pim_product_value',
+                    'type'               => 'pim_product_value',
                     'allow_add'          => false,
                     'allow_delete'       => true,
                     'by_reference'       => false,

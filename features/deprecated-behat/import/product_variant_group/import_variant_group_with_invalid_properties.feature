@@ -38,7 +38,7 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Attributes: This property cannot be changed."
-    And I should see "Read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
@@ -57,7 +57,7 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Attributes: This property cannot be changed."
-    And I should see "Read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
@@ -76,7 +76,7 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Variant group \"NO_AXIS\" must be defined with at least one axis"
-    And I should see "Read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |
@@ -95,7 +95,7 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Cannot process group \"NOT_VG\", only variant groups are accepted"
-    And I should see "Read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
     And there should be the following groups:
       | code   | label-en_US | label-fr_FR | axis       | type    |

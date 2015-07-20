@@ -34,7 +34,7 @@ define([
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
-                        templateContext.mediaUrl = this.getMediaUrl(templateContext.value.value);
+                        templateContext.mediaUrl = this.getMediaUrl(templateContext.value.data);
                         templateContext.inUpload = !this.isReady();
                         return templateContext;
                     }, this));
@@ -50,17 +50,18 @@ define([
 
                 return null;
             },
-            renderCopyInput: function (context, locale, scope) {
-                context.value = AttributeManager.getValue(
-                    this.model.get('values'),
-                    this.attribute,
-                    locale,
-                    scope
-                );
+            renderCopyInput: function (value) {
+                return this.getTemplateContext()
+                    .then(_.bind(function (context) {
+                        var copyContext = $.extend(true, {}, context);
+                        copyContext.value = value;
+                        copyContext.mediaUrl = this.getMediaUrl(value.data);
+                        copyContext.context.locale = value.locale;
+                        copyContext.context.scope = value.scope;
+                        copyContext.editMode = 'view';
 
-                context.mediaUrl = this.getMediaUrl(context.value.value);
-
-                return Field.prototype.renderCopyInput.apply(this, arguments);
+                        return this.renderInput(copyContext);
+                    }, this));
             },
             updateModel: function () {
                 if (!this.isReady()) {
@@ -135,7 +136,7 @@ define([
                 }
             },
             previewImage: function () {
-                var mediaUrl = this.getMediaUrl(this.getCurrentValue().value);
+                var mediaUrl = this.getMediaUrl(this.getCurrentValue().data);
                 if (mediaUrl) {
                     $.slimbox(mediaUrl, '', {overlayOpacity: 0.3});
                 }
@@ -148,7 +149,7 @@ define([
                     this.uploadContext.scope
                 );
 
-                productValue.value = value;
+                productValue.data = value;
                 mediator.trigger('entity:form:edit:update_state');
             }
         });

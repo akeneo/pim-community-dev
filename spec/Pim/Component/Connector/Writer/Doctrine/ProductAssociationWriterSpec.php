@@ -43,12 +43,12 @@ class ProductAssociationWriterSpec extends ObjectBehavior
         $product1->getId()->willReturn(null);
         $association1 = new Association();
         $product1->getAssociations()->willReturn(new ArrayCollection([$association1]));
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
         $product2->getId()->willReturn(42);
         $association2->getId()->willReturn(1);
         $product2->getAssociations()->willReturn(new ArrayCollection([$association2]));
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
         $this->write([$product1, $product2]);
     }

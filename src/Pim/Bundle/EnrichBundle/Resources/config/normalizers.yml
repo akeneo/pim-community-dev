@@ -90,6 +90,7 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_enrich.provider.field.registry'
+            - '@pim_enrich.provider.empty_value.registry'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

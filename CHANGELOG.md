@@ -36,6 +36,7 @@
 - Change method `createZip` of `Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory` to return a `League\Flysystem\Filesystem`
 - Change method `getArchive` of `Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface` to return a `resource`
 
+- `normalize` method of `Pim\Bundle\TransformBundle\Normalizer\Structured\ProductValueNormalizer` returns an array with a "data" key instead of "value" key
 - `Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter` and `Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor` are deprecated
 - Change the constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`, removed `Pim\Bundle\VersioningBundle\Manager\VersionManager`
 - Rename method `onKernelRequest` to `findUsername` on `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`
@@ -152,6 +153,20 @@
 - Constructor of `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` has been changed
 - Depreciate and change constructor of `Pim\Bundle\TransformBundle\Builder\FieldNameBuilder`
 - Replace the argument ProductManager by ProductRepositoryInterface in the constructor of `Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator`
+- Add an argument BulkSaverInterface in the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\CategoryRemover`
+
+# 1.3.x
+
+# 1.3.18 (2015-07-09)
+
+## Bug fixes
+- PIM-4528: Fix attribute field display on error during mass edit
+- PIM-4535: Fix font problems on pdf generation: you can now set a custom font by setting the %pim_pdf_generator_font% parameter.
+
+# 1.3.17 (2015-07-07)
+
+## Bug fixes
+- PIM-4494: Fix loading page when family has been sorted
 
 # 1.3.16 (2015-06-08)
 
@@ -553,6 +568,11 @@
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
+
+# 1.2.36 (2015-07-06)
+
+## Bug fixes
+- PIM-4494: Fix js memory leak on a product edit form with scopable attributes
 
 # 1.2.35 (2015-05-29)
 
@@ -1034,7 +1054,7 @@
 - Rename service `pim_datagrid.extension.pager.orm_pager` to `pim_datagrid.extension.pager`
 - Replace `Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource` by `Pim\Bundle\DataGridBundle\Datasource\Datasource`
 - Replace service `pim_datagrid.datasource.orm` by `pim_datagrid.datasource.default`
- - Delete `Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource`
+- Delete `Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource`
 - Delete service `pim_datagrid.datasource.mongodb`
 - Remove the flush parameter from Pim\Bundle\CatalogBundle\Doctrine\MongoDB\CompletenessGenerator::generateMissingForProduct(), as it was not used properly anymore (completeness are directly pushed to MongoDB without using ODM)
 - Rename countForAttribute to countVariantGroupAxis in GroupRepository

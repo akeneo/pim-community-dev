@@ -40,7 +40,7 @@ class WriterSpec extends ObjectBehavior
 
         $manager->persist($object2)->shouldBeCalled();
         $object2->getId()->willReturn(42);
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
 
         $registry->getManagers()->willReturn([$manager]);
         $manager->flush()->shouldBeCalled();

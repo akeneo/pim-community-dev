@@ -121,14 +121,14 @@ class AssociatedProductHydrator implements HydratorInterface
         ];
 
         $pipeline = [
-            ['$match' => $match],
+            ['$match'   => $match],
             ['$project' => $productFields],
             [
                 '$sort' => [
                     'is_associated' => $direction
                 ]
             ],
-            ['$skip' => $skip],
+            ['$skip'  => $skip],
             ['$limit' => $limit],
         ];
 

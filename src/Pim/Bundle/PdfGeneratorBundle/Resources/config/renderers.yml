@@ -10,6 +10,7 @@ services:
             - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'
             - '@pim_pdf_generator.builder.dompdf'
             - %upload_dir%
+            - %pim_pdf_generator_font%
         tags:
             - { name: pim_pdf_generator.renderer, priority: 80 }
 

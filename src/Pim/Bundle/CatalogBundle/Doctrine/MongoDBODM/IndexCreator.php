@@ -153,7 +153,7 @@ class IndexCreator
     public function ensureUniqueAttributesIndexes()
     {
         $attributes = $this->getAttributeRepository()->findBy(
-            ['unique' => true],
+            ['unique'  => true],
             ['created' => 'ASC'],
             self::MONGODB_INDEXES_LIMIT
         );

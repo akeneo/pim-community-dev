@@ -26,7 +26,7 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        product: this.getData()
+                        product: this.getFormData()
                     })
                 );
 

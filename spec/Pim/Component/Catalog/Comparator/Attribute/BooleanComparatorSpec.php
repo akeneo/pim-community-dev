@@ -23,12 +23,12 @@ class BooleanComparatorSpec extends ObjectBehavior
 
     function it_gets_changes_when_adding_value()
     {
-        $changes = ['value' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
 
-        $changes = ['value' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes = ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'];
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
@@ -36,26 +36,26 @@ class BooleanComparatorSpec extends ObjectBehavior
 
     function it_gets_changes_when_changing_value()
     {
-        $changes   = ['value' => false, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['value' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes   = ['data' => false, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
 
-        $changes   = ['value' => 0, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['value' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes   = ['data' => 0, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn($changes);
     }
 
     function it_returns_null_when_values_are_the_same()
     {
-        $changes   = ['value' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['value' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes   = ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn(null);
 
-        $changes   = ['value' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
-        $originals = ['value' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $changes   = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['data' => true, 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
         $this->compare($changes, $originals)->shouldReturn(null);
     }

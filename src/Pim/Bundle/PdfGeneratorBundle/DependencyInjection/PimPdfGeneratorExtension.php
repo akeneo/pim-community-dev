@@ -25,5 +25,9 @@ class PimPdfGeneratorExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('renderers.yml');
         $loader->load('builders.yml');
+
+        if (!$container->hasParameter('pim_pdf_generator_font')) {
+            $container->setParameter('pim_pdf_generator_font', null);
+        }
     }
 }

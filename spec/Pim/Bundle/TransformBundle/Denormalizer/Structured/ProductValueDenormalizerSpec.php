@@ -85,7 +85,7 @@ class ProductValueDenormalizerSpec extends ObjectBehavior
             ->willReturn(1);
 
         $value = $this->denormalize(
-            ['value' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'],
+            ['data' => 1, 'locale' => 'en_US', 'scope' => 'ecommerce'],
             'Pim\Bundle\CatalogBundle\Model\ProductValue',
             'json',
             ['attribute' => $attribute]

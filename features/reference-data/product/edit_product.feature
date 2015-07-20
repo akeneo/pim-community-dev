@@ -34,8 +34,8 @@ Feature: Edit a product
     Given I am logged in as "Mary"
     And the following product values:
       | product    | attribute   | value          |
-      | high-heels | heel_color  | Red            |
-      | high-heels | sole_fabric | Neoprene, Silk |
+      | high-heels | heel_color  | red            |
+      | high-heels | sole_fabric | neoprene, silk |
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:

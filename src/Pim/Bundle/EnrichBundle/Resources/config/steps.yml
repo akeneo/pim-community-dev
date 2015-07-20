@@ -1,2 +1,2 @@
 parameters:
-    pim_enrich.step.mass_edit.step.class: Pim\Bundle\EnrichBundle\Step\MassEditStep
+    pim_enrich.step.mass_edit.step.class: Pim\Bundle\EnrichBundle\Connector\Step\MassEditStep

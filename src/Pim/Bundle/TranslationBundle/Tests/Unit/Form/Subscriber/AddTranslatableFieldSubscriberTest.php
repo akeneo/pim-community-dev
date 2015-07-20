@@ -244,9 +244,9 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     $options['widget'],
                     '',
                     array(
-                        'label'         => $this->localeConfig['locales'][$locale]['label'],
-                        'required'      => in_array($locale, $requiredLocales),
-                        'mapped' => false,
+                        'label'           => $this->localeConfig['locales'][$locale]['label'],
+                        'required'        => in_array($locale, $requiredLocales),
+                        'mapped'          => false,
                         'auto_initialize' => false
                     )
                 )

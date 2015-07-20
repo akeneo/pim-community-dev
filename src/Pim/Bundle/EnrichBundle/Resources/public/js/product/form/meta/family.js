@@ -15,7 +15,7 @@ define(
             className: 'family',
             template: _.template(template),
             configure: function () {
-                this.listenTo(this.getRoot().model, 'change:family', this.render);
+                this.listenTo(this.getFormModel(), 'change:family', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -26,7 +26,7 @@ define(
 
                 this.$el.html(
                     this.template({
-                        product: this.getData()
+                        product: this.getFormData()
                     })
                 );
 

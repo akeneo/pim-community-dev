@@ -30,16 +30,16 @@ class QueryProductCommand extends ContainerAwareCommand
     {
         $filtersExample = [
             [
-                'field' => 'sku',
+                'field'    => 'sku',
                 'operator' => 'STARTS WITH',
-                'value' => 'Ak'
+                'value'    => 'Ak'
             ],
             [
-                'field' => 'completeness',
+                'field'    => 'completeness',
                 'operator' => '=',
-                'value' => '100',
-                'locale' => 'en_US',
-                'scope' => 'print'
+                'value'    => '100',
+                'locale'   => 'en_US',
+                'scope'    => 'print'
             ]
         ];
 

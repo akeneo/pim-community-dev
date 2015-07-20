@@ -11,37 +11,42 @@ Feature: Compare and copy localized fields
       | tshirt | tshirts | Floup      | Front view   | Vue de face  | City shoes                  | Chaussures de ville         |
     And I am logged in as "Mary"
 
-  @skip-pef
   Scenario: Successfully display available comparison languages
     Given I am on the "tshirt" product page
-    Then I should see comparison languages "German (Germany), English (United Kingdom) and French (France)"
+    And I start the copy
+    Then the copy locale switcher should contain the following items:
+      | language | flag    | locale |
+      | German   | flag-de | de_DE  |
+      | English  | flag-gb | en_GB  |
+      | English  | flag-us | en_US  |
+      | French   | flag-fr | fr_FR  |
 
-  @skip-pef
   Scenario: Successfully copy all compared product localized values
     Given I am on the "tshirt" product page
-    When I compare values with the "French (France)" translation
+    When I compare values with the "fr_FR" translation
     And I select all translations
     And I copy selected translations
     Then the product Name should be "Floup"
-    And the product ecommerce Description should be "Chaussures de ville"
+    And the product Description for scope "ecommerce" should be "Chaussures de ville"
+    And I visit the "Media" group
     And the product Legend should be "Vue de face"
 
-  @skip-pef
   Scenario: Successfully copy current tab compared product localized values
     Given I am on the "tshirt" product page
-    When I compare values with the "French (France)" translation
-    And I select current tab translations
+    When I compare values with the "fr_FR" translation
+    And I select all visible translations
     And I copy selected translations
     Then the product Name should be "Floup"
-    And the product ecommerce Description should be "Chaussures de ville"
+    And the product Description for scope "ecommerce" should be "Chaussures de ville"
+    And I visit the "Media" group
     And the product Legend should be "Front view"
 
-  @skip-pef
   Scenario: Successfully copy manually selected compared product localized values
     Given I am on the "tshirt" product page
-    When I compare values with the "French (France)" translation
+    When I compare values with the "fr_FR" translation
     And I select translations for "Name"
     And I copy selected translations
     Then the product Name should be "Floup"
-    And the product ecommerce Description should be "City shoes"
+    And the product Description for scope "ecommerce" should be "City shoes"
+    And I visit the "Media" group
     And the product Legend should be "Front view"

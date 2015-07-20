@@ -89,7 +89,7 @@ define(
                 ).promise();
             },
             updateModel: function () {
-                var data = this.$('.field-input:first input[type="hidden"].select-field').get(0).value;
+                var data = this.$('.field-input:first input[type="hidden"].select-field').val();
                 data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);

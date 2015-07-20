@@ -165,7 +165,7 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $params = [
                 '--no-interaction' => true,
-                '--append' => true
+                '--append'         => true
             ]
             + $this->getFixturesList($input->getOption('fixtures'));
 
