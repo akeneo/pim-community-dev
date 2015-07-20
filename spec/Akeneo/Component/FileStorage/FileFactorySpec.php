@@ -20,7 +20,7 @@ class FileFactorySpec extends ObjectBehavior
         $rawFile = new \SplFileInfo(__FILE__);
 
         $pathGenerator->generate($rawFile)->willReturn([
-            'guid'      => '12345',
+            'uuid'      => '12345',
             'file_name' => '12345_my_file.php',
             'path'      => '1/2/3/4/',
             'path_name' => '1/2/3/4/12345_my_file.php',
@@ -34,7 +34,7 @@ class FileFactorySpec extends ObjectBehavior
         $rawFile = new UploadedFile(__FILE__, 'FileFactorySpec.php', 'text/x-php', filesize(__FILE__));
 
         $pathGenerator->generate($rawFile)->willReturn([
-            'guid'      => '12345',
+            'uuid'      => '12345',
             'file_name' => '12345_my_file.php',
             'path'      => '1/2/3/4/',
             'path_name' => '1/2/3/4/12345_my_file.php',
@@ -77,7 +77,7 @@ class FileFactorySpec extends ObjectBehavior
         return [
             'beValidFile' => function ($subject) {
                 return
-                    $subject->getGuid() === '12345' &&
+                    $subject->getUuid() === '12345' &&
                     $subject->getKey() === '1/2/3/4/12345_my_file.php' &&
                     $subject->getOriginalFilename() === 'FileFactorySpec.php' &&
                     $subject->getMimeType() === 'text/x-php' &&

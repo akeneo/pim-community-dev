@@ -52,7 +52,7 @@ class FileFactory implements FileFactoryInterface
 
         $file = new $this->fileClass();
         $file->setKey($pathInfo['path'].$pathInfo['file_name']);
-        $file->setGuid($pathInfo['guid']);
+        $file->setUuid($pathInfo['uuid']);
         $file->setMimeType($mimeType);
         $file->setOriginalFilename($originalFilename);
         $file->setSize($size);
@@ -71,7 +71,7 @@ class FileFactory implements FileFactoryInterface
         $key = null !== $key ? $key : $file->getKey();
 
         $newFile = new $this->fileClass();
-        $newFile->setGuid($uuid);
+        $newFile->setUuid($uuid);
         $newFile->setMimeType($file->getMimeType());
         $newFile->setOriginalFilename($file->getOriginalFilename());
         $newFile->setSize($file->getSize());

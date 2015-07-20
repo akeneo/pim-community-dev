@@ -35,14 +35,14 @@ interface FileInterface
     /**
      * @return string
      */
-    public function getGuid();
+    public function getUuid();
 
     /**
-     * @param string $guid
+     * @param string $uuid
      *
      * @return FileInterface
      */
-    public function setGuid($guid);
+    public function setUuid($uuid);
 
     /**
      * @return string

@@ -5,7 +5,7 @@ namespace Akeneo\Component\FileStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * Generates all the path data (sanitized and unique filename, path, pathname and guid) of a file.
+ * Generates all the path data (sanitized and unique filename, path, pathname and uuid) of a file.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -19,7 +19,7 @@ class PathGenerator implements PathGeneratorInterface
      *
      * For example, a file called "this i#s the é file.txt'" will produce the following output:
      *   [
-     *      'guid'      => '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12',
+     *      'uuid'      => '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12',
      *      'file_name' => '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_i_s_the___file.txt'
      *      'path'      => '2/f/d/4/',
      *      'path_name' => '2/f/d/4/2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_i_s_the___file.txt',
@@ -44,7 +44,7 @@ class PathGenerator implements PathGeneratorInterface
         $pathName = $path.$fileName;
 
         return [
-            'guid' => $uuid,
+            'uuid' => $uuid,
             'file_name' => $fileName,
             'path' => $path,
             'path_name' => $pathName,

@@ -20,7 +20,7 @@ class File implements FileInterface
     protected $key;
 
     /** @var string */
-    protected $guid;
+    protected $uuid;
 
     /** @var string */
     protected $originalFilename;
@@ -52,17 +52,17 @@ class File implements FileInterface
     /**
      * {@inheritdoc}
      */
-    public function getGuid()
+    public function getUuid()
     {
-        return $this->guid;
+        return $this->uuid;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setGuid($guid)
+    public function setUuid($uuid)
     {
-        $this->guid = $guid;
+        $this->uuid = $uuid;
 
         return $this;
     }
