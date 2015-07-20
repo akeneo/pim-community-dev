@@ -140,14 +140,12 @@ define([
              * @return Array
              */
             generateMissingPrices: function (prices, currencies) {
+                prices = prices || [];
                 _.each(currencies, function (currency) {
                     var price = _.findWhere(prices, {currency: currency.code});
 
                     if (!price) {
                         price = {data: null, currency: currency.code};
-                        if (!prices) {
-                            prices = [];
-                        }
                         prices.push(price);
                     }
 
