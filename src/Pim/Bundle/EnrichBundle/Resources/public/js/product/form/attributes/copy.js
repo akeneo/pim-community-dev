@@ -149,9 +149,9 @@ define(
             copy: function () {
                 _.each(this.copyFields, _.bind(function (copyField) {
                     if (copyField.selected && copyField.field && copyField.field.isEditable()) {
-                        var sourceData = this.getSourceData();
+                        var formValues = this.getFormModel().get('values');
                         var oldValue = AttributeManager.getValue(
-                            sourceData[copyField.field.attribute.code],
+                            formValues[copyField.field.attribute.code],
                             copyField.field.attribute,
                             UserContext.get('catalogLocale'),
                             UserContext.get('catalogScope')
