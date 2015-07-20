@@ -32,9 +32,11 @@ define(
             className: 'btn-group',
             submitTemplate: _.template(submitTemplate),
             modifiedByDraftTemplate: _.template(modifiedByDraftTemplate),
+            confirmationMessage: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
+            confirmationTitle: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
             productId: null,
             events: {
-                'click .submit-draft': 'submitDraft'
+                'click .submit-draft': 'onSubmitDraft'
             },
 
             /**
@@ -152,6 +154,17 @@ define(
             },
 
             /**
+             * Callback triggered on "send for approval" button click
+             */
+            onSubmitDraft: function () {
+                mediator.trigger('pim_enrich:form:state:confirm', {
+                    message: this.confirmationMessage,
+                    title: this.confirmationTitle,
+                    action: _.bind(this.submitDraft, this)
+                });
+            },
+
+            /**
              * Submit the current draft to backend for approval
              *
              * @returns {Object}
@@ -176,8 +189,6 @@ define(
                             _.__('pimee_enrich.entity.product_draft.flash.draft_not_sendable')
                         );
                     });
-
-                return this;
             },
 
             /**
