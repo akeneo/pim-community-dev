@@ -45,6 +45,7 @@ define(
             configure: function () {
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
                 this.listenTo(mediator, 'product:action:pre_save', this.onProductPreSave);
+                this.listenTo(mediator, 'product:action:post_update', this.onProductPostUpdate);
 
                 this.stopListening(mediator, 'field:extension:add');
                 this.listenTo(mediator, 'field:extension:add', this.addFieldExtension);
@@ -70,10 +71,17 @@ define(
             },
 
             /**
-             * Event callback called just before data is sent to backend to be saved
+             * Remove draft from fetcher cache just before data is sent to backend to be saved
              */
             onProductPreSave: function() {
                 this.clearDraftCache();
+            },
+
+            /**
+             * Re-render extension after saving
+             */
+            onProductPostUpdate: function () {
+                this.render();
             },
 
             /**
