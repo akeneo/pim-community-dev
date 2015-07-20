@@ -10,7 +10,6 @@ Feature: Publish a product
       | code        | label       | type                        | property-reference_data_name |
       | main_fabric | Main fabric | reference_data_multiselect  | fabrics                      |
       | main_color  | Main color  | reference_data_simpleselect | color                        |
-    And I am logged in as "Julia"
     And the following reference data:
       | type   | code     |
       | color  | red      |
@@ -31,8 +30,6 @@ Feature: Publish a product
     Then the grid should contain 1 elements
     And I should see product red-heels
 
-  #need save working copy to work
-  @skip-pef
   Scenario: Successfully edit a published product with reference data
     Given I am on the "red-heels" product page
     When I press the "Publish" button
@@ -41,7 +38,7 @@ Feature: Publish a product
     And I fill in the following information:
       | Main color  | blue              |
       | Main fabric | spandex, neoprene |
-    And I press the "Save working copy" button
+    And I save the product
     And I am on the published index page
     Then the grid should contain 1 elements
     And I should see product red-heels

@@ -17,7 +17,7 @@ Feature: Browse product drafts for a specific product
       | white-boots | ready       | Sandra |
     And I am logged in as "Julia"
 
-  @skip-pef
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully display product drafts
     Given I edit the "black-boots" product
     When I visit the "Proposals" tab

@@ -1,7 +1,7 @@
 Feature: Approve draft
   In order to update products
-  As a redactor user
-  I need to be able to approve a draft
+  As a product manager
+  I need to be able to approve a proposal
 
   Background:
     Given a "clothing" catalog configuration
@@ -10,7 +10,7 @@ Feature: Approve draft
       | akeneo_tshirt | tshirts    |
       | akeneo_sweat  | tshirts    |
 
-  @skip-pef
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4596
   Scenario: Successfully approve a draft
     Given I should get the following products after apply the following updater to it:
       | product       | actions                                                                               | result | username |

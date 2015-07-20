@@ -24,74 +24,56 @@ Feature: Validate text attributes of a product
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
-  @skip-pef
   Scenario: Validate the unique constraint of text attribute
     Given I change the Email to "bar@example.com"
     And I save the product
-    Then I should see validation tooltip "The value bar@example.com is already set on another product for the unique attribute email"
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "The value bar@example.com is already set on another product for the unique attribute email"
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the max characters constraint of text attribute
     Given I change the Barcode to "000000000"
     And I save the product
-    Then I should see validation tooltip "This value is too long. It should have 8 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is too long. It should have 8 characters or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the max characters constraint of scopable text attribute
-    Given I change the "mobile Barcodes" to "000000000"
+    Given I change the Barcodes for scope mobile to "000000000"
     And I save the product
-    Then I should see validation tooltip "This value is too long. It should have 8 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is too long. It should have 8 characters or less."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the email validation rule constraint of text attribute
     Given I change the Email to "foo"
     And I save the product
-    Then I should see validation tooltip "This value is not a valid email address."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is not a valid email address."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the email validation rule constraint of scopable text attribute
-    Given I change the "mobile Emails" to "foo"
+    Given I change the Emails for scope mobile to "foo"
     And I save the product
-    Then I should see validation tooltip "This value is not a valid email address."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is not a valid email address."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the url validation rule constraint of text attribute
     Given I change the Link to "bar"
     And I save the product
-    Then I should see validation tooltip "This value is not a valid URL."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is not a valid URL."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the url validation rule constraint of scopable text attribute
-    Given I change the "mobile Links" to "bar"
+    Given I change the Links for scope mobile to "bar"
     And I save the product
-    Then I should see validation tooltip "This value is not a valid URL."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is not a valid URL."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the regexp validation rule constraint of text attribute
     Given I change the Barcode to "111111"
     And I save the product
-    Then I should see validation tooltip "This value is not valid."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is not valid."
+    And there should be 1 error in the "Product information" tab
 
-  @skip-pef
   Scenario: Validate the regexp validation rule constraint of scopable text attribute
-    Given I change the "mobile Barcodes" to "111111"
+    Given I change the Barcodes for scope mobile to "111111"
     And I save the product
-    Then I should see validation tooltip "This value is not valid."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation error "This value is not valid."
+    And there should be 1 error in the "Product information" tab

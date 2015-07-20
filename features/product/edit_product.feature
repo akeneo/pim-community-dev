@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a product I have access
   In order to enrich the catalog
   As a product manager
@@ -26,7 +27,7 @@ Feature: Edit a product I have access
       | rangers | vintage, classy | rangers    |
       | boots   | boots           | boots      |
 
-  @javascript @skip-pef
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully create, edit and save a product I have access
     Given I am on the "rangers" product page
     And I fill in the following information:
@@ -35,7 +36,6 @@ Feature: Edit a product I have access
     Then I should be on the product "rangers" edit page
     Then the product Name should be "My Rangers"
 
-  @javascript
   Scenario: Seeing the edit actions on the product grid
     Given I am on the products page
     And I select the "Boots" tree

@@ -26,6 +26,7 @@ Feature: List proposals
       | field | value         |
       | Name  | Autumn jacket |
 
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4513
   Scenario: Successfully sort and filter proposals in the grid
     Given I am logged in as "admin"
     And I am on the proposals page
@@ -37,6 +38,7 @@ Feature: List proposals
       | Author | Julia       | jacket          |
       | Author | Sandra,Mary | sweater, tshirt |
 
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4513
   Scenario: Successfully approve or refuse a proposal
     Given I am logged in as "admin"
     And I am on the proposals page
@@ -49,6 +51,7 @@ Feature: List proposals
     Then I should see a flash message "The proposal has been refused."
     And the grid should contain 1 element
 
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4513
   Scenario: Successfully display only proposals that the current user can approve
     Given I am logged in as "Julia"
     And I am on the proposals page
