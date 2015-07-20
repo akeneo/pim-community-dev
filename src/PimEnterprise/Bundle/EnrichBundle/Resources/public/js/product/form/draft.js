@@ -153,12 +153,15 @@ define(
                     .then(function (draft) {
                         return draft.sendForApproval();
                     })
-                    .then(function () {
+                    .then(_.bind(function () {
+                        this.clearDraftCache();
+                        this.render();
+
                         messenger.notificationFlashMessage(
                             'success',
                             _.__('pimee_enrich.entity.product_draft.flash.sent_for_approval')
                         );
-                    })
+                    }, this))
                     .fail(function () {
                         messenger.notificationFlashMessage(
                             'error',
