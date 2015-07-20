@@ -1,5 +1,6 @@
 parameters:
-    pimee_product_asset.event_subscriber.catalog.remove_channel.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriberSubscriber\ORM\RemoveChannelSubscriber
+    pimee_product_asset.event_subscriber.catalog.remove_channel.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM\RemoveChannelSubscriber
+    pimee_product_asset.event_subscriber.asset_event.class: PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM\AssetEventSubscriber
 
 services:
     pimee_product_asset.event_subscriber.catalog.remove_channel:
@@ -9,5 +10,13 @@ services:
             - '@pimee_product_asset.repository.channel_configuration'
             - '@pimee_product_asset.remover.variation'
             - '@pimee_product_asset.remover.channel_configuration'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_product_asset.event_subscriber.asset_event:
+        class: %pimee_product_asset.event_subscriber.asset_event.class%
+        arguments:
+            - '@pimee_workflow.doctrine.query.published_product_query_factory'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: kernel.event_subscriber }

@@ -368,19 +368,12 @@ class ProductAssetController extends Controller
     {
         $productAsset = $this->findProductAssetOr404($id);
 
-        try {
-            $this->assetRemover->remove($productAsset);
-            $route = 'pimee_product_asset_index';
-            $parameters = [];
-        } catch (\Exception $e) {
-            $route = 'pimee_product_asset_edit';
-            $parameters = ['id' => $id];
-        }
+        $this->assetRemover->remove($productAsset);
 
-        if ($this->getRequest()->isXmlHttpRequest() && !isset($e)) {
+        if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirect($this->generateUrl($route, $parameters));
+            return $this->redirect($this->generateUrl('pimee_product_asset_index'));
         }
     }
 
