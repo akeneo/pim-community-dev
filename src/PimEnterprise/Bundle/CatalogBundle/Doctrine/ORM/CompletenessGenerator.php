@@ -19,6 +19,7 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
  * Enterprise completeness generator
+ * Override of base generator to integrate assets in the completeness process
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
@@ -72,8 +73,19 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
      */
     protected function generate(array $criteria = [])
     {
+        $this->prepareMissingCompletenesses($criteria);
+
+        $this->prepareCompletePrices($criteria);
         $this->prepareCompleteAssets($criteria);
-        parent::generate($criteria);
+
+        $sql = $this->getInsertCompletenessSQL($criteria);
+
+        $stmt = $this->connection->prepare($sql);
+
+        foreach ($criteria as $placeholder => $value) {
+            $stmt->bindValue($placeholder, $value);
+        }
+        $stmt->execute();
     }
 
     /**
@@ -91,28 +103,27 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
-        $selectSql = 'SELECT value_id, locale_id, channel_id
-            FROM
-            (
-                SELECT av.value_id,
-                IF (r.locale_id IS NOT NULL, r.locale_id, cl.locale_id) AS locale_id,
-                v.channel_id,
-                v.file_id, a.code
-                FROM pim_catalog_product_value_asset av
-                JOIN pim_catalog_product_value pv ON av.value_id = pv.id
-                JOIN pimee_product_asset_asset a ON av.asset_id = a.id
-                JOIN pimee_product_asset_reference r ON r.asset_id = a.id
-                JOIN pimee_product_asset_variation v ON v.reference_id = r.id
-                LEFT JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id AND r.locale_id IS NULL
-                WHERE 1 = 1
-                %product_value_conditions%
-                %channel_conditions%
-            ) AS unionTable
+        $selectSql = 'SELECT av.value_id,
+            IF (r.locale_id IS NOT NULL, r.locale_id, cl.locale_id) AS locale_id,
+            v.channel_id
+
+            FROM pim_catalog_product_value_asset av
+            JOIN pim_catalog_product_value pv ON av.value_id = pv.id
+            JOIN %missing_completeness_table% missing ON missing.product_id = pv.entity_id
+            JOIN pimee_product_asset_asset a ON av.asset_id = a.id
+            JOIN pimee_product_asset_reference r ON r.asset_id = a.id
+            JOIN pimee_product_asset_variation v ON v.reference_id = r.id
+            LEFT JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id AND r.locale_id IS NULL
+
+            WHERE 1 = 1
+            %product_value_conditions%
+            %channel_conditions%
 
             GROUP BY value_id, locale_id, channel_id
 
-            HAVING COUNT(file_id) > 0';
+            HAVING COUNT(v.file_id) > 0';
 
+        $selectSql = $this->applyTableNames($selectSql);
         $selectSql = $this->applyCriteria($selectSql, $criteria);
 
         $createPattern = 'CREATE TEMPORARY TABLE %s (value_id INT, locale_id INT, channel_id INT) %s';
@@ -144,6 +155,21 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         $sql = str_replace('%product_value_conditions%', $productValueCondition, $sql);
 
         return $sql;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function applyTableNames($sql)
+    {
+        $sql = parent::applyTableNames($sql);
+
+        return strtr(
+            $sql,
+            [
+                '%missing_completeness_table%' => self::MISSING_TABLE,
+            ]
+        );
     }
 
     /**

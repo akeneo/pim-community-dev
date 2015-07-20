@@ -28,6 +28,7 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
  * Enterprise completeness generator
+ * Override of base generator to integrate assets in the completeness process
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
@@ -108,7 +109,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
         $fields = [];
         foreach ($channels as $channel) {
             foreach ($channel->getLocales() as $locale) {
-                $fields = $this->getFieldsNamesForChannelAndLocale($fields,$channel,$locale,$familyReqs);
+                $fields = $this->getFieldsNamesForChannelAndLocale($fields, $channel, $locale, $familyReqs);
             }
         }
 
@@ -129,17 +130,19 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
         LocaleInterface $locale,
         array $familyReqs
     ) {
-        $expectedCompleteness                                = $channel->getCode() . '-' . $locale->getCode();
-        $fields[$expectedCompleteness]                       = [];
-        $fields[$expectedCompleteness]['channel']            = $channel->getId();
-        $fields[$expectedCompleteness]['locale']             = $locale->getId();
-        $fields[$expectedCompleteness]['reqs']               = [];
+        $expectedCompleteness = $channel->getCode() . '-' . $locale->getCode();
+
+        $fields[$expectedCompleteness] = [];
+
+        $fields[$expectedCompleteness]['channel'] = $channel->getId();
+        $fields[$expectedCompleteness]['locale']  = $locale->getId();
+        $fields[$expectedCompleteness]['reqs']    = [];
+
         $fields[$expectedCompleteness]['reqs']['attributes'] = [];
         $fields[$expectedCompleteness]['reqs']['prices']     = [];
         $fields[$expectedCompleteness]['reqs']['assets']     = [];
 
         foreach ($familyReqs[$channel->getCode()] as $requirement) {
-            /** @var AttributeRequirementInterface $requirement */
             $fieldName = $this->getNormalizedFieldName($requirement->getAttribute(), $channel, $locale);
 
             if (AbstractAttributeType::BACKEND_TYPE_PRICE === $requirement->getAttribute()->getBackendType()) {

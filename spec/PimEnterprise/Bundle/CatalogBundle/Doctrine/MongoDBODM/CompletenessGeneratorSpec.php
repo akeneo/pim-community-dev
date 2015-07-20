@@ -16,6 +16,9 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use Prophecy\Argument;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class CompletenessGeneratorSpec extends ObjectBehavior
 {
     public function let(
