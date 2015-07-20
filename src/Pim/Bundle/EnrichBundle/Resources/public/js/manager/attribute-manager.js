@@ -145,6 +145,9 @@ define([
 
                     if (!price) {
                         price = {data: null, currency: currency.code};
+                        if (!prices) {
+                            prices = [];
+                        }
                         prices.push(price);
                     }
 
