@@ -21,7 +21,7 @@
             'label': 'Delete'
         }) }}
     {% endif %}
-    {{ UI.button({'path' : path('oro_user_group_index'), 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
+    {{ UI.button({'path' : path('oro_user_group_index'), 'iClass' : 'icon-chevron-left ', 'title' : 'Cancel'|trans, 'label' : 'Cancel'|trans}) }}
     {{ UI.saveAndStayButton('pim_user_group_edit') }}
     {{ UI.saveAndCloseButton() }}
 {% endblock navButtons %}

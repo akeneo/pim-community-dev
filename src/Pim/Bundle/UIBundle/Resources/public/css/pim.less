@@ -72,10 +72,12 @@ table.grid {
     display: table-cell;
     i {
       opacity: 0;
-      margin: 0 2px;
-      padding: 0 5px;
+      width: 26px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
       border: 1px solid #ccc;
-      .border-radius(3px);
+      .border-radius(2px);
     }
   }
 }
@@ -114,7 +116,8 @@ tr:hover>.action-cell a.action>i {
 
 .btn-group>.dropdown-menu li {
   a:hover {
-    background: @color-purple_light;
+    background: #f3f3f3;
+    color: @textColor;
   }
   &.disabled a {
     color: @textColor + #555;
@@ -572,6 +575,8 @@ span.link-label {
       font-size: 12px;
       padding-left: 20px;
       padding-right: 25px;
+      color: @textColor;
+      font-weight: 400;
 
       &:hover {
         cursor: pointer;
@@ -725,7 +730,6 @@ h3.tab-header {
   }
 
   .attribute-copy-actions {
-    max-width: @max-field-width + 10px;
     .flex(1);
     margin-left: 10px;
     border-left: 1px solid #ccc;
@@ -769,8 +773,8 @@ h3.tab-header {
       .align-items(center);
 
       .product-label {
-        font-size: 17px;
-        font-weight: 300;
+        font-size: 18px;
+        font-weight: 400;
         color: @color-new-purple-medium;
       }
     }
@@ -1557,6 +1561,10 @@ h3.tab-header {
 
 .product-edit-form > header .actions .btn-group {
   font-weight: 200;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .product-edit-form > header .btn-dropdown {
@@ -1593,13 +1601,7 @@ h3.tab-header {
 
   &.disabled > a, & > .disabled {
     opacity: 1;
-    background-color: #a1a9b7;
-    color: #fff;
     border: none;
-
-    .caret {
-      border-top-color: #fff;
-    }
   }
 }
 
