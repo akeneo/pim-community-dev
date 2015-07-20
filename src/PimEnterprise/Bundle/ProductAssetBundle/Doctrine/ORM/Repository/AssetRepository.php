@@ -137,7 +137,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
      */
     public function applyTagFilter(QueryBuilder $qb, $field, $operator, $value)
     {
-        $qb->leftJoin('pa.tags', 'tags');
+        $qb->leftJoin(sprintf('%s.tags', $this->getAlias()), 'tags');
 
         switch ($operator) {
             case Operators::IN_LIST:
