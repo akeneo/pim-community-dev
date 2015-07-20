@@ -187,7 +187,7 @@ class Grid extends Index
 
             if ($operator !== false) {
                 $filter->find('css', 'button.dropdown-toggle')->click();
-                $filter->find('css', '[data-value="'.$operator.'"]')->click();
+                $filter->find('css', '[data-value="' . $operator . '"]')->click();
             }
 
             if (null !== $results && null !== $select2) {
@@ -389,8 +389,11 @@ class Grid extends Index
             return false;
         }
 
-        $values       = $this->getValuesInColumn($column);
+        $values = $this->getValuesInColumn($column);
+        $values = $this->formatColumnValues($values);
+
         $sortedValues = $values;
+
         if ($order === 'ascending') {
             sort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
         } else {
@@ -730,6 +733,7 @@ class Grid extends Index
 
         return $checkbox;
     }
+
     /**
      * @param NodeElement $row
      * @param int         $position
@@ -797,7 +801,8 @@ class Grid extends Index
             foreach ($headers as $key => $header) {
                 if ($header->getAttribute('class') === 'action-column'
                     || $header->getAttribute('class') === 'select-all-header-cell'
-                    || $header->find('css', 'input[type="checkbox"]')) {
+                    || $header->find('css', 'input[type="checkbox"]')
+                ) {
                     unset($headers[$key]);
                 }
             }
@@ -1048,5 +1053,29 @@ class Grid extends Index
         }
 
         $listItem->click();
+    }
+
+    /**
+     * Format column values before sorting
+     *
+     * @param string[] $values
+     *
+     * @return string[]
+     */
+    protected function formatColumnValues(array $values)
+    {
+        $cleanValues = [];
+
+        foreach ($values as $key => $value) {
+            $clean = trim($value);
+
+            if (false !== strtotime($clean)) {
+                $clean = \DateTime::createFromFormat('M j, Y', $clean)->format('Ymd');
+            }
+
+            $cleanValues[$key] = $clean;
+        }
+
+        return $cleanValues;
     }
 }
