@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Media controller
@@ -15,14 +16,19 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MediaController
 {
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /** @var string */
     protected $uploadDir;
 
     /**
-     * @param string $uploadDir
+     * @param ValidatorInterface $validator
+     * @param string             $uploadDir
      */
-    public function __construct($uploadDir)
+    public function __construct(ValidatorInterface $validator, $uploadDir)
     {
+        $this->validator = $validator;
         $this->uploadDir = $uploadDir;
     }
 
@@ -36,6 +42,19 @@ class MediaController
     public function postAction(Request $request)
     {
         $file = $request->files->get('file');
+        $violations = $this->validator->validate($file);
+
+        if (count($violations) > 0) {
+            $errors = [];
+            foreach ($violations as $violation) {
+                $errors[$violation->getPropertyPath()] = [
+                    'message'       => $violation->getMessage(),
+                    'invalid_value' => $violation->getInvalidValue()
+                ];
+            }
+
+            return new JsonResponse($errors, 400);
+        }
 
         try {
             $movedFile = $file->move(

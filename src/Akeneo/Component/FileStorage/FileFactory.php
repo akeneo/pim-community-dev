@@ -39,16 +39,15 @@ class FileFactory implements FileFactoryInterface
         $pathInfo = $this->pathGenerator->generate($rawFile);
 
         if ($rawFile instanceof UploadedFile) {
-            $size = $rawFile->getClientSize();
-            $mimeType = $rawFile->getMimeType();
             $originalFilename = $rawFile->getClientOriginalName();
             $extension = $rawFile->getClientOriginalExtension();
         } else {
-            $size = filesize($rawFile->getPathname());
-            $mimeType = MimeTypeGuesser::getInstance()->guess($rawFile->getPathname());
             $originalFilename = $rawFile->getFilename();
             $extension = $rawFile->getExtension();
         }
+
+        $size = filesize($rawFile->getPathname());
+        $mimeType = MimeTypeGuesser::getInstance()->guess($rawFile->getPathname());
 
         $file = new $this->fileClass();
         $file->setKey($pathInfo['path'].$pathInfo['file_name']);

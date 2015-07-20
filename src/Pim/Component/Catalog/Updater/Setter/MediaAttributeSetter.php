@@ -132,7 +132,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     }
 
     /**
-     * TODO: inform the use that this could take some time
+     * TODO: inform the user that this could take some time
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data

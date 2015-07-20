@@ -2,63 +2,85 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Symfony\Component\HttpFoundation\File\File as FileObject;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
+use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
 /**
- * Constraint.
+ * Validate files linked to product (need to validate extension and size).
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileValidator extends BaseFileValidator
+class FileValidator extends ConstraintValidator
 {
     /**
      * {@inheritdoc}
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof ProductMediaInterface) {
-            $value = $value->getFile();
+        if ($value instanceof FileInterface) {
+            $this->validateFileSize($value, $constraint);
+            $this->validateFileExtension($value, $constraint);
         }
-
-        if (null === $value || '' === $value) {
-            return;
-        }
-
-        parent::validate($value, $constraint);
-
-        $this->validateAllowedExtension($value, $constraint);
     }
 
     /**
      * Validate if extension is allowed.
      *
-     * @param mixed      $value      The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
+     * @param FileInterface $file      The file that should be validated
+     * @param Constraint    $constraint The constraint for the validation
      */
-    protected function validateAllowedExtension($value, Constraint $constraint)
+    protected function validateFileExtension(FileInterface $file, Constraint $constraint)
     {
-        if ($constraint->allowedExtensions) {
-            $file = $value instanceof \SplFileInfo ? $value : new \SplFileInfo($value);
-
-            if ($file instanceof UploadedFile) {
-                $extension = $file->getClientOriginalExtension();
-            } elseif ($file instanceof FileObject) {
-                $extension = $file->getExtension();
-            } else {
-                $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-            }
-
+        if (!empty($constraint->allowedExtensions)) {
+            $extension = $file->getExtension();
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->extensionsMessage,
                     ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
                 );
+            }
+        }
+    }
+
+    /**
+     * Validate if file size is allowed.
+     *
+     * @param FileInterface $file
+     * @param Constraint    $constraint
+     */
+    protected function validateFileSize(FileInterface $file, Constraint $constraint)
+    {
+        $fileSize = $file->getSize();
+
+        // comes from Symfony\Component\Validator\Constraints\FileValidator
+        if ($constraint->maxSize) {
+            if (ctype_digit((string) $constraint->maxSize)) {
+                $size = $fileSize;
+                $limit = (int) $constraint->maxSize;
+                $suffix = 'bytes';
+            } elseif (preg_match('/^\d++k$/', $constraint->maxSize)) {
+                $size = round($fileSize / 1000, 2);
+                $limit = (int) $constraint->maxSize;
+                $suffix = 'kB';
+            } elseif (preg_match('/^\d++M$/', $constraint->maxSize)) {
+                $size = round($fileSize / 1000000, 2);
+                $limit = (int) $constraint->maxSize;
+                $suffix = 'MB';
+            } else {
+                throw new ConstraintDefinitionException(sprintf('"%s" is not a valid maximum size', $constraint->maxSize));
+            }
+
+            if ($size > $limit) {
+                $this->context->addViolation($constraint->maxSizeMessage, [
+                    '{{ size }}' => $size,
+                    '{{ limit }}' => $limit,
+                    '{{ suffix }}' => $suffix,
+                    '{{ file }}' => $this->formatValue($file->getOriginalFilename()),
+                ]);
             }
         }
     }

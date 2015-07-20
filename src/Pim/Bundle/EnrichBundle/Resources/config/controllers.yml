@@ -225,7 +225,7 @@ services:
             - '@liip_imagine.cache.manager'
             - '@oneup_flysystem.mount_manager'
             - '@liip_imagine.filter.manager'
-            - 'storage'
+            - [ 'storage', 'tmpStorage' ]
 
     pim_enrich.controller.variant_group:
         scope: request
@@ -368,6 +368,7 @@ services:
     pim_enrich.controller.rest.media:
         class: %pim_enrich.controller.rest.media.class%
         arguments:
+            - '@validator'
             - %tmp_storage_dir%
 
     pim_enrich.controller.rest.product:

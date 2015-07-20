@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ExecutionContextInterface;
@@ -22,25 +22,45 @@ class FileValidatorSpec extends ObjectBehavior
 
     function it_validates_extensions(
         $context,
-        File $constraint
+        File $constraint,
+        FileInterface $file
     ) {
         $constraint->allowedExtensions = ['gif', 'jpg'];
+        $file->getExtension()->willReturn('jpg');
+        $file->getSize()->willReturn(100);
 
         $context
             ->addViolation(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->validate(
-            new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
-            $constraint
-        );
+        $this->validate($file, $constraint);
+    }
+
+    function it_validates_size(
+        $context,
+        File $constraint,
+        FileInterface $file
+    ) {
+        $constraint->maxSize = '1M';
+
+        $file->getExtension()->willReturn('jpg');
+        $file->getSize()->willReturn(500);
+
+        $context
+            ->addViolation(Argument::any())
+            ->shouldNotBeCalled();
+
+        $this->validate($file, $constraint);
     }
 
     function it_does_not_validate_extensions(
         $context,
-        File $constraint
+        File $constraint,
+        FileInterface $file
     ) {
         $constraint->allowedExtensions = ['pdf', 'docx'];
+        $file->getExtension()->willReturn('jpg');
+        $file->getSize()->willReturn(100);
 
         $context
             ->addViolation(
@@ -49,27 +69,27 @@ class FileValidatorSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
-        $this->validate(
-            new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
-            $constraint
-        );
+        $this->validate($file, $constraint);
     }
 
-    function it_validates_extensions_with_product_media(
+    function it_does_not_validate_size(
         $context,
         File $constraint,
-        ProductMediaInterface $productMedia
+        FileInterface $file
     ) {
-        $constraint->allowedExtensions = ['gif', 'jpg'];
-        $productMedia->getFile()->willReturn(
-            new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg')
-        );
+        $constraint->maxSize = '1M';
+        $file->getExtension()->willReturn('jpg');
+        $file->getSize()->willReturn(1075200);
+        $file->getOriginalFilename()->willReturn('my file.jpg');
 
         $context
-            ->addViolation(Argument::any())
-            ->shouldNotBeCalled();
+            ->addViolation(
+                $constraint->maxSizeMessage,
+                Argument::any()
+            )
+            ->shouldBeCalled();
 
-        $this->validate($productMedia, $constraint);
+        $this->validate($file, $constraint);
     }
 
     function it_validates_nullable_value(
@@ -77,6 +97,7 @@ class FileValidatorSpec extends ObjectBehavior
         File $constraint
     ) {
         $constraint->allowedExtensions = ['gif', 'jpg'];
+        $constraint->maxSize = '2M';
 
         $context
             ->addViolation(Argument::any())
@@ -85,19 +106,21 @@ class FileValidatorSpec extends ObjectBehavior
         $this->validate(null, $constraint);
     }
 
-    function it_validates_empty_extensions(
+    function it_validates_empty_extension_and_size(
         $context,
-        File $constraint
+        File $constraint,
+        FileInterface $file
     ) {
         $constraint->allowedExtensions = [];
+        $constraint->maxSize = null;
+
+        $file->getExtension()->willReturn('jpg');
+        $file->getSize()->willReturn(100);
 
         $context
             ->addViolation(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->validate(
-            new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/caterpillar_variant_import.zip'),
-            $constraint
-        );
+        $this->validate($file, $constraint);
     }
 }
