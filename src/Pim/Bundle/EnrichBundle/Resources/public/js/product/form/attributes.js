@@ -58,11 +58,11 @@ define(
                 });
 
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
-                this.listenTo(mediator, 'entity:action:validation_error', this.render);
-                this.listenTo(mediator, 'change-family:change:after', this.render);
-                this.listenTo(mediator, 'attributes:add-attribute:after', this.render);
-                this.listenTo(mediator, 'product:action:post_update', this.postSave);
-                this.listenTo(mediator, 'show_attribute', this.showAttribute);
+                this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.render);
+                this.listenTo(mediator, 'pim_enrich:form:change-family:after', this.render);
+                this.listenTo(mediator, 'pim_enrich:form:add-attribute:after', this.render);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.postSave);
+                this.listenTo(mediator, 'pim_enrich:form:show_attribute', this.showAttribute);
 
                 window.addEventListener('resize', _.bind(this.resize, this));
                 FieldManager.clearFields();
@@ -182,7 +182,8 @@ define(
                     );
 
                     this.setData(product);
-                    mediator.trigger('attributes:add-attribute:after');
+
+                    mediator.trigger('pim_enrich:form:add-attribute:after');
                 }, this));
             },
             removeAttribute: function (event) {
@@ -244,7 +245,7 @@ define(
             showAttribute: function (event) {
                 AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
                     .done(_.bind(function (attributeGroups) {
-                        mediator.trigger('form-tabs:change:tab', this.code);
+                        mediator.trigger('pim_enrich:form:form-tabs:change', this.code);
 
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,

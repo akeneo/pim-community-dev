@@ -15,7 +15,7 @@ define(
             className: 'product-label',
             configure: function () {
                 this.listenTo(UserContext, 'change:catalogLocale', this.render);
-                this.listenTo(mediator, 'product:action:post_update', this.render);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

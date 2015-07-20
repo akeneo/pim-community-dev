@@ -47,14 +47,15 @@ define(
              */
             configure: function () {
                 this.listenTo(this.getFormModel(), 'change', this.render);
-                this.listenTo(mediator, 'entity:form:edit:update_state', this.render);
-                this.listenTo(mediator, 'product:action:post_update', this.collectAndRender);
+                this.listenTo(mediator, 'pim_enrich:form:entity:update_state', this.render);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.collectAndRender);
                 this.listenTo(mediator, 'pim_enrich:form:state:confirm', this.onConfirmation);
 
                 $(window).on('beforeunload', _.bind(this.beforeUnload, this));
                 $('body')
                     .off('click', this.linkSelector)
                     .on('click', this.linkSelector, _.bind(this.linkClicked, this));
+
 
                 Backbone.Router.prototype.on('route', this.unbindEvents);
 

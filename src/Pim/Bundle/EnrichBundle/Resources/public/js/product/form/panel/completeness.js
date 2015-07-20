@@ -36,10 +36,8 @@ define(
                     label: _.__('pim_enrich.form.product.panel.completeness.title')
                 });
 
-                mediator.on('product:action:post_update', _.bind(this.update, this));
-
-                this.stopListening(mediator, 'change-family:change:after');
-                this.listenTo(mediator, 'change-family:change:after', _.bind(this.onChangeFamily, this));
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.update);
+                this.listenTo(mediator, 'pim_enrich:form:change-family:after', this.onChangeFamily);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -92,7 +90,7 @@ define(
              */
             showAttribute: function (event) {
                 mediator.trigger(
-                    'show_attribute',
+                    'pim_enrich:form:show_attribute',
                     {
                         attribute: event.currentTarget.dataset.attribute,
                         locale: event.currentTarget.dataset.locale,

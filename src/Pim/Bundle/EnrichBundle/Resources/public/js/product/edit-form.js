@@ -31,10 +31,12 @@ define(
             initialize: function () {
                 this.model = new Backbone.Model();
 
-                mediator.off(null, null, 'context:product:form:init');
-                mediator.on('entity:error:save', _.bind(this.clearCache, this), 'context:product:form:init');
-
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+            configure: function () {
+                mediator.clear('pim_enrich:form');
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
                 if (!this.configured) {

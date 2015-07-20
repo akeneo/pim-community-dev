@@ -34,11 +34,8 @@ define(
                 this.listenTo(this.state, 'change', this.render);
                 this.badges = {};
 
-                this.stopListening(mediator, 'entity:action:validation_error');
-                this.listenTo(mediator, 'entity:action:validation_error', this.onValidationError);
-
-                this.stopListening(mediator, 'product:action:post_update');
-                this.listenTo(mediator, 'product:action:post_update', this.onPostUpdate);
+                this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.onValidationError);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.onPostUpdate);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -59,7 +56,10 @@ define(
                             }, this));
 
                             if (0 < valuesErrors.length) {
-                                mediator.trigger('show_attribute', {attribute: _.keys(valuesErrors)[0]});
+                                mediator.trigger(
+                                    'pim_enrich:form:show_attribute',
+                                    {attribute: _.keys(valuesErrors)[0]}
+                                );
                             }
                         }, this));
                 }

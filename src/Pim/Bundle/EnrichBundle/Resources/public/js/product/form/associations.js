@@ -108,7 +108,7 @@ define(
                     }, this));
                 }, this));
 
-                mediator.on('product:action:post_update', _.bind(function () {
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', _.bind(function () {
                     this.$('.selection-inputs input').val('');
                     this.renderPanes();
                     var associationType = this.state.get('currentAssociationType');

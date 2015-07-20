@@ -25,7 +25,7 @@ define([
                             return this.generateMissing(product);
                         }, this))
                         .then(function (product) {
-                            mediator.trigger('product:action:post_fetch', product);
+                            mediator.trigger('pim_enrich:form:product:action:post_fetch', product);
 
                             return product;
                         })
@@ -40,10 +40,12 @@ define([
                     url: Routing.generate('pim_enrich_product_rest_get', {id: id}),
                     contentType: 'application/json',
                     data: JSON.stringify(data)
-                }).then(_.bind(function (data) {
-                    this.productPromises[id] = $.Deferred().resolve(data).promise();
+                }).then(_.bind(function (product) {
+                    this.productPromises[id] = $.Deferred().resolve(product).promise();
 
-                    return data;
+                    mediator.trigger('pim_enrich:form:entity:action:post_save', product);
+
+                    return product;
                 }, this));
             },
             remove: function (id) {

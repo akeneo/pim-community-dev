@@ -24,14 +24,9 @@ define(
         return BaseForm.extend({
             validationErrors: {},
             initialize: function () {
-                this.stopListening(mediator, 'product:action:post_update');
-                this.listenTo(mediator, 'product:action:post_update', this.onPostUpdate);
-
-                this.stopListening(mediator, 'entity:action:validation_error');
-                this.listenTo(mediator, 'entity:action:validation_error', this.onValidationError);
-
-                this.stopListening(mediator, 'field:extension:add');
-                this.listenTo(mediator, 'field:extension:add', this.addExtension);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.onPostUpdate);
+                this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.onValidationError);
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },

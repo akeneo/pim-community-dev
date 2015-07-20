@@ -40,7 +40,7 @@ define(
                     label: _.__('pim_enrich.form.product.panel.history.title')
                 });
 
-                mediator.on('product:action:post_update', _.bind(this.refreshHistory, this));
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.refreshHistory);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -61,7 +61,6 @@ define(
                         })
                     );
 
-                    mediator.trigger('history:rendered:before');
                     if (this.getParent().getParent().state.get('fullPanel') && this.actions) {
                         _.each(this.$el.find('td.actions'), _.bind(function (element) {
                             _.each(this.actions, _.bind(function (action) {
@@ -69,7 +68,6 @@ define(
                             }, this));
                         }, this));
                     }
-                    mediator.trigger('history:rendered:after');
 
                     this.delegateEvents();
                     this.renderExtensions();

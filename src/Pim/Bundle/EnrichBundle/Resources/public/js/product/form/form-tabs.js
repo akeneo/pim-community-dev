@@ -26,7 +26,7 @@ define(
                 this.state = new Backbone.Model();
 
                 this.listenTo(this.state, 'change', this.render);
-                this.listenTo(mediator, 'form-tabs:change:tab', _.bind(this.setCurrentTab, this));
+                this.listenTo(mediator, 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
