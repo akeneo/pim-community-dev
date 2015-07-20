@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class AssetEventSubscriber implements EventSubscriberInterface
+class MissingVariationsEventSubscriber implements EventSubscriberInterface
 {
     /** @var CommandLauncher */
     protected $commandLauncher;
