@@ -41,6 +41,10 @@ define(
                 }
             ),
             confirmationTitle: _.__('pim_enrich.confirmation.leave'),
+
+            /**
+             * @inheritdoc
+             */
             configure: function () {
                 this.listenTo(this.getFormModel(), 'change', this.render);
                 this.listenTo(mediator, 'entity:form:edit:update_state', this.render);
@@ -50,18 +54,32 @@ define(
                     this.render();
                 }, this));
 
+                this.listenTo(mediator, 'pim_enrich:form:state:confirm', this.onConfirmation);
+
                 Backbone.Router.prototype.on('route', this.unbindEvents);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * Initialize event listeners
+             */
             bindEvents: function () {
                 $(window).on('beforeunload', _.bind(this.beforeUnload, this));
                 $(this.linkSelector).off('click').on('click', _.bind(this.linkClicked, this));
             },
+
+            /**
+             * Detach event listeners
+             */
             unbindEvents: function () {
                 $(window).off('beforeunload', this.beforeUnload);
-                $(this.linkSelector).off('click', _.bind(this.linkClicked, this));
+                $(this.linkSelector).off('click');
             },
+
+            /**
+             * @inheritdoc
+             */
             render: function () {
                 this.collectState();
                 this.$el.html(
@@ -72,17 +90,26 @@ define(
 
                 return this;
             },
+
+            /**
+             * Store a stringified representation of the form model for further comparisons
+             */
             collectState: function () {
                 if (null === this.state || undefined === this.state) {
                     this.state = JSON.stringify(this.getFormData());
                     this.bindEvents();
                 }
             },
+
+            /**
+             * Callback triggered on beforeunload event
+             */
             beforeUnload: function () {
                 if (this.hasModelChanged()) {
                     return this.confirmationMessage;
                 }
             },
+
             linkClicked: function (event) {
                 event.stopImmediatePropagation();
                 event.preventDefault();
@@ -91,14 +118,16 @@ define(
                     Navigation.getInstance().setLocation($(event.currentTarget).attr('href'));
                 };
 
-                if (this.hasModelChanged()) {
-                    Dialog.confirm(this.confirmationMessage, this.confirmationTitle, doAction);
-                } else {
-                    doAction();
-                }
+                this.confirmAction(this.confirmationMessage, this.confirmationTitle, doAction);
 
                 return false;
             },
+
+            /**
+             * Check if current form model has changed compared to the stored model state
+             *
+             * @return {boolean}
+             */
             hasModelChanged: function () {
                 if (this.state !== JSON.stringify(this.getFormData())) {
                     /*global console: true */
@@ -107,6 +136,34 @@ define(
                 }
 
                 return this.state !== JSON.stringify(this.getFormData());
+            },
+
+            /**
+             * Display a dialog modal to ask an action confirmation if model has changed
+             *
+             * @param {string} message
+             * @param {string} title
+             * @param {function} action
+             */
+            confirmAction: function (message, title, action) {
+                if (this.hasModelChanged()) {
+                    Dialog.confirm(message, title, action);
+                } else {
+                    action();
+                }
+            },
+
+            /**
+             * Callback that can be triggered from anywhere to ask an action confirmation
+             *
+             * @param {Object} event
+             */
+            onConfirmation: function (event) {
+                this.confirmAction(
+                    event.message || this.confirmationMessage,
+                    event.title || this.confirmationTitle,
+                    event.action
+                );
             }
         });
     }
