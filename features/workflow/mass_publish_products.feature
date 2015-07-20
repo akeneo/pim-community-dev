@@ -200,4 +200,4 @@ Feature: Publish many products at once
     And I should see product unionjack
     Then the row "unionjack" should contain:
       | column   | value |
-      | complete | 22%   |
+      | complete | 20%   |

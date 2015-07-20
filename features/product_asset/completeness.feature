@@ -23,7 +23,7 @@ Feature: Display the completeness of a product with assets
     And I am logged in as "Julia"
     And I launched the completeness calculator
 
-  Scenario: Successfully update the completeness at product save
+  Scenario: Successfully update the completeness at product save (global assets)
     Given I am on the "jacket-white" product page
     And I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
@@ -65,6 +65,64 @@ Feature: Display the completeness of a product with assets
     And I should see the completeness:
       | channel | locale | state   | missing_values            | ratio |
       | mobile  | de_DE  | warning | gallery                   | 83%   |
+      | mobile  | en_US  | warning | gallery                   | 83%   |
+      | tablet  | de_DE  | warning | weather_conditions rating | 80%   |
+      | tablet  | en_US  | warning | weather_conditions rating | 80%   |
+
+  Scenario: Successfully update the completeness at product save (localized assets)
+    Given I am on the "jacket-white" product page
+    And I visit the "Media" group
+    And I attach file "akeneo.jpg" to "Side view"
+    And I save the product
+    When I open the "Completeness" panel
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale | state   | missing_values                    | ratio |
+      | mobile  | de_DE  | warning | gallery                           | 83%   |
+      | mobile  | en_US  | warning | gallery                           | 83%   |
+      | tablet  | de_DE  | warning | weather_conditions rating gallery | 70%   |
+      | tablet  | en_US  | warning | weather_conditions rating gallery | 70%   |
+    When I visit the "Media" group
+    And I start to manage assets for "gallery"
+    And I check the row "paint"
+    And I check the row "chicagoskyline"
+    And I confirm the asset modification
+    And I save the product
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale | state   | missing_values                    | ratio |
+      | mobile  | de_DE  | warning | gallery                           | 83%   |
+      | mobile  | en_US  | warning | gallery                           | 83%   |
+      | tablet  | de_DE  | warning | weather_conditions rating gallery | 70%   |
+      | tablet  | en_US  | warning | weather_conditions rating gallery | 70%   |
+    Given I generate missing variations for asset paint
+    And I am on the "jacket-white" product page
+    When I open the "Completeness" panel
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale | state   | missing_values            | ratio |
+      | mobile  | de_DE  | success |                           | 100%  |
+      | mobile  | en_US  | success |                           | 100%  |
+      | tablet  | de_DE  | warning | weather_conditions rating | 80%   |
+      | tablet  | en_US  | warning | weather_conditions rating | 80%   |
+    Given I generate missing variations for asset chicagoskyline
+    And I delete the paint variation for channel mobile and locale ""
+    When I am on the "jacket-white" product page
+    When I open the "Completeness" panel
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale | state   | missing_values            | ratio |
+      | mobile  | de_DE  | success |                           | 100%  |
+      | mobile  | en_US  | success |                           | 100%  |
+      | tablet  | de_DE  | warning | weather_conditions rating | 80%   |
+      | tablet  | en_US  | warning | weather_conditions rating | 80%   |
+    Given I delete the chicagoskyline variation for channel mobile and locale "en_US"
+    When I am on the "jacket-white" product page
+    When I open the "Completeness" panel
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale | state   | missing_values            | ratio |
+      | mobile  | de_DE  | success |                           | 100%  |
       | mobile  | en_US  | warning | gallery                   | 83%   |
       | tablet  | de_DE  | warning | weather_conditions rating | 80%   |
       | tablet  | en_US  | warning | weather_conditions rating | 80%   |
