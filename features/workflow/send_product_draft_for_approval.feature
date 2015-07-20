@@ -27,11 +27,10 @@ Feature: Send a product draft for approval
     Then its status should be "Waiting for approval"
     And I should see "Sent for approval"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Fail to send a non existing product draft for approval
     Then I should not see "Send for approval"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3980
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully restore the product draft status when I modify it after sending it for approval
     When I change the "Name" to "Baggy"
     And I save the product
