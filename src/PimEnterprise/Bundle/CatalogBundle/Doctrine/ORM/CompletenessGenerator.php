@@ -173,6 +173,8 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
     }
 
     /**
+     * Overrided method to exclude assets from automatic mapping
+     *
      * {@inheritdoc}
      */
     protected function getForeignKeysFromMappings($mappings)
