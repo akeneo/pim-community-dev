@@ -120,18 +120,19 @@
     <div class="btn-group">
         <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}{% if (parameters.action is defined) %} action-button{% endif %}"
                 {% if (parameters.action is defined) %}data-action="{{ parameters.action }}"{% endif %}>
+            {% if (parameters.iClass is defined) %}<i class="{{ parameters.iClass }}"></i>{% endif %}
             {{ parameters.label|trans }}
         </button>
     </div>
 {% endmacro %}
 
 {% macro saveAndCloseButton(label = 'Save and Close') %}
-    {{ _self.buttonType({'type': 'submit', 'class': 'btn-primary', 'label': label}) }}
+    {{ _self.buttonType({'type': 'submit', 'class': 'btn-primary icons-holder-text', 'label': label, 'iClass': 'icon-ok'}) }}
 {% endmacro %}
 
 {% macro saveAndStayButton(acl = '', label = 'Save') %}
     {% if acl is empty or resource_granted(acl) %}
-    {{ _self.buttonType({'type': 'button', 'class': 'btn-primary', 'label': label, 'action': 'save_and_stay'}) }}
+    {{ _self.buttonType({'type': 'button', 'class': 'btn-primary icons-holder-text', 'label': label, 'action': 'save_and_stay', 'iClass': 'icon-ok'}) }}
     {% endif %}
 {% endmacro %}
 
@@ -225,7 +226,7 @@
 
     <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
         <div class="navbar-inner">
-            <div class="container-fluid" style="width: auto;">
+            <div class="row-fluid" style="width: auto;">
                 <ul class="nav">
                     {% for navElement in dataBlocks %}
                         <li {% if navElement.class is defined %}class="{{ navElement.class }}"{% endif %}><a href="#scroll-{{ loop.index }}">{{ navElement.title|trans }}</a></li>
