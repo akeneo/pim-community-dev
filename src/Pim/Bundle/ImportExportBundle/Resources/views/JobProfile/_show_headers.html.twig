@@ -33,7 +33,7 @@
         {{ elements.form_errors(uploadForm) }}
         <div class="row-fluid">
             {{ form_row(uploadForm.file) }}
-            {{ elements.submitBtn('Upload and '~action~' now') }}
+            {{ elements.submitBtn('Upload and '~action~' now', 'upload-alt') }}
         </div>
     {{ form_end(uploadForm) }}
 {% endif %}

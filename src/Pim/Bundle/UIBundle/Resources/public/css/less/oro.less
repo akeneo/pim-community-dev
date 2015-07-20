@@ -207,8 +207,8 @@ select {
   padding:0;
   text-indent:0;
   font-size:14px;
-  line-height:1.3em;
-  color:#666;
+  color: #666;
+
 }
 
 // GLOBAL LAYOUT ELEMENTS
@@ -278,7 +278,7 @@ select {
 }
 .navbar .nav > li > a:focus,
 .navbar .nav > li > a:hover {
-  color: #fff;
+  color: #444;
 }
 .navbar .nav > .active > a,
 .navbar .nav > .active > a:hover,
@@ -476,11 +476,12 @@ select {
   }
 }
 .grid thead .caret {
-  margin: 8px 0 0;
+  margin: 14px 0 0;
 }
 .table thead th {
-  padding:4px 10px;
+  padding:0 10px;
   font-size:11px;
+  line-height: 34px;
   a {
     color:lighten(@bodyColor,10%);
     text-shadow:0 1px 0 darken(#ffffff,5%);
@@ -545,10 +546,7 @@ select {
       margin:0;
       &:before {
         display:inline-block;
-        margin:4px 5px 0 0;
         font-size:16px;
-        color:#666;
-        line-height:19px;
       }
     }
     .icon-chevron-left.hide-text {
