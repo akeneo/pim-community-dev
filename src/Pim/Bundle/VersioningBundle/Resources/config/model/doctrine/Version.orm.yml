@@ -8,6 +8,9 @@ Pim\Bundle\VersioningBundle\Model\Version:
             columns:
                 - resource_name
                 - resource_id
+        resource_name_idx:
+            columns:
+                - resource_name
         pending_idx:
             columns:
                 - pending

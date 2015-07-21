@@ -45,8 +45,8 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                if (!this.configured) {
-                    return;
+                if (!this.configured || this.code !== this.getParent().state.get('currentPanel')) {
+                    return this;
                 }
 
                 this.loadData().done(_.bind(function (data) {

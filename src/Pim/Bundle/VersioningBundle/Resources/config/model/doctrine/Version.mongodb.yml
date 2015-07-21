@@ -15,6 +15,11 @@ Pim\Bundle\VersioningBundle\Model\Version:
             keys:
                 resourceName: 1
                 resourceId: 1
+        resource_name:
+            options:
+                background: true
+            keys:
+                resourceName: 1
     fields:
         id:
             id: true

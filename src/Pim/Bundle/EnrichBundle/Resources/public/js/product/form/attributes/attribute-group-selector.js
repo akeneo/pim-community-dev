@@ -34,10 +34,13 @@ define(
                 this.listenTo(this.state, 'change', this.render);
                 this.badges = {};
 
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+            configure: function () {
                 this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.onValidationError);
                 this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.onPostUpdate);
 
-                BaseForm.prototype.initialize.apply(this, arguments);
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             onValidationError: function (event) {
                 this.removeBadges();
@@ -58,7 +61,7 @@ define(
                             if (0 < valuesErrors.length) {
                                 mediator.trigger(
                                     'pim_enrich:form:show_attribute',
-                                    {attribute: _.keys(valuesErrors)[0]}
+                                    {attribute: _.first(_.keys(valuesErrors))}
                                 );
                             }
                         }, this));

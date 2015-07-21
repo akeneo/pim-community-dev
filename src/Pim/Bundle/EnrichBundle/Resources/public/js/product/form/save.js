@@ -95,7 +95,7 @@ define(
                         switch (response.status) {
                             case 400:
                                 mediator.trigger(
-                                    'pim_enrich:form:entity:validation_error',
+                                    'pim_enrich:form:entity:bad_request',
                                     {'sentData': product, 'response': response.responseJSON}
                                 );
                                 break;

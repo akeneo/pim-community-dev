@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -28,22 +29,31 @@ class ProductNormalizer implements NormalizerInterface
     /** @var VersionManager */
     protected $versionManager;
 
+    /** @var LocaleManager */
+    protected $localeManager;
+
+    /** @var StructureVersionProviderInterface */
+    protected $structureVersionProvider;
+
     /**
-     * @param NormalizerInterface $productNormalizer
-     * @param NormalizerInterface $versionNormalizer
-     * @param VersionManager      $versionManager
-     * @param LocaleManager       $localeManager
+     * @param NormalizerInterface               $productNormalizer
+     * @param NormalizerInterface               $versionNormalizer
+     * @param VersionManager                    $versionManager
+     * @param LocaleManager                     $localeManager
+     * @param StructureVersionProviderInterface $structureVersionProvider
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
-        LocaleManager $localeManager
+        LocaleManager $localeManager,
+        StructureVersionProviderInterface $structureVersionProvider
     ) {
-        $this->productNormalizer = $productNormalizer;
-        $this->versionNormalizer = $versionNormalizer;
-        $this->versionManager    = $versionManager;
-        $this->localeManager     = $localeManager;
+        $this->productNormalizer        = $productNormalizer;
+        $this->versionNormalizer        = $versionNormalizer;
+        $this->versionManager           = $versionManager;
+        $this->localeManager            = $localeManager;
+        $this->structureVersionProvider = $structureVersionProvider;
     }
 
     /**
@@ -57,9 +67,15 @@ class ProductNormalizer implements NormalizerInterface
         $newestLog = $this->versionManager->getNewestLogEntry($product);
 
         $normalizedProduct['meta'] = [
-            'id'      => $product->getId(),
-            'created' => $oldestLog !== null ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null,
-            'updated' => $newestLog !== null ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null
+            'id'                => $product->getId(),
+            'created'           => null !== $oldestLog ?
+                $this->versionNormalizer->normalize($oldestLog, 'internal_api') :
+                null,
+            'updated'           => null !== $newestLog ?
+                $this->versionNormalizer->normalize($newestLog, 'internal_api') :
+                null,
+            'model_type'        => 'product',
+            'structure_version' => $this->structureVersionProvider->getStructureVersion()
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;

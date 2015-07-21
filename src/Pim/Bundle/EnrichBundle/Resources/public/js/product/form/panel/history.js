@@ -45,6 +45,10 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
+                if (this.code !== this.getParent().state.get('currentPanel')) {
+                    return this;
+                }
+
                 if (0 === this.versions.length) {
                     this.refreshHistory();
 
@@ -52,7 +56,6 @@ define(
                 }
 
                 if (this.getFormData().meta) {
-
                     this.$el.html(
                         this.template({
                             versions: this.versions,
@@ -80,6 +83,7 @@ define(
                 if (this.loading) {
                     return;
                 }
+
                 this.loading = true;
                 if (this.getFormData().meta) {
                     $.getJSON(

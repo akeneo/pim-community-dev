@@ -46,6 +46,10 @@ define(
              * {@inheritdoc}
              */
             render: function () {
+                if (this.code !== this.getParent().state.get('currentPanel')) {
+                    return this;
+                }
+
                 if (this.getFormData().meta) {
                     $.when(
                         FetcherRegistry.getFetcher('completeness').fetchForProduct(
