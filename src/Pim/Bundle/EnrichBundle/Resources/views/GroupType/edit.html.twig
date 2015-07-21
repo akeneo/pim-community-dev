@@ -5,7 +5,7 @@
 {% block content %}
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_enrich_group_type_edit', { id: form.vars.value.id}),
+        'action': path('pim_enrich_grouptype_edit', { id: form.vars.value.id}),
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'group type.title'|trans })
@@ -16,12 +16,12 @@
 
         {% set confirmationMessage = 'confirmation.remove.group type'|trans({ '%name%': form.vars.value.label }) %}
         {% set buttons %}
-            {{ elements.backLink(path('pim_enrich_group_type_index')) }}
+            {{ elements.backLink(path('pim_enrich_grouptype_index')) }}
             {% if not form.vars.value.isVariant %}
                 {{ elements.deleteLink(
-                    path('pim_enrich_group_type_remove', { id: form.vars.value.id }),
-                    'pim_enrich_group_type_remove',
-                    path('pim_enrich_group_type_index'),
+                    path('pim_enrich_grouptype_remove', { id: form.vars.value.id }),
+                    'pim_enrich_grouptype_remove',
+                    path('pim_enrich_grouptype_index'),
                     confirmationMessage,
                     'flash.group type.removed'|trans
                 ) }}

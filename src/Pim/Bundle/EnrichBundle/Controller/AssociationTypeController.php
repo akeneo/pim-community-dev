@@ -105,7 +105,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_enrich_association_type_index")
+     * @AclAncestor("pim_enrich_associationtype_index")
      *
      * @return Response
      */
@@ -120,14 +120,14 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_enrich_association_type_create")
+     * @AclAncestor("pim_enrich_associationtype_create")
      *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_association_type_index');
+            return $this->redirectToRoute('pim_enrich_associationtype_index');
         }
 
         $associationType = new AssociationType();
@@ -137,7 +137,7 @@ class AssociationTypeController extends AbstractDoctrineController
 
             $response = [
                 'status' => 1,
-                'url'    => $this->generateUrl('pim_enrich_association_type_edit', ['id' => $associationType->getId()])
+                'url'    => $this->generateUrl('pim_enrich_associationtype_edit', ['id' => $associationType->getId()])
             ];
 
             return new Response(json_encode($response));
@@ -155,7 +155,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param int     $id
      *
      * @Template
-     * @AclAncestor("pim_enrich_association_type_edit")
+     * @AclAncestor("pim_enrich_associationtype_edit")
      *
      * @return array
      */
@@ -166,7 +166,7 @@ class AssociationTypeController extends AbstractDoctrineController
         if ($this->assocTypeHandler->process($associationType)) {
             $this->addFlash('success', 'flash.association type.updated');
 
-            return $this->redirectToRoute('pim_enrich_association_type_edit', ['id' => $id]);
+            return $this->redirectToRoute('pim_enrich_associationtype_edit', ['id' => $id]);
         }
         $usageCount = $this->assocManager->countForAssociationType($associationType);
 
@@ -181,7 +181,7 @@ class AssociationTypeController extends AbstractDoctrineController
      *
      * @param AssociationType $associationType
      *
-     * @AclAncestor("pim_enrich_association_type_remove")
+     * @AclAncestor("pim_enrich_associationtype_remove")
      *
      * @return Response|RedirectResponse
      */
@@ -192,7 +192,7 @@ class AssociationTypeController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_association_type_index');
+            return $this->redirectToRoute('pim_enrich_associationtype_index');
         }
     }
 }

@@ -150,36 +150,36 @@ pim_enrich_family_history:
     group_name: pim_enrich.acl_group.family
 
 # Attribute group
-pim_enrich_attribute_group_index:
+pim_enrich_attributegroup_index:
     type: action
     label: pim_enrich.acl.attribute_group.index
     group_name: pim_enrich.acl_group.attribute_group
-pim_enrich_attribute_group_create:
+pim_enrich_attributegroup_create:
     type: action
     label: pim_enrich.acl.attribute_group.create
     group_name: pim_enrich.acl_group.attribute_group
-pim_enrich_attribute_group_edit:
+pim_enrich_attributegroup_edit:
     type: action
     label: pim_enrich.acl.attribute_group.edit
     group_name: pim_enrich.acl_group.attribute_group
-pim_enrich_attribute_group_remove:
+pim_enrich_attributegroup_remove:
     type: action
     label: pim_enrich.acl.attribute_group.remove
     group_name: pim_enrich.acl_group.attribute_group
 
-pim_enrich_attribute_group_sort:
+pim_enrich_attributegroup_sort:
     type: action
     label: pim_enrich.acl.attribute_group.sort
     group_name: pim_enrich.acl_group.attribute_group
-pim_enrich_attribute_group_add_attribute:
+pim_enrich_attributegroup_add_attribute:
     type: action
     label: pim_enrich.acl.attribute_group.add_attribute
     group_name: pim_enrich.acl_group.attribute_group
-pim_enrich_attribute_group_remove_attribute:
+pim_enrich_attributegroup_remove_attribute:
     type: action
     label: pim_enrich.acl.attribute_group.remove_attribute
     group_name: pim_enrich.acl_group.attribute_group
-pim_enrich_attribute_group_history:
+pim_enrich_attributegroup_history:
     type: action
     label: pim_enrich.acl.attribute_group.history
     group_name: pim_enrich.acl_group.attribute_group
@@ -268,41 +268,41 @@ pim_enrich_variant_group_remove_attribute:
     group_name: pim_enrich.acl_group.variant_group
 
 # Group type
-pim_enrich_group_type_index:
+pim_enrich_grouptype_index:
     type: action
     label: pim_enrich.acl.group_type.index
     group_name: pim_enrich.acl_group.group_type
-pim_enrich_group_type_create:
+pim_enrich_grouptype_create:
     type: action
     label: pim_enrich.acl.group_type.create
     group_name: pim_enrich.acl_group.group_type
-pim_enrich_group_type_edit:
+pim_enrich_grouptype_edit:
     type: action
     label: pim_enrich.acl.group_type.edit
     group_name: pim_enrich.acl_group.group_type
-pim_enrich_group_type_remove:
+pim_enrich_grouptype_remove:
     type: action
     label: pim_enrich.acl.group_type.remove
     group_name: pim_enrich.acl_group.group_type
 
 # Association
-pim_enrich_association_type_index:
+pim_enrich_associationtype_index:
     type: action
     label: pim_enrich.acl.association_type.index
     group_name: pim_enrich.acl_group.association_type
-pim_enrich_association_type_create:
+pim_enrich_associationtype_create:
     type: action
     label: pim_enrich.acl.association_type.create
     group_name: pim_enrich.acl_group.association_type
-pim_enrich_association_type_edit:
+pim_enrich_associationtype_edit:
     type: action
     label: pim_enrich.acl.association_type.edit
     group_name: pim_enrich.acl_group.association_type
-pim_enrich_association_type_remove:
+pim_enrich_associationtype_remove:
     type: action
     label: pim_enrich.acl.association_type.remove
     group_name: pim_enrich.acl_group.association_type
-pim_enrich_association_type_history:
+pim_enrich_associationtype_history:
     type: action
     label: pim_enrich.acl.association_type.history
     group_name: pim_enrich.acl_group.association_type

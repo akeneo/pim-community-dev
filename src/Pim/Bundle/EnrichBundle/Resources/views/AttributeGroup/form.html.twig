@@ -19,7 +19,7 @@
         {% if editMode and not group.code is constant('DEFAULT_GROUP_CODE', group) %}
             {{ elements.deleteLink(
                 path('pim_enrich_attributegroup_remove', {'id': form.vars.value.id}),
-                'pim_enrich_attribute_group_remove',
+                'pim_enrich_attributegroup_remove',
                 path('pim_enrich_attributegroup_index'),
                 'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.label}),
                 'flash.attribute group.removed'|trans)
