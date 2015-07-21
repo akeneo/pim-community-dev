@@ -67,7 +67,7 @@ define(
                 event.promises.push(
                     this.getDraft()
                         .then(function (draft) {
-                            draft.applyToProduct(event.product);
+                            draft.applyChanges(event.product.values);
                         })
                 );
             },
@@ -176,7 +176,7 @@ define(
                     })
                     .then(_.bind(function () {
                         this.clearDraftCache();
-                        this.render();
+                        this.refreshModel();
 
                         messenger.notificationFlashMessage(
                             'success',
@@ -196,6 +196,19 @@ define(
              */
             showWorkingCopy: function () {
                 mediator.trigger('draft:action:show_working_copy');
+            },
+
+            /**
+             * Update the form model with draft changes
+             */
+            refreshModel: function () {
+                this.getDraft()
+                    .then(_.bind(function (draft) {
+                        var formValues = this.getFormModel().get('values');
+                        draft.applyChanges(formValues);
+                        this.getFormModel().set('values', formValues);
+                        mediator.trigger('product:action:post_update');
+                    }, this));
             }
         });
     }
