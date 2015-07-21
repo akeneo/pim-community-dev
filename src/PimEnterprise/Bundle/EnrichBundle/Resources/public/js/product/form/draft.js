@@ -32,9 +32,11 @@ define(
             className: 'btn-group',
             submitTemplate: _.template(submitTemplate),
             modifiedByDraftTemplate: _.template(modifiedByDraftTemplate),
+            confirmationMessage: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
+            confirmationTitle: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
             productId: null,
             events: {
-                'click .submit-draft': 'submitDraft'
+                'click .submit-draft': 'onSubmitDraft'
             },
 
             /**
@@ -45,6 +47,7 @@ define(
             configure: function () {
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
                 this.listenTo(mediator, 'product:action:pre_save', this.onProductPreSave);
+                this.listenTo(mediator, 'product:action:post_update', this.onProductPostUpdate);
 
                 this.stopListening(mediator, 'field:extension:add');
                 this.listenTo(mediator, 'field:extension:add', this.addFieldExtension);
@@ -64,16 +67,23 @@ define(
                 event.promises.push(
                     this.getDraft()
                         .then(function (draft) {
-                            draft.applyToProduct(event.product);
+                            draft.applyChanges(event.product.values);
                         })
                 );
             },
 
             /**
-             * Event callback called just before data is sent to backend to be saved
+             * Remove draft from fetcher cache just before data is sent to backend to be saved
              */
             onProductPreSave: function() {
                 this.clearDraftCache();
+            },
+
+            /**
+             * Re-render extension after saving
+             */
+            onProductPostUpdate: function () {
+                this.render();
             },
 
             /**
@@ -144,29 +154,39 @@ define(
             },
 
             /**
+             * Callback triggered on "send for approval" button click
+             */
+            onSubmitDraft: function () {
+                mediator.trigger('pim_enrich:form:state:confirm', {
+                    message: this.confirmationMessage,
+                    title: this.confirmationTitle,
+                    action: _.bind(this.submitDraft, this)
+                });
+            },
+
+            /**
              * Submit the current draft to backend for approval
-             *
-             * @returns {Object}
              */
             submitDraft: function () {
                 this.getDraft()
                     .then(function (draft) {
                         return draft.sendForApproval();
                     })
-                    .then(function () {
+                    .then(_.bind(function () {
+                        this.clearDraftCache();
+                        this.refreshModel();
+
                         messenger.notificationFlashMessage(
                             'success',
                             _.__('pimee_enrich.entity.product_draft.flash.sent_for_approval')
                         );
-                    })
+                    }, this))
                     .fail(function () {
                         messenger.notificationFlashMessage(
                             'error',
                             _.__('pimee_enrich.entity.product_draft.flash.draft_not_sendable')
                         );
                     });
-
-                return this;
             },
 
             /**
@@ -174,6 +194,19 @@ define(
              */
             showWorkingCopy: function () {
                 mediator.trigger('draft:action:show_working_copy');
+            },
+
+            /**
+             * Update the form model with draft changes
+             */
+            refreshModel: function () {
+                this.getDraft()
+                    .then(_.bind(function (draft) {
+                        var formValues = this.getFormModel().get('values');
+                        draft.applyChanges(formValues);
+                        this.getFormModel().set('values', formValues);
+                        mediator.trigger('product:action:post_update');
+                    }, this));
             }
         });
     }

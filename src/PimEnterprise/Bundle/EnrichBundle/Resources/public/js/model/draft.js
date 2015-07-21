@@ -45,21 +45,19 @@ define(
             },
 
             /**
-             * Apply draft values on product values
+             * Apply draft changes on product values
              * productData is modified by reference
              *
-             * @param {Object} productData
-             *
-             * @returns {Promise}
+             * @param {Object} productValues
              */
-            applyToProduct: function (productData) {
+            applyChanges: function (productValues) {
                 var changes = this.get('changes');
 
                 if (changes && changes.values) {
                     _.each(changes.values, function (draftValues, attributeCode) {
                         _.each(draftValues, function (draftValue) {
                             var productValue = _.findWhere(
-                                productData.values[attributeCode],
+                                productValues[attributeCode],
                                 {locale: draftValue.locale, scope: draftValue.scope}
                             );
 
