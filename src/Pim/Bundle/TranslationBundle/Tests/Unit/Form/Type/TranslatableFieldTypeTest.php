@@ -58,12 +58,12 @@ class TranslatableFieldTypeTest extends TypeTestCase
         $this->factory = Forms::createFormFactoryBuilder()
             ->addTypeExtension(
                 new FormTypeValidatorExtension(
-                    $this->getMock('Symfony\Component\Validator\ValidatorInterface')
+                    $this->getMock('Symfony\Component\Validator\Validator\ValidatorInterface')
                 )
             )
             ->addType(
                 new TranslatableFieldType(
-                    $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
+                    $this->getMock('Symfony\Component\Validator\Validator\ValidatorInterface'),
                     $this->getUserContextMock(),
                     $this->getLocaleHelperMock()
                 )
@@ -72,7 +72,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
 
         // Create form type
         $this->type = new TranslatableFieldType(
-            $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
+            $this->getMock('Symfony\Component\Validator\Validator\ValidatorInterface'),
             $this->getUserContextMock(),
             $this->getLocaleHelperMock()
         );
