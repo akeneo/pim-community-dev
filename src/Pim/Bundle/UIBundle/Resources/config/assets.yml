@@ -29,3 +29,7 @@ css:
         - bundles/pimui/css/signin.less
         - bundles/pimui/css/flags.less
         - bundles/pimui/css/style.less
+        - bundles/pimui/css/tabnav.less
+        - bundles/pimui/css/buttons.less
+        - bundles/pimui/css/accordion.less
+        - bundles/pimui/css/filterbox.less

@@ -167,16 +167,16 @@ select {
 }
 .btn-group > .btn:last-child,
 .btn-group > .dropdown-toggle {
-  -moz-border-radius-topright: 3px;
-  border-top-right-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 2px;
+  border-top-right-radius: 2px;
+  -moz-border-radius-bottomright: 2px;
+  border-bottom-right-radius: 2px;
 }
 .btn-group > .btn:first-child {
-  -moz-border-radius-topleft: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 2px;
+  border-top-left-radius: 2px;
+  -moz-border-radius-bottomleft: 2px;
+  border-bottom-left-radius: 2px;
 }
 
 // Bootstrap - Nav
@@ -207,8 +207,8 @@ select {
   padding:0;
   text-indent:0;
   font-size:14px;
-  line-height:1.3em;
-  color:#666;
+  color: #666;
+
 }
 
 // GLOBAL LAYOUT ELEMENTS
@@ -278,7 +278,7 @@ select {
 }
 .navbar .nav > li > a:focus,
 .navbar .nav > li > a:hover {
-  color: #fff;
+  color: #444;
 }
 .navbar .nav > .active > a,
 .navbar .nav > .active > a:hover,
@@ -444,7 +444,10 @@ select {
   margin-top: 10px;
   overflow: visible;
   .table-bordered {
-    border-left:1px solid #ddd;
+    border-left:1px solid #dfdfdf;
+    -webkit-border-radius: 0px;
+       -moz-border-radius: 0px;
+            border-radius: 0px;
     td,
     th { border-left:0; }
     .boolean-cell {
@@ -464,27 +467,21 @@ select {
     width: 60px;
   }
   thead th {
-    background-color: #eee;
+    background-color: @color-new-grey;
     padding: 5px 10px;
-    #gradient > .vertical(#f5f5f5, #eeeeee);
     white-space: nowrap;
-    &:first-child {
-      .border-radius(4px 0 0 0);
-    }
-    &:last-child {
-      .border-radius(0 4px 0 0);
-    }
   }
   tbody td {
     padding: 5px 10px;
   }
 }
 .grid thead .caret {
-  margin: 8px 0 0;
+  margin: 14px 0 0;
 }
 .table thead th {
-  padding:4px 10px;
+  padding:0 10px;
   font-size:11px;
+  line-height: 34px;
   a {
     color:lighten(@bodyColor,10%);
     text-shadow:0 1px 0 darken(#ffffff,5%);
@@ -549,10 +546,7 @@ select {
       margin:0;
       &:before {
         display:inline-block;
-        margin:4px 5px 0 0;
         font-size:16px;
-        color:#666;
-        line-height:19px;
       }
     }
     .icon-chevron-left.hide-text {
@@ -869,8 +863,8 @@ textarea {
   font-size: 11px;
 }
 .btn-group > a.btn {
-  height: 28px;
-  line-height: 26px;
+  height: 34px;
+  line-height: 34px;
 }
 .oro-action .btn-group > .btn,
 .oro-action .btn-group > .dropdown-menu,
