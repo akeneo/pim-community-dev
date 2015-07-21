@@ -47,6 +47,7 @@ Feature: Add products to a variant group
     And I press the "Save" button
     Then I should be redirected on the variant groups page
     When I edit the "sandal-white-37" product
+    And the history of the product "sandal-white-37" has been built
     And I visit the "History" tab
     And I should see history:
       | version | author                                                            | property | value           |
