@@ -23,8 +23,9 @@ class ValidRegexValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         if ($value) {
-            if (@preg_match($value, null) === false) {
-                $this->context->addViolation($constraint->message);
+            if (false === @preg_match($value, null)) {
+                $this->context->buildViolation($constraint->message)
+                    ->addViolation();
             }
         }
     }
