@@ -428,11 +428,9 @@ class Form extends Base
         }
 
         if ($label->hasAttribute('for')) {
-
             $for = $label->getAttribute('for');
 
             if (0 === strpos($for, 's2id_')) {
-
                 if ($label->getParent()->find('css', '.select2-container-multi')) {
                     return 'multiSelect2';
                 } elseif ($label->getParent()->find('css', 'select')) {
@@ -478,16 +476,18 @@ class Form extends Base
     {
         $allValues = explode(',', $value);
         $selectedValues = $label->getParent()->findAll('css', '.select2-search-choice');
-        $selectedTextValues = array_map(function ($selectedValue) {
-            return $selectedValue->getText();
-        }, $selectedValues);
+        $selectedTextValues = array_map(
+            function ($selectedValue) {
+                return $selectedValue->getText();
+            },
+            $selectedValues
+        );
 
         // Delete tag from right to left to prevent select2 DOM change
         $selectedValues = array_reverse($selectedValues);
 
         foreach ($selectedValues as $selectedValue) {
             if (false === in_array($selectedValue->getText(), $allValues)) {
-
                 $closeButton = $selectedValue->find('css', 'a');
 
                 if (!$closeButton) {
@@ -546,7 +546,6 @@ class Form extends Base
     protected function fillSelect2Field($label, $value)
     {
         if (trim($value)) {
-
             if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
                 $link->click();
 

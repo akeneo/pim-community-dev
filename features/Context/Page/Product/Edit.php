@@ -352,7 +352,6 @@ class Edit extends Form
 
         $columnIdx = null;
         foreach ($comments as $index => $thread) {
-
             if (null !== $currentMessage = $this->findCommentMessage($thread)) {
                 $currentMessage = $currentMessage->getText();
             }
