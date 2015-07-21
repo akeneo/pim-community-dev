@@ -166,8 +166,6 @@ define(
 
             /**
              * Submit the current draft to backend for approval
-             *
-             * @returns {Object}
              */
             submitDraft: function () {
                 this.getDraft()
