@@ -310,7 +310,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $this->getGroupedAttributes(),
             $availableAttributes
         );
-        $attributesForm->bind($request);
+        $attributesForm->submit($request);
 
         $this->manager->addAttributes($group, $availableAttributes->getAttributes());
         $this->addFlash('success', 'flash.attribute group.attributes added');

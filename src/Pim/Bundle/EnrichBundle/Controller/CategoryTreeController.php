@@ -250,7 +250,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
@@ -286,7 +286,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
