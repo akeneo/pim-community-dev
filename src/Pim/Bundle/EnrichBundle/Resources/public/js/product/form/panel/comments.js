@@ -22,7 +22,6 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
-            code: 'history',
             comments: [],
             events: {
                 'keyup .comment-create textarea, .reply-to-comment textarea': 'toggleButtons',

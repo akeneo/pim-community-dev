@@ -17,22 +17,17 @@ define([
     ) {
         return {
             productValues: null,
-            productPromises: {},
             get: function (id) {
-                if (!(id in this.productPromises)) {
-                    this.productPromises[id] = $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
-                        .then(_.bind(function (product) {
-                            return this.generateMissing(product);
-                        }, this))
-                        .then(function (product) {
-                            mediator.trigger('pim_enrich:form:product:action:post_fetch', product);
+                return $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
+                    .then(_.bind(function (product) {
+                        return this.generateMissing(product);
+                    }, this))
+                    .then(function (product) {
+                        mediator.trigger('pim_enrich:form:product:action:post_fetch', product);
 
-                            return product;
-                        })
-                        .promise();
-                }
-
-                return this.productPromises[id];
+                        return product;
+                    })
+                    .promise();
             },
             save: function (id, data) {
                 return $.ajax({
@@ -41,8 +36,6 @@ define([
                     contentType: 'application/json',
                     data: JSON.stringify(data)
                 }).then(_.bind(function (product) {
-                    this.productPromises[id] = $.Deferred().resolve(product).promise();
-
                     mediator.trigger('pim_enrich:form:entity:action:post_save', product);
 
                     return product;
@@ -54,14 +47,7 @@ define([
                     url: Routing.generate('pim_enrich_product_remove', {id: id}),
                     headers: { accept: 'application/json' },
                     data: { _method: 'DELETE' }
-                }).then(_.bind(function () {
-                    delete this.productPromises[id];
-                }, this));
-            },
-            clear: function (id) {
-                if (id in this.productPromises) {
-                    delete this.productPromises[id];
-                }
+                });
             },
             getValues: function (product) {
                 return AttributeManager.getAttributesForProduct(product).then(function (attributes) {

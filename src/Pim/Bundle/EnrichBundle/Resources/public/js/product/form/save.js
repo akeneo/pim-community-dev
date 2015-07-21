@@ -94,6 +94,7 @@ define(
                     .fail(_.bind(function (response) {
                         switch (response.status) {
                             case 400:
+                                mediator.trigger('pim_enrich:form:cache:clear');
                                 mediator.trigger(
                                     'pim_enrich:form:entity:bad_request',
                                     {'sentData': product, 'response': response.responseJSON}

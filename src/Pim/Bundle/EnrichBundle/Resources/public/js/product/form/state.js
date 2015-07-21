@@ -56,7 +56,6 @@ define(
                     .off('click', this.linkSelector)
                     .on('click', this.linkSelector, _.bind(this.linkClicked, this));
 
-
                 Backbone.Router.prototype.on('route', this.unbindEvents);
 
                 return BaseForm.prototype.configure.apply(this, arguments);

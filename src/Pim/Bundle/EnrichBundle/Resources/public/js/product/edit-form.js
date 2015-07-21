@@ -42,6 +42,7 @@ define(
                 if (!this.configured) {
                     return this;
                 }
+                mediator.trigger('pim_enrich:form:render:before');
 
                 this.$el.html(
                     this.template({
@@ -49,7 +50,9 @@ define(
                     })
                 );
 
-                return this.renderExtensions();
+                this.renderExtensions();
+
+                mediator.trigger('pim_enrich:form:render:after');
             },
             clearCache: function () {
                 FetcherRegistry.clearAll();

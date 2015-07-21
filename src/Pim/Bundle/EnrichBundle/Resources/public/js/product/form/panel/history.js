@@ -25,7 +25,6 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane history-panel',
-            code: 'history',
             loading: false,
             versions: [],
             actions: {},

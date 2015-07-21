@@ -65,6 +65,7 @@ define(
                 this.listenTo(mediator, 'pim_enrich:form:show_attribute', this.showAttribute);
 
                 window.addEventListener('resize', _.bind(this.resize, this));
+                this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
                 FieldManager.clearFields();
 
                 this.onExtensions('comparison:change', _.bind(this.comparisonChange, this));
