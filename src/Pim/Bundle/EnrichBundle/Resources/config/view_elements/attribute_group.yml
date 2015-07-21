@@ -10,7 +10,7 @@ services:
             - 'pim_enrich.attribute_group.tab.property'
             - %pim_enrich.view_element.attribute_group.tab.property.template%
         tags:
-            - { name: pim_enrich.view_element, type: pim_enrich_attribute_group_form.form_tab, position: 90 }
+            - { name: pim_enrich.view_element, type: pim_enrich_attributegroup_form.form_tab, position: 90 }
 
     pim_enrich.view_element.attribute_group.tab.attribute:
         parent: pim_enrich.view_element.base
@@ -20,7 +20,7 @@ services:
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
         tags:
-            - { name: pim_enrich.view_element, type: pim_enrich_attribute_group_form.form_tab, position: 100 }
+            - { name: pim_enrich.view_element, type: pim_enrich_attributegroup_form.form_tab, position: 100 }
 
     pim_enrich.view_element.attribute_group.tab.history:
         parent: pim_enrich.view_element.base
@@ -29,6 +29,6 @@ services:
             - %pim_enrich.view_element.attribute_group.tab.history.template%
         calls:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.edit_form'] ]
-            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_attribute_group_history'}] ]
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_attributegroup_history'}] ]
         tags:
-            - { name: pim_enrich.view_element, type: pim_enrich_attribute_group_form.form_tab, position: 110 }
+            - { name: pim_enrich.view_element, type: pim_enrich_attributegroup_form.form_tab, position: 110 }

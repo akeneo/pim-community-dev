@@ -75,6 +75,6 @@ class AssociationTypeType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enrich_association_type';
+        return 'pim_enrich_associationtype';
     }
 }

@@ -32,7 +32,7 @@ require(
             });
 
             var buttons = [];
-            {% if resource_granted('pim_enrich_attribute_group_create') %}
+            {% if resource_granted('pim_enrich_attributegroup_create') %}
                 buttons.push($('<a>', {
                     'class': 'no-hash',
                     'data-toggle': 'tooltip',

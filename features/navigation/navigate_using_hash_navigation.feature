@@ -10,7 +10,7 @@ Feature: Navigate the application in hash navigation mode
     And I am on the home page
     Then I should be able visit the following pages without errors
       | page                                    |
-      | pim_enrich_association_type_index       |
+      | pim_enrich_associationtype_index        |
       | pim_enrich_attributegroup_create        |
       | pim_enrich_attributegroup_index         |
       | pim_enrich_categorytree_index           |
