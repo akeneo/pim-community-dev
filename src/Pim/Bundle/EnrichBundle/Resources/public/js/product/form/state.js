@@ -52,7 +52,9 @@ define(
                 this.listenTo(mediator, 'pim_enrich:form:state:confirm', this.onConfirmation);
 
                 $(window).on('beforeunload', _.bind(this.beforeUnload, this));
-                $(this.linkSelector).off('click').on('click', _.bind(this.linkClicked, this));
+                $('body')
+                    .off('click', this.linkSelector)
+                    .on('click', this.linkSelector, _.bind(this.linkClicked, this));
 
                 Backbone.Router.prototype.on('route', this.unbindEvents);
 
@@ -64,7 +66,7 @@ define(
              */
             unbindEvents: function () {
                 $(window).off('beforeunload', this.beforeUnload);
-                $(this.linkSelector).off('click');
+                $('body').off('click', this.linkSelector);
             },
 
             /**
