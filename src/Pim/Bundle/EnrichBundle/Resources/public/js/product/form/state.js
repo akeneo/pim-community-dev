@@ -48,25 +48,15 @@ define(
             configure: function () {
                 this.listenTo(this.getFormModel(), 'change', this.render);
                 this.listenTo(mediator, 'entity:form:edit:update_state', this.render);
-
-                mediator.on('product:action:post_update', _.bind(function (data) {
-                    this.state = JSON.stringify(data);
-                    this.render();
-                }, this));
-
+                this.listenTo(mediator, 'product:action:post_update', this.collectAndRender);
                 this.listenTo(mediator, 'pim_enrich:form:state:confirm', this.onConfirmation);
+
+                $(window).on('beforeunload', _.bind(this.beforeUnload, this));
+                $(this.linkSelector).off('click').on('click', _.bind(this.linkClicked, this));
 
                 Backbone.Router.prototype.on('route', this.unbindEvents);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * Initialize event listeners
-             */
-            bindEvents: function () {
-                $(window).on('beforeunload', _.bind(this.beforeUnload, this));
-                $(this.linkSelector).off('click').on('click', _.bind(this.linkClicked, this));
             },
 
             /**
@@ -81,7 +71,10 @@ define(
              * @inheritdoc
              */
             render: function () {
-                this.collectState();
+                if (null === this.state || undefined === this.state) {
+                    this.collectState();
+                }
+
                 this.$el.html(
                     this.template({
                         message: this.message
@@ -95,10 +88,15 @@ define(
              * Store a stringified representation of the form model for further comparisons
              */
             collectState: function () {
-                if (null === this.state || undefined === this.state) {
-                    this.state = JSON.stringify(this.getFormData());
-                    this.bindEvents();
-                }
+                this.state = JSON.stringify(this.getFormData());
+            },
+
+            /**
+             * Force collect state and re-render
+             */
+            collectAndRender: function () {
+                this.collectState();
+                this.render();
             },
 
             /**
@@ -110,6 +108,13 @@ define(
                 }
             },
 
+            /**
+             * Callback triggered on any link click event to ask confirmation if there are unsaved changes
+             *
+             * @param {Object} event
+             *
+             * @return {boolean}
+             */
             linkClicked: function (event) {
                 event.stopImmediatePropagation();
                 event.preventDefault();
