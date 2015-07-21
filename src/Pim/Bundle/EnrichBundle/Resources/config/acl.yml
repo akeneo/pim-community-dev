@@ -268,19 +268,19 @@ pim_enrich_variant_group_remove_attribute:
     group_name: pim_enrich.acl_group.variant_group
 
 # Group type
-pim_enrich_group_type_index:
+pim_enrich_grouptype_index:
     type: action
     label: pim_enrich.acl.group_type.index
     group_name: pim_enrich.acl_group.group_type
-pim_enrich_group_type_create:
+pim_enrich_grouptype_create:
     type: action
     label: pim_enrich.acl.group_type.create
     group_name: pim_enrich.acl_group.group_type
-pim_enrich_group_type_edit:
+pim_enrich_grouptype_edit:
     type: action
     label: pim_enrich.acl.group_type.edit
     group_name: pim_enrich.acl_group.group_type
-pim_enrich_group_type_remove:
+pim_enrich_grouptype_remove:
     type: action
     label: pim_enrich.acl.group_type.remove
     group_name: pim_enrich.acl_group.group_type

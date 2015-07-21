@@ -20,7 +20,7 @@ Feature: Navigate the application in hash navigation mode
       | pim_enrich_currency_index               |
       | pim_enrich_family_index                 |
       | pim_enrich_group_index                  |
-      | pim_enrich_group_type_index             |
+      | pim_enrich_grouptype_index              |
       | pim_enrich_locale_index                 |
       | pim_enrich_product_index                |
       | pim_enrich_attribute_index              |

@@ -90,12 +90,12 @@ oro_menu_config:
             aclResourceId: pim_enrich_association_type_index
             extras:
                 routes: ['/^pim_enrich_association_type_\w+$/']
-        pim_enrich_group_type:
+        pim_enrich_grouptype:
             label: pim_menu.item.group_type
-            route: pim_enrich_group_type_index
-            aclResourceId: pim_enrich_group_type_index
+            route: pim_enrich_grouptype_index
+            aclResourceId: pim_enrich_grouptype_index
             extras:
-                routes: ['/^pim_enrich_group_type_\w+$/']
+                routes: ['/^pim_enrich_grouptype_\w+$/']
 
     tree:
         application_menu:
@@ -113,7 +113,7 @@ oro_menu_config:
                         pim_enrich_attribute: ~
                         pim_enrich_family: ~
                         pim_enrich_association_type: ~
-                        pim_enrich_group_type: ~
+                        pim_enrich_grouptype: ~
                         pim_enrich_currency: ~
                         pim_enrich_locale: ~
                         pim_enrich_channel: ~
@@ -144,8 +144,8 @@ oro_titles:
     pim_enrich_variant_group_edit:         pim_title.variant_group.edit
     pim_enrich_association_type_index:     pim_title.association_type.index
     pim_enrich_association_type_edit:      pim_title.association_type.edit
-    pim_enrich_group_type_index:           pim_title.group_type.index
-    pim_enrich_group_type_edit:            pim_title.group_type.edit
+    pim_enrich_grouptype_index:            pim_title.group_type.index
+    pim_enrich_grouptype_edit:             pim_title.group_type.edit
     pim_enrich_mass_edit_action_choose:    pim_title.mass_edit_action.choose
     pim_enrich_mass_edit_action_configure: pim_title.mass_edit_action.configure
     pim_enrich_mass_edit_action_perform:   pim_title.mass_edit_action.configure

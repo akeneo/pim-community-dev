@@ -240,7 +240,7 @@ services:
         arguments:
             - %pim_catalog.entity.group_type.class%
         tags:
-            - { name: form.type, alias: pim_enrich_group_type }
+            - { name: form.type, alias: pim_enrich_grouptype }
 
     pim_enrich.form.type.association_type:
         class: %pim_enrich.form.type.association_type.class%

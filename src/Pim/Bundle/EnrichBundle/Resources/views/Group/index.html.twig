@@ -13,8 +13,8 @@
                 'dialog',
                 'pim_enrich_group_create'
             ) }}
-        {% elseif resource_granted('pim_enrich_group_type_index') %}
-            <a href="{{ path('pim_enrich_group_type_index') }}">
+        {% elseif resource_granted('pim_enrich_grouptype_index') %}
+            <a href="{{ path('pim_enrich_grouptype_index') }}">
                 <span class="label link-label">{{ 'info.group.no group types'|trans }}</span>
             </a>
         {% endif %}

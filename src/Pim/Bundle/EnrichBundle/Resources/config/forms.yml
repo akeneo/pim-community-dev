@@ -61,8 +61,8 @@ services:
         factory_method:  createNamed
         factory_service: form.factory
         arguments:
-            - pim_enrich_group_type_form
-            - pim_enrich_group_type
+            - pim_enrich_grouptype_form
+            - pim_enrich_grouptype
 
     pim_enrich.form.association_type:
         class:           Symfony\Component\Form\Form
