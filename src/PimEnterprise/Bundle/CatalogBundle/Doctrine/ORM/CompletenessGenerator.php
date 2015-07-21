@@ -117,7 +117,6 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
 
             WHERE 1 = 1
             %product_value_conditions%
-            %channel_conditions%
 
             GROUP BY value_id, locale_id, channel_id
 
