@@ -73,7 +73,11 @@ class QueryProductCommand extends ContainerAwareCommand
             $nbProducts = count($products);
             if ($nbProducts > self::MAX_ROWS) {
                 $output->writeln(
-                    sprintf('<info>%d first products on %d matching these criterias</info>', self::MAX_ROWS, $nbProducts)
+                    sprintf(
+                        '<info>%d first products on %d matching these criterias</info>',
+                        self::MAX_ROWS,
+                        $nbProducts
+                    )
                 );
             }
         } else {

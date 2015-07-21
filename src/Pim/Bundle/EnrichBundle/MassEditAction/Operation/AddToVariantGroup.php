@@ -256,9 +256,12 @@ class AddToVariantGroup extends ProductMassEditOperation
     {
         // For now, we show all label and code of skipped groups (not good if too many)
         if ($validVariantGroups) {
-            $validIds = array_map(function (GroupInterface $validGroup) {
-                return $validGroup->getId();
-            }, $validVariantGroups);
+            $validIds = array_map(
+                function (GroupInterface $validGroup) {
+                    return $validGroup->getId();
+                },
+                $validVariantGroups
+            );
 
             $invalidVariantGroups = $this->groupRepository->getVariantGroupsByIds($validIds, false);
         } else {
@@ -282,9 +285,12 @@ class AddToVariantGroup extends ProductMassEditOperation
         $validVariantGroups = [];
 
         if ($products) {
-            $productIds = array_map(function (ProductInterface $product) {
-                return $product->getId();
-            }, $products);
+            $productIds = array_map(
+                function (ProductInterface $product) {
+                    return $product->getId();
+                },
+                $products
+            );
 
             $commonAttributeIds = $this->productMassActionRepo->findCommonAttributeIds($productIds);
             $validVariantGroups = $this->groupRepository->getVariantGroupsByAttributeIds($commonAttributeIds);
