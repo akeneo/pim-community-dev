@@ -62,6 +62,9 @@ class TextAttributeSetter extends AbstractAttributeSetter
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
+        if (is_string($data) && '' === trim($data)) {
+            $data = null;
+        }
         $value->setData($data);
     }
 }

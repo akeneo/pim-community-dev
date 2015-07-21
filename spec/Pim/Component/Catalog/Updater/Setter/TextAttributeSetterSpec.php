@@ -63,8 +63,8 @@ class TextAttributeSetterSpec extends ObjectBehavior
         ProductValue $productValue
     ) {
         $locale = 'fr_FR';
-        $scope = 'mobile';
-        $data = 'data';
+        $scope  = 'mobile';
+        $data   = 'data';
 
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData($data)->shouldBeCalled();
@@ -80,5 +80,29 @@ class TextAttributeSetterSpec extends ObjectBehavior
         $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+    }
+
+    function it_sets_null_value_when_receiving_empty_string(
+        AttributeInterface $attribute,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        $builder,
+        ProductValue $productValue
+    ) {
+        $locale = 'fr_FR';
+        $scope  = 'mobile';
+        $data   = '';
+
+        $attribute->getCode()->willReturn('attributeCode');
+        $productValue->setData(null)->shouldBeCalled();
+
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->willReturn($productValue);
+
+        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+
+        $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
 }
