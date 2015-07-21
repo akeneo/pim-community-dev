@@ -12,9 +12,10 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -31,26 +32,38 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     protected $normalizer;
 
     /** @var PublishedProductManager */
-    protected $manager;
+    protected $publishedManager;
 
-    /** @var SerializerInterface */
-    protected $serializer;
+    /** @var ProductDraftManager */
+    protected $draftManager;
+
+    /** @var ProductDraftApplierInterface */
+    protected $draftApplier;
 
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
+    /** @var SerializerInterface */
+    protected $serializer;
+
     /**
-     * @param NormalizerInterface      $normalizer
-     * @param PublishedProductManager  $manager
-     * @param CategoryAccessRepository $categoryAccessRepo
+     * @param NormalizerInterface          $normalizer
+     * @param PublishedProductManager      $publishedManager
+     * @param ProductDraftManager          $draftManager
+     * @param ProductDraftApplierInterface $draftApplier
+     * @param CategoryAccessRepository     $categoryAccessRepo
      */
     public function __construct(
         NormalizerInterface $normalizer,
-        PublishedProductManager $manager,
+        PublishedProductManager $publishedManager,
+        ProductDraftManager $draftManager,
+        ProductDraftApplierInterface $draftApplier,
         CategoryAccessRepository $categoryAccessRepo
     ) {
         $this->normalizer         = $normalizer;
-        $this->manager            = $manager;
+        $this->publishedManager   = $publishedManager;
+        $this->draftManager       = $draftManager;
+        $this->draftApplier       = $draftApplier;
         $this->categoryAccessRepo = $categoryAccessRepo;
     }
 
@@ -59,24 +72,30 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
-        $published         = $this->manager->findPublishedProductByOriginalId($product->getId());
-        $ownerGroups       = $this->categoryAccessRepo->getGrantedUserGroupsForProduct(
+        $originalProduct = $this->normalizer->normalize($product, 'internal_api', $context);
+        $published       = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
+        $ownerGroups     = $this->categoryAccessRepo->getGrantedUserGroupsForProduct(
             $product,
             Attributes::OWN_PRODUCTS
         );
 
-        $normalizedProduct['meta'] = array_merge(
-            $normalizedProduct['meta'],
+        $draft = $this->draftManager->findOrCreate($product);
+        $this->draftApplier->apply($product, $draft);
+        $modifiedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
+
+        $modifiedProduct['meta'] = array_merge(
+            $modifiedProduct['meta'],
             [
                 'published' => $published ?
                     $this->serializer->normalize($published->getVersion(), 'internal_api', $context) :
                     null,
-                'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context)
+                'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
+                'working_copy' => $originalProduct['values'],
+                'draft_status' => $this->serializer->normalize($draft->getStatus(), 'internal_api', $context)
             ]
         );
 
-        return $normalizedProduct;
+        return $modifiedProduct;
     }
 
     /**
