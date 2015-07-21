@@ -14,34 +14,21 @@ class SecurityController extends Controller
      */
     public function loginAction()
     {
-        $request = $this->getRequest();
-        $session = $request->getSession();
+        $authenticationUtils = $this->get('security.authentication_utils');
 
-        // get the error if any (works with forward and redirect -- see below)
-        if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
-            $error = $request->attributes->get(Security::AUTHENTICATION_ERROR);
-        } elseif (null !== $session && $session->has(Security::AUTHENTICATION_ERROR)) {
-            $error = $session->get(Security::AUTHENTICATION_ERROR);
-
-            $session->remove(Security::AUTHENTICATION_ERROR);
-        } else {
-            $error = '';
-        }
-
-        if ($error) {
-            // TODO: this is a potential security risk (see http://trac.symfony-project.org/ticket/9523)
-            $error = $error->getMessage();
-        }
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
-        $lastUsername = (null === $session) ? '' : $session->get(Security::LAST_USERNAME);
+        $lastUsername = $authenticationUtils->getLastUsername();
         $csrfToken    = $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue();
 
-        return array(
+        return [
+            // last username entered by the user
             'last_username' => $lastUsername,
             'csrf_token'    => $csrfToken,
             'error'         => $error,
-        );
+        ];
     }
 
     public function checkAction()
