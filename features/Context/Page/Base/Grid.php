@@ -185,9 +185,9 @@ class Grid extends Index
             $results = $this->getElement('Select2 results');
             $select2 = $filter->find('css', '.select2-input');
 
-            if ($operator !== false) {
+            if (false !== $operator) {
                 $filter->find('css', 'button.dropdown-toggle')->click();
-                $filter->find('css', '[data-value="' . $operator . '"]')->click();
+                $filter->find('css', sprintf('[data-value="%s"]', $operator))->click();
             }
 
             if (null !== $results && null !== $select2) {
@@ -1069,8 +1069,8 @@ class Grid extends Index
         foreach ($values as $key => $value) {
             $clean = trim($value);
 
-            if (false !== strtotime($clean)) {
-                $clean = \DateTime::createFromFormat('M j, Y', $clean)->format('Ymd');
+            if (false !== $timestamp = strtotime($clean)) {
+                $clean = date('Ymd-H:i:s', $timestamp);
             }
 
             $cleanValues[$key] = $clean;
