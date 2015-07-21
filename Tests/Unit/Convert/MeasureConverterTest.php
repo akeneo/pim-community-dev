@@ -56,7 +56,7 @@ class MeasureConverterTest extends \PHPUnit_Framework_TestCase
             throw new \Exception("Config file $filepath not exists");
         }
 
-        return Yaml::parse($filepath);
+        return Yaml::parse(file_get_contents($filepath));
     }
 
     /**
