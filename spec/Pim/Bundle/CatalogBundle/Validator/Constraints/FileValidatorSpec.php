@@ -6,7 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class FileValidatorSpec extends ObjectBehavior
 {
@@ -20,14 +21,12 @@ class FileValidatorSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\FileValidator');
     }
 
-    function it_validates_extensions(
-        $context,
-        File $constraint
-    ) {
+    function it_validates_extensions($context, File $constraint)
+    {
         $constraint->allowedExtensions = ['gif', 'jpg'];
 
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate(
@@ -38,16 +37,18 @@ class FileValidatorSpec extends ObjectBehavior
 
     function it_does_not_validate_extensions(
         $context,
-        File $constraint
+        File $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $constraint->allowedExtensions = ['pdf', 'docx'];
 
         $context
-            ->addViolation(
+            ->buildViolation(
                 $constraint->extensionsMessage,
                 ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate(
             new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
@@ -66,33 +67,29 @@ class FileValidatorSpec extends ObjectBehavior
         );
 
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate($productMedia, $constraint);
     }
 
-    function it_validates_nullable_value(
-        $context,
-        File $constraint
-    ) {
+    function it_validates_nullable_value($context, File $constraint)
+    {
         $constraint->allowedExtensions = ['gif', 'jpg'];
 
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate(null, $constraint);
     }
 
-    function it_validates_empty_extensions(
-        $context,
-        File $constraint
-    ) {
+    function it_validates_empty_extensions($context, File $constraint)
+    {
         $constraint->allowedExtensions = [];
 
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate(

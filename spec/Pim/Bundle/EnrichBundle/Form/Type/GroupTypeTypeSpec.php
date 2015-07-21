@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GroupTypeTypeSpec extends ObjectBehavior
 {
@@ -24,7 +24,7 @@ class GroupTypeTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pim_enrich_group_type');
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

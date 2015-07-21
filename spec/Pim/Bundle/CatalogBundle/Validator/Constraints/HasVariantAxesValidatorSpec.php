@@ -10,7 +10,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\HasVariantAxes;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class HasVariantAxesValidatorSpec extends ObjectBehavior
 {
@@ -31,7 +32,7 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
     ) {
         $product->getVariantGroup()->willReturn(null);
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($product, $constraint);
@@ -59,7 +60,7 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
         $colorValue->getData()->willReturn('Red');
 
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($product, $constraint);
@@ -73,7 +74,8 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
         AttributeInterface $colorAttribute,
         ProductValueInterface $sizeValue,
         ProductValueInterface $identifierValue,
-        HasVariantAxes $constraint
+        HasVariantAxes $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $tShirtVariantGroup->getCode()->willReturn('tshirt');
         $tShirtVariantGroup->getAxisAttributes()->willReturn([$sizeAttribute, $colorAttribute]);
@@ -88,7 +90,7 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
 
         $sizeValue->getData()->willReturn('XL');
 
-        $context->addViolation(
+        $context->buildViolation(
             'The product "%product%" is in the variant group "%variant%" but it misses the following axes: %axes%.',
             [
                 '%product%' => $identifierValue,
@@ -96,7 +98,8 @@ class HasVariantAxesValidatorSpec extends ObjectBehavior
                 '%axes%'    => 'color'
             ]
         )
-        ->shouldBeCalled();
+        ->shouldBeCalled()
+        ->willReturn($violation);
 
         $this->validate($product, $constraint);
     }

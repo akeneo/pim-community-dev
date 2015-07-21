@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SetAttributeRequirementsSpec extends ObjectBehavior
 {
