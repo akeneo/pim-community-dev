@@ -15,16 +15,16 @@ class PaginatorFactory implements PaginatorFactoryInterface
     protected $paginatorClass;
 
     /** @var int */
-    protected $pageSize;
+    protected $defaultPageSize;
 
     /**
-     * @param string $paginatorClass class name implementation
-     * @param int    $pageSize
+     * @param string $paginatorClass  class name implementation
+     * @param int    $defaultPageSize the default page size
      */
-    public function __construct($paginatorClass, $pageSize)
+    public function __construct($paginatorClass, $defaultPageSize)
     {
-        $this->paginatorClass = $paginatorClass;
-        $this->pageSize = $pageSize;
+        $this->paginatorClass  = $paginatorClass;
+        $this->defaultPageSize = $defaultPageSize;
     }
 
     /**
@@ -33,7 +33,7 @@ class PaginatorFactory implements PaginatorFactoryInterface
     public function createPaginator(CursorInterface $cursor, $pageSize = null)
     {
         if (null === $pageSize) {
-            $pageSize = $this->pageSize;
+            $pageSize = $this->defaultPageSize;
         }
 
         return new $this->paginatorClass($cursor, $pageSize);
