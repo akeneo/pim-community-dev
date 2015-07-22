@@ -43,11 +43,11 @@ datagrid:
         sorters:
             columns:
                 code:
-                    data_name: pa.code
+                    data_name: asset.code
                 description:
-                    data_name: pa.description
+                    data_name: asset.description
                 endOfUseAt:
-                    data_name: pa.endOfUseAt
+                    data_name: asset.endOfUseAt
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
@@ -55,11 +55,11 @@ datagrid:
                 code:
                     type:      string
                     label:     pimee_product_asset.code.label
-                    data_name: pa.code
+                    data_name: asset.code
                 description:
                     type:      string
                     label:     pimee_product_asset.description.label
-                    data_name: pa.description
+                    data_name: asset.description
                 tags:
                     type:      product_asset_tag
                     data_name: tags.id
@@ -72,5 +72,5 @@ datagrid:
                             choices:  '@pimee_product_asset.repository.tag->findAllCodes'
                 endOfUseAt:
                     type:      date
-                    data_name: pa.endOfUseAt
+                    data_name: asset.endOfUseAt
                     label:     pimee_product_asset.endOfUse.label

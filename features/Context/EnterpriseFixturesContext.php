@@ -11,6 +11,8 @@ use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Classification\Repository\TagRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -137,7 +139,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param bool      $scopable
      * @param bool      $ready
      *
-     * @return Given[]
+     * @return Step\Given[]
      * @Given /^(\w+) proposed the following change to "([^"]*)":$/
      */
     public function someoneProposedTheFollowingChangeTo(
@@ -194,7 +196,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string    $product
      * @param TableNode $table
      *
-     * @return Given[]
+     * @return Step\Given[]
      * @Given /^(\w+) proposed the following scopable change to "([^"]*)":$/
      */
     public function someoneProposedTheFollowingScopableChangeTo($username, $product, TableNode $table)
@@ -207,7 +209,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string    $product
      * @param TableNode $table
      *
-     * @return Given[]
+     * @return Step\Given[]
      * @Given /^(\w+) started to propose the following change to "([^"]*)":$/
      */
     public function someoneStartedToProposeTheFollowingChangeTo($username, $product, TableNode $table)
@@ -516,9 +518,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @Given /^I should see the following proposals:$/
+     *
      * @param TableNode $table
      *
-     * @Given /^I should see the following proposals:$/
+     * @throws \Exception
      */
     public function iShouldSeeTheFollowingProposals(TableNode $table)
     {
@@ -580,7 +584,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string    $products
      * @param TableNode $table
      *
-     * @return Given[]
+     * @return Step\Given[]
      * @Given /^(\w+) should have proposed the following values for products (.*):$/
      */
     public function someoneShouldHaveProposedTheFollowingValuesForProducts($username, $products, TableNode $table)
@@ -664,6 +668,22 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getAssetRepository()
     {
         return $this->getContainer()->get('pimee_product_asset.repository.asset');
+    }
+
+    /**
+     * @return LocaleRepositoryInterface
+     */
+    public function getLocaleRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.locale');
+    }
+
+    /**
+     * @return ChannelRepositoryInterface
+     */
+    public function getChannelRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.channel');
     }
 
     /**

@@ -6,7 +6,10 @@ use Behat\Behat\Context\Step;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Asset\Edit;
+use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetVariationSaver;
+use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Overrided context
@@ -191,5 +194,58 @@ class EnterpriseAssetContext extends RawMinkContext
     protected function getCurrentPage()
     {
         return $this->getMainContext()->getSubcontext('navigation')->getCurrentPage();
+    }
+
+    /**
+     * @Then /^I delete the (\S+) variation for channel (\S+) and locale "(\S*)"$/
+     *
+     * @param $assetCode
+     * @param $localeCode
+     * @param $channelCode
+     */
+    public function iDeleteVariation($assetCode, $channelCode, $localeCode = null)
+    {
+        $asset = $this->getFixturesContext()->getAsset($assetCode);
+
+        $locale  = $this->getFixturesContext()->getLocaleRepository()->findOneBy(['code' => $localeCode]);
+        $channel = $this->getFixturesContext()->getChannelRepository()->findOneBy(['code' => $channelCode]);
+
+        if ($localeCode) {
+            $reference = $asset->getReference($locale);
+        } else {
+            $reference = $asset->getReference(null);
+        }
+        $variation = $reference->getVariation($channel);
+
+        $this->getAssetFileUpdater()->deleteVariationFile($variation);
+        $this->getVariationsaver()->save($variation, ['schedule' => true]);
+    }
+
+    /**
+     * @return EnterpriseFixturesContext
+     */
+    protected function getFixturesContext()
+    {
+        return $this->getMainContext()->getSubcontext('fixtures');
+    }
+
+    /**
+     * @return FilesUpdaterInterface
+     */
+    protected function getAssetFileUpdater()
+    {
+        /** @var Container $container */
+        $container = $this->getMainContext()->getContainer();
+        return $container->get('pimee_product_asset.updater.files');
+    }
+
+    /**
+     * @return AssetVariationSaver
+     */
+    protected function getVariationsaver()
+    {
+        /** @var Container $container */
+        $container = $this->getMainContext()->getContainer();
+        return $container->get('pimee_product_asset.saver.variation');
     }
 }

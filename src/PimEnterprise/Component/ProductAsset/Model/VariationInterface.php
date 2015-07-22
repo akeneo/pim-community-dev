@@ -96,4 +96,14 @@ interface VariationInterface
      * @return VariationInterface
      */
     public function setLocked($locked);
+
+    /**
+     * Check if a variation can be considered complete
+     *
+     * @param string $localeCode
+     * @param string $channelCode
+     *
+     * @return bool
+     */
+    public function isComplete($localeCode, $channelCode);
 }

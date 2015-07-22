@@ -1,8 +1,8 @@
 parameters:
-    pimee_product_asset.saver.reference.class:     Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
-    pimee_product_asset.saver.variation.class:     Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+    pimee_product_asset.saver.reference.class:     PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetReferenceSaver
+    pimee_product_asset.saver.variation.class:     PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetVariationSaver
     pimee_product_asset.saver.file_metadata.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
-    pimee_product_asset.saver.asset.class:         Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+    pimee_product_asset.saver.asset.class:         PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetSaver
     pimee_product_asset.saver.tag.class:           Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
 
 services:
@@ -10,11 +10,11 @@ services:
         class: %pimee_product_asset.saver.asset.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
-            - %pimee_product_asset.model.asset.class%
+            - '@pim_catalog.saver.completeness_options_resolver'
+            - '@pim_catalog.doctrine.completeness_generator'
 
     pimee_product_asset.saver.tag:
-        class: %pimee_product_asset.saver.asset.class%
+        class: %pimee_product_asset.saver.tag.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
@@ -24,15 +24,15 @@ services:
         class: %pimee_product_asset.saver.reference.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
-            - %pimee_product_asset.model.reference.class%
+            - '@pim_catalog.saver.completeness_options_resolver'
+            - '@pim_catalog.doctrine.completeness_generator'
 
     pimee_product_asset.saver.variation:
         class: %pimee_product_asset.saver.variation.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@akeneo_storage_utils.saver.base_options_resolver'
-            - %pimee_product_asset.model.variation.class%
+            - '@pim_catalog.saver.completeness_options_resolver'
+            - '@pim_catalog.doctrine.completeness_generator'
 
     pimee_product_asset.saver.file_metadata:
         class: %pimee_product_asset.saver.file_metadata.class%

@@ -17,7 +17,7 @@ class AssetEventListenerSpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEventListener');
+        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEventSubscriber');
     }
 
     function it_can_generate_variations_files($commandLauncher, AssetInterface $asset)

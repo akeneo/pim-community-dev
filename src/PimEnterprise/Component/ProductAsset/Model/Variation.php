@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -168,5 +168,25 @@ class Variation implements VariationInterface
         $this->locked = (bool) $locked;
 
         return $this;
+    }
+
+    /**
+     * Check if a variation can be considered complete
+     *
+     * @param string $localeCode
+     * @param string $channelCode
+     *
+     * @return bool
+     */
+    public function isComplete($localeCode, $channelCode)
+    {
+        $channelOk = (null === $this->getChannel() || $channelCode === $this->getChannel()->getCode());
+
+        $localeOk = (null === $this->getReference()->getLocale()
+            || $localeCode === $this->getReference()->getLocale()->getCode());
+
+        $fileOk = null !== $this->getFile();
+
+        return $channelOk && $localeOk && $fileOk;
     }
 }

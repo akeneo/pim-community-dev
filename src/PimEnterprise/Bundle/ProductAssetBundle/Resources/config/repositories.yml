@@ -23,6 +23,8 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%pimee_product_asset.model.asset.class%]
+        calls:
+            - [setProductClass, ['%pim_catalog.entity.product.class%']]
         tags:
             - { name: 'pim_repository' }
 

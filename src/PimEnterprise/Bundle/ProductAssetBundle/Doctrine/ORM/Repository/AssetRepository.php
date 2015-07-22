@@ -11,9 +11,12 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
@@ -23,6 +26,25 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
  */
 class AssetRepository extends EntityRepository implements AssetRepositoryInterface
 {
+    /** @var string */
+    protected $productClass;
+
+    /**
+     * @return string
+     */
+    public function getProductClass()
+    {
+        return $this->productClass;
+    }
+
+    /**
+     * @param string $productClass
+     */
+    public function setProductClass($productClass)
+    {
+        $this->productClass = $productClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -115,7 +137,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
      */
     public function applyTagFilter(QueryBuilder $qb, $field, $operator, $value)
     {
-        $qb->leftJoin('pa.tags', 'tags');
+        $qb->leftJoin(sprintf('%s.tags', $this->getAlias()), 'tags');
 
         switch ($operator) {
             case Operators::IN_LIST:
@@ -171,6 +193,65 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
      */
     protected function getAlias()
     {
-        return 'pa';
+        return 'asset';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findProducts(AssetInterface $asset, $hydrationMode = Query::HYDRATE_OBJECT)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $qb->select('p')
+            ->from($this->getProductClass(), 'p')
+            ->join('p.values', 'v')
+            ->join('v.assets', 'a')
+            ->where('a.id = :assetId')
+            ->setParameter(':assetId', $asset->getId(), \PDO::PARAM_INT);
+
+        return $qb->getQuery()->getResult($hydrationMode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countCompleteAssets(array $assetIds, $localeId, $channelId)
+    {
+        $selectSql = 'SELECT a.id,
+            IF (r.locale_id IS NOT NULL, r.locale_id, cl.locale_id) AS locale_id,
+            v.channel_id
+
+            FROM pimee_product_asset_asset a
+            JOIN pimee_product_asset_reference r ON r.asset_id = a.id
+            JOIN pimee_product_asset_variation v ON v.reference_id = r.id
+            LEFT JOIN pim_catalog_channel_locale AS cl ON v.channel_id = cl.channel_id AND r.locale_id IS NULL
+
+            WHERE a.id IN (?)
+            AND (r.locale_id = ? OR cl.locale_id = ?)
+            AND v.channel_id = ?
+
+            GROUP BY a.id, locale_id, channel_id
+
+            HAVING COUNT(v.file_id) > 0';
+
+        $dbalConnection = $this->_em->getConnection();
+
+        $stmt = $dbalConnection->executeQuery($selectSql,
+            [
+                $assetIds,
+                $localeId,
+                $localeId,
+                $channelId
+            ],
+            [
+                Connection::PARAM_INT_ARRAY,
+                \PDO::PARAM_INT,
+                \PDO::PARAM_INT,
+                \PDO::PARAM_INT,
+            ]
+        );
+
+        return $stmt->rowCount();
     }
 }

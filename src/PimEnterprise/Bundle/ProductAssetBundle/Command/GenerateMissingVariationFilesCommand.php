@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,9 +66,21 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
         $generator     = $this->getVariationsCollectionFileGenerator();
         $processedList = $generator->generate($missingVariations, true);
 
+        $processedAssets = [];
+
         foreach ($processedList as $item) {
             $variation = $item->getItem();
-            $msg       = $this->getGenerationMessage(
+
+            if (!$variation instanceof VariationInterface) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expects a "PimEnterprise\Component\ProductAsset\Model\VariationInterface", "%s" provided.',
+                        get_class($variation)
+                    )
+                );
+            }
+
+            $msg = $this->getGenerationMessage(
                 $variation->getAsset(),
                 $variation->getChannel(),
                 $variation->getLocale()
@@ -80,11 +94,22 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
                     $msg = sprintf('%s <comment>Skipped (%s)</comment>', $msg, $item->getReason());
                     break;
                 default:
+                    $asset = $variation->getAsset();
+                    if (!array_key_exists($asset->getCode(), $processedAssets)) {
+                        $processedAssets[$asset->getCode()] = $asset;
+                    }
                     $msg = sprintf('%s <info>Done!</info>', $msg);
                     break;
             }
 
             $output->writeln($msg);
+        }
+
+        $output->writeln('<info>Schedule completeness calculation</info>');
+
+        foreach ($processedAssets as $asset) {
+            $output->writeln(sprintf('<info>Schedule completeness for asset %s</info>', $asset->getCode()));
+            $this->getCompletenessGenerator()->scheduleForAsset($asset);
         }
 
         $output->writeln('<info>Done!</info>');
@@ -98,5 +123,13 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     protected function getVariationsCollectionFileGenerator()
     {
         return $this->getContainer()->get('pimee_product_asset.variations_collection_files_generator');
+    }
+
+    /**
+     * @return EnterpriseCompletenessGeneratorInterface
+     */
+    protected function getCompletenessGenerator()
+    {
+        return $this->getContainer()->get('pim_catalog.doctrine.completeness_generator');
     }
 }
