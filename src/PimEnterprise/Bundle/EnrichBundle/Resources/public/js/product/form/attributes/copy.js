@@ -75,7 +75,7 @@ define(
              * Return the sources list optionally filtered
              * If there is no working copy it means that the user owns the product, so draft is not a valid source
              *
-             * @returns {*}
+             * @returns {Array}
              */
             getSources: function () {
                 if (!this.workingCopy) {
@@ -92,7 +92,6 @@ define(
             */
             getSourceData: function () {
                 var data = {};
-
                 switch (this.currentSource) {
                     case 'working_copy':
                         data = this.workingCopy ? this.workingCopy.values : this.getFormData().values;
