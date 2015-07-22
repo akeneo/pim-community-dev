@@ -72,9 +72,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $originalProduct = $this->normalizer->normalize($product, 'internal_api', $context);
-        $published       = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
-        $ownerGroups     = $this->categoryAccessRepo->getGrantedUserGroupsForProduct(
+        $workingCopy = $this->normalizer->normalize($product, 'json', $context);
+        $published   = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
+        $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForProduct(
             $product,
             Attributes::OWN_PRODUCTS
         );
@@ -90,7 +90,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                     $this->serializer->normalize($published->getVersion(), 'internal_api', $context) :
                     null,
                 'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
-                'working_copy' => $originalProduct['values'],
+                'working_copy' => $workingCopy,
                 'draft_status' => $this->serializer->normalize($draft->getStatus(), 'internal_api', $context)
             ]
         );
