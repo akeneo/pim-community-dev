@@ -51,7 +51,7 @@ define(
              * @param {Object} context
              */
             onSourceSwitcherRender: function (context) {
-                context.sources       = this.sources;
+                context.sources       = this.getSources();
                 context.currentSource = this.currentSource;
             },
 
@@ -63,7 +63,7 @@ define(
              * @throws {Error} If specified source code is invalid
              */
             onSourceChange: function (newSource) {
-                if (!_.contains(this.sources, newSource)) {
+                if (!_.contains(this.getSources(), newSource)) {
                     throw new Error('Invalid source code "' + newSource + '"');
                 }
 
@@ -72,12 +72,17 @@ define(
             },
 
             /**
-             * Return the current product id
+             * Return the sources list optionally filtered
+             * If there is no working copy it means that the user owns the product, so draft is not a valid source
              *
-             * @returns {number}
+             * @returns {*}
              */
-            getProductId: function () {
-                return this.getFormData().meta.id;
+            getSources: function () {
+                if (!this.workingCopy) {
+                    return _.without(this.sources, 'draft');
+                } else {
+                    return this.sources;
+                }
             },
 
             /**

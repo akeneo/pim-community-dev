@@ -77,6 +77,10 @@ define(
              * @returns {boolean}
              */
             isValueChanged: function (field, locale, scope) {
+                if (!this.workingCopy) {
+                    return false;
+                }
+
                 var attribute = field.attribute;
                 locale = locale || field.context.locale;
                 scope = scope || field.context.scope;
