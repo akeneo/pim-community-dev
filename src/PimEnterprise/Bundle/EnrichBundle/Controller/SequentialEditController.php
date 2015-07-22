@@ -41,7 +41,7 @@ class SequentialEditController extends BaseSequentialEditController
                 'pim_enrich_product_edit',
                 [
                     'dataLocale' => $request->get('dataLocale'),
-                    'id' => current($sequentialEdit->getObjectSet())
+                    'id'         => current($sequentialEdit->getObjectSet())
                 ]
             )
         );

@@ -126,8 +126,9 @@ class PublishedProductController extends AbstractController
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function publishAction(Request $request, $id)
     {
@@ -144,7 +145,7 @@ class PublishedProductController extends AbstractController
             return new JsonResponse(
                 [
                     'successful' => true,
-                    'message' => $this->translator->trans('flash.product.published')
+                    'message'    => $this->translator->trans('flash.product.published')
                 ]
             );
         }
@@ -166,8 +167,9 @@ class PublishedProductController extends AbstractController
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
      *
-     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     *
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function unpublishAction(Request $request, $id)
     {
@@ -184,7 +186,7 @@ class PublishedProductController extends AbstractController
             return new JsonResponse(
                 [
                     'successful' => true,
-                    'message' => $this->translator->trans('flash.product.unpublished')
+                    'message'    => $this->translator->trans('flash.product.unpublished')
                 ]
             );
         }
@@ -257,9 +259,9 @@ class PublishedProductController extends AbstractController
      *
      * @param integer|string $id
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
      */
     protected function findPublishedOr404($id)
     {

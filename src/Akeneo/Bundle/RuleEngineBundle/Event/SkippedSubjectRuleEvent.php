@@ -20,7 +20,6 @@ use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
  */
 class SkippedSubjectRuleEvent extends RuleEvent
 {
-
     /** @var mixed */
     protected $subject;
 

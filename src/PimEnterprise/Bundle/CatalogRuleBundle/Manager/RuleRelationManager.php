@@ -147,9 +147,9 @@ class RuleRelationManager
     /**
      * @param $resourceName
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     protected function resolveResourceName($resourceName)
     {
