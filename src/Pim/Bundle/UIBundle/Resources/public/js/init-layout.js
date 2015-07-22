@@ -52,7 +52,7 @@ require(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/m
     /**
      * Init page layout js and hide progress bar after hash navigation request is completed
      */
-    mediator.bind('hash_navigation_request:complete', function () {
+    mediator.bind('route_complete', function () {
         layout.init();
     });
 
@@ -123,7 +123,7 @@ require(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/m
 
         $(window).on('resize', adjustHeight);
 
-        mediator.bind('hash_navigation_request:complete', adjustReloaded);
+        mediator.bind('route_complete', adjustReloaded);
     }());
 
     /* ============================================================

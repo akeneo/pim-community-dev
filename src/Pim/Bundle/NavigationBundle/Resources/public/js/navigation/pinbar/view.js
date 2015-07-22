@@ -63,7 +63,7 @@ function($, _, Backbone, mediator, AbstractView,
              * Change pinbar icon state after hash navigation request is completed
              */
             mediator.bind(
-                "hash_navigation_request:complete",
+                "route_complete",
                 this.checkPinbarIcon,
                 this
             );
@@ -103,7 +103,7 @@ function($, _, Backbone, mediator, AbstractView,
                 }
                 if (url != this.getCurrentPageItemData().url) {
                     if (changeLocation) {
-                        Backbone.history.navigate(url);
+                        Backbone.history.navigate('#/' + url);
                     }
                     item.save(
                         null,

@@ -66,7 +66,7 @@ function($, _, mediator) {
             }
 
             // destroy DOM garbage after change page via hash-navigation
-            mediator.once('hash_navigation_request:start', function() {
+            mediator.once('route_start', function() {
                 if (this.element.closest('body').length) {
                     this.multiselect("destroy");
                     this.element.hide();
