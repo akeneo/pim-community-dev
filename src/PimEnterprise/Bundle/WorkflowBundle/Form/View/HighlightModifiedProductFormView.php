@@ -70,17 +70,13 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
             foreach (array_keys($view['attributes']) as $name) {
                 if (isset($views[$key]['attributes'][$name]['value'])
                     && $this->applier->isMarkedAsModified($views[$key]['attributes'][$name])) {
-
                     $this->markFieldAsModified($views[$key]['attributes'][$name]['value']);
-
                 } elseif (isset($views[$key]['attributes'][$name]['values'])) {
-
                     foreach (array_keys($views[$key]['attributes'][$name]['values']) as $scope) {
                         if ($this->applier->isMarkedAsModified($views[$key]['attributes'][$name], $scope)) {
                             $this->markFieldAsModified($views[$key]['attributes'][$name]['values'][$scope]);
                         }
                     }
-
                 }
             }
         }
@@ -106,10 +102,10 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
         $url = $this->urlGenerator->generate(
             'pimee_enrich_product_value_show',
             [
-                'productId' => $value->getEntity()->getId(),
+                'productId'     => $value->getEntity()->getId(),
                 'attributeCode' => $value->getAttribute()->getCode(),
-                'locale' => $value->getLocale(),
-                'scope' => $value->getScope(),
+                'locale'        => $value->getLocale(),
+                'scope'         => $value->getScope(),
             ]
         );
 

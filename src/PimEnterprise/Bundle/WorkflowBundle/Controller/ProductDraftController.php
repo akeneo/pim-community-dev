@@ -89,10 +89,11 @@ class ProductDraftController extends AbstractController
     /**
      * @param integer|string $id
      *
-     * @return RedirectResponse
      * @throws \LogicException
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
+     *
+     * @return RedirectResponse
      */
     public function approveAction($id)
     {
@@ -123,7 +124,7 @@ class ProductDraftController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $productDraft->getProduct()->getId(),
+                    'id'         => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
@@ -133,9 +134,10 @@ class ProductDraftController extends AbstractController
     /**
      * @param integer|string $id
      *
-     * @return RedirectResponse
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
+     *
+     * @return RedirectResponse
      */
     public function refuseAction($id)
     {
@@ -157,7 +159,7 @@ class ProductDraftController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $productDraft->getProduct()->getId(),
+                    'id'         => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
@@ -169,9 +171,10 @@ class ProductDraftController extends AbstractController
      *
      * @param integer|string $id
      *
-     * @return RedirectResponse
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
+     *
+     * @return RedirectResponse
      */
     public function readyAction($id)
     {
@@ -189,7 +192,7 @@ class ProductDraftController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $productDraft->getProduct()->getId(),
+                    'id'         => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )

@@ -71,8 +71,8 @@ class PrepareProductDraftChangesSubscriber implements EventSubscriberInterface
         $productDraft = $event->getProductDraft();
         $submittedChanges = $event->getChanges();
 
-        $oldValue = array_merge(['values'=>[]], $productDraft->getChanges());
-        $newValue = array_merge(['values'=>[]], $submittedChanges);
+        $oldValue = array_merge(['values'=> []], $productDraft->getChanges());
+        $newValue = array_merge(['values'=> []], $submittedChanges);
 
         $event->setChanges(
             [

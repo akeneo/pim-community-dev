@@ -38,7 +38,7 @@ class ProductDraftRepository extends EntityRepository implements
         return $this->findOneBy(
             [
                 'product' => $product,
-                'author' => $username,
+                'author'  => $username,
             ]
         );
     }

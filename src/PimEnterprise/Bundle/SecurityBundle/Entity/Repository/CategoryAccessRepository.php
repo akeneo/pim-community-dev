@@ -343,9 +343,9 @@ class CategoryAccessRepository extends EntityRepository
      * @param string $accessLevel
      * @param array  $categoryIds
      *
-     * @return \Doctrine\ORM\QueryBuilder
-     *
      * @throws \LogicException
+     *
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function isCategoriesGranted(User $user, $accessLevel, array $categoryIds)
     {
@@ -369,14 +369,14 @@ class CategoryAccessRepository extends EntityRepository
      *
      * @param $accessLevel
      *
-     * @return string
-     *
      * @throws \LogicException
+     *
+     * @return string
      */
     protected function getAccessField($accessLevel)
     {
         $mapping = [
-            Attributes::OWN_PRODUCTS => 'ownProducts',
+            Attributes::OWN_PRODUCTS  => 'ownProducts',
             Attributes::EDIT_PRODUCTS => 'editProducts',
             Attributes::VIEW_PRODUCTS => 'viewProducts',
         ];

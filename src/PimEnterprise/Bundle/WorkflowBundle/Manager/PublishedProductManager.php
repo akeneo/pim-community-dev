@@ -122,7 +122,7 @@ class PublishedProductManager
             [
                 [
                     'attribute' => $this->productManager->getIdentifierAttribute(),
-                    'value' => $identifier
+                    'value'     => $identifier
                 ]
             ]
         );

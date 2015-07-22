@@ -30,9 +30,9 @@ class UserContext extends BaseUserContext
     /**
      * Returns the current locale making sure that user has permissions for this locale
      *
-     * @return Locale
-     *
      * @throws \LogicException When there is no granted locale
+     *
+     * @return Locale
      */
     public function getCurrentGrantedLocale()
     {
@@ -78,8 +78,9 @@ class UserContext extends BaseUserContext
     /**
      * Get user category tree
      *
-     * @return CategoryInterface
      * @throws \LogicException
+     *
+     * @return CategoryInterface
      */
     public function getAccessibleUserTree()
     {

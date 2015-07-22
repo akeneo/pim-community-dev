@@ -72,7 +72,7 @@ class ProductMassActionManager extends BaseProductMassActionManager
                 array_unique($attributeIds),
                 array(
                     'conditions' => ['unique' => 0],
-                    'filters'    => ['g.id' => $subQB]
+                    'filters'    => ['g.id'   => $subQB]
                 )
             );
     }

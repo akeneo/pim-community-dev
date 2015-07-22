@@ -104,9 +104,9 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      * @param array $data
      * @param array $context
      *
-     * @return object
-     *
      * @throws InvalidArgumentException
+     *
+     * @return object
      */
     protected function getEntity(array $data, array $context)
     {
@@ -141,9 +141,9 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      *
      * @param string $identifier
      *
-     * @return object|false
-     *
      * @throws RevertException
+     *
+     * @return object|false
      */
     protected function findEntity($identifier)
     {

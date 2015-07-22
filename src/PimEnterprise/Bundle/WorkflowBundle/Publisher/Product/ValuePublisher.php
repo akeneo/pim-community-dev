@@ -60,10 +60,8 @@ class ValuePublisher implements PublisherInterface
                     $copiedData->add($copiedObject);
                 }
             }
-
         } elseif (is_object($originalData)) {
             $copiedData = $this->publisher->publish($originalData, $options);
-
         } else {
             $copiedData = $originalData;
         }
