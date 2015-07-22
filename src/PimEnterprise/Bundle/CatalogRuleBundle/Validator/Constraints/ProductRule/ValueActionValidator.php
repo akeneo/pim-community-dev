@@ -88,10 +88,10 @@ class ValueActionValidator extends ConstraintValidator
                 ['locale' => $action->getLocale(), 'scope' => $action->getScope()]
             );
         } catch (\Exception $e) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 $constraint->message,
                 ['%message%' => $e->getMessage()]
-            );
+            )->addViolation();
         }
 
         $fakeValue = $fakeProduct->getValue($action->getField(), $action->getLocale(), $action->getScope());
@@ -100,12 +100,12 @@ class ValueActionValidator extends ConstraintValidator
         }
 
         foreach ($errors as $error) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 $constraint->message,
                 [
                     '%message%' => $error->getMessage(),
                 ]
-            );
+            )->addViolation();
         }
     }
 
@@ -130,10 +130,10 @@ class ValueActionValidator extends ConstraintValidator
                 ]
             );
         } catch (\Exception $e) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 $constraint->message,
                 ['%message%' => $e->getMessage()]
-            );
+            )->addViolation();
         }
     }
 
