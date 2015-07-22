@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
+use Akeneo\Bundle\StorageUtilsBundle\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -9,7 +10,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Attribute option remover
@@ -60,11 +60,20 @@ class AttributeOptionRemover implements RemoverInterface
         }
 
         $options = $this->optionsResolver->resolveRemoveOptions($options);
-        $this->eventDispatcher->dispatch(AttributeOptionEvents::PRE_REMOVE, new GenericEvent($attributeOption));
+        $attributeOptionId = $attributeOption->getId();
+        $this->eventDispatcher->dispatch(
+            AttributeOptionEvents::PRE_REMOVE,
+            new RemoveEvent($attributeOption, $attributeOptionId)
+        );
 
         $this->objectManager->remove($attributeOption);
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(
+            AttributeOptionEvents::POST_REMOVE,
+            new RemoveEvent($attributeOption, $attributeOptionId)
+        );
     }
 }

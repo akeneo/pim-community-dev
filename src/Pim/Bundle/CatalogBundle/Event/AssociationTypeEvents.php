@@ -12,12 +12,22 @@ namespace Pim\Bundle\CatalogBundle\Event;
 final class AssociationTypeEvents
 {
     /**
-     * This event is thrown before an association type is removed.
+     * This event is thrown before an association type get removed.
      *
      * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
     const PRE_REMOVE = 'pim_catalog.pre_remove.association_type';
+
+    /**
+     * This event is thrown after an association type get removed.
+     *
+     * The event listener receives an
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_REMOVE = 'pim_catalog.post_remove.association_type';
 }

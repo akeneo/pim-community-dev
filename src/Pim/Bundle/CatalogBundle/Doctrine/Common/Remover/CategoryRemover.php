@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
+use Akeneo\Bundle\StorageUtilsBundle\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -10,7 +11,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Category remover
@@ -67,8 +67,10 @@ class CategoryRemover implements RemoverInterface
         }
 
         $options = $this->optionsResolver->resolveRemoveOptions($options);
+
+        $categoryId = $category->getId();
         $eventName = $category->isRoot() ? CategoryEvents::PRE_REMOVE_TREE : CategoryEvents::PRE_REMOVE_CATEGORY;
-        $this->eventDispatcher->dispatch($eventName, new GenericEvent($category));
+        $this->eventDispatcher->dispatch($eventName, new RemoveEvent($category, $categoryId));
 
         $productsToUpdate = [];
         foreach ($category->getProducts() as $product) {
@@ -91,5 +93,8 @@ class CategoryRemover implements RemoverInterface
                 ]
             );
         }
+
+        $eventName = $category->isRoot() ? CategoryEvents::POST_REMOVE_TREE : CategoryEvents::POST_REMOVE_CATEGORY;
+        $this->eventDispatcher->dispatch($eventName, new RemoveEvent($category, $categoryId));
     }
 }

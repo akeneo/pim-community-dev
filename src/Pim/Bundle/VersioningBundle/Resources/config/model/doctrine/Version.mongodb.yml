@@ -1,7 +1,6 @@
 Pim\Bundle\VersioningBundle\Model\Version:
     type: document
     collection: pim_versioning_version
-    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\VersionRepository
     indexes:
         pending:

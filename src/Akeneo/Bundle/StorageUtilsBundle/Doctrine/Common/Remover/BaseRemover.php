@@ -2,11 +2,14 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
+use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
+use Akeneo\Bundle\StorageUtilsBundle\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Base remover, declared as different services for different classes
@@ -23,22 +26,28 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
     /** @var RemovingOptionsResolverInterface */
     protected $optionsResolver;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var string */
     protected $removedClass;
 
     /**
      * @param ObjectManager                    $objectManager
      * @param RemovingOptionsResolverInterface $optionsResolver
+     * @param EventDispatcherInterface         $eventDispatcher
      * @param string                           $removedClass
      */
     public function __construct(
         ObjectManager $objectManager,
         RemovingOptionsResolverInterface $optionsResolver,
+        EventDispatcherInterface $eventDispatcher,
         $removedClass
     ) {
-        $this->objectManager = $objectManager;
+        $this->objectManager   = $objectManager;
         $this->optionsResolver = $optionsResolver;
-        $this->removedClass = $removedClass;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->removedClass    = $removedClass;
     }
 
     /**
@@ -57,11 +66,16 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
         }
 
         $options = $this->optionsResolver->resolveRemoveOptions($options);
+        $objectId = $object->getId();
+        $this->eventDispatcher->dispatch(BaseEvents::PRE_REMOVE, new RemoveEvent($object, $objectId));
+
         $this->objectManager->remove($object);
 
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(BaseEvents::POST_REMOVE, new RemoveEvent($object, $objectId));
     }
 
     /**

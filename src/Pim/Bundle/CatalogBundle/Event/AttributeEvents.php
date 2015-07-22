@@ -35,7 +35,7 @@ final class AttributeEvents
      * This event is thrown before an attribute is removed.
      *
      * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
@@ -45,7 +45,7 @@ final class AttributeEvents
      * This event is thrown after an attribute is removed.
      *
      * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */

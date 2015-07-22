@@ -21,3 +21,6 @@ services:
             - '@database_connection'
             - '@doctrine.orm.default_entity_manager'
             - '@pim_catalog.doctrine.table_name_builder'
+
+    pim_versioning.object_manager.version:
+        alias: doctrine.orm.entity_manager

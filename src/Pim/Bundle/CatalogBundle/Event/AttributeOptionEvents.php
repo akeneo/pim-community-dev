@@ -12,12 +12,22 @@ namespace Pim\Bundle\CatalogBundle\Event;
 final class AttributeOptionEvents
 {
     /**
-     * This event is thrown before an attribute option is removed.
+     * This event is thrown before an attribute option get removed.
      *
      * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
     const PRE_REMOVE = 'pim_catalog.pre_remove.attribute_option';
+
+    /**
+     * This event is thrown after an attribute option get removed.
+     *
+     * The event listener receives an
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_REMOVE = 'pim_catalog.post_remove.attribute_option';
 }

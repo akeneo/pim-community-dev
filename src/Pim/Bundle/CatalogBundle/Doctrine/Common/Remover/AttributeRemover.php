@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
+use Akeneo\Bundle\StorageUtilsBundle\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -11,7 +12,6 @@ use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Attribute remover
@@ -74,7 +74,9 @@ class AttributeRemover implements RemoverInterface
         }
 
         $options = $this->optionsResolver->resolveRemoveOptions($options);
-        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($attribute));
+
+        $attributeId = $attribute->getId();
+        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new RemoveEvent($attribute, $attributeId));
 
         $this->removeFromProductTemplate($attribute);
         $this->objectManager->remove($attribute);
@@ -82,7 +84,7 @@ class AttributeRemover implements RemoverInterface
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(AttributeEvents::POST_REMOVE, new GenericEvent($attribute));
+        $this->eventDispatcher->dispatch(AttributeEvents::POST_REMOVE, new RemoveEvent($attribute, $attributeId));
     }
 
     /**
