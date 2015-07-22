@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Akeneo\Component\Console\CommandResult;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -76,12 +77,12 @@ class EnterpriseCommandContext extends CommandContext
             $commandOptions['-a'] = $assetCode;
         }
 
-        $result = $commandTester->execute($commandOptions);
+        $commandResult = $commandTester->execute($commandOptions);
 
-        if (0 !== $result) {
+        if (0 !== $commandResult) {
             throw new \Exception(
                 sprintf(
-                    'An error occured during the execution of the publish command : %s',
+                    'An error occured during the execution of the generate variations command : %s',
                     $commandTester->getDisplay()
                 )
             );

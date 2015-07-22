@@ -1,10 +1,10 @@
 parameters:
-    pimee_product_asset.event_listener.variation.class: PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEventListener
+    pimee_product_asset.subscriber.missing_variations.class: PimEnterprise\Bundle\ProductAssetBundle\Event\MissingVariationsEventSubscriber
 
 services:
-    pimee_product_asset.event_listener.variation:
-        class: %pimee_product_asset.event_listener.variation.class%
+    pimee_product_asset.subscriber.missing_variations:
+        class: %pimee_product_asset.subscriber.missing_variations.class%
         arguments:
             - '@pimee_product_asset.command_launcher'
         tags:
-            - { name: kernel.event_listener, event: pimee_product_asset.asset.files_upload.post, method: onAssetFilesUploaded }
+            - { name: kernel.event_subscriber }

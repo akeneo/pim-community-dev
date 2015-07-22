@@ -21,6 +21,7 @@ families:
             - datasheet
             - side_view
             - length
+            - gallery
         attributeAsLabel: name
         requirements:
             tablet:
@@ -33,12 +34,14 @@ families:
                 - side_view
                 - size
                 - main_color
+                - gallery
             mobile:
                 - sku
                 - name
                 - price
                 - size
                 - main_color
+                - gallery
     pants:
         labels:
             en_US: Pants

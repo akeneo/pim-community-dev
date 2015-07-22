@@ -1,5 +1,6 @@
 parameters:
-    pim_catalog.repository.product_mass_action.class: PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository
+    pim_catalog.repository.product_mass_action.class:  PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository
+    pim_catalog.doctrine.completeness_generator.class: PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
 
 services:
     pim_catalog.repository.product_mass_action:
@@ -9,3 +10,14 @@ services:
             - %pim_catalog.entity.product.class%
             - '@pim_catalog.repository.family'
             - '@pimee_workflow.repository.published_product'
+
+    pim_catalog.doctrine.completeness_generator:
+        class: %pim_catalog.doctrine.completeness_generator.class%
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.family'
+            - '@pimee_product_asset.repository.asset'
+            - '@pim_catalog.repository.attribute'
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.product.class%
