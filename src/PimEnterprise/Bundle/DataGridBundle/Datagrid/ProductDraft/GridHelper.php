@@ -66,7 +66,7 @@ class GridHelper
     {
         return [
             ProductDraft::IN_PROGRESS => 'pimee_workflow.product_draft.status.in_progress',
-            ProductDraft::READY => 'pimee_workflow.product_draft.status.ready',
+            ProductDraft::READY       => 'pimee_workflow.product_draft.status.ready',
         ];
     }
 }

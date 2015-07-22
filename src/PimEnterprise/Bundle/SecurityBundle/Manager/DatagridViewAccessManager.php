@@ -62,9 +62,9 @@ class DatagridViewAccessManager
      * @param DatagridView  $view
      * @param string        $attribute
      *
-     * @return bool
-     *
      * @throws \LogicException
+     *
+     * @return bool
      */
     public function isUserGranted(UserInterface $user, DatagridView $view, $attribute)
     {

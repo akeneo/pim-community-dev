@@ -55,8 +55,8 @@ class MetadataSubscriber implements EventSubscriberInterface
             [
                 self::KEY => [
                     'attribute' => $value->getAttribute()->getCode(),
-                    'locale' => $value->getLocale(),
-                    'scope' => $value->getScope(),
+                    'locale'    => $value->getLocale(),
+                    'scope'     => $value->getScope(),
                 ]
             ]
         );

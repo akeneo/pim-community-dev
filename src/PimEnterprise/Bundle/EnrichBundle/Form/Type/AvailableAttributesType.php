@@ -74,7 +74,7 @@ class AvailableAttributesType extends BaseAvailableAttributesType
             'attributes',
             'light_entity',
             [
-                'repository' => $this->attributeRepository,
+                'repository'         => $this->attributeRepository,
                 'repository_options' => [
                     'excluded_attribute_ids' => $excludedAttributeIds,
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),

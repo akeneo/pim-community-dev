@@ -46,9 +46,9 @@ class CategoryPermissionsType extends AbstractType
             'apply_on_children',
             'checkbox',
             [
-                'label' => 'category.permissions.apply_on_children.label',
-                'help'  => 'category.permissions.apply_on_children.help',
-                'data' => true,
+                'label'    => 'category.permissions.apply_on_children.label',
+                'help'     => 'category.permissions.apply_on_children.help',
+                'data'     => true,
                 'required' => false
             ]
         );

@@ -241,9 +241,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string $sku
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\Product
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
      */
     public function getPublished($sku)
     {
@@ -395,8 +395,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string $type
      * @param string $action
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     protected function getAccessLevelByAccessTypeAndAction($type, $action)
     {
