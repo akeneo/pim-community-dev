@@ -24,9 +24,9 @@ interface BuilderInterface
     /**
      * @param RuleDefinitionInterface $definition
      *
-     * @return RuleInterface
-     *
      * @throws \Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException
+     *
+     * @return RuleInterface
      */
     public function build(RuleDefinitionInterface $definition);
 }

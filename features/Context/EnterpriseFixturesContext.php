@@ -489,7 +489,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $data
             );
@@ -505,7 +505,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
 
             $condition = [
-                'field' => $data['field'],
+                'field'    => $data['field'],
                 'operator' => $data['operator'],
                 // TODO: replace this dirty fix to use the same class than ConditionNormalizer
                 'value' => $data['value'],
@@ -537,7 +537,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $data
             );
@@ -553,7 +553,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $value = $this->formatActionData($attribute, $data['value']);
 
             $action = [
-                'type' => 'set_value',
+                'type'  => 'set_value',
                 'field' => $code,
                 'value' => $value,
             ];
@@ -582,7 +582,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $data = array_merge(
                 [
                     'locale' => null,
-                    'scope' => null
+                    'scope'  => null
                 ],
                 $data
             );
@@ -593,9 +593,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $content['actions'] = [];
             }
             $action = [
-                'type' => 'copy_value',
+                'type'       => 'copy_value',
                 'from_field' => $data['from_field'],
-                'to_field' => $data['to_field'],
+                'to_field'   => $data['to_field'],
             ];
             if ($data['from_locale'] !== null && $data['from_locale'] !== '') {
                 $action['from_locale'] = $data['from_locale'];
@@ -620,9 +620,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string $code
      *
-     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface
      */
     public function getRule($code)
     {

@@ -57,8 +57,9 @@ class AttributeGroupAccessManager
      * @param AttributeGroupInterface $group
      * @param string                  $permission
      *
-     * @return bool
      * @throws \LogicException
+     *
+     * @return bool
      */
     public function isUserGranted(UserInterface $user, AttributeGroupInterface $group, $permission)
     {

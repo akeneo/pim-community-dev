@@ -42,9 +42,10 @@ class CategoryTreeController extends BaseCategoryTreeController
      * @param integer $categoryId the category id
      * @param string  $context    the retrieving context
      *
-     * @return CategoryInterface
      * @throws NotFoundHttpException
      * @throws AccessDeniedException
+     *
+     * @return CategoryInterface
      */
     protected function findGrantedCategory($categoryId, $context)
     {

@@ -93,8 +93,9 @@ class ProductDraftController extends AbstractController
      * List proposals
      *
      * @Template
-     * @return Response
      * @throws AccessDeniedException if the current user is not the owner of any categories
+     *
+     * @return Response
      */
     public function indexAction()
     {
@@ -109,10 +110,11 @@ class ProductDraftController extends AbstractController
      * @param Request        $request
      * @param integer|string $id
      *
-     * @return JsonResponse|RedirectResponse
      * @throws \LogicException
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
+     *
+     * @return JsonResponse|RedirectResponse
      */
     public function approveAction(Request $request, $id)
     {
@@ -145,7 +147,7 @@ class ProductDraftController extends AbstractController
             return new JsonResponse(
                 [
                     'successful' => $status === 'success',
-                    'message' => $this->getTranslator()->trans(
+                    'message'    => $this->getTranslator()->trans(
                         sprintf('flash.product_draft.approve.%s', $status),
                         $messageParams
                     )
@@ -159,7 +161,7 @@ class ProductDraftController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $productDraft->getProduct()->getId(),
+                    'id'         => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
@@ -170,9 +172,10 @@ class ProductDraftController extends AbstractController
      * @param Request        $request
      * @param integer|string $id
      *
-     * @return RedirectResponse
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
+     *
+     * @return RedirectResponse
      */
     public function refuseAction(Request $request, $id)
     {
@@ -194,7 +197,7 @@ class ProductDraftController extends AbstractController
             return new JsonResponse(
                 [
                     'successful' => true,
-                    'message' => $this->getTranslator()->trans('flash.product_draft.refuse.success')
+                    'message'    => $this->getTranslator()->trans('flash.product_draft.refuse.success')
                 ]
             );
         }
@@ -203,7 +206,7 @@ class ProductDraftController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $productDraft->getProduct()->getId(),
+                    'id'         => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
@@ -215,9 +218,10 @@ class ProductDraftController extends AbstractController
      *
      * @param integer|string $id
      *
-     * @return RedirectResponse
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
+     *
+     * @return RedirectResponse
      */
     public function readyAction($id)
     {
@@ -235,7 +239,7 @@ class ProductDraftController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $productDraft->getProduct()->getId(),
+                    'id'         => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )

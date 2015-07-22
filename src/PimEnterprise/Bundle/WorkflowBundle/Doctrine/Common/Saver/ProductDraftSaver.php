@@ -156,9 +156,9 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
      * @param ProductInterface $product
      * @param array            $options
      *
-     * @return null
-     *
      * @throws \LogicException
+     *
+     * @return null
      */
     protected function persistProductDraft(ProductInterface $product, array $options)
     {
@@ -195,9 +195,9 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     /**
      * Get user from the security context
      *
-     * @return \Symfony\Component\Security\Core\User\UserInterface
-     *
      * @throws \LogicException
+     *
+     * @return \Symfony\Component\Security\Core\User\UserInterface
      */
     protected function getUser()
     {

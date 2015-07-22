@@ -84,10 +84,10 @@ class RuleController
      *
      * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
      *
-     * @return JsonResponse
-     *
      * @throws NotFoundHttpException
      * @throws \Exception
+     *
+     * @return JsonResponse
      */
     public function deleteAction($resourceName, $resourceId, $ruleId)
     {

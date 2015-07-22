@@ -48,9 +48,9 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
     /**
      * {@inheritdoc}
      *
-     * @return RuleDefinitionInterface
-     *
      * @throws \LogicException
+     *
+     * @return RuleDefinitionInterface
      */
     public function denormalize($data, $class, $format = null, array $context = [])
     {
