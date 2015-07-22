@@ -6,6 +6,9 @@ define(function (require) {
     var messenger = require('oro/messenger');
     var _ = require('underscore');
     var FetcherRegistry = require('pim/fetcher-registry');
+    require('oro/init-layout');
+    require('oro/init-user');
+    require('pimuser/js/init-signin');
 
     return (function () {
         return {
