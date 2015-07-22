@@ -78,9 +78,16 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $workingCopy = null;
         if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
             $workingCopy = $this->normalizer->normalize($product, 'json', $context);
+            $draft       = $this->draftManager->findOrCreate($product);
+            $draftStatus = $draft->getStatus();
+            $this->draftApplier->apply($product, $draft);
+            $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
+        } else {
+            $workingCopy = null;
+            $draftStatus = null;
+            $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
         }
 
         $published   = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
@@ -89,23 +96,19 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             Attributes::OWN_PRODUCTS
         );
 
-        $draft = $this->draftManager->findOrCreate($product);
-        $this->draftApplier->apply($product, $draft);
-        $modifiedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
-
-        $modifiedProduct['meta'] = array_merge(
-            $modifiedProduct['meta'],
+        $normalizedProduct['meta'] = array_merge(
+            $normalizedProduct['meta'],
             [
                 'published' => $published ?
                     $this->serializer->normalize($published->getVersion(), 'internal_api', $context) :
                     null,
                 'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
                 'working_copy' => $workingCopy,
-                'draft_status' => $this->serializer->normalize($draft->getStatus(), 'internal_api', $context)
+                'draft_status' => $draftStatus
             ]
         );
 
-        return $modifiedProduct;
+        return $normalizedProduct;
     }
 
     /**
