@@ -76,9 +76,7 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($ruleDefinition);
-        if (true === $options['flush'] && true === $options['flush_only_object']) {
-            $this->objectManager->flush($ruleDefinition);
-        } elseif (true === $options['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
 
