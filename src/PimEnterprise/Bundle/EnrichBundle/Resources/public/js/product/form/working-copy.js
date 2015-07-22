@@ -98,7 +98,11 @@ define(
                     scope
                 );
 
-                return workingCopyValue !== currentValue;
+                if (_.isObject(currentValue.data)) {
+                    return !_.isEqual(workingCopyValue.data, currentValue.data);
+                } else {
+                    return workingCopyValue.data !== currentValue.data;
+                }
             },
 
             /**
