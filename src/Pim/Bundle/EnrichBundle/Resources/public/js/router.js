@@ -22,6 +22,8 @@ define(function (require) {
             this.loadingMask = new LoadingMask();
             this.loadingMask.render().$el.appendTo($('.hash-loading-mask'));
             _.bindAll(this, 'showLoadingMask', 'hideLoadingMask');
+
+            this.listenTo(mediator, 'route_complete', this._processLinks);
         },
         dashboard: function () {
             return this.defaultRoute(this.generate('pim_dashboard_index'));
@@ -94,6 +96,20 @@ define(function (require) {
             var fragment = window.location.hash;
             Backbone.history.fragment = new Date().getTime();
             this.redirect(fragment, true);
+        },
+        _processLinks: function () {
+            _.each($('a[route]'), function (link) {
+                var route = link.getAttribute('route');
+                var routeParams = link.getAttribute('route-params');
+                if (routeParams) {
+                    try {
+                        routeParams = JSON.parse(routeParams.replace(/'/g, '"'));
+                    } catch (error) {
+                        routeParams = null;
+                    }
+                }
+                link.setAttribute('href', '#' + Routing.generate(route, routeParams));
+            });
         }
     });
 

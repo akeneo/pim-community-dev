@@ -39,7 +39,7 @@ function($, _, Backbone, app, mediator, error) {
              * Change active pinbar item after hash navigation request is completed
              */
             mediator.bind(
-                "hash_navigation_request:complete",
+                "route_complete",
                 function() {
                     /*if (!this.isRemoved && this.checkCurrentUrl()) {
                         this.maximize();

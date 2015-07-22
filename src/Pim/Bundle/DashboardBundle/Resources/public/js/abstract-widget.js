@@ -29,11 +29,7 @@ define(
             initialize: function (options) {
                 this.options = _.extend({}, this.defaults, this.options, options);
 
-                mediator.on('hash_navigation_request:complete', function () {
-                    if (this.isDashboardPage()) {
-                        this.delayedLoad();
-                    }
-                }, this);
+                this.listenTo(router, 'route_complete:pim_dashboard_index', this.delayedLoad);
             },
 
             render: function () {
@@ -51,17 +47,8 @@ define(
                 return this;
             },
 
-            isDashboardPage: function () {
-                var route = router.match(Backbone.history.getFragment());
-                if (false !== route) {
-                    return route.name === 'oro_default' || route.name === 'pim_dashboard_index';
-                }
-
-                return false;
-            },
-
             loadData: function () {
-                if (!this.needsData || !this.isDashboardPage()) {
+                if (!this.needsData) {
                     this.loadTimeout = null;
 
                     return;

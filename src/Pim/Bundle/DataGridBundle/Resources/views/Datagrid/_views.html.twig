@@ -176,7 +176,7 @@ require(
 
         var $createLink = $('#create-view').on('click', promptForLabel);
 
-        mediator.once('hash_navigation_request:start', function() {
+        mediator.once('route_start', function() {
             $selector.multiselect('destroy').hide();
             $createLink.addClass('hide');
             $updateLink.addClass('hide');

@@ -149,7 +149,7 @@ define(
 
                 pageInit();
             });
-            mediator.bind('hash_navigation_request:complete pim:reinit', function () {
+            mediator.on('route_complete pim:reinit', function () {
                 pageInit();
             });
         };

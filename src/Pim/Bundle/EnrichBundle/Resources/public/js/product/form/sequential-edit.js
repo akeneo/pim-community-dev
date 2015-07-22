@@ -15,8 +15,7 @@ define(
         'oro/mediator',
         'pim/form',
         'text!pim/template/product/sequential-edit',
-        'routing',
-        'oro/navigation',
+        'pim/router',
         'pim/product-manager',
         'pim/fetcher-registry',
         'pim/user-context',
@@ -29,8 +28,7 @@ define(
         mediator,
         BaseForm,
         template,
-        Routing,
-        Navigation,
+        router,
         ProductManager,
         FetcherRegistry,
         UserContext
@@ -47,10 +45,8 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                mediator.once('hash_navigation_request:start', function (navigation) {
-                    if (navigation.url === Routing.generate('pim_enrich_product_index')) {
-                        FetcherRegistry.clear('sequentialEdit');
-                    }
+                this.listenTo(router, 'route_start:pim_enrich_product_index', function () {
+                    FetcherRegistry.clear('sequentialEdit');
                 });
 
                 return $.when(
@@ -172,15 +168,10 @@ define(
                 this.goToProduct(event.currentTarget.dataset.id);
             },
             goToProduct: function (id) {
-                Navigation.getInstance().setLocation(
-                    Routing.generate(
-                        'pim_enrich_product_edit',
-                        { id: id }
-                    )
-                );
+                router.redirectToRoute('pim_enrich_product_edit', { id: id });
             },
             finish: function () {
-                Navigation.getInstance().setLocation(Routing.generate('pim_enrich_product_index'));
+                router.redirectToRoute('pim_enrich_product_index');
             }
         });
     }

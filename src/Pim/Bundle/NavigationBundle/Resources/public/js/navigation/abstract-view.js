@@ -1,7 +1,7 @@
 /* jshint browser:true */
 /* global define */
-define(['underscore', 'backbone', 'oro/navigation/dotmenu/view'],
-function(_, Backbone, DotmenuView) {
+define(['underscore', 'backbone', 'oro/navigation/dotmenu/view', 'pim/router'],
+function(_, Backbone, DotmenuView, router) {
     'use strict';
 
     /**
@@ -78,8 +78,6 @@ function(_, Backbone, DotmenuView) {
          */
         getNewItemData: function(el) {
             var itemData = this.getCurrentPageItemData();
-            itemData['title_rendered'] = document.title;
-            itemData['title_rendered_short'] = document.title;
             itemData['title'] = document.title;
             return itemData;
         },

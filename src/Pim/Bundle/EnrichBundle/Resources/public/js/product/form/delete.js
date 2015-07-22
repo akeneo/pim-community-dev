@@ -13,10 +13,10 @@ define(
         'oro/mediator',
         'pim/form',
         'text!pim/template/product/delete',
-        'oro/navigation',
+        'oro/messenger',
+        'pim/router',
         'oro/loading-mask',
         'pim/product-manager',
-        'routing',
         'pim/dialog'
     ],
     function (
@@ -24,10 +24,10 @@ define(
         mediator,
         BaseForm,
         template,
-        Navigation,
+        messenger,
+        router,
         LoadingMask,
         ProductManager,
-        Routing,
         Dialog
     ) {
         return BaseForm.extend({
@@ -53,22 +53,20 @@ define(
                 var productId   = this.getFormData().meta.id;
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-                var navigation = Navigation.getInstance();
 
                 ProductManager.remove(productId)
                     .done(function () {
-                        navigation.addFlashMessage(
+                        messenger.notificationFlashMessage(
                             'success',
-                            _.__('pim_enrich.entity.product.info.deletion_successful')
-                        );
-                        navigation.setLocation(Routing.generate('pim_enrich_product_index'));
+                            _.__('pim_enrich.entity.product.info.deletion_successful'));
+
+                        router.redirectToRoute('pim_enrich_product_index');
                     })
                     .fail(function (xhr) {
                         var message = xhr.responseJSON && xhr.responseJSON.message ?
                             xhr.responseJSON.message :
                             _.__('pim_enrich.entity.product.info.deletion_failed');
-                        navigation.addFlashMessage('error', message);
-                        navigation.afterRequest();
+                        messenger.notificationFlashMessage('error', message);
                     })
                     .always(function () {
                         loadingMask.hide().$el.remove();
