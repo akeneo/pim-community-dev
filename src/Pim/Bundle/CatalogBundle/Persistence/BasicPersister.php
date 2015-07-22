@@ -37,8 +37,8 @@ class BasicPersister implements ProductPersister
         $options = array_merge(
             [
                 'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
+                'flush'       => true,
+                'schedule'    => true,
             ],
             $options
         );

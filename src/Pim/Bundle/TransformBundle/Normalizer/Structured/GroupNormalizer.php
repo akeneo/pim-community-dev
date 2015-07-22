@@ -40,8 +40,8 @@ class GroupNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = array())
     {
         $results = array(
-            'code' => $object->getCode(),
-            'type' => $object->getType()->getCode(),
+            'code'       => $object->getCode(),
+            'type'       => $object->getType()->getCode(),
             'attributes' => $this->normalizeAttributes($object)
         ) + $this->transNormalizer->normalize($object, $format, $context);
 

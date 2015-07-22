@@ -25,12 +25,12 @@ class AclRoleType extends OroAclRoleType
                 $fieldName,
                 'oro_acl_collection',
                 array(
-                    'type' => new AclPrivilegeType(),
-                    'allow_add' => true,
-                    'prototype' => false,
+                    'type'         => new AclPrivilegeType(),
+                    'allow_add'    => true,
+                    'prototype'    => false,
                     'allow_delete' => false,
-                    'mapped' => false,
-                    'options' => array(
+                    'mapped'       => false,
+                    'options'      => array(
                         'privileges_config' => $config,
                     )
                 )

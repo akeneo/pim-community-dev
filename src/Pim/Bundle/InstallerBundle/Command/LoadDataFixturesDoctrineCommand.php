@@ -83,8 +83,9 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
      *
      * @param string[] $paths
      *
-     * @return array
      * @throws \InvalidArgumentException
+     *
+     * @return array
      */
     protected function getFixtures(array $paths)
     {

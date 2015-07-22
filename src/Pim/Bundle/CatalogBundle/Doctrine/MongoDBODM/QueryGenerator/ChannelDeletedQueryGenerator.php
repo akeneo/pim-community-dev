@@ -22,7 +22,6 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
         $queries = [];
 
         foreach ($attributes as $attribute) {
-
             $attributeNormFields = [
                 sprintf(
                     ProductQueryUtility::NORMALIZED_FIELD . '.%s',
@@ -40,7 +39,7 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
             foreach ($attributeNormFields as $attributeNormField) {
                 $queries[] = [
                     [sprintf('%s', $attributeNormField) => [ '$exists' => true ]],
-                    ['$unset' => [$attributeNormField => '']],
+                    ['$unset'   => [$attributeNormField => '']],
                     ['multiple' => true]
                 ];
             }

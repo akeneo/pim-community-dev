@@ -5,9 +5,7 @@ namespace Pim\Bundle\UserBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
-
 use Pim\Bundle\UserBundle\Form\Transformer\AccessLevelToBooleanTransformer;
 
 /**

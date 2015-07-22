@@ -192,9 +192,9 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
      *
      * @param AbstractAttribute $attribute
      *
-     * @return Family
-     *
      * @throws InvalidArgumentException
+     *
+     * @return Family
      */
     public function removeAttribute(AbstractAttribute $attribute)
     {

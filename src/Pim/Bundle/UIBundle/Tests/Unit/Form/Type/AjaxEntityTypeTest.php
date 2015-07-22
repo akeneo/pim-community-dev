@@ -36,8 +36,8 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
         'multiple'              => 'multiple',
         'locale'                => 'locale',
         'collection_id'         => 'collection_id',
-        'option1' => 'value1',
-        'option2' => 'option2'
+        'option1'               => 'value1',
+        'option2'               => 'option2'
     );
 
     protected function setUp()
@@ -102,7 +102,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
             'defaults'      => array(array()),
             'with_locale'   => array(
                 array('locale' => 'other_locale'),
-                array('url' => 'pim_ui_ajaxentity_list?&class=class&dataLocale=other_locale&collectionId=')
+                array('url'    => 'pim_ui_ajaxentity_list?&class=class&dataLocale=other_locale&collectionId=')
             ),
             'with_url'      => array(array('url' => 'url')),
             'with_params'   => array(

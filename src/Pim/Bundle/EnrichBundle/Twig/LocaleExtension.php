@@ -50,7 +50,7 @@ class LocaleExtension extends \Twig_Extension
                 'flag',
                 [$this, 'flag'],
                 [
-                    'is_safe' => ['html'],
+                    'is_safe'           => ['html'],
                     'needs_environment' => true,
                 ]
             ),
@@ -121,10 +121,10 @@ class LocaleExtension extends \Twig_Extension
         return $environment->render(
             'PimEnrichBundle:Locale:_flag.html.twig',
             [
-                'label' => $this->localeHelper->getLocaleLabel($code, $translateIn),
-                'region' => $this->localeHelper->getRegion($code),
+                'label'    => $this->localeHelper->getLocaleLabel($code, $translateIn),
+                'region'   => $this->localeHelper->getRegion($code),
                 'language' => $this->localeHelper->getLanguage($code),
-                'short' => $short,
+                'short'    => $short,
             ]
         );
     }

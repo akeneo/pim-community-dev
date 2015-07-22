@@ -28,7 +28,6 @@ class ChangeStatusType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-
         $resolver->setDefaults(
             [
                 'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\ChangeStatus',

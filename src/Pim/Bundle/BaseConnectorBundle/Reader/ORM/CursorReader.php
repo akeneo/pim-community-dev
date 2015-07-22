@@ -3,12 +3,10 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
 use Doctrine\ORM\AbstractQuery;
-
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-
 use Pim\Bundle\BaseConnectorBundle\Exception\ORMReaderException;
 
 /**
@@ -65,9 +63,9 @@ class CursorReader extends AbstractConfigurableStepElement implements
     /**
      * Get query to execute
      *
-     * @return \Doctrine\ORM\AbstractQuery
-     *
      * @throws ORMReaderException
+     *
+     * @return \Doctrine\ORM\AbstractQuery
      */
     protected function getQuery()
     {

@@ -7,7 +7,6 @@ use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-
 use Doctrine\Common\Collections\Collection;
 
 /**

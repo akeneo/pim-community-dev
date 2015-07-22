@@ -85,9 +85,9 @@ class CatalogContext
      *
      * @param string $key
      *
-     * @return mixed
-     *
      * @throws \LogicException
+     *
+     * @return mixed
      */
     public function getConfiguration($key)
     {

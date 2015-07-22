@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
-
 use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;

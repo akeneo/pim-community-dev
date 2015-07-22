@@ -67,7 +67,6 @@ abstract class AbstractResolveDoctrineOrmTargetEntitiesPass implements CompilerP
                 )
             );
         }
-
     }
 
     /**

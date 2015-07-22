@@ -47,11 +47,11 @@ class AttributeGroupNormalizerTest extends Structured\AttributeGroupNormalizerTe
         return array(
             array(
                 array(
-                    'code'       => 'mycode',
+                    'code'        => 'mycode',
                     'label-en_US' => 'My name',
                     'label-fr_FR' => 'Mon nom',
-                    'sortOrder'  => 5,
-                    'attributes' => 'attribute1,attribute2,attribute3'
+                    'sortOrder'   => 5,
+                    'attributes'  => 'attribute1,attribute2,attribute3'
                 )
             ),
         );

@@ -15,12 +15,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -311,8 +308,9 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @param integer $categoryId
      *
-     * @return CategoryInterface
      * @throws NotFoundHttpException
+     *
+     * @return CategoryInterface
      */
     protected function findCategory($categoryId)
     {

@@ -202,7 +202,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 GROUP BY l.id, c.id, v.id
                 HAVING COUNT(price.data) = COUNT(price.id)
 COMPLETE_PRICES_SQL;
-
     }
 
     /**
@@ -235,7 +234,6 @@ COMPLETE_PRICES_SQL;
                 AND co.locale_id = l.id
             WHERE co.id IS NULL
 MISSING_SQL;
-
     }
 
     /**

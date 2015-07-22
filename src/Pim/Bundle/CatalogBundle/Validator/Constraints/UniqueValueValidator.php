@@ -4,9 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 
@@ -54,7 +52,6 @@ class UniqueValueValidator extends ConstraintValidator
         if ($value instanceof ProductValueInterface && $this->productManager->valueExists($value)) {
             $this->context->addViolation($constraint->message);
         }
-
     }
 
     /**

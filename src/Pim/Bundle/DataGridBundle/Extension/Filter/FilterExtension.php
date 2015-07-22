@@ -142,7 +142,6 @@ class FilterExtension extends AbstractExtension
                 $metadata,
                 ['label' => $this->translator->trans($metadata['label'])]
             );
-
         }
 
         $data->offsetAddToArray('state', ['filters' => $filtersState])

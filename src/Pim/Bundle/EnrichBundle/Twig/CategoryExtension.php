@@ -349,8 +349,8 @@ class CategoryExtension extends \Twig_Extension
         $label = $this->getLabel($tree, $withProductCount, $includeSub, $relatedEntity);
 
         return [
-            'id' => $tree->getId(),
-            'label' => $label,
+            'id'       => $tree->getId(),
+            'label'    => $label,
             'selected' => ($tree->getId() === $selectedTreeId) ? 'true' : 'false'
         ];
     }

@@ -216,9 +216,9 @@ class MediaManager
      *
      * @param AbstractProductMedia $media
      *
-     * @return string|null the path of the media or null if the media has no file attached
-     *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
+     *
+     * @return string|null the path of the media or null if the media has no file attached
      */
     public function getFilePath(AbstractProductMedia $media)
     {
@@ -270,9 +270,9 @@ class MediaManager
      * Get the media, base64 encoded
      * @param AbstractProductMedia $media
      *
-     * @return string|null the base 64 representation of the file media or null if the media has no file attached
-     *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
+     *
+     * @return string|null the base 64 representation of the file media or null if the media has no file attached
      */
     public function getBase64(AbstractProductMedia $media)
     {

@@ -45,7 +45,7 @@ class CompletenessWidget implements WidgetInterface
         $params = array();
         foreach ($channels as $channel) {
             $params[$channel['label']] = array(
-                'total' => $channel['total'],
+                'total'    => $channel['total'],
                 'complete' => 0,
             );
         }

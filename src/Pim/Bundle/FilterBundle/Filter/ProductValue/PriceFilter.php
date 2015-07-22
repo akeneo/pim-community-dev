@@ -4,10 +4,8 @@ namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-
 use Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 

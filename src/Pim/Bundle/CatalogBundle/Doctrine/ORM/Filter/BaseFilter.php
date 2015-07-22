@@ -94,14 +94,14 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      * @param string|array $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @return string
      * @throws ProductQueryException
+     *
+     * @return string
      */
     protected function prepareCriteriaCondition($field, $operator, $value)
     {
         if (is_array($operator)) {
             return $this->prepareMultiCriteriaCondition($field, $operator, $value);
-
         } else {
             return $this->prepareSingleCriteriaCondition($field, $operator, $value);
         }

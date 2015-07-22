@@ -22,7 +22,7 @@ use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
  */
 class UserContextListener implements EventSubscriberInterface
 {
-     /**
+    /**
      * @var SecurityContextInterface
      */
     protected $securityContext;

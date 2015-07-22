@@ -21,7 +21,6 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
         $this->reader = new CsvReader();
         $this->stepExecution = $this->getStepExecutionMock();
         $this->reader->setStepExecution($this->stepExecution);
-
     }
 
     /**

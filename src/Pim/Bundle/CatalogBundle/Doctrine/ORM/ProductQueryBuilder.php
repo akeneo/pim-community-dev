@@ -51,9 +51,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
     /** @var array */
     protected $fieldSorters = [
-        'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter',
-        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter',
-        'in_group'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\InGroupSorter',
+        'family'        => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter',
+        'completeness'  => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter',
+        'in_group'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\InGroupSorter',
         'is_associated' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\IsAssociatedSorter',
     ];
 

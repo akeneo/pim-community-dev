@@ -98,9 +98,9 @@ interface ProductInterface
     /**
      * Get the identifier of the product
      *
-     * @return ProductValueInterface the identifier of the product
-     *
      * @throws MissingIdentifierException if no identifier could be found
+     *
+     * @return ProductValueInterface the identifier of the product
      */
     public function getIdentifier();
 

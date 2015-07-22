@@ -58,7 +58,6 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $this->updateCatalogLocale($form);
         $this->updateCatalogScope($form);
         $this->updateDefaultTree($form);
-
     }
 
     /**

@@ -75,7 +75,6 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
         }
 
         if (is_null($data->getId()) === false) {
-
             $form = $event->getForm();
 
             // add related options

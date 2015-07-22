@@ -160,7 +160,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
                         )
                     ),
                     'withHeader' => array(
-                        'type' => 'switch',
+                        'type'    => 'switch',
                         'options' => array(
                             'label' => 'pim_base_connector.export.withHeader.label',
                             'help'  => 'pim_base_connector.export.withHeader.help'

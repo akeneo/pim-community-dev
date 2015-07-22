@@ -1222,9 +1222,9 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
      *
      * @param array $parameters
      *
-     * @return AbstractAttribute
-     *
      * @throws \Exception
+     *
+     * @return AbstractAttribute
      */
     public function setParameters($parameters)
     {

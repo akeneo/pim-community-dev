@@ -31,7 +31,6 @@ class PimCatalogBundle extends Bundle
     public function __construct()
     {
         if (class_exists('\Doctrine\ODM\MongoDB\Types\Type')) {
-
             \Doctrine\ODM\MongoDB\Types\Type::registerType(
                 self::ODM_ENTITIES_TYPE,
                 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entities'
@@ -41,7 +40,6 @@ class PimCatalogBundle extends Bundle
                 self::ODM_ENTITY_TYPE,
                 'Pim\Bundle\CatalogBundle\MongoDB\Type\Entity'
             );
-
         }
     }
 

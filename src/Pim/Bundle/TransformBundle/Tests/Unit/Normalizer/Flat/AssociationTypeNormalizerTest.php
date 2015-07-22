@@ -47,7 +47,7 @@ class AssociationTypeNormalizerTest extends Structured\AssociationTypeNormalizer
         return array(
             array(
                 array(
-                    'code'  => 'mycode',
+                    'code'        => 'mycode',
                     'label-en_US' => 'My label',
                     'label-fr_FR' => 'Mon étiquette'
                 )

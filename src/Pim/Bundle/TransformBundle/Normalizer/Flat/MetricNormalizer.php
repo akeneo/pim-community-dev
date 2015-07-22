@@ -37,7 +37,7 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
 
             $data = $this->getMetricData($object, false);
             $result = [
-                $fieldKey => $data,
+                $fieldKey     => $data,
                 $unitFieldKey => '' === $data ? '' : $object->getUnit(),
             ];
         } else {

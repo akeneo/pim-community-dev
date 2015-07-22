@@ -92,8 +92,9 @@ class AttributeTypeFactory
      *
      * @param string $typeAlias alias
      *
-     * @return AttributeTypeInterface
      * @throws \RunTimeException
+     *
+     * @return AttributeTypeInterface
      */
     public function get($typeAlias)
     {

@@ -214,7 +214,7 @@ class AttributeType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => $this->attributeClass,
+                'data_class'         => $this->attributeClass,
                 'cascade_validation' => true
             ]
         );

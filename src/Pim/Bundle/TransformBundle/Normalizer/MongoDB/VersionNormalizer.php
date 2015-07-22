@@ -4,7 +4,6 @@ namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
