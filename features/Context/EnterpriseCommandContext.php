@@ -4,10 +4,12 @@ namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
+use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
+use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
+use PimEnterprise\Bundle\WorkflowBundle\Command\SendDraftForApprovalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -228,6 +230,32 @@ class EnterpriseCommandContext extends CommandContext
     }
 
     /**
+     * @param string $product
+     * @param string $username
+     *
+     * @throws \Exception
+     *
+     * @Given /^I send draft "([^"]*)" created by "([^"]*)" for approval"$/
+     */
+    public function iSendDraftForApproval($product, $username)
+    {
+        $application = new Application();
+        $application->add(new SendDraftForApprovalCommand());
+
+        $proposal = $application->find('pim:draft:send-for-approval');
+        $proposal->setContainer($this->getContainer());
+        $proposalTester = new CommandTester($proposal);
+
+        $proposalTester->execute(
+            [
+                'command'    => $proposal->getName(),
+                'identifier' => $product,
+                'username'   => $username,
+            ]
+        );
+    }
+
+    /**
      * @param TableNode $updates
      *
      * @throws \Exception
@@ -244,6 +272,7 @@ class EnterpriseCommandContext extends CommandContext
     {
         $application = new Application();
         $application->add(new UpdateProductCommand());
+        $application->add(new CreateDraftCommand());
         $application->add(new GetProductCommand());
 
         return $application;

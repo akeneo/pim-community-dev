@@ -10,11 +10,12 @@ Feature: Approve draft
       | akeneo_tshirt | tshirts    |
       | akeneo_sweat  | tshirts    |
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-4596
+  @jira https://akeneo.atlassian.net/browse/PIM-4596
   Scenario: Successfully approve a draft
     Given I should get the following products after apply the following updater to it:
       | product       | actions                                                                               | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
+    And I send draft "akeneo_tshirt" created by "Mary" for approval"
     Then I approve the proposal of the product "akeneo_tshirt" created by user "Mary"
 
   Scenario: Failed to approve a draft with a not found user
