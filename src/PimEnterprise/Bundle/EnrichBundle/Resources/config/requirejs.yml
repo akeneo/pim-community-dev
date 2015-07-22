@@ -1,36 +1,31 @@
 config:
     config:
-        pim/fetcher-registry:
-            fetchers:
-                product-draft:
-                    module: pimee/product-draft-fetcher
-                    options:
-                        urls:
-                            get: pimee_workflow_product_draft_rest_get
-                            ready: pimee_workflow_product_draft_ready
+        pimee/product-edit-form/draft:
+            options:
+                urls:
+                    ready: pimee_workflow_product_draft_ready
 
     paths:
         pimee/manage-permissions:         pimenterpriseenrich/js/manage-permissions
-        pimee/model/draft:                pimenterpriseenrich/js/model/draft
         pimee/permission-manager:         pimenterpriseenrich/js/product/permission-manager
         pimee/product-draft-fetcher:      pimenterpriseenrich/js/fetcher/product-draft-fetcher
         pimee/published-product-manager:  pimenterpriseenrich/js/product/published-product-manager
         pimee/rule-manager:               pimenterpriseenrich/js/product/rule-manager
-
 
         # Form extensions
         pimee/product-edit-form/attributes/copy:                      pimenterpriseenrich/js/product/form/attributes/copy
         pimee/product-edit-form/attributes/read-only-attribute-group: pimenterpriseenrich/js/product/form/attributes/read-only-attribute-group
         pimee/product-edit-form/attributes/read-only-locale:          pimenterpriseenrich/js/product/form/attributes/read-only-locale
         pimee/product-edit-form/attributes/smart-attribute:           pimenterpriseenrich/js/product/form/attributes/smart-attribute
-        pimee/product-edit-form/draft:                                pimenterpriseenrich/js/product/form/draft
         pimee/product-edit-form/meta/owner-groups:                    pimenterpriseenrich/js/product/form/meta/owner-groups
         pimee/product-edit-form/meta/published:                       pimenterpriseenrich/js/product/form/meta/published
         pimee/product-edit-form/panel/history/published:              pimenterpriseenrich/js/product/form/panel/history/published
         pimee/product-edit-form/panel/history/revert:                 pimenterpriseenrich/js/product/form/panel/history/revert
         pimee/product-edit-form/publish:                              pimenterpriseenrich/js/product/form/publish
         pimee/product-edit-form/save:                                 pimenterpriseenrich/js/product/form/save
+        pimee/product-edit-form/send-for-approval:                    pimenterpriseenrich/js/product/form/send-for-approval
         pimee/product-edit-form/source-switcher:                      pimenterpriseenrich/js/product/form/source-switcher
+        pimee/product-edit-form/working-copy:                         pimenterpriseenrich/js/product/form/working-copy
 
         # Templates
         pimee/template/product/meta/owner-groups:                       pimenterpriseenrich/templates/product/meta/owner-groups.html

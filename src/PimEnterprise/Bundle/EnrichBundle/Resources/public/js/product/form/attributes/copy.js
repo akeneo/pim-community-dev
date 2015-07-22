@@ -9,15 +9,13 @@ define(
         'jquery',
         'underscore',
         'oro/mediator',
-        'pim/product-edit-form/attributes/copy',
-        'pim/fetcher-registry'
+        'pim/product-edit-form/attributes/copy'
     ],
     function (
         $,
         _,
         mediator,
-        Copy,
-        FetcherRegistry
+        Copy
     ) {
         return Copy.extend({
             sources: ['working_copy', 'draft'],
@@ -83,16 +81,6 @@ define(
             },
 
             /**
-             * Retrieve the current draft using the draft fetcher
-             *
-             * @returns {Promise}
-             */
-            getDraft: function () {
-                return FetcherRegistry.getFetcher('product-draft')
-                    .fetchForProduct(this.getProductId());
-            },
-
-            /**
             * @inheritdoc
              *
              * @throws {Error} If current source is not set or not valid
@@ -117,12 +105,10 @@ define(
             * @inheritdoc
             */
             canBeCopied: function (field) {
-                return $.when(
-                        this.getDraft(),
-                        Copy.prototype.canBeCopied.apply(this, arguments)
-                    ).then(_.bind(function (draft, canBeCopied) {
-                        return draft.isValueChanged(field, this.locale, this.scope) || canBeCopied;
-                    }, this));
+                var canBeCopied = Copy.prototype.canBeCopied.apply(this, arguments);
+
+                return canBeCopied || true;
+                //draft.isValueChanged(field, this.locale, this.scope);
             },
 
             /**
