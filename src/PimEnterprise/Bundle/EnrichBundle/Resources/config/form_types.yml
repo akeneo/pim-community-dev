@@ -37,7 +37,7 @@ services:
         arguments:
             - %pim_catalog.entity.attribute_group.class%
         tags:
-            - { name: form.type, alias: pim_enrich_attribute_group }
+            - { name: form.type, alias: pim_enrich_attributegroup }
         calls:
             - [addEventSubscriber, ['@pim_enrich.form.subscriber.set_attribute_group_sort_order']]
             - [addEventSubscriber, ['@pimee_enrich.form.subscriber.attribute_group_permissions']]
