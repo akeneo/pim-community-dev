@@ -39,7 +39,7 @@ class MediaNormalizer extends AbstractProductValueDataNormalizer
     {
         if (isset($context['prepare_copy'])) {
             return [
-                'filePath' => $this->manager->getFilePath($object),
+                'filePath'   => $this->manager->getFilePath($object),
                 'exportPath' => $this->manager->getExportPath($object)
             ];
         }

@@ -5,7 +5,6 @@ namespace Pim\Bundle\ImportExportBundle\Form\Subscriber;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 
 /**

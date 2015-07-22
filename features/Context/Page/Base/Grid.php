@@ -49,8 +49,9 @@ class Grid extends Index
     /**
      * Returns the currently visible grid, if there is one
      *
-     * @return NodeElement
      * @throws InvalidArgumentException
+     *
+     * @return NodeElement
      */
     public function getGrid()
     {

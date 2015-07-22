@@ -22,9 +22,9 @@ class MultipleOptionCodeUpdatedQueryGenerator extends AbstractQueryGenerator
 
         foreach ($attributeNormFields as $attributeNormField) {
             $queries[] = [
-                [$attributeNormField => [ '$elemMatch' => ['code' => $oldValue] ]],
-                ['$set' => [$attributeNormField . '.$.code' => $newValue]],
-                ['multiple' => true]
+                [$attributeNormField => [ '$elemMatch'                   => ['code' => $oldValue] ]],
+                ['$set'              => [$attributeNormField . '.$.code' => $newValue]],
+                ['multiple'          => true]
             ];
         }
 

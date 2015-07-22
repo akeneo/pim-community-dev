@@ -174,10 +174,10 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
      * @param string  $key
      * @param boolean $isRequired
      *
-     * @return mixed
-     *
      * @throws \LogicException
      * @throws \Exception
+     *
+     * @return mixed
      */
     protected function getConfiguration($key, $isRequired = true)
     {

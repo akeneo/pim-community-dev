@@ -16,12 +16,10 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
-
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
@@ -430,9 +428,9 @@ class JobProfileController extends AbstractDoctrineController
      * @param integer $id
      * @param boolean $checkStatus
      *
-     * @return Job|RedirectResponse
-     *
      * @throws NotFoundHttpException
+     *
+     * @return Job|RedirectResponse
      */
     protected function getJobInstance($id, $checkStatus = true)
     {

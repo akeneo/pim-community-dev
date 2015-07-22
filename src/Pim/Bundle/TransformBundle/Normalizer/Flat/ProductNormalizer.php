@@ -111,7 +111,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     protected function normalizeValues(ProductInterface $product, $format = null, array $context = [])
     {
         if (empty($this->fields)) {
-
             $values = $this->getFilteredValues($product, $context);
             $context['metric_format'] = 'multiple_fields';
 
@@ -124,7 +123,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             }
             ksort($normalizedValues);
             $this->results = array_merge($this->results, $normalizedValues);
-
         } else {
 
             // TODO only used for quick export, find a way to homogeneize this part

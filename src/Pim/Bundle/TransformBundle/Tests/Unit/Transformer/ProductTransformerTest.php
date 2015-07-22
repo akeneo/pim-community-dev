@@ -109,10 +109,10 @@ class ProductTransformerTest extends EntityTransformerTestCase
             'product_class',
             array(
                 'identifier' => 'id',
-                'col1' => 'value1',
-                'col2' => 'value2',
-                'skip' => 'skip',
-                'required' => ''
+                'col1'       => 'value1',
+                'col2'       => 'value2',
+                'skip'       => 'skip',
+                'required'   => ''
             )
         );
 
@@ -126,10 +126,10 @@ class ProductTransformerTest extends EntityTransformerTestCase
             'product_class',
             array(
                 'identifier' => 'id2',
-                'col1' => 'value3',
-                'col2' => 'value4',
-                'skip' => 'skip',
-                'required' => ''
+                'col1'       => 'value3',
+                'col2'       => 'value4',
+                'skip'       => 'skip',
+                'required'   => ''
             )
         );
 
@@ -142,10 +142,10 @@ class ProductTransformerTest extends EntityTransformerTestCase
             'product_class',
             array(
                 'identifier' => 'id3',
-                'col1' => 'value5',
-                'col2' => 'value6',
-                'skip' => 'skip',
-                'required' => ''
+                'col1'       => 'value5',
+                'col2'       => 'value6',
+                'skip'       => 'skip',
+                'required'   => ''
             )
         );
 
@@ -198,10 +198,10 @@ class ProductTransformerTest extends EntityTransformerTestCase
             ->with(
                 $this->equalTo(
                     array(
-                        'owner' => 'id',
+                        'owner'            => 'id',
                         'association_type' => 'association1',
-                        'products'        => '1,2,3',
-                        'groups'          => '1,2'
+                        'products'         => '1,2,3',
+                        'groups'           => '1,2'
                     )
                 )
             );
@@ -211,9 +211,9 @@ class ProductTransformerTest extends EntityTransformerTestCase
             ->with(
                 $this->equalTo(
                     array(
-                        'owner' => 'id',
+                        'owner'            => 'id',
                         'association_type' => 'association2',
-                        'products'        => '4,5'
+                        'products'         => '4,5'
                     )
                 )
             );
@@ -221,9 +221,9 @@ class ProductTransformerTest extends EntityTransformerTestCase
         $product = $this->transformer->transform(
             'product_class',
             array(
-                'identifier' => 'id',
-                'col1' => 'value1',
-                'col2' => 'value2',
+                'identifier'            => 'id',
+                'col1'                  => 'value1',
+                'col2'                  => 'value2',
                 'association1_products' => '1,2,3',
                 'association1_groups'   => '1,2',
                 'association2_products' => '4,5'

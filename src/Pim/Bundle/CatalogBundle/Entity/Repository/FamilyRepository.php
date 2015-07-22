@@ -29,11 +29,11 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     {
         if ($values) {
             $rootAlias = $qb->getRootAlias();
-                $valueWhereCondition =
-                    $inset
-                    ? $qb->expr()->in($rootAlias, $values)
-                    : $qb->expr()->notIn($rootAlias, $values);
-                $qb->andWhere($valueWhereCondition);
+            $valueWhereCondition =
+                $inset
+                ? $qb->expr()->in($rootAlias, $values)
+                : $qb->expr()->notIn($rootAlias, $values);
+            $qb->andWhere($valueWhereCondition);
         }
 
         if (null !== $qb->getDQLPart('where')) {

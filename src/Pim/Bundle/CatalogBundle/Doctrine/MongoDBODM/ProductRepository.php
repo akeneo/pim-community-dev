@@ -434,7 +434,7 @@ class ProductRepository extends DocumentRepository implements
             [
                 [
                     'attribute' => $this->attributeRepository->getIdentifier(),
-                    'value' => $code,
+                    'value'     => $code,
                 ]
             ]
         );
@@ -475,7 +475,6 @@ class ProductRepository extends DocumentRepository implements
         $this->productQB = $productQB;
 
         return $this;
-
     }
 
     /**
@@ -693,9 +692,9 @@ class ProductRepository extends DocumentRepository implements
      * @param integer|null $limit
      * @param integer|null $offset
      *
-     * @return QueryBuilder
-     *
      * @throws \RuntimeException
+     *
+     * @return QueryBuilder
      */
     protected function findAllByAttributesQB(
         array $attributes = array(),
@@ -741,8 +740,8 @@ class ProductRepository extends DocumentRepository implements
     {
         $mongoRef = [
             '$ref' => $this->dm->getClassMetadata($this->documentName)->getCollection(),
-            '$id' => new \MongoId($productId),
-            '$db' => $this->dm->getConfiguration()->getDefaultDB(),
+            '$id'  => new \MongoId($productId),
+            '$db'  => $this->dm->getConfiguration()->getDefaultDB(),
         ];
 
         $collection = $this->dm->getDocumentCollection($this->documentName);

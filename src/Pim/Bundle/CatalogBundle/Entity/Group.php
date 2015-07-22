@@ -307,9 +307,9 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
      *
      * @param AbstractAttribute $attribute
      *
-     * @return Group
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return Group
      */
     public function removeAttribute(AbstractAttribute $attribute)
     {

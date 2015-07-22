@@ -33,7 +33,6 @@ class AddMassActionHandlersPass implements CompilerPassInterface
             $alias = (isset($tags[0]['alias'])) ? $tags[0]['alias'] : $serviceId;
 
             $handlerRegistry->addMethodCall('addHandler', array($alias, new Reference($serviceId)));
-
         }
     }
 }

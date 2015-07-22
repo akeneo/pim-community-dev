@@ -16,16 +16,12 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\EventDispatcher\Event;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
@@ -302,7 +298,7 @@ class ProductController extends AbstractDoctrineController
             }
 
             $params = [
-                'id' => $product->getId(),
+                'id'         => $product->getId(),
                 'dataLocale' => $this->getDataLocaleCode(),
             ];
             if ($comparisonLocale = $this->getComparisonLocale()) {
@@ -418,9 +414,9 @@ class ProductController extends AbstractDoctrineController
      * @param integer $attributeId
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
-     * @return RedirectResponse
-     *
      * @throws NotFoundHttpException
+     *
+     * @return RedirectResponse
      */
     public function removeAttributeAction($productId, $attributeId)
     {
@@ -556,9 +552,9 @@ class ProductController extends AbstractDoctrineController
      *
      * @param integer $id the product id
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {

@@ -13,11 +13,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
@@ -131,7 +128,7 @@ class AssociationTypeController extends AbstractDoctrineController
 
             $response = array(
                 'status' => 1,
-                'url' =>
+                'url'    =>
                     $this->generateUrl('pim_enrich_association_type_edit', array('id' => $associationType->getId()))
             );
 

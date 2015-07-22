@@ -227,9 +227,9 @@ class EditCommonAttributes extends ProductMassEditOperation
     public function getFormOptions()
     {
         return array(
-            'locales'          => $this->userContext->getUserLocales(),
+            'locales'           => $this->userContext->getUserLocales(),
             'common_attributes' => $this->commonAttributes,
-            'current_locale' => $this->getLocale()->getCode()
+            'current_locale'    => $this->getLocale()->getCode()
         );
     }
 

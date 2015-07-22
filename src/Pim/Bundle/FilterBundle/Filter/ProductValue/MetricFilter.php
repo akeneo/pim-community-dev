@@ -4,15 +4,12 @@ namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
-
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-
 use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 

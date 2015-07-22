@@ -60,7 +60,7 @@ class AvailableAttributesType extends AbstractType
             'attributes',
             'light_entity',
             [
-                'repository' => $this->attributeRepository,
+                'repository'         => $this->attributeRepository,
                 'repository_options' => [
                     'excluded_attribute_ids' => $options['attributes'],
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),

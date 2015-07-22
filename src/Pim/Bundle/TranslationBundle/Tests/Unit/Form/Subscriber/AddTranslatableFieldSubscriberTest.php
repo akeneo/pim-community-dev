@@ -24,9 +24,9 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     protected $form;
 
     protected $localeConfig = array(
-        'locales'=>array(
-            'fr_FR' => array('label'=>'fr_FR'),
-            'en_US' => array('label'=>'en_US')
+        'locales'=> array(
+            'fr_FR' => array('label'=> 'fr_FR'),
+            'en_US' => array('label'=> 'en_US')
         )
     );
 
@@ -244,9 +244,9 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     $options['widget'],
                     '',
                     array(
-                        'label'         => $this->localeConfig['locales'][$locale]['label'],
-                        'required'      => in_array($locale, $requiredLocales),
-                        'mapped' => false,
+                        'label'           => $this->localeConfig['locales'][$locale]['label'],
+                        'required'        => in_array($locale, $requiredLocales),
+                        'mapped'          => false,
                         'auto_initialize' => false
                     )
                 )

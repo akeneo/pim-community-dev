@@ -133,7 +133,6 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         if ($include) {
             $expression = $qb->expr()->in($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
-
         } else {
             $expression = $qb->expr()->notIn($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);

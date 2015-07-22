@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Doctrine\ORM\EntityManager;
-
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -72,7 +71,7 @@ class AssociationType extends AbstractType
                 'pim_object_identifier',
                 array(
                     'repository' => $this->assocTypeRepository,
-                    'multiple' => false
+                    'multiple'   => false
                 )
             )
             ->add(
@@ -80,9 +79,9 @@ class AssociationType extends AbstractType
                 'pim_object_identifier',
                 array(
                     'repository' => $this->productRepository,
-                    'mapped'   => false,
-                    'required' => false,
-                    'multiple' => true
+                    'mapped'     => false,
+                    'required'   => false,
+                    'multiple'   => true
                 )
             )
             ->add(
@@ -90,9 +89,9 @@ class AssociationType extends AbstractType
                 'pim_object_identifier',
                 array(
                     'repository' => $this->productRepository,
-                    'mapped'   => false,
-                    'required' => false,
-                    'multiple' => true
+                    'mapped'     => false,
+                    'required'   => false,
+                    'multiple'   => true
                 )
             )
             ->add(
@@ -100,9 +99,9 @@ class AssociationType extends AbstractType
                 'pim_object_identifier',
                 array(
                     'repository' => $this->groupRepository,
-                    'mapped'   => false,
-                    'required' => false,
-                    'multiple' => true
+                    'mapped'     => false,
+                    'required'   => false,
+                    'multiple'   => true
                 )
             )
             ->add(
@@ -110,9 +109,9 @@ class AssociationType extends AbstractType
                 'pim_object_identifier',
                 array(
                     'repository' => $this->groupRepository,
-                    'mapped'   => false,
-                    'required' => false,
-                    'multiple' => true
+                    'mapped'     => false,
+                    'required'   => false,
+                    'multiple'   => true
                 )
             );
     }

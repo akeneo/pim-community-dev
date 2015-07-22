@@ -34,9 +34,9 @@ abstract class CategoryView extends Form
     /**
      * @param string $category
      *
-     * @return NodeElement
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return NodeElement
      */
     public function findCategoryInTree($category)
     {
@@ -51,9 +51,9 @@ abstract class CategoryView extends Form
     /**
      * @param string $action
      *
-     * @return CategoryView
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return CategoryView
      */
     public function rightClickAction($action)
     {

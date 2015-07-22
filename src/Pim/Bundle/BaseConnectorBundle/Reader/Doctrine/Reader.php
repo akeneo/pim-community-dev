@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-
 use Pim\Bundle\BaseConnectorBundle\Exception\ORMReaderException;
 
 /**
@@ -56,9 +55,9 @@ class Reader extends AbstractConfigurableStepElement implements
     /**
      * Get query to execute
      *
-     * @return Doctrine\ORM\AbstractQuery|Doctrine\MongoDB\Query\Query
-     *
      * @throws ORMReaderException
+     *
+     * @return Doctrine\ORM\AbstractQuery|Doctrine\MongoDB\Query\Query
      */
     public function getQuery()
     {

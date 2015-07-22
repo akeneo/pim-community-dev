@@ -128,9 +128,9 @@ class FixturesContext extends RawMinkContext
      * @param string $method
      * @param array  $args
      *
-     * @return mixed
-     *
      * @throws \BadMethodCallException
+     *
+     * @return mixed
      */
     public function __call($method, $args)
     {
@@ -1216,9 +1216,9 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $sku
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\Product
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
      */
     public function getProduct($sku)
     {
@@ -1328,8 +1328,8 @@ class FixturesContext extends RawMinkContext
         return $repo->findOneBy(
             [
                 'attribute' => $attribute,
-                'family' => $family,
-                'channel' => $channel,
+                'family'    => $family,
+                'channel'   => $channel,
             ]
         );
     }
@@ -1428,7 +1428,7 @@ class FixturesContext extends RawMinkContext
     {
         if (is_string($data)) {
             $data = [
-                'code' => $data,
+                'code'  => $data,
                 'group' => 'other',
             ];
         }

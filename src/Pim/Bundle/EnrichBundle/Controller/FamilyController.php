@@ -14,11 +14,8 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
@@ -256,9 +253,9 @@ class FamilyController extends AbstractDoctrineController
      * @param integer $attributeId
      *
      * @AclAncestor("pim_enrich_family_edit_attributes")
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
      * @throws DeleteException
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAttributeAction($familyId, $attributeId)
     {

@@ -415,9 +415,9 @@ class Edit extends Form
     /**
      * @param string $category
      *
-     * @return NodeElement
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return NodeElement
      */
     public function findCategoryInTree($category)
     {
@@ -546,8 +546,9 @@ class Edit extends Form
      * @param string $name
      * @param string $scope
      *
-     * @return NodeElement
      * @throws ElementNotFoundException
+     *
+     * @return NodeElement
      */
     protected function findScopedField($name, $scope)
     {

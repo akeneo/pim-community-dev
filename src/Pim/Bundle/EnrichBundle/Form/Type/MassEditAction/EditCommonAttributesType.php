@@ -59,7 +59,7 @@ class EditCommonAttributesType extends AbstractType
                 'values',
                 'pim_enrich_localized_collection',
                 array(
-                    'type' => 'pim_product_value',
+                    'type'               => 'pim_product_value',
                     'allow_add'          => false,
                     'allow_delete'       => true,
                     'by_reference'       => false,
@@ -112,8 +112,8 @@ class EditCommonAttributesType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',
-                'locales' => [],
+                'data_class'        => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',
+                'locales'           => [],
                 'common_attributes' => [],
                 'current_locale'    => null,
             ]

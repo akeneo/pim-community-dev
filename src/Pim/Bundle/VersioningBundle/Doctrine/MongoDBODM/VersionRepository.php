@@ -21,7 +21,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     {
         return $this->findBy(
             ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
-            ['loggedAt' => 'desc']
+            ['loggedAt'   => 'desc']
         );
     }
 

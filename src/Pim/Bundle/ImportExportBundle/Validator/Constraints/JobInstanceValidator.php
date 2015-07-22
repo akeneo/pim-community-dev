@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 
 /**

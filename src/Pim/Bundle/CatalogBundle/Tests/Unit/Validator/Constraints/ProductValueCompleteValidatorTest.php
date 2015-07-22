@@ -84,23 +84,23 @@ class ProductValueCompleteValidatorTest extends \PHPUnit_Framework_TestCase
         $price->setData(12.5);
 
         return array(
-            array('char' => 'a'),
-            array('string' => 'test'),
-            array('sentence' => 'juste a sentence'),
-            array('integer' => 5),
-            array('zero' => 0),
-            array('float' => 3.4),
-            array('zero float' => 0.0),
-            array('negative integer' => -2),
-            array('negative float' => -5.3),
-            array('negative zero' => -0),
-            array('negative zero float' => -0.00),
-            array('boolean true' => true),
-            array('boolean false' => false),
-            array('not empty array' => array('A')),
-            array('object' => new \stdClass()),
+            array('char'                        => 'a'),
+            array('string'                      => 'test'),
+            array('sentence'                    => 'juste a sentence'),
+            array('integer'                     => 5),
+            array('zero'                        => 0),
+            array('float'                       => 3.4),
+            array('zero float'                  => 0.0),
+            array('negative integer'            => -2),
+            array('negative float'              => -5.3),
+            array('negative zero'               => -0),
+            array('negative zero float'         => -0.00),
+            array('boolean true'                => true),
+            array('boolean false'               => false),
+            array('not empty array'             => array('A')),
+            array('object'                      => new \stdClass()),
             array('not empty option collection' => new ArrayCollection(array(new AttributeOption()))),
-            array('expected price collection' => new ArrayCollection(array($price)), $attribute),
+            array('expected price collection'   => new ArrayCollection(array($price)), $attribute),
         );
     }
 
@@ -139,9 +139,9 @@ class ProductValueCompleteValidatorTest extends \PHPUnit_Framework_TestCase
         $price->setData(null);
 
         return array(
-            array('null' => null),
-            array('empty string' => ''),
-            array('empty option collection' => new ArrayCollection()),
+            array('null'                        => null),
+            array('empty string'                => ''),
+            array('empty option collection'     => new ArrayCollection()),
             array('unexpected price collection' => new ArrayCollection(array($price)), $attribute),
         );
     }

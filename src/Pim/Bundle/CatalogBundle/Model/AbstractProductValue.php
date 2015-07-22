@@ -176,8 +176,9 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * @param AbstractAttribute $attribute
      *
-     * @return AbstractProductValue
      * @throws LogicException
+     *
+     * @return AbstractProductValue
      */
     public function setAttribute(AbstractAttribute $attribute = null)
     {

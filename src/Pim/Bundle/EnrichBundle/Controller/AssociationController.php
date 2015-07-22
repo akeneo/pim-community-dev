@@ -85,9 +85,9 @@ class AssociationController
      *
      * @param integer $id the product id
      *
-     * @return ProductInterface
-     *
      * @throws NotFoundHttpException
+     *
+     * @return ProductInterface
      */
     protected function findProductOr404($id)
     {

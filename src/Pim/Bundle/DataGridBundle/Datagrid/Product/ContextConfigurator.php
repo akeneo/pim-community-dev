@@ -285,7 +285,7 @@ class ContextConfigurator implements ConfiguratorInterface
         if ($om instanceof \Doctrine\ORM\EntityManagerInterface) {
             return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_ORM;
         } else {
-             return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_MONGODB_ODM;
+            return \Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension::DOCTRINE_MONGODB_ODM;
         }
     }
 

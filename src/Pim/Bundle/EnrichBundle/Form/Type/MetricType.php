@@ -40,7 +40,7 @@ class MetricType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Metric',
+                'data_class'   => 'Pim\Bundle\CatalogBundle\Model\Metric',
                 'units'        => array(),
                 'default_unit' => null,
                 'family'       => null

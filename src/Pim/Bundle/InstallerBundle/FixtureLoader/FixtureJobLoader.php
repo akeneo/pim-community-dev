@@ -66,7 +66,6 @@ class FixtureJobLoader
         $fileLocator = $this->container->get('file_locator');
 
         foreach ($this->jobsFilePaths as $jobsFilePath) {
-
             $realPath = $fileLocator->locate('@'.$jobsFilePath);
             $this->reader->setFilePath($realPath);
 

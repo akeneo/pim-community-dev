@@ -167,7 +167,7 @@ class ProductManager
             [
                 [
                     'attribute' => $this->getIdentifierAttribute(),
-                    'value' => $identifier
+                    'value'     => $identifier
                 ]
             ]
         );
@@ -223,8 +223,8 @@ class ProductManager
     {
         $options = [
             'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
+            'flush'       => $flush,
+            'schedule'    => $schedule,
         ];
 
         return $this->saveProduct($product, $options);
@@ -243,8 +243,8 @@ class ProductManager
         $options = array_merge(
             [
                 'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
+                'flush'       => true,
+                'schedule'    => true,
             ],
             $options
         );
@@ -267,8 +267,8 @@ class ProductManager
     {
         $options = [
             'recalculate' => $recalculate,
-            'flush' => $flush,
-            'schedule' => $schedule,
+            'flush'       => $flush,
+            'schedule'    => $schedule,
         ];
 
         return $this->saveAllProducts($products, $options);
@@ -285,8 +285,8 @@ class ProductManager
         $allOptions = array_merge(
             [
                 'recalculate' => false,
-                'flush' => true,
-                'schedule' => true,
+                'flush'       => true,
+                'schedule'    => true,
             ],
             $options
         );

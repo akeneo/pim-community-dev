@@ -176,7 +176,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
                     $this->displayedColumns[$column] = $this->availableColumns[$column];
                 }
             }
-
         } else {
             $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
                 + $this->propertiesColumns;

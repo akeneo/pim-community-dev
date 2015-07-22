@@ -113,10 +113,10 @@ class FamilyTransformerTest extends EntityTransformerTestCase
         $object = $this->transformer->transform(
             'Pim\Bundle\CatalogBundle\Entity\AttributeRequirement',
             array(
-                'code' => 'code',
-                'type' => 'type',
-                'col1' => 'val1',
-                'col2' => 'val2',
+                'code'         => 'code',
+                'type'         => 'type',
+                'col1'         => 'val1',
+                'col2'         => 'val2',
                 'requirements' => array(
                     array(
                         'code' => 'o1code',

@@ -5,9 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\JobAliasSubscriber;
 use Pim\Bundle\ImportExportBundle\Form\Subscriber\RemoveDuplicateJobConfigurationSubscriber;

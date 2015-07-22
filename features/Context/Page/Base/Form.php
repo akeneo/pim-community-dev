@@ -401,8 +401,9 @@ class Form extends Base
      * @param string $name
      * @param string $currency
      *
-     * @return NodeElement
      * @throws ElementNotFoundException
+     *
+     * @return NodeElement
      */
     protected function findPriceField($name, $currency)
     {

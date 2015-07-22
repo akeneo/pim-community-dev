@@ -290,7 +290,7 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $constraint = new Range(
             array(
-                'min' => 10,
+                'min'        => 10,
                 'minMessage' => 'myMessage',
             )
         );
@@ -314,7 +314,7 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $constraint = new Range(
             array(
-                'max' => 20,
+                'max'        => 20,
                 'maxMessage' => 'myMessage',
             )
         );
@@ -343,8 +343,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $constraint = new Range(
             array(
-                'min' => 10,
-                'max' => 20,
+                'min'        => 10,
+                'max'        => 20,
                 'minMessage' => 'myMinMessage',
                 'maxMessage' => 'myMaxMessage',
             )
@@ -374,8 +374,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $constraint = new Range(
             array(
-                'min' => 10,
-                'max' => 20,
+                'min'        => 10,
+                'max'        => 20,
                 'minMessage' => 'myMinMessage',
                 'maxMessage' => 'myMaxMessage',
             )
@@ -417,8 +417,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $constraint = new Range(
             array(
-                'min' => 10,
-                'max' => 20,
+                'min'        => 10,
+                'max'        => 20,
                 'minMessage' => 'myMessage',
             )
         );
@@ -443,8 +443,8 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $constraint = new Range(
             array(
-                'min' => 10,
-                'max' => 20,
+                'min'        => 10,
+                'max'        => 20,
                 'maxMessage' => 'myMessage',
             )
         );

@@ -27,17 +27,17 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
         'measures_config' => array(
             'Length' => array(
                 'standard' => 'METER',
-                'units' => array(
-                    'INCH' => array(),
+                'units'    => array(
+                    'INCH'      => array(),
                     'KILOMETER' => array(),
-                    'METER' => array(),
+                    'METER'     => array(),
                 )
             ),
             'Temperature' => array(
                 'standard' => 'KELVIN',
-                'units' => array(
+                'units'    => array(
                     'CELSIUS' => array(),
-                    'KELVIN' => array(),
+                    'KELVIN'  => array(),
                     'RANKINE' => array(),
                     'REAUMUR' => array()
                 )

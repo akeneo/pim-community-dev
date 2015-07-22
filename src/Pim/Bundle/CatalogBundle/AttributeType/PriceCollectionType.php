@@ -48,8 +48,8 @@ class PriceCollectionType extends AbstractAttributeType
         return array_merge(
             parent::prepareValueFormOptions($value),
             [
-                'type' => 'pim_enrich_price',
-                'allow_add' => true,
+                'type'         => 'pim_enrich_price',
+                'allow_add'    => true,
                 'allow_delete' => false,
                 'by_reference' => false,
             ]

@@ -74,7 +74,7 @@ class GroupType extends AbstractType
                 'type',
                 'entity',
                 array(
-                    'class' => 'PimCatalogBundle:GroupType',
+                    'class'         => 'PimCatalogBundle:GroupType',
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository
                             ->buildAll()
@@ -122,10 +122,10 @@ class GroupType extends AbstractType
                 'attributes',
                 'entity',
                 array(
-                    'label'    => 'Axis',
-                    'required' => true,
-                    'multiple' => true,
-                    'class'    => $this->attributeClass,
+                    'label'         => 'Axis',
+                    'required'      => true,
+                    'multiple'      => true,
+                    'class'         => $this->attributeClass,
                     'query_builder' => function (AttributeRepository $repository) {
                         return $repository->findAllAxisQB();
                     },

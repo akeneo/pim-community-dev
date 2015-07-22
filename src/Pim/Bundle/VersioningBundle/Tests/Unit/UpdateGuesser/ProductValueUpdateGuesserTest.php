@@ -52,6 +52,5 @@ class ProductValueUpdateGuesserTest extends AbstractUpdateGuesserTest
         $updates = $guesser->guessUpdates($em, $price, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($product, $updates[0]);
-
     }
 }

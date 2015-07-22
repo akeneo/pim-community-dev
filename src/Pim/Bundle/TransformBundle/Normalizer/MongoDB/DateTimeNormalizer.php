@@ -3,9 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 use \MongoDate;
 
 /**

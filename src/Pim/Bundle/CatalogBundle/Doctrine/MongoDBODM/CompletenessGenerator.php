@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
@@ -227,7 +226,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $collection->update($query, $normalizedComp, $options);
         } else {
             foreach ($completenesses as $key => $value) {
-
                 $compObject = array('$push' => array('completenesses' => $value['object']));
 
                 $collection->update($query, $compObject, $options);

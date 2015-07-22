@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
-
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
@@ -145,7 +144,7 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $params = array(
                 '--no-interaction' => true,
-                '--append' => true
+                '--append'         => true
             )
             + $this->getFixturesList($input->getOption('fixtures'));
 

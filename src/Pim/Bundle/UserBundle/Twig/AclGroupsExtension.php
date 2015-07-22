@@ -74,7 +74,7 @@ class AclGroupsExtension extends \Twig_Extension
         $groups = [];
         foreach ($config as $groupName => $groupConfig) {
             $groups[] = [
-                'name' => $groupName,
+                'name'  => $groupName,
                 'order' => isset($groupConfig['order']) ? $groupConfig['order'] : -1
             ];
         }
