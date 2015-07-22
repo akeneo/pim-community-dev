@@ -25,16 +25,9 @@ define([
                             return this.generateMissing(product);
                         }, this))
                         .then(function (product) {
-                            var promises = [];
-                            mediator.trigger('product:action:post_fetch', {
-                                promises: promises,
-                                product: product,
-                                originalProduct: $.extend(true, {}, product)
-                            });
+                            mediator.trigger('product:action:post_fetch', product);
 
-                            return $.when.apply($, promises).then(function () {
-                                return product;
-                            });
+                            return product;
                         })
                         .promise();
                 }
