@@ -153,7 +153,7 @@
     <target name="php-cs-fixer" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="bash">
             <arg value="-c"/>
-            <arg value="curl http://get.sensiolabs.org/php-cs-fixer.phar -o ${basedir}/bin/php-cs-fixer"/>
+            <arg value="curl http://get.sensiolabs.org/php-cs-fixer.phar -o ${basedir}/bin/php-cs-fixer --create-dirs"/>
         </exec>
 
         <exec executable="bash">
