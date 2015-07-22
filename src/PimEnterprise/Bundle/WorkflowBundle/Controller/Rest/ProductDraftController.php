@@ -82,10 +82,10 @@ class ProductDraftController
      *
      * @return JsonResponse
      */
-    public function readyAction($id)
+    public function readyAction($productId)
     {
-        if (null === $productDraft = $this->repository->find($id)) {
-            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
+        if (null === $productDraft = $this->findDraftForProduct($productId)) {
+            throw new NotFoundHttpException(sprintf('Draft for product "%s" not found', $productId));
         }
 
         if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft)) {
@@ -100,13 +100,13 @@ class ProductDraftController
     /**
      * Find a product draft for a product by the product id
      *
-     * @param string $id the product id
+     * @param string $productId the product id
      *
      * @return ProductDraftInterface|null
      */
-    protected function findDraftForProduct($id)
+    protected function findDraftForProduct($productId)
     {
-        $product = $this->productRepository->findOneById($id);
+        $product = $this->productRepository->findOneById($productId);
 
         if ($product) {
             $username = $this->userContext->getUser()->getUsername();

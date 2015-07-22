@@ -31,7 +31,8 @@ define(
             submitTemplate: _.template(submitTemplate),
             confirmationMessage: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
             confirmationTitle: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
-            urls: {},
+            routes: {},
+            productId: null,
             draftStatus: null,
             events: {
                 'click .submit-draft': 'onSubmitDraft'
@@ -43,7 +44,7 @@ define(
              * @returns {Promise}
              */
             configure: function () {
-                this.urls = module.config().urls;
+                this.routes = module.config().routes;
 
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
                 this.listenTo(mediator, 'product:action:post_update', this.onProductPostUpdate);
@@ -57,6 +58,7 @@ define(
              * @param {Object} product
              */
             onProductPostFetch: function (product) {
+                this.productId = product.meta.id;
                 this.draftStatus = product.meta.draft_status;
             },
 
@@ -105,8 +107,8 @@ define(
             submitDraft: function () {
                 $.post(
                     Routing.generate(
-                        this.urls.ready,
-                        {id: this.id}
+                        this.routes.ready,
+                        {productId: this.productId}
                     )
                 )
                 .then(_.bind(function () {

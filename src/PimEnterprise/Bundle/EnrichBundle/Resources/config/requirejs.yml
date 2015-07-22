@@ -1,9 +1,8 @@
 config:
     config:
-        pimee/product-edit-form/draft:
-            options:
-                urls:
-                    ready: pimee_workflow_product_draft_ready
+        pimee/product-edit-form/send-for-approval:
+            routes:
+                ready: pimee_workflow_product_draft_ready
 
     paths:
         pimee/manage-permissions:         pimenterpriseenrich/js/manage-permissions
