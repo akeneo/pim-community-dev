@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class QueryProductCommand extends ContainerAwareCommand
 {
     /* @var integer */
-    const MAX_ROWS = 10;
+    const DEFAULT_PAGE_SIZE = 10;
 
     /**
      * {@inheritdoc}
@@ -56,6 +58,13 @@ class QueryProductCommand extends ContainerAwareCommand
                 false,
                 InputOption::VALUE_NONE,
                 'If defined, output the result in json format'
+            )
+            ->addOption(
+                'page-size',
+                false,
+                InputOption::VALUE_OPTIONAL,
+                'If defined, display this page',
+                self::DEFAULT_PAGE_SIZE
             );
     }
 
@@ -64,25 +73,36 @@ class QueryProductCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filters = json_decode($input->getArgument('json_filters'), true);
-        $products = $this->getProducts($filters);
+        $jsonFilters = $input->getArgument('json_filters');
+        $filters = json_decode($jsonFilters, true);
+        if (null === $filters) {
+            $output->writeln(
+                sprintf('<error>You must provide valid filters</info>')
+            );
+        }
+
+        $pageSize = $input->getOption('page-size');
+        $productCursor = $this->getProductsCursor($filters);
+        $productPaginator = $this->createProductPaginator($productCursor, $pageSize);
+        $productPaginator->next();
+        $productPage = $productPaginator->current();
+
         if (!$input->getOption('json-output')) {
-            $table = $this->buildTable($products, self::MAX_ROWS);
+            $table = $this->buildTable($productPage);
             $table->render($output);
 
-            $nbProducts = count($products);
-            if ($nbProducts > self::MAX_ROWS) {
+            if ($productCursor->count() > $productPaginator->getPageSize()) {
                 $output->writeln(
                     sprintf(
                         '<info>%d first products on %d matching these criterias</info>',
-                        self::MAX_ROWS,
-                        $nbProducts
+                        $productPaginator->getPageSize(),
+                        $productCursor->count()
                     )
                 );
             }
         } else {
             $result = [];
-            foreach ($products as $product) {
+            foreach ($productPage as $product) {
                 $result[] = $product->getIdentifier()->getData();
             }
 
@@ -91,24 +111,19 @@ class QueryProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param CursorInterface $products
-     * @param int             $maxRows
+     * @param ProductInterface[] $products
      *
      * @return \Symfony\Component\Console\Helper\HelperInterface
      */
-    protected function buildTable(CursorInterface $products, $maxRows)
+    protected function buildTable(array $products)
     {
         $helperSet = $this->getHelperSet();
         $rows = [];
-        $ind = 0;
         foreach ($products as $product) {
-            if ($ind++ < $maxRows) {
-                $rows[] = [$product->getId(), $product->getIdentifier()];
-            } else {
-                $rows[] = ['...', '...'];
-                break;
-            }
+            $rows[] = [$product->getId(), $product->getIdentifier()];
         }
+        $rows[] = ['...', '...'];
+
         $headers = ['id', 'identifier'];
         $table = $helperSet->get('table');
         $table->setHeaders($headers)->setRows($rows);
@@ -117,13 +132,13 @@ class QueryProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param array $filters
+     * @param array   $filters
      *
-     * @return CursorInterface
+     * @return ProductInterface[]
      */
-    protected function getProducts(array $filters)
+    protected function getProductsCursor(array $filters)
     {
-        $productQueryBuilder = $this->getProductQueryBuilder();
+        $productQueryBuilder = $this->createProductQueryBuilder();
 
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
@@ -135,17 +150,31 @@ class QueryProductCommand extends ContainerAwareCommand
             $context = ['locale' => $filter['locale'], 'scope' => $filter['scope']];
             $productQueryBuilder->addFilter($filter['field'], $filter['operator'], $filter['value'], $context);
         }
+        $cursor = $productQueryBuilder->execute();
 
-        return $productQueryBuilder->execute();
+        return $cursor;
     }
 
     /**
      * @return ProductQueryBuilderInterface
      */
-    protected function getProductQueryBuilder()
+    protected function createProductQueryBuilder()
     {
         $factory = $this->getContainer()->get('pim_catalog.query.product_query_builder_factory');
 
         return $factory->create();
+    }
+
+    /**
+     * @param CursorInterface $cursor
+     * @param integer         $pageSize
+     *
+     * @return PaginatorInterface
+     */
+    protected function createProductPaginator(CursorInterface $cursor, $pageSize)
+    {
+        $factory = $this->getContainer()->get('pim_catalog.query.paginator.paginator_factory');
+
+        return $factory->createPaginator($cursor, $pageSize);
     }
 }
