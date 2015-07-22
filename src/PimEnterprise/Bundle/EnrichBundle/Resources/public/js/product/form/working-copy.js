@@ -33,6 +33,7 @@ define(
             configure: function () {
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
                 this.listenTo(mediator, 'field:extension:add', this.addFieldExtension);
+                this.listenTo(mediator, 'pim_enrich:form:field:can_be_copied', this.canBeCopied);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -110,6 +111,16 @@ define(
              */
             showWorkingCopy: function () {
                 mediator.trigger('draft:action:show_working_copy');
+            },
+
+            /**
+             * Add the possibility to a field to be copied if its value has been modified in draft
+             *
+             * @param event
+             */
+            canBeCopied: function (event) {
+                var isValueChanged = this.isValueChanged(event.field, event.locale, event.scope);
+                event.canBeCopied = event.canBeCopied || isValueChanged;
             }
         });
     }

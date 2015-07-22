@@ -39,10 +39,10 @@ define(
             /**
             * Event callback called just after product is fetched form backend
             *
-            * @param {Object} event
+            * @param {Object} product
             */
-            onProductPostFetch: function (event) {
-                this.workingCopy = event.originalProduct;
+            onProductPostFetch: function (product) {
+                this.workingCopy = product.meta.working_copy;
             },
 
             /**
@@ -63,7 +63,7 @@ define(
              * @throws {Error} If specified source code is invalid
              */
             onSourceChange: function (newSource) {
-                if (-1 === this.sources.indexOf(newSource)) {
+                if (!_.contains(this.sources, newSource)) {
                     throw new Error('Invalid source code "' + newSource + '"');
                 }
 
@@ -87,9 +87,10 @@ define(
             */
             getSourceData: function () {
                 var data = {};
+
                 switch (this.currentSource) {
                     case 'working_copy':
-                        data = this.workingCopy.values;
+                        data = this.workingCopy ? this.workingCopy.values : this.getFormData().values;
                         break;
                     case 'draft':
                         data = this.getFormData().values;
@@ -105,10 +106,16 @@ define(
             * @inheritdoc
             */
             canBeCopied: function (field) {
-                var canBeCopied = Copy.prototype.canBeCopied.apply(this, arguments);
+                var params = {
+                    field: field,
+                    canBeCopied: Copy.prototype.canBeCopied.apply(this, arguments),
+                    locale: this.locale,
+                    scope: this.scope
+                };
 
-                return canBeCopied || true;
-                //draft.isValueChanged(field, this.locale, this.scope);
+                mediator.trigger('pim_enrich:form:field:can_be_copied', params);
+
+                return params.canBeCopied;
             },
 
             /**
