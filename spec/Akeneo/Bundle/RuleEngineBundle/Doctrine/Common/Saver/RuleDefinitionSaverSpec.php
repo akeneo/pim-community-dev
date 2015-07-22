@@ -35,7 +35,7 @@ class RuleDefinitionSaverSpec extends ObjectBehavior
         $rule = new RuleDefinition();
         $optionsResolver->resolveSaveOptions([])
             ->shouldBeCalled()
-            ->willReturn(['flush' => true, 'flush_only_object' => false]);
+            ->willReturn(['flush' => true]);
 
         $entityManager->persist($rule)->shouldBeCalled();
         $entityManager->flush()->shouldBeCalled();
@@ -47,11 +47,11 @@ class RuleDefinitionSaverSpec extends ObjectBehavior
     {
         $optionsResolver->resolveSaveAllOptions([])
             ->shouldBeCalled()
-            ->willReturn(['flush' => true, 'flush_only_object' => false]);
+            ->willReturn(['flush' => true]);
 
         $optionsResolver->resolveSaveOptions(['flush' => false])
             ->shouldBeCalledTimes(2)
-            ->willReturn(['flush' => false, 'flush_only_object' => false]);
+            ->willReturn(['flush' => false]);
 
         $rule1 = new RuleDefinition();
         $rule2 = new RuleDefinition();
