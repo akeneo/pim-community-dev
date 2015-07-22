@@ -72,9 +72,9 @@ class RelationTransformer implements PropertyTransformerInterface
      * @param boolean      $multiple
      * @param string       $referencePrefix
      *
-     * @return object|array
-     *
      * @throws PropertyTransformerException
+     *
+     * @return object|array
      */
     protected function doTransform($value, $class, $multiple, $referencePrefix)
     {

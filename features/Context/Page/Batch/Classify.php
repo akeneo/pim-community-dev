@@ -23,7 +23,7 @@ class Classify extends Wizard
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Trees list'  => array('css' => '#trees-list'),
+                'Trees list'     => array('css' => '#trees-list'),
                 'Category tree'  => array('css' => '#trees'),
             )
         );
@@ -62,9 +62,9 @@ class Classify extends Wizard
     /**
      * @param string $category
      *
-     * @return NodeElement
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return NodeElement
      */
     public function findCategoryInTree($category)
     {

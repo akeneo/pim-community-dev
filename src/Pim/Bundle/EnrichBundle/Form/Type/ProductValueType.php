@@ -78,7 +78,7 @@ class ProductValueType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => $this->valueClass,
+                'data_class'         => $this->valueClass,
                 'cascade_validation' => true
             )
         );

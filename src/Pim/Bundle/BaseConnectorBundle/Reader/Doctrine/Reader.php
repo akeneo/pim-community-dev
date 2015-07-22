@@ -55,9 +55,9 @@ class Reader extends AbstractConfigurableStepElement implements
     /**
      * Get query to execute
      *
-     * @return Doctrine\ORM\AbstractQuery|Doctrine\MongoDB\Query\Query
-     *
      * @throws ORMReaderException
+     *
+     * @return Doctrine\ORM\AbstractQuery|Doctrine\MongoDB\Query\Query
      */
     public function getQuery()
     {

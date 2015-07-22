@@ -28,17 +28,17 @@ class MultipleLoaderTest extends \PHPUnit_Framework_TestCase
                 $this->returnValue(
                     array(
                         array(
-                            'name' => 'entity2',
+                            'name'      => 'entity2',
                             'extension' => 'csv',
                             'path'      => '/dir1/entity2.csv'
                         ),
                         array(
-                            'name' => 'entity3',
+                            'name'      => 'entity3',
                             'extension' => 'yml',
                             'path'      => '/dir2/entity3.yml'
                         ),
                         array(
-                            'name' => 'entity1',
+                            'name'      => 'entity1',
                             'extension' => 'yml',
                             'path'      => '/dir1/entity1.yml'
                         ),

@@ -40,9 +40,9 @@ class MassActionHandlerRegistry
      *
      * @param string $alias
      *
-     * @return MassActionHandlerInterface
-     *
      * @throws \LogicException
+     *
+     * @return MassActionHandlerInterface
      */
     public function getHandler($alias)
     {

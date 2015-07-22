@@ -78,9 +78,9 @@ class UserContext
      * Returns the current locale from the request or the user's catalog locale
      * or the first activated locale
      *
-     * @return Locale
-     *
      * @throws \LogicException When there are no activated locales
+     *
+     * @return Locale
      */
     public function getCurrentLocale()
     {

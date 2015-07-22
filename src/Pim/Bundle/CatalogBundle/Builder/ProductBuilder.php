@@ -305,8 +305,8 @@ class ProductBuilder implements ProductBuilderInterface
         foreach ($values as $value) {
             $existingValues[] = array(
                 'attribute' => $value->getAttribute()->getCode(),
-                'locale' => $value->getLocale(),
-                'scope' => $value->getScope()
+                'locale'    => $value->getLocale(),
+                'scope'     => $value->getScope()
             );
         }
 
@@ -432,8 +432,8 @@ class ProductBuilder implements ProductBuilderInterface
             foreach ($channel->getLocales() as $locale) {
                 $scopeToLocaleRows[] = array(
                     'attribute' => $attribute->getCode(),
-                    'locale' => $locale->getCode(),
-                    'scope' => $channel->getCode()
+                    'locale'    => $locale->getCode(),
+                    'scope'     => $channel->getCode()
                 );
             }
         }

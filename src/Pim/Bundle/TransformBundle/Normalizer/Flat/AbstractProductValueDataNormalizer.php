@@ -29,9 +29,9 @@ abstract class AbstractProductValueDataNormalizer implements NormalizerInterface
      * @param object $object  Object to normalize
      * @param array  $context Context options for the normalizer
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException when the context does not contain a "field_name" key
+     *
+     * @return string
      */
     protected function getFieldName($object, array $context = [])
     {

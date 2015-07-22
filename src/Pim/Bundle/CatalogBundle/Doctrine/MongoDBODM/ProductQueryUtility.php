@@ -74,9 +74,9 @@ class ProductQueryUtility
      * @param string  $locale
      * @param string  $scope
      *
-     * @return string
-     *
      * @throws \LogicException
+     *
+     * @return string
      */
     public static function getNormalizedValueField(
         $attributeCode,
