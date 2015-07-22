@@ -79,7 +79,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         $pqb = $this->createProductQueryBuilder(
             [
                 'locale' => $options['default_locale'],
-                'scope' => $options['default_scope']
+                'scope'  => $options['default_scope']
             ]
         );
 
@@ -139,10 +139,10 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         );
         $resolver->setDefaults(
             [
-                'repository_method' => 'createQueryBuilder',
+                'repository_method'     => 'createQueryBuilder',
                 'repository_parameters' => 'o',
-                'default_locale' => null,
-                'default_scope' => null
+                'default_locale'        => null,
+                'default_scope'         => null
             ]
         );
     }

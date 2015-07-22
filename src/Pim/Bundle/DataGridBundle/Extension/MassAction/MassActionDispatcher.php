@@ -143,8 +143,9 @@ class MassActionDispatcher
      * @param string            $massActionName
      * @param DatagridInterface $datagrid
      *
-     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
      * @throws \LogicException
+     *
+     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
      */
     protected function getMassActionByName($massActionName, DatagridInterface $datagrid)
     {

@@ -113,9 +113,9 @@ class VariantGroupAttributeController
      * @param integer $attributeId
      *
      * @AclAncestor("pim_enrich_group_remove_attribute")
-     * @return RedirectResponse
-     *
      * @throws NotFoundHttpException
+     *
+     * @return RedirectResponse
      */
     public function removeAttributeAction(Request $request, $groupId, $attributeId)
     {
@@ -140,9 +140,9 @@ class VariantGroupAttributeController
      *
      * @param integer $id
      *
-     * @return GroupInterface
-     *
      * @throws NotFoundHttpException
+     *
+     * @return GroupInterface
      */
     protected function findVariantGroupOr404($id)
     {
@@ -162,9 +162,9 @@ class VariantGroupAttributeController
      *
      * @param integer $id
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
-     *
      * @throws NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     protected function findAttributeOr404($id)
     {

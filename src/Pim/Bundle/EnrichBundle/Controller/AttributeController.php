@@ -328,8 +328,9 @@ class AttributeController extends AbstractDoctrineController
      *
      * @param integer $id
      *
-     * @return AttributeInterface
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return AttributeInterface
      */
     protected function findAttributeOr404($id)
     {

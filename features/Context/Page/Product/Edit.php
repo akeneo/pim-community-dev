@@ -261,8 +261,9 @@ class Edit extends Form
     /**
      * Get the completeness content
      *
-     * @return \Behat\Mink\Element\NodeElement
      * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement
      */
     public function findCompletenessContent()
     {
@@ -317,8 +318,9 @@ class Edit extends Form
     /**
      * Get the comment threads node
      *
-     * @return \Behat\Mink\Element\NodeElement|mixed
      * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed
      */
     protected function findCommentTopics()
     {
@@ -328,8 +330,9 @@ class Edit extends Form
     /**
      * Get the comment replies node
      *
-     * @return \Behat\Mink\Element\NodeElement|mixed
      * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed
      */
     protected function findCommentReplies()
     {
@@ -340,8 +343,9 @@ class Edit extends Form
      * @param string $message
      * @param string $author
      *
-     * @return NodeElement     the comment
      * @throws \LogicException in case the comment does not exist
+     *
+     * @return NodeElement     the comment
      */
     public function findComment($message, $author)
     {

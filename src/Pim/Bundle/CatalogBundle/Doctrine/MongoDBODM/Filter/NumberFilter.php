@@ -81,7 +81,6 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     protected function applyFilter($operator, $value, $field)
     {
-
         switch ($operator) {
             case Operators::IS_EMPTY:
                 $this->qb->field($field)->exists(false);

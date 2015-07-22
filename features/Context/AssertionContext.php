@@ -505,8 +505,10 @@ class AssertionContext extends RawMinkContext
     /**
      * @param string $attribute
      *
-     * @return bool
      * @throws ExpectationException
+     *
+     * @return bool
+     *
      * @Then /^I should see that (.*) is inherited from variant group attribute$/
      */
     public function iShouldSeeThatAttributeIsInheritedFromVariantGroup($attribute)
@@ -524,8 +526,10 @@ class AssertionContext extends RawMinkContext
     /**
      * @param string $attribute
      *
-     * @return bool
      * @throws ExpectationException
+     *
+     * @return bool
+     *
      * @Then /^I should see that (.*) is not inherited from variant group attribute$/
      */
     public function iShouldSeeThatAttributeIsNotInheritedFromVariantGroup($attribute)
@@ -544,9 +548,9 @@ class AssertionContext extends RawMinkContext
      * @param $fieldName
      * @param $string
      *
-     * @return bool
-     *
      * @throws ExpectationException
+     *
+     * @return bool
      *
      * @Then /^the field "([^"]*)" should have the following options:$/
      */

@@ -91,9 +91,9 @@ class ProductAttributeController
      * @param integer $attributeId The attribute id
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
-     * @return RedirectResponse
-     *
      * @throws NotFoundHttpException
+     *
+     * @return RedirectResponse
      */
     public function removeAttributeAction(Request $request, $productId, $attributeId)
     {
@@ -117,9 +117,9 @@ class ProductAttributeController
      *
      * @param integer $id the product id
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {
@@ -139,9 +139,9 @@ class ProductAttributeController
      *
      * @param integer $id the attribute id
      *
-     * @return AttributeInterface
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return AttributeInterface
      */
     protected function findAttributeOr404($id)
     {

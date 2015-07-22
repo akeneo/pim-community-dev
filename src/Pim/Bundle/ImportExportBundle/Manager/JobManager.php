@@ -137,8 +137,9 @@ class JobManager implements SaverInterface, RemoverInterface
      * @param JobInstance   $jobInstance
      * @param UserInterface $user
      *
-     * @return JobExecution
      * @throws \Exception
+     *
+     * @return JobExecution
      */
     protected function create(JobInstance $jobInstance, UserInterface $user)
     {

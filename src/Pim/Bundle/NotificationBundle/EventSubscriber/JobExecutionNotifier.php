@@ -72,7 +72,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
             sprintf('pim_import_export.notification.%s.%s', $type, $status),
             $status,
             [
-                'route' => sprintf('pim_importexport_%s_execution_show', $type),
+                'route'       => sprintf('pim_importexport_%s_execution_show', $type),
                 'routeParams' => [
                     'id' => $jobExecution->getId()
                 ],

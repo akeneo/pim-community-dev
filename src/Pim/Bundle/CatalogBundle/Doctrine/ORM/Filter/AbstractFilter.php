@@ -69,8 +69,9 @@ abstract class AbstractFilter implements FilterInterface
      * @param string|array $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @return string
      * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
+     *
+     * @return string
      */
     protected function prepareCriteriaCondition($field, $operator, $value)
     {

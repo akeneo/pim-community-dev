@@ -50,9 +50,9 @@ class ProductController
      *
      * @AclAncestor("pim_pdf_generator_product_download")
      *
-     * @return Response
-     *
      * @throws HttpException
+     *
+     * @return Response
      */
     public function downloadPdfAction(Request $request, $id)
     {
@@ -92,9 +92,9 @@ class ProductController
      *
      * @param integer $id the product id
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {

@@ -265,9 +265,9 @@ class FamilyController extends AbstractDoctrineController
      * @param integer $attributeId
      *
      * @AclAncestor("pim_enrich_family_edit_attributes")
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
      * @throws DeleteException
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAttributeAction($familyId, $attributeId)
     {

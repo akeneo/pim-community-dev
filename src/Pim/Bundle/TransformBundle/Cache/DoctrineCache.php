@@ -100,9 +100,9 @@ class DoctrineCache
      * @param string $class
      * @param string $code
      *
-     * @return object
-     *
      * @throws \Exception
+     *
+     * @return object
      */
     protected function findObject($class, $code)
     {

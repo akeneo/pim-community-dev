@@ -127,10 +127,10 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         return array(
-            'form' => $form->createView(),
-            'count' => $this->getObjectCount(),
+            'form'        => $form->createView(),
+            'count'       => $this->getObjectCount(),
             'queryParams' => $this->getQueryParams(),
-            'operator' => $operator,
+            'operator'    => $operator,
         );
     }
 
@@ -282,7 +282,7 @@ class MassEditActionController extends AbstractDoctrineController
             new MassEditOperatorType(),
             $operator,
             [
-                'operations' => $operator->getOperationChoices(),
+                'operations'        => $operator->getOperationChoices(),
                 'validation_groups' => $validationGroups
             ]
         );

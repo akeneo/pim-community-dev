@@ -1893,8 +1893,9 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @return array
      * @throws ExpectationException
+     *
+     * @return array
      *
      * @Given /^I should see the following product comments:$/
      */
@@ -1918,7 +1919,6 @@ class WebUser extends RawMinkContext
                         );
                     }
                 }
-
             } catch (\LogicException $e) {
                 throw $this->createExpectationException($e->getMessage());
             }
@@ -1948,8 +1948,9 @@ class WebUser extends RawMinkContext
      * @param string $message
      * @param string $author
      *
-     * @return bool
      * @throws ExpectationException
+     *
+     * @return bool
      *
      * @Then /^I should not see the link to delete the "([^"]*)" comment of "([^"]*)"$/
      */
