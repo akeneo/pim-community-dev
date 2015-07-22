@@ -65,9 +65,9 @@ class CursorReader extends AbstractConfigurableStepElement implements
     /**
      * Get query to execute
      *
-     * @return \Doctrine\ORM\AbstractQuery
-     *
      * @throws ORMReaderException
+     *
+     * @return \Doctrine\ORM\AbstractQuery
      */
     protected function getQuery()
     {

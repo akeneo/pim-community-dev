@@ -141,7 +141,7 @@ class NotificationManager
     {
         $notification = $this->repository->findOneBy(
             [
-                'id' => $id,
+                'id'   => $id,
                 'user' => $user
             ]
         );

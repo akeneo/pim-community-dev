@@ -95,7 +95,7 @@ SQL;
         $stmt = $this->getEntityManager()->getConnection()->executeQuery(
             $sql,
             array(
-                ':channel_id' => $channel->getId(),
+                ':channel_id'         => $channel->getId(),
                 ':current_locale_ids' => $currentLocaleIds,
             ),
             array(

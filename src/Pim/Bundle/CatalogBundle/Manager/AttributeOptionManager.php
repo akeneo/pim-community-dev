@@ -88,10 +88,12 @@ class AttributeOptionManager
 
     /**
      * Get an attribute option or throw an exception
+     *
      * @param integer $id
      *
-     * @return AttributeInterface
      * @throws EntityNotFoundException
+     *
+     * @return AttributeInterface
      */
     public function getAttributeOption($id)
     {

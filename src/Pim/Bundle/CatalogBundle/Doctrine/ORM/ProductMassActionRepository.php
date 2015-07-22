@@ -148,7 +148,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         $commonAttSql = strtr(
             $commonAttSql,
             [
-                '%product_ids%' => '('.implode($productIds, ',').')',
+                '%product_ids%'        => '('.implode($productIds, ',').')',
                 '%product_ids_count%'  => count($productIds)
             ]
         );
@@ -210,7 +210,7 @@ SQL;
             $commonAttSql,
             [
                 '%non_family_att_sql%' => $nonFamilyAttSql,
-                '%family_att_sql%' => $familyAttSql
+                '%family_att_sql%'     => $familyAttSql
             ]
         );
     }

@@ -33,7 +33,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
 
         $this->version
             ->setVersion($numVersion)
-            ->setSnapshot(['field' => 'value'])
+            ->setSnapshot(['field'  => 'value'])
             ->setChangeset(['field' => 'value']);
     }
 

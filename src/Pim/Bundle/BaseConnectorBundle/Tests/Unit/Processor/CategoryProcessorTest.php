@@ -97,10 +97,10 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     {
         $this->processor->setStepExecution($this->stepExecution);
         $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
+            'root'     => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
+            'root2'    => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
+            'leaf'     => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
+            'subleaf'  => array('code' => 'subleaf', 'parent' => 'leaf'),
             'leaf2'    => array('code' => 'leaf2', 'parent' => 'root'),
         );
 
@@ -120,10 +120,10 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     {
         $this->processor->setStepExecution($this->stepExecution);
         $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'persisted'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
+            'root'     => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
+            'root2'    => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
+            'leaf'     => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'persisted'),
+            'subleaf'  => array('code' => 'subleaf', 'parent' => 'leaf'),
             'leaf2'    => array('code' => 'leaf2', 'parent' => 'root'),
         );
 
@@ -149,10 +149,10 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     {
         $this->processor->setStepExecution($this->stepExecution);
         $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'bad_root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
+            'root'     => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
+            'root2'    => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
+            'leaf'     => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'bad_root'),
+            'subleaf'  => array('code' => 'subleaf', 'parent' => 'leaf'),
             'leaf2'    => array('code' => 'leaf2', 'parent' => 'root'),
         );
 
@@ -180,10 +180,10 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     {
         $this->processor->setStepExecution($this->stepExecution);
         $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => 'leaf'),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
+            'root'     => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => 'leaf'),
+            'root2'    => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
+            'leaf'     => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
+            'subleaf'  => array('code' => 'subleaf', 'parent' => 'leaf'),
             'leaf2'    => array('code' => 'leaf2', 'parent' => 'root2'),
         );
 
@@ -211,10 +211,10 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     {
         $this->processor->setStepExecution($this->stepExecution);
         $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
+            'root'     => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
+            'root2'    => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
+            'leaf'     => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
+            'subleaf'  => array('code' => 'subleaf', 'parent' => 'leaf'),
             'leaf2'    => array('code' => 'leaf2', 'parent' => 'root2'),
         );
 
@@ -257,10 +257,10 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
     public function testTransformWithErrorsWithoutStepExecution()
     {
         $data = array(
-            'root'    => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
-            'root2'   => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
-            'leaf'    => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
-            'subleaf' => array('code' => 'subleaf', 'parent' => 'leaf'),
+            'root'     => array('code' => 'root', 'key1' => 'value1', 'key2' => 'value2', 'parent' => null),
+            'root2'    => array('code' => 'root2', 'key1' => 'value3', 'key2' => 'value4'),
+            'leaf'     => array('code' => 'leaf', 'key1' => 'value5', 'parent' => 'root'),
+            'subleaf'  => array('code' => 'subleaf', 'parent' => 'leaf'),
             'leaf2'    => array('code' => 'leaf2', 'parent' => 'root2'),
         );
 

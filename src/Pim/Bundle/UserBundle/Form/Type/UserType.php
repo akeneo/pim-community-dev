@@ -82,7 +82,7 @@ class UserType extends OroUserType
                     'expanded'       => true,
                     'required'       => !$this->isMyProfilePage,
                     'read_only'      => $this->isMyProfilePage,
-                    'disabled'      => $this->isMyProfilePage,
+                    'disabled'       => $this->isMyProfilePage,
                 )
             )
             ->add(

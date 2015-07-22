@@ -26,8 +26,9 @@ interface ProductRepositoryInterface
      *
      * @param integer $id
      *
-     * @return ProductInterface|null
      * @throws NonUniqueResultException
+     *
+     * @return ProductInterface|null
      */
     public function findOneByWithValues($id);
 

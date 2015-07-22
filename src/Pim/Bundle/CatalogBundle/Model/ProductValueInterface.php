@@ -83,9 +83,9 @@ interface ProductValueInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return ProductValueInterface
-     *
      * @throws \LogicException
+     *
+     * @return ProductValueInterface
      */
     public function setAttribute(AttributeInterface $attribute = null);
 

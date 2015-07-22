@@ -98,7 +98,7 @@ class CommentController
             'PimCommentBundle:Comment:_thread.html.twig',
             [
                 'replyForms' => [$comment->getId() => $replyForm->createView()],
-                'comment' => $comment,
+                'comment'    => $comment,
             ]
         );
     }
@@ -139,7 +139,7 @@ class CommentController
             'PimCommentBundle:Comment:_thread.html.twig',
             [
                 'replyForms' => [$comment->getId() => $replyForm->createView()],
-                'comment' => $comment,
+                'comment'    => $comment,
             ]
         );
     }

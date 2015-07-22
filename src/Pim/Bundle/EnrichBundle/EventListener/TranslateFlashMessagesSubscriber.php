@@ -39,7 +39,7 @@ class TranslateFlashMessagesSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::VIEW => ['translate', 128],
+            KernelEvents::VIEW     => ['translate', 128],
             KernelEvents::RESPONSE => ['translate', 128],
         ];
     }

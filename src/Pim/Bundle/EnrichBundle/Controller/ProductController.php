@@ -326,7 +326,7 @@ class ProductController extends AbstractDoctrineController
             }
 
             $params = [
-                'id' => $product->getId(),
+                'id'         => $product->getId(),
                 'dataLocale' => $this->getDataLocaleCode(),
             ];
             if ($comparisonLocale = $this->getComparisonLocale()) {
@@ -538,9 +538,9 @@ class ProductController extends AbstractDoctrineController
      *
      * @param integer $id the product id
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {

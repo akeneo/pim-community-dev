@@ -56,8 +56,9 @@ class MediaController
      * @param Request $request
      * @param string  $filename
      *
-     * @return Response
      * @throws NotFoundHttpException If media is not found
+     *
+     * @return Response
      */
     public function showAction(Request $request, $filename)
     {

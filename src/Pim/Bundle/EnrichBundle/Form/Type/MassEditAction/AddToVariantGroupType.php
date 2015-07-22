@@ -40,12 +40,12 @@ class AddToVariantGroupType extends AbstractType
             'group',
             'entity',
             [
-                'class'    => $this->groupClassName,
-                'required' => true,
-                'multiple' => false,
-                'expanded' => false,
-                'choices'  => $options['groups'],
-                'select2'  => true,
+                'class'        => $this->groupClassName,
+                'required'     => true,
+                'multiple'     => false,
+                'expanded'     => false,
+                'choices'      => $options['groups'],
+                'select2'      => true,
                 'empty_value'  => '',
             ]
         );
@@ -59,7 +59,7 @@ class AddToVariantGroupType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => $this->dataClass,
-                'groups' => []
+                'groups'     => []
             ]
         );
     }

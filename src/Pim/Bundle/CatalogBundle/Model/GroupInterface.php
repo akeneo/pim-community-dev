@@ -126,9 +126,9 @@ interface GroupInterface extends
      *
      * @param AttributeInterface $attribute
      *
-     * @return GroupInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return GroupInterface
      */
     public function removeAttribute(AttributeInterface $attribute);
 
@@ -175,9 +175,9 @@ interface GroupInterface extends
      *
      * @param AttributeInterface $attribute
      *
-     * @return GroupInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return GroupInterface
      */
     public function removeAxisAttribute(AttributeInterface $attribute);
 

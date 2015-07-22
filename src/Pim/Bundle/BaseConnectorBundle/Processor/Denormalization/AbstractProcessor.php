@@ -111,10 +111,9 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      * @param IdentifiableObjectRepositoryInterface $repository the repository to search inside
      * @param array                                 $data       the data that is currently processed
      *
-     * @return object|null
-     *
      * @throws MissingIdentifierException in case the processed data do not allow to retrieve an object
      *                                    by its identifiers properly
+     * @return object|null
      */
     protected function findObject(IdentifiableObjectRepositoryInterface $repository, array $data)
     {

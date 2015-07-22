@@ -57,7 +57,7 @@ class AddToGroupsType extends AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => $this->dataClass,
-                'groups' => [],
+                'groups'     => [],
             ]
         );
     }

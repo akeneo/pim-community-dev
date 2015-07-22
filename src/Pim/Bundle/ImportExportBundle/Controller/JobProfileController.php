@@ -477,9 +477,9 @@ class JobProfileController extends AbstractDoctrineController
      * @param integer $id
      * @param boolean $checkStatus
      *
-     * @return Job|RedirectResponse
-     *
      * @throws NotFoundHttpException
+     *
+     * @return Job|RedirectResponse
      */
     protected function getJobInstance($id, $checkStatus = true)
     {

@@ -216,9 +216,9 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                         $this->associationClass,
                         $format,
                         [
-                            'entity' => $association,
+                            'entity'                => $association,
                             'association_type_code' => $associationTypeCode,
-                            'part' => $part
+                            'part'                  => $part
                         ] + $context
                     );
 

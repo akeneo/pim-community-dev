@@ -34,8 +34,9 @@ class CriteriaCondition
      * @param string|array $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @return string
      * @throws ProductQueryException
+     *
+     * @return string
      */
     public function prepareCriteriaCondition($field, $operator, $value)
     {
@@ -92,9 +93,10 @@ class CriteriaCondition
      * @param string       $operator the operator used to filter
      * @param string|array $value    the value(s) to filter
      *
-     * @return string
      * @throws \Pim\Bundle\CatalogBundle\Exception\ProductQueryException
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     protected function prepareSingleCriteriaCondition($field, $operator, $value)
     {

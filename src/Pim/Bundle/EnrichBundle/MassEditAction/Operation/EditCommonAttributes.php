@@ -309,7 +309,7 @@ class EditCommonAttributes extends ProductMassEditOperation
 
         if (count($this->getCommonAttributes()) < 1) {
             $messages[] = [
-                'key' => $rootMessageKey.'.no_attribute.warning',
+                'key'     => $rootMessageKey.'.no_attribute.warning',
                 'options' => []
             ];
         }

@@ -329,8 +329,9 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @param integer $categoryId
      *
-     * @return CategoryInterface
      * @throws NotFoundHttpException
+     *
+     * @return CategoryInterface
      */
     protected function findCategory($categoryId)
     {

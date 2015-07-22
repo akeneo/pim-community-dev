@@ -369,7 +369,7 @@ class ProductRepository extends EntityRepository implements
     public function valueExists(ProductValueInterface $value)
     {
         $criteria = array(
-            'attribute' => $value->getAttribute(),
+            'attribute'                              => $value->getAttribute(),
             $value->getAttribute()->getBackendType() => $value->getData()
         );
         $result = $this->getEntityManager()->getRepository(get_class($value))->findBy($criteria);

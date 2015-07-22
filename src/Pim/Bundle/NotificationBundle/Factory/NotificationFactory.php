@@ -37,9 +37,9 @@ class NotificationFactory
     {
         $defaults = [
             'messageParams' => [],
-            'route' => null,
-            'routeParams' => [],
-            'context' => []
+            'route'         => null,
+            'routeParams'   => [],
+            'context'       => []
         ];
 
         $options = $options + $defaults;

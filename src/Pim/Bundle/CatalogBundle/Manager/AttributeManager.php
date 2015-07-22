@@ -120,10 +120,12 @@ class AttributeManager
 
     /**
      * Get an attribute or throw an exception
+     *
      * @param integer $id
      *
-     * @return AttributeInterface
      * @throws EntityNotFoundException
+     *
+     * @return AttributeInterface
      */
     public function getAttribute($id)
     {

@@ -25,7 +25,7 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $updatesExample = [
             [
-                'type' => 'set_value',
+                'type'  => 'set_value',
                 'field' => 'name',
                 'value' => 'My name'
             ],
@@ -125,12 +125,12 @@ class UpdateProductCommand extends ContainerAwareCommand
         );
         $resolver->setDefaults(
             [
-                'locale' => null,
-                'scope' => null,
+                'locale'      => null,
+                'scope'       => null,
                 'from_locale' => null,
-                'to_locale' => null,
-                'from_scope' => null,
-                'to_scope' => null
+                'to_locale'   => null,
+                'from_scope'  => null,
+                'to_scope'    => null
             ]
         );
 

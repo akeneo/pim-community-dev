@@ -646,8 +646,8 @@ class ProductRepository extends DocumentRepository implements
     {
         $mongoRef = [
             '$ref' => $this->dm->getClassMetadata($this->documentName)->getCollection(),
-            '$id' => new \MongoId($productId),
-            '$db' => $this->dm->getConfiguration()->getDefaultDB(),
+            '$id'  => new \MongoId($productId),
+            '$db'  => $this->dm->getConfiguration()->getDefaultDB(),
         ];
 
         $collection = $this->dm->getDocumentCollection($this->documentName);

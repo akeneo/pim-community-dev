@@ -139,8 +139,9 @@ class Cursor extends AbstractCursor
     }
 
     /**
-     * @return CursorableRepositoryInterface
      * @throws LogicException
+     *
+     * @return CursorableRepositoryInterface
      */
     protected function getRepository()
     {

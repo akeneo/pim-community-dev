@@ -420,8 +420,9 @@ interface AttributeInterface extends
      *
      * @param array $parameters
      *
-     * @return AttributeInterface
      * @throws \Exception
+     *
+     * @return AttributeInterface
      */
     public function setParameters($parameters);
 
