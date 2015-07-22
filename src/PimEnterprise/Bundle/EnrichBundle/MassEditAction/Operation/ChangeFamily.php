@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily as BaseChangeFamily;
-
 use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**

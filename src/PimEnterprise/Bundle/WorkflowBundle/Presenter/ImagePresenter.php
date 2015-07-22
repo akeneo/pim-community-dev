@@ -87,7 +87,7 @@ class ImagePresenter implements PresenterInterface
                 'pim_enrich_media_show',
                 [
                     'filename' => $filename,
-                    'filter' => 'thumbnail',
+                    'filter'   => 'thumbnail',
                 ]
             ),
             $title

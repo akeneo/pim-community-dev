@@ -101,7 +101,7 @@ class PermissionFilter extends OroChoiceFilter
     protected function parseData($data)
     {
         $mapping = [
-            self::OWN => Attributes::OWN_PRODUCTS,
+            self::OWN  => Attributes::OWN_PRODUCTS,
             self::EDIT => Attributes::EDIT_PRODUCTS,
             self::VIEW => Attributes::VIEW_PRODUCTS
         ];

@@ -48,10 +48,11 @@ class MediaManager extends BaseMediaManager
      *
      * @param string $filename
      *
+     * @throws \InvalidArgumentException When file does not exist
+     *
      * @return \Pim\Bundle\CatalogBundle\Model\AbstractProductMedia
      *
      * @see PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\MediaDenormalizer
-     * @throws \InvalidArgumentException When file does not exist
      */
     public function createFromFilename($filename)
     {

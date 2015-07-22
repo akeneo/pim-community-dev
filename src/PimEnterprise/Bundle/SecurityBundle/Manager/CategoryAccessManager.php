@@ -99,9 +99,9 @@ class CategoryAccessManager
      * @param CategoryInterface $category
      * @param string            $attribute
      *
-     * @return bool
-     *
      * @throws \LogicException
+     *
+     * @return bool
      */
     public function isUserGranted(UserInterface $user, CategoryInterface $category, $attribute)
     {

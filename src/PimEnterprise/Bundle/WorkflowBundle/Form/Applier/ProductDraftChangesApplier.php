@@ -76,13 +76,13 @@ class ProductDraftChangesApplier
                 'values',
                 'pim_enrich_localized_collection',
                 [
-                    'type' => 'pim_product_value',
-                    'allow_add' => false,
-                    'allow_delete' => false,
-                    'by_reference' => false,
+                    'type'               => 'pim_product_value',
+                    'allow_add'          => false,
+                    'allow_delete'       => false,
+                    'by_reference'       => false,
                     'cascade_validation' => true,
-                    'currentLocale' => null,
-                    'comparisonLocale' => null,
+                    'currentLocale'      => null,
+                    'comparisonLocale'   => null,
                 ]
             )
             ->addEventListener(

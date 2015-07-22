@@ -153,8 +153,8 @@ class ProductDraftPersister implements ProductPersister
         $options = array_merge(
             [
                 'recalculate' => true,
-                'flush' => true,
-                'schedule' => true,
+                'flush'       => true,
+                'schedule'    => true,
             ],
             $options
         );
@@ -180,9 +180,9 @@ class ProductDraftPersister implements ProductPersister
      * @param ObjectManager    $manager
      * @param ProductInterface $product
      *
-     * @return null
-     *
      * @throws \LogicException
+     *
+     * @return null
      */
     protected function persistProductDraft(ObjectManager $manager, ProductInterface $product)
     {
@@ -220,9 +220,9 @@ class ProductDraftPersister implements ProductPersister
     /**
      * Get user from the security context
      *
-     * @return \Symfony\Component\Security\Core\User\UserInterface
-     *
      * @throws \LogicException
+     *
+     * @return \Symfony\Component\Security\Core\User\UserInterface
      */
     protected function getUser()
     {

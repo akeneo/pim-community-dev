@@ -133,8 +133,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     sprintf('I expand the "%s" attribute', substr(strstr($data['field'], ' '), 1))
                 );
             }
-            switch (true)
-            {
+            switch (true) {
                 case 0 === strpos($data['value'], 'file('):
                     $file = strtr($data['value'], ['file(' => '', ')' => '']);
                     $steps[] = new Step\Given(sprintf('I attach file "%s" to "%s"', $file, $data['field']));
@@ -209,9 +208,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string $sku
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\Product
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
      */
     public function getPublished($sku)
     {
@@ -356,8 +355,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string $type
      * @param string $action
      *
-     * @return string
      * @throws \Exception
+     *
+     * @return string
      */
     protected function getAccessLevelByAccessTypeAndAction($type, $action)
     {

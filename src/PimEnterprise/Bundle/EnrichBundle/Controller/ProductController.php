@@ -73,9 +73,9 @@ class ProductController extends BaseProductController
      * @param Request $request
      * @param integer $id
      *
-     * @return RedirectResponse
-     *
      * @throws AccessDeniedException
+     *
+     * @return RedirectResponse
      *
      * @AclAncestor("pim_enrich_product_index")
      */
@@ -90,7 +90,6 @@ class ProductController extends BaseProductController
             $parameters = $this->editAction($this->request, $id);
 
             return $this->render('PimEnrichBundle:Product:edit.html.twig', $parameters);
-
         } elseif ($this->securityContext->isGranted(Attributes::VIEW, $product)) {
             $parameters = $this->showAction($this->request, $id);
 
@@ -165,7 +164,7 @@ class ProductController extends BaseProductController
         return $this->render(
             'PimEnterpriseEnrichBundle:Product:_product_drafts.html.twig',
             array(
-                'product' => $this->findProductOr404($id),
+                'product'    => $this->findProductOr404($id),
                 'dataLocale' => $this->getDataLocaleCode()
             )
         );

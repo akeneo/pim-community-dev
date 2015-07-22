@@ -30,7 +30,7 @@ class PublishedAssociationRepository extends EntityRepository implements Publish
     {
         return $this->findOneBy(
             [
-                'owner' => $ownerId,
+                'owner'           => $ownerId,
                 'associationType' => $type,
             ]
         );
