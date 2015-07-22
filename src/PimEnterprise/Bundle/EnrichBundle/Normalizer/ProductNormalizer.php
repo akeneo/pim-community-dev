@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -43,6 +43,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
+    /** @var SecurityContextInterface */
+    protected $securityContext;
+
     /** @var SerializerInterface */
     protected $serializer;
 
@@ -52,19 +55,22 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      * @param ProductDraftManager          $draftManager
      * @param ProductDraftApplierInterface $draftApplier
      * @param CategoryAccessRepository     $categoryAccessRepo
+     * @param SecurityContextInterface     $securityContext
      */
     public function __construct(
         NormalizerInterface $normalizer,
         PublishedProductManager $publishedManager,
         ProductDraftManager $draftManager,
         ProductDraftApplierInterface $draftApplier,
-        CategoryAccessRepository $categoryAccessRepo
+        CategoryAccessRepository $categoryAccessRepo,
+        SecurityContextInterface $securityContext
     ) {
         $this->normalizer         = $normalizer;
         $this->publishedManager   = $publishedManager;
         $this->draftManager       = $draftManager;
         $this->draftApplier       = $draftApplier;
         $this->categoryAccessRepo = $categoryAccessRepo;
+        $this->securityContext    = $securityContext;
     }
 
     /**
@@ -72,7 +78,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $workingCopy = $this->normalizer->normalize($product, 'json', $context);
+        $workingCopy = null;
+        if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
+            $workingCopy = $this->normalizer->normalize($product, 'json', $context);
+        }
+
         $published   = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
         $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForProduct(
             $product,
