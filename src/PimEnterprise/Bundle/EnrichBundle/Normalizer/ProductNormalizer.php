@@ -11,11 +11,13 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -34,8 +36,8 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var PublishedProductManager */
     protected $publishedManager;
 
-    /** @var ProductDraftManager */
-    protected $draftManager;
+    /** @var ProductDraftRepositoryInterface */
+    protected $draftRepository;
 
     /** @var ProductDraftApplierInterface */
     protected $draftApplier;
@@ -50,24 +52,24 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     protected $serializer;
 
     /**
-     * @param NormalizerInterface          $normalizer
-     * @param PublishedProductManager      $publishedManager
-     * @param ProductDraftManager          $draftManager
-     * @param ProductDraftApplierInterface $draftApplier
-     * @param CategoryAccessRepository     $categoryAccessRepo
-     * @param SecurityContextInterface     $securityContext
+     * @param NormalizerInterface             $normalizer
+     * @param PublishedProductManager         $publishedManager
+     * @param ProductDraftRepositoryInterface $draftRepository
+     * @param ProductDraftApplierInterface    $draftApplier
+     * @param CategoryAccessRepository        $categoryAccessRepo
+     * @param SecurityContextInterface        $securityContext
      */
     public function __construct(
         NormalizerInterface $normalizer,
         PublishedProductManager $publishedManager,
-        ProductDraftManager $draftManager,
+        ProductDraftRepositoryInterface $draftRepository,
         ProductDraftApplierInterface $draftApplier,
         CategoryAccessRepository $categoryAccessRepo,
         SecurityContextInterface $securityContext
     ) {
         $this->normalizer         = $normalizer;
         $this->publishedManager   = $publishedManager;
-        $this->draftManager       = $draftManager;
+        $this->draftRepository    = $draftRepository;
         $this->draftApplier       = $draftApplier;
         $this->categoryAccessRepo = $categoryAccessRepo;
         $this->securityContext    = $securityContext;
@@ -78,9 +80,10 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
+        if (!$this->securityContext->isGranted(Attributes::OWN, $product) &&
+            null !== $draft = $this->findDraftForProduct($product)
+        ) {
             $workingCopy = $this->normalizer->normalize($product, 'json', $context);
-            $draft       = $this->draftManager->findOrCreate($product);
             $draftStatus = $draft->getStatus();
             $this->draftApplier->apply($product, $draft);
             $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
@@ -125,5 +128,27 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     public function setSerializer(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
+    }
+
+    /**
+     * Find a product draft for the specified product
+     *
+     * @param ProductInterface $product
+     *
+     * @return ProductDraftInterface|null
+     */
+    protected function findDraftForProduct(ProductInterface $product)
+    {
+        return $this->draftRepository->findUserProductDraft($product, $this->getUsername());
+    }
+
+    /**
+     * Return the current username
+     *
+     * @return string
+     */
+    protected function getUsername()
+    {
+        return $this->securityContext->getToken()->getUsername();
     }
 }

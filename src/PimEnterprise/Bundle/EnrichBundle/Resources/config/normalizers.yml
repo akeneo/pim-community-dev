@@ -29,7 +29,7 @@ services:
         arguments:
             - '@pim_enrich.normalizer.product'
             - '@pimee_workflow.manager.published_product'
-            - '@pimee_workflow.manager.product_draft'
+            - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.applier.product_draft'
             - '@pimee_security.repository.category_access'
             - '@security.context'

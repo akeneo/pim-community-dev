@@ -65,7 +65,8 @@ define(
             /**
              * Re-render extension after saving
              */
-            onProductPostUpdate: function () {
+            onProductPostUpdate: function (product) {
+                this.draftStatus = product.meta.draft_status;
                 this.render();
             },
 
