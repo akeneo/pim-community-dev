@@ -100,7 +100,7 @@ define(
                         data = this.getFormData().values;
                         break;
                     default:
-                        throw new Error("No valid source is currently selected to copy from");
+                        throw new Error('No valid source is currently selected to copy from');
                 }
 
                 return data;
