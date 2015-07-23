@@ -25,14 +25,11 @@ define(
     ) {
         return BaseForm.extend({
             modifiedByDraftTemplate: _.template(modifiedByDraftTemplate),
-            workingCopy: null,
 
             /**
              * @inheritdoc
              */
             configure: function () {
-                this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
-                this.listenTo(mediator, 'product:action:pre_update', this.onProductPreUpdate);
                 this.listenTo(mediator, 'field:extension:add', this.addFieldExtension);
                 this.listenTo(mediator, 'pim_enrich:form:field:can_be_copied', this.canBeCopied);
 
@@ -40,21 +37,14 @@ define(
             },
 
             /**
-             * Event callback called just after product is fetched form backend
+             * Return the current working copy
              *
-             * @param {Object} product
+             * @returns {Object|null}
              */
-            onProductPostFetch: function (product) {
-                this.workingCopy = product.meta.working_copy;
-            },
+            getWorkingCopy: function () {
+                var workingCopy = this.getFormData().meta.working_copy;
 
-            /**
-             * Update working copy after saving
-             *
-             * @param {Object} product
-             */
-            onProductPreUpdate: function (product) {
-                this.workingCopy = product.meta.working_copy;
+                return _.isEmpty(workingCopy) ? null : workingCopy;
             },
 
             /**
@@ -87,7 +77,7 @@ define(
              * @returns {boolean}
              */
             isValueChanged: function (field, locale, scope) {
-                if (!this.workingCopy) {
+                if (null === this.getWorkingCopy()) {
                     return false;
                 }
 
@@ -96,7 +86,7 @@ define(
                 scope = scope || field.context.scope;
 
                 var workingCopyValue = AttributeManager.getValue(
-                    this.workingCopy.values[attribute.code],
+                    this.getWorkingCopy().values[attribute.code],
                     attribute,
                     locale,
                     scope

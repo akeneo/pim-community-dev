@@ -71,21 +71,14 @@ class ProductDraftController
      *
      * @param int|string $id
      *
-     * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
      *
      * @return JsonResponse
      */
     public function readyAction($productId)
     {
-        $product = $this->productRepository->findOneById($productId);
-        if (null === $product) {
-            throw new NotFoundHttpException(sprintf('Product with id %d not found', $productId));
-        }
-
-        if (null === $productDraft = $this->findDraftForProduct($product)) {
-            throw new NotFoundHttpException(sprintf('Draft for product %d not found', $productId));
-        }
+        $product      = $this->findProductOr404($productId);
+        $productDraft = $this->findDraftForProductOr404($product);
 
         if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft)) {
             throw new AccessDeniedHttpException();
@@ -101,13 +94,37 @@ class ProductDraftController
      *
      * @param ProductInterface $product
      *
-     * @return ProductDraftInterface|null
+     * @throws NotFoundHttpException
+     *
+     * @return ProductDraftInterface
      */
-    protected function findDraftForProduct(ProductInterface $product)
+    protected function findDraftForProductOr404(ProductInterface $product)
     {
-        $username = $this->securityContext->getToken()->getUsername();
+        $username     = $this->securityContext->getToken()->getUsername();
         $productDraft = $this->repository->findUserProductDraft($product, $username);
+        if (null === $productDraft) {
+            throw new NotFoundHttpException(sprintf('Draft for product %d not found', $product->getId()));
+        }
 
         return $productDraft;
+    }
+
+    /**
+     * Find a product by its id
+     *
+     * @param $productId
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return ProductInterface
+     */
+    protected function findProductOr404($productId)
+    {
+        $product = $this->productRepository->findOneById($productId);
+        if (null === $product) {
+            throw new NotFoundHttpException(sprintf('Product with id %d not found', $productId));
+        }
+
+        return $product;
     }
 }

@@ -34,8 +34,6 @@ define(
             confirmationMessage: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
             confirmationTitle: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
             routes: {},
-            productId: null,
-            draftStatus: null,
             events: {
                 'click .submit-draft': 'onSubmitDraft'
             },
@@ -48,30 +46,35 @@ define(
             configure: function () {
                 this.routes = module.config().routes;
 
-                this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
                 this.listenTo(mediator, 'product:action:post_update', this.onProductPostUpdate);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
-             * Event callback called just after product is fetched form backend
-             *
-             * @param {Object} product
+             * Re-render extension after saving
              */
-            onProductPostFetch: function (product) {
-                this.productId = product.meta.id;
-                this.draftStatus = product.meta.draft_status;
+            onProductPostUpdate: function () {
+                this.render();
             },
 
             /**
-             * Re-render extension after saving
+             * Return the current productId
              *
-             * @param {Object} product
+             * @return {number}
              */
-            onProductPostUpdate: function (product) {
-                this.draftStatus = product.meta.draft_status;
-                this.render();
+            getProductId: function () {
+                return this.getFormData().meta.id;
+            },
+
+            /**
+             * Return the current draft status
+             * Return null if there is no draft (not created yet or the user owns the product)
+             *
+             * @returns {number|null}
+             */
+            getDraftStatus: function () {
+                return this.getFormData().meta.draft_status;
             },
 
             /**
@@ -80,10 +83,10 @@ define(
              * @returns {Object}
              */
             render: function () {
-                if (null !== this.draftStatus) {
+                if (null !== this.getDraftStatus()) {
                     this.$el.html(
                         this.submitTemplate({
-                            'submitted': 0 !== this.draftStatus
+                            'submitted': 0 !== this.getDraftStatus()
                         })
                     );
                     this.delegateEvents();
@@ -113,7 +116,7 @@ define(
                 $.post(
                     Routing.generate(
                         this.routes.ready,
-                        {productId: this.productId}
+                        {productId: this.getProductId()}
                     )
                 )
                 .done(_.bind(ProductManager.generateMissing, this))

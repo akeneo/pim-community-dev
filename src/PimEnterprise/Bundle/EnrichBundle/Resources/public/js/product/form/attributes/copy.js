@@ -20,39 +20,18 @@ define(
         return Copy.extend({
             sources: ['working_copy', 'draft'],
             currentSource: '',
-            workingCopy: {},
 
             /**
              * @inheritdoc
              */
             configure: function () {
-                this.currentSource = this.sources[0];
-                this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
-                this.listenTo(mediator, 'product:action:pre_update', this.onProductPreUpdate);
+                this.currentSource = _.first(this.sources);
                 this.listenTo(mediator, 'draft:action:show_working_copy', this.showWorkingCopy);
 
                 this.onExtensions('source_switcher:render:before', this.onSourceSwitcherRender);
                 this.onExtensions('source_switcher:source_change', this.onSourceChange);
 
                 return Copy.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-            * Event callback called just after product is fetched form backend
-            *
-            * @param {Object} product
-            */
-            onProductPostFetch: function (product) {
-                this.workingCopy = product.meta.working_copy;
-            },
-
-            /**
-             * Update working copy after saving
-             *
-             * @param {Object} product
-             */
-            onProductPreUpdate: function (product) {
-                this.workingCopy = product.meta.working_copy;
             },
 
             /**
@@ -82,13 +61,24 @@ define(
             },
 
             /**
+             * Return the current working copy
+             *
+             * @returns {Object|null}
+             */
+            getWorkingCopy: function () {
+                var workingCopy = this.getFormData().meta.working_copy;
+
+                return _.isEmpty(workingCopy) ? null : workingCopy;
+            },
+
+            /**
              * Return the sources list optionally filtered
              * If there is no working copy it means that the user owns the product, so draft is not a valid source
              *
              * @returns {Array}
              */
             getSources: function () {
-                if (!this.workingCopy) {
+                if (null === this.getWorkingCopy()) {
                     return _.without(this.sources, 'draft');
                 } else {
                     return this.sources;
@@ -104,7 +94,9 @@ define(
                 var data = {};
                 switch (this.currentSource) {
                     case 'working_copy':
-                        data = this.workingCopy ? this.workingCopy.values : this.getFormData().values;
+                        data = null === this.getWorkingCopy() ?
+                            this.getFormData().values :
+                            this.getWorkingCopy().values;
                         break;
                     case 'draft':
                         data = this.getFormData().values;
