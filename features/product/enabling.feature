@@ -8,7 +8,7 @@ Feature: Enable and disable a product
     Given the "default" catalog configuration
     And I am logged in as "Julia"
 
-  @skip-pef @javascript
+  @javascript
   Scenario: Successfully disable a product
     Given an enabled "boat" product
     When I am on the "boat" product page
@@ -16,7 +16,7 @@ Feature: Enable and disable a product
     Then I should see flash message "Product working copy has been updated"
     And product "boat" should be disabled
 
-  @skip-pef @javascript
+  @javascript
   Scenario: Successfully enable a product
     Given a disabled "boat" product
     When I am on the "boat" product page

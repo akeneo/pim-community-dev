@@ -73,7 +73,7 @@ class RuleDefinitionWriter extends AbstractConfigurableStepElement implements
     protected function incrementCount($item)
     {
         if ($item->getId()) {
-            $this->stepExecution->incrementSummaryInfo('update');
+            $this->stepExecution->incrementSummaryInfo('process');
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
         }

@@ -58,11 +58,11 @@ class ProductsValidator
      */
     public function validate(RuleInterface $rule, array $products)
     {
-        $invalidProductIndexes = [];
+        $invalidProductIdx = [];
         foreach ($products as $index => $product) {
             $violations = $this->productValidator->validate($product);
             if ($violations->count() > 0) {
-                $invalidProductIndexes[] = $index;
+                $invalidProductIdx[] = $index;
                 $this->objectDetacher->detach($product);
                 $reasons = [];
                 foreach ($violations as $violation) {
@@ -75,7 +75,7 @@ class ProductsValidator
             }
         }
 
-        foreach ($invalidProductIndexes as $index) {
+        foreach ($invalidProductIdx as $index) {
             unset($products[$index]);
         }
 

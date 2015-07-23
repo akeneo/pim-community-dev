@@ -51,6 +51,8 @@ class ProductDraftStandardConverter implements StandardArrayConverterInterface
      *     'name-fr_FR': 'T-shirt super beau',
      *     'description-en_US-mobile': 'My description',
      *     'length': '10 CENTIMETER'
+     *     'family': 'my-code'
+     *     'categories': 'code1,code2'
      * ]
      *
      * After:
@@ -99,9 +101,7 @@ class ProductDraftStandardConverter implements StandardArrayConverterInterface
             $attributeInfo = $this->attributeExtractor->extractColumnInfo($key);
 
             if (null === $attributeInfo) {
-                throw new ArrayConversionException(
-                    sprintf('Field "%s" is not allowed. Only attributes are allowed in a product draft', $key)
-                );
+                unset($item[$key]);
             }
         }
 

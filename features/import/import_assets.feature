@@ -28,7 +28,7 @@ Feature: Import assets
       | landscape |
       | cities    |
       | flowers   |
-    Then I should see "read 2"
+    Then I should see "read lines 2"
     And I should see "created 4"
     And I should see "created 2"
 
@@ -50,9 +50,9 @@ Feature: Import assets
       | code  | description                  | tags                                                                                                        |
       | paint | New description of my paint. | awesome,backless,big_sizes,car,cities,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage    |
       | akene | Beautiful akene              | akeneo,backless,big_sizes,cities,dress_suit,flower,flowers,neckline,pattern,pea,solid_color,stripes,vintage |
-    Then I should see "read 2"
+    Then I should see "read lines 2"
     And I should see "created 5"
-    And I should see "updated 2"
+    And I should see "processed 2"
 
   Scenario: Import asset file with missing required code header
     Given the "clothing" catalog configuration
@@ -160,7 +160,7 @@ Feature: Import assets
     And I launch the import job
     And I wait for the "clothing_asset_import" job to finish
     Then I should see "description: This value is too long. It should have 500 characters or less"
-    And I should see "read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
 
   Scenario: Import asset with invalid value for field en_of_use_at
@@ -177,5 +177,5 @@ Feature: Import assets
     And I launch the import job
     And I wait for the "clothing_asset_import" job to finish
     Then I should see "Asset expects a string with the format \"yyyy-mm-dd\" as data, \"2006/05/12\" given"
-    And I should see "read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
