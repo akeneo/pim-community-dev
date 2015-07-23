@@ -32,6 +32,7 @@ define(
              */
             configure: function () {
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
+                this.listenTo(mediator, 'product:action:pre_update', this.onProductPreUpdate);
                 this.listenTo(mediator, 'field:extension:add', this.addFieldExtension);
                 this.listenTo(mediator, 'pim_enrich:form:field:can_be_copied', this.canBeCopied);
 
@@ -44,6 +45,15 @@ define(
              * @param {Object} product
              */
             onProductPostFetch: function (product) {
+                this.workingCopy = product.meta.working_copy;
+            },
+
+            /**
+             * Update working copy after saving
+             *
+             * @param {Object} product
+             */
+            onProductPreUpdate: function (product) {
                 this.workingCopy = product.meta.working_copy;
             },
 

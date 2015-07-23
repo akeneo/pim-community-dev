@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
@@ -45,31 +45,25 @@ class ProductDraftController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var UserContext */
-    protected $userContext;
-
     /**
      * @param SecurityContextInterface        $securityContext
      * @param ProductDraftRepositoryInterface $repository
      * @param ProductDraftManager             $manager
      * @param ProductRepositoryInterface      $productRepository
      * @param NormalizerInterface             $normalizer
-     * @param UserContext                     $userContext
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         ProductDraftRepositoryInterface $repository,
         ProductDraftManager $manager,
         ProductRepositoryInterface $productRepository,
-        NormalizerInterface $normalizer,
-        UserContext $userContext
+        NormalizerInterface $normalizer
     ) {
         $this->securityContext   = $securityContext;
         $this->repository        = $repository;
         $this->manager           = $manager;
         $this->productRepository = $productRepository;
         $this->normalizer        = $normalizer;
-        $this->userContext       = $userContext;
     }
 
     /**
@@ -84,8 +78,13 @@ class ProductDraftController
      */
     public function readyAction($productId)
     {
-        if (null === $productDraft = $this->findDraftForProduct($productId)) {
-            throw new NotFoundHttpException(sprintf('Draft for product "%s" not found', $productId));
+        $product = $this->productRepository->findOneById($productId);
+        if (null === $product) {
+            throw new NotFoundHttpException(sprintf('Product with id %d not found', $productId));
+        }
+
+        if (null === $productDraft = $this->findDraftForProduct($product)) {
+            throw new NotFoundHttpException(sprintf('Draft for product %d not found', $productId));
         }
 
         if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft)) {
@@ -94,25 +93,21 @@ class ProductDraftController
 
         $this->manager->markAsReady($productDraft);
 
-        return new JsonResponse($this->normalizer->normalize($productDraft, 'internal_api'));
+        return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
     }
 
     /**
-     * Find a product draft for a product by the product id
+     * Find a product draft for a product
      *
-     * @param string $productId the product id
+     * @param ProductInterface $product
      *
      * @return ProductDraftInterface|null
      */
-    protected function findDraftForProduct($productId)
+    protected function findDraftForProduct(ProductInterface $product)
     {
-        $product = $this->productRepository->findOneById($productId);
+        $username = $this->securityContext->getToken()->getUsername();
+        $productDraft = $this->repository->findUserProductDraft($product, $username);
 
-        if ($product) {
-            $username = $this->userContext->getUser()->getUsername();
-            $productDraft = $this->repository->findUserProductDraft($product, $username);
-
-            return $productDraft;
-        }
+        return $productDraft;
     }
 }

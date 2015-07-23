@@ -64,6 +64,8 @@ define(
 
             /**
              * Re-render extension after saving
+             *
+             * @param {Object} product
              */
             onProductPostUpdate: function (product) {
                 this.draftStatus = product.meta.draft_status;
@@ -112,8 +114,8 @@ define(
                         {productId: this.productId}
                     )
                 )
-                .then(_.bind(function () {
-                    mediator.trigger('product:action:post_update');
+                .then(_.bind(function (product) {
+                    this.setData(product);
 
                     messenger.notificationFlashMessage(
                         'success',

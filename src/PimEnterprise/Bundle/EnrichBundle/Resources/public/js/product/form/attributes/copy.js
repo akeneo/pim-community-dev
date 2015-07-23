@@ -28,6 +28,7 @@ define(
             configure: function () {
                 this.currentSource = this.sources[0];
                 this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
+                this.listenTo(mediator, 'product:action:pre_update', this.onProductPreUpdate);
                 this.listenTo(mediator, 'draft:action:show_working_copy', this.showWorkingCopy);
 
                 this.onExtensions('source_switcher:render:before', this.onSourceSwitcherRender);
@@ -42,6 +43,15 @@ define(
             * @param {Object} product
             */
             onProductPostFetch: function (product) {
+                this.workingCopy = product.meta.working_copy;
+            },
+
+            /**
+             * Update working copy after saving
+             *
+             * @param {Object} product
+             */
+            onProductPreUpdate: function (product) {
                 this.workingCopy = product.meta.working_copy;
             },
 
