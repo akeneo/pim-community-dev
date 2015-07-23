@@ -306,3 +306,9 @@ pim_enrich_associationtype_history:
     type: action
     label: pim_enrich.acl.association_type.history
     group_name: pim_enrich.acl_group.association_type
+
+# Job
+pim_enrich_job_tracker_index:
+    type: action
+    label: pim_enrich.acl.job_tracker.index
+    group_name: pim_enrich.acl_group.job_tracker
