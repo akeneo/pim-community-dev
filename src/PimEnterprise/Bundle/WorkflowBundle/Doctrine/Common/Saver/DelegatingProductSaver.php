@@ -88,6 +88,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
                 $this->draftSaver->save($productDraft, $options);
             }
         }
+
+        $this->objectManager->refresh($product);
     }
 
     /**
