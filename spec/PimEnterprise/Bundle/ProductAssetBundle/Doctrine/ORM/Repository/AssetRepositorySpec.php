@@ -29,14 +29,14 @@ class AssetRepositorySpec extends ObjectBehavior
 
     function it_finds_the_product_assets_for_an_empty_search($em, QueryBuilder $qb, AbstractQuery $query)
     {
-        $select = 'pa.id as id, CONCAT(\'[\', pa.code, \']\') as text';
+        $select = 'asset.id as id, CONCAT(\'[\', asset.code, \']\') as text';
 
         $em->createQueryBuilder()->willReturn($qb);
-        $qb->select('pa')->willReturn($qb);
+        $qb->select('asset')->willReturn($qb);
         $qb->select($select)->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
-        $qb->orderBy('pa.sortOrder', 'DESC')->willReturn($qb);
-        $qb->addOrderBy('pa.code')->willReturn($qb);
+        $qb->orderBy('asset.sortOrder', 'DESC')->willReturn($qb);
+        $qb->addOrderBy('asset.code')->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
 
@@ -47,15 +47,15 @@ class AssetRepositorySpec extends ObjectBehavior
 
     function it_finds_the_product_assets_for_a_search($em, QueryBuilder $qb, AbstractQuery $query)
     {
-        $select = 'pa.id as id, CONCAT(\'[\', pa.code, \']\') as text';
+        $select = 'asset.id as id, CONCAT(\'[\', asset.code, \']\') as text';
 
         $em->createQueryBuilder()->willReturn($qb);
-        $qb->select('pa')->willReturn($qb);
+        $qb->select('asset')->willReturn($qb);
         $qb->select($select)->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
-        $qb->orderBy('pa.sortOrder', 'DESC')->willReturn($qb);
-        $qb->addOrderBy('pa.code')->willReturn($qb);
-        $qb->andWhere('pa.code LIKE :search')->willReturn($qb);
+        $qb->orderBy('asset.sortOrder', 'DESC')->willReturn($qb);
+        $qb->addOrderBy('asset.code')->willReturn($qb);
+        $qb->andWhere('asset.code LIKE :search')->willReturn($qb);
         $qb->setParameter('search', '%my-search%')->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
@@ -67,15 +67,15 @@ class AssetRepositorySpec extends ObjectBehavior
 
     function it_finds_the_product_assets_third_page_of_a_search($em, QueryBuilder $qb, AbstractQuery $query)
     {
-        $select = 'pa.id as id, CONCAT(\'[\', pa.code, \']\') as text';
+        $select = 'asset.id as id, CONCAT(\'[\', asset.code, \']\') as text';
 
         $em->createQueryBuilder()->willReturn($qb);
-        $qb->select('pa')->willReturn($qb);
+        $qb->select('asset')->willReturn($qb);
         $qb->select($select)->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
-        $qb->orderBy('pa.sortOrder', 'DESC')->willReturn($qb);
-        $qb->addOrderBy('pa.code')->willReturn($qb);
-        $qb->andWhere('pa.code LIKE :search')->willReturn($qb);
+        $qb->orderBy('asset.sortOrder', 'DESC')->willReturn($qb);
+        $qb->addOrderBy('asset.code')->willReturn($qb);
+        $qb->andWhere('asset.code LIKE :search')->willReturn($qb);
         $qb->setParameter('search', '%my-search%')->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
