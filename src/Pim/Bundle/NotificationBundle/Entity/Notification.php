@@ -9,7 +9,7 @@ namespace Pim\Bundle\NotificationBundle\Entity;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Notification
+class Notification implements NotificationInterface
 {
     /** @var int */
     protected $id;
@@ -44,9 +44,7 @@ class Notification
     }
 
     /**
-     * Get id
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -54,11 +52,7 @@ class Notification
     }
 
     /**
-     * Set message
-     *
-     * @param string $message
-     *
-     * @return Notification
+     * {@inheritdoc}
      */
     public function setMessage($message)
     {
@@ -68,9 +62,7 @@ class Notification
     }
 
     /**
-     * Get message
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getMessage()
     {
@@ -78,11 +70,7 @@ class Notification
     }
 
     /**
-     * Set type
-     *
-     * @param string $type
-     *
-     * @return Notification
+     * {@inheritdoc}
      */
     public function setType($type)
     {
@@ -92,9 +80,7 @@ class Notification
     }
 
     /**
-     * Get type
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -102,11 +88,7 @@ class Notification
     }
 
     /**
-     * Set route
-     *
-     * @param string $route
-     *
-     * @return Notification
+     * {@inheritdoc}
      */
     public function setRoute($route)
     {
@@ -116,9 +98,7 @@ class Notification
     }
 
     /**
-     * Get route
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getRoute()
     {
@@ -126,11 +106,7 @@ class Notification
     }
 
     /**
-     * Set routeParams
-     *
-     * @param array $routeParams
-     *
-     * @return Notification
+     * {@inheritdoc}
      */
     public function setRouteParams(array $routeParams)
     {
@@ -140,9 +116,7 @@ class Notification
     }
 
     /**
-     * Get routeParams
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getRouteParams()
     {
@@ -150,11 +124,7 @@ class Notification
     }
 
     /**
-     * Set messageParams
-     *
-     * @param array $messageParams
-     *
-     * @return Notification
+     * {@inheritdoc}
      */
     public function setMessageParams(array $messageParams)
     {
@@ -164,9 +134,7 @@ class Notification
     }
 
     /**
-     * Get messageParams
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getMessageParams()
     {
@@ -174,9 +142,7 @@ class Notification
     }
 
     /**
-     * Get created
-     *
-     * @return \DateTime
+     * {@inheritdoc}
      */
     public function getCreated()
     {
@@ -184,11 +150,7 @@ class Notification
     }
 
     /**
-     * Set context
-     *
-     * @param array $context
-     *
-     * @return Notification
+     * {@inheritdoc}
      */
     public function setContext(array $context)
     {
@@ -198,9 +160,7 @@ class Notification
     }
 
     /**
-     * Get context
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getContext()
     {

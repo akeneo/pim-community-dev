@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\NotificationBundle\Controller;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\UserNotification;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManagerInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\DelegatingEngine;
@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class NotificationControllerSpec extends ObjectBehavior
 {
-    function let(DelegatingEngine $templating, NotificationManager $manager, UserContext $context)
+    function let(DelegatingEngine $templating, NotificationManagerInterface $manager, UserContext $context)
     {
         $this->beConstructedWith($templating, $manager, $context);
     }
@@ -25,7 +25,7 @@ class NotificationControllerSpec extends ObjectBehavior
 
     function it_lists_user_notifications_linked_to_the_current_user(
         UserInterface $user,
-        UserNotification $userNotification,
+        UserNotificationInterface $userNotification,
         Request $request,
         $manager,
         $context,

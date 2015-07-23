@@ -3,10 +3,11 @@
 namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistryInterface;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,15 +27,22 @@ class JobExecutionNotifier implements EventSubscriberInterface
     /** @staticvar string */
     const QUICK_EXPORT = 'quick_export';
 
-    /** @var NotificationManager */
+    /** @var NotificationFactoryRegistryInterface */
+    protected $factoryRegistry;
+
+    /** @var NotificationManagerInterface */
     protected $manager;
 
     /**
-     * @param NotificationManager $manager
+     * @param NotificationFactoryRegistryInterface $factoryRegistry
+     * @param NotificationManagerInterface         $manager
      */
-    public function __construct(NotificationManager $manager)
-    {
-        $this->manager = $manager;
+    public function __construct(
+        NotificationFactoryRegistryInterface $factoryRegistry,
+        NotificationManagerInterface $manager
+    ) {
+        $this->factoryRegistry = $factoryRegistry;
+        $this->manager         = $manager;
     }
 
     /**
@@ -55,28 +63,37 @@ class JobExecutionNotifier implements EventSubscriberInterface
     public function afterJobExecution(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
-        $user = $jobExecution->getUser();
+        $user         = $jobExecution->getUser();
 
         if (null === $user) {
             return;
         }
 
-        if ($jobExecution->getStatus()->isUnsuccessful()) {
-            $status = 'error';
-        } else {
-            $status = 'success';
-            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-                if ($stepExecution->getWarnings()->count()) {
-                    $status = 'warning';
-                    break;
-                }
-            }
+        $notification = $this->createNotification($jobExecution);
+        $this->manager->notify([$user], $notification);
+    }
+
+    /**
+     * Retrieve the matching factory and create the notification
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @throws \LogicException
+     *
+     * @return NotificationInterface
+     */
+    protected function createNotification(JobExecution $jobExecution)
+    {
+        $type    = $jobExecution->getJobInstance()->getType();
+        $factory = $this->factoryRegistry->getJobNotificationFactory($type);
+
+        if (!$factory) {
+            throw new \LogicException(sprintf('No notification factory found for the "%s" job type', $type));
         }
 
-        $type = $jobExecution->getJobInstance()->getType();
+        $notification = $factory->createNotification($jobExecution);
 
-        // TODO: maybe create a registry or something similar to load routes ?
-        $this->generateNotification($jobExecution, $user, $type, $status);
+        return $notification;
     }
 
     /**
@@ -92,11 +109,6 @@ class JobExecutionNotifier implements EventSubscriberInterface
     protected function generateNotification(JobExecution $jobExecution, $user, $type, $status)
     {
         switch ($type) {
-            case JobInstance::TYPE_EXPORT:
-            case JobInstance::TYPE_IMPORT:
-                $this->generateExportImportNotify($jobExecution, $user, $type, $status);
-                break;
-
             case self::TYPE_MASS_EDIT:
             case self::QUICK_EXPORT:
                 $this->generateMassEditNotify($jobExecution, $user, $type, $status);
@@ -108,30 +120,6 @@ class JobExecutionNotifier implements EventSubscriberInterface
                 );
                 break;
         }
-    }
-
-    /**
-     * @param JobExecution         $jobExecution
-     * @param string|UserInterface $user
-     * @param string               $type
-     * @param string               $status
-     */
-    protected function generateExportImportNotify(JobExecution $jobExecution, $user, $type, $status)
-    {
-        $this->manager->notify(
-            [$user],
-            sprintf('pim_import_export.notification.%s.%s', $type, $status),
-            $status,
-            [
-                'route'         => sprintf('pim_importexport_%s_execution_show', $type),
-                'routeParams'   => [
-                    'id' => $jobExecution->getId()
-                ],
-                'messageParams' => [
-                    '%label%' => $jobExecution->getJobInstance()->getLabel()
-                ]
-            ]
-        );
     }
 
     /**

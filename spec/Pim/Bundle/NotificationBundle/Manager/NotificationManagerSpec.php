@@ -4,11 +4,10 @@ namespace spec\Pim\Bundle\NotificationBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
-use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository;
-use Pim\Bundle\NotificationBundle\Entity\UserNotification;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
-use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
+use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
+use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -17,12 +16,11 @@ class NotificationManagerSpec extends ObjectBehavior
 {
     function let(
         EntityManager $em,
-        UserNotificationRepository $repository,
-        NotificationFactory $notificationFactory,
-        UserProviderInterface $userProvider,
-        UserNotificationFactory $userNotificationFactory
+        UserNotificationRepositoryInterface $repository,
+        UserNotificationFactoryInterface $userNotificationFactory,
+        UserProviderInterface $userProvider
     ) {
-        $this->beConstructedWith($em, $repository, $notificationFactory, $userNotificationFactory, $userProvider);
+        $this->beConstructedWith($em, $repository, $userNotificationFactory, $userProvider);
     }
 
     function it_is_initializable()
@@ -30,18 +28,13 @@ class NotificationManagerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Manager\NotificationManager');
     }
 
-    function it_can_create_a_notification(
+    function it_can_save_a_notification(
         UserInterface $user,
-        Notification $notification,
-        UserNotification $userNotification,
+        NotificationInterface $notification,
+        UserNotificationInterface $userNotification,
         $em,
-        $notificationFactory,
         $userNotificationFactory
     ) {
-        $notificationFactory
-            ->createNotification('Some message', 'success', Argument::any())
-            ->shouldBeCalled()
-            ->willReturn($notification);
         $userNotificationFactory
             ->createUserNotification($notification, $user)
             ->shouldBeCalled()
@@ -51,21 +44,17 @@ class NotificationManagerSpec extends ObjectBehavior
         $em->flush($notification)->shouldBeCalled();
         $em->flush([$userNotification])->shouldBeCalled();
 
-        $this->notify([$user], 'Some message');
+        $this->notify([$user], $notification);
     }
 
-    function it_can_create_multiple_notifications(
+    function it_can_save_several_notifications(
         UserInterface $user,
         UserInterface $user2,
-        Notification $notification,
-        UserNotification $userNotification,
+        NotificationInterface $notification,
+        UserNotificationInterface $userNotification,
         $em,
-        $notificationFactory,
         $userNotificationFactory
     ) {
-        $notificationFactory
-            ->createNotification('Some message', 'success', Argument::any())
-            ->willReturn($notification);
         $userNotificationFactory
             ->createUserNotification(
                 $notification,
@@ -74,15 +63,15 @@ class NotificationManagerSpec extends ObjectBehavior
             ->willReturn($userNotification);
 
         $em->persist($notification)->shouldBeCalled();
-        $em->persist(Argument::type('Pim\Bundle\NotificationBundle\Entity\UserNotification'))->shouldBeCalledTimes(2);
+        $em->persist(Argument::type('Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface'))->shouldBeCalledTimes(2);
         $em->flush($notification)->shouldBeCalled();
         $em->flush([$userNotification, $userNotification])->shouldBeCalled();
 
-        $this->notify([$user, $user2], 'Some message');
+        $this->notify([$user, $user2], $notification);
     }
 
     function it_can_return_all_notifications_for_a_user(
-        UserNotification $userNotification,
+        UserNotificationInterface $userNotification,
         UserInterface $user,
         $repository
     ) {
@@ -104,7 +93,7 @@ class NotificationManagerSpec extends ObjectBehavior
         $this->markAsViewed($user, 'all');
     }
 
-    function it_can_remove_a_notification(UserNotification $userNotification, UserInterface $user, $repository, $em)
+    function it_can_remove_a_notification(UserNotificationInterface $userNotification, UserInterface $user, $repository, $em)
     {
         $repository->findOneBy(['id' => 1, 'user' => $user])->willReturn($userNotification);
 
