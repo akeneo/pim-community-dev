@@ -38,6 +38,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.filter.product_edit_data'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.object_manager.product'
 
     pimee_enrich.controller.rule_relation:
         class: %pimee_enrich.controller.rule_relation.class%
