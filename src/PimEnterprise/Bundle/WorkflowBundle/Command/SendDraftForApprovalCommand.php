@@ -37,7 +37,7 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:draft:send-for-approval')
-            ->setDescription('Sends a draft for approval')
+            ->setDescription('Sends a product draft for approval')
             ->addArgument(
                 'identifier',
                 InputArgument::REQUIRED,
@@ -46,7 +46,7 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
             ->addArgument(
                 'username',
                 InputArgument::REQUIRED,
-                sprintf('The author of updated product')
+                sprintf('The author of the draft')
             );
     }
 

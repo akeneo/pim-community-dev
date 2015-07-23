@@ -39,7 +39,7 @@ class CreateDraftCommand extends UpdateProductCommand
             [
                 'type'  => 'set_data',
                 'field' => 'name',
-                'data'  => 'My name'
+                'data'  => 'My name',
             ],
             [
                 'type'        => 'copy_data',
@@ -48,12 +48,12 @@ class CreateDraftCommand extends UpdateProductCommand
                 'from_locale' => 'en_US',
                 'to_field'    => 'description',
                 'to_scope'    => 'mobile',
-                'to_locale'   => 'en_US'
+                'to_locale'   => 'en_US',
             ],
             [
                 'type'  => 'add_data',
                 'field' => 'categories',
-                'data'  => ['tshirt']
+                'data'  => ['tshirt'],
             ],
         ];
 
