@@ -14,6 +14,7 @@ define(
         'oro/mediator',
         'oro/messenger',
         'pim/form',
+        'pim/product-manager',
         'text!pimee/template/product/submit-draft'
     ],
     function (
@@ -24,6 +25,7 @@ define(
         mediator,
         messenger,
         BaseForm,
+        ProductManager,
         submitTemplate
     ) {
         return BaseForm.extend({
@@ -114,6 +116,7 @@ define(
                         {productId: this.productId}
                     )
                 )
+                .done(_.bind(ProductManager.generateMissing, this))
                 .then(_.bind(function (product) {
                     this.setData(product);
 
