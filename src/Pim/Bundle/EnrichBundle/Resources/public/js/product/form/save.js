@@ -88,11 +88,7 @@ define(
                             this.updateSuccessMessage
                         );
 
-                        this.setData(data);
-
-                        if (!options || !options.silent) {
-                            mediator.trigger('product:action:post_update', data);
-                        }
+                        this.setData(data, options);
                     }, this))
                     .fail(_.bind(function (response) {
                         switch (response.status) {

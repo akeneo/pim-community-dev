@@ -8,8 +8,18 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['jquery', 'underscore', 'backbone'],
-    function ($, _, Backbone) {
+    [
+        'jquery',
+        'underscore',
+        'backbone',
+        'oro/mediator'
+    ],
+    function (
+        $,
+        _,
+        Backbone,
+        mediator
+    ) {
         return Backbone.View.extend({
             code: 'form',
             initialize: function () {
@@ -59,7 +69,15 @@ define(
             setData: function (data, options) {
                 options = options || {};
 
+                if (!options.silent) {
+                    mediator.trigger('product:action:pre_update', data);
+                }
+
                 this.getRoot().model.set(data, options);
+
+                if (!options.silent) {
+                    mediator.trigger('product:action:post_update', data);
+                }
 
                 return this;
             },
