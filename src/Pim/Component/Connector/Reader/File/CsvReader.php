@@ -232,7 +232,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
                 return null;
             }
             if ($this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('read');
+                $this->stepExecution->incrementSummaryInfo('read_lines');
             }
 
             if (count($this->fieldNames) !== count($data)) {

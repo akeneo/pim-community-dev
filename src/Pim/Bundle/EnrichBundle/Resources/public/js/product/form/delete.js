@@ -50,7 +50,7 @@ define(
                 );
             },
             doDelete: function () {
-                var productId   = this.getData().meta.id;
+                var productId   = this.getFormData().meta.id;
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();

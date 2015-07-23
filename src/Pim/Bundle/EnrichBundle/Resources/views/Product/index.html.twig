@@ -13,9 +13,12 @@
                 UserContext.set('catalogLocale', '{{ dataLocale.code }}');
                 $(function() {
                     $('.has-sidebar').sidebarize();
+
                 });
             }
         );
+
+        sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
     </script>
 {% endblock %}
 
@@ -60,5 +63,4 @@
             {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
         </div>
     </div>
-
 {% endblock %}

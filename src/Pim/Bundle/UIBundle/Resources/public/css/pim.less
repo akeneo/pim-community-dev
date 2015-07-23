@@ -605,7 +605,7 @@ span.link-label {
     line-height: 28px;
     word-wrap: break-word;
     overflow: hidden;
-    white-space: nowrap;
+    white-space: normal;
     text-overflow: ellipsis;
     border-right: none;
 
@@ -710,7 +710,7 @@ h3.tab-header {
 
 .comparison-mode {
   .comparison-elements-container {
-    .display-flex();
+    display: block;
   }
 
   .attribute-edit-actions {
@@ -907,9 +907,11 @@ h3.tab-header {
     .flex(0);
   }
 
-  & > .panels > .panel-container {
-    width: auto;
+  & > .panels {
     .flex(1);
+    & > .panel-container {
+      width: auto;
+    }
   }
 }
 
@@ -1047,10 +1049,6 @@ h3.tab-header {
       max-width: @max-field-width - @copy-field-selector-width;
       min-width: @min-field-width - @copy-field-selector-width;
     }
-  }
-
-  .field-input {
-    padding-top: 3px;
   }
 }
 

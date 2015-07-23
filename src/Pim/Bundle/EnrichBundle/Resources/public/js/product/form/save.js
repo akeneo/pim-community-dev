@@ -50,11 +50,7 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             save: function (options) {
-                _.each(FieldManager.getFields(), function (field) {
-                    field.updateModel();
-                });
-
-                var product = $.extend(true, {}, this.getData());
+                var product = $.extend(true, {}, this.getFormData());
                 var productId = product.meta.id;
 
                 delete product.variant_group;
@@ -98,7 +94,7 @@ define(
                             mediator.trigger('product:action:post_update', data);
                         }
                     }, this))
-                    .fail(function (response) {
+                    .fail(_.bind(function (response) {
                         switch (response.status) {
                             case 400:
                                 mediator.trigger(
@@ -118,7 +114,7 @@ define(
                             'error',
                             this.updateFailureMessage
                         );
-                    }).always(function () {
+                    }, this)).always(function () {
                         loadingMask.hide().$el.remove();
                     });
             }

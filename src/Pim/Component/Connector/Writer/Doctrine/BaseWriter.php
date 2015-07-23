@@ -74,7 +74,7 @@ class BaseWriter extends AbstractConfigurableStepElement implements
     {
         foreach ($objects as $object) {
             if ($object->getId()) {
-                $this->stepExecution->incrementSummaryInfo('update');
+                $this->stepExecution->incrementSummaryInfo('process');
             } else {
                 $this->stepExecution->incrementSummaryInfo('create');
             }

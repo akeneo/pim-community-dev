@@ -31,7 +31,7 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             addExtension: function (event) {
-                var product = this.getData();
+                var product = this.getFormData();
                 if (!product.variant_group) {
                     return;
                 }

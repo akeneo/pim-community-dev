@@ -19,26 +19,34 @@ define([
             field: null,
             locale: null,
             scope: null,
-            data: '',
+            value: {},
             template: _.template(template),
             selected: false,
             events: {
-                'change .copy-field-selector': 'selectionChanged',
-                'click': 'select'
+                'click': 'onSelect'
             },
+
+            /**
+             * Initialize the view
+             */
             initialize: function () {
                 this.selected = false;
                 this.field    = null;
             },
+
+            /**
+             * Render the copy field view
+             * Delegates the render of the input itself to the Field.renderCopyInput() method
+             *
+             * @returns {Object}
+             */
             render: function () {
                 this.$el.empty();
 
                 var templateContext = {
                     type: this.field.attribute.field_type,
                     label: this.field.attribute.label[this.field.context.locale],
-                    data: this.data,
                     config: this.field.config,
-                    context: this.field.context,
                     attribute: this.field.attribute,
                     selected: this.selected,
                     locale: this.locale,
@@ -47,35 +55,65 @@ define([
                 };
 
                 this.$el.html(this.template(templateContext));
-
-                this.field.getTemplateContext().done(_.bind(function (templateContext) {
-                    this.$('.field-input').html(this.field.renderCopyInput(templateContext, this.locale, this.scope));
-                }, this));
+                this.field.renderCopyInput(this.value)
+                    .then(_.bind(function (render) {
+                        this.$('.field-input').html(render);
+                    }, this));
 
                 this.delegateEvents();
 
                 return this;
             },
-            setData: function (data) {
-                this.data = data;
+
+            /**
+             * Set the value to be displayed in the copy field
+             *
+             * @param {Object} value
+             */
+            setValue: function (value) {
+                this.value = value;
             },
+
+            /**
+             * Set the locale
+             *
+             * @param {string} locale
+             */
             setLocale: function (locale) {
                 this.locale = locale;
             },
+
+            /**
+             * Set the scope
+             *
+             * @param {string} scope
+             */
             setScope: function (scope) {
                 this.scope = scope;
             },
+
+            /**
+             * Bound this copy field to the original field
+             *
+             * @param {Field} field
+             */
             setField: function (field) {
                 this.field = field;
             },
-            selectionChanged: function (event) {
-                this.selected = event.currentTarget.checked;
-            },
-            select: function () {
-                this.selected = !this.selected;
 
-                this.field.render();
+            /**
+             * Callback called when the copy field is clicked, toggle the select checkbox state
+             */
+            onSelect: function () {
+                this.selected = !this.selected;
+                this.$('.copy-field-selector').prop('checked', this.selected);
             },
+
+            /**
+             * Mark this copy field as selected or not
+             *
+             * @param {boolean} selected
+             */
             setSelected: function (selected) {
                 this.selected = selected;
             }
