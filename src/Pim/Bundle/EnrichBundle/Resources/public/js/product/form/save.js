@@ -20,16 +20,17 @@ define(
         'pim/i18n',
         'pim/user-context'
     ],
-    function ($,
-            _,
-            mediator,
-            BaseForm,
-            messenger,
-            LoadingMask,
-            ProductManager,
-            FieldManager,
-            i18n,
-            UserContext
+    function (
+        $,
+        _,
+        mediator,
+        BaseForm,
+        messenger,
+        LoadingMask,
+        ProductManager,
+        FieldManager,
+        i18n,
+        UserContext
     ) {
         return BaseForm.extend({
             className: 'btn-group',
