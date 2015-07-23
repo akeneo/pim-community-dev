@@ -96,6 +96,12 @@ oro_menu_config:
             aclResourceId: pim_enrich_grouptype_index
             extras:
                 routes: ['/^pim_enrich_grouptype_\w+$/']
+        pim_enrich_job_tracker:
+            label: job_tracker.tab.title
+            route: pim_enrich_job_tracker_index
+            aclResourceId: pim_enrich_job_tracker_index
+            extras:
+                routes: ['/^pim_enrich_job_tracker_\w+$/']
 
     tree:
         application_menu:
@@ -117,6 +123,9 @@ oro_menu_config:
                         pim_enrich_currency: ~
                         pim_enrich_locale: ~
                         pim_enrich_channel: ~
+                system_tab:
+                    children:
+                        pim_enrich_job_tracker: ~
 
 oro_titles:
     oro_default:                           pim_title.dashboard
