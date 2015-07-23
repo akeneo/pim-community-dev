@@ -93,7 +93,6 @@ define(
                     .done(_.bind(function () {
                         ProductManager.clear(this.getFormData().meta.id);
                         ProductManager.get(this.getFormData().meta.id).done(_.bind(function (product) {
-                            this.setData(product);
                             navigation.addFlashMessage(
                                 'success',
                                 _.__(
@@ -102,11 +101,10 @@ define(
                                 )
                             );
                             navigation.afterRequest();
-
                             loadingMask.hide().$el.remove();
-                            this.render();
+
+                            this.setData(product);
                             mediator.trigger('product:action:post_publish', product);
-                            mediator.trigger('product:action:post_update', product);
                         }, this));
                     }, this))
                     .fail(function () {
