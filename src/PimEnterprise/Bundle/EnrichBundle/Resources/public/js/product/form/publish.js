@@ -89,6 +89,7 @@ define(
                 var navigation = Navigation.getInstance();
 
                 var method = publish ? PublishedProductManager.publish : PublishedProductManager.unpublish;
+                // TODO: We shouldn't force product fetching, we should use request response (cf. send for approval)
                 method(productId)
                     .done(_.bind(function () {
                         ProductManager.clear(this.getFormData().meta.id);

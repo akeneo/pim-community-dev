@@ -57,6 +57,8 @@ define(
                             }
                         ).done(
                             _.bind(function () {
+                                // TODO: We shouldn't force product fetching,
+                                // we should use request response (cf. send for approval)
                                 ProductManager.clear(this.getFormData().meta.id);
                                 ProductManager.get(this.getFormData().meta.id).done(_.bind(function (product) {
                                     navigation.addFlashMessage(
