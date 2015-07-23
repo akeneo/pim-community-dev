@@ -71,11 +71,9 @@ class AssetEventSubscriber implements EventSubscriberInterface
             $ppqb = $this->pqbFactory->create();
             $publishedProducts = $ppqb
                 ->addFilter($attributeCode, 'IN', [$asset->getId()])
-                ->getQueryBuilder()
-                ->getQuery()
                 ->execute();
 
-            if (!empty($publishedProducts)) {
+            if ($publishedProducts->count() > 0) {
                 throw new PublishedProductConsistencyException(
                     'Impossible to remove an asset linked to a published product'
                 );
