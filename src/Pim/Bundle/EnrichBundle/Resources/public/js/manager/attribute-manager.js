@@ -124,6 +124,9 @@ define([
                         }
 
                         if ('pim_catalog_price_collection' === attribute.type) {
+                            if (null === newValue.data) { // TODO revert this temporary fix
+                                newValue.data = [];
+                            }
                             newValue.data = this.generateMissingPrices(newValue.data, currencies);
                         }
                     }, this));
