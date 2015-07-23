@@ -10,7 +10,7 @@ Feature: Create a draft with a price fields
       | akeneo_tshirt | tshirts    |
 
   Scenario: Successfully add a draft without add attribute in product
-    Given I should get the following products after apply the following updater to it:
+    Given I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                                                             | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "price", "data": [{"data": 4, "currency": "EUR"}, {"data": "5", "currency": "USD"}], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -23,7 +23,7 @@ Feature: Create a draft with a price fields
     Given the following product values:
       | product       | attribute | value  |
       | akeneo_tshirt | price     | 12.00 EUR, 15.00 USD |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                                                                 | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "price", "data": [{"data": 4.00, "currency": "EUR"}, {"data": 5.00, "currency": "USD"}], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -36,7 +36,7 @@ Feature: Create a draft with a price fields
     Given the following product values:
       | product       | attribute | value    |
       | akeneo_tshirt | price     | 5.00 USD |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                              | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "price", "data": [{"data": 5.00, "currency": "USD"}], "locale": null, "scope": null}] | {}     | Mary     |
     And I should not get the following proposal:

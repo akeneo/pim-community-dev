@@ -57,23 +57,28 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
     {
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
-        if (false === $product) {
+        if (!$product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found</error>', $identifier));
 
             return -1;
         }
 
-        if ($input->hasArgument('username') && '' != $username = $input->getArgument('username')) {
-            if (!$this->createToken($output, $username)) {
-                return -1;
-            }
+        $username = $input->getArgument('username');
+        if (!$this->createToken($output, $username)) {
+            return -1;
         }
 
         $productDraft = $this->getProductDraft($product, $username);
+        if (!$productDraft) {
+            $output->writeln(sprintf('<error>Product draft "%s" not found</error>', $identifier));
+
+            return -1;
+        }
+
         $productDraft->setStatus(ProductDraftInterface::READY);
         $this->saveDraft($productDraft);
 
-        return 1;
+        return 0;
     }
 
     /**
@@ -129,8 +134,8 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
      */
     protected function createToken(OutputInterface $output, $username)
     {
-        $userManager = $this->getContainer()->get('oro_user.manager');
-        $user = $userManager->findUserByUsername($username);
+        $userRepository = $this->getContainer()->get('pim_user.repository.user');
+        $user = $userRepository->findOneByIdentifier($username);
 
         if (null === $user) {
             $output->writeln(sprintf('<error>Username "%s" is unknown<error>', $username));

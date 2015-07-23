@@ -10,7 +10,7 @@ Feature: Create a draft with a identifier fields
       | akeneo_tshirt | tshirts    |
 
   Scenario: Successfully add a draft without add attribute in product
-    Given I should get the following products after apply the following updater to it:
+    Given I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                           | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "sku", "data": "akeneo_tshirt_v2", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -20,7 +20,7 @@ Feature: Create a draft with a identifier fields
       | sku | akeneo_tshirt |
 
   Scenario: Successfully add a draft without update attribute in product
-    Given I should get the following products after apply the following updater to it:
+    Given I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                           | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "sku", "data": "akeneo_tshirt_v2", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -30,7 +30,7 @@ Feature: Create a draft with a identifier fields
       | sku | akeneo_tshirt |
 
   Scenario: Do not create a draft with same values as product
-    Given I should get the following products after apply the following updater to it:
+    Given I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                        | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "sku", "data": "akeneo_tshirt", "locale": null, "scope": null}] | {}     | Mary     |
     And I should not get the following proposal:

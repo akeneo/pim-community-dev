@@ -256,13 +256,76 @@ class EnterpriseCommandContext extends CommandContext
     }
 
     /**
+     * @Then /^I should get the following product drafts after apply the following updater to it:$/
+     *
      * @param TableNode $updates
      *
      * @throws \Exception
      */
-    public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
+    public function iShouldGetTheFollowingProductDraftsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
     {
-        parent::iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt($updates);
+        $application = $this->getApplicationsForUpdaterProduct();
+
+        $draftCommand = $application->find('pim:draft:create');
+        $draftCommand->setContainer($this->getMainContext()->getContainer());
+        $draftCommandTester = new CommandTester($draftCommand);
+
+        $getCommand = $application->find('pim:product:get');
+        $getCommand->setContainer($this->getMainContext()->getContainer());
+        $getCommandTester = new CommandTester($getCommand);
+
+        foreach ($updates->getHash() as $update) {
+            $username = isset($update['username']) ? $update['username'] : null;
+
+            $draftCommandTester->execute(
+                [
+                    'command'      => $draftCommand->getName(),
+                    'identifier'   => $update['product'],
+                    'json_updates' => $update['actions'],
+                    'username'     => $username
+                ]
+            );
+
+            $expected = json_decode($update['result'], true);
+            if (isset($expected['product'])) {
+                $getCommandTester->execute(
+                    [
+                        'command'    => $getCommand->getName(),
+                        'identifier' => $expected['product']
+                    ]
+                );
+                unset($expected['product']);
+            } else {
+                $getCommandTester->execute(
+                    [
+                        'command'    => $getCommand->getName(),
+                        'identifier' => $update['product']
+                    ]
+                );
+            }
+
+            $actual = json_decode($getCommandTester->getDisplay(), true);
+
+            if (null === $actual) {
+                throw new \Exception(sprintf(
+                    'An error occurred during the execution of the update command : %s',
+                    $getCommandTester->getDisplay()
+                ));
+            }
+
+            if (null === $expected) {
+                throw new \Exception(sprintf(
+                    'Looks like the expected result is not valid json : %s',
+                    $update['result']
+                ));
+            }
+            $diff = $this->arrayIntersect($actual, $expected);
+
+            assertEquals(
+                $expected,
+                $diff
+            );
+        }
     }
 
     /**
@@ -273,6 +336,7 @@ class EnterpriseCommandContext extends CommandContext
         $application = new Application();
         $application->add(new UpdateProductCommand());
         $application->add(new CreateDraftCommand());
+        $application->add(new SendDraftForApprovalCommand());
         $application->add(new GetProductCommand());
 
         return $application;

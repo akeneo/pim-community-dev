@@ -72,7 +72,7 @@ class CreateDraftCommand extends UpdateProductCommand
             )
             ->addArgument(
                 'username',
-                InputArgument::OPTIONAL,
+                InputArgument::REQUIRED,
                 sprintf('The author of updated product')
             )
             ->addArgument(
@@ -94,16 +94,15 @@ class CreateDraftCommand extends UpdateProductCommand
     {
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
-        if (false === $product) {
+        if (!$product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found</error>', $identifier));
 
             return -1;
         }
 
-        if ($input->hasArgument('username') && '' != $username = $input->getArgument('username')) {
-            if (!$this->createToken($output, $username)) {
-                return -1;
-            }
+        $username = $input->getArgument('username');
+        if (!$this->createToken($output, $username)) {
+            return -1;
         }
 
         $updates = json_decode($input->getArgument('json_updates'), true);
@@ -124,11 +123,12 @@ class CreateDraftCommand extends UpdateProductCommand
             $this->saveDraft($productDraft);
             $output->writeln(sprintf('<info>Draft "%s" has been created</info>', $identifier));
         } else {
-            $output->writeln(sprintf('<info>No draft were created because do diff were found</info>'));
+            $output->writeln(sprintf('<info>No draft has been created because do diff has been found</info>'));
+
             return -1;
         }
 
-        return 1;
+        return 0;
     }
 
     /**
