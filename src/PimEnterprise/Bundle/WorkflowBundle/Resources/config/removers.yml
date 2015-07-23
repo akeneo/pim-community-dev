@@ -4,4 +4,5 @@ services:
         arguments:
             - '@pimee_workflow.object_manager.product_draft'
             - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
             - '%pimee_workflow.model.product_draft.class%'
