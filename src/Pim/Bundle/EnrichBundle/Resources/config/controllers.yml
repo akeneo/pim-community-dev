@@ -370,6 +370,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.filter.product_edit_data'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.object_manager.product'
 
     pim_enrich.controller.rest.product_category:
         class: %pim_enrich.controller.rest.product_category.class%

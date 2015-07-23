@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
@@ -63,6 +64,9 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var ObjectManager */
+    protected $objectManager;
+
     /**
      * @param ProductRepositoryInterface   $productRepository
      * @param AttributeRepositoryInterface $attributeRepository
@@ -74,6 +78,7 @@ class ProductController
      * @param ObjectFilterInterface        $objectFilter
      * @param CollectionFilterInterface    $productEditDataFilter
      * @param ProductBuilderInterface      $productBuilder
+     * @param ObjectManager                $objectManager
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -85,7 +90,8 @@ class ProductController
         UserContext $userContext,
         ObjectFilterInterface $objectFilter,
         CollectionFilterInterface $productEditDataFilter,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        ObjectManager $objectManager
     ) {
         $this->productRepository     = $productRepository;
         $this->attributeRepository   = $attributeRepository;
@@ -97,6 +103,7 @@ class ProductController
         $this->objectFilter          = $objectFilter;
         $this->productEditDataFilter = $productEditDataFilter;
         $this->productBuilder        = $productBuilder;
+        $this->objectManager         = $objectManager;
     }
 
     /**
@@ -177,6 +184,7 @@ class ProductController
 
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
+            $this->objectManager->refresh($product);
 
             return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
         } else {
