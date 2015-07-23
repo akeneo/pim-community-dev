@@ -15,7 +15,7 @@ final class BaseEvents
      * This event is thrown before a generic entity get removed.
      *
      * The event listener receives an
-     * Akeneo\Bundle\StorageUtilsBundle\Event\RemoveEvent instance.
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */

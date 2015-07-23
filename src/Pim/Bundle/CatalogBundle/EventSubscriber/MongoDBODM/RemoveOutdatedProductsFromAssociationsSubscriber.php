@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\RemoveEvent;
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\RemoveEvent;
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;

@@ -34,11 +34,16 @@ class AttributeOptionRemoverSpec extends ObjectBehavior
         $optionsResolver->resolveRemoveOptions([])->willReturn(['flush' => true]);
         $eventDispatcher->dispatch(
             AttributeOptionEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->remove($option)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            AttributeOptionEvents::POST_REMOVE,
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
+        )->shouldBeCalled();
 
         $this->remove($option);
     }

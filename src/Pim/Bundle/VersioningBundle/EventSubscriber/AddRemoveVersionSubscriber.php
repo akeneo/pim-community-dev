@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
-use Akeneo\Bundle\StorageUtilsBundle\Event\RemoveEvent;
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;

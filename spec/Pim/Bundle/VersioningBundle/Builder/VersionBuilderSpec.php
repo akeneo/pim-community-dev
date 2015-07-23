@@ -4,32 +4,38 @@ namespace spec\Pim\Bundle\VersioningBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class VersionBuilderSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer)
+    function let(NormalizerInterface $normalizer, VersionFactory $versionFactory)
     {
-        $this->beConstructedWith($normalizer);
+        $this->beConstructedWith($normalizer, $versionFactory);
     }
 
-    function it_builds_versions_for_versionable_entities($normalizer, ProductInterface $product)
+    function it_builds_versions_for_versionable_entities($normalizer, $versionFactory, ProductInterface $product, Version $version)
     {
         $product->getId()->willReturn(1);
         $normalizer->normalize($product, 'csv', ['versioning' => true])->willReturn(['bar' => 'baz']);
-        $version = $this->buildVersion($product, 'foo');
-        $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
-        $version->getAuthor()->shouldReturn('foo');
-        $version->isPending()->shouldReturn(false);
-        $version->getVersion()->shouldReturn(1);
-        $version->getResourceId()->shouldReturn(1);
-        $version->getSnapshot()->shouldReturn(['bar' => 'baz']);
-        $version->getChangeset()->shouldReturn(['bar' => ['old' => '', 'new' => 'baz']]);
+        $versionFactory->create(Argument::Any(), 1, 'foo', null)->willReturn($version);
+        $version->setVersion(1)->willReturn($version);
+        $version->setSnapshot(['bar' => 'baz'])->willReturn($version);
+        $version->setChangeset(['bar' => ['old' => '', 'new' => 'baz']])->willReturn($version);
+        $this->buildVersion($product, 'foo');
     }
 
-    function it_creates_pending_version(ProductInterface $product)
+    function it_creates_pending_version($versionFactory, ProductInterface $product, Version $pending)
     {
+        $product->getId()->willReturn(1);
+        $versionFactory->create(Argument::Any(), 1, 'baz', null)->willReturn($pending);
+        $pending->getChangeset()->willReturn($pending);
+        $pending->setChangeset([])->willReturn($pending);
+        $pending->getAuthor()->willReturn('baz');
+        $pending->isPending()->willReturn(true);
+
         $version = $this->createPendingVersion($product, 'baz', []);
         $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
         $version->getAuthor()->shouldReturn('baz');
@@ -42,7 +48,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $pending->setSnapshot(['foo' => 'bar'])->willReturn($pending);
         $pending->getChangeset()->willReturn(['foo' => 'bar']);
 
-        $pending->setChangeset(['foo' => ['old' => '', 'new' => 'bar']])->shouldBeCalled();
+        $pending->setChangeset(['foo' => ['old' => '', 'new' => 'bar']])->willReturn($pending);
 
         $this->buildPendingVersion($pending);
     }
