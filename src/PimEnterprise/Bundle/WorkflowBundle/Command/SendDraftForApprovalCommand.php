@@ -58,7 +58,7 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
         if (null === $product) {
-            $output->writeln(sprintf('<error>product with identifier "%s" not found</error>', $identifier));
+            $output->writeln(sprintf('<error>Product with identifier "%s" not found</error>', $identifier));
 
             return -1;
         }

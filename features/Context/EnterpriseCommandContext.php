@@ -235,7 +235,7 @@ class EnterpriseCommandContext extends CommandContext
      *
      * @throws \Exception
      *
-     * @Given /^I send draft "([^"]*)" created by "([^"]*)" for approval"$/
+     * @Given /^I send draft "([^"]+)" created by "([^"]+)" for approval"$/
      */
     public function iSendDraftForApproval($product, $username)
     {

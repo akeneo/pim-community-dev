@@ -59,7 +59,7 @@ class CreateDraftCommand extends UpdateProductCommand
 
         $this
             ->setName('pim:draft:create')
-            ->setDescription('Create a draft')
+            ->setDescription('Create a draft based on a diff from the original product')
             ->addArgument(
                 'identifier',
                 InputArgument::REQUIRED,
@@ -95,7 +95,7 @@ class CreateDraftCommand extends UpdateProductCommand
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
         if (null === $product) {
-            $output->writeln(sprintf('<error>product with identifier "%s" not found</error>', $identifier));
+            $output->writeln(sprintf('<error>Product with identifier "%s" not found</error>', $identifier));
 
             return -1;
         }
@@ -113,7 +113,7 @@ class CreateDraftCommand extends UpdateProductCommand
             $output->writeln(sprintf("<error>%s</error>", $violation->getMessage()));
         }
         if (0 !== $violations->count()) {
-            $output->writeln(sprintf('<error>product "%s" is not valid</error>', $identifier));
+            $output->writeln(sprintf('<error>Product "%s" is not valid</error>', $identifier));
 
             return -1;
         }
