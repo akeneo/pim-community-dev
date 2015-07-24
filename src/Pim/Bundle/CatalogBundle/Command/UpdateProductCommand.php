@@ -32,7 +32,7 @@ class UpdateProductCommand extends ContainerAwareCommand
             [
                 'type'  => 'set_data',
                 'field' => 'name',
-                'data'  => 'My name'
+                'data'  => 'My name',
             ],
             [
                 'type'        => 'copy_data',
@@ -41,12 +41,12 @@ class UpdateProductCommand extends ContainerAwareCommand
                 'from_locale' => 'en_US',
                 'to_field'    => 'description',
                 'to_scope'    => 'mobile',
-                'to_locale'   => 'en_US'
+                'to_locale'   => 'en_US',
             ],
             [
                 'type'  => 'add_data',
                 'field' => 'categories',
-                'data'  => ['tshirt']
+                'data'  => ['tshirt'],
             ],
         ];
 
@@ -77,7 +77,7 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
-        if (false === $product) {
+        if (null === $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found</error>', $identifier));
 
             return -1;
@@ -104,6 +104,8 @@ class UpdateProductCommand extends ContainerAwareCommand
 
         $this->save($product);
         $output->writeln(sprintf('<info>product "%s" has been updated</info>', $identifier));
+
+        return 0;
     }
 
     /**
@@ -313,8 +315,8 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function createToken(OutputInterface $output, $username)
     {
-        $userManager = $this->getContainer()->get('oro_user.manager');
-        $user = $userManager->findUserByUsername($username);
+        $userRepository = $this->getContainer()->get('pim_user.repository.user');
+        $user = $userRepository->findOneByIdentifier($username);
 
         if (null === $user) {
             $output->writeln(sprintf('<error>Username "%s" is unknown<error>', $username));
