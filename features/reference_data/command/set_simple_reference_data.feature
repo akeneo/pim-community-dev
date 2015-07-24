@@ -14,7 +14,7 @@ Feature: Create a draft with a simple reference data fields
       | akeneo_tshirt | tshirts    |
 
   Scenario: Successfully add a draft without add attribute in product
-    Given I should get the following products after apply the following updater to it:
+    Given I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                     | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "lace_color", "data": "Red", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -27,7 +27,7 @@ Feature: Create a draft with a simple reference data fields
     Given the following product values:
       | product       | attribute  | value |
       | akeneo_tshirt | lace_color | Green |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                      | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "lace_color", "data": "Blue", "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -40,7 +40,7 @@ Feature: Create a draft with a simple reference data fields
     Given the following product values:
       | product       | attribute  | value |
       | akeneo_tshirt | lace_color | Blue  |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                      | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "lace_color", "data": "Blue", "locale": null, "scope": null}] | {}     | Mary     |
     And I should not get the following proposal:

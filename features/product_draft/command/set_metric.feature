@@ -10,7 +10,7 @@ Feature: Create a draft with a metric fields
       | akeneo_tshirt | tshirts    |
 
   Scenario: Successfully add a draft without add attribute in product
-    Given I should get the following products after apply the following updater to it:
+    Given I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                                   | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"data": 12.0000, "unit": "CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -23,7 +23,7 @@ Feature: Create a draft with a metric fields
     Given the following product values:
       | product       | attribute | value              |
       | akeneo_tshirt | length    | 15.0000 CENTIMETER |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                                 | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"data":12.0000, "unit":"CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -36,7 +36,7 @@ Feature: Create a draft with a metric fields
     Given the following product values:
       | product       | attribute | value              |
       | akeneo_tshirt | length    | 20.0000 CENTIMETER |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                                 | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"data":20.0000, "unit":"CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
     And I should not get the following proposal:

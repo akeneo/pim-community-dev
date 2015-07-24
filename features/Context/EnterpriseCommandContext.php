@@ -4,10 +4,12 @@ namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
+use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
+use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
+use PimEnterprise\Bundle\WorkflowBundle\Command\SendDraftForApprovalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -228,13 +230,102 @@ class EnterpriseCommandContext extends CommandContext
     }
 
     /**
+     * @param string $product
+     * @param string $username
+     *
+     * @throws \Exception
+     *
+     * @Given /^I send draft "([^"]+)" created by "([^"]+)" for approval"$/
+     */
+    public function iSendDraftForApproval($product, $username)
+    {
+        $application = new Application();
+        $application->add(new SendDraftForApprovalCommand());
+
+        $proposal = $application->find('pim:draft:send-for-approval');
+        $proposal->setContainer($this->getContainer());
+        $proposalTester = new CommandTester($proposal);
+
+        $proposalTester->execute(
+            [
+                'command'    => $proposal->getName(),
+                'identifier' => $product,
+                'username'   => $username,
+            ]
+        );
+    }
+
+    /**
+     * @Then /^I should get the following product drafts after apply the following updater to it:$/
+     *
      * @param TableNode $updates
      *
      * @throws \Exception
      */
-    public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
+    public function iShouldGetTheFollowingProductDraftsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
     {
-        parent::iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt($updates);
+        $application = $this->getApplicationsForUpdaterProduct();
+
+        $draftCommand = $application->find('pim:draft:create');
+        $draftCommand->setContainer($this->getMainContext()->getContainer());
+        $draftCommandTester = new CommandTester($draftCommand);
+
+        $getCommand = $application->find('pim:product:get');
+        $getCommand->setContainer($this->getMainContext()->getContainer());
+        $getCommandTester = new CommandTester($getCommand);
+
+        foreach ($updates->getHash() as $update) {
+            $username = isset($update['username']) ? $update['username'] : null;
+
+            $draftCommandTester->execute(
+                [
+                    'command'      => $draftCommand->getName(),
+                    'identifier'   => $update['product'],
+                    'json_updates' => $update['actions'],
+                    'username'     => $username
+                ]
+            );
+
+            $expected = json_decode($update['result'], true);
+            if (isset($expected['product'])) {
+                $getCommandTester->execute(
+                    [
+                        'command'    => $getCommand->getName(),
+                        'identifier' => $expected['product']
+                    ]
+                );
+                unset($expected['product']);
+            } else {
+                $getCommandTester->execute(
+                    [
+                        'command'    => $getCommand->getName(),
+                        'identifier' => $update['product']
+                    ]
+                );
+            }
+
+            $actual = json_decode($getCommandTester->getDisplay(), true);
+
+            if (null === $actual) {
+                throw new \Exception(sprintf(
+                    'An error occurred during the execution of the update command : %s',
+                    $getCommandTester->getDisplay()
+                ));
+            }
+
+            if (null === $expected) {
+                throw new \Exception(sprintf(
+                    'Looks like the expected result is not valid json : %s',
+                    $update['result']
+                ));
+            }
+            $diff = $this->arrayIntersect($actual, $expected);
+
+            assertEquals(
+                $expected,
+                $diff
+            );
+        }
     }
 
     /**
@@ -244,6 +335,8 @@ class EnterpriseCommandContext extends CommandContext
     {
         $application = new Application();
         $application->add(new UpdateProductCommand());
+        $application->add(new CreateDraftCommand());
+        $application->add(new SendDraftForApprovalCommand());
         $application->add(new GetProductCommand());
 
         return $application;
