@@ -26,6 +26,8 @@ class FileValidatorSpec extends ObjectBehavior
         FileInterface $file
     ) {
         $constraint->allowedExtensions = ['gif', 'jpg'];
+        $file->getId()->willReturn(12);
+        $file->getUploadedFile()->willReturn(null);
         $file->getExtension()->willReturn('jpg');
         $file->getSize()->willReturn(100);
 
@@ -43,6 +45,8 @@ class FileValidatorSpec extends ObjectBehavior
     ) {
         $constraint->maxSize = '1M';
 
+        $file->getId()->willReturn(12);
+        $file->getUploadedFile()->willReturn(null);
         $file->getExtension()->willReturn('jpg');
         $file->getSize()->willReturn(500);
 
@@ -59,6 +63,8 @@ class FileValidatorSpec extends ObjectBehavior
         FileInterface $file
     ) {
         $constraint->allowedExtensions = ['pdf', 'docx'];
+        $file->getId()->willReturn(12);
+        $file->getUploadedFile()->willReturn(null);
         $file->getExtension()->willReturn('jpg');
         $file->getSize()->willReturn(100);
 
@@ -78,6 +84,8 @@ class FileValidatorSpec extends ObjectBehavior
         FileInterface $file
     ) {
         $constraint->maxSize = '1M';
+        $file->getId()->willReturn(12);
+        $file->getUploadedFile()->willReturn(null);
         $file->getExtension()->willReturn('jpg');
         $file->getSize()->willReturn(1075200);
         $file->getOriginalFilename()->willReturn('my file.jpg');
@@ -90,6 +98,24 @@ class FileValidatorSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->validate($file, $constraint);
+    }
+
+    function it_validates_new_instance_of_files(
+        $context,
+        File $constraint,
+        FileInterface $file
+    ) {
+        $constraint->allowedExtensions = ['gif', 'jpg'];
+        $constraint->maxSize = '2M';
+
+        $file->getId()->willReturn(null);
+        $file->getUploadedFile()->willReturn(null);
+
+        $context
+            ->addViolation(Argument::any())
+            ->shouldNotBeCalled();
+
+        $this->validate(null, $constraint);
     }
 
     function it_validates_nullable_value(
@@ -114,6 +140,8 @@ class FileValidatorSpec extends ObjectBehavior
         $constraint->allowedExtensions = [];
         $constraint->maxSize = null;
 
+        $file->getId()->willReturn(12);
+        $file->getUploadedFile()->willReturn(null);
         $file->getExtension()->willReturn('jpg');
         $file->getSize()->willReturn(100);
 

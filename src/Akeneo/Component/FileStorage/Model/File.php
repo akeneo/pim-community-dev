@@ -37,6 +37,9 @@ class File implements FileInterface
     /** @var string */
     protected $storage;
 
+    /** @var bool */
+    protected $removed = false;
+
     //TODDO: check if we really need it
     /** @var UploadedFile */
     protected $uploadedFile;
@@ -47,6 +50,17 @@ class File implements FileInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * TODO: interface if needed
+     * {@inheritdoc}
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -191,6 +205,24 @@ class File implements FileInterface
         $this->uploadedFile = $uploadedFile;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRemoved($removed)
+    {
+        $this->removed = $removed;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRemoved()
+    {
+        return $this->removed;
     }
 
     /**

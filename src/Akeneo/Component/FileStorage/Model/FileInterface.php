@@ -119,4 +119,16 @@ interface FileInterface
      * @return FileInterface|null
      */
     public function setUploadedFile(UploadedFile $uploadedFile = null);
+
+    /**
+     * @param bool $removed
+     *
+     * @return FileInterface
+     */
+    public function setRemoved($removed);
+
+    /**
+     * @return bool
+     */
+    public function isRemoved();
 }

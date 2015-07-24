@@ -66,10 +66,13 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'media');
         $this->checkData($attribute, $data);
 
-        if ($this->shouldFileBeStoredAndMediaSet($data)) {
+        if (null === $data || empty($data['filePath'])) {
+            $file = null;
+        } elseif(null === $file = $this->repository->findOneByIdentifier($data['filePath'])) {
             $file = $this->storeFile($attribute, $data);
-            $this->setMedia($product, $attribute, $file, $options['locale'], $options['scope']);
         }
+
+        $this->setMedia($product, $attribute, $file, $options['locale'], $options['scope']);
     }
 
     /**
@@ -162,22 +165,5 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         }
 
         return $file;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return bool
-     */
-    protected function shouldFileBeStoredAndMediaSet(array $data = null)
-    {
-        if (null !== $data &&
-            null !== $data['filePath'] &&
-            null !== $this->repository->findOneByIdentifier($data['filePath'])
-        ) {
-            return false;
-        }
-
-        return true;
     }
 }

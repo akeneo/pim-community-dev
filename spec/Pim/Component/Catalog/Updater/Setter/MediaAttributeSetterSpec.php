@@ -188,7 +188,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath'         => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
         $repository->findOneByIdentifier(Argument::any())->willReturn(null);
@@ -222,7 +222,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_skips_an_attribute_data_that_has_already_been_stored_as_media(
+    function it_does_not_store_an_attribute_data_that_has_already_been_stored_as_media(
         $repository,
         $storer,
         AttributeInterface $attribute,
@@ -240,7 +240,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $repository->findOneByIdentifier(Argument::any())->willReturn($file);
         $storer->store(Argument::cetera())->shouldNotBeCalled();
-        $value->setMedia($file)->shouldNotBeCalled();
+        $value->setMedia($file)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }

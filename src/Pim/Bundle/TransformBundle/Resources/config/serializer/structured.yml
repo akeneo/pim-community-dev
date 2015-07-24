@@ -29,6 +29,7 @@ parameters:
     pim_serializer.denormalizer.metric.class:                    Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MetricDenormalizer
     pim_serializer.denormalizer.datetime.class:                  Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\DateTimeDenormalizer
     pim_serializer.denormalizer.media.class:                     Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MediaDenormalizer
+    pim_serializer.denormalizer.file.class:                      Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\FileDenormalizer
     pim_serializer.denormalizer.boolean.class:                   Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\BooleanDenormalizer
     pim_serializer.denormalizer.reference_data.class:            Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\ReferenceDataDenormalizer
     pim_serializer.denormalizer.reference_data_collection.class: Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\ReferenceDataCollectionDenormalizer
@@ -215,11 +216,11 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_serializer.denormalizer.media:
-        class: %pim_serializer.denormalizer.media.class%
+    pim_serializer.denormalizer.file:
+        class: %pim_serializer.denormalizer.file.class%
         arguments:
             - ['pim_catalog_image', 'pim_catalog_file']
-            - '@pim_catalog.manager.media'
+            - '@akeneo_file_storage.repository.file'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

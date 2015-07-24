@@ -21,7 +21,7 @@ class FileValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof FileInterface) {
+        if ($value instanceof FileInterface && (null !== $value->getId() || null !== $value->getUploadedFile())) {
             $this->validateFileSize($value, $constraint);
             $this->validateFileExtension($value, $constraint);
         }
@@ -36,7 +36,11 @@ class FileValidator extends ConstraintValidator
     protected function validateFileExtension(FileInterface $file, Constraint $constraint)
     {
         if (!empty($constraint->allowedExtensions)) {
-            $extension = $file->getExtension();
+            $extension = null !== $file->getUploadedFile() ?
+                $file->getUploadedFile()->getClientOriginalExtension() :
+                $file->getExtension()
+            ;
+
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->extensionsMessage,
@@ -54,10 +58,13 @@ class FileValidator extends ConstraintValidator
      */
     protected function validateFileSize(FileInterface $file, Constraint $constraint)
     {
-        $fileSize = $file->getSize();
-
         // comes from Symfony\Component\Validator\Constraints\FileValidator
         if ($constraint->maxSize) {
+            $fileSize = null !== $file->getUploadedFile() ?
+                $file->getUploadedFile()->getSize() :
+                $file->getSize()
+            ;
+
             if (ctype_digit((string) $constraint->maxSize)) {
                 $size = $fileSize;
                 $limit = (int) $constraint->maxSize;
