@@ -20,16 +20,17 @@ define(
         'pim/i18n',
         'pim/user-context'
     ],
-    function ($,
-            _,
-            mediator,
-            BaseForm,
-            messenger,
-            LoadingMask,
-            ProductManager,
-            FieldManager,
-            i18n,
-            UserContext
+    function (
+        $,
+        _,
+        mediator,
+        BaseForm,
+        messenger,
+        LoadingMask,
+        ProductManager,
+        FieldManager,
+        i18n,
+        UserContext
     ) {
         return BaseForm.extend({
             className: 'btn-group',
@@ -88,11 +89,7 @@ define(
                             this.updateSuccessMessage
                         );
 
-                        this.setData(data);
-
-                        if (!options || !options.silent) {
-                            mediator.trigger('product:action:post_update', data);
-                        }
+                        this.setData(data, options);
                     }, this))
                     .fail(_.bind(function (response) {
                         switch (response.status) {

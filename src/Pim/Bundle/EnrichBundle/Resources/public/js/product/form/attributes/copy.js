@@ -94,20 +94,16 @@ define(
              */
             addFieldExtension: function (event) {
                 var field = event.field;
-                event.promises.push(
-                    this.canBeCopied(field)
-                        .then(_.bind(function (canBeCopied) {
-                            if (canBeCopied && this.copying) {
-                                field.addElement('comparison', this.code, this.getCopyField(field));
-                            }
-                        }, this))
-                );
+                if (this.copying && this.canBeCopied(field)) {
+                    field.addElement('comparison', this.code, this.getCopyField(field));
+                }
             },
 
             /**
              * Get or create a copy field object corresponding to the specified field
              *
              * @param {Field} field
+             *
              * @returns {CopyField}
              */
             getCopyField: function (field) {
@@ -137,10 +133,10 @@ define(
              * Indicate if the specified field can be copied
              *
              * @param {Field} field
-             * @returns {Promise}
+             * @returns {boolean}
              */
             canBeCopied: function (field) {
-                return $.Deferred().resolve(field.attribute.localizable || field.attribute.scopable).promise();
+                return field.attribute.localizable || field.attribute.scopable;
             },
 
             /**
@@ -256,22 +252,13 @@ define(
              * @param {Field[]} fields
              */
             selectFields: function (fields) {
-                var selectPromises = [];
                 _.each(fields, _.bind(function (field) {
-                    selectPromises.push(
-                        this.canBeCopied(field)
-                            .then(_.bind(function (canBeCopied) {
-                                if (canBeCopied) {
-                                    this.getCopyField(field).setSelected(true);
-                                }
-                            }, this))
-                    );
+                    if (this.canBeCopied(field)) {
+                        this.getCopyField(field).setSelected(true);
+                    }
                 }, this));
 
-                $.when.apply(this, selectPromises)
-                    .then(_.bind(function () {
-                        this.trigger('copy:select:after');
-                    }, this));
+                this.trigger('copy:select:after');
             }
         });
     }
