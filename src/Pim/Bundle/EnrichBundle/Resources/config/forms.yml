@@ -13,8 +13,8 @@ services:
         factory_method:  createNamed
         factory_service: form.factory
         arguments:
-            - pim_enrich_attribute_group_form
-            - pim_enrich_attribute_group
+            - pim_enrich_attributegroup_form
+            - pim_enrich_attributegroup
 
     pim_enrich.form.family:
         class:           Symfony\Component\Form\Form
@@ -61,13 +61,13 @@ services:
         factory_method:  createNamed
         factory_service: form.factory
         arguments:
-            - pim_enrich_group_type_form
-            - pim_enrich_group_type
+            - pim_enrich_grouptype_form
+            - pim_enrich_grouptype
 
     pim_enrich.form.association_type:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
         factory_service: form.factory
         arguments:
-            - pim_enrich_association_type_form
-            - pim_enrich_association_type
+            - pim_enrich_associationtype_form
+            - pim_enrich_associationtype

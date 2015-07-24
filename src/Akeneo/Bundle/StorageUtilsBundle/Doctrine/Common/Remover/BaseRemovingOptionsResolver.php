@@ -21,9 +21,6 @@ class BaseRemovingOptionsResolver implements RemovingOptionsResolverInterface
     public function resolveRemoveOptions(array $options)
     {
         $resolver = $this->createOptionsResolver();
-        $resolver->setOptional(['flush_only_object']);
-        $resolver->setAllowedTypes(['flush_only_object' => 'bool']);
-        $resolver->setDefaults(['flush_only_object' => false]);
         $options = $resolver->resolve($options);
 
         return $options;

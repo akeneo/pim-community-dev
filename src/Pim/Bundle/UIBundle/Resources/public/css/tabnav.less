@@ -1,0 +1,69 @@
+@import 'less/variables';
+@import 'less/mixins';
+
+.navigation.navbar-extra {
+  padding: 15px;
+  background-color: #F7F7F9;
+
+  .sub-title{
+    color: @color-new-purple-medium;
+  }
+}
+
+#form-navbar.navbar, #user-profile.navbar, #group-profile.navbar {
+  background-color: transparent;
+  border-bottom: 3px solid @color-new-purple-medium;
+  margin: 15px 15px 0 15px;
+  box-shadow: none;
+
+  .navbar-inner {
+    box-shadow: none;
+  }
+
+  li {
+    a {
+      background: #F6F6F6;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+      margin-right: 4px;
+      border: solid 1px #DFDFDF;
+      border-bottom: solid 1px #F6F6F6;
+      box-shadow: none;
+      text-shadow: none;
+      line-height: 24px;
+      font-size: 12px;
+      padding-left: 20px;
+      padding-right: 25px;
+
+      &:hover {
+        cursor: pointer;
+        border-bottom: solid 1px @color-new-purple-light;
+        background: @color-new-purple-light;
+      }
+    }
+
+    &.active {
+      a {
+        background: @color-new-purple-medium;
+        color: white;
+        border: solid 1px @color-new-purple-medium;
+      }
+    }
+  }
+}
+
+.tab-pane {
+  padding-top: 15px;
+
+  &.buffer-top {
+    padding-top: 0
+  }
+}
+
+.tab-content {
+  padding: 0 15px;
+}
+
+.form-container .tab-content {
+  padding: 0;
+}

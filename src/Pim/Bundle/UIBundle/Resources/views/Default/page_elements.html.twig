@@ -1,4 +1,4 @@
-{% macro createBtn(entity, url, attr, acl) %}
+{% macro createBtn(entity, url, attr, acl, icon) %}
 {% spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% if attr == 'dialog' %}
@@ -7,7 +7,12 @@
             {% set url = null %}
         {% endif %}
         {% set title = ('btn.create.' ~ entity)|trans|capitalize %}
-        <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>{{ title }}</a>
+        <a class="btn btn-primary pull-right{% if attr.class is defined %} {{ attr.class }}{% endif %} {% if entity and icon %} icons-holder-text{% elseif icon %} icons-holder{% endif %} " href="{{ url ? url : 'javascript:void(0);' }}" title="{{ title }}"{% if attr %}{% for key, value in attr %}{% if key != 'class' %} {{ key }}="{{ value }}"{% endif %}{% endfor %}{% endif %}>
+          {% if icon %}
+            <i class="icon-{{ icon }}"></i>
+          {% endif %}
+          {{ title }}
+        </a>
         {% if buttonId is defined %}
             <script type="text/javascript">
                 require(
@@ -28,7 +33,7 @@
 {% macro submitBtn(text, icon) %}
 {% spaceless %}
     {% set text = text|default('btn.save')|trans|capitalize %}
-    <button type="submit" class="btn btn-primary" title="{{ text }}">
+    <button type="submit" class="btn btn-primary btn-submit" title="{{ text }}">
         {% if icon %}
             <i class="icon-{{ icon }}"></i>
         {% endif %}
@@ -71,7 +76,7 @@
 {% macro deleteLink(url, acl, redirectUrl, message, successMessage, title) %}{% spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% import _self as elements %}
-        <a class="btn icons-holder-text no-hash" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
+        <a class="btn icons-holder-text no-hash btn-delete" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
             <i class="icon-trash"></i>
             {{ 'btn.delete'|trans|capitalize }}
         </a>
@@ -82,7 +87,7 @@
 {% spaceless %}
     {% set title = opts.title is defined ? opts.title : text %}
     {% set icon = opts.icon is defined ? opts.icon : null %}
-    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="btn {{ opts.class is defined ? opts.class|join(' ') }}{% if text and icon %} icons-holder-text{% elseif icon %} icons-holder{% endif %}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
+    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="btn {{ opts.class is defined ? opts.class|join(' ') }}{% if text and icon %} icons-holder-text{% elseif icon %} icons-holder{% endif %} {{ icon }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
         {% if icon %}<i class="icon-{{ icon }}"></i>{% endif %}
         {{ text|trans|capitalize }}
     </a>
@@ -152,7 +157,7 @@
             <div class="accordion-group">
                 <div class="accordion-heading">
                     <a class="accordion-toggle" data-toggle="collapse" href="#collapse-{{ counter }}-{{ loop.index }}">
-                        <i class="icon-collapse-alt"></i>
+                        <i class="icon-chevron-down"></i>
                         {{ title|trans }}
                     </a>
                 </div>

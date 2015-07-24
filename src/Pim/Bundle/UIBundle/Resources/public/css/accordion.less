@@ -1,0 +1,20 @@
+@import 'less/variables';
+@import 'less/mixins';
+
+.accordion {
+  margin-bottom: 0;
+
+  .accordion-group {
+    margin: 0;
+    border-radius: 0;
+    border-top: none;
+
+    .accordion-heading {
+      background-color: @color-new-grey;
+
+      .accordion-toggle {
+        padding: 10px 15px;
+      }
+    }
+  }
+}

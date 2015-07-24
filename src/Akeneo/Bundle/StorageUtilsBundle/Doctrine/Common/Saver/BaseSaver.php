@@ -59,9 +59,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($object);
 
-        if (true === $options['flush'] && true === $options['flush_only_object']) {
-            $this->objectManager->flush($object);
-        } elseif (true === $options['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
     }
