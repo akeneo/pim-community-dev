@@ -51,7 +51,7 @@
         {% set buttons %}
             {{ elements.backLink(indexRoute) }}
             {{ elements.deleteLink(removeRoute, removeAcl, indexRoute, removeMessage, removeSuccessMessage) }}
-            {{ elements.submitBtn }}
+            {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
         {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
@@ -69,7 +69,7 @@
         {{ elements.form_navbar(navbarTabs, '') }}
 
         <div class="row-fluid tab-content">
-            <div class="tab-pane buffer-top active" id="general-properties">
+            <div class="tab-pane active" id="general-properties">
 
                 {% set properties %}
                     {{ form_row(form.code) }}
@@ -88,7 +88,7 @@
             </div>
 
             {% if form.permissions is defined %}
-            <div class="tab-pane buffer-top" id="permissions">
+            <div class="tab-pane" id="permissions">
                 {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>
             {% endif %}
