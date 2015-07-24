@@ -41,7 +41,6 @@ class MediaTypeSpec extends ObjectBehavior
         )->willReturn($builder);
 
         $builder->add('id', 'hidden')->willReturn($builder);
-        $builder->add('copyFrom', 'hidden')->shouldBeCalled();
 
         $this->buildForm($builder, []);
     }
