@@ -77,7 +77,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
             return null;
         } else {
             $output->writeln(sprintf(
-                '<error>Proposal with identifier "%s" and user "%s" not found<error>',
+                '<error>Proposal with identifier "%s" and user "%s" is not ready<error>',
                 $identifier,
                 $username
             ));

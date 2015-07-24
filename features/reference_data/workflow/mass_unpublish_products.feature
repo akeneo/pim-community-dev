@@ -20,7 +20,7 @@ Feature: Unpublish many products at once
       | yellow-sneakers | Yellow     | Nylon                   |
     And I am logged in as "Julia"
 
-  @skip-pef
+  @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully unpublish several products with reference data
     And I am on the published page
     Then the grid should contain 3 elements

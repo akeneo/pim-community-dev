@@ -240,7 +240,7 @@
     </target>
 
     <target name="behat" description="Run acceptance tests with Behat">
-        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh">
             <arg value="${behat.concurrency}" />
             <arg value="${behat.xdebug}" />
             <arg value="${symfony.database.name}_" />

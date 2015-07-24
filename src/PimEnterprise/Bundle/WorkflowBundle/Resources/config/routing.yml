@@ -1,3 +1,9 @@
+pimee_workflow_product_draft_ready:
+    path: /product/{productId}/send-draft
+    defaults: { _controller: pimee_workflow.controller.product_draft_rest:readyAction }
+    requirements:
+        _method: POST
+
 product_draft:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_draft.yml'
     prefix: /product_draft

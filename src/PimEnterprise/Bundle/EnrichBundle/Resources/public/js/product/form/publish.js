@@ -47,7 +47,7 @@ define(
                 );
             },
             render: function () {
-                var categories = this.getData().categories;
+                var categories = this.getFormData().categories;
                 var isOwner = !categories.length ||
                     !!_.intersection(this.permissions.categories.OWN_PRODUCTS, categories).length;
 
@@ -56,7 +56,7 @@ define(
                 }
 
                 this.$el.html(this.template({
-                    'product': this.getData()
+                    product: this.getFormData()
                 }));
                 this.delegateEvents();
 
@@ -83,17 +83,17 @@ define(
                 this.togglePublished(false);
             },
             togglePublished: function (publish) {
-                var productId   = this.getData().meta.id;
+                var productId   = this.getFormData().meta.id;
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();
 
                 var method = publish ? PublishedProductManager.publish : PublishedProductManager.unpublish;
+                // TODO: We shouldn't force product fetching, we should use request response (cf. send for approval)
                 method(productId)
                     .done(_.bind(function () {
-                        ProductManager.clear(this.getData().meta.id);
-                        ProductManager.get(this.getData().meta.id).done(_.bind(function (product) {
-                            this.setData(product);
+                        ProductManager.clear(this.getFormData().meta.id);
+                        ProductManager.get(this.getFormData().meta.id).done(_.bind(function (product) {
                             navigation.addFlashMessage(
                                 'success',
                                 _.__(
@@ -102,11 +102,10 @@ define(
                                 )
                             );
                             navigation.afterRequest();
-
                             loadingMask.hide().$el.remove();
-                            this.render();
+
+                            this.setData(product);
                             mediator.trigger('product:action:post_publish', product);
-                            mediator.trigger('product:action:post_update', product);
                         }, this));
                     }, this))
                     .fail(function () {

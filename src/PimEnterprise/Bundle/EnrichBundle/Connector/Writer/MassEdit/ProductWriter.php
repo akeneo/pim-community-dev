@@ -75,7 +75,7 @@ class ProductWriter extends BaseProductWriter
     protected function incrementCount(ProductInterface $product)
     {
         if ($this->hasPermissions($product)) {
-            $this->stepExecution->incrementSummaryInfo('update');
+            $this->stepExecution->incrementSummaryInfo('process');
         } else {
             $this->stepExecution->incrementSummaryInfo('proposal');
         }
