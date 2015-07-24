@@ -38,7 +38,11 @@ define(
             },
             registerPanel: function (event) {
                 var panels = this.state.get('panels') || [];
-                panels.push({ code: event.code, label: event.label });
+                panels.push({
+                    code: event.code,
+                    displayCondition: event.displayCondition,
+                    label: event.label
+                });
 
                 this.state.set('panels', panels);
             },
