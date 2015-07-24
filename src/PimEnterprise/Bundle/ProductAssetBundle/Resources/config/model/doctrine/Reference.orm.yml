@@ -34,3 +34,4 @@ PimEnterprise\Component\ProductAsset\Model\Reference:
                 - persist
                 - refresh
                 - detach
+                - remove

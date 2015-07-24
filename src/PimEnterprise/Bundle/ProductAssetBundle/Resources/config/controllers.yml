@@ -16,6 +16,7 @@ services:
             - '@pimee_product_asset.saver.asset'
             - '@pimee_product_asset.saver.reference'
             - '@pimee_product_asset.saver.variation'
+            - '@pimee_product_asset.remover.asset'
             - '@event_dispatcher'
             - '@pimee_product_asset.factory.asset'
             - '@akeneo_file_storage.file_storage.file_factory'

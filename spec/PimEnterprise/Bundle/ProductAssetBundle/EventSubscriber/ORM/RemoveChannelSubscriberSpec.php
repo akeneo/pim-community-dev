@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Subscriber;
+namespace spec\PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Event\ChannelEvents;

@@ -52,3 +52,10 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
             embedded: true
             type: one
             targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMediaInterface
+        assets:
+            notSaved: true
+            type: entities
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\Asset
+            idsField: assetIds
+        assetIds:
+            type: collection

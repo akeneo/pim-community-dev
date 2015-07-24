@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Subscriber;
+namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Event\ChannelEvents;
@@ -29,6 +29,12 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
     /** @var RemoverInterface */
     protected $channelConfigRemover;
 
+    /**
+     * @param VariationRepositoryInterface            $variationRepo
+     * @param ChannelConfigurationRepositoryInterface $channelConfigRepo
+     * @param RemoverInterface                        $variationRemover
+     * @param RemoverInterface                        $channelConfigRemover
+     */
     public function __construct(
         VariationRepositoryInterface $variationRepo,
         ChannelConfigurationRepositoryInterface $channelConfigRepo,
@@ -53,6 +59,8 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
 
     /**
      * @param GenericEvent $event
+     *
+     * @throw \InvalidArgumentException
      *
      * @return GenericEvent
      */

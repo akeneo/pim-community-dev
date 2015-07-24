@@ -163,6 +163,16 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
+     * @param array $assets
+     *
+     * @Then /^I should not see assets? (.*)$/
+     */
+    public function iShouldNotSeeAssets($assets)
+    {
+        $this->getMainContext()->getSubcontext('datagrid')->iShouldNotSeeEntities($assets);
+    }
+
+    /**
      * @param mixed|null  $file
      * @param string|null $channel
      *
