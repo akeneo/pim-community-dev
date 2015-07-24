@@ -21,7 +21,7 @@ class GroupTypeTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim_enrich_group_type');
+        $this->getName()->shouldReturn('pim_enrich_grouptype');
     }
 
     function it_sets_default_options(OptionsResolver $resolver)

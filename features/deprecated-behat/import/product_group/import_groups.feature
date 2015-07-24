@@ -28,9 +28,9 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "Read 4"
+    Then I should see "read lines 4"
     And I should see "Created 2"
-    And I should see "Updated 2"
+    And I should see "Processed 2"
     And I should not see "Skip"
     Then there should be the following groups:
       | code           | label-en_US    | label-fr_FR          | type    | axis       |
@@ -53,7 +53,7 @@ Feature: Import groups
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
     Then I should see "This property cannot be changed"
-    And I should see "Read 1"
+    And I should see "read lines 1"
     And I should see "Skipped 1"
     Then there should be the following groups:
       | code           | label-en_US    | label-fr_FR          | type    | axis       |
@@ -74,7 +74,7 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "Read 1"
+    Then I should see "read lines 1"
     And I should see "skipped 1"
     And I should see "Code must be provided"
 
@@ -89,7 +89,7 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "Read 1"
+    Then I should see "read lines 1"
     And I should see "skipped 1"
     And I should see "Cannot process variant group \"New_VG\", only groups are accepted"
 
@@ -104,7 +104,7 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "Read 1"
+    Then I should see "read lines 1"
     And I should see "skipped 1"
     And I should see "Cannot process variant group \"AKENEO_TSHIRT\", only groups are accepted"
 
@@ -119,6 +119,6 @@ Feature: Import groups
     When I am on the "footwear_group_import" import job page
     And I launch the import job
     And I wait for the "footwear_group_import" job to finish
-    Then I should see "Read 1"
+    Then I should see "read lines 1"
     And I should see "skipped 1"
     And I should see "Group \"STANDARD_WITH_AXIS\", which is not variant, can not be defined with axes"

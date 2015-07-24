@@ -63,6 +63,6 @@ class GroupTypeType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enrich_group_type';
+        return 'pim_enrich_grouptype';
     }
 }

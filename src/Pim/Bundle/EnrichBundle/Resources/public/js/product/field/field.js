@@ -48,7 +48,9 @@ define([
             },
             render: function () {
                 this.setEditable(true);
-                var promises = [];
+                this.setValid(true);
+                this.elements = {};
+                var promises  = [];
                 mediator.trigger('field:extension:add', {'field': this, 'promises': promises});
 
                 $.when.apply($, promises)
@@ -80,16 +82,17 @@ define([
                 throw new Error('You should implement your field template');
             },
             postRender: function () {},
-            renderCopyInput: function (context, locale, scope) {
-                context.value = AttributeManager.getValue(
-                    this.model.get('values'),
-                    this.attribute,
-                    locale,
-                    scope
-                );
-                context.editMode = 'view';
+            renderCopyInput: function (value) {
+                return this.getTemplateContext()
+                    .then(_.bind(function (context) {
+                        var copyContext = $.extend(true, {}, context);
+                        copyContext.value = value;
+                        copyContext.context.locale = value.locale;
+                        copyContext.context.scope = value.scope;
+                        copyContext.editMode = 'view';
 
-                return this.renderInput(context);
+                        return this.renderInput(copyContext);
+                    }, this));
             },
             getTemplateContext: function () {
                 var deferred = $.Deferred();
@@ -161,6 +164,15 @@ define([
                 } else {
                     return 'view';
                 }
+            },
+            canBeSeen: function () {
+                if (this.attribute.localizable &&
+                    this.attribute.is_locale_specific &&
+                    !_.contains(this.attribute.locale_specific_codes, this.context.locale)) {
+                    return false;
+                }
+
+                return true;
             },
             getCurrentValue: function () {
                 return AttributeManager.getValue(

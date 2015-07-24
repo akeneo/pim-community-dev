@@ -73,7 +73,7 @@ class AttributeGroupType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enrich_attribute_group';
+        return 'pim_enrich_attributegroup';
     }
 
     /**

@@ -20,7 +20,7 @@ class ProductAssociationWriter extends Writer
     {
         $count = count($item->getProducts()) + count($item->getGroups());
 
-        $action = (null !== $item->getId()) ? 'update' : 'create';
+        $action = (null !== $item->getId()) ? 'process' : 'create';
 
         for ($i = 0; $i < $count; $i++) {
             $this->stepExecution->incrementSummaryInfo($action);

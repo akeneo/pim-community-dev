@@ -13,15 +13,17 @@ define(
         'backbone',
         'pim/form',
         'pim/fetcher-registry',
+        'pim/product-manager',
         'text!pim/template/product/meta/change-family-modal',
         'pim/user-context',
+        'oro/mediator',
         'backbone/bootstrap-modal',
         'jquery.select2'
     ],
-    function (_, Backbone, BaseForm, FetcherRegistry, modalTemplate, UserContext) {
+    function (_, Backbone, BaseForm, FetcherRegistry, ProductManager, modalTemplate, UserContext, mediator) {
         var FormView = BaseForm.extend({
             tagName: 'i',
-            className: 'icon-pencil',
+            className: 'icon-pencil change-family',
             modalTemplate: _.template(modalTemplate),
             events: {
                 'click': 'showModal'
@@ -38,15 +40,21 @@ define(
                         title: _.__('pim_enrich.form.product.change_family.modal.title'),
                         content: this.modalTemplate({
                             families: families,
-                            product:  this.getData(),
+                            product:  this.getFormData(),
                             locale:   UserContext.get('catalogLocale')
                         })
                     });
 
                     familyModal.on('ok', _.bind(function () {
                         var selectedFamily = familyModal.$('select').select2('val') || null;
-                        this.getRoot().model.set('family', selectedFamily);
-                        familyModal.close();
+
+                        this.getFormModel().set('family', selectedFamily);
+                        ProductManager.generateMissing(this.getFormData()).then(_.bind(function (product) {
+                            this.setData(product);
+
+                            mediator.trigger('change-family:change:after');
+                            familyModal.close();
+                        }, this));
                     }, this));
 
                     familyModal.open();

@@ -104,7 +104,7 @@ class ProductWriterSpec extends ObjectBehavior
         $product1->getId()->willReturn('45');
         $product2->getId()->willReturn(null);
 
-        $stepExecution->incrementSummaryInfo('update')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('process')->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('create')->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);

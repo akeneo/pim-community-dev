@@ -31,7 +31,7 @@ define(
                 this.$('.datepicker').datepicker();
             },
             updateModel: function () {
-                var data = this.$('.field-input:first input[type="text"]').get(0).value;
+                var data = this.$('.field-input:first input[type="text"]').val();
                 data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);

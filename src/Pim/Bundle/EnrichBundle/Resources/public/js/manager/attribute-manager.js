@@ -64,7 +64,7 @@ define([
             },
 
             /**
-             * Get the value in the given collection for the given lcoale and scope
+             * Get the value in the given collection for the given locale and scope
              * @param Array  values
              * @param Object attribute
              * @param String locale
@@ -126,7 +126,6 @@ define([
                         if ('pim_catalog_price_collection' === attribute.type) {
                             newValue.data = this.generateMissingPrices(newValue.data, currencies);
                         }
-
                     }, this));
                 }, this));
 
@@ -141,6 +140,7 @@ define([
              * @return Array
              */
             generateMissingPrices: function (prices, currencies) {
+                prices = prices || [];
                 _.each(currencies, function (currency) {
                     var price = _.findWhere(prices, {currency: currency.code});
 
@@ -151,7 +151,7 @@ define([
 
                 });
 
-                return prices;
+                return _.sortBy(prices, 'currency');
             }
         };
     }

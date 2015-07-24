@@ -21,7 +21,7 @@ class AssociationTypeTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim_enrich_association_type');
+        $this->getName()->shouldReturn('pim_enrich_associationtype');
     }
 
     function it_builds_form(FormBuilderInterface $builder)

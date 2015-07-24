@@ -53,7 +53,7 @@ config:
                     module: pim/base-fetcher
                     options:
                         urls:
-                            list: pim_enrich_association_type_rest_index
+                            list: pim_enrich_associationtype_rest_index
                 completeness:
                     module: pim/completeness-fetcher
                     options:

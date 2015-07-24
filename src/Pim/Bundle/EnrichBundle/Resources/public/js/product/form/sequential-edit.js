@@ -67,7 +67,7 @@ define(
                     return;
                 }
                 var objectSet = this.model.get('objectSet');
-                var currentIndex = objectSet.indexOf(this.getData().meta.id);
+                var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
                 var nextObject = objectSet[currentIndex + 1];
 
                 this.parent.extensions['save-buttons'].addButton({
@@ -101,7 +101,7 @@ define(
                 var deferred = $.Deferred();
 
                 var objectSet     = this.model.get('objectSet');
-                var currentObject = this.getData().meta.id;
+                var currentObject = this.getFormData().meta.id;
                 var index         = objectSet.indexOf(currentObject);
                 var previous      = objectSet[index - 1];
                 var next          = objectSet[index + 1];
@@ -147,7 +147,7 @@ define(
             },
             preloadNext: function () {
                 var objectSet = this.model.get('objectSet');
-                var currentIndex = objectSet.indexOf(this.getData().meta.id);
+                var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
                 var pending = objectSet[currentIndex + 2];
                 if (pending) {
                     setTimeout(function () {
@@ -159,7 +159,7 @@ define(
             saveAndContinue: function () {
                 this.parent.extensions.save.save({ silent: true }).done(_.bind(function () {
                     var objectSet = this.model.get('objectSet');
-                    var currentIndex = objectSet.indexOf(this.getData().meta.id);
+                    var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
                     var nextObject = objectSet[currentIndex + 1];
                     if (nextObject) {
                         this.goToProduct(nextObject);

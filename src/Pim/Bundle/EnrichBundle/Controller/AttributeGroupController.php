@@ -120,7 +120,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * Attribute group index
      *
      * @Template
-     * @AclAncestor("pim_enrich_attribute_group_index")
+     * @AclAncestor("pim_enrich_attributegroup_index")
      *
      * @return Response
      */
@@ -137,13 +137,13 @@ class AttributeGroupController extends AbstractDoctrineController
      * Create attribute group
      *
      * @Template()
-     * @AclAncestor("pim_enrich_attribute_group_create")
+     * @AclAncestor("pim_enrich_attributegroup_create")
      *
      * @return array
      */
     public function createAction()
     {
-        if ($this->securityFacade->isGranted('pim_enrich_attribute_group_create')) {
+        if ($this->securityFacade->isGranted('pim_enrich_attributegroup_create')) {
             $group = new AttributeGroup();
 
             if ($this->formHandler->process($group)) {
@@ -177,7 +177,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param AttributeGroup $group
      *
      * @Template
-     * @AclAncestor("pim_enrich_attribute_group_edit")
+     * @AclAncestor("pim_enrich_attributegroup_edit")
      *
      * @return array
      */
@@ -204,7 +204,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @AclAncestor("pim_enrich_attribute_group_sort")
+     * @AclAncestor("pim_enrich_attributegroup_sort")
      *
      * @return Response
      */
@@ -241,7 +241,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @throws DeleteException
      *
-     * @AclAncestor("pim_enrich_attribute_group_remove")
+     * @AclAncestor("pim_enrich_attributegroup_remove")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -297,7 +297,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request $request The request object
      * @param int     $id      The group id to add attributes to
      *
-     * @AclAncestor("pim_enrich_attribute_group_add_attribute")
+     * @AclAncestor("pim_enrich_attributegroup_add_attribute")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -324,7 +324,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param int $groupId
      * @param int $attributeId
      *
-     * @AclAncestor("pim_enrich_attribute_group_remove_attribute")
+     * @AclAncestor("pim_enrich_attributegroup_remove_attribute")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

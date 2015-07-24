@@ -45,7 +45,7 @@ define(
                 'click a[data-group]': 'displayModal'
             },
             configure: function () {
-                this.listenTo(this.getRoot().model, 'change:groups', this.render);
+                this.listenTo(this.getFormModel(), 'change:groups', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -54,7 +54,7 @@ define(
                     return this;
                 }
 
-                GroupManager.getProductGroups(this.getData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getFormData()).done(_.bind(function (groups) {
                     this.$el.html(
                         this.template({
                             groups: groups,
@@ -71,7 +71,7 @@ define(
                 ).then(_.identity);
             },
             displayModal: function (event) {
-                GroupManager.getProductGroups(this.getData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getFormData()).done(_.bind(function (groups) {
                     var group = _.findWhere(groups, { code: event.currentTarget.dataset.group });
 
                     $.when(

@@ -68,7 +68,7 @@ define(
                     Routing.generate(
                         'pim_enrich_product_comments_rest_get',
                         {
-                            id: this.getData().meta.id
+                            id: this.getFormData().meta.id
                         }
                     )
                 );
@@ -89,7 +89,7 @@ define(
             saveComment: function () {
                 $.ajax({
                     type: 'POST',
-                    url: Routing.generate('pim_enrich_product_comments_rest_post', { id: this.getData().meta.id }),
+                    url: Routing.generate('pim_enrich_product_comments_rest_post', { id: this.getFormData().meta.id }),
                     contentType: 'application/json',
                     data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
                 }).done(_.bind(function () {
@@ -120,7 +120,7 @@ define(
                     url: Routing.generate(
                         'pim_enrich_product_comment_reply_rest_post',
                         {
-                            id: this.getData().meta.id,
+                            id: this.getFormData().meta.id,
                             commentId: $thread.data('comment-id')
                         }
                     ),

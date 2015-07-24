@@ -21,7 +21,7 @@ class AttributeGroupTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim_enrich_attribute_group');
+        $this->getName()->shouldReturn('pim_enrich_attributegroup');
     }
 
     function it_builds_form(FormBuilderInterface $builder)

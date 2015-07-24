@@ -71,6 +71,10 @@ class CompletenessController
     public function getAction($id)
     {
         $product = $this->productRepository->getFullProduct($id);
+        if (null === $product->getFamily()) {
+            return new JsonResponse();
+        }
+
         $this->completenessManager->generateMissingForProduct($product);
 
         $channels = $this->channelRepository->getFullChannels();

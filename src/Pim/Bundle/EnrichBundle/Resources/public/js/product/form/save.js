@@ -20,16 +20,17 @@ define(
         'pim/i18n',
         'pim/user-context'
     ],
-    function ($,
-            _,
-            mediator,
-            BaseForm,
-            messenger,
-            LoadingMask,
-            ProductManager,
-            FieldManager,
-            i18n,
-            UserContext
+    function (
+        $,
+        _,
+        mediator,
+        BaseForm,
+        messenger,
+        LoadingMask,
+        ProductManager,
+        FieldManager,
+        i18n,
+        UserContext
     ) {
         return BaseForm.extend({
             className: 'btn-group',
@@ -50,11 +51,7 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             save: function (options) {
-                _.each(FieldManager.getFields(), function (field) {
-                    field.updateModel();
-                });
-
-                var product = $.extend(true, {}, this.getData());
+                var product = $.extend(true, {}, this.getFormData());
                 var productId = product.meta.id;
 
                 delete product.variant_group;
@@ -92,16 +89,15 @@ define(
                             this.updateSuccessMessage
                         );
 
-                        this.setData(data);
-
-                        if (!options || !options.silent) {
-                            mediator.trigger('product:action:post_update', data);
-                        }
+                        this.setData(data, options);
                     }, this))
-                    .fail(function (response) {
+                    .fail(_.bind(function (response) {
                         switch (response.status) {
                             case 400:
-                                mediator.trigger('validation_error', response.responseJSON);
+                                mediator.trigger(
+                                    'entity:action:validation_error',
+                                    {'sentData': product, 'response': response.responseJSON}
+                                );
                                 break;
                             case 500:
                                 /* global console */
@@ -115,7 +111,7 @@ define(
                             'error',
                             this.updateFailureMessage
                         );
-                    }).always(function () {
+                    }, this)).always(function () {
                         loadingMask.hide().$el.remove();
                     });
             }

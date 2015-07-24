@@ -185,9 +185,9 @@ class Grid extends Index
             $results = $this->getElement('Select2 results');
             $select2 = $filter->find('css', '.select2-input');
 
-            if ($operator !== false) {
+            if (false !== $operator) {
                 $filter->find('css', 'button.dropdown-toggle')->click();
-                $filter->find('css', '[data-value="'.$operator.'"]')->click();
+                $filter->find('css', sprintf('[data-value="%s"]', $operator))->click();
             }
 
             if (null !== $results && null !== $select2) {
@@ -282,10 +282,15 @@ class Grid extends Index
         assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
         $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
 
-        $this->spin(function () use ($element, $num) {
-            $element->find('css', 'button')->click();
+        $this->spin(function () use ($element) {
+            $button = $element->find('css', 'button');
+            if (null !== $button) {
+                $button->click();
 
-            return true;
+                return true;
+            }
+
+            return false;
         });
 
         $element->find('css', sprintf('ul.dropdown-menu li a:contains("%d")', $num))->click();
@@ -389,8 +394,11 @@ class Grid extends Index
             return false;
         }
 
-        $values       = $this->getValuesInColumn($column);
+        $values = $this->getValuesInColumn($column);
+        $values = $this->formatColumnValues($values);
+
         $sortedValues = $values;
+
         if ($order === 'ascending') {
             sort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
         } else {
@@ -730,6 +738,7 @@ class Grid extends Index
 
         return $checkbox;
     }
+
     /**
      * @param NodeElement $row
      * @param int         $position
@@ -797,7 +806,8 @@ class Grid extends Index
             foreach ($headers as $key => $header) {
                 if ($header->getAttribute('class') === 'action-column'
                     || $header->getAttribute('class') === 'select-all-header-cell'
-                    || $header->find('css', 'input[type="checkbox"]')) {
+                    || $header->find('css', 'input[type="checkbox"]')
+                ) {
                     unset($headers[$key]);
                 }
             }
@@ -1048,5 +1058,29 @@ class Grid extends Index
         }
 
         $listItem->click();
+    }
+
+    /**
+     * Format column values before sorting
+     *
+     * @param string[] $values
+     *
+     * @return string[]
+     */
+    protected function formatColumnValues(array $values)
+    {
+        $cleanValues = [];
+
+        foreach ($values as $key => $value) {
+            $clean = trim($value);
+
+            if (false !== $timestamp = strtotime($clean)) {
+                $clean = date('Ymd-H:i:s', $timestamp);
+            }
+
+            $cleanValues[$key] = $clean;
+        }
+
+        return $cleanValues;
     }
 }

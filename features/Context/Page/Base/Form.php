@@ -111,7 +111,7 @@ class Form extends Base
     /**
      * Get the specified tab
      *
-     * @return NodeElement[]
+     * @return NodeElement
      */
     public function getTab($tab)
     {

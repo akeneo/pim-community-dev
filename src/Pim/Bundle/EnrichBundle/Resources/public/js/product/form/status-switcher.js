@@ -27,7 +27,7 @@ define(
                 'click li a': 'updateStatus'
             },
             render: function () {
-                var status = this.getRoot().getData().enabled;
+                var status = this.getRoot().getFormData().enabled;
 
                 this.$el.html(this.template({
                     status: status
@@ -40,7 +40,7 @@ define(
             },
             updateStatus: function (event) {
                 var newStatus = event.currentTarget.dataset.status === 'enable';
-                this.getRoot().model.set('enabled', newStatus);
+                this.getFormModel().set('enabled', newStatus);
                 this.render();
             }
         });

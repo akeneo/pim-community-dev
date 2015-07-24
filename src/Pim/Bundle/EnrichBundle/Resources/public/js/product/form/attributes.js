@@ -44,7 +44,7 @@ define(
         Dialog,
         messenger
     ) {
-        var FormView = BaseForm.extend({
+        return BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tabbable tabs-left product-attributes',
             events: {
@@ -57,11 +57,13 @@ define(
                     label: _.__('pim_enrich.form.product.tab.attributes.title')
                 });
 
-                this.listenTo(this.getRoot().model, 'change', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
-                mediator.on('product:action:post_update', _.bind(this.postSave, this));
-                mediator.on('product:action:post_validation_error', _.bind(this.postValidationError, this));
-                mediator.on('show_attribute', _.bind(this.showAttribute, this));
+                this.listenTo(mediator, 'entity:action:validation_error', this.render);
+                this.listenTo(mediator, 'change-family:change:after', this.render);
+                this.listenTo(mediator, 'attributes:add-attribute:after', this.render);
+                this.listenTo(mediator, 'product:action:post_update', this.postSave);
+                this.listenTo(mediator, 'show_attribute', this.showAttribute);
+
                 window.addEventListener('resize', _.bind(this.resize, this));
                 FieldManager.clearFields();
 
@@ -70,6 +72,7 @@ define(
                 this.onExtensions('add-attribute:add', _.bind(this.addAttributes, this));
                 this.onExtensions('copy:copy-fields:after', _.bind(this.render, this));
                 this.onExtensions('copy:select:after', _.bind(this.render, this));
+                this.onExtensions('copy:context:change', _.bind(this.render, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -79,36 +82,38 @@ define(
                 }
 
                 this.rendering = true;
-
                 this.getConfig().done(_.bind(function () {
                     this.$el.html(this.template({}));
                     this.resize();
-                    var product = this.getData();
+                    var product = this.getFormData();
                     $.when(
                         FetcherRegistry.getFetcher('family').fetchAll(),
                         ProductManager.getValues(product)
-                    ).done(_.bind(function (families, values) {
+                    ).then(_.bind(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
                             this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
                         );
 
-                        var fieldPromisses = [];
+                        var fieldPromises = [];
                         _.each(productValues, _.bind(function (productValue, attributeCode) {
-                            fieldPromisses.push(this.renderField(product, attributeCode, productValue, families));
+                            fieldPromises.push(this.renderField(product, attributeCode, productValue, families));
                         }, this));
 
-                        $.when.apply($, fieldPromisses).done(_.bind(function () {
-                            var $productValuesPanel = this.$('.product-values');
-                            $productValuesPanel.empty();
+                        this.rendering = false;
 
-                            FieldManager.clearVisibleFields();
-                            _.each(arguments, _.bind(function (field) {
+                        return $.when.apply($, fieldPromises);
+                    }, this)).then(_.bind(function () {
+                        var $productValuesPanel = this.$('.product-values');
+                        $productValuesPanel.empty();
+
+                        FieldManager.clearVisibleFields();
+                        _.each(arguments, _.bind(function (field) {
+                            if (field.canBeSeen()) {
                                 field.render();
                                 FieldManager.addVisibleField(field.attribute.code);
                                 $productValuesPanel.append(field.$el);
-                            }, this));
-                            this.rendering = false;
+                            }
                         }, this));
                     }, this));
                     this.delegateEvents();
@@ -142,11 +147,9 @@ define(
             },
             getConfig: function () {
                 var promises = [];
-                var product = this.getData();
+                var product = this.getFormData();
 
                 promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
-
-                this.triggerExtensions('add-attribute:update:available-attributes');
 
                 return $.when.apply($, promises).promise();
             },
@@ -159,9 +162,8 @@ define(
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('currency').fetchAll()
                 ).then(_.bind(function (attributes, locales, channels, currencies) {
-                    var product = this.getData();
+                    var product = this.getFormData();
 
-                    var hasRequiredValues = true;
                     _.each(attributeCodes, function (attributeCode) {
                         var attribute = _.findWhere(attributes, {code: attributeCode});
                         if (!product.values[attribute.code]) {
@@ -172,7 +174,6 @@ define(
                                 channels,
                                 currencies
                             );
-                            hasRequiredValues = false;
                         }
                     });
 
@@ -180,17 +181,8 @@ define(
                         _.findWhere(attributes, {code: _.first(attributeCodes)}).group
                     );
 
-                    if (hasRequiredValues) {
-                        this.getRoot().model.trigger('change');
-                        return;
-                    }
-
-                    /* jshint sub:true */
-                    /* jscs:disable requireDotNotation */
-                    this.extensions['copy'].generateCopyFields();
-
                     this.setData(product);
-                    this.getRoot().model.trigger('change');
+                    mediator.trigger('attributes:add-attribute:after');
                 }, this));
             },
             removeAttribute: function (event) {
@@ -198,7 +190,7 @@ define(
                     return;
                 }
                 var attributeCode = event.currentTarget.dataset.attribute;
-                var product = this.getData();
+                var product = this.getFormData();
                 var fields = FieldManager.getFields();
 
                 Dialog.confirm(
@@ -211,7 +203,7 @@ define(
                                 url: Routing.generate(
                                     'pim_enrich_product_remove_attribute_rest',
                                     {
-                                        productId: this.getData().meta.id,
+                                        productId: this.getFormData().meta.id,
                                         attributeId: attribute.id
                                     }
                                 ),
@@ -221,13 +213,8 @@ define(
 
                                 delete product.values[attributeCode];
                                 delete fields[attributeCode];
-                                /* jshint sub:true */
-                                this.extensions['copy'].generateCopyFields();
-                                /* jscs:enable requireDotNotation */
 
                                 this.setData(product);
-
-                                this.getRoot().model.trigger('change');
                             }, this)).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',
@@ -250,45 +237,15 @@ define(
             getLocale: function () {
                 return UserContext.get('catalogLocale');
             },
-            postValidationError: function () {
-                this.render();
-                this.extensions['attribute-group-selector'].removeBadges();
-                var invalidField = _.reduce(FieldManager.getFields(), function (invalidField, field) {
-                    return !field.isValid() ? field : invalidField;
-                }, null);
-
-                if (invalidField) {
-                    mediator.trigger('show_attribute', {attribute: invalidField.attribute.code});
-                }
-
-                this.updateAttributeGroupBadges();
-            },
             postSave: function () {
                 FieldManager.fields = {};
-                this.extensions['attribute-group-selector'].removeBadges();
-
                 this.render();
             },
-            updateAttributeGroupBadges: function () {
-                var fields = FieldManager.getFields();
-
-                AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
-                    .done(_.bind(function (attributeGroups) {
-                        _.each(fields, _.bind(function (field) {
-                            var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
-                                attributeGroups,
-                                field.attribute.code
-                            );
-
-                            if (!field.isValid()) {
-                                this.extensions['attribute-group-selector'].addToBadge(attributeGroup, 'invalid');
-                            }
-                        }, this));
-                    }, this));
-            },
             showAttribute: function (event) {
-                AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
+                AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
                     .done(_.bind(function (attributeGroups) {
+                        mediator.trigger('form-tabs:change:tab', this.code);
+
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,
                             event.attribute
@@ -324,7 +281,5 @@ define(
                 this.$el[open ? 'addClass' : 'removeClass']('comparison-mode');
             }
         });
-
-        return FormView;
     }
 );

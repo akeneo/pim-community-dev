@@ -92,7 +92,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_enrich_group_type_index")
+     * @AclAncestor("pim_enrich_grouptype_index")
      *
      * @return Response
      */
@@ -107,14 +107,14 @@ class GroupTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_enrich_group_type_create")
+     * @AclAncestor("pim_enrich_grouptype_create")
      *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_group_type_index');
+            return $this->redirectToRoute('pim_enrich_grouptype_index');
         }
 
         $groupType = new GroupType();
@@ -123,7 +123,7 @@ class GroupTypeController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.group type.created');
 
             $url = $this->generateUrl(
-                'pim_enrich_group_type_edit',
+                'pim_enrich_grouptype_edit',
                 array('id' => $groupType->getId())
             );
             $response = array('status' => 1, 'url' => $url);
@@ -142,7 +142,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param GroupType $groupType
      *
      * @Template
-     * @AclAncestor("pim_enrich_group_type_edit")
+     * @AclAncestor("pim_enrich_grouptype_edit")
      *
      * @return array
      */
@@ -162,7 +162,7 @@ class GroupTypeController extends AbstractDoctrineController
      *
      * @param GroupType $groupType
      *
-     * @AclAncestor("pim_enrich_group_type_remove")
+     * @AclAncestor("pim_enrich_grouptype_remove")
      *
      * @return Response|RedirectResponse
      */
@@ -179,7 +179,7 @@ class GroupTypeController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_group_type_index');
+            return $this->redirectToRoute('pim_enrich_grouptype_index');
         }
     }
 }

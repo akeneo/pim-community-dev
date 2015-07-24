@@ -20,7 +20,7 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                var meta = this.getRoot().model.get('meta');
+                var meta = this.getFormData().meta;
 
                 if (meta && meta.label) {
                     this.$el.text(meta.label[UserContext.get('catalogLocale')]);

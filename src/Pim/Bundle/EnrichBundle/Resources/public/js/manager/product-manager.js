@@ -3,12 +3,14 @@
 define([
         'jquery',
         'underscore',
+        'oro/mediator',
         'routing',
         'pim/attribute-manager',
         'pim/fetcher-registry'
     ], function (
         $,
         _,
+        mediator,
         Routing,
         AttributeManager,
         FetcherRegistry
@@ -22,6 +24,11 @@ define([
                         .then(_.bind(function (product) {
                             return this.generateMissing(product);
                         }, this))
+                        .then(function (product) {
+                            mediator.trigger('product:action:post_fetch', product);
+
+                            return product;
+                        })
                         .promise();
                 }
 

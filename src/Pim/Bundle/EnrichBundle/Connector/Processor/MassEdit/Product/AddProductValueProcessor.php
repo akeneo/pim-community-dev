@@ -61,8 +61,6 @@ class AddProductValueProcessor extends AbstractProcessor
             return null;
         }
 
-        $this->stepExecution->incrementSummaryInfo('mass_edited');
-
         return $product;
     }
 

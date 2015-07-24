@@ -72,10 +72,10 @@ Feature: Add products to a variant group
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 1       | Admin Doe - admin@example.com                                     | SKU      | sandal-white-37 |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3736 @unstable
+  @jira https://akeneo.atlassian.net/browse/PIM-3736
   Scenario: Reject product addition in a variant group, products count should be correct
     Given the following products:
-      | SKU              | family  | categories        | size | color | name-en_US |
+      | sku              | family  | categories        | size | color | name-en_US |
       | sandal-white-37  | sandals | winter_collection | 37   | white | old name   |
       | sandal-white-38  | sandals | winter_collection | 38   | white | old name   |
       | sandal-white-39  | sandals | winter_collection | 39   | white | old name   |

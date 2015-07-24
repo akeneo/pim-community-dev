@@ -59,9 +59,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
         $options = $this->optionsResolver->resolveRemoveOptions($options);
         $this->objectManager->remove($object);
 
-        if (true === $options['flush'] && true === $options['flush_only_object']) {
-            $this->objectManager->flush($object);
-        } elseif (true === $options['flush']) {
+        if (true === $options['flush']) {
             $this->objectManager->flush();
         }
     }
