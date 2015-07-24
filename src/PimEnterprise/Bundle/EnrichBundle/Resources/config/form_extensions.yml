@@ -5,8 +5,8 @@ extensions:
     copy:
         module: pimee/product-edit-form/attributes/copy
 
-    draft:
-        module: pimee/product-edit-form/draft
+    send-for-approval:
+        module: pimee/product-edit-form/send-for-approval
         parent: product-edit-form
         targetZone: buttons
         position: 85
@@ -64,3 +64,9 @@ extensions:
         parent: copy
         targetZone: context-selectors
         position: 120
+
+    working-copy:
+        module: pimee/product-edit-form/working-copy
+        parent: product-edit-form
+        targetZone: self
+        position: 100
