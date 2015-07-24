@@ -16,7 +16,7 @@ Feature: Check menu items visibility
     And I logout
     When I am logged in as "Sandra"
     And I am on the dashboard page
-    Then I should not see "System"
+    Then I should see "System"
     When I logout
     And I am logged in as "Peter"
     And I am on the dashboard page
