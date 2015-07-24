@@ -11,7 +11,7 @@ use Akeneo\Bundle\BatchBundle\Notification\MailNotifier;
 class MailNotifierTest extends \PHPUnit_Framework_TestCase
 {
     protected $handler;
-    protected $securityContext;
+    protected $tokenStorage;
     protected $twig;
     protected $mailer;
     protected $notifier;
@@ -21,15 +21,15 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
         $this->handler         = $this->getDisabledConstructorMock(
             'Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler'
         );
-        $this->securityContext = $this->getDisabledConstructorMock(
-            'Symfony\Component\Security\Core\SecurityContextInterface'
+        $this->tokenStorage = $this->getDisabledConstructorMock(
+            'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface'
         );
         $this->twig            = $this->getDisabledConstructorMock('\Twig_Environment');
         $this->mailer          = $this->getDisabledConstructorMock('\Swift_Mailer');
 
         $this->notifier = new MailNotifier(
             $this->handler,
-            $this->securityContext,
+            $this->tokenStorage,
             $this->twig,
             $this->mailer,
             'no-reply@example.com'
@@ -46,7 +46,7 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
         $this->markTestSkipped();
         $user = $this->getUserMock();
         $token = $this->getTokenMock($user);
-        $this->securityContext
+        $this->tokenStorage
             ->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($token));
@@ -169,7 +169,7 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
     {
         $token = $this->getTokenMock(null);
 
-        $this->securityContext
+        $this->tokenStorage
             ->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($token));

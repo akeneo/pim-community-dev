@@ -52,7 +52,7 @@ services:
         class: %akeneo_batch.mail_notifier.class%
         arguments:
             - @akeneo_batch.logger.batch_log_handler
-            - @security.context
+            - @security.token_storage
             - @twig
             - @mailer
             - %akeneo_batch.mail_notifier.sender_email%

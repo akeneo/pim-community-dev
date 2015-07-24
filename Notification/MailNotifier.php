@@ -2,9 +2,9 @@
 
 namespace Akeneo\Bundle\BatchBundle\Notification;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Notify Job execution result by mail
@@ -21,9 +21,9 @@ class MailNotifier implements Notifier
     protected $logger;
 
     /**
-     * @var SecurityContextInterface $securityContext
+     * @var TokenStorageInterface $tokenStorage
      */
-    protected $securityContext;
+    protected $tokenStorage;
 
     /**
      * @var Twig_Environment $twig
@@ -46,24 +46,24 @@ class MailNotifier implements Notifier
     protected $recipientEmail;
 
     /**
-     * @param BatchLogHandler          $logger
-     * @param SecurityContextInterface $securityContext
-     * @param \Twig_Environment        $twig
-     * @param \Swift_Mailer            $mailer
-     * @param string                   $senderEmail
+     * @param BatchLogHandler       $logger
+     * @param TokenStorageInterface $tokenStorage
+     * @param \Twig_Environment     $twig
+     * @param \Swift_Mailer         $mailer
+     * @param string                $senderEmail
      */
     public function __construct(
         BatchLogHandler $logger,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         \Twig_Environment $twig,
         \Swift_Mailer $mailer,
         $senderEmail
     ) {
-        $this->logger          = $logger;
-        $this->securityContext = $securityContext;
-        $this->twig            = $twig;
-        $this->mailer          = $mailer;
-        $this->senderEmail     = $senderEmail;
+        $this->logger       = $logger;
+        $this->tokenStorage = $tokenStorage;
+        $this->twig         = $twig;
+        $this->mailer       = $mailer;
+        $this->senderEmail  = $senderEmail;
     }
 
     /**
@@ -118,7 +118,7 @@ class MailNotifier implements Notifier
             return $this->recipientEmail;
         }
 
-        if (null === $token = $this->securityContext->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return;
         }
 
