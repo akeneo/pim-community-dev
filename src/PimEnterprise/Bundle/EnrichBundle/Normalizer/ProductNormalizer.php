@@ -18,7 +18,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -45,8 +46,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var SerializerInterface */
     protected $serializer;
@@ -57,7 +61,8 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      * @param ProductDraftRepositoryInterface $draftRepository
      * @param ProductDraftApplierInterface    $draftApplier
      * @param CategoryAccessRepository        $categoryAccessRepo
-     * @param SecurityContextInterface        $securityContext
+     * @param TokenStorageInterface           $tokenStorage
+     * @param AuthorizationCheckerInterface   $authorizationChecker
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -65,14 +70,16 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         ProductDraftRepositoryInterface $draftRepository,
         ProductDraftApplierInterface $draftApplier,
         CategoryAccessRepository $categoryAccessRepo,
-        SecurityContextInterface $securityContext
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->normalizer         = $normalizer;
-        $this->publishedManager   = $publishedManager;
-        $this->draftRepository    = $draftRepository;
-        $this->draftApplier       = $draftApplier;
-        $this->categoryAccessRepo = $categoryAccessRepo;
-        $this->securityContext    = $securityContext;
+        $this->normalizer           = $normalizer;
+        $this->publishedManager     = $publishedManager;
+        $this->draftRepository      = $draftRepository;
+        $this->draftApplier         = $draftApplier;
+        $this->categoryAccessRepo   = $categoryAccessRepo;
+        $this->tokenStorage         = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -80,7 +87,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        if (!$this->securityContext->isGranted(Attributes::OWN, $product) &&
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $product) &&
             null !== $draft = $this->findDraftForProduct($product)
         ) {
             $workingCopy = $this->normalizer->normalize($product, 'json', $context);
@@ -149,6 +156,6 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     protected function getUsername()
     {
-        return $this->securityContext->getToken()->getUsername();
+        return $this->tokenStorage->getToken()->getUsername();
     }
 }

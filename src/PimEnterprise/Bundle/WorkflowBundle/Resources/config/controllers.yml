@@ -45,3 +45,4 @@ services:
             - '@pimee_workflow.manager.product_draft'
             - '@pim_catalog.repository.product'
             - '@pim_internal_api_serializer'
+            - '@security.token_storage'
