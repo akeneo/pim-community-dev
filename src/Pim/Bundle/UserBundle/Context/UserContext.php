@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -34,8 +35,8 @@ class UserContext
     /** @var CategoryManager */
     protected $categoryManager;
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var array */
     protected $userLocales;
@@ -48,6 +49,7 @@ class UserContext
      * @param LocaleManager         $localeManager
      * @param ChannelManager        $channelManager
      * @param CategoryManager       $categoryManager
+     * @param RequestStack          $requestStack
      * @param string                $defaultLocale
      */
     public function __construct(
@@ -55,23 +57,15 @@ class UserContext
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
+        RequestStack $requestStack,
         $defaultLocale
     ) {
         $this->tokenStorage    = $tokenStorage;
         $this->localeManager   = $localeManager;
         $this->channelManager  = $channelManager;
         $this->categoryManager = $categoryManager;
+        $this->requestStack    = $requestStack;
         $this->defaultLocale   = $defaultLocale;
-    }
-
-    /**
-     * Sets the current request
-     *
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
     }
 
     /**
@@ -200,8 +194,9 @@ class UserContext
      */
     protected function getRequestLocale()
     {
-        if ($this->request) {
-            $localeCode = $this->request->get(self::REQUEST_LOCALE_PARAM);
+        $request = $this->getCurrentRequest();
+        if (null !== $request) {
+            $localeCode = $request->get(self::REQUEST_LOCALE_PARAM);
             if ($localeCode) {
                 $locale = $this->localeManager->getLocaleByCode($localeCode);
                 if ($locale && $this->isLocaleAvailable($locale)) {
@@ -271,6 +266,16 @@ class UserContext
         }
 
         return null;
+    }
+
+    /**
+     * Get current request
+     *
+     * @return Request|null
+     */
+    protected function getCurrentRequest()
+    {
+        return $this->requestStack->getCurrentRequest();
     }
 
     /**
