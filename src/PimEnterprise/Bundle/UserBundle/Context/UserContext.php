@@ -17,6 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -38,6 +39,7 @@ class UserContext extends BaseUserContext
      * @param LocaleManager                 $localeManager
      * @param ChannelManager                $channelManager
      * @param CategoryManager               $categoryManager
+     * @param RequestStack                  $requestStack
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param string                        $defaultLocale
      */
@@ -46,6 +48,7 @@ class UserContext extends BaseUserContext
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
+        RequestStack $requestStack,
         AuthorizationCheckerInterface $authorizationChecker,
         $defaultLocale
     ) {
@@ -53,6 +56,7 @@ class UserContext extends BaseUserContext
         $this->localeManager        = $localeManager;
         $this->channelManager       = $channelManager;
         $this->categoryManager      = $categoryManager;
+        $this->requestStack         = $requestStack;
         $this->authorizationChecker = $authorizationChecker;
         $this->defaultLocale        = $defaultLocale;
     }
