@@ -15,6 +15,7 @@ services:
     pim_catalog.manager.category:
         class: %pim_catalog.manager.category.class%
         arguments:
+            - '@pim_catalog.repository.category'
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.category.class%
             - '@event_dispatcher'
