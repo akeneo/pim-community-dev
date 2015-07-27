@@ -68,7 +68,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
 
         if (null === $data || empty($data['filePath'])) {
             $file = null;
-        } elseif(null === $file = $this->repository->findOneByIdentifier($data['filePath'])) {
+        } elseif (null === $file = $this->repository->findOneByIdentifier($data['filePath'])) {
             $file = $this->storeFile($attribute, $data);
         }
 
