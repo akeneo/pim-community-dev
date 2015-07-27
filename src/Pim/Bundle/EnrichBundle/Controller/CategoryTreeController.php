@@ -18,6 +18,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -336,7 +337,7 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     protected function findCategory($categoryId)
     {
-        $category = $this->categoryManager->getEntityRepository()->find($categoryId);
+        $category = $this->categoryManager->getCategoryRepository()->find($categoryId);
 
         if (!$category) {
             throw $this->createNotFoundException('Category not found');
@@ -348,11 +349,9 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * Gets the options for the form
      *
-     * @param CategoryInterface $category
-     *
      * @return array
      */
-    protected function getFormOptions(CategoryInterface $category)
+    protected function getFormOptions()
     {
         return [];
     }

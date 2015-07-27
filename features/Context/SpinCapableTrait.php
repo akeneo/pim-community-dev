@@ -13,7 +13,7 @@ trait SpinCapableTrait
      *
      * @return mixed
      */
-    public function spin($callable, $wait = 60, $message = 'no message')
+    public function spin($callable, $wait = 20, $message = 'no message')
     {
         for ($i = 0; $i < $wait; ++$i) {
             try {

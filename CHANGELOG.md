@@ -165,6 +165,7 @@
 - Remove the option 'flush_only_object' from `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver`, `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver`, `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseRemover`
 - Add an argument `Pim/Bundle/VersioningBundle/Factory/VersionFactory` in the constructor of `Pim/Bundle/VersioningBundle/Builder/VersionBuilder`
 - Add an argument `Symfony\Component\EventDispatcher\EventDispatcher` in the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover`
+- Constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
 # 1.3.x
 

@@ -26,6 +26,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class WebUser extends RawMinkContext
 {
+    use SpinCapableTrait;
+
     protected $windowWidth;
 
     protected $windowHeight;
@@ -1541,8 +1543,36 @@ class WebUser extends RawMinkContext
         if ($right) {
             $category->rightClick();
         } else {
-            $category->click();
+            try {
+                $checkbox = $this->spin(function () use ($category) {
+                    return $category->find('css', '.jstree-checkbox');
+
+                });
+            } catch (\Exception $e) {
+                $checkbox = null;
+            }
+
+            if (null !== $checkbox) {
+                $checkbox->click();
+            } else {
+                $category->click();
+            }
             $this->wait();
+        }
+    }
+
+    /**
+     * @Then /^I should see (\d+) category count$/
+     *
+     * @param int $count
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeCategoryCount($count)
+    {
+        $badge = $this->getCurrentPage()->find('css', sprintf('span.badge:contains("%d")', $count));
+        if (!$badge) {
+            throw $this->createExpectationException('Catgeroy badge not found');
         }
     }
 
