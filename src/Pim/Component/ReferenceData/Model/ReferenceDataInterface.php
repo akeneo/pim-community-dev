@@ -44,7 +44,7 @@ interface ReferenceDataInterface
     /**
      * Get the property that will be used as label to be displayed in the PIM.
      * If no property is returned, the [code] of the reference data will be
-     * diplayed in the PIM.
+     * displayed in the PIM.
      *
      * @return string|null
      */
