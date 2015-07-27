@@ -2,10 +2,12 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
+use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
@@ -18,14 +20,18 @@ class MediaAttributeCopierSpec extends ObjectBehavior
     function let(
         ProductBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
-        MediaManager $mediaManager,
-        MediaFactory $mediaFactory
+        RawFileFetcherInterface $rawFileFetcher,
+        RawFileStorerInterface $rawFileStorer,
+        MediaFactory $mediaFactory,
+        MountManager $mountManager
     ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
-            $mediaManager,
+            $rawFileFetcher,
+            $rawFileStorer,
             $mediaFactory,
+            $mountManager,
             ['media'],
             ['media']
         );
@@ -61,7 +67,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
     }
 
     function it_copies_when_a_product_value_has_the_values_and_the_media(
-        $mediaManager,
         $attrValidatorHelper,
         ProductMediaInterface $fromMedia,
         ProductMediaInterface $toMedia,
@@ -69,7 +74,9 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         ProductInterface $product,
         ProductValueInterface $fromProductValue,
-        ProductValueInterface $toProductValue
+        ProductValueInterface $toProductValue,
+        RawFileStorerInterface $rawFileStorer,
+        RawFileFetcherInterface $rawFileFetcher
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -82,16 +89,14 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromMedia->getOriginalFilename()->shouldBeCalled()->willReturn('picture.jpg');
+        $rawFileStorer->store()->shouldBeCalled();
+        $rawFileFetcher->fetch()->shouldBeCalled();
 
         $fromProductValue->getMedia()->willReturn($fromMedia);
         $toProductValue->getMedia()->willReturn($toMedia);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
-
-        $mediaManager->generateFilenamePrefix($product, $fromProductValue)->willReturn('prefix-to-file');
-        $mediaManager->duplicate($fromMedia, $toMedia, 'prefix-to-file')->shouldBeCalled();
 
         $this->copyAttributeData(
             $product,
@@ -104,7 +109,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
     function it_copies_when_a_product_value_has_a_media_but_not_the_target_value(
         $builder,
-        $mediaManager,
         $attrValidatorHelper,
         ProductMediaInterface $fromMedia,
         ProductMediaInterface $toMedia,
@@ -125,8 +129,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromMedia->getOriginalFilename()->shouldBeCalled()->willReturn('picture.jpg');
-
         $fromProductValue->getMedia()->willReturn($fromMedia);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
@@ -134,9 +136,6 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $builder->addProductValue($product, $toAttribute, $toLocale, $toScope)->willReturn($toProductValue);
         $toProductValue->getMedia()->willReturn($toMedia);
-
-        $mediaManager->generateFilenamePrefix($product, $fromProductValue)->willReturn('prefix-to-file');
-        $mediaManager->duplicate($fromMedia, $toMedia, 'prefix-to-file')->shouldBeCalled();
 
         $this->copyAttributeData(
             $product,
