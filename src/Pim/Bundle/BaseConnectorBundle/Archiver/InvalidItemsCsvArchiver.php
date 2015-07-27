@@ -53,8 +53,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         );
         $this->filesystem->put($key, '');
         $this->writer->setFilePath(
-            $this->filesystem->getConfig()->get('directory') .
-            DIRECTORY_SEPARATOR .
+            $this->filesystem->getAdapter()->getPathPrefix() .
             $key
         );
         $this->writer->initialize();

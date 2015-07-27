@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use League\Flysystem\Config;
+use League\Flysystem\Adapter\Local as LocalAdapter;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
@@ -17,10 +17,10 @@ class InvalidItemsCsvArchiverSpec extends ObjectBehavior
         InvalidItemsCollector $collector,
         CsvWriter $writer,
         Filesystem $filesystem,
-        Config $config
+        LocalAdapter $adapter
     ) {
-        $filesystem->getConfig()->willReturn($config);
-        $config->get('directory')->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'archivist');
+        $filesystem->getAdapter()->willReturn($adapter);
+        $adapter->getPathPrefix()->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'archivist/');
         $this->beConstructedWith($collector, $writer, $filesystem, '/root');
     }
 
