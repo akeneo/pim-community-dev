@@ -11,7 +11,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProductWriterSpec extends ObjectBehavior
 {
@@ -20,14 +21,14 @@ class ProductWriterSpec extends ObjectBehavior
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkObjectDetacherInterface $detacher,
-        SecurityContextInterface $securityContext
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith(
             $mediaManager,
             $versionManager,
             $productSaver,
             $detacher,
-            $securityContext
+            $authorizationChecker
         );
     }
 
@@ -107,7 +108,8 @@ class ProductWriterSpec extends ObjectBehavior
     }
 
     function it_increments_summary_info_with_permission(
-        $securityContext,
+        $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
         StepExecution $stepExecution,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -115,12 +117,12 @@ class ProductWriterSpec extends ObjectBehavior
         ProductInterface $product4
     ) {
         $product1->getId()->willReturn('45');
-        $securityContext->getToken()->willReturn('token');
+        $tokenStorage->getToken()->willReturn('token');
         $product2->getId()->willReturn(null);
         $product3->getId()->willReturn('42');
         $product4->getId()->willReturn(null);
 
-        $securityContext->isGranted(Attributes::OWN, Argument::any())->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::OWN, Argument::any())->willReturn(false);
 
         $stepExecution->incrementSummaryInfo('process')->shouldBeCalledTimes(2);
         $stepExecution->incrementSummaryInfo('proposal')->shouldBeCalledTimes(2);

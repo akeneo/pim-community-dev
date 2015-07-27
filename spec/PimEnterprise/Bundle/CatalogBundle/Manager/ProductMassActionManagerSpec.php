@@ -19,14 +19,14 @@ class ProductMassActionManagerSpec extends ObjectBehavior
         ProductMassActionRepositoryInterface $massActionRepo,
         AttributeRepository $attRepo,
         AttributeGroupAccessRepository $attGroupAccessRepo,
-        SecurityContext $securityContext,
+        SecurityContext $authorizationChecker,
         TokenInterface $token,
         User $user
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $authorizationChecker->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $this->beConstructedWith($massActionRepo, $attRepo, $attGroupAccessRepo, $securityContext);
+        $this->beConstructedWith($massActionRepo, $attRepo, $attGroupAccessRepo, $authorizationChecker);
     }
 
     function it_finds_attributes_with_groups_with_sub_query(

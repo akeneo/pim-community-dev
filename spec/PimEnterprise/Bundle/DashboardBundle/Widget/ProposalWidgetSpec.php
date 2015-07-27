@@ -9,22 +9,24 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProposalWidgetSpec extends ObjectBehavior
 {
     function let(
         ProductDraftRepositoryInterface $repository,
-        SecurityContextInterface $securityContext,
-        TokenInterface $token,
+        AuthorizationCheckerInterface $authorizationChecker,
         User $user,
-        UserManager $userManager
+        TokenInterface $token,
+        UserManager $userManager,
+        TokenStorageInterface $tokenStorage
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $this->beConstructedWith($securityContext, $repository, $userManager);
+        $this->beConstructedWith($authorizationChecker, $repository, $userManager, $tokenStorage);
     }
 
     function it_is_a_widget()
@@ -37,21 +39,21 @@ class ProposalWidgetSpec extends ObjectBehavior
         $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:proposal.html.twig');
     }
 
-    function it_exposes_the_proposal_widget_template_parameters($securityContext)
+    function it_exposes_the_proposal_widget_template_parameters($authorizationChecker)
     {
-        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $this->getParameters()->shouldBeArray();
     }
 
-    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($securityContext, $user)
+    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($authorizationChecker, $user)
     {
-        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
         $this->getData()->shouldReturn([]);
     }
 
     function it_exposes_proposal_data(
-        $securityContext,
+        $authorizationChecker,
         $user,
         $repository,
         $userManager,
@@ -61,7 +63,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         ProductInterface $secondProduct,
         User $userJulia
     ) {
-        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $repository->findApprovableByUser($user, 10)->willReturn([$first, $second]);
 
         $userJulia->getFirstName()->willReturn('Julia');
@@ -101,7 +103,7 @@ class ProposalWidgetSpec extends ObjectBehavior
     }
 
     function it_fallbacks_on_username_if_user_not_found(
-        $securityContext,
+        $authorizationChecker,
         $user,
         $repository,
         $userManager,
@@ -110,7 +112,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         ProductInterface $firstProduct,
         ProductInterface $secondProduct
     ) {
-        $securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $repository->findApprovableByUser($user, 10)->willReturn([$first, $second]);
 
         $userManager->findUserByUsername('jack')->willReturn(null);

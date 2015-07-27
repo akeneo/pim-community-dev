@@ -6,25 +6,25 @@ use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AttributeGroupViewRightFilterSpec extends ObjectBehavior
 {
-    public function let(SecurityContextInterface $securityContext)
+    public function let(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->beConstructedWith($securityContext);
+        $this->beConstructedWith($authorizationChecker);
     }
 
-    public function it_does_not_filter_an_attribute_group_if_the_user_is_granted_to_view_attribute_group($securityContext, AttributeGroupInterface $marketing)
+    public function it_does_not_filter_an_attribute_group_if_the_user_is_granted_to_view_attribute_group($authorizationChecker, AttributeGroupInterface $marketing)
     {
-        $securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $marketing)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $marketing)->willReturn(true);
 
         $this->filterObject($marketing, 'pim:product_value:view', [])->shouldReturn(false);
     }
 
-    public function it_filters_an_attribute_group_if_the_user_is_not_granted_to_view_attribute_group($securityContext, AttributeGroupInterface $marketing)
+    public function it_filters_an_attribute_group_if_the_user_is_not_granted_to_view_attribute_group($authorizationChecker, AttributeGroupInterface $marketing)
     {
-        $securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $marketing)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $marketing)->willReturn(false);
 
         $this->filterObject($marketing, 'pim:product_value:view', [])->shouldReturn(true);
     }

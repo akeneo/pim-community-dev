@@ -9,8 +9,10 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserContextSpec extends ObjectBehavior
 {
@@ -20,43 +22,47 @@ class UserContextSpec extends ObjectBehavior
     }
 
     function let(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
         TokenInterface $token,
-        User $user
+        User $user,
+        TokenStorageInterface $tokenStorage,
+        RequestStack $requestStack
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $this->beConstructedWith(
-            $securityContext,
+            $tokenStorage,
             $localeManager,
             $channelManager,
             $categoryManager,
+            $requestStack,
+            $authorizationChecker,
             'en_US'
         );
     }
 
-    function it_gets_the_default_tree_if_accessible($user, $securityContext, CategoryInterface $secondTree)
+    function it_gets_the_default_tree_if_accessible($user, $authorizationChecker, CategoryInterface $secondTree)
     {
         $user->getDefaultTree()->willReturn($secondTree);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(true);
 
         $this->getAccessibleUserTree()->shouldReturn($secondTree);
     }
 
     function it_gets_the_first_accessible_tree_if_the_default_user_tree_is_not_accessible(
         $user,
-        $securityContext,
+        $authorizationChecker,
         $categoryManager,
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
         CategoryInterface $thirdTree
     ) {
         $user->getDefaultTree()->willReturn($secondTree);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(false);
 
         $categoryManager->getAccessibleTrees($user)->willReturn([$thirdTree, $firstTree]);
 
@@ -65,12 +71,12 @@ class UserContextSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_default_tree_is_accessible(
         $user,
-        $securityContext,
+        $authorizationChecker,
         $categoryManager,
         CategoryInterface $firstTree
     ) {
         $user->getDefaultTree()->willReturn($firstTree);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(false);
 
         $categoryManager->getAccessibleTrees($user)->willReturn([]);
 

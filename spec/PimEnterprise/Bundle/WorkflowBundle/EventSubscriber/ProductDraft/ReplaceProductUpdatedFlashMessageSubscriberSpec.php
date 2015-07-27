@@ -15,12 +15,12 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
 {
     function let(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ObjectRepository $repository,
         FilterResponseEvent $event,
         Request $request,
@@ -31,7 +31,7 @@ class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
         Message $noticeBar,
         Message $successFoo
     ) {
-        $this->beConstructedWith($securityContext, $repository);
+        $this->beConstructedWith($authorizationChecker, $repository);
 
         $event->getRequest()->willReturn($request);
         $request->getSession()->willReturn($session);
@@ -64,7 +64,7 @@ class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
     }
 
     function it_replaces_product_updated_flash_message(
-        $securityContext,
+        $authorizationChecker,
         $repository,
         $event,
         $attributes,
@@ -76,7 +76,7 @@ class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
         $event->getRequestType()->willReturn(HttpKernelInterface::MASTER_REQUEST);
         $attributes->get('id')->willReturn('1337');
         $repository->find('1337')->willReturn($product);
-        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
 
         $noticeFoo->setTemplate('flash.product_draft.updated')->shouldBeCalled();
         $noticeBar->setTemplate(Argument::any())->shouldNotBeCalled();
@@ -119,7 +119,7 @@ class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_replace_product_updated_flash_message_when_current_user_is_the_owner_of_the_product(
-        $securityContext,
+        $authorizationChecker,
         $repository,
         $event,
         $attributes,
@@ -131,7 +131,7 @@ class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
         $event->getRequestType()->willReturn(HttpKernelInterface::MASTER_REQUEST);
         $attributes->get('id')->willReturn('1337');
         $repository->find('1337')->willReturn($product);
-        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $noticeFoo->setTemplate(Argument::any())->shouldNotBeCalled();
         $noticeBar->setTemplate(Argument::any())->shouldNotBeCalled();

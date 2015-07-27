@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Connector\Tasklet;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use PhpSpec\ObjectBehavior;
@@ -13,7 +14,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class ApproveTaskletSpec extends ObjectBehavior
@@ -22,20 +23,23 @@ class ApproveTaskletSpec extends ObjectBehavior
         ProductDraftRepositoryInterface $productDraftRepository,
         ProductDraftManager $productDraftManager,
         UserProviderInterface $userProvider,
-        SecurityContextInterface $securityContext
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->beConstructedWith(
             $productDraftRepository,
             $productDraftManager,
             $userProvider,
-            $securityContext
+            $authorizationChecker,
+            $tokenStorage
         );
     }
 
     function it_approves_valid_proposals(
         $productDraftRepository,
         $userProvider,
-        $securityContext,
+        $authorizationChecker,
+        $tokenStorage,
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -48,19 +52,19 @@ class ApproveTaskletSpec extends ObjectBehavior
         $jobExecution->getUser()->willReturn('julia');
         $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
-        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
 
         $stepExecution->incrementSummaryInfo('approved')->shouldBeCalledTimes(2);
         $this->setStepExecution($stepExecution);
@@ -71,7 +75,8 @@ class ApproveTaskletSpec extends ObjectBehavior
     function it_skips_proposals_if_not_ready(
         $productDraftRepository,
         $userProvider,
-        $securityContext,
+        $authorizationChecker,
+        $tokenStorage,
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -84,19 +89,19 @@ class ApproveTaskletSpec extends ObjectBehavior
         $jobExecution->getUser()->willReturn('julia');
         $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
         $productDraft1->getProduct()->willReturn($product1);
-        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(1);
@@ -109,7 +114,8 @@ class ApproveTaskletSpec extends ObjectBehavior
     function it_skips_proposals_if_user_does_not_own_the_product(
         $productDraftRepository,
         $userProvider,
-        $securityContext,
+        $authorizationChecker,
+        $tokenStorage,
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -122,19 +128,19 @@ class ApproveTaskletSpec extends ObjectBehavior
         $jobExecution->getUser()->willReturn('julia');
         $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
-        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(false);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(1);
@@ -147,7 +153,8 @@ class ApproveTaskletSpec extends ObjectBehavior
     function it_skips_proposals_if_user_cannot_edit_the_attributes(
         $productDraftRepository,
         $userProvider,
-        $securityContext,
+        $authorizationChecker,
+        $tokenStorage,
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -160,19 +167,19 @@ class ApproveTaskletSpec extends ObjectBehavior
         $jobExecution->getUser()->willReturn('julia');
         $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
-        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(false);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
 
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(1);
@@ -186,7 +193,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         $productDraftRepository,
         $productDraftManager,
         $userProvider,
-        $securityContext,
+        $authorizationChecker,
+        $tokenStorage,
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -199,19 +207,19 @@ class ApproveTaskletSpec extends ObjectBehavior
         $jobExecution->getUser()->willReturn('julia');
         $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
         $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
-        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
 
         $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
-        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
 
         $productDraftManager->approve($productDraft1)->willThrow(new ValidatorException());
         $productDraftManager->approve($productDraft2)->shouldBeCalled();
