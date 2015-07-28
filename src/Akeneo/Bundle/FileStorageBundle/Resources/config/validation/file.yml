@@ -44,4 +44,4 @@ Akeneo\Component\FileStorage\Model\File:
                 max: 255
             - NotBlank: ~
         uploadedFile:
-            - File: ~
+            - File: { groups: [upload, Default] }
