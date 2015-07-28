@@ -53,12 +53,12 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
         UserManager $userManager,
         TokenStorageInterface $tokenStorage
     ) {
-        $this->manager              = $manager;
-        $this->paginatorFactory     = $paginatorFactory;
-        $this->validator            = $validator;
-        $this->objectDetacher       = $objectDetacher;
-        $this->userManager          = $userManager;
-        $this->tokenStorage         = $tokenStorage;
+        $this->manager          = $manager;
+        $this->paginatorFactory = $paginatorFactory;
+        $this->validator        = $validator;
+        $this->objectDetacher   = $objectDetacher;
+        $this->userManager      = $userManager;
+        $this->tokenStorage     = $tokenStorage;
     }
 
     /**
