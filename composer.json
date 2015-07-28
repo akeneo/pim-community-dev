@@ -16,8 +16,8 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "akeneo/batch-bundle": "0.4.*",
-        "akeneo/measure-bundle": "0.2.*",
+        "akeneo/batch-bundle": "dev-master",
+        "akeneo/measure-bundle": "dev-master",
         "apy/jsfv-bundle": "2.0.1",
         "ass/xmlsecurity": "1.1.1",
         "doctrine/annotations": "1.2.6",
@@ -56,7 +56,7 @@
         "symfony/icu": "1.1.0",
         "symfony/monolog-bundle": "~2.4",
         "symfony/swiftmailer-bundle": "2.3.8",
-        "symfony/symfony": "2.7.*",
+        "symfony/symfony": "2.7.2",
         "twig/extensions": "1.2.0"
     },
     "require-dev": {
