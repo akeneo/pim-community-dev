@@ -98,7 +98,7 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
             'Deleted'
         );
         $version->setVersion(null !== $previousVersion ? $previousVersion->getVersion() + 1 : 1)
-            ->setSnapshot($previousVersion->getSnapshot())
+            ->setSnapshot(null !== $previousVersion ? $previousVersion->getSnapshot(): [])
             ->setChangeset([]);
 
         $this->versionSaver->save($version);

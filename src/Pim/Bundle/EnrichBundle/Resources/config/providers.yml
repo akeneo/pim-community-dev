@@ -56,3 +56,4 @@ services:
             - [addResource, ['%pim_catalog.entity.channel.class%']]
             - [addResource, ['%pim_catalog.entity.family.class%']]
             - [addResource, ['%pim_catalog.entity.group.class%']]
+            - [addResource, ['%pim_catalog.entity.locale.class%']]

@@ -19,9 +19,7 @@ define([
             productValues: null,
             get: function (id) {
                 return $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
-                    .then(_.bind(function (product) {
-                        return this.generateMissing(product);
-                    }, this))
+                    .then(this.generateMissing)
                     .then(function (product) {
                         mediator.trigger('pim_enrich:form:product:action:post_fetch', product);
 

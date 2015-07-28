@@ -10,6 +10,7 @@ parameters:
     pim_serializer.normalizer.flat.label_translation.class: Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer
     pim_serializer.normalizer.flat.product.class:           Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
     pim_serializer.normalizer.flat.product_value.class:     Pim\Bundle\TransformBundle\Normalizer\Flat\ProductValueNormalizer
+    pim_serializer.normalizer.flat.locale.class:            Pim\Bundle\TransformBundle\Normalizer\Flat\LocaleNormalizer
 
     pim_serializer.normalizer.flat.collection.class:        Pim\Bundle\TransformBundle\Normalizer\Flat\CollectionNormalizer
     pim_serializer.normalizer.flat.datetime.class:          Pim\Bundle\TransformBundle\Normalizer\Flat\DateTimeNormalizer
