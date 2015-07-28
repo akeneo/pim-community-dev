@@ -12,7 +12,6 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Reference data filter
@@ -35,7 +34,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /** @var ReferenceDataIdResolver */
     protected $idsResolver;
 
-    /** @var OptionsResolverInterface */
+    /** @var OptionsResolver */
     protected $optionsResolver;
 
     /**
@@ -58,8 +57,8 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $this->supportedOperators = $supportedOperators;
 
         $this->optionsResolver = new OptionsResolver();
-        $this->optionsResolver->setRequired(['field']);
-        $this->optionsResolver->setOptional(['locale', 'scope']);
+        $this->optionsResolver->setRequired(['field'])
+            ->setDefined(['locale', 'scope']);
     }
 
     /**

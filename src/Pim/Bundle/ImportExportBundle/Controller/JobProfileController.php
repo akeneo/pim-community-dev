@@ -21,10 +21,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Job Profile controller
@@ -62,7 +62,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -78,7 +78,7 @@ class JobProfileController extends AbstractDoctrineController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -94,7 +94,7 @@ class JobProfileController extends AbstractDoctrineController
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
@@ -440,7 +440,7 @@ class JobProfileController extends AbstractDoctrineController
 
                 if ($reader instanceof UploadedFileAwareInterface) {
                     $constraints = $reader->getUploadedFileConstraints();
-                    $this->fileError = $this->getValidator()->validateValue($file, $constraints);
+                    $this->fileError = $this->getValidator()->validate($file, $constraints);
 
                     if ($this->fileError->count() !== 0) {
                         foreach ($this->fileError as $error) {

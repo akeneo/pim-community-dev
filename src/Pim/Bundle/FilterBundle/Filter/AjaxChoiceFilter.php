@@ -6,7 +6,7 @@ use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
-use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 
 /**
  * Choice filter with asynchronously populated options

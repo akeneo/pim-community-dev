@@ -25,23 +25,23 @@ class VariantGroupAxisValidator extends ConstraintValidator
     {
         /* @var GroupInterface */
         if ($variantGroup instanceof GroupInterface) {
-            $isNew = $variantGroup->getId() === null;
+            $isNew = null === $variantGroup->getId();
             $isVariantGroup = $variantGroup->getType()->isVariant();
             $hasAxis = count($variantGroup->getAxisAttributes()) > 0;
             if ($isNew && $isVariantGroup && !$hasAxis) {
-                $this->context->addViolation(
+                $this->context->buildViolation(
                     $constraint->expectedAxisMessage,
-                    array(
+                    [
                         '%variant group%' => $variantGroup->getCode()
-                    )
-                );
+                    ]
+                )->addViolation();
             } elseif (!$isVariantGroup && $hasAxis) {
-                $this->context->addViolation(
+                $this->context->buildViolation(
                     $constraint->unexpectedAxisMessage,
-                    array(
+                    [
                         '%group%' => $variantGroup->getCode()
-                    )
-                );
+                    ]
+                )->addViolation();
             }
         }
     }

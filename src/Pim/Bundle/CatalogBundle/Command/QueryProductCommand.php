@@ -141,9 +141,9 @@ class QueryProductCommand extends ContainerAwareCommand
         $productQueryBuilder = $this->getProductQueryBuilder();
 
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['locale', 'scope']);
-        $resolver->setDefaults(['locale' => null, 'scope' => null]);
+        $resolver->setRequired(['field', 'operator', 'value'])
+            ->setDefined(['locale', 'scope'])
+            ->setDefaults(['locale' => null, 'scope' => null]);
 
         foreach ($filters as $filter) {
             $filter = $resolver->resolve($filter);

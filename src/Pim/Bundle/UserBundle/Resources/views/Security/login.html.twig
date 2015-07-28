@@ -16,7 +16,7 @@
     {% if error %}
     <div class="alert alert-error">
         <button data-dismiss="alert" class="close" type="button">&times;</button>
-        <div>{{ error|trans }}</div>
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     </div>
     {% endif %}
 

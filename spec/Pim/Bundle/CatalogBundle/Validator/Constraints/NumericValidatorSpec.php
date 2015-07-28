@@ -7,7 +7,8 @@ use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class NumericValidatorSpec extends ObjectBehavior
 {
@@ -29,10 +30,10 @@ class NumericValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_null_value($context, Numeric $numericConstraint)
     {
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate(null, $numericConstraint);
@@ -42,10 +43,10 @@ class NumericValidatorSpec extends ObjectBehavior
     {
         $metric->getData()->willReturn(null);
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate($metric, $numericConstraint);
@@ -58,10 +59,10 @@ class NumericValidatorSpec extends ObjectBehavior
     ) {
         $productPrice->getData()->willReturn(null);
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate($productPrice, $numericConstraint);
@@ -71,7 +72,7 @@ class NumericValidatorSpec extends ObjectBehavior
     {
         $propertyPath = null;
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate(5, $numericConstraint);
@@ -84,7 +85,7 @@ class NumericValidatorSpec extends ObjectBehavior
     ) {
         $metric->getData()->willReturn(5);
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($metric, $numericConstraint);
@@ -97,17 +98,21 @@ class NumericValidatorSpec extends ObjectBehavior
     ) {
         $productPrice->getData()->willReturn(5);
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($productPrice, $numericConstraint);
     }
 
-    function it_adds_violation_when_validating_non_numeric_value($context, Numeric $numericConstraint)
-    {
+    function it_adds_violation_when_validating_non_numeric_value(
+        $context,
+        Numeric $numericConstraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
         $context
-            ->addViolation($numericConstraint->message)
-            ->shouldBeCalled();
+            ->buildViolation($numericConstraint->message)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate('a', $numericConstraint);
     }
@@ -115,12 +120,14 @@ class NumericValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_validating_non_numeric_metric_value(
         $context,
         MetricInterface $metric,
-        Numeric $numericConstraint
+        Numeric $numericConstraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $metric->getData()->willReturn('a');
         $context
-            ->addViolationAt('data', $numericConstraint->message)
-            ->shouldBeCalled();
+            ->buildViolation($numericConstraint->message)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($metric, $numericConstraint);
     }
@@ -128,12 +135,14 @@ class NumericValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_validating_non_numeric_product_price_value(
         $context,
         ProductPriceInterface $productPrice,
-        Numeric $numericConstraint
+        Numeric $numericConstraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $productPrice->getData()->willReturn('a');
         $context
-            ->addViolationAt('data', $numericConstraint->message)
-            ->shouldBeCalled();
+            ->buildViolation($numericConstraint->message)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($productPrice, $numericConstraint);
     }

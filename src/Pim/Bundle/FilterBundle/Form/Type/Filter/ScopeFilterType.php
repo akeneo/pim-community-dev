@@ -4,7 +4,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -52,7 +52,7 @@ class ScopeFilterType extends ChoiceFilterType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $scopeChoices = $this->userContext->getChannelChoicesWithUserChannel();
 

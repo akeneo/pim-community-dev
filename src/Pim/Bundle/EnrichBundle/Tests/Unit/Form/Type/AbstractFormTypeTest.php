@@ -10,7 +10,7 @@ use Pim\Bundle\UIBundle\Form\Type\SwitchType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension;
 use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
+use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
  * Abstract form type test

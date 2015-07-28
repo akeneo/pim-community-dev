@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -130,32 +131,32 @@ class UpdateProductCommand extends ContainerAwareCommand
     protected function update(ProductInterface $product, array $updates)
     {
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['type']);
-        $resolver->setAllowedValues(['type' => ['set_data', 'copy_data', 'add_data', 'remove_data']]);
-        $resolver->setOptional(
-            [
-                'field',
-                'data',
-                'locale',
-                'scope',
-                'from_field',
-                'to_field',
-                'from_locale',
-                'to_locale',
-                'from_scope',
-                'to_scope'
-            ]
-        );
-        $resolver->setDefaults(
-            [
-                'locale'      => null,
-                'scope'       => null,
-                'from_locale' => null,
-                'to_locale'   => null,
-                'from_scope'  => null,
-                'to_scope'    => null
-            ]
-        );
+        $resolver->setRequired(['type'])
+            ->setAllowedValues('type', ['set_data', 'copy_data', 'add_data', 'remove_data'])
+            ->setDefined(
+                [
+                    'field',
+                    'data',
+                    'locale',
+                    'scope',
+                    'from_field',
+                    'to_field',
+                    'from_locale',
+                    'to_locale',
+                    'from_scope',
+                    'to_scope'
+                ]
+            )
+            ->setDefaults(
+                [
+                    'locale'      => null,
+                    'scope'       => null,
+                    'from_locale' => null,
+                    'to_locale'   => null,
+                    'from_scope'  => null,
+                    'to_scope'    => null
+                ]
+            );
 
         foreach ($updates as $update) {
             $update = $resolver->resolve($update);
@@ -276,11 +277,11 @@ class UpdateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Symfony\Component\Security\Core\SecurityContextInterface;
+     * @return TokenStorageInterface
      */
-    protected function getSecurityContext()
+    protected function getTokenStorage()
     {
-        return $this->getContainer()->get('security.context');
+        return $this->getContainer()->get('security.token_storage');
     }
 
     /**
@@ -325,7 +326,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         }
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->getSecurityContext()->setToken($token);
+        $this->getTokenStorage()->setToken($token);
 
         return true;
     }

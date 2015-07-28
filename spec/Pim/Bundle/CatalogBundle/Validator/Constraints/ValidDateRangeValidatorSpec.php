@@ -7,7 +7,8 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDateRange;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ValidDateRangeValidatorSpec extends ObjectBehavior
 {
@@ -35,7 +36,7 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
         $attribute->getDateMax()->willReturn($date2);
 
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($attribute, $constraint);
@@ -44,7 +45,8 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_dates_are_valid_but_date_max_is_before_date_min(
         $context,
         AttributeInterface $attribute,
-        ValidDateRange $constraint
+        ValidDateRange $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $date1 = new \DateTime();
         $date1->setDate(2020, 12, 21);
@@ -55,8 +57,12 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
         $attribute->getDateMax()->willReturn($date2);
 
         $context
-            ->addViolationAt('dateMax', $constraint->message)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->message)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('dateMax')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }
@@ -64,7 +70,8 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_date_max_is_not_valid(
         $context,
         AttributeInterface $attribute,
-        ValidDateRange $constraint
+        ValidDateRange $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $date = new \DateTime();
 
@@ -72,8 +79,12 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
         $attribute->getDateMax()->willReturn('not_a_date');
 
         $context
-            ->addViolationAt('dateMax', $constraint->invalidDateMessage)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->invalidDateMessage)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('dateMax')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }
@@ -81,7 +92,8 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_date_min_is_not_valid(
         $context,
         AttributeInterface $attribute,
-        ValidDateRange $constraint
+        ValidDateRange $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $date = new \DateTime();
 
@@ -89,8 +101,12 @@ class ValidDateRangeValidatorSpec extends ObjectBehavior
         $attribute->getDateMax()->willReturn($date);
 
         $context
-            ->addViolationAt('dateMin', $constraint->invalidDateMessage)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->invalidDateMessage)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('dateMin')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }

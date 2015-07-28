@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssociationTypeSpec extends ObjectBehavior
 {
@@ -103,7 +103,7 @@ class AssociationTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

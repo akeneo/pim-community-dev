@@ -7,7 +7,6 @@ use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * PDF renderer used to render PDF for a Product
@@ -150,9 +149,9 @@ class ProductPdfRenderer implements RendererInterface
     /**
      * Options configuration (for the option resolver)
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolverInterface $resolver)
+    protected function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['locale', 'scope', 'product']);
         $resolver->setDefaults(

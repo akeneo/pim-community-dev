@@ -9,7 +9,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric;
 use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ValidMetricValidatorSpec extends ObjectBehavior
 {
@@ -41,7 +42,7 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         $accessor->getValue($attribute, 'defaultMetricUnit')
             ->shouldBeCalled()
             ->willReturn('kg');
-        $context->addViolationAt(Argument::cetera())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($attribute, $constraint)->shouldReturn(null);
     }
@@ -59,7 +60,7 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         $accessor->getValue($metric, 'unit')
             ->shouldBeCalled()
             ->willReturn('kg');
-        $context->addViolationAt(Argument::cetera())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($metric, $constraint)->shouldReturn(null);
     }
@@ -80,7 +81,7 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         $accessor->getValue($metric, 'unit')
             ->shouldBeCalled()
             ->willReturn('kg');
-        $context->addViolationAt(Argument::cetera())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($value, $constraint)->shouldReturn(null);
     }
@@ -89,7 +90,8 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         $accessor,
         $context,
         ValidMetric $constraint,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $accessor->getValue($attribute, 'metricFamily')
             ->shouldBeCalled()
@@ -98,7 +100,12 @@ class ValidMetricValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn('kg');
 
-        $context->addViolationAt('metricFamily', Argument::any())->shouldBeCalled();
+        $context->buildViolation(Argument::any())
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('metricFamily')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint)->shouldReturn(null);
     }
@@ -107,7 +114,8 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         $accessor,
         $context,
         ValidMetric $constraint,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $accessor->getValue($attribute, 'metricFamily')
             ->shouldBeCalled()
@@ -116,7 +124,12 @@ class ValidMetricValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn('InconsistentUnit');
 
-        $context->addViolationAt('defaultMetricUnit', Argument::any())->shouldBeCalled();
+        $context->buildViolation(Argument::any())
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('defaultMetricUnit')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint)->shouldReturn(null);
     }
