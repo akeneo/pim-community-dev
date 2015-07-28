@@ -24,7 +24,7 @@ Feature: Show all rules related to an attribute
       | update_tees_collection | number_in_stock | 800                                                     |        | tablet |
       | update_tees_collection | release_date    | 2015-05-26                                              |        | mobile |
       | update_tees_collection | price           | 12,EUR                                                  |        |        |
-      | update_tees_collection | side_view       | image.jpg,../../../features/Context/fixtures/akeneo.jpg |        |        |
+      | update_tees_collection | side_view       | image.jpg,%fixtures%/akeneo.jpg                         |        |        |
       | update_tees_collection | length          | 10,CENTIMETER                                           |        |        |
     And the following product rule copier actions:
       | rule                   | from_field  | to_field    | from_locale | to_locale | from_scope | to_scope |

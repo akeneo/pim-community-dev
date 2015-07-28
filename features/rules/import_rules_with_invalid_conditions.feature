@@ -531,8 +531,8 @@ Feature: Import rules
       | rule                       | field | operator | value | locale |
       | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
     And the following product rule setter actions:
-      | rule                       | field     | value                                                    |
-      | sony_beautiful_description | side_view | SNKRS-1R,../../../features/Context/fixtures/SNKRS-1R.png |
+      | rule                       | field     | value                                |
+      | sony_beautiful_description | side_view | SNKRS-1R.png,%fixtures%/SNKRS-1R.png |
     And the following yaml file to import:
     """
     rules:
@@ -567,8 +567,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data"
-    And I should see "actions[0]: Attribute or field \"side_view\" expects a valid file path as data"
+    And I should see "conditions[0]: Attribute or field \"side_view\" expects a string as data, \"array\" given (for filter media).: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition"
+    And I should see "actions[0]: Attribute or field \"side_view\" expects a valid pathname as data, \"invalid/path/to/image\" given (for setter media).: PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction"
     When I am on the "side_view" attribute page
     And I visit the "Rules" tab
     Then I should see "SNKRS-1R"

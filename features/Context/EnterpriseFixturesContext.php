@@ -590,6 +590,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data
             );
 
+            $data['value'] = $this->replacePlaceholders($data['value']);
+
             $rule = $this->getRule($data['rule']);
             $content = $rule->getContent();
             if (!isset($content['actions'])) {
