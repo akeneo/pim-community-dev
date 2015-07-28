@@ -23,6 +23,7 @@ services:
     pimee_versioning.normalizer.locale:
         class: %pimee_versioning.normalizer.locale.class%
         arguments:
+            - '@pim_versioning.serializer.normalizer.flat.locale'
             - '@pimee_security.manager.locale_access'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 100 }

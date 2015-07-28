@@ -25,15 +25,20 @@ class LocaleNormalizer implements NormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['csv', 'flat'];
 
+    /** @var NormalizerInterface */
+    protected $localeNormalizer;
+
     /** @var LocaleAccessManager */
     protected $accessManager;
 
     /**
+     * @param NormalizerInterface $localeNormalizer
      * @param LocaleAccessManager $accessManager
      */
-    public function __construct(LocaleAccessManager $accessManager)
+    public function __construct(NormalizerInterface $localeNormalizer, LocaleAccessManager $accessManager)
     {
-        $this->accessManager = $accessManager;
+        $this->localeNormalizer = $localeNormalizer;
+        $this->accessManager    = $accessManager;
     }
 
     /**
@@ -41,7 +46,7 @@ class LocaleNormalizer implements NormalizerInterface
      */
     public function normalize($locale, $format = null, array $context = array())
     {
-        $normalizedLocale = ['code' => $locale->getCode()];
+        $normalizedLocale = $this->localeNormalizer->normalize($locale);
 
         if (true === $context['versioning']) {
             $normalizedLocale['view_permission'] = implode(
