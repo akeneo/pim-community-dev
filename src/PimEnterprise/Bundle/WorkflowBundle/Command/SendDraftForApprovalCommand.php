@@ -11,17 +11,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\DelegatingProductSaver;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Sends a draft for approval
@@ -117,11 +114,11 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Symfony\Component\Security\Core\SecurityContextInterface;
+     * @return TokenStorageInterface
      */
-    protected function getSecurityContext()
+    protected function getTokenStorage()
     {
-        return $this->getContainer()->get('security.context');
+        return $this->getContainer()->get('security.token_storage');
     }
 
     /**
@@ -144,7 +141,7 @@ class SendDraftForApprovalCommand extends ContainerAwareCommand
         }
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->getSecurityContext()->setToken($token);
+        $this->getTokenStorage()->setToken($token);
 
         return true;
     }
