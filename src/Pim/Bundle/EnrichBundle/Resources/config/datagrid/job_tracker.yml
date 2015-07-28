@@ -39,7 +39,7 @@ datagrid:
                 started_at:
                     data_name: startTime
             default:
-                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                started_at: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 type:
