@@ -51,7 +51,7 @@ class ReferenceDataCollectionPresenter extends AbstractReferenceDataPresenter
     {
         $result = [];
         $repository = $this->repositoryResolver->resolve($this->referenceDataName);
-        $references = $repository->findBy(['code' => $change['value']]);
+        $references = $repository->findBy(['code' => $change['data']]);
 
         foreach ($references as $reference) {
             $result[] = (string) $reference;
