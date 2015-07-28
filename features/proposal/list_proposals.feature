@@ -37,7 +37,7 @@ Feature: List proposals
       | Author | Julia       | jacket          |
       | Author | Sandra,Mary | sweater, tshirt |
 
-  Scenario: Successfully approve or refuse a proposal
+  Scenario: Successfully approve or reject a proposal
     Given I am logged in as "admin"
     And I am on the proposals page
     Then the grid should contain 3 elements
@@ -45,7 +45,7 @@ Feature: List proposals
     When I click on the "Approve" action of the row which contains "tshirt"
     Then I should see a flash message "The proposal has been applied successfully."
     And the grid should contain 2 elements
-    When I click on the "Refuse" action of the row which contains "jacket"
+    When I click on the "Reject" action of the row which contains "jacket"
     Then I should see a flash message "The proposal has been refused."
     And the grid should contain 1 element
 

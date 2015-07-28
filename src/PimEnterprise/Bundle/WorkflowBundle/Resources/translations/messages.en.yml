@@ -14,7 +14,7 @@ pimee_workflow:
             can_not_be_approved: Can't be reviewed
             can_not_be_deleted: Can't be deleted
         status_message:
-            can_not_be_approved: You can't approve or refuse this approval as it applies changes on values you can't edit. Please contact your administrator to change your rights.
+            can_not_be_approved: You can't approve or reject this approval as it applies changes on values you can't edit. Please contact your administrator to change your rights.
             can_not_be_deleted: You can't delete this approval as it applies changes on values you can't edit. Please contact your administrator to change your rights.
         action:
             approve: Approve
@@ -22,7 +22,7 @@ pimee_workflow:
             remove:  Remove
         mass_review_action:
             approve: Approve selected
-            refuse:  Refuse selected
+            refuse:  Reject selected
             error:
                 draft_not_ready: This proposal is not ready to be approved
                 not_product_owner: You don't own the product related to this proposal
@@ -63,7 +63,7 @@ flash:
             success: The proposal has been applied successfully.
             error: The proposal can't be applied due to the following error. %error%
         refuse:
-            success: The proposal has been refused.
+            success: The proposal has been rejected.
 
 pim_menu:
     item:
@@ -93,11 +93,11 @@ Completeness.title: Completeness
 publish_product.steps.publish_product_tasklet.title: Publish product
 unpublish_product.steps.unpublish_product_tasklet.title: Unpublish product
 approve_product_draft.steps.approve.title: Approve proposal
-approve_product_draft.steps.refuse.title: Refuse proposal
+approve_product_draft.steps.refuse.title: Reject proposal
 
 job_execution.summary:
     approved: approved
-    refused: refused
+    refused: rejected
     mass_published: Product published
     mass_unpublished: Product unpublished
     proposal: Proposal created

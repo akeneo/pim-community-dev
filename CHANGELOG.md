@@ -2,7 +2,7 @@
 
 ## Technical improvements
 - Product edit form revamp
-- Mass approve or refuse proposals
+- Mass approve or reject proposals
 - Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for all models)
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
 - Replaced `attribute_options.yml` by `attribute_options.csv`
