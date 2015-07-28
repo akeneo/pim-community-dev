@@ -158,6 +158,8 @@
 - Replace the argument ProductManager by ProductRepositoryInterface in the constructor of `Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator`
 - Add an argument BulkSaverInterface in the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\CategoryRemover`
 - Remove the option 'flush_only_object' from `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver`, `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver`, `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseRemover`
+- Replace the arguments MediaManager and MediaFactory by RawFileFetcherInterface and RawFileStorerInterface in the constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`
+- Add an argument MountManager in the constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`
 
 # 1.3.x
 
