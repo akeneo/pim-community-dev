@@ -280,7 +280,11 @@ class Grid extends Index
     public function changePageSize($num)
     {
         assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
-        $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
+
+        $parentElement = $this->getElement('Grid toolbar');
+        $element = $this->spin(function() use ($parentElement) {
+            return $parentElement->find('css', '.page-size');
+        });
 
         $this->spin(function () use ($element) {
             $button = $element->find('css', 'button');

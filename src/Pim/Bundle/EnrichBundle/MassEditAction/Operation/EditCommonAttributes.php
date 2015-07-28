@@ -196,7 +196,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      */
     public function finalize()
     {
-        foreach ($this->values as $productValue) {
+        foreach ($this->getValues() as $productValue) {
             $media = $productValue->getMedia();
 
             if (null !== $media && null !== $media->getUploadedFile()) {
