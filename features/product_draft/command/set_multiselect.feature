@@ -10,7 +10,7 @@ Feature: Create a draft with a multi select fields
       | akeneo_tshirt | tshirts    |
 
   Scenario: Successfully add a draft without add attribute in product
-    Given I should get the following products after apply the following updater to it:
+    Given I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                      | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "weather_conditions", "data": ["Dry", "Wet"], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -23,7 +23,7 @@ Feature: Create a draft with a multi select fields
     Given the following product values:
       | product       | attribute          | value |
       | akeneo_tshirt | weather_conditions | Dry   |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                              | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "weather_conditions", "data": ["Cold", "Dry", "Wet"], "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
@@ -36,7 +36,7 @@ Feature: Create a draft with a multi select fields
     Given the following product values:
       | product       | attribute           | value   |
       | akeneo_tshirt | weather_conditions  | Dry,Wet |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                      | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "weather_conditions", "data": ["Dry", "Wet"], "locale": null, "scope": null}] | {}     | Mary     |
     And I should not get the following proposal:

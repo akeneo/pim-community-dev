@@ -127,7 +127,7 @@ Feature: Import proposals
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
     Then there should be 1 proposal
-    When I should get the following products after apply the following updater to it:
+    When I should get the following product drafts after apply the following updater to it:
       | product   | actions                                                                                               | result | username |
       | my-jacket | [{"type": "set_data", "field": "name", "data": "Wonderful jacket", "locale": "en_US", "scope": null}] | {}     | Mary     |
     Then there should be 2 proposals
