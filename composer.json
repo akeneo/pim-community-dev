@@ -16,8 +16,8 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-migration-sf",
-        "oro/platform": "dev-bump-symfony-marie",
+        "akeneo/pim-community-dev": "dev-master",
+        "oro/platform": "dev-bump-symfony",
         "phpspec/php-diff": "1.0.2",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "doctrine/doctrine-migrations-bundle": "1.0.0"
