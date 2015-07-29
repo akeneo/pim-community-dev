@@ -568,7 +568,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCategories(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->createCategory([$data]);
+            $this->createCategory($data);
         }
     }
 
@@ -1796,23 +1796,21 @@ class FixturesContext extends RawMinkContext
             $data = [['code' => $data]];
         }
 
-        $categories = $this->loadFixture('categories', $data);
+        $category = $this->loadFixture('categories', $data);
 
         /*
          * When using ODM, one must persist and flush category without product
          * before adding and persisting products inside it
          */
-        foreach ($categories as $category) {
-            $products = $category->getProducts();
-            $this->persist($category, true);
-            foreach ($products as $product) {
-                $product->addCategory($category);
-                // TODO replace by call to a saver
-                $this->flush($product);
-            }
+        $products = $category->getProducts();
+        $this->persist($category, true);
+        foreach ($products as $product) {
+            $product->addCategory($category);
+            // TODO replace by call to a saver
+            $this->flush($product);
         }
 
-        return reset($categories);
+        return $category;
     }
 
     /**
