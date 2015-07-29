@@ -11,7 +11,7 @@ Feature: Filter products per price
       | furniture |
       | library   |
     And the following attributes:
-      | label | scopable | type   | useable as grid filter | decimals_allowed |
+      | label | scopable | type   | useable_as_grid_filter | decimals_allowed |
       | Price | yes      | prices | yes                    | yes              |
     And the following products:
       | sku    | family    | enabled | price-mobile | price-ecommerce |
