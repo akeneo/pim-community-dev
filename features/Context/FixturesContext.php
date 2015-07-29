@@ -294,7 +294,6 @@ class FixturesContext extends RawMinkContext
         if (is_string($data)) {
             $data = ['code' => $data];
         }
-
         $variantGroup = $this->loadFixture('variant_groups', $data);
         $this->saveVariantGroup($variantGroup);
 
@@ -497,6 +496,9 @@ class FixturesContext extends RawMinkContext
         }
 
         foreach ($groups as $code => $data) {
+            if (!isset($data['type'])) {
+                $data['type'] = 'VARIANT';
+            }
             $this->createVariantGroup(['code' => $code] + $data);
         }
 
@@ -1721,20 +1723,12 @@ class FixturesContext extends RawMinkContext
 
         $data['type'] = $this->getAttributeType($data['type']);
 
-        $properties = [];
         foreach ($data as $key => $element) {
             if (in_array($element, ['yes', 'no'])) {
                 $element    = $element === 'yes';
                 $data[$key] = $element;
             }
-            if (false !== strpos($key, 'property-')) {
-                $property              = str_replace('property-', '', $key);
-                $properties[$property] = $element;
-                unset($data[$key]);
-            }
         }
-
-        $data['properties'] = $properties;
 
         $attribute = $this->loadFixture('attributes', $data);
 
