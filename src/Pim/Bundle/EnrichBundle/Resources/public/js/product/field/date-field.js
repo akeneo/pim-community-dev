@@ -21,6 +21,9 @@ define(
     ) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
+            datepickerOptions: {
+                todayHighlight: true
+            },
             events: {
                 'change .field-input:first input[type="text"]': 'updateModel'
             },
@@ -28,7 +31,7 @@ define(
                 return this.fieldTemplate(context);
             },
             postRender: function () {
-                this.$('.datepicker').datepicker();
+                this.$('.datepicker').datepicker(this.datepickerOptions);
             },
             updateModel: function () {
                 var data = this.$('.field-input:first input[type="text"]').val();
