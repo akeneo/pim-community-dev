@@ -52,7 +52,7 @@ association_types:
 attributes:
     order: 40
     csv:
-        processor:         pim_connector.processor.denormalization.processor.attribute.flat
+        processor:         pim_connector.processor.denormalization.attribute.flat
     yml:
         processor:         pim_base_connector.processor.attribute
 
