@@ -18,6 +18,8 @@
     "require": {
         "akeneo/pim-community-dev": "dev-master",
         "oro/platform": "dev-bump-symfony",
+        "akeneo/batch-bundle": "dev-master",
+        "akeneo/measure-bundle": "dev-master",
         "phpspec/php-diff": "1.0.2",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "doctrine/doctrine-migrations-bundle": "1.0.0"
