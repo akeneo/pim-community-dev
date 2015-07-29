@@ -1733,6 +1733,8 @@ class FixturesContext extends RawMinkContext
             if (in_array($element, ['yes', 'no'])) {
                 $element    = $element === 'yes';
                 $data[$key] = $element;
+            } elseif (in_array($key, ['available_locales', 'date_min', 'date_max']) && '' === $element) {
+                unset($data[$key]);
             }
         }
 
