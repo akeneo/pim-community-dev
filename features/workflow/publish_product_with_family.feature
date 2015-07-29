@@ -6,8 +6,8 @@ Feature: Publish product with a family
   Scenario: Successfully publish a product belonging to a family
     Given a "default" catalog configuration
     And the following family:
-      | code  |
-      | shirt |
+      | code  | requirements-ecommerce | requirements-mobile |
+      | shirt | sku                    | sku                 |
     And the following products:
       | sku     | family |
       | tshirt1 | shirt  |
