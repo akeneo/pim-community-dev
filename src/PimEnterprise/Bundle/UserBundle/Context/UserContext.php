@@ -20,7 +20,9 @@ use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
 use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -34,35 +36,46 @@ class UserContext extends BaseUserContext
 
     /** @staticvar string */
     const USER_PUBLISHED_PRODUCT_CATEGORY_TYPE = 'published_product';
-
     /** @var CategoryRepositoryInterface */
     protected $assetCategoryRepo;
 
     /** @var ChainedFilter */
     protected $chainedFilter;
 
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
     /**
-     * @param SecurityContextInterface    $securityContext
-     * @param LocaleManager               $localeManager
-     * @param ChannelManager              $channelManager
-     * @param CategoryRepositoryInterface $productCategoryRepo
-     * @param CategoryRepositoryInterface $assetCategoryRepo
-     * @param ChainedFilter               $chainedFilter
-     * @param string                      $defaultLocale
+     * @param TokenStorageInterface         $tokenStorage
+     * @param LocaleManager                 $localeManager
+     * @param ChannelManager                $channelManager
+     * @param CategoryRepositoryInterface   $productCategoryRepo
+     * @param CategoryRepositoryInterface   $assetCategoryRepo
+     * @param ChainedFilter                 $chainedFilter
+     * @param RequestStack                  $requestStack
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param string                        $defaultLocale
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryRepositoryInterface $productCategoryRepo,
         CategoryRepositoryInterface $assetCategoryRepo,
         ChainedFilter $chainedFilter,
+        RequestStack $requestStack,
+        AuthorizationCheckerInterface $authorizationChecker,
         $defaultLocale
     ) {
-        parent::__construct($securityContext, $localeManager, $channelManager, $productCategoryRepo, $defaultLocale);
-
-        $this->assetCategoryRepo = $assetCategoryRepo;
-        $this->chainedFilter     = $chainedFilter;
+        $this->tokenStorage         = $tokenStorage;
+        $this->localeManager        = $localeManager;
+        $this->channelManager       = $channelManager;
+        $this->productCategoryRepo  = $productCategoryRepo;
+        $this->assetCategoryRepo    = $assetCategoryRepo;
+        $this->chainedFilter        = $chainedFilter;
+        $this->requestStack         = $requestStack;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->defaultLocale        = $defaultLocale;
     }
 
     /**
@@ -75,17 +88,17 @@ class UserContext extends BaseUserContext
     public function getCurrentGrantedLocale()
     {
         $locale = $this->getRequestLocale();
-        if (null !== $locale && $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
             return $locale;
         }
 
         $locale = $this->getUserLocale();
-        if (null !== $locale && $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
             return $locale;
         }
 
         $locale = $this->getDefaultLocale();
-        if (null !== $locale && $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
             return $locale;
         }
 
@@ -108,7 +121,7 @@ class UserContext extends BaseUserContext
         return array_filter(
             $this->getUserLocales(),
             function ($locale) use ($permissionLevel) {
-                return $this->securityContext->isGranted($permissionLevel, $locale);
+                return $this->authorizationChecker->isGranted($permissionLevel, $locale);
             }
         );
     }
@@ -159,7 +172,7 @@ class UserContext extends BaseUserContext
     {
         $defaultTree = $this->getUserOption('defaultTree');
 
-        if ($defaultTree && $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $defaultTree)) {
+        if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $defaultTree)) {
             return $defaultTree;
         }
 

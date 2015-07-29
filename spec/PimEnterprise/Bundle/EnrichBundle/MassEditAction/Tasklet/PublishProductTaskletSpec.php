@@ -15,12 +15,13 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class PublishProductTaskletSpec extends ObjectBehavior
 {
@@ -33,7 +34,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         UserInterface $userJulia,
         UserInterface $userMary
     ) {
@@ -52,7 +54,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
             $validator,
             $objectDetacher,
             $userManager,
-            $securityContext,
+            $tokenStorage,
+            $authorizationChecker,
             $pqbFactory
         );
     }
@@ -68,7 +71,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
-        $securityContext,
+        $tokenStorage,
+        $authorizationChecker,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         ProductInterface $product1,
@@ -96,9 +100,9 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
 
-        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
@@ -118,7 +122,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
-        $securityContext,
+        $tokenStorage,
+        $authorizationChecker,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         ProductInterface $product1,
@@ -146,9 +151,9 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
 
-        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $violation1 = new ConstraintViolation('error1', 'spec', [], '', '', $product1);
         $violation2 = new ConstraintViolation('error2', 'spec', [], '', '', $product2);
@@ -177,7 +182,8 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
-        $securityContext,
+        $tokenStorage,
+        $authorizationChecker,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         ProductInterface $product1,
@@ -205,9 +211,9 @@ class PublishProductTaskletSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('mary');
 
-        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(false);
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(false);
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);

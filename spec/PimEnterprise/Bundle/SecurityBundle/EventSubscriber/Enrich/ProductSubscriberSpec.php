@@ -10,24 +10,26 @@ use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProductSubscriberSpec extends ObjectBehavior
 {
     function let(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         TokenInterface $token,
         User $user,
         UserContext $userContext,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        TokenStorageInterface $tokenStorage
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $userContext->getCurrentLocale()->willReturn($locale);
 
-        $this->beConstructedWith($securityContext, $userContext);
+        $this->beConstructedWith($authorizationChecker, $userContext);
     }
 
     function it_subscribes_to_pre_edit_product()
@@ -35,11 +37,11 @@ class ProductSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([ProductEvents::PRE_EDIT => 'checkEditPermission']);
     }
 
-    function it_checks_edit_permission($securityContext, GenericEvent $event, ProductInterface $product, $locale)
+    function it_checks_edit_permission($authorizationChecker, GenericEvent $event, ProductInterface $product, $locale)
     {
         $event->getSubject()->willReturn($product);
-        $securityContext->isGranted(Argument::any(), $product)->willReturn(false);
-        $securityContext->isGranted(Argument::any(), $locale)->willReturn(true);
+        $authorizationChecker->isGranted(Argument::any(), $product)->willReturn(false);
+        $authorizationChecker->isGranted(Argument::any(), $locale)->willReturn(true);
 
         $this->shouldThrow(new AccessDeniedException())->during('checkEditPermission', [$event]);
     }

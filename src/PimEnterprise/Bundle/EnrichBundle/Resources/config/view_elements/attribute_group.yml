@@ -12,4 +12,4 @@ services:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_enrich_attribute_group_edit_permissions'}] ]
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form].children[permissions]'}] ]
         tags:
-            - { name: pim_enrich.view_element, type: pim_enrich_attribute_group_form.form_tab, position: 105}
+            - { name: pim_enrich.view_element, type: pim_enrich_attributegroup_form.form_tab, position: 105}

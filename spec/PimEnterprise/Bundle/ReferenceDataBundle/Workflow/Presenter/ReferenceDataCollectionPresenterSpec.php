@@ -61,7 +61,7 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
 
         $value->getData()->willReturn([$leather, $neoprene]);
-        $this->present($value, ['value' => ['Leather', 'Neoprene']])->shouldReturn('diff between two reference data');
+        $this->present($value, ['data' => ['Leather', 'Neoprene']])->shouldReturn('diff between two reference data');
     }
 }
 

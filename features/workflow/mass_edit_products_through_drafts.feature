@@ -12,15 +12,13 @@ Feature: Mass edit products through product draft
       | sku                       | my-first-jacket         |
       | name-en_US                | First jacket            |
       | description-en_US-mobile  | An awesome first jacket |
-      | number_in_stock-ecommerce | 2                       |
       | number_in_stock-mobile    | 4                       |
-      | number_in_stock-print     | 5                       |
       | number_in_stock-tablet    | 20                      |
       | price-USD                 | 45                      |
       | manufacturer              | Volcom                  |
       | weather_conditions        | dry, wet                |
-      | handmade                  | no                      |
-      | release_date-ecommerce    | 2014-05-14              |
+      | handmade                  | 0                       |
+      | release_date-mobile       | 2014-05-14              |
       | length                    | 60 CENTIMETER           |
     And the product:
       | family                    | jackets                  |
@@ -28,21 +26,17 @@ Feature: Mass edit products through product draft
       | sku                       | my-second-jacket         |
       | name-en_US                | Second jacket            |
       | description-en_US-mobile  | An awesome second jacket |
-      | number_in_stock-ecommerce | 2                        |
       | number_in_stock-mobile    | 4                        |
-      | number_in_stock-print     | 5                        |
       | number_in_stock-tablet    | 20                       |
       | price-USD                 | 45                       |
       | manufacturer              | Volcom                   |
       | weather_conditions        | dry, wet                 |
-      | handmade                  | no                       |
-      | release_date-ecommerce    | 2014-05-14               |
+      | handmade                  | 0                        |
+      | release_date-mobile       | 2014-05-14               |
       | length                    | 60 CENTIMETER            |
     And I am logged in as "Mary"
     And I am on the products page
 
-  # TODO: Re enable this test once drafts will be operational on mass edit
-  @skip
   Scenario: Succesfully create simple text attribute product draft of many products
     Given I mass-edit products my-first-jacket and my-second-jacket
     And I choose the "Edit common attributes" operation

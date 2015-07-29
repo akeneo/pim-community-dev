@@ -9,11 +9,11 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
 {
-    function let(SecurityContextInterface $context)
+    function let(AuthorizationCheckerInterface $context)
     {
         $this->beConstructedWith($context);
     }

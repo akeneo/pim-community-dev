@@ -14,8 +14,9 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
 {
@@ -23,20 +24,21 @@ class CategoryFilterSpec extends ObjectBehavior
         FormFactoryInterface $factory,
         ProductFilterUtility $utility,
         CategoryRepositoryInterface $categoryRepo,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         CategoryAccessRepository $accessRepository,
         TokenInterface $token,
         User $user,
         QueryBuilder $qb,
         FilterDatasourceAdapterInterface $datasource
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getGroups()->willReturn(new ArrayCollection());
 
         $datasource->getQueryBuilder()->willReturn($qb);
 
-        $this->beConstructedWith($factory, $utility, $categoryRepo, $securityContext, $accessRepository);
+        $this->beConstructedWith($factory, $utility, $categoryRepo, $authorizationChecker, $accessRepository, $tokenStorage);
     }
 
     function it_extends_the_ce_filter()
@@ -90,7 +92,7 @@ class CategoryFilterSpec extends ObjectBehavior
         CategoryInterface $tree,
         $accessRepository,
         $user,
-        $securityContext
+        $tokenStorage
     ) {
         $manager->getCategoryRepository()->willReturn($repo);
         $tree->getId()->willReturn(1);
@@ -127,7 +129,7 @@ class CategoryFilterSpec extends ObjectBehavior
         CategoryRepositoryInterface $repo,
         CategoryInterface $category,
         $accessRepository,
-        $securityContext
+        $authorizationChecker
     ) {
         $manager->getCategoryRepository()->willReturn($repo);
         $repo->find(42)->willReturn($category);
@@ -135,7 +137,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $repo->find(42)->willReturn($category);
         $repo->getAllChildrenIds($category)->willReturn([2, 3]);
 
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(true);
         $accessRepository->getCategoryIdsWithExistingAccess([], [2, 3])->willReturn([2]);
 
         $utility->applyFilter($datasource, 'categories.id', 'IN', [2, 42])->shouldBeCalled();

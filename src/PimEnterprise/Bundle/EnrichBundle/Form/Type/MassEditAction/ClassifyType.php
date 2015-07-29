@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType as BaseClassifyType;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * We override the ClassifyType because we want to show only the category tree
@@ -16,24 +16,24 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ClassifyType extends BaseClassifyType
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /**
-     * @param CategoryManager          $categoryManager
-     * @param SecurityContextInterface $securityContext
-     * @param string                   $categoryClass
-     * @param string                   $dataClass
+     * @param CategoryManager       $categoryManager
+     * @param TokenStorageInterface $tokenStorage
+     * @param string                $categoryClass
+     * @param string                $dataClass
      */
     public function __construct(
         CategoryManager $categoryManager,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         $categoryClass,
         $dataClass
     ) {
         parent::__construct($categoryManager, $categoryClass, $dataClass);
 
-        $this->securityContext = $securityContext;
-        $this->trees = $categoryManager->getAccessibleTrees($this->securityContext->getToken()->getUser());
+        $this->tokenStorage = $tokenStorage;
+        $this->trees        = $categoryManager->getAccessibleTrees($this->tokenStorage->getToken()->getUser());
     }
 }

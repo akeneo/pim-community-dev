@@ -9,7 +9,8 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
             - '@pim_user.provider.user'
-            - '@security.context'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
 
     pimee_workflow.mass_review_tasklet.refuse_draft:
         class: %pimee_workflow.mass_review_tasklet.refuse_draft.class%
@@ -17,4 +18,5 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
             - '@pim_user.provider.user'
-            - '@security.context'
+            - '@security.authorization_checker'
+            - '@security.token_storage'

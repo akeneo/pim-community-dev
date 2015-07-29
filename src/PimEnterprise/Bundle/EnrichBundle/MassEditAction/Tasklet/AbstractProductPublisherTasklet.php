@@ -12,10 +12,10 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Basic implementation of a product publisher/unpublisher tasklet
@@ -42,8 +42,8 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
     /** @var UserManager */
     protected $userManager;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     public function __construct(
         PublishedProductManager $manager,
@@ -51,14 +51,14 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
-        SecurityContextInterface $securityContext
+        TokenStorageInterface $tokenStorage
     ) {
         $this->manager          = $manager;
         $this->paginatorFactory = $paginatorFactory;
         $this->validator        = $validator;
         $this->objectDetacher   = $objectDetacher;
         $this->userManager      = $userManager;
-        $this->securityContext  = $securityContext;
+        $this->tokenStorage     = $tokenStorage;
     }
 
     /**
@@ -100,7 +100,7 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
         $user = $this->userManager->findUserByUsername($username);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->securityContext->setToken($token);
+        $this->tokenStorage->setToken($token);
     }
 
     /**

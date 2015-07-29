@@ -38,7 +38,7 @@ services:
     pimee_workflow.event_subscriber.product_draft.replace_flash_message:
         class: %pimee_workflow.event_subscriber.product_draft.replace_flash_message.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
         tags:
             - { name: kernel.event_subscriber }

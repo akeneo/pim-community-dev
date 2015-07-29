@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\ImportExportBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JobProfilePermissionsTypeSpec extends ObjectBehavior
 {
@@ -31,7 +31,7 @@ class JobProfilePermissionsTypeSpec extends ObjectBehavior
             ->shouldHaveBeenCalled();
     }
 
-    function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolverInterface $resolver)
+    function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

@@ -2,7 +2,7 @@
     <button class="btn btn-publish publish-product <%= (product.meta.published.version === product.meta.updated.version) ? 'disabled' : '' %>">
         <i class="icon icon-cloud-upload"></i><%= _.__('pimee_enrich.entity.product.btn.publish_this_version') %>
     </button>
-    <button class="btn dropdown-toggle" data-toggle="dropdown">
+    <button class="btn dropdown-toggle dropdown-publish" data-toggle="dropdown">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu pull-right">

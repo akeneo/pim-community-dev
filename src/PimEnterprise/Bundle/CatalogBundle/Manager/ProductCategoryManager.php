@@ -19,7 +19,8 @@ use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Product category manager
@@ -28,30 +29,36 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ProductCategoryManager extends BaseProductCategoryManager
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
      * Constructor
      *
-     * @param ProductCategoryRepositoryInterface $productRepo        Product repository
-     * @param CategoryRepositoryInterface        $categoryRepo       Category repository
-     * @param SecurityContextInterface           $securityContext    Security context
-     * @param CategoryAccessRepository           $categoryAccessRepo Category Access repository
+     * @param ProductCategoryRepositoryInterface $productRepo          Product repository
+     * @param CategoryRepositoryInterface        $categoryRepo         Category repository
+     * @param AuthorizationCheckerInterface      $authorizationChecker Authorization checker
+     * @param CategoryAccessRepository           $categoryAccessRepo   Category Access repository
+     * @param TokenStorageInterface              $tokenStorage         Token storage
      */
     public function __construct(
         ProductCategoryRepositoryInterface $productRepo,
         CategoryRepositoryInterface $categoryRepo,
-        SecurityContextInterface $securityContext,
-        CategoryAccessRepository $categoryAccessRepo
+        AuthorizationCheckerInterface $authorizationChecker,
+        CategoryAccessRepository $categoryAccessRepo,
+        TokenStorageInterface $tokenStorage
     ) {
         parent::__construct($productRepo, $categoryRepo);
 
-        $this->categoryAccessRepo = $categoryAccessRepo;
-        $this->securityContext = $securityContext;
+        $this->categoryAccessRepo   = $categoryAccessRepo;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->tokenStorage         = $tokenStorage;
     }
 
     /**
@@ -65,7 +72,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
         $trees     = $this->categoryRepository->getChildren(null, true, 'created', 'DESC');
         $treeCount = [];
         foreach ($trees as $tree) {
-            if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree)) {
+            if ($this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $tree)) {
                 $treeCount[] = [
                     'tree'         => $tree,
                     'productCount' => isset($count[$tree->getId()]) ? $count[$tree->getId()] : 0
@@ -86,7 +93,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
         $inChildren = false,
         $inProvided = true
     ) {
-        if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+        if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
             return 0;
         }
 
@@ -114,7 +121,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
             $path = $this->categoryRepository->getPath($category);
             $fullPathGranted = true;
             foreach ($path as $pathItem) {
-                if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
+                if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
                     $fullPathGranted = false;
                     break;
                 }
@@ -142,7 +149,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
     {
         $categoryIds = $this->categoryAccessRepo->getGrantedCategoryIdsFromQB(
             $childrenQb,
-            $this->securityContext->getToken()->getUser(),
+            $this->tokenStorage->getToken()->getUser(),
             Attributes::VIEW_PRODUCTS
         );
 

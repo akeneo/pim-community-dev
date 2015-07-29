@@ -11,17 +11,36 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
+use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Product Controller
@@ -59,10 +78,10 @@ class ProductController extends BaseProductController
 
         $this->seqEditManager->removeByUser($this->getUser());
 
-        return array(
+        return [
             'locales'    => $this->getUserLocales(),
             'dataLocale' => $dataLocale,
-        );
+        ];
     }
 
     /**
@@ -80,11 +99,11 @@ class ProductController extends BaseProductController
     public function dispatchAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $editProductGranted = $this->securityContext->isGranted(Attributes::EDIT, $product);
+        $editProductGranted = $this->securityFacade->isGranted(Attributes::EDIT, $product);
 
         if ($editProductGranted) {
             return $this->render('PimEnrichBundle:Product:edit.html.twig', ['productId' => $id]);
-        } elseif ($this->securityContext->isGranted(Attributes::VIEW, $product)) {
+        } elseif ($this->securityFacade->isGranted(Attributes::VIEW, $product)) {
             $parameters = $this->showAction($this->request, $id);
 
             return $this->render('PimEnrichBundle:Product:show.html.twig', $parameters);
@@ -109,7 +128,7 @@ class ProductController extends BaseProductController
         $product = $this->findProductOr404($id);
         $locale  = $this->userContext->getCurrentLocale();
 
-        $viewLocaleGranted = $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale);
+        $viewLocaleGranted = $this->securityFacade->isGranted(Attributes::VIEW_PRODUCTS, $locale);
         if (!$viewLocaleGranted) {
             throw new AccessDeniedException();
         }
@@ -166,10 +185,10 @@ class ProductController extends BaseProductController
     {
         return $this->render(
             'PimEnterpriseEnrichBundle:Product:_product_drafts.html.twig',
-            array(
+            [
                 'product'    => $this->findProductOr404($id),
                 'dataLocale' => $this->getDataLocaleCode()
-            )
+            ]
         );
     }
 

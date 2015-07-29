@@ -15,7 +15,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Grid listener to configure job profile grid row actions
@@ -24,15 +24,15 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ConfigureJobProfileGridListener
 {
-    /** @var SecurityContextInterface $securityContext */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface $authorizationChecker */
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -57,7 +57,7 @@ class ConfigureJobProfileGridListener
      */
     protected function getActionConfiguration(ResultRecordInterface $record)
     {
-        if (!$this->securityContext->isGranted(Attributes::EDIT, $record->getRootEntity())) {
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT, $record->getRootEntity())) {
             return ['edit' => false, 'delete' => false];
         }
     }

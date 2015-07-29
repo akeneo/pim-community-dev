@@ -7,5 +7,5 @@ services:
         class: %pimee_pdf_generator.controller.product.class%
         parent: pim_pdf_generator.controller.product
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pim_user.context.user'

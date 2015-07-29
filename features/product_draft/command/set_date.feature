@@ -10,7 +10,7 @@ Feature: Create a draft with a date fields
       | akeneo_tshirt | tshirts    |
 
   Scenario: Successfully add a draft without add attribute in product
-    Given I should get the following products after apply the following updater to it:
+    Given I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                  | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "release_date", "data": "2014-02-18", "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
@@ -23,7 +23,7 @@ Feature: Create a draft with a date fields
     Given the following product values:
       | product       | attribute     | value      | scope  |
       | akeneo_tshirt | release_date  | 2014-12-18 | mobile |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                  | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "release_date", "data": "2014-02-18", "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
@@ -36,7 +36,7 @@ Feature: Create a draft with a date fields
     Given the following product values:
       | product       | attribute    | value      | scope  |
       | akeneo_tshirt | release_date | 2014-12-18 | mobile |
-    Then I should get the following products after apply the following updater to it:
+    Then I should get the following product drafts after apply the following updater to it:
       | product       | actions                                                                                                  | result | username |
       | akeneo_tshirt | [{"type": "set_data", "field": "release_date", "data": "2014-12-18", "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should not get the following proposal:

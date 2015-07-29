@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GroupsTypeSpec extends ObjectBehavior
 {
@@ -23,7 +23,7 @@ class GroupsTypeSpec extends ObjectBehavior
         $this->getParent()->shouldReturn('entity');
     }
 
-    function it_configures_the_form_type_to_provide_available_user_groups(OptionsResolverInterface $resolver)
+    function it_configures_the_form_type_to_provide_available_user_groups(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

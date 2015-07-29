@@ -91,7 +91,7 @@ Feature: Publish a product
     And I am on the "my-jacket" published show page
     And I should see "March 25, 2014"
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-4600
+  @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Fail to delete attribute options if it's used by a published product
     Given the following attributes:
       | code    | label   | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |

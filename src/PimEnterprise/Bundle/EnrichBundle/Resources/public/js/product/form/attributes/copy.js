@@ -9,27 +9,23 @@ define(
         'jquery',
         'underscore',
         'oro/mediator',
-        'pim/product-edit-form/attributes/copy',
-        'pim/fetcher-registry'
+        'pim/product-edit-form/attributes/copy'
     ],
     function (
         $,
         _,
         mediator,
-        Copy,
-        FetcherRegistry
+        Copy
     ) {
         return Copy.extend({
             sources: ['working_copy', 'draft'],
             currentSource: '',
-            workingCopy: {},
 
             /**
              * @inheritdoc
              */
             configure: function () {
-                this.currentSource = this.sources[0];
-                this.listenTo(mediator, 'product:action:post_fetch', this.onProductPostFetch);
+                this.currentSource = _.first(this.sources);
                 this.listenTo(mediator, 'draft:action:show_working_copy', this.showWorkingCopy);
 
                 this.onExtensions('source_switcher:render:before', this.onSourceSwitcherRender);
@@ -39,21 +35,12 @@ define(
             },
 
             /**
-            * Event callback called just after product is fetched form backend
-            *
-            * @param {Object} event
-            */
-            onProductPostFetch: function (event) {
-                this.workingCopy = event.originalProduct;
-            },
-
-            /**
              * Keep any source switcher uo-to-date for its rendering
              *
              * @param {Object} context
              */
             onSourceSwitcherRender: function (context) {
-                context.sources       = this.sources;
+                context.sources       = this.getSources();
                 context.currentSource = this.currentSource;
             },
 
@@ -65,7 +52,7 @@ define(
              * @throws {Error} If specified source code is invalid
              */
             onSourceChange: function (newSource) {
-                if (-1 === this.sources.indexOf(newSource)) {
+                if (!_.contains(this.getSources(), newSource)) {
                     throw new Error('Invalid source code "' + newSource + '"');
                 }
 
@@ -74,22 +61,28 @@ define(
             },
 
             /**
-             * Return the current product id
+             * Return the current working copy
              *
-             * @returns {number}
+             * @returns {Object|null}
              */
-            getProductId: function () {
-                return this.getFormData().meta.id;
+            getWorkingCopy: function () {
+                var workingCopy = this.getFormData().meta.working_copy;
+
+                return _.isEmpty(workingCopy) ? null : workingCopy;
             },
 
             /**
-             * Retrieve the current draft using the draft fetcher
+             * Return the sources list optionally filtered
+             * If there is no working copy it means that the user owns the product, so draft is not a valid source
              *
-             * @returns {Promise}
+             * @returns {Array}
              */
-            getDraft: function () {
-                return FetcherRegistry.getFetcher('product-draft')
-                    .fetchForProduct(this.getProductId());
+            getSources: function () {
+                if (null === this.getWorkingCopy()) {
+                    return _.without(this.sources, 'draft');
+                } else {
+                    return this.sources;
+                }
             },
 
             /**
@@ -101,13 +94,15 @@ define(
                 var data = {};
                 switch (this.currentSource) {
                     case 'working_copy':
-                        data = this.workingCopy.values;
+                        data = null === this.getWorkingCopy() ?
+                            this.getFormData().values :
+                            this.getWorkingCopy().values;
                         break;
                     case 'draft':
                         data = this.getFormData().values;
                         break;
                     default:
-                        throw new Error("No valid source is currently selected to copy from");
+                        throw new Error('No valid source is currently selected to copy from');
                 }
 
                 return data;
@@ -117,12 +112,16 @@ define(
             * @inheritdoc
             */
             canBeCopied: function (field) {
-                return $.when(
-                        this.getDraft(),
-                        Copy.prototype.canBeCopied.apply(this, arguments)
-                    ).then(_.bind(function (draft, canBeCopied) {
-                        return draft.isValueChanged(field, this.locale, this.scope) || canBeCopied;
-                    }, this));
+                var params = {
+                    field: field,
+                    canBeCopied: Copy.prototype.canBeCopied.apply(this, arguments),
+                    locale: this.locale,
+                    scope: this.scope
+                };
+
+                mediator.trigger('pim_enrich:form:field:can_be_copied', params);
+
+                return params.canBeCopied;
             },
 
             /**

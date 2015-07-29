@@ -32,7 +32,8 @@ class NonEmptyValueConditionValidator extends ConstraintValidator
         $value = $productCondition->getValue();
 
         if (Operators::IS_EMPTY !== $productCondition->getOperator() && null === $value) {
-            $this->context->addViolation($constraint->message, []);
+            $this->context->buildViolation($constraint->message)
+                ->addViolation();
         }
     }
 }

@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Job profile listener used to handle permissions
@@ -27,17 +27,17 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class JobPermissionsSubscriber implements EventSubscriberInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -86,8 +86,8 @@ class JobPermissionsSubscriber implements EventSubscriberInterface
     public function checkShowPermission(GenericEvent $event)
     {
         $jobInstance = $event->getSubject();
-        if (false === $this->securityContext->isGranted(Attributes::EDIT, $jobInstance)
-            && false === $this->securityContext->isGranted(Attributes::EXECUTE, $jobInstance)) {
+        if (false === $this->authorizationChecker->isGranted(Attributes::EDIT, $jobInstance)
+            && false === $this->authorizationChecker->isGranted(Attributes::EXECUTE, $jobInstance)) {
             throw new AccessDeniedException();
         }
     }
@@ -112,7 +112,7 @@ class JobPermissionsSubscriber implements EventSubscriberInterface
      */
     protected function isGranted($permission, JobInstance $jobInstance)
     {
-        if (false === $this->securityContext->isGranted($permission, $jobInstance)) {
+        if (false === $this->authorizationChecker->isGranted($permission, $jobInstance)) {
             throw new AccessDeniedException();
         }
     }

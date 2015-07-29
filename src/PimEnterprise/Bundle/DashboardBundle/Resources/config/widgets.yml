@@ -5,8 +5,9 @@ services:
     pimee_dashboard.widget.proposal:
         class: %pimee_dashboard.widget.proposal.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pimee_workflow.repository.product_draft'
             - '@oro_user.manager'
+            - '@security.token_storage'
         tags:
             - { name: pim_dashboard.widget, position: 100 }

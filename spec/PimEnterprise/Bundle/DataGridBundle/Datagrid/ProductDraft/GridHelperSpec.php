@@ -4,13 +4,13 @@ namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class GridHelperSpec extends ObjectBehavior
 {
-    function let(SecurityContextInterface $securityContext)
+    function let(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->beConstructedWith($securityContext);
+        $this->beConstructedWith($authorizationChecker);
     }
 
     function it_provides_product_draft_status_choices()
