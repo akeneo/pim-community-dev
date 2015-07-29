@@ -83,7 +83,8 @@ services:
     pimee_catalog.filter.category:
         class: %pimee_catalog.filter.category.class%
         arguments:
-            - '@security.context'
+            - '@security.token_storage'
             - '@pimee_security.repository.category_access'
+            - '@security.authorization_checker'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.product_category.view }
