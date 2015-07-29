@@ -117,6 +117,7 @@ class UserLoader extends LoadUserData
 
         if (!$role) {
             $role = new Role($code);
+            // TODO use a Saver
             $this->om->persist($role);
             $this->om->flush();
         }
