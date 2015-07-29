@@ -7,9 +7,9 @@ Feature: Filter products per media
   Scenario: Successfully filter products by image and file attributes
     Given the "default" catalog configuration
     And the following attributes:
-      | code       | label-en_US | type  | useableAsGridFilter | allowedExtensions |
-      | image      | Image       | image | yes                 | gif,png,jpeg,jpg  |
-      | attachment | Attachment  | file  | yes                 | txt               |
+      | code       | label-en_US | type  | useable_as_grid_filter | allowedExtensions |
+      | image      | Image       | image | yes                    | gif,png,jpeg,jpg  |
+      | attachment | Attachment  | file  | yes                    | txt               |
     And the following family:
       | code    | attributes             |
       | tshirts | sku, image, attachment |

@@ -2021,6 +2021,10 @@ class FixturesContext extends RawMinkContext
             $data = ['code' => $data];
         }
 
+        if (isset($data['attributes'])) {
+            $data['attributes'] = str_replace(' ', '', $data['attributes']);
+        }
+
         $requirements = [];
         foreach ($data as $key => $value) {
             if (false !== strpos($key, 'requirements-')) {
