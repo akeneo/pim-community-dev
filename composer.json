@@ -65,7 +65,7 @@
         "squizlabs/php_codesniffer": "2.*",
         "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
-        "behat/behat": "2.5.4",
+        "behat/behat": "2.5.5",
         "kriswallsmith/buzz": ">=0.5",
         "behat/common-contexts": "1.2.0",
         "behat/gherkin":"2.3.5",
