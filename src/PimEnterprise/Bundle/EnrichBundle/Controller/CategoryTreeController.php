@@ -30,9 +30,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -59,7 +58,7 @@ class CategoryTreeController extends BaseCategoryTreeController
      * @param Request                     $request
      * @param EngineInterface             $templating
      * @param RouterInterface             $router
-     * @param SecurityContextInterface    $securityContext
+     * @param TokenStorageInterface       $tokenStorage
      * @param FormFactoryInterface        $formFactory
      * @param ValidatorInterface          $validator
      * @param TranslatorInterface         $translator
@@ -78,7 +77,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -97,7 +96,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,

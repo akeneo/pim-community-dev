@@ -10,8 +10,8 @@ use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContext;
 
 class ProductMassActionManagerSpec extends ObjectBehavior
 {
@@ -19,14 +19,14 @@ class ProductMassActionManagerSpec extends ObjectBehavior
         ProductMassActionRepositoryInterface $massActionRepo,
         AttributeRepository $attRepo,
         AttributeGroupAccessRepository $attGroupAccessRepo,
-        SecurityContext $authorizationChecker,
+        TokenStorageInterface $tokenStorage,
         TokenInterface $token,
         User $user
     ) {
-        $authorizationChecker->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $this->beConstructedWith($massActionRepo, $attRepo, $attGroupAccessRepo, $authorizationChecker);
+        $this->beConstructedWith($massActionRepo, $attRepo, $attGroupAccessRepo, $tokenStorage);
     }
 
     function it_finds_attributes_with_groups_with_sub_query(
