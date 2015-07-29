@@ -15,7 +15,6 @@ use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationExcep
 use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 use Imagine\Image\Palette\PaletteInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Option resolver for ColorSpace transformation
@@ -24,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ColorSpaceOptionsResolver implements TransformationOptionsResolverInterface
 {
-    /** @var OptionsResolverInterface */
+    /** @var OptionsResolver */
     protected $resolver;
 
     public function __construct()

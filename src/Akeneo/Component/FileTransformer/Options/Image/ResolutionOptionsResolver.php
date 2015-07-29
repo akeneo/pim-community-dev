@@ -15,7 +15,6 @@ use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationExcep
 use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 use Imagine\Image\ImageInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Option resolver for Resolution transformation
@@ -24,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ResolutionOptionsResolver implements TransformationOptionsResolverInterface
 {
-    /** @var OptionsResolverInterface */
+    /** @var OptionsResolver */
     protected $resolver;
 
     public function __construct()
