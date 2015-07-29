@@ -3,7 +3,7 @@ default:
     order: 100
     multiple: false
     csv:
-        reader:            pim_base_connector.reader.file.csv
+        reader:            pim_connector.reader.file.csv
         reader_options:    {}
         processor_options: {}
     yml:
@@ -15,8 +15,8 @@ categories:
     order: 30
     multiple: true
     csv:
-        reader:            pim_base_connector.reader.file.csv_category
-        processor:         pim_base_connector.processor.category
+        reader:            pim_connector.reader.file.csv_category
+        processor:         pim_connector.processor.denormalization.category.flat
     yml:
         reader:            pim_base_connector.reader.file.yaml_multiple
         processor:         pim_base_connector.processor.category
@@ -45,14 +45,14 @@ group_types:
 association_types:
     order: 40
     csv:
-        processor:         pim_base_connector.processor.association_type
+        processor:         pim_connector.processor.denormalization.association_type.flat
     yml:
         processor:         pim_base_connector.processor.association_type
 
 attributes:
     order: 40
     csv:
-        processor:         pim_base_connector.processor.attribute
+        processor:         pim_connector.processor.denormalization.processor.attribute.flat
     yml:
         processor:         pim_base_connector.processor.attribute
 
@@ -60,34 +60,32 @@ attribute_options:
     order: 50
     csv:
         processor:         pim_connector.processor.denormalization.attribute_option.flat
-    yml:
-        processor:         pim_connector.processor.denormalization.attribute_option.structured
 
 families:
     order: 60
     csv:
-        processor:         pim_base_connector.processor.family
+        processor:         pim_connector.processor.denormalization.family.flat
     yml:
         processor:         pim_base_connector.processor.family
 
 groups:
     order: 70
     csv:
-        processor:         pim_base_connector.processor.group
+        processor:         pim_connector.processor.denormalization.group.flat
     yml:
         processor:         pim_base_connector.processor.group
 
 variant_groups:
     order: 75
     csv:
-        processor:         pim_base_connector.processor.denormalization.csv_variant_group
+        processor:         pim_connector.processor.denormalization.csv_variant_group.flat
     yml:
         processor:         pim_base_connector.processor.group
 
 products:
     order: 80
     csv:
-        reader:            pim_base_connector.reader.file.csv_product
+        reader:            pim_connector.reader.file.csv_product
         processor:         pim_connector.processor.denormalization.product.flat
 
 jobs:
