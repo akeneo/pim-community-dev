@@ -80,7 +80,9 @@ class ReferenceDataSorter implements AttributeSorterInterface
     {
         $referenceDataName = $attribute->getReferenceDataName();
 
-        return null !== $referenceDataName && null !== $this->registry->get($referenceDataName);
+        return '' !== $referenceDataName &&
+            null !== $referenceDataName &&
+            null !== $this->registry->get($referenceDataName);
     }
 
     /**
