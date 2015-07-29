@@ -26,7 +26,7 @@ services:
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
-            - '@security.context'
+            - '@security.token_storage'
             - '@pim_catalog.repository.product_category'
             - '@pimee_security.repository.category_access'
         tags:
@@ -38,8 +38,9 @@ services:
             - '@form.factory'
             - '@pim_filter.product_utility'
             - '@pim_catalog.manager.product_category'
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_category }
 
@@ -49,7 +50,8 @@ services:
             - '@form.factory'
             - '@pim_filter.product_utility'
             - '@pimee_workflow.manager.published_product_category'
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: published_product_category }

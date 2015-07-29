@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Filter the granted attribute objects.
@@ -24,15 +24,15 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class GrantedAttributeNormalizerFilter implements NormalizerFilterInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -47,7 +47,7 @@ class GrantedAttributeNormalizerFilter implements NormalizerFilterInterface
                 }
                 $attributeGroup = $attribute->getGroup();
 
-                return $this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup);
+                return $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup);
             }
         );
 

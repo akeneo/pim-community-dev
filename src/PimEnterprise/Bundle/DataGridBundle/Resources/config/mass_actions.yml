@@ -11,4 +11,4 @@ services:
             - '@pim_catalog.manager.association_type'
             - '@pim_catalog.context.catalog'
             - '@pimee_security.repository.attribute_group_access'
-            - '@security.context'
+            - '@security.token_storage'

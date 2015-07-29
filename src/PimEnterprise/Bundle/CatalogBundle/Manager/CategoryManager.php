@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -31,29 +31,29 @@ class CategoryManager extends BaseCategoryManager
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
-    /* @var SecurityContextInterface */
-    protected $securityContext;
+    /* @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
      * Constructor
      *
-     * @param ObjectManager            $om
-     * @param string                   $categoryClass
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param CategoryAccessRepository $categoryAccessRepo
-     * @param SecurityContextInterface $securityContext
+     * @param ObjectManager                 $om
+     * @param string                        $categoryClass
+     * @param EventDispatcherInterface      $eventDispatcher
+     * @param CategoryAccessRepository      $categoryAccessRepo
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         ObjectManager $om,
         $categoryClass,
         EventDispatcherInterface $eventDispatcher,
         CategoryAccessRepository $categoryAccessRepo,
-        SecurityContextInterface $securityContext
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct($om, $categoryClass, $eventDispatcher);
 
         $this->categoryAccessRepo = $categoryAccessRepo;
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -91,7 +91,7 @@ class CategoryManager extends BaseCategoryManager
         $children = $this->getChildren($parentId, $selectNodeId);
         foreach ($children as $indChild => $child) {
             $category = (is_object($child)) ? $child : $child['item'];
-            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+            if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
                 unset($children[$indChild]);
             }
         }
@@ -131,7 +131,7 @@ class CategoryManager extends BaseCategoryManager
             $isLeaf = is_object($categoryData);
             $category = $isLeaf ? $categoryData : $categoryData['item'];
 
-            if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
                 unset($filledTree[$categoryIdx]);
             } elseif (!$isLeaf) {
                 $this->filterGrantedFilledTree($categoryData['__children']);

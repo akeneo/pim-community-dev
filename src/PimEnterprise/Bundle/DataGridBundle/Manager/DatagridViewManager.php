@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Pim\Bundle\DataGridBundle\Manager\DatagridViewManager as BaseDatagridViewManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Datagrid view manager
@@ -26,27 +26,28 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class DatagridViewManager extends BaseDatagridViewManager
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
      * Constructor
      *
-     * @param EntityRepository         $repository
-     * @param DatagridManager          $datagridManager
-     * @param SaverInterface           $saver
-     * @param RemoverInterface         $remover
-     * @param SecurityContextInterface $securityContext
+     * @param EntityRepository              $repository
+     * @param DatagridManager               $datagridManager
+     * @param SaverInterface                $saver
+     * @param RemoverInterface              $remover
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         EntityRepository $repository,
         DatagridManager $datagridManager,
         SaverInterface $saver,
         RemoverInterface $remover,
-        SecurityContextInterface $securityContext
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct($repository, $datagridManager, $saver, $remover);
-        $this->securityContext = $securityContext;
+
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -57,7 +58,7 @@ class DatagridViewManager extends BaseDatagridViewManager
         $views = parent::findPublic($alias);
 
         foreach ($views as $key => $view) {
-            if (false === $this->securityContext->isGranted(Attributes::VIEW, $view)) {
+            if (false === $this->authorizationChecker->isGranted(Attributes::VIEW, $view)) {
                 unset($views[$key]);
             }
         }

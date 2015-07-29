@@ -18,8 +18,9 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Delegating product saver, depending on context it delegates to other savers to deal with drafts or working copies
@@ -40,34 +41,40 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var ProductSavingOptionsResolver */
     protected $optionsResolver;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var ProductDraftBuilderInterface */
     protected $productDraftBuilder;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
-     * @param SaverInterface               $workingCopySaver
-     * @param SaverInterface               $draftSaver
-     * @param ObjectManager                $objectManager
-     * @param ProductSavingOptionsResolver $optionsResolver
-     * @param SecurityContextInterface     $securityContext
-     * @param ProductDraftBuilderInterface $productDraftBuilder
+     * @param SaverInterface                $workingCopySaver
+     * @param SaverInterface                $draftSaver
+     * @param ObjectManager                 $objectManager
+     * @param ProductSavingOptionsResolver  $optionsResolver
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ProductDraftBuilderInterface  $productDraftBuilder
+     * @param TokenStorageInterface         $tokenStorage
      */
     public function __construct(
         SaverInterface $workingCopySaver,
         SaverInterface $draftSaver,
         ObjectManager $objectManager,
         ProductSavingOptionsResolver $optionsResolver,
-        SecurityContextInterface $securityContext,
-        ProductDraftBuilderInterface $productDraftBuilder
+        AuthorizationCheckerInterface $authorizationChecker,
+        ProductDraftBuilderInterface $productDraftBuilder,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->workingCopySaver    = $workingCopySaver;
-        $this->draftSaver          = $draftSaver;
-        $this->objectManager       = $objectManager;
-        $this->optionsResolver     = $optionsResolver;
-        $this->securityContext     = $securityContext;
-        $this->productDraftBuilder = $productDraftBuilder;
+        $this->workingCopySaver     = $workingCopySaver;
+        $this->draftSaver           = $draftSaver;
+        $this->objectManager        = $objectManager;
+        $this->optionsResolver      = $optionsResolver;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->productDraftBuilder  = $productDraftBuilder;
+        $this->tokenStorage         = $tokenStorage;
     }
 
     /**
@@ -122,10 +129,10 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      */
     protected function hasPermissions(ProductInterface $product)
     {
-        if (null === $product->getId() || null === $this->securityContext->getToken()) {
+        if (null === $product->getId() || null === $this->tokenStorage->getToken()) {
             $isOwner = true;
         } else {
-            $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
+            $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
         }
 
         return $isOwner;
@@ -136,6 +143,6 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      */
     protected function getUsername()
     {
-        return $this->securityContext->getToken()->getUser()->getUsername();
+        return $this->tokenStorage->getToken()->getUser()->getUsername();
     }
 }

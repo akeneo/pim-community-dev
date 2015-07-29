@@ -15,7 +15,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Subscriber to remove product value when user has no right to at least see it
@@ -24,15 +24,15 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class RemoveProductValueSubscriber implements EventSubscriberInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -61,7 +61,7 @@ class RemoveProductValueSubscriber implements EventSubscriberInterface
                 $productValue = $formValue->getData();
                 $attribute = $productValue->getAttribute();
                 $attributeGroup = $attribute->getGroup();
-                if (false === $this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)) {
+                if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)) {
                     $formValueName = $formValue->getName();
                     $formValues->remove($formValueName);
                 }

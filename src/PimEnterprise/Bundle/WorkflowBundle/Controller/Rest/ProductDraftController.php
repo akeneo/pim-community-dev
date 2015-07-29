@@ -20,7 +20,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -30,8 +31,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductDraftController
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var ProductDraftRepositoryInterface */
     protected $repository;
@@ -45,25 +46,31 @@ class ProductDraftController
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
-     * @param SecurityContextInterface        $securityContext
+     * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftRepositoryInterface $repository
      * @param ProductDraftManager             $manager
      * @param ProductRepositoryInterface      $productRepository
      * @param NormalizerInterface             $normalizer
+     * @param TokenStorageInterface           $tokenStorage
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftRepositoryInterface $repository,
         ProductDraftManager $manager,
         ProductRepositoryInterface $productRepository,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->securityContext   = $securityContext;
-        $this->repository        = $repository;
-        $this->manager           = $manager;
-        $this->productRepository = $productRepository;
-        $this->normalizer        = $normalizer;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->repository           = $repository;
+        $this->manager              = $manager;
+        $this->productRepository    = $productRepository;
+        $this->normalizer           = $normalizer;
+        $this->tokenStorage         = $tokenStorage;
     }
 
     /**
@@ -80,7 +87,7 @@ class ProductDraftController
         $product      = $this->findProductOr404($productId);
         $productDraft = $this->findDraftForProductOr404($product);
 
-        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
@@ -100,7 +107,7 @@ class ProductDraftController
      */
     protected function findDraftForProductOr404(ProductInterface $product)
     {
-        $username     = $this->securityContext->getToken()->getUsername();
+        $username     = $this->tokenStorage->getToken()->getUsername();
         $productDraft = $this->repository->findUserProductDraft($product, $username);
         if (null === $productDraft) {
             throw new NotFoundHttpException(sprintf('Draft for product %d not found', $product->getId()));

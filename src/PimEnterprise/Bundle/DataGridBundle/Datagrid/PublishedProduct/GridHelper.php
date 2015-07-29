@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\PublishedProduct;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Helper for published datagrid
@@ -23,22 +23,22 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class GridHelper
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var PublishedProductRepositoryInterface */
     protected $publishedRepository;
 
     /**
-     * @param SecurityContextInterface            $securityContext
+     * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param PublishedProductRepositoryInterface $publishedRepository
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         PublishedProductRepositoryInterface $publishedRepository
     ) {
-        $this->securityContext = $securityContext;
-        $this->publishedRepository = $publishedRepository;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->publishedRepository  = $publishedRepository;
     }
 
     /**
@@ -51,7 +51,8 @@ class GridHelper
         return function (ResultRecordInterface $record) {
             /** @var \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface $published */
             $published = $this->publishedRepository->findOneById($record->getValue('id'));
-            $ownershipGranted = $this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct());
+            $product = $published->getOriginalProduct();
+            $ownershipGranted = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 
             return [
                 'unpublish' => $ownershipGranted,

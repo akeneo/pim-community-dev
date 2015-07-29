@@ -1,2 +1,16 @@
 parameters:
-    pim_user.context.user.class: PimEnterprise\Bundle\UserBundle\Context\UserContext
+    pimee_user.context.user.class: PimEnterprise\Bundle\UserBundle\Context\UserContext
+
+services:
+    pimee_user.context.user:
+        public: true
+        class: %pimee_user.context.user.class%
+        decorates: pim_user.context.user
+        arguments:
+            - '@security.token_storage'
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.category'
+            - '@request_stack'
+            - '@security.authorization_checker'
+            - %locale%

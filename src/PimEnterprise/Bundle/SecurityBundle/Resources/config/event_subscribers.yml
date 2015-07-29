@@ -11,14 +11,14 @@ services:
     pimee_security.event_subscriber.enrich.disable_product_value_form:
         class: %pimee_security.event_subscriber.enrich.disable_product_value_form.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: kernel.event_subscriber }
 
     pimee_security.event_subscriber.enrich.product:
         class: %pimee_security.event_subscriber.enrich.product.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pim_user.context.user'
         tags:
             - { name: kernel.event_subscriber }
@@ -26,7 +26,7 @@ services:
     pimee_security.event_subscriber.enrich.job_permissions:
         class: %pimee_security.event_subscriber.enrich.job_permissions.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
         tags:
             - { name: kernel.event_subscriber }
 

@@ -47,7 +47,7 @@ services:
         class: %pim_enrich.form.type.product.view.class%
         arguments:
             - '@pim_enrich.form.view.view_updater.registry'
-            - '@security.context'
+            - '@security.authorization_checker'
 
     pim_enrich.form.type.available_attributes:
         class: %pim_enrich.form.type.available_attributes.class%
@@ -89,7 +89,7 @@ services:
         class: %pimee_enrich.form.type.classify.class%
         arguments:
             - '@pim_catalog.manager.category'
-            - '@security.context'
+            - '@security.token_storage'
             - %pim_catalog.entity.category.class%
             - %pim_enrich.mass_edit_action.classify.class%
         tags:

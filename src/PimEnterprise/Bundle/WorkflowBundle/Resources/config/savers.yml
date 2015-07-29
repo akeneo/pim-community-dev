@@ -22,5 +22,6 @@ services:
             - '@pimee_workflow.saver.product_draft'
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.saver.product_options_resolver'
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pimee_workflow.builder.draft'
+            - '@security.token_storage'

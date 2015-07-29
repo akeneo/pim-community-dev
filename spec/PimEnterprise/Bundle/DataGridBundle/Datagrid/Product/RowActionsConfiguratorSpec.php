@@ -13,24 +13,26 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class RowActionsConfiguratorSpec extends ObjectBehavior
 {
     function let(
         DatagridConfiguration $datagridConfiguration,
         ConfigurationRegistry $registry,
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductRepositoryInterface $productRepository,
         LocaleRepositoryInterface $localeRepository,
         TokenInterface $token,
         User $user,
         ResultRecordInterface $record,
         ProductInterface $product,
-        LocaleInterface $locale
+        LocaleInterface $locale,
+        TokenStorageInterface $tokenStorage
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $record->getValue('id')->willReturn(42);
@@ -38,7 +40,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $localeRepository->findOneBy(['code' => 'en_US'])->willReturn($locale);
         $productRepository->findOneById(42)->willReturn($product);
 
-        $this->beConstructedWith($registry, $securityContext, $productRepository, $localeRepository);
+        $this->beConstructedWith($registry, $authorizationChecker, $productRepository, $localeRepository);
     }
 
     function it_is_initializable()
@@ -46,18 +48,18 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator');
     }
 
-    function it_configures_the_grid($datagridConfiguration, $securityContext)
+    function it_configures_the_grid($datagridConfiguration, $authorizationChecker)
     {
-        $securityContext->isGranted(Attributes::EDIT, Argument::any())->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, Argument::any())->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
 
         $this->configure($datagridConfiguration);
     }
 
-    function it_configures_the_view_actions_for_a_row($record, $product, $securityContext)
+    function it_configures_the_view_actions_for_a_row($record, $product, $authorizationChecker)
     {
-        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(false);
-        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
@@ -71,11 +73,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         );
     }
 
-    function it_configures_the_edit_actions_for_a_row($record, $product, $securityContext, $locale)
+    function it_configures_the_edit_actions_for_a_row($record, $product, $authorizationChecker, $locale)
     {
-        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
@@ -92,12 +94,12 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
     function it_hides_actions_except_the_show_for_a_row_if_user_can_not_edit_the_product(
         $record,
         $product,
-        $securityContext,
+        $authorizationChecker,
         $locale
     ) {
-        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
-        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(false);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
@@ -114,12 +116,12 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
     function it_hides_the_edit_categories_action_if_user_does_not_own_the_product(
         $record,
         $product,
-        $securityContext,
+        $authorizationChecker,
         $locale
     ) {
-        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(false);
-        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(

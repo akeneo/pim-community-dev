@@ -15,7 +15,7 @@ use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Disable the product value form
@@ -24,15 +24,15 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class DisableProductValueFieldSubscriber implements EventSubscriberInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -59,7 +59,7 @@ class DisableProductValueFieldSubscriber implements EventSubscriberInterface
             && $eventContext['root_form_name'] === 'pim_product_create';
 
         if (!$isCreateForm
-            && false === $this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $attributeGroup)) {
+            && false === $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attributeGroup)) {
             $formOptions = $event->getFormOptions();
             $formOptions['disabled']  = true;
             $formOptions['read_only'] = true;

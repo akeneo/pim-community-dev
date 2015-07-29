@@ -11,8 +11,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class DelegatingProductSaverSpec extends ObjectBehavior
 {
@@ -21,16 +22,18 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         SaverInterface $draftSaver,
         ObjectManager $objectManager,
         ProductSavingOptionsResolver $optionsResolver,
-        SecurityContextInterface $securityContext,
-        ProductDraftBuilderInterface $productDraftBuilder
+        AuthorizationCheckerInterface $authorizationChecker,
+        ProductDraftBuilderInterface $productDraftBuilder,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->beConstructedWith(
             $workingCopySaver,
             $draftSaver,
             $objectManager,
             $optionsResolver,
-            $securityContext,
-            $productDraftBuilder
+            $authorizationChecker,
+            $productDraftBuilder,
+            $tokenStorage
         );
     }
 
@@ -47,16 +50,17 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     function it_delegates_to_working_copy_saver_when_user_is_the_owner(
         ProductInterface $product,
         $optionsResolver,
-        $securityContext,
-        $workingCopySaver
+        $authorizationChecker,
+        $workingCopySaver,
+        $tokenStorage
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $product->getId()->willReturn(42);
-        $securityContext->isGranted(Attributes::OWN, $product)
+        $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(true);
-        $securityContext->getToken()->willReturn('token');
+        $tokenStorage->getToken()->willReturn('token');
 
         $workingCopySaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled();
@@ -83,9 +87,10 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     function it_delegates_to_draft_saver_when_user_is_not_the_owner_and_product_exists_without_changes(
         ProductInterface $product,
         $optionsResolver,
-        $securityContext,
+        $authorizationChecker,
         $productDraftBuilder,
         $draftSaver,
+        $tokenStorage,
         UsernamePasswordToken $token,
         User $user
     ) {
@@ -93,12 +98,12 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $product->getId()->willReturn(42);
-        $securityContext->isGranted(Attributes::OWN, $product)
+        $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(false);
 
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
 
         $productDraftBuilder->build($product, 'username')
             ->willReturn(null)
@@ -112,9 +117,10 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     function it_delegates_to_draft_saver_when_user_is_not_the_owner_and_product_exists_with_changes(
         ProductInterface $product,
         $optionsResolver,
-        $securityContext,
+        $authorizationChecker,
         $productDraftBuilder,
         $draftSaver,
+        $tokenStorage,
         UsernamePasswordToken $token,
         User $user
     ) {
@@ -123,12 +129,12 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $product->getId()->willReturn(42);
-        $securityContext->isGranted(Attributes::OWN, $product)
+        $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->shouldBeCalled()
             ->willReturn(false);
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
 
         $productDraft = new ProductDraft();
         $productDraftBuilder->build($product, 'username')
@@ -143,14 +149,14 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     function it_delegates_to_working_copy_saver_when_there_is_no_token_generated(
         ProductInterface $product,
         $optionsResolver,
-        $securityContext,
-        $workingCopySaver
+        $workingCopySaver,
+        $tokenStorage
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $product->getId()->willReturn(42);
-        $securityContext->getToken()->willReturn(null);
+        $tokenStorage->getToken()->willReturn(null);
 
         $workingCopySaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled();

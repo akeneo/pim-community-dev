@@ -16,7 +16,7 @@ use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as BaseJobExecutio
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Override job execution manager to introduce permissions
@@ -28,8 +28,8 @@ class JobExecutionManager extends BaseJobExecutionManager
     /** @var JobProfileAccessRepository */
     protected $accessRepository;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var JobExecutionRepository */
     protected $repository;
@@ -40,18 +40,18 @@ class JobExecutionManager extends BaseJobExecutionManager
      * @param JobExecutionRepository     $repository
      * @param SecurityFacade             $securityFacade
      * @param JobProfileAccessRepository $accessRepository
-     * @param SecurityContextInterface   $securityContext
+     * @param TokenStorageInterface      $tokenStorage
      */
     public function __construct(
         JobExecutionRepository $repository,
         SecurityFacade $securityFacade,
         JobProfileAccessRepository $accessRepository,
-        SecurityContextInterface $securityContext
+        TokenStorageInterface $tokenStorage
     ) {
         parent::__construct($repository, $securityFacade);
 
         $this->accessRepository = $accessRepository;
-        $this->securityContext  = $securityContext;
+        $this->tokenStorage     = $tokenStorage;
     }
 
     /**
@@ -69,7 +69,7 @@ class JobExecutionManager extends BaseJobExecutionManager
         );
 
         $subQB = $this->accessRepository->getGrantedJobsQB(
-            $this->securityContext->getToken()->getUser(),
+            $this->tokenStorage->getToken()->getUser(),
             Attributes::EXECUTE
         );
 

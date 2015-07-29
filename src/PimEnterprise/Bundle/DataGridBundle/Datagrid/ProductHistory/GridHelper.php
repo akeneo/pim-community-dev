@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductHistory;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Helper for product history to display revert action
@@ -23,22 +23,22 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class GridHelper
 {
-    /** @var \Symfony\Component\Security\Core\SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
-    /** @var \Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface */
+    /** @var ProductRepositoryInterface */
     protected $productRepository;
 
     /**
-     * @param SecurityContextInterface   $securityContext
-     * @param ProductRepositoryInterface $productRepository
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ProductRepositoryInterface    $productRepository
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductRepositoryInterface $productRepository
     ) {
-        $this->securityContext   = $securityContext;
-        $this->productRepository = $productRepository;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->productRepository    = $productRepository;
     }
 
     /**
@@ -50,7 +50,7 @@ class GridHelper
     {
         return function (ResultRecordInterface $record) {
             $product = $this->productRepository->findOneById($record->getValue('resourceId'));
-            $ownershipGranted = $this->securityContext->isGranted(Attributes::OWN, $product);
+            $ownershipGranted = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 
             return [
                 'revert' => $ownershipGranted

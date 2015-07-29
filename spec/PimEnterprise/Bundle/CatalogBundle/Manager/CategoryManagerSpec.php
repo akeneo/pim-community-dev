@@ -12,7 +12,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
@@ -26,7 +26,7 @@ class CategoryManagerSpec extends ObjectBehavior
         ObjectManager $om,
         EventDispatcherInterface $eventDispatcher,
         CategoryRepositoryInterface $categoryRepository,
-        SecurityContextInterface $context
+        AuthorizationCheckerInterface $context
     ) {
         $om->getRepository(Argument::any())->willReturn($categoryRepository);
         $this->beConstructedWith(

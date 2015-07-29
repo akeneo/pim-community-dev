@@ -6,7 +6,7 @@ services:
     pimee_workflow.helper.filter_product_values:
         class: %pimee_workflow.helper.filter_product_values.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
 
     pimee_workflow.helper.sort_product_values:
         class: %pimee_workflow.helper.sort_product_values.class%
