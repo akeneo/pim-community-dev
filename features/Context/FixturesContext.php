@@ -1132,6 +1132,8 @@ class FixturesContext extends RawMinkContext
     {
         $extension = strtolower($extension);
 
+        $string = $this->replacePlaceholders($string);
+
         $this->placeholderValues['%file to import%'] = $filename =
             sprintf(
                 '%s/pim-import/behat-import-%s.%s',

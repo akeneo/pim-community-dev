@@ -78,6 +78,6 @@ class FileFactory implements FileFactoryInterface
         $newFile->setStorage($destFsAlias);
         $newFile->setKey($key);
 
-       return $newFile;
+        return $newFile;
     }
 }
