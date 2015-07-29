@@ -19,7 +19,7 @@ use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Asset import processor, allows to,

@@ -19,7 +19,7 @@ use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Connector\Factory\TagFactory;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Tag import processor, allows to,
