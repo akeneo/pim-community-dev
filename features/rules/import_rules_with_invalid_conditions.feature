@@ -581,8 +581,8 @@ Feature: Import rules
       | rule                       | field | operator | value | locale |
       | sony_beautiful_description | name  | CONTAINS | Canon | fr_FR  |
     And the following product rule setter actions:
-      | rule                       | field     | value                                                    |
-      | sony_beautiful_description | side_view | SNKRS-1R,../../../features/Context/fixtures/SNKRS-1R.png |
+      | rule                       | field     | value                                |
+      | sony_beautiful_description | side_view | SNKRS-1R.png,%fixtures%/SNKRS-1R.png |
     And the following yaml file to import:
     """
     rules:
