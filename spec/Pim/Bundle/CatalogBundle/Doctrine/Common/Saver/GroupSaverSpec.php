@@ -9,7 +9,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -20,7 +19,6 @@ class GroupSaverSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
-        ProductTemplateMediaManager $templateMediaManager,
         ProductTemplateApplierInterface $templateApplier,
         SavingOptionsResolverInterface $optionsResolver,
         VersionContext $versionContext
@@ -28,7 +26,6 @@ class GroupSaverSpec extends ObjectBehavior
         $this->beConstructedWith(
             $objectManager,
             $productSaver,
-            $templateMediaManager,
             $templateApplier,
             $versionContext,
             $optionsResolver,
@@ -119,22 +116,6 @@ class GroupSaverSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->save($group, ['remove_products' => [$removedProduct]]);
-    }
-
-    function it_handles_media_values_of_variant_group_product_templates(
-        $templateMediaManager,
-        GroupInterface $group,
-        GroupType $type,
-        ProductTemplateInterface $template
-    ) {
-        $group->getType()->willReturn($type);
-        $group->getCode()->willReturn('my_code');
-        $type->isVariant()->willReturn(true);
-        $group->getProductTemplate()->willReturn($template);
-
-        $templateMediaManager->handleProductTemplateMedia($template)->shouldBeCalled();
-
-        $this->save($group);
     }
 
     function it_saves_a_variant_group_and_copies_values_to_products(

@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Pim\Component\Connector\Writer\File\FileExporterInterface;
+
 /**
  * Write variant group data into a csv file on the filesystem
  *
@@ -11,6 +14,17 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
  */
 class CsvVariantGroupWriter extends CsvWriter
 {
+    /** @var FileExporterInterface */
+    protected $fileExporter;
+
+    /**
+     * @param FileExporterInterface $fileExporter
+     */
+    public function __construct(FileExporterInterface $fileExporter)
+    {
+        $this->fileExporter = $fileExporter;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -44,12 +58,21 @@ class CsvVariantGroupWriter extends CsvWriter
         if (!is_dir(dirname($target))) {
             mkdir(dirname($target), 0777, true);
         }
-        if (copy($media['filePath'], $target)) {
+
+        try {
+            $this->fileExporter->export($media['filePath'], $target, $media['storageAlias']);
             $this->writtenFiles[$target] = $media['exportPath'];
-        } else {
+        } catch (FileTransferException $e) {
             $this->stepExecution->addWarning(
                 $this->getName(),
                 'The media has not been found or is not currently available',
+                [],
+                $media
+            );
+        } catch (\LogicException $e) {
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                'The media has not been copied',
                 [],
                 $media
             );

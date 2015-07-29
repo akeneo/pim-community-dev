@@ -34,7 +34,7 @@ services:
     pim_base_connector.writer.file.csv_variant_group:
         class: %pim_base_connector.writer.file.csv_variant_group.class%
         arguments:
-            - '@pim_catalog.manager.media'
+            - '@pim_connector.writer.file.file_exporter'
 
     # Doctrine Writer
     # deprecated will be removed in 1.5

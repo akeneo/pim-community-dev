@@ -8,7 +8,6 @@ use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
@@ -28,9 +27,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /** @var BulkSaverInterface */
     protected $productSaver;
 
-    /** @var ProductTemplateMediaManager */
-    protected $templateMediaManager;
-
     /** @var ProductTemplateApplierInterface */
     protected $productTplApplier;
 
@@ -46,7 +42,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /**
      * @param ObjectManager                   $objectManager
      * @param BulkSaverInterface              $productSaver
-     * @param ProductTemplateMediaManager     $templateMediaManager
      * @param ProductTemplateApplierInterface $productTplApplier
      * @param VersionContext                  $versionContext
      * @param SavingOptionsResolverInterface  $optionsResolver
@@ -55,19 +50,17 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     public function __construct(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
-        ProductTemplateMediaManager $templateMediaManager,
         ProductTemplateApplierInterface $productTplApplier,
         VersionContext $versionContext,
         SavingOptionsResolverInterface $optionsResolver,
         $productClassName
     ) {
-        $this->objectManager          = $objectManager;
-        $this->productSaver           = $productSaver;
-        $this->templateMediaManager   = $templateMediaManager;
-        $this->productTplApplier      = $productTplApplier;
-        $this->versionContext         = $versionContext;
-        $this->optionsResolver        = $optionsResolver;
-        $this->productClassName       = $productClassName;
+        $this->objectManager     = $objectManager;
+        $this->productSaver      = $productSaver;
+        $this->productTplApplier = $productTplApplier;
+        $this->versionContext    = $versionContext;
+        $this->optionsResolver   = $optionsResolver;
+        $this->productClassName  = $productClassName;
     }
 
     /**
@@ -91,13 +84,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             sprintf('Comes from variant group %s', $group->getCode()),
             $this->productClassName
         );
-
-        if ($group->getType()->isVariant()) {
-            $template = $group->getProductTemplate();
-            if (null !== $template) {
-                $this->templateMediaManager->handleProductTemplateMedia($template);
-            }
-        }
 
         $this->objectManager->persist($group);
         if (true === $options['flush']) {

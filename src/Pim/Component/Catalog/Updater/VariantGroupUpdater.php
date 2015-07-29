@@ -211,6 +211,7 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         $originalValues = $template->getValuesData();
         $mergedValuesData = $this->mergeValuesData($originalValues, $newValues);
         $mergedValues = $this->transformArrayToValues($mergedValuesData);
+        $mergedValuesData = $this->replaceMediaLocalPathsByStoredPaths($mergedValues, $mergedValuesData);
 
         $template->setValues($mergedValues);
         $template->setValuesData($mergedValuesData);
@@ -299,5 +300,29 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         }
 
         return $originalValues;
+    }
+
+    /**
+     * Replace media local paths by stored paths in the merged values data as
+     * the file has already been stored during the construction of the product values
+     * (in the method transformArrayToValues).
+     *
+     * @param Collection $mergedValues
+     * @param array      $mergedValuesData
+     *
+     * @return array
+     */
+    protected function replaceMediaLocalPathsByStoredPaths(Collection $mergedValues, array $mergedValuesData)
+    {
+        foreach ($mergedValues as $value) {
+            if (null !== $value->getMedia()) {
+                $attributeCode = $value->getAttribute()->getCode();
+                foreach ($mergedValuesData[$attributeCode] as $index => $data) {
+                    $mergedValuesData[$attributeCode][$index]['data']['filePath'] = $value->getMedia()->getKey();
+                }
+            }
+        }
+
+        return $mergedValuesData;
     }
 }
