@@ -53,7 +53,7 @@ pimee_enrich:
             copy:
                 source:
                     working_copy: Working copy
-                    draft: Draft
+                    draft: My draft
         product_draft:
             info:
                 update_successful: Product draft has been successfully saved
