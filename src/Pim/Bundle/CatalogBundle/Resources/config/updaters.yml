@@ -104,6 +104,7 @@ services:
         arguments:
             - @pim_catalog.repository.attribute_group
             - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
+            - '@pim_catalog.repository.locale'
             - '@?pim_reference_data.registry'
 
     pim_catalog.updater.category:

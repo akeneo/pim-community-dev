@@ -37,13 +37,13 @@
         </div>
 
         <div class="row offset1 buffer-top configuration">
-            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', queryParams)) }}
-            {{ elements.link('btn.next', null, {'class': ['next', 'btn-primary']}) }}
+            {{ elements.link('btn.back', path('pim_enrich_mass_edit_action_choose', queryParams), {'class': 'btn-cancel', 'icon': 'chevron-left'}) }}
+            {{ elements.link('btn.next', null, {'class': ['next btn-next', 'btn-primary'], 'icon': 'chevron-right'}) }}
         </div>
 
         <div class="row offset1 buffer-top confirmation hide">
-            {{ elements.link('btn.cancel', null, {'class': 'cancel'}) }}
-            {{ elements.submitBtn('btn.confirm') }}
+            {{ elements.link('btn.cancel', null, {'class': 'cancel btn-cancel', 'icon': 'chevron-left'}) }}
+            {{ elements.submitBtn('btn.confirm', 'ok') }}
         </div>
 
     {{ form_end(form) }}

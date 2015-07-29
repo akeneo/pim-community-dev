@@ -8,16 +8,22 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class AttributeUpdaterSpec extends ObjectBehavior
 {
-    function let(AttributeGroupRepositoryInterface $attributeGroupRepository, ConfigurationRegistryInterface $registry)
+    function let(
+        AttributeGroupRepositoryInterface $attrGroupRepo,
+        ConfigurationRegistryInterface $registry,
+        LocaleRepositoryInterface $localeRepository
+    )
     {
         $this->beConstructedWith(
-            $attributeGroupRepository,
+            $attrGroupRepo,
             ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect'],
+            $localeRepository,
             $registry
         );
     }
@@ -33,7 +39,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_a_new_attribute(
-        $attributeGroupRepository,
+        $attrGroupRepo,
         AttributeInterface $attribute,
         AttributeTranslation $translation,
         AttributeGroupInterface $attributeGroup,
@@ -55,7 +61,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $translation->setLabel('Test1')->shouldBeCalled();
         $translation->setLabel('Test2')->shouldBeCalled();
 
-        $attributeGroupRepository->findOneByIdentifier('marketing')->willReturn($attributeGroup);
+        $attrGroupRepo->findOneByIdentifier('marketing')->willReturn($attributeGroup);
         $attribute->setGroup($attributeGroup)->shouldBeCalled();
         $attribute->setAttributeType('pim_catalog_text')->shouldBeCalled();
 
@@ -65,7 +71,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_groups_found(
-        $attributeGroupRepository,
+        $attrGroupRepo,
         AttributeInterface $attribute,
         AttributeTranslation $translation
     ) {
@@ -85,7 +91,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $translation->setLabel('Test1')->shouldBeCalled();
         $translation->setLabel('Test2')->shouldBeCalled();
 
-        $attributeGroupRepository->findOneByIdentifier('marketing')->willReturn(null);
+        $attrGroupRepo->findOneByIdentifier('marketing')->willReturn(null);
 
         $this->shouldThrow(new \InvalidArgumentException('AttributeGroup "marketing" does not exist'))->during(
             'update',

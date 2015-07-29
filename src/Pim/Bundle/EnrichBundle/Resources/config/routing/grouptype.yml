@@ -1,20 +1,20 @@
-pim_enrich_group_type_index:
+pim_enrich_grouptype_index:
     path: /.{_format}
     defaults: { _controller: pim_enrich.controller.group_type:indexAction, _format: html }
     requirements:
         _format: html|json
 
-pim_enrich_group_type_create:
+pim_enrich_grouptype_create:
     path: /create
     defaults: { _controller: pim_enrich.controller.group_type:createAction }
 
-pim_enrich_group_type_edit:
+pim_enrich_grouptype_edit:
     path: /{id}/edit
     defaults: { _controller: pim_enrich.controller.group_type:editAction }
     requirements:
         id: \d+
 
-pim_enrich_group_type_remove:
+pim_enrich_grouptype_remove:
     path: /{id}/remove
     defaults: { _controller: pim_enrich.controller.group_type:removeAction }
     requirements:

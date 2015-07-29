@@ -17,9 +17,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Group type controller
@@ -45,7 +45,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -59,7 +59,7 @@ class GroupTypeController extends AbstractDoctrineController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -73,7 +73,7 @@ class GroupTypeController extends AbstractDoctrineController
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
@@ -92,7 +92,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_enrich_group_type_index")
+     * @AclAncestor("pim_enrich_grouptype_index")
      *
      * @return Response
      */
@@ -107,14 +107,14 @@ class GroupTypeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_enrich_group_type_create")
+     * @AclAncestor("pim_enrich_grouptype_create")
      *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_enrich_group_type_index');
+            return $this->redirectToRoute('pim_enrich_grouptype_index');
         }
 
         $groupType = new GroupType();
@@ -123,7 +123,7 @@ class GroupTypeController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.group type.created');
 
             $url = $this->generateUrl(
-                'pim_enrich_group_type_edit',
+                'pim_enrich_grouptype_edit',
                 array('id' => $groupType->getId())
             );
             $response = array('status' => 1, 'url' => $url);
@@ -142,7 +142,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param GroupType $groupType
      *
      * @Template
-     * @AclAncestor("pim_enrich_group_type_edit")
+     * @AclAncestor("pim_enrich_grouptype_edit")
      *
      * @return array
      */
@@ -162,7 +162,7 @@ class GroupTypeController extends AbstractDoctrineController
      *
      * @param GroupType $groupType
      *
-     * @AclAncestor("pim_enrich_group_type_remove")
+     * @AclAncestor("pim_enrich_grouptype_remove")
      *
      * @return Response|RedirectResponse
      */
@@ -179,7 +179,7 @@ class GroupTypeController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_group_type_index');
+            return $this->redirectToRoute('pim_enrich_grouptype_index');
         }
     }
 }

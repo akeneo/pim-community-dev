@@ -45,7 +45,7 @@ services:
             - '@request'
             - '@templating'
             - '@router'
-            - '@security.context'
+            - '@security.token_storage'
             - '@form.factory'
             - '@validator'
             - '@translator'
@@ -397,7 +397,7 @@ services:
         scope: request
         class: %pim_enrich.controller.rest.product_comment.class%
         arguments:
-            - '@security.context'
+            - '@security.token_storage'
             - '@form.factory'
             - '@pim_catalog.repository.product'
             - '@pim_comment.repository.comment'

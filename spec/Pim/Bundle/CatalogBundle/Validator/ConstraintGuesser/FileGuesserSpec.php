@@ -40,8 +40,9 @@ class FileGuesserSpec extends ObjectBehavior
         $constraint = $constraints[0];
         $constraint->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\File');
 
+        $constraint->binaryFormat->shouldBe(false);
         $constraint->maxSize
-            ->shouldBe('15M');
+            ->shouldBe(15000000);
         $constraint->allowedExtensions
             ->shouldBe([]);
     }
@@ -64,7 +65,7 @@ class FileGuesserSpec extends ObjectBehavior
         $constraint->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\File');
 
         $constraint->maxSize
-            ->shouldBe($maxSize * FileGuesser::KILOBYTE_MULTIPLIER . 'k');
+            ->shouldBe((int) ($maxSize * FileGuesser::KILOBYTE_MULTIPLIER * 1000));
         $constraint->allowedExtensions
             ->shouldBe([]);
     }
@@ -87,7 +88,7 @@ class FileGuesserSpec extends ObjectBehavior
         $constraint->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\File');
 
         $constraint->maxSize
-            ->shouldBe($maxSize . 'M');
+            ->shouldBe(15000000);
 
         $maxSize = '15.5';
 
@@ -102,7 +103,7 @@ class FileGuesserSpec extends ObjectBehavior
         $constraint->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\File');
 
         $constraint->maxSize
-            ->shouldBe(intval($maxSize * FileGuesser::KILOBYTE_MULTIPLIER) . 'k');
+            ->shouldBe(intval($maxSize * FileGuesser::KILOBYTE_MULTIPLIER * 1000));
     }
 
     function it_guesses_file_with_allowed_extensions(AttributeInterface $attribute)
@@ -143,7 +144,7 @@ class FileGuesserSpec extends ObjectBehavior
         $constraint->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\File');
 
         $constraint->maxSize
-            ->shouldBe('15M');
+            ->shouldBe(15000000);
 
         $constraint->allowedExtensions
             ->shouldBe(['jpg', 'png']);

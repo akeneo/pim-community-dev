@@ -18,10 +18,10 @@
 
 {% block navButtons %}
     {% if editRoute is defined %}
-        {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-edit ', 'title' : 'Edit profile', 'label' : 'Edit'}) }}
+        {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-pencil ', 'title' : 'Edit profile', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
     {% else %}
         {% if resource_granted('pim_user_user_edit') %}
-            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit user', 'label' : 'Edit'}) }}
+            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-pencil ', 'title' : 'Edit user', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
         {% endif %}
     {% endif %}
     {% if resource_granted('pim_user_user_remove') and entity.id!=app.user.id %}

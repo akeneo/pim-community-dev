@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Processor to add product to a variant group in a mass edit

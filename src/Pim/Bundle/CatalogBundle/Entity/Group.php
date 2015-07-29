@@ -341,7 +341,7 @@ class Group implements GroupInterface
      */
     public function getGroupSequence()
     {
-        return array('Default', strtolower($this->getType()->getCode()));
+        return array('Group', strtolower($this->getType()->getCode()));
     }
 
     /**

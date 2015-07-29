@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -28,7 +29,8 @@ class UserContextSpec extends ObjectBehavior
         ChannelInterface $mobile,
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
-        CategoryRepositoryInterface $productCategoryRepo
+        CategoryRepositoryInterface $productCategoryRepo,
+        RequestStack $requestStack
     ) {
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -49,14 +51,24 @@ class UserContextSpec extends ObjectBehavior
         $channelManager->getChannels()->willReturn([$mobile, $ecommerce]);
         $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree]);
 
-        $this->beConstructedWith($securityContext, $localeManager, $channelManager, $productCategoryRepo, 'en_US');
+        $this->beConstructedWith(
+            $securityContext,
+            $localeManager,
+            $channelManager,
+            $productCategoryRepo,
+            $requestStack,
+            'en_US'
+        );
     }
 
-    function it_provides_locale_from_the_request_if_it_has_been_set(Request $request, $fr)
+    function it_provides_locale_from_the_request_if_it_has_been_set(
+        RequestStack $requestStack,
+        Request $request,
+        $fr)
     {
+        $requestStack->getCurrentRequest()->willReturn($request);
         $request->get('dataLocale')->willReturn('fr_FR');
 
-        $this->setRequest($request);
         $this->getCurrentLocale()->shouldReturn($fr);
     }
 

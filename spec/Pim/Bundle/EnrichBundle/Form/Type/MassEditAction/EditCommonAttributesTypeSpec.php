@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditCommonAttributesTypeSpec extends ObjectBehavior
 {
@@ -30,7 +30,7 @@ class EditCommonAttributesTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pim_enrich_mass_edit_common_attributes');
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\UserBundle\Context;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
@@ -11,7 +10,8 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -28,8 +28,8 @@ class UserContext
     /** @staticvar string */
     const USER_PRODUCT_CATEGORY_TYPE = 'product';
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var LocaleManager */
     protected $localeManager;
@@ -37,8 +37,8 @@ class UserContext
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var Request */
-    protected $request;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var array */
     protected $userLocales;
@@ -50,34 +50,27 @@ class UserContext
     protected $defaultLocale;
 
     /**
-     * @param SecurityContextInterface    $securityContext
+     * @param TokenStorageInterface       $tokenStorage
      * @param LocaleManager               $localeManager
      * @param ChannelManager              $channelManager
      * @param CategoryRepositoryInterface $productCategoryRepo
+     * @param RequestStack                $requestStack
      * @param string                      $defaultLocale
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryRepositoryInterface $productCategoryRepo,
+        RequestStack $requestStack,
         $defaultLocale
     ) {
-        $this->securityContext     = $securityContext;
+        $this->tokenStorage        = $tokenStorage;
         $this->localeManager       = $localeManager;
         $this->channelManager      = $channelManager;
+        $this->requestStack        = $requestStack;
         $this->defaultLocale       = $defaultLocale;
         $this->productCategoryRepo = $productCategoryRepo;
-    }
-
-    /**
-     * Sets the current request
-     *
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
     }
 
     /**
@@ -234,8 +227,9 @@ class UserContext
      */
     protected function getRequestLocale()
     {
-        if ($this->request) {
-            $localeCode = $this->request->get(self::REQUEST_LOCALE_PARAM);
+        $request = $this->getCurrentRequest();
+        if (null !== $request) {
+            $localeCode = $request->get(self::REQUEST_LOCALE_PARAM);
             if ($localeCode) {
                 $locale = $this->localeManager->getLocaleByCode($localeCode);
                 if ($locale && $this->isLocaleAvailable($locale)) {
@@ -290,13 +284,13 @@ class UserContext
      */
     protected function getUserOption($optionName)
     {
-        $token = $this->securityContext->getToken();
+        $token = $this->tokenStorage->getToken();
 
         if ($token !== null) {
             $user   = $token->getUser();
             $method = sprintf('get%s', ucfirst($optionName));
 
-            if ($user && is_callable(array($user, $method))) {
+            if ($user && is_callable([$user, $method])) {
                 $value = $user->$method();
                 if ($value) {
                     return $value;
@@ -308,13 +302,23 @@ class UserContext
     }
 
     /**
+     * Get current request
+     *
+     * @return Request|null
+     */
+    protected function getCurrentRequest()
+    {
+        return $this->requestStack->getCurrentRequest();
+    }
+
+    /**
      * Get authenticated user
      *
      * @return User|null
      */
     public function getUser()
     {
-        if (null === $token = $this->securityContext->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 

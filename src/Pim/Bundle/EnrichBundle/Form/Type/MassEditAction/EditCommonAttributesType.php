@@ -3,12 +3,13 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Form type of the EditCommonAttributes operation
@@ -89,12 +90,16 @@ class EditCommonAttributesType extends AbstractType
                 'displayedAttributes',
                 'entity',
                 [
-                    'class'    => $this->attributeClass,
-                    'choices'  => $options['all_attributes'],
-                    'required' => false,
-                    'multiple' => true,
-                    'expanded' => false,
-                    'group_by' => 'group.label',
+                    'class'        => $this->attributeClass,
+                    'choices'      => $options['all_attributes'],
+                    'required'     => false,
+                    'multiple'     => true,
+                    'expanded'     => false,
+                    'group_by'     => 'group.label',
+                    'choice_value' => function (AttributeInterface $attribute) {
+                        // Cast id to string to be compatible with ChoiceView
+                        return (string) $attribute->getId();
+                    }
                 ]
             );
     }
@@ -114,7 +119,7 @@ class EditCommonAttributesType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [

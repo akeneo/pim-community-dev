@@ -12,7 +12,8 @@ use Pim\Bundle\CatalogBundle\Validator\UniqueValuesSet;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UniqueValueValidatorSpec extends ObjectBehavior
 {
@@ -60,7 +61,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $uniqueValuesSet->addValue($uniqueValue)->willReturn(true);
 
         $this->validate("my_value", $constraint)->shouldReturn(null);
-        $context->addViolation(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
     }
 
     function it_adds_violation_with_non_unique_value_from_form_data_and_value_comes_from_database(
@@ -71,7 +72,8 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         UniqueValue $constraint,
         ProductInterface $product,
-        Form $form
+        Form $form,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $context->getRoot()->willReturn($form);
         $form->getData()->willReturn($product);
@@ -86,7 +88,9 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $productRepository->valueExists($uniqueValue)->willReturn(true);
         $uniqueValuesSet->addValue($uniqueValue)->willReturn(true);
 
-        $context->addViolation($constraint->message, Argument::any())->shouldBeCalled();
+        $context->buildViolation($constraint->message, Argument::any())
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate("my_value", $constraint)->shouldReturn(null);
     }
@@ -99,7 +103,8 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         ExecutionContextInterface $context,
         UniqueValue $constraint,
         ProductInterface $product,
-        Form $form
+        Form $form,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $context->getRoot()->willReturn($form);
         $form->getData()->willReturn($product);
@@ -114,7 +119,9 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $productRepository->valueExists($uniqueValue)->willReturn(false);
         $uniqueValuesSet->addValue($uniqueValue)->willReturn(false);
 
-        $context->addViolation($constraint->message, Argument::any())->shouldBeCalled();
+        $context->buildViolation($constraint->message, Argument::any())
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate("my_value", $constraint)->shouldReturn(null);
     }
@@ -128,7 +135,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $this->initialize($emptyContext);
         $emptyContext->getRoot()->willReturn(null);
         $productRepository->valueExists($value)->shouldNotBeCalled();
-        $emptyContext->addViolation(Argument::any())->shouldNotBeCalled();
+        $emptyContext->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate("my_value", $constraint)->shouldReturn(null);
     }
@@ -140,7 +147,7 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         Constraint $constraint
     ) {
         $productRepository->valueExists($value)->shouldNotBeCalled();
-        $context->addViolation(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate("", $constraint)->shouldReturn(null);
     }

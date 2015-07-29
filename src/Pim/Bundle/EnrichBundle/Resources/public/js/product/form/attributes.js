@@ -215,8 +215,6 @@ define(
                                 delete fields[attributeCode];
 
                                 this.setData(product);
-
-                                this.getFormModel().trigger('change');
                             }, this)).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',

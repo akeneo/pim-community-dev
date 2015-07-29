@@ -12,7 +12,7 @@ use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Validates an imported product
@@ -162,7 +162,7 @@ class ProductImportValidator extends ImportValidator
             return new \Symfony\Component\Validator\ConstraintViolationList();
         }
 
-        return $this->validator->validateValue(
+        return $this->validator->validate(
             $value->getData(),
             $this->getAttributeConstraints($columnInfo->getAttribute())
         );

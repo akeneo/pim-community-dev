@@ -182,11 +182,11 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
         $productQueryBuilder = $this->getProductQueryBuilder();
 
         $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['context']);
-        $resolver->setDefaults([
-            'context' => ['locale' => null, 'scope' => null]
-        ]);
+        $resolver->setRequired(['field', 'operator', 'value'])
+            ->setDefined(['context'])
+            ->setDefaults([
+                'context' => ['locale' => null, 'scope' => null]
+            ]);
 
         foreach ($filters as $filter) {
             $filter = $resolver->resolve($filter);

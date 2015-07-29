@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -44,38 +43,7 @@ class PimCatalogExtension extends Extension
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
 
-        $this->loadValidationFiles($container);
         $this->loadStorageDriver($container);
-    }
-
-    /**
-     * Loads the validation files from all bundles
-     *
-     * @param ContainerBuilder $container
-     */
-    protected function loadValidationFiles(ContainerBuilder $container)
-    {
-        $dirs = array();
-        foreach ($container->getParameter('kernel.bundles') as $bundle) {
-            $reflection = new \ReflectionClass($bundle);
-            $dir = dirname($reflection->getFileName()) . '/Resources/config/validation';
-            if (is_dir($dir)) {
-                $dirs[] = $dir;
-            }
-        }
-        $finder = new Finder();
-        $mappingFiles = array();
-        foreach ($finder->files()->in($dirs) as $file) {
-            $mappingFiles[$file->getBasename('.yml')] = $file->getRealPath();
-        }
-        $mappingFiles = array_merge(
-            $container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files'),
-            array_values($mappingFiles)
-        );
-        $container->setParameter(
-            'validator.mapping.loader.yaml_files_loader.mapping_files',
-            $mappingFiles
-        );
     }
 
     /**
