@@ -22,7 +22,7 @@ final class GroupEvents
     const PRE_REMOVE = 'pim_catalog.pre_remove.group';
 
     /**
-     * This event is thrown after an group get removed.
+     * This event is thrown after a group gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.

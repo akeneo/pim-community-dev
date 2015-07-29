@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle\Event;
 final class FamilyEvents
 {
     /**
-     * This event is thrown before a family get removed.
+     * This event is thrown before a family gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
@@ -22,7 +22,7 @@ final class FamilyEvents
     const PRE_REMOVE = 'pim_catalog.pre_remove.family';
 
     /**
-     * This event is thrown after an family get removed.
+     * This event is thrown after a family gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.

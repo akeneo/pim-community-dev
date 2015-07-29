@@ -13,7 +13,7 @@ use Pim\Bundle\VersioningBundle\Model\Version;
  */
 class VersionFactory
 {
-    /** @var VersionClass */
+    /** @var string */
     protected $versionClass;
 
     /**
@@ -34,12 +34,8 @@ class VersionFactory
      *
      * @return Version
      */
-    public function create(
-        $resourceName,
-        $resourceId,
-        $author,
-        $context = null
-    ) {
+    public function create($resourceName, $resourceId, $author, $context = null)
+    {
         return new $this->versionClass($resourceName, $resourceId, $author, $context);
     }
 }

@@ -82,19 +82,20 @@ define(
 
                 return ProductManager
                     .save(productId, product)
-                    .done(ProductManager.generateMissing)
-                    .done(_.bind(function (data) {
+                    .then(ProductManager.generateMissing)
+                    .then(_.bind(function (data) {
                         messenger.notificationFlashMessage(
                             'success',
                             this.updateSuccessMessage
                         );
 
                         this.setData(data, options);
+
+                        mediator.trigger('pim_enrich:form:entity:post_fetch', data);
                     }, this))
                     .fail(_.bind(function (response) {
                         switch (response.status) {
                             case 400:
-                                mediator.trigger('pim_enrich:form:cache:clear');
                                 mediator.trigger(
                                     'pim_enrich:form:entity:bad_request',
                                     {'sentData': product, 'response': response.responseJSON}
@@ -112,7 +113,8 @@ define(
                             'error',
                             this.updateFailureMessage
                         );
-                    }, this)).always(function () {
+                    }, this))
+                    .always(function () {
                         loadingMask.hide().$el.remove();
                     });
             }

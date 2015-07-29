@@ -59,7 +59,7 @@ class FamilyRemover implements RemoverInterface
             );
         }
 
-        $options = $this->optionsResolver->resolveRemoveOptions($options);
+        $options  = $this->optionsResolver->resolveRemoveOptions($options);
         $familyId = $family->getId();
         $this->eventDispatcher->dispatch(FamilyEvents::PRE_REMOVE, new RemoveEvent($family, $familyId));
 

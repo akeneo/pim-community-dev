@@ -65,7 +65,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
             );
         }
 
-        $options = $this->optionsResolver->resolveRemoveOptions($options);
+        $options  = $this->optionsResolver->resolveRemoveOptions($options);
         $objectId = $object->getId();
         $this->eventDispatcher->dispatch(BaseEvents::PRE_REMOVE, new RemoveEvent($object, $objectId));
 

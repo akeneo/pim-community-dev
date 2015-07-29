@@ -15,12 +15,13 @@ use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Add current user
  *
- * @author    NJulien Sanchez <julien@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -32,28 +33,34 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
     /** @var VersionRepositoryInterface */
     protected $versionRepository;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var SaverInterface */
     protected $versionSaver;
 
     /**
-     * @param VersionFactory             $versionFactory
-     * @param VersionRepositoryInterface $versionRepository
-     * @param SecurityContextInterface   $securityContext
-     * @param SaverInterface             $versionSaver
+     * @param VersionFactory                $versionFactory
+     * @param VersionRepositoryInterface    $versionRepository
+     * @param TokenStorageInterface         $tokenStorage
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param SaverInterface                $versionSaver
      */
     public function __construct(
         VersionFactory $versionFactory,
         VersionRepositoryInterface $versionRepository,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         SaverInterface $versionSaver
     ) {
-        $this->versionFactory    = $versionFactory;
-        $this->versionRepository = $versionRepository;
-        $this->securityContext   = $securityContext;
-        $this->versionSaver      = $versionSaver;
+        $this->versionFactory       = $versionFactory;
+        $this->versionRepository    = $versionRepository;
+        $this->tokenStorage         = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->versionSaver         = $versionSaver;
     }
 
     /**
@@ -78,8 +85,8 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
      */
     public function postRemove(RemoveEvent $event)
     {
-        if (null !== ($token = $this->securityContext->getToken()) &&
-            $this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')
+        if (null !== ($token = $this->tokenStorage->getToken()) &&
+            $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
         ) {
             $author = $token->getUser()->getUsername();
         } else {

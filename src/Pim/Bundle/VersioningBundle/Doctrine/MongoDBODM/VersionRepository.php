@@ -46,7 +46,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
      */
     public function getNewestLogEntryForRessources($resourceNames)
     {
-        return $this->findOneBy(['resourceName' => $resourceNames], ['loggedAt' => 'desc'], 1);
+        return $this->findOneBy(['resourceName' => ['$in' => $resourceNames]], ['loggedAt' => 'desc'], 1);
     }
 
     /**

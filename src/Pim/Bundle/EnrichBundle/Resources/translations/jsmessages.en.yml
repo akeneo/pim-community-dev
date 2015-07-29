@@ -73,7 +73,7 @@ alert:
         error_occured_during_submission: An error occured during the form submission on the server
         save_before_edit_other:          Please register your modifications on other rows before editing this one
     session_storage:
-        not_available: Your web browser does not seems sompatible with sessionStorage. Please contact your administrator
+        not_available: Your web browser does not seems compatible with sessionStorage. Please contact your administrator
 
 confirm:
     attribute_option:

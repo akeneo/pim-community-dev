@@ -35,7 +35,8 @@ services:
         arguments:
             - '@pim_versioning.factory.version'
             - '@pim_versioning.repository.version'
-            - '@security.context'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
             - '@pim_versioning.saver.version'
         tags:
             - { name: kernel.event_subscriber}

@@ -13,8 +13,7 @@ config:
     config:
         pim/product-edit-form/cache-invalidator:
             events:
-                - 'pim_enrich:form:entity:action:post_fetch'
-                - 'pim_enrich:form:entity:action:post_save'
+                - 'pim_enrich:form:entity:post_fetch'
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher

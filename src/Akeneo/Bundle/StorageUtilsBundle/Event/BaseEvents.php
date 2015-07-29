@@ -12,7 +12,7 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Event;
 final class BaseEvents
 {
     /**
-     * This event is thrown before a generic entity get removed.
+     * This event is thrown before a generic entity gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
@@ -22,7 +22,7 @@ final class BaseEvents
     const PRE_REMOVE = 'pim_catalog.pre_remove.object';
 
     /**
-     * This event is thrown before a generic entity get removed.
+     * This event is thrown after a generic entity gets removed.
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.

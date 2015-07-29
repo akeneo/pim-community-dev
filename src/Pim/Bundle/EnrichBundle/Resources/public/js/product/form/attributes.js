@@ -217,6 +217,8 @@ define(
                                 delete fields[attributeCode];
 
                                 this.setData(product);
+
+                                mediator.trigger('pim_enrich:form:remove-attribute:after');
                             }, this)).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',

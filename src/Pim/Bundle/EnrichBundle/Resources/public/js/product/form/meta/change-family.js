@@ -50,6 +50,8 @@ define(
 
                         this.getFormModel().set('family', selectedFamily);
                         ProductManager.generateMissing(this.getFormData()).then(_.bind(function (product) {
+                            mediator.trigger('pim_enrich:form:change-family:before');
+
                             this.setData(product);
 
                             mediator.trigger('pim_enrich:form:change-family:after');

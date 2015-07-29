@@ -143,7 +143,7 @@ class ChannelController extends AbstractDoctrineController
             );
         }
 
-        return['form' => $this->channelForm->createView()];
+        return ['form' => $this->channelForm->createView()];
     }
 
     /**

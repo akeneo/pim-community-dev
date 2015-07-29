@@ -21,7 +21,7 @@ class RemoveEvent extends GenericEvent
      * @param int   $subjectId
      * @param array $arguments
      */
-    public function __construct($subject, $subjectId, array $arguments = array())
+    public function __construct($subject, $subjectId, array $arguments = [])
     {
         parent::__construct($subject, $arguments);
 

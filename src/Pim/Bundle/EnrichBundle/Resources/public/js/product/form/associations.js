@@ -108,23 +108,7 @@ define(
                     }, this));
                 }, this));
 
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', _.bind(function () {
-                    this.$('.selection-inputs input').val('');
-                    this.renderPanes();
-                    var associationType = this.state.get('currentAssociationType');
-
-                    _.each(this.datagrids, function (datagrid) {
-                        if ($('#grid-' + datagrid.name).length) {
-                            mediator
-                                .trigger(
-                                    'datagrid:setParam:' + datagrid.name,
-                                    datagrid.paramName,
-                                    datagrid.getParamValue(associationType)
-                                )
-                                .trigger('datagrid:doRefresh:' + datagrid.name);
-                        }
-                    });
-                }, this));
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', _.bind(this.postUpdate, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -180,6 +164,23 @@ define(
                         })
                     );
                 }, this));
+            },
+            postUpdate: function () {
+                this.$('.selection-inputs input').val('');
+                this.renderPanes();
+                var associationType = this.state.get('currentAssociationType');
+
+                _.each(this.datagrids, function (datagrid) {
+                    if ($('#grid-' + datagrid.name).length) {
+                        mediator
+                            .trigger(
+                                'datagrid:setParam:' + datagrid.name,
+                                datagrid.paramName,
+                                datagrid.getParamValue(associationType)
+                            )
+                            .trigger('datagrid:doRefresh:' + datagrid.name);
+                    }
+                });
             },
             loadAssociationTypes: function () {
                 return FetcherRegistry.getFetcher('association-type').fetchAll();

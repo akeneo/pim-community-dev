@@ -45,7 +45,8 @@ class ProductStructureVersionProvider implements StructureVersionProviderInterfa
      */
     public function addResource($resourceName)
     {
-        $this->resourceNames[] = $resourceName;
-        $this->resourceNames   = array_unique($this->resourceNames);
+        if (!in_array($resourceName, $this->resourceNames)) {
+            $this->resourceNames[] = $resourceName;
+        }
     }
 }

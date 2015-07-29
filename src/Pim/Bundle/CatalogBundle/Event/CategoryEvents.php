@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle\Event;
 final class CategoryEvents
 {
     /**
-     * This event is thrown before a category get removed.
+     * This event is thrown before a category gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
@@ -22,7 +22,7 @@ final class CategoryEvents
     const PRE_REMOVE_CATEGORY = 'pim_catalog.pre_remove.category';
 
     /**
-     * This event is thrown after an category get removed.
+     * This event is thrown after a category gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
@@ -32,7 +32,7 @@ final class CategoryEvents
     const POST_REMOVE_CATEGORY = 'pim_catalog.post_remove.category';
 
     /**
-     * This event is thrown before a tree get removed.
+     * This event is thrown before a tree gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
@@ -42,7 +42,7 @@ final class CategoryEvents
     const PRE_REMOVE_TREE = 'pim_catalog.pre_remove.tree';
 
     /**
-     * This event is thrown after an tree get removed.
+     * This event is thrown after a tree gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
