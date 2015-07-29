@@ -4,8 +4,8 @@ namespace spec\PimEnterprise\Bundle\TransformBundle\Normalizer\Flat;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AttributeGroupNormalizerSpec extends ObjectBehavior

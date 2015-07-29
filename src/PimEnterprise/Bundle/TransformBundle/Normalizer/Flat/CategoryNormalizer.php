@@ -40,7 +40,7 @@ class CategoryNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($category, $format = null, array $context = array())
+    public function normalize($category, $format = null, array $context = [])
     {
         $normalizedCategory = $this->categoryNormalizer->normalize($category, $format, $context);
 

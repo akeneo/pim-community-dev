@@ -4,20 +4,20 @@ namespace spec\PimEnterprise\Bundle\TransformBundle\Normalizer\Flat;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class LocaleNormalizerSpec extends ObjectBehavior
 {
-    function let(LocaleAccessManager $accessManager)
+    function let(NormalizerInterface $localeNormalizer, LocaleAccessManager $accessManager)
     {
-        $this->beConstructedWith($accessManager);
+        $this->beConstructedWith($localeNormalizer, $accessManager);
     }
 
-    function it_normalize_a_locale_with_access_informations($accessManager, LocaleInterface $en, Group $allGroup, Group $managerGroup, Group $adminGroup)
+    function it_normalize_a_locale_with_access_informations($localeNormalizer, $accessManager, LocaleInterface $en, Group $allGroup, Group $managerGroup, Group $adminGroup)
     {
-        $en->getCode()->willReturn('en_US');
+        $localeNormalizer->normalize($en, 'csv', ['versioning' => true])->willReturn(['code' => 'en_US']);
         $accessManager->getViewUserGroups($en)->willReturn([$allGroup]);
         $allGroup->__toString()->willReturn('All');
         $accessManager->getEditUserGroups($en)->willReturn([$managerGroup]);

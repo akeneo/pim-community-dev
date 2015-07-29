@@ -104,6 +104,8 @@ define(
                             loadingMask.hide().$el.remove();
 
                             this.setData(product);
+
+                            mediator.trigger('pim_enrich:form:entity:post_fetch', product);
                             mediator.trigger('pim_enrich:form:entity:post_publish', product);
                         }, this));
                     }, this))

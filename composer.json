@@ -16,7 +16,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-PIM-4520",
+        "akeneo/pim-community-dev": "dev-master",
         "oro/platform": "dev-bump-symfony",
         "akeneo/batch-bundle": "dev-master",
         "akeneo/measure-bundle": "dev-master",

@@ -44,9 +44,9 @@ class LocaleNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($locale, $format = null, array $context = array())
+    public function normalize($locale, $format = null, array $context = [])
     {
-        $normalizedLocale = $this->localeNormalizer->normalize($locale);
+        $normalizedLocale = $this->localeNormalizer->normalize($locale, $format, $context);
 
         if (true === $context['versioning']) {
             $normalizedLocale['view_permission'] = implode(

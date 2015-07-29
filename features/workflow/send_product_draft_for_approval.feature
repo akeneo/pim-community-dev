@@ -49,5 +49,5 @@ Feature: Send a product draft for approval
       | title   | Are you sure you want to send this draft?                                                                    |
       | content | Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes? |
     When I confirm the dialog
-    Then I should see "Sent for approval"
+    Then I should see the text "Sent for approval"
     And the product Name should be "Baggy"

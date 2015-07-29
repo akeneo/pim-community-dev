@@ -4,8 +4,8 @@ namespace spec\PimEnterprise\Bundle\TransformBundle\Normalizer\Flat;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class CategoryNormalizerSpec extends ObjectBehavior

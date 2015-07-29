@@ -42,7 +42,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($attributeGroup, $format = null, array $context = array())
+    public function normalize($attributeGroup, $format = null, array $context = [])
     {
         $normalizedAttributeGroup = $this->attributeGroupNormalizer->normalize($attributeGroup, $format, $context);
 

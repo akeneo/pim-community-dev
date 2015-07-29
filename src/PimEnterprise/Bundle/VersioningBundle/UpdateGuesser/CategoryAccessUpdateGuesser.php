@@ -27,7 +27,7 @@ class CategoryAccessUpdateGuesser implements UpdateGuesserInterface
      */
     public function supportAction($action)
     {
-        return in_array($action, array(UpdateGuesserInterface::ACTION_UPDATE_ENTITY));
+        return $action === UpdateGuesserInterface::ACTION_UPDATE_ENTITY;
     }
 
     /**
