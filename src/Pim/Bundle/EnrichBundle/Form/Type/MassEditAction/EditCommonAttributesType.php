@@ -90,12 +90,12 @@ class EditCommonAttributesType extends AbstractType
                 'displayedAttributes',
                 'entity',
                 [
-                    'class'    => $this->attributeClass,
-                    'choices'  => $options['all_attributes'],
-                    'required' => false,
-                    'multiple' => true,
-                    'expanded' => false,
-                    'group_by' => 'group.label',
+                    'class'        => $this->attributeClass,
+                    'choices'      => $options['all_attributes'],
+                    'required'     => false,
+                    'multiple'     => true,
+                    'expanded'     => false,
+                    'group_by'     => 'group.label',
                     'choice_value' => function (AttributeInterface $attribute) {
                         // Cast id to string to be compatible with ChoiceView
                         return (string) $attribute->getId();
