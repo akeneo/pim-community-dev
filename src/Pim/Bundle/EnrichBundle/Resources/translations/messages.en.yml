@@ -261,6 +261,9 @@ pim_enrich:
             edit: Edit an association type
             remove: Remove an association type
             history: View association type history
+        job_tracker:
+            index: View process tracker
+
     acl_group:
         association_type: Association types
         attribute: Attributes
