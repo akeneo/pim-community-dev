@@ -24,34 +24,22 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class CompletenessManager
 {
-    /**
-     * @var FamilyRepositoryInterface
-     */
+    /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
-    /**
-     * @var ChannelRepositoryInterface
-     */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /**
-     * @var LocaleRepositoryInterface
-     */
+    /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /**
-     * @var CompletenessGeneratorInterface
-     */
+    /** @var CompletenessGeneratorInterface */
     protected $generator;
 
-    /**
-     * @var ValidatorInterface
-     */
+    /** @var ValidatorInterface */
     protected $validator;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $class;
 
     /**

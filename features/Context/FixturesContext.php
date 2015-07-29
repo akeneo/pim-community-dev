@@ -2023,18 +2023,11 @@ class FixturesContext extends RawMinkContext
             $data['attributes'] = str_replace(' ', '', $data['attributes']);
         }
 
-        $requirements = [];
         foreach ($data as $key => $value) {
             if (false !== strpos($key, 'requirements-')) {
-                $channel                = str_replace('requirements-', '', $key);
-                $attributes             = explode(',', $value);
-                $requirements[$channel] = $attributes;
-                unset($data[$key]);
+                $data[$key] = str_replace(' ', '', $value);
             }
         }
-
-        $data['requirements'] = $requirements;
-
         $family = $this->loadFixture('families', $data);
 
         $this->persist($family);
