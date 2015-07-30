@@ -126,7 +126,3 @@ oro_menu_config:
                 system_tab:
                     children:
                         pim_enrich_job_tracker: ~
-
-oro_titles:
-    pim_enrich_job_tracker_index:          pim_title.job_tracker.index
-    pim_enrich_job_tracker_show:           pim_title.job_tracker.show
