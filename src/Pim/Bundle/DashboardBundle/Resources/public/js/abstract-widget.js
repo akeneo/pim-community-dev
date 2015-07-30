@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'pim/router', 'oro/loading-mask', 'oro/mediator'],
-    function ($, _, Backbone, router, LoadingMask, mediator) {
+    ['jquery', 'underscore', 'backbone', 'pim/router', 'oro/loading-mask'],
+    function ($, _, Backbone, router, LoadingMask) {
         'use strict';
 
         return Backbone.View.extend({

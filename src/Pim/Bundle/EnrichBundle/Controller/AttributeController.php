@@ -205,8 +205,6 @@ class AttributeController extends AbstractDoctrineController
         $attribute = $this->findAttributeOr404($id);
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.updated');
-
-            return $this->redirectToRoute('pim_enrich_attribute_edit', ['id' => $attribute->getId()]);
         }
 
         return [
