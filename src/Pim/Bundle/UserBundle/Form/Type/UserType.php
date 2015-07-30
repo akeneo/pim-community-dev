@@ -9,7 +9,7 @@ use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Overriden user form to add a custom subscriber
@@ -30,20 +30,20 @@ class UserType extends OroUserType
     protected $groupRepository;
 
     /**
-     * @param SecurityContextInterface  $security
+     * @param TokenStorageInterface     $tokenStorage
      * @param Request                   $request
      * @param UserPreferencesSubscriber $subscriber
      * @param RoleRepository            $roleRepository
      * @param GroupRepository           $groupRepository
      */
     public function __construct(
-        SecurityContextInterface $security,
+        TokenStorageInterface $tokenStorage,
         Request $request,
         UserPreferencesSubscriber $subscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository
     ) {
-        parent::__construct($security, $request);
+        parent::__construct($tokenStorage, $request);
 
         $this->subscriber = $subscriber;
         $this->roleRepository = $roleRepository;
@@ -66,7 +66,7 @@ class UserType extends OroUserType
     public function addEntityFields(FormBuilderInterface $builder)
     {
         $builder->addEventSubscriber(
-            new UserSubscriber($builder->getFormFactory(), $this->security)
+            new UserSubscriber($builder->getFormFactory(), $this->tokenStorage)
         );
         $this->setDefaultUserFields($builder);
         $builder

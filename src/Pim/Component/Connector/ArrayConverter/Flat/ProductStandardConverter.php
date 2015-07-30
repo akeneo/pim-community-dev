@@ -11,7 +11,6 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Product Converter
@@ -247,32 +246,28 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
-     * @return OptionsResolverInterface
+     * @return OptionsResolver
      */
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
 
         $required = [];
-        $allowedTypes = [
-            'family'     => 'string',
-            'enabled'    => 'bool',
-            'categories' => 'string',
-            'groups'     => 'string'
-        ];
         $optional = array_merge(
             ['family', 'enabled', 'categories', 'groups'],
             $this->attrColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );
 
-        $resolver->setRequired($required);
-        $resolver->setOptional($optional);
-        $resolver->setAllowedTypes($allowedTypes);
-        $booleanNormalizer = function ($options, $value) {
-            return (bool) $value;
-        };
-        $resolver->setNormalizers(['enabled' => $booleanNormalizer]);
+        $resolver->setRequired($required)
+            ->setDefined($optional)
+            ->setAllowedTypes('family', 'string')
+            ->setAllowedTypes('enabled', ['bool', 'string'])
+            ->setAllowedTypes('categories', 'string')
+            ->setAllowedTypes('groups', 'string')
+            ->setNormalizer('enabled', function ($options, $value) {
+                return (bool) $value;
+            });
 
         return $resolver;
     }

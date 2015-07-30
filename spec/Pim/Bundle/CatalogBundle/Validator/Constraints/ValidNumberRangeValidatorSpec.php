@@ -7,7 +7,8 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidNumberRange;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ValidNumberRangeValidatorSpec extends ObjectBehavior
 {
@@ -32,7 +33,7 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
         $attribute->isNegativeAllowed()->willReturn(true);
 
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($attribute, $constraint);
@@ -41,7 +42,8 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_min_is_negative_allowed_but_decimal_not_allowed(
         $context,
         AttributeInterface $attribute,
-        ValidNumberRange $constraint
+        ValidNumberRange $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $attribute->isNegativeAllowed()->willReturn(true);
         $attribute->isDecimalsAllowed()->willReturn(false);
@@ -50,8 +52,12 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
         $attribute->getNumberMax()->willReturn(1);
 
         $context
-            ->addViolationAt('numberMin', $constraint->invalidNumberMessage)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->invalidNumberMessage)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('numberMin')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }
@@ -59,7 +65,8 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_max_is_negative_allowed_but_decimal_not_allowed(
         $context,
         AttributeInterface $attribute,
-        ValidNumberRange $constraint
+        ValidNumberRange $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $attribute->isNegativeAllowed()->willReturn(true);
         $attribute->isDecimalsAllowed()->willReturn(false);
@@ -68,8 +75,12 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
         $attribute->getNumberMax()->willReturn(-1.2);
 
         $context
-            ->addViolationAt('numberMax', $constraint->invalidNumberMessage)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->invalidNumberMessage)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('numberMax')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }
@@ -77,7 +88,8 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_min_is_not_negative_allowed(
         $context,
         AttributeInterface $attribute,
-        ValidNumberRange $constraint
+        ValidNumberRange $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $attribute->isNegativeAllowed()->willReturn(false);
 
@@ -85,8 +97,12 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
         $attribute->getNumberMax()->willReturn(1);
 
         $context
-            ->addViolationAt('numberMin', $constraint->invalidNumberMessage)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->invalidNumberMessage)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('numberMin')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }
@@ -94,7 +110,8 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
     function it_adds_violation_when_min_is_greater_than_max(
         $context,
         AttributeInterface $attribute,
-        ValidNumberRange $constraint
+        ValidNumberRange $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $attribute->getNumberMin()->willReturn(9);
         $attribute->getNumberMax()->willReturn(1);
@@ -102,8 +119,12 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
         $attribute->isNegativeAllowed()->willReturn(false);
 
         $context
-            ->addViolationAt('numberMax', $constraint->message)
-            ->shouldBeCalled();
+            ->buildViolation($constraint->message)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath('numberMax')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($attribute, $constraint);
     }

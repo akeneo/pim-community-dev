@@ -7,9 +7,6 @@ parameters:
     pim_catalog.query.filter.attribute_dumper.class:            Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterDumper
     pim_catalog.doctrine.query.filter.category.class:           Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter
     pim_catalog.doctrine.query.filter.object_id_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolver
-    pim_catalog.query.paginator.paginator_factory.class: Akeneo\Component\StorageUtils\Cursor\PaginatorFactory
-    pim_catalog.query.paginator.class:                   Akeneo\Component\StorageUtils\Cursor\Paginator
-    pim_catalog.query.paginator.default_page_size:       100
 
 services:
     pim_catalog.query.product_query_builder_factory:
@@ -22,12 +19,6 @@ services:
             - @pim_catalog.query.filter.registry
             - @pim_catalog.query.sorter.registry
             - @pim_catalog.factory.product_cursor
-
-    pim_catalog.query.paginator.paginator_factory:
-        class: %pim_catalog.query.paginator.paginator_factory.class%
-        arguments:
-            - %pim_catalog.query.paginator.class%
-            - %pim_catalog.query.paginator.default_page_size%
 
     # deprecated : will be removed in 1.4, please use pim_catalog.query.product_query_builder_factory
     pim_catalog.doctrine.product_query_builder:

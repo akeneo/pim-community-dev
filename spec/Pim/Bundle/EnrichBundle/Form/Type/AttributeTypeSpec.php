@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AttributeTypeSpec extends ObjectBehavior
 {
@@ -60,7 +60,7 @@ class AttributeTypeSpec extends ObjectBehavior
                 [
                     'choices'   => ['text', 'number', 'email'],
                     'select2'   => true,
-                    'disabled'  => true,
+                    'disabled'  => false,
                     'read_only' => true
                 ]
             )
@@ -118,7 +118,7 @@ class AttributeTypeSpec extends ObjectBehavior
         $builder->add('useableAsGridFilter', 'switch')->shouldHaveBeenCalled();
     }
 
-    function it_sets_the_default_form_data_class(OptionsResolverInterface $resolver)
+    function it_sets_the_default_form_data_class(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             [

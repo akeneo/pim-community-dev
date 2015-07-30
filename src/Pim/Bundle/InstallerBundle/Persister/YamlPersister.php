@@ -40,7 +40,7 @@ class YamlPersister
      */
     public function parse()
     {
-        $data = Yaml::parse($this->paramFile);
+        $data = Yaml::parse(file_get_contents($this->paramFile));
 
         if (!is_array($data) || !isset($data['parameters'])) {
             return array();

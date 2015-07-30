@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Resolve completeness saving options
@@ -50,18 +49,14 @@ class CompletenessSavingOptionsResolver implements SavingOptionsResolverInterfac
     }
 
     /**
-     * @return OptionsResolverInterface
+     * @return OptionsResolver
      */
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush', 'schedule']);
-        $resolver->setAllowedTypes(
-            [
-                'flush'    => 'bool',
-                'schedule' => 'bool'
-            ]
-        );
+        $resolver->setDefined(['flush', 'schedule'])
+            ->setAllowedTypes('flush', 'bool')
+            ->setAllowedTypes('schedule', 'bool');
 
         return $resolver;
     }

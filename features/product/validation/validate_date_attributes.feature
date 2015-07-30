@@ -11,8 +11,8 @@ Feature: Validate date attributes of a product
       | release   | Release     | date | no       | yes    | 2013-01-01 | 2015-12-12 |
       | available | Available   | date | yes      | no     | 2013-01-01 | 2015-12-12 |
     And the following family:
-      | code | label-en_US | attributes              |
-      | baz  | Baz         | sku, release, available |
+      | code | label-en_US | attributes              | requirements-ecommerce | requirements-mobile |
+      | baz  | Baz         | sku, release, available | sku                    | sku                 |
     And the following products:
       | sku | family |
       | foo | baz    |

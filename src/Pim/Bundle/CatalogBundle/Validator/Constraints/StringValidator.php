@@ -38,13 +38,13 @@ class StringValidator extends ConstraintValidator
         }
 
         if (!is_string($checkedValue)) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 $constraint->message,
                 [
                     '%attribute%' => $code,
                     '%givenType%' => gettype($checkedValue),
                 ]
-            );
+            )->addViolation();
         }
     }
 }

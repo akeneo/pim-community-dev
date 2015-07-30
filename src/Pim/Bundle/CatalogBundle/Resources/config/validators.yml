@@ -1,4 +1,6 @@
 parameters:
+    symfony.validator.recursive.class:                                     Symfony\Component\Validator\Validator\RecursiveValidator
+
     pim_catalog.validator.helper.attribute.class:                          Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper
     pim_catalog.validator.constraint.valid_metric.class:                   Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
     pim_catalog.validator.constraint.currency.class:                       Pim\Bundle\CatalogBundle\Validator\Constraints\CurrencyValidator
@@ -226,13 +228,19 @@ services:
             - [ 'addMetadataFactory', [ '@pim_catalog.validator.mapping.product_value_metadata_factory' ] ]
             - [ 'addMetadataFactory', [ '@validator.mapping.class_metadata_factory' ] ]
 
-    pim_catalog.validator.product:
-        class: %validator.class%
+    pim_catalog.validator.context.factory:
+        public: false
+        class:  Symfony\Component\Validator\Context\ExecutionContextFactory
         arguments:
-            - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
-            - '@validator.validator_factory'
             - '@translator.default'
             - %validator.translation_domain%
+
+    pim_catalog.validator.product:
+        class: %symfony.validator.recursive.class%
+        arguments:
+            - @pim_catalog.validator.context.factory
+            - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
+            - '@validator.validator_factory'
             - []
 
     # deprecated will be removed in 1.5, please use pim_catalog.validator.product

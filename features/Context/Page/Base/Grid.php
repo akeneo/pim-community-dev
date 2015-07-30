@@ -281,9 +281,8 @@ class Grid extends Index
     {
         assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
 
-        $parentElement = $this->getElement('Grid toolbar');
-        $element = $this->spin(function() use ($parentElement) {
-            return $parentElement->find('css', '.page-size');
+        $element = $this->spin(function () {
+            return $this->getElement('Grid toolbar')->find('css', '.page-size');
         });
 
         $this->spin(function () use ($element) {

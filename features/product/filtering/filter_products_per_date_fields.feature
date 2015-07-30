@@ -10,7 +10,7 @@ Feature: Filter products by date field
 
   Scenario: Successfully filter products by empty value for date attribute
     Given the following attributes:
-      | label   | type | localizable | scopable | useable as grid filter |
+      | label   | type | localizable | scopable | useable_as_grid_filter |
       | release | date | no          | no       | yes                    |
     And the following products:
       | sku    | release    |
@@ -28,7 +28,7 @@ Feature: Filter products by date field
   @skip @info Broken because timezone is not well managed yet (except for UTC)
   Scenario: Successfully filter products by date attributes
     Given the following attributes:
-      | label   | code    | type | localizable | scopable | useable as grid filter |
+      | label   | code    | type | localizable | scopable | useable_as_grid_filter |
       | release | release | date | no          | no       | yes                    |
     And the following products:
       | sku    | release    |

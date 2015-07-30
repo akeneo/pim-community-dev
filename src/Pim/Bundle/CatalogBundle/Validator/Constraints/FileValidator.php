@@ -42,10 +42,10 @@ class FileValidator extends ConstraintValidator
             ;
 
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
-                $this->context->addViolation(
+                $this->context->buildViolation(
                     $constraint->extensionsMessage,
                     ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
-                );
+                )->addViolation();
             }
         }
     }

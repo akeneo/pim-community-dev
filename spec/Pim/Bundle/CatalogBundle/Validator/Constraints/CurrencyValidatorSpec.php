@@ -7,7 +7,8 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Currency;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class CurrencyValidatorSpec extends ObjectBehavior
 {
@@ -25,7 +26,7 @@ class CurrencyValidatorSpec extends ObjectBehavior
     ) {
         $price->getCurrency()->willReturn('EUR');
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
-        $context->addViolationAt(Argument::cetera())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($price, $constraint)->shouldReturn(null);
     }
@@ -34,11 +35,16 @@ class CurrencyValidatorSpec extends ObjectBehavior
         $currencyManager,
         $context,
         Currency $constraint,
-        ProductPriceInterface $price
+        ProductPriceInterface $price,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $price->getCurrency()->willReturn('CHF');
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
-        $context->addViolationAt('currency', Argument::any())->shouldBeCalled();
+        $context->buildViolation(Argument::any())
+            ->shouldBeCalled()
+            ->willReturn($violation);
+        $violation->atPath('currency')->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($price, $constraint)->shouldReturn(null);
     }

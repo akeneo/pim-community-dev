@@ -17,7 +17,8 @@ services:
     pim_versioning.event_subscriber.adduser:
         class: %pim_versioning.event_subscriber.adduser.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
         tags:
             - { name: kernel.event_subscriber }
 

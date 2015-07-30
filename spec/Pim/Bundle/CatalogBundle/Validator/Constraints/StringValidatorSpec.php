@@ -7,7 +7,8 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\String;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class StringValidatorSpec extends ObjectBehavior
 {
@@ -29,10 +30,10 @@ class StringValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_null_value($context, String $stringConstraint)
     {
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate(null, $stringConstraint);
@@ -41,20 +42,24 @@ class StringValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_when_validates_string_value($context, String $stringConstraint)
     {
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate('foo', $stringConstraint);
     }
 
-    function it_adds_violation_when_validating_non_string_value($context, String $stringConstraint)
-    {
+    function it_adds_violation_when_validating_non_string_value(
+        $context,
+        String $stringConstraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
         $context
-            ->addViolation(
+            ->buildViolation(
                 $stringConstraint->message,
                 ['%attribute%' => '', '%givenType%' => 'integer']
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate(666, $stringConstraint);
     }
@@ -71,7 +76,7 @@ class StringValidatorSpec extends ObjectBehavior
         $productValue->getVarchar()->willReturn('bar');
 
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($productValue, $stringConstraint);
@@ -81,7 +86,8 @@ class StringValidatorSpec extends ObjectBehavior
         $context,
         String $stringConstraint,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
@@ -89,11 +95,13 @@ class StringValidatorSpec extends ObjectBehavior
         $productValue->getInteger()->willReturn(666);
 
         $context
-            ->addViolation(
+            ->buildViolation(
                 $stringConstraint->message,
                 ['%attribute%' => 'foo', '%givenType%' => 'integer']
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($violation)
+        ;
 
         $this->validate($productValue, $stringConstraint);
     }

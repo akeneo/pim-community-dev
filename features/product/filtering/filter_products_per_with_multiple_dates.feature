@@ -11,7 +11,7 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | code     | label    | type | useable as grid filter |
+      | code     | label    | type | useable_as_grid_filter |
       | delivery | Delivery | date | yes                    |
       | supply   | Supply   | date | yes                    |
     And the following "delivery" attribute options: Black and Green

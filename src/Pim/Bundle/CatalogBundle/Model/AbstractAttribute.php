@@ -433,7 +433,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getGroupSequence()
     {
-        $groups = ['Default', $this->getAttributeType()];
+        $groups = ['Attribute', $this->getAttributeType()];
 
         if ($this->isUnique()) {
             $groups[] = 'unique';
