@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 
@@ -15,9 +16,6 @@ use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
  */
 abstract class AbstractProduct implements ProductInterface
 {
-    /** @staticvar string */
-    const IDENTIFIER_TYPE = 'pim_catalog_identifier';
-
     /** @var int|string */
     protected $id;
 
@@ -397,7 +395,7 @@ abstract class AbstractProduct implements ProductInterface
     public function getIdentifier()
     {
         foreach ($this->values as $value) {
-            if (self::IDENTIFIER_TYPE === $value->getAttribute()->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getAttributeType()) {
                 return $value;
             }
         }
@@ -557,7 +555,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
-        if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
             return false;
         }
 
@@ -648,7 +646,7 @@ abstract class AbstractProduct implements ProductInterface
         foreach ($this->getValues() as $value) {
             if (in_array(
                 $value->getAttribute()->getAttributeType(),
-                array('pim_catalog_image', 'pim_catalog_file')
+                array(AttributeTypes::IMAGE, AttributeTypes::FILE)
             )) {
                 $media[] = $value->getData();
             }

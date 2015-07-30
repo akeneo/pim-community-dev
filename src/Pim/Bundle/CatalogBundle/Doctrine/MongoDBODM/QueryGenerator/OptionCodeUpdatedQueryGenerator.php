@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+
 /**
  * Option code updated query generator
  *
@@ -37,6 +39,6 @@ class OptionCodeUpdatedQueryGenerator extends AbstractQueryGenerator
     public function supports($entity, $field)
     {
         return parent::supports($entity, $field) &&
-            $entity->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect';
+            $entity->getAttribute()->getAttributeType() === AttributeTypes::OPTION_SIMPLE_SELECT;
     }
 }

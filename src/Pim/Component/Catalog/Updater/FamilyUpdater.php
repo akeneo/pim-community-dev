@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -161,7 +162,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                     sprintf('Attribute with "%s" code does not exist', $attributeCode)
                 );
             }
-            if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
                 $hasIdentifier = true;
             }
 

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,9 +30,9 @@ class LengthGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             array(
-                'pim_catalog_text',
-                'pim_catalog_textarea',
-                'pim_catalog_identifier',
+                AttributeTypes::TEXT,
+                AttributeTypes::TEXTAREA,
+                AttributeTypes::IDENTIFIER,
             )
         );
     }
@@ -43,7 +44,7 @@ class LengthGuesser implements ConstraintGuesserInterface
     {
         $constraints = array();
 
-        $characterLimit = 'pim_catalog_textarea' === $attribute->getAttributeType() ?
+        $characterLimit = AttributeTypes::TEXTAREA === $attribute->getAttributeType() ?
             static::TEXTAREA_FIELD_LEMGTH :
             static::TEXT_FIELD_LEMGTH;
 

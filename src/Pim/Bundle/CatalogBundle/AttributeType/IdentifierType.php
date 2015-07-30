@@ -81,6 +81,6 @@ class IdentifierType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_identifier';
+        return AttributeTypes::IDENTIFIER;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraints\Date;
@@ -23,7 +24,7 @@ class DateGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             array(
-                'pim_catalog_date',
+                AttributeTypes::DATE,
             )
         );
     }

@@ -4,6 +4,7 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -27,9 +28,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class ProductTransformer extends EntityTransformer
 {
-    /** @staticvar the identifier attribute type */
-    const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
-
     /** @var AttributeCache */
     protected $attributeCache;
 
@@ -320,7 +318,7 @@ class ProductTransformer extends EntityTransformer
                 $attribute = $this->attributes[$columnName];
                 $columnInfo->setAttribute($attribute);
                 $this->attributeColumnsInfo[] = $columnInfo;
-                if (static::IDENTIFIER_ATTRIBUTE_TYPE == $attribute->getAttributeType()) {
+                if (AttributeTypes::IDENTIFIER == $attribute->getAttributeType()) {
                     $this->identifierAttribute = $attribute;
                 }
             } else {

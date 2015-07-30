@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 
 /**
  * Columns configurator for product grid, first column is identifier, then properties then ordered attributes
@@ -137,7 +138,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
                     'groupOrder' => $attribute['groupOrder']
                 );
 
-                if ($attributeType === 'pim_catalog_identifier') {
+                if ($attributeType === AttributeTypes::IDENTIFIER) {
                     $this->identifierColumn[$attributeCode] = $columnConfig;
                 } else {
                     $this->attributesColumns[$attributeCode] = $columnConfig;

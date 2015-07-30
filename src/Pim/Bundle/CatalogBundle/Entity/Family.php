@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -179,7 +180,7 @@ class Family implements FamilyInterface
      */
     public function removeAttribute(AttributeInterface $attribute)
     {
-        if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
             throw new \InvalidArgumentException('Identifier cannot be removed from a family.');
         }
 
@@ -265,7 +266,7 @@ class Family implements FamilyInterface
             function ($attribute) {
                 return in_array(
                     $attribute->getAttributeType(),
-                    ['pim_catalog_text', 'pim_catalog_identifier']
+                    [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER]
                 );
             }
         )->toArray();

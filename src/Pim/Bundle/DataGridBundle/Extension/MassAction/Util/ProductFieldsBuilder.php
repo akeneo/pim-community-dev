@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -145,9 +146,9 @@ class ProductFieldsBuilder
                 }
             } elseif ($attribute->isScopable()) {
                 $fieldsList[] = sprintf('%s-%s', $attCode, $scopeCode);
-            } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+            } elseif ($attribute->getAttributeType() === AttributeTypes::IDENTIFIER) {
                 array_unshift($fieldsList, $attCode);
-            } elseif ($attribute->getAttributeType() === 'pim_catalog_price_collection') {
+            } elseif ($attribute->getAttributeType() === AttributeTypes::PRICE_COLLECTION) {
                 foreach ($this->currencyManager->getActiveCodes() as $currencyCode) {
                     $fieldsList[] = sprintf('%s-%s', $attCode, $currencyCode);
                 }

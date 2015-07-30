@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -173,7 +174,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         foreach ($product->getValues() as $value) {
             if (in_array(
                 $value->getAttribute()->getAttributeType(),
-                array('pim_catalog_image', 'pim_catalog_file')
+                [AttributeTypes::IMAGE, AttributeTypes::FILE]
             )) {
                 $media[] = $value->getData();
             }
