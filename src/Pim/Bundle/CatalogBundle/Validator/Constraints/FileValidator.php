@@ -82,12 +82,12 @@ class FileValidator extends ConstraintValidator
             }
 
             if ($size > $limit) {
-                $this->context->addViolation($constraint->maxSizeMessage, [
-                    '{{ size }}' => $size,
-                    '{{ limit }}' => $limit,
+                $this->context->buildViolation($constraint->maxSizeMessage, [
+                    '{{ size }}'   => $size,
+                    '{{ limit }}'  => $limit,
                     '{{ suffix }}' => $suffix,
-                    '{{ file }}' => $this->formatValue($file->getOriginalFilename()),
-                ]);
+                    '{{ file }}'   => $this->formatValue($file->getOriginalFilename()),
+                ])->addViolation();
             }
         }
     }

@@ -33,7 +33,7 @@ class FileValidatorSpec extends ObjectBehavior
         $file->getSize()->willReturn(100);
 
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate($file, $constraint);
@@ -84,7 +84,8 @@ class FileValidatorSpec extends ObjectBehavior
     function it_does_not_validate_size(
         $context,
         File $constraint,
-        FileInterface $file
+        FileInterface $file,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $constraint->maxSize = '1M';
         $file->getId()->willReturn(12);
@@ -94,11 +95,12 @@ class FileValidatorSpec extends ObjectBehavior
         $file->getOriginalFilename()->willReturn('my file.jpg');
 
         $context
-            ->addViolation(
+            ->buildViolation(
                 $constraint->maxSizeMessage,
                 Argument::any()
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($file, $constraint);
     }
@@ -133,13 +135,9 @@ class FileValidatorSpec extends ObjectBehavior
         $this->validate(null, $constraint);
     }
 
-    function it_validates_empty_extension_and_size(
-        $context,
-        File $constraint,
-        FileInterface $file
-    ) {
+    function it_validates_empty_extension_and_size($context, File $constraint, FileInterface $file)
+    {
         $constraint->allowedExtensions = [];
-        $constraint->maxSize = null;
 
         $file->getId()->willReturn(12);
         $file->getUploadedFile()->willReturn(null);
