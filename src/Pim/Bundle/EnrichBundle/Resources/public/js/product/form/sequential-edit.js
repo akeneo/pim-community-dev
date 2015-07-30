@@ -49,7 +49,7 @@ define(
             configure: function () {
                 mediator.once('hash_navigation_request:start', function (navigation) {
                     if (navigation.url === Routing.generate('pim_enrich_product_index')) {
-                        FetcherRegistry.clear('sequentialEdit');
+                        FetcherRegistry.clear('sequential-edit');
                     }
                 });
 
