@@ -50,15 +50,15 @@ You can read this guide to see all modifications: https://gist.github.com/mickae
 You can execute the following commands in your project folder:
 
 ```
-    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\OptionsResolver\\OptionsResolverInterface;/use Symfony\\Component\\OptionsResolver\\OptionsResolver;/g'
-    find ./src -type f -print0 | xargs -0 sed -i 's/public function setDefaultOptions(OptionsResolverInterface $resolver)/public function configureOptions(OptionsResolver $resolver)/g'
-    find ./src -type f -print0 | xargs -0 sed -i 's/OptionsResolverInterface/OptionsResolver/g'
-    find ./src -type f -print0 | xargs -0 sed -i 's/* @return OptionsResolverInterface/* @return OptionsResolver/g'
-    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\ValidatorInterface;/use Symfony\\Component\\Validator\\Validator\\ValidatorInterface;/g'
-    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Form\\Extension\\Core\\View\\ChoiceView;/use Symfony\\Component\\Form\\ChoiceList\\View\\ChoiceView;/g'
-    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Form\\Tests\\Extension\\Core\\Type\\TypeTestCase;/use Symfony\\Component\\Form\\Test\\TypeTestCase;/g'
-    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\MetadataFactoryInterface;/use Symfony\\Component\\Validator\\Mapping\\Factory\\MetadataFactoryInterface;/g'
-    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\ExecutionContextInterface;/use Symfony\\Component\\Validator\\Context\\ExecutionContextInterface;/g'
+    find ./src ./spec -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\OptionsResolver\\OptionsResolverInterface;/use Symfony\\Component\\OptionsResolver\\OptionsResolver;/g'
+    find ./src ./spec -type f -print0 | xargs -0 sed -i 's/public function setDefaultOptions(OptionsResolverInterface $resolver)/public function configureOptions(OptionsResolver $resolver)/g'
+    find ./src ./spec -type f -print0 | xargs -0 sed -i 's/var OptionsResolverInterface/var OptionsResolver/g'
+    find ./src ./spec -type f -print0 | xargs -0 sed -i 's/* @return OptionsResolverInterface/* @return OptionsResolver/g'
+    find ./src ./spec -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\ValidatorInterface;/use Symfony\\Component\\Validator\\Validator\\ValidatorInterface;/g'
+    find ./src ./spec -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Form\\Extension\\Core\\View\\ChoiceView;/use Symfony\\Component\\Form\\ChoiceList\\View\\ChoiceView;/g'
+    find ./src ./spec -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Form\\Tests\\Extension\\Core\\Type\\TypeTestCase;/use Symfony\\Component\\Form\\Test\\TypeTestCase;/g'
+    find ./src ./spec -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\MetadataFactoryInterface;/use Symfony\\Component\\Validator\\Mapping\\Factory\\MetadataFactoryInterface;/g'
+    find ./src ./spec -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\ExecutionContextInterface;/use Symfony\\Component\\Validator\\Context\\ExecutionContextInterface;/g'
 ```
 
 In 2.7, the `Symfony\Component\Security\Core\SecurityContext` is marked as deprecated in favor of the `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` (see: http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements).
