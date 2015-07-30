@@ -83,6 +83,17 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
                 entity_id:
                     referencedColumnName: id
                     onDelete: CASCADE
+        media:
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInterface
+            cascade:
+                - remove
+                - persist
+                - refresh
+                - detach
+            joinColumns:
+                media_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
     manyToMany:
         options:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
@@ -101,17 +112,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
                         nullable: true
                         onDelete: CASCADE
     oneToOne:
-        media:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMediaInterface
-            cascade:
-                - remove
-                - persist
-                - refresh
-            inversedBy: value
-            joinColumns:
-                media_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
         metric:
             targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetricInterface
             cascade:
