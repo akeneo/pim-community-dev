@@ -102,8 +102,8 @@ Feature: Export products
     And the following job "tablet_product_export" configuration:
       | filePath | %tmp%/tablet_product_export/tablet_product_export.csv |
     And the following attributes:
-      | code                      | type | localizable | availableLocales |
-      | locale_specific_attribute | text | yes         | en_US,fr_FR      |
+      | code                      | type | localizable | available_locales |
+      | locale_specific_attribute | text | yes         | en_US,fr_FR       |
     And the following products:
       | sku          | family  | categories                   | price                 | size   | color | manufacturer     | material | country_of_manufacture |
       | tshirt-white | tshirts | men_2013, men_2014, men_2015 | 10 EUR, 15 USD, 9 GBP | size_M | white | american_apparel | cotton   | usa                    |

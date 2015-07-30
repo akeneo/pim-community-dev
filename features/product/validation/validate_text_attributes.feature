@@ -16,8 +16,8 @@ Feature: Validate text attributes of a product
       | references          | References          | text | yes      | no     |                | url             |                   |
       | desc                | Description         | text | no       | no     |                |                 |                   |
     And the following family:
-      | code | label-en_US | attributes                                                                  |
-      | baz  | Baz         | sku, barcode, email, link, manufacturer_number, recipient, references, desc |
+      | code | label-en_US | attributes                                                                  | requirements-ecommerce | requirements-mobile |
+      | baz  | Baz         | sku, barcode, email, link, manufacturer_number, recipient, references, desc | sku                    | sku                 |
     And the following products:
       | sku | family |
       | foo | baz    |

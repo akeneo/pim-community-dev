@@ -11,7 +11,7 @@ Feature: Filter products with multiples metrics filters
       | furniture |
       | library   |
     And the following attributes:
-      | code      | label     | type   | useable as grid filter | metric family | default metric unit | decimals allowed |
+      | code      | label     | type   | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed |
       | weight    | Weight    | metric | yes                    | Weight        | GRAM                | yes              |
       | packaging | Packaging | metric | yes                    | Weight        | GRAM                | yes              |
     And the following "weight" attribute options: Black and Green

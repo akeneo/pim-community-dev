@@ -138,8 +138,8 @@ Feature: Execute a job
   @jira https://akeneo.atlassian.net/browse/PIM-3377
   Scenario: Fail when import invalid attribute with nonexistent specific locale
     Given the following attributes:
-      | code                      | type | localizable | availableLocales |
-      | locale_specific_attribute | text | yes         | en_US            |
+      | code                      | type | localizable | available_locales |
+      | locale_specific_attribute | text | yes         | en_US             |
     Then I am on the Attribute index page
     And I add the "french" locale to the "mobile" channel
     Given the following CSV file to import:

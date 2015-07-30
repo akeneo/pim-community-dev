@@ -294,7 +294,6 @@ class FixturesContext extends RawMinkContext
         if (is_string($data)) {
             $data = ['code' => $data];
         }
-
         $variantGroup = $this->loadFixture('variant_groups', $data);
         $this->saveVariantGroup($variantGroup);
 
@@ -400,6 +399,7 @@ class FixturesContext extends RawMinkContext
         $entities  = $this->getRepository($namespace)->findAll();
 
         foreach ($entities as $entity) {
+            // TODO use a Remover
             $this->remove($entity, false);
         }
         $this->flush();
@@ -427,7 +427,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $this->createAttribute($data);
         }
-
+        // TODO use a Saver
         $this->flush();
     }
 
@@ -443,7 +443,7 @@ class FixturesContext extends RawMinkContext
             $attribute->setLocale($this->getLocaleCode($data['locale']))->setLabel($data['label']);
             $this->persist($attribute);
         }
-
+        // TODO use a Saver
         $this->flush();
     }
 
@@ -497,9 +497,12 @@ class FixturesContext extends RawMinkContext
         }
 
         foreach ($groups as $code => $data) {
+            if (!isset($data['type'])) {
+                $data['type'] = 'VARIANT';
+            }
             $this->createVariantGroup(['code' => $code] + $data);
         }
-
+        // TODO use a Saver
         $this->flush();
     }
 
@@ -517,7 +520,7 @@ class FixturesContext extends RawMinkContext
             $row['resource']     = $product;
             $comments[$row['#']] = $this->createComment($row, $comments);
         }
-
+        // TODO use a Saver
         $this->flush();
     }
 
@@ -534,7 +537,7 @@ class FixturesContext extends RawMinkContext
         foreach ($this->listToArray($attributeCodes) as $code) {
             $this->getProductBuilder()->addAttributeToProduct($product, $this->getAttribute($code));
         }
-
+        // TODO use a Saver
         $this->persist($product);
         $this->flush();
     }
@@ -552,8 +555,8 @@ class FixturesContext extends RawMinkContext
         $family    = $this->getFamily($family);
 
         $family->setAttributeAsLabel($attribute);
+        // TODO use a Saver
         $this->persist($family);
-
         $this->flush();
     }
 
@@ -565,7 +568,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCategories(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->createCategory([$data]);
+            $this->createCategory($data);
         }
     }
 
@@ -625,14 +628,14 @@ class FixturesContext extends RawMinkContext
             $attribute = $this->loadFixture('attributes', $data);
             $this->persist($attribute, $index % 200 === 0);
         }
-
+        // TODO use a Saver
         $this->flush();
 
         foreach ($optionData as $index => $data) {
             $option = $this->loadFixture('attribute_options', $data);
             $this->persist($option, $index % 200 === 0);
         }
-
+        // TODO use a Saver
         $this->flush();
     }
 
@@ -821,6 +824,7 @@ class FixturesContext extends RawMinkContext
         }
 
         $jobInstance->setRawConfiguration($configuration);
+        // TODO use a Saver
         $this->flush();
     }
 
@@ -890,7 +894,7 @@ class FixturesContext extends RawMinkContext
             $attribute->addOption($option);
             $this->persist($option);
         }
-
+        // TODO use a Saver
         $this->flush();
     }
 
@@ -908,7 +912,7 @@ class FixturesContext extends RawMinkContext
         foreach ($this->listToArray($referenceData) as $code) {
             $this->createReferenceData($referenceDataType, $code, $code);
         }
-
+        // TODO use a Saver
         $this->getEntityManager()->flush();
     }
 
@@ -926,7 +930,7 @@ class FixturesContext extends RawMinkContext
 
             $this->createReferenceData(trim($row['type']), trim($row['code']), trim($row['label']));
         }
-
+        // TODO use a Saver
         $this->getEntityManager()->flush();
     }
 
@@ -1325,6 +1329,7 @@ class FixturesContext extends RawMinkContext
     {
         $channel->setConversionUnits($conversionUnits->getRowsHash());
 
+        // TODO replace by call to a saver
         $this->flush();
     }
 
@@ -1492,6 +1497,7 @@ class FixturesContext extends RawMinkContext
      */
     public function iVeRemovedTheAttribute($attribute)
     {
+        // TODO use a Remover
         $this->remove($this->getAttribute($attribute));
     }
 
@@ -1505,6 +1511,7 @@ class FixturesContext extends RawMinkContext
     {
         $product = $this->getProduct($identifier);
         $product->setFamily($this->getFamily($family));
+        // TODO replace by call to a saver
         $this->persist($product);
         $this->flush();
     }
@@ -1569,6 +1576,7 @@ class FixturesContext extends RawMinkContext
         $this->getVersionManager()->setRealTimeVersioning(true);
         $versions = $this->getVersionManager()->buildPendingVersions($product);
         foreach ($versions as $version) {
+            // TODO replace by call to a saver
             $this->persist($version);
             $this->flush($version);
         }
@@ -1721,20 +1729,14 @@ class FixturesContext extends RawMinkContext
 
         $data['type'] = $this->getAttributeType($data['type']);
 
-        $properties = [];
         foreach ($data as $key => $element) {
             if (in_array($element, ['yes', 'no'])) {
                 $element    = $element === 'yes';
                 $data[$key] = $element;
-            }
-            if (false !== strpos($key, 'property-')) {
-                $property              = str_replace('property-', '', $key);
-                $properties[$property] = $element;
+            } elseif (in_array($key, ['available_locales', 'date_min', 'date_max', 'number_min', 'number_max']) && '' === $element) {
                 unset($data[$key]);
             }
         }
-
-        $data['properties'] = $properties;
 
         $attribute = $this->loadFixture('attributes', $data);
 
@@ -1796,22 +1798,21 @@ class FixturesContext extends RawMinkContext
             $data = [['code' => $data]];
         }
 
-        $categories = $this->loadFixture('categories', $data);
+        $category = $this->loadFixture('categories', $data);
 
         /*
          * When using ODM, one must persist and flush category without product
          * before adding and persisting products inside it
          */
-        foreach ($categories as $category) {
-            $products = $category->getProducts();
-            $this->persist($category, true);
-            foreach ($products as $product) {
-                $product->addCategory($category);
-                $this->flush($product);
-            }
+        $products = $category->getProducts();
+        $this->persist($category, true);
+        foreach ($products as $product) {
+            $product->addCategory($category);
+            // TODO replace by call to a saver
+            $this->flush($product);
         }
 
-        return reset($categories);
+        return $category;
     }
 
     /**
@@ -1880,7 +1881,7 @@ class FixturesContext extends RawMinkContext
             $attribute = $this->getAttribute($attributeCode);
             $group->addAttribute($attribute);
         }
-
+        // TODO replace by call to a saver
         $this->persist($group);
         $this->flush($group);
 
@@ -1888,6 +1889,7 @@ class FixturesContext extends RawMinkContext
             if (!empty($sku)) {
                 $product = $this->getProduct($sku);
                 $product->addGroup($group);
+                // TODO replace by call to a saver
                 $this->flush($product);
             }
         }
@@ -2019,18 +2021,15 @@ class FixturesContext extends RawMinkContext
             $data = ['code' => $data];
         }
 
-        $requirements = [];
-        foreach ($data as $key => $value) {
-            if (false !== strpos($key, 'requirements-')) {
-                $channel                = str_replace('requirements-', '', $key);
-                $attributes             = explode(',', $value);
-                $requirements[$channel] = $attributes;
-                unset($data[$key]);
-            }
+        if (isset($data['attributes'])) {
+            $data['attributes'] = str_replace(' ', '', $data['attributes']);
         }
 
-        $data['requirements'] = $requirements;
-
+        foreach ($data as $key => $value) {
+            if (false !== strpos($key, 'requirements-')) {
+                $data[$key] = str_replace(' ', '', $value);
+            }
+        }
         $family = $this->loadFixture('families', $data);
 
         $this->persist($family);
@@ -2289,6 +2288,8 @@ class FixturesContext extends RawMinkContext
     /**
      * @param object $object
      * @param bool   $flush
+     *
+     * TODO use Savers
      */
     protected function persist($object, $flush = true)
     {
@@ -2303,6 +2304,8 @@ class FixturesContext extends RawMinkContext
     /**
      * @param object $object
      * @param bool   $flush
+     *
+     * * TODO use Removers
      */
     protected function remove($object, $flush = true)
     {
