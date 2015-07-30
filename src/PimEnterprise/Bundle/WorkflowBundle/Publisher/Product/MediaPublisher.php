@@ -18,6 +18,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 /**
  * Product media publisher
  *
+ * TODO: to remove
+ * @deprecated will be removed in 1.4
+ *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class MediaPublisher implements PublisherInterface

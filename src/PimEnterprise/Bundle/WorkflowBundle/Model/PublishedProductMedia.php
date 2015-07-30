@@ -17,6 +17,9 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 /**
  * Published product media
  *
+ * TODO: to remove
+ * @deprecated will be removed in 1.4
+ *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */

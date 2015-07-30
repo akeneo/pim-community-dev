@@ -63,7 +63,7 @@ class FilePublisher implements PublisherInterface
 
         $value = $options['value'];
 
-        if ($value->getMedia() && $value->getMedia()->getKey()) {
+        if (null !== $value->getMedia() && null !== $value->getMedia()->getKey()) {
             //TODO: remove the hardcoded 'storage'
             $filesystem = $this->mountManager->getFilesystem('storage');
 
