@@ -35,11 +35,8 @@ define(
                     currentSource: ''
                 };
 
-                this.trigger('source_switcher:render:before', context);
-                this.$el.html(
-                    this.template(context)
-                );
-
+                this.trigger('pim_enrich:form:source_switcher:render:before', context);
+                this.$el.html(this.template(context));
                 this.delegateEvents();
 
                 return this;
@@ -51,7 +48,7 @@ define(
              * @param {Object} event
              */
             changeSource: function (event) {
-                this.trigger('source_switcher:source_change', event.currentTarget.dataset.source);
+                this.trigger('pim_enrich:form:source_switcher:source_change', event.currentTarget.dataset.source);
             }
         });
     }

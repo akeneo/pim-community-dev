@@ -11,6 +11,7 @@ Feature: Enforce no permissions for a category
       | grantedTwo | winter_collection |            |      |
       | notGranted | summer_collection | white      | L    |
 
+  @javascript
   Scenario: Redirect users from the product page to the dashboard when they can't see products in any tree
     Given I am logged in as "Mary"
     And I am on the "2014_collection" category page
@@ -99,6 +100,7 @@ Feature: Enforce no permissions for a category
     And I am on the "hm_jackets" variant group page
     Then the grid should contain 1 elements
 
+  @javascript
   Scenario: Display only granted products in variant group products grid, I see a sub set of products
     Given I am logged in as "Mary"
     And I am on the "summer_collection" category page

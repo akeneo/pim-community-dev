@@ -46,16 +46,9 @@ define(
             configure: function () {
                 this.routes = module.config().routes;
 
-                this.listenTo(mediator, 'product:action:post_update', this.onProductPostUpdate);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            /**
-             * Re-render extension after saving
-             */
-            onProductPostUpdate: function () {
-                this.render();
             },
 
             /**
@@ -119,9 +112,11 @@ define(
                         {productId: this.getProductId()}
                     )
                 )
-                .done(_.bind(ProductManager.generateMissing, this))
+                .then(ProductManager.generateMissing)
                 .then(_.bind(function (product) {
                     this.setData(product);
+
+                    mediator.trigger('pim_enrich:form:entity:post_fetch', product);
 
                     messenger.notificationFlashMessage(
                         'success',
