@@ -51,7 +51,7 @@ define([
                 this.setValid(true);
                 this.elements = {};
                 var promises  = [];
-                mediator.trigger('field:extension:add', {'field': this, 'promises': promises});
+                mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises});
 
                 $.when.apply($, promises)
                     .then(_.bind(function () {
@@ -186,7 +186,7 @@ define([
                 var productValue = this.getCurrentValue();
 
                 productValue.data = value;
-                mediator.trigger('entity:form:edit:update_state');
+                mediator.trigger('pim_enrich:form:entity:update_state');
             }
         });
     }

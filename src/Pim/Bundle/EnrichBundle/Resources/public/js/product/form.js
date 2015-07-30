@@ -70,13 +70,13 @@ define(
                 options = options || {};
 
                 if (!options.silent) {
-                    mediator.trigger('product:action:pre_update', data);
+                    mediator.trigger('pim_enrich:form:entity:pre_update', data);
                 }
 
                 this.getRoot().model.set(data, options);
 
                 if (!options.silent) {
-                    mediator.trigger('product:action:post_update', data);
+                    mediator.trigger('pim_enrich:form:entity:post_update', data);
                 }
 
                 return this;

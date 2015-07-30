@@ -38,6 +38,7 @@ class CategoryRemoverSpec extends ObjectBehavior
         ProductInterface $product2
     ) {
         $optionsResolver->resolveRemoveOptions(['flush' => true])->willReturn(['flush' => true]);
+        $category->getId()->willReturn(12);
         $category->isRoot()->willReturn(false);
         $category->getProducts()->willReturn([$product1, $product2]);
         $product1->removeCategory($category)->shouldBeCalled();
@@ -45,11 +46,16 @@ class CategoryRemoverSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             CategoryEvents::PRE_REMOVE_CATEGORY,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->remove($category)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            CategoryEvents::POST_REMOVE_CATEGORY,
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
+        )->shouldBeCalled();
 
         $productSaver->saveAll(
             [$product1, $product2],
@@ -68,15 +74,21 @@ class CategoryRemoverSpec extends ObjectBehavior
         $objectManager,
         CategoryInterface $tree
     ) {
+        $tree->getId()->willReturn(12);
         $tree->isRoot()->willReturn(true);
         $tree->getProducts()->willReturn([]);
 
         $eventDispatcher->dispatch(
             CategoryEvents::PRE_REMOVE_TREE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->remove($tree)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            CategoryEvents::POST_REMOVE_TREE,
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
+        )->shouldBeCalled();
 
         $this->remove($tree, ['flush' => true]);
     }

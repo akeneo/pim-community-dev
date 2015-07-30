@@ -34,11 +34,16 @@ class GroupRemoverSpec extends ObjectBehavior
         $optionsResolver->resolveRemoveOptions([])->willReturn(['flush' => true]);
         $eventDispatcher->dispatch(
             GroupEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->remove($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            GroupEvents::POST_REMOVE,
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
+        )->shouldBeCalled();
 
         $this->remove($group);
     }

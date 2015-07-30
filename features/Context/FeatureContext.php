@@ -283,7 +283,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function wait($time = 30000, $condition = null)
     {
-        if (!$this->getSession()->getDriver() instanceof Selenium2Driver) {
+        if (!($this->getSession()->getDriver() instanceof Selenium2Driver)) {
             return;
         }
 

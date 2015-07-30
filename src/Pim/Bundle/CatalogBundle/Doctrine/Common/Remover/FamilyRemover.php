@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -9,7 +10,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Family remover
@@ -59,12 +59,15 @@ class FamilyRemover implements RemoverInterface
             );
         }
 
-        $options = $this->optionsResolver->resolveRemoveOptions($options);
-        $this->eventDispatcher->dispatch(FamilyEvents::PRE_REMOVE, new GenericEvent($family));
+        $options  = $this->optionsResolver->resolveRemoveOptions($options);
+        $familyId = $family->getId();
+        $this->eventDispatcher->dispatch(FamilyEvents::PRE_REMOVE, new RemoveEvent($family, $familyId));
 
         $this->objectManager->remove($family);
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(FamilyEvents::POST_REMOVE, new RemoveEvent($family, $familyId));
     }
 }

@@ -9,15 +9,16 @@ use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $productNormalizer, NormalizerInterface $versionNormalizer, VersionManager $versionManager, LocaleManager $localeManager)
+    function let(NormalizerInterface $productNormalizer, NormalizerInterface $versionNormalizer, VersionManager $versionManager, LocaleManager $localeManager, StructureVersionProviderInterface $structureVersionProvider)
     {
-        $this->beConstructedWith($productNormalizer, $versionNormalizer, $versionManager, $localeManager);
+        $this->beConstructedWith($productNormalizer, $versionNormalizer, $versionManager, $localeManager, $structureVersionProvider);
     }
 
     function it_supports_products(ProductInterface $mug)
@@ -25,7 +26,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($mug, 'internal_api')->shouldReturn(true);
     }
 
-    function it_normalize_products($productNormalizer, $versionNormalizer, $versionManager, $localeManager, ProductInterface $mug, AssociationInterface $upsell, AssociationTypeInterface $groupType, GroupInterface $group, ArrayCollection $groups)
+    function it_normalize_products($productNormalizer, $versionNormalizer, $versionManager, $localeManager, $structureVersionProvider, ProductInterface $mug, AssociationInterface $upsell, AssociationTypeInterface $groupType, GroupInterface $group, ArrayCollection $groups)
     {
         $productNormalizer->normalize($mug, 'json', [])->willReturn(
             ['normalized_property' => 'a nice normalized property']
@@ -48,19 +49,23 @@ class ProductNormalizerSpec extends ObjectBehavior
         $groups->toArray()->willReturn([$group]);
         $group->getId()->willReturn(12);
 
+        $structureVersionProvider->getStructureVersion()->willReturn(12);
+
         $this->normalize($mug, 'internal_api', [])->shouldReturn([
             'normalized_property' => 'a nice normalized property',
             'meta' => [
                 'id'      => 12,
                 'created' => 'normalized_create_version',
                 'updated' => 'normalized_update_version',
+                'model_type'        => 'product',
+                'structure_version' => 12,
                 'label'   => [
                     'en_US' => 'A nice Mug!',
                     'fr_FR' => 'Un très beau Mug !'
                 ],
                 'associations' => [
                     'group' => ['groupIds' => [12]]
-                ]
+                ],
             ]
         ]);
     }

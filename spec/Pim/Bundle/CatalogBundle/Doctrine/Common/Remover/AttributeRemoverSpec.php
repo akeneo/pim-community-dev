@@ -41,7 +41,7 @@ class AttributeRemoverSpec extends ObjectBehavior
         $optionsResolver->resolveRemoveOptions([])->willReturn(['flush' => true]);
         $eventDispatcher->dispatch(
             AttributeEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->remove($attribute)->shouldBeCalled();
@@ -49,7 +49,7 @@ class AttributeRemoverSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             AttributeEvents::POST_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->getRepository('Pim\CatalogBundle\Entity\ProductTemplate')->willReturn($productTemplateRepository);
@@ -73,6 +73,7 @@ class AttributeRemoverSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $attribute->getCode()->willReturn('test');
+        $attribute->getId()->willReturn(12);
 
         $productTemplate->getValuesData()->willReturn(['test']);
         $productTemplateRepository->findAll()->willReturn([$productTemplate]);
@@ -100,6 +101,7 @@ class AttributeRemoverSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $attribute->getCode()->willReturn('test');
+        $attribute->getId()->willReturn(12);
 
         $productTemplate->getValuesData()->willReturn(['test', 'test2']);
         $productTemplateRepository->findAll()->willReturn([$productTemplate]);
