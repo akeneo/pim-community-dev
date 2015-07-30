@@ -16,5 +16,5 @@ class Creation extends CategoryView
     /**
      * @var string
      */
-    protected $path = '/enrich/category-tree/create';
+    protected $path = '#/enrich/category-tree/create/0';
 }

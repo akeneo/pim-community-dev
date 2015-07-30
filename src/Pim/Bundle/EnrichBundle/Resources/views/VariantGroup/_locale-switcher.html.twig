@@ -7,7 +7,7 @@
     <ul class="dropdown-menu">
         {% for locale in locales %}
             <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
-                <a href="{{ path('pim_enrich_variant_group_edit', {id: form.vars.data.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
+                <a href="#{{ path('pim_enrich_variant_group_edit', {id: form.vars.data.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
                     <span class="indicator">
                         {% if locale.code == dataLocale %}
                             <i class="icon-circle"></i>

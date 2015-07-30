@@ -4,7 +4,7 @@
             {{ 'info.association type.none exist'|trans }}
         </span>
         {% if resource_granted('pim_enrich_associationtype_index') %}
-            <a href="{{ path('pim_enrich_associationtype_index') }}">
+            <a href="#{{ path('pim_enrich_associationtype_index') }}">
                 <span class="label link-label">{{ 'info.association type.create one'|trans }}</span>
             </a>
         {% endif %}

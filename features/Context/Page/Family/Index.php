@@ -16,5 +16,5 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/configuration/family/';
+    protected $path = '#/configuration/family/';
 }

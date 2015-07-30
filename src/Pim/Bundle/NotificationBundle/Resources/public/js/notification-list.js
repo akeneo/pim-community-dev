@@ -1,6 +1,6 @@
 define(
-    ['backbone', 'jquery', 'underscore', 'routing', 'oro/navigation'],
-    function (Backbone, $, _, Routing, Navigation) {
+    ['backbone', 'jquery', 'underscore', 'pim/router'],
+    function (Backbone, $, _, router) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
@@ -25,7 +25,7 @@ define(
 
             template: _.template(
                 [
-                    '<a href="<%= url ? url : \'javascript: void(0);\' %>"<%= viewed ? \'\' : \'class="new"\' %>>',
+                    '<a href="<%= url ? \'#\' + url : \'javascript: void(0);\' %>"<%= viewed ? \'\' : \'class="new"\' %>>',
                         '<i class="icon-<%= icon %>"></i>',
                         '<%= message %>',
                         '<i class="icon-<%= viewed ? \'trash\' : \'eye-close\' %> action"></i>',
@@ -43,7 +43,7 @@ define(
 
             remove: function () {
                 this.model.destroy({
-                    url: Routing.generate('pim_notification_notification_remove', { id: this.model.get('id') }),
+                    url: router.generate('pim_notification_notification_remove', { id: this.model.get('id') }),
                     wait: false,
                     _method: 'DELETE'
                 });
@@ -56,7 +56,7 @@ define(
             open: function (e) {
                 this.preventOpen(e);
                 if (this.model.get('url')) {
-                    Navigation.getInstance().setLocation(this.model.get('url'));
+                    router.redirect(this.model.get('url'));
                 }
             },
 
@@ -70,7 +70,7 @@ define(
                 this.model.set('viewed', true);
                 $.ajax({
                     type: 'POST',
-                    url: Routing.generate('pim_notification_notification_mark_viewed', {id: this.model.id}),
+                    url: router.generate('pim_notification_notification_mark_viewed', {id: this.model.id}),
                     async: true
                 });
             },
@@ -135,7 +135,7 @@ define(
 
                 this.collection.trigger('loading:start');
 
-                $.getJSON(Routing.generate('pim_notification_notification_list') + '?skip=' + this.collection.length)
+                $.getJSON(router.generate('pim_notification_notification_list') + '?skip=' + this.collection.length)
                     .then(_.bind(function (data) {
                         this.collection.add(data.notifications);
                         this.collection.hasMore = data.notifications.length >= 10;

@@ -36,7 +36,6 @@ define(
             return Routing.generate(
                 'pim_enrich_categorytree_listtree',
                 {
-                    _format:        'json',
                     dataLocale:     dataLocale,
                     select_node_id: getActiveNode(true),
                     include_sub:    +includeSub,
@@ -50,7 +49,6 @@ define(
             return Routing.generate(
                 'pim_enrich_categorytree_children',
                 {
-                    _format:    'json',
                     dataLocale: dataLocale,
                     related_entity: relatedEntity,
                     context: 'view'

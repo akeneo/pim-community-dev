@@ -297,7 +297,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 "typeof $ != 'undefined'",                     // jQuery is loaded
                 "!$.active",                                   // No ajax request is active
                 "$('#page').css('display') == 'block'",        // Page is displayed (no progress bar)
-                "$('.loading-mask').css('display') == 'none'", // Page is not loading (no black mask loading page)
+                "!$('.loading-mask:visible').length",          // Page is not loading (no black mask loading page)
                 "$('.jstree-loading').length == 0",            // Jstree has finished loading
             ];
 
@@ -307,10 +307,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $defaultCondition = false;
         }
 
+        // Make sure jQuery is loaded
+        $this->getSession()->executeScript('require(["jquery"])');
         // Make sure the AJAX calls are fired up before checking the condition
         $this->getSession()->wait(100, false);
 
         $this->getSession()->wait($time, $condition);
+
+        // The page might load quicky but take a moment to render so let's wait some more
+        $this->getSession()->wait(1000, false);
 
         // Check if we reached the timeout unless the condition is false to explicitly wait the specified time
         if ($condition !== false && microtime(true) > $end) {

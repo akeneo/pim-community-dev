@@ -7,6 +7,7 @@ Feature: Add attributes to a variant group
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Display available attributes for a variant group
     Given the following attribute:
       | code   | label-en_US | unique | group     |
@@ -26,6 +27,7 @@ Feature: Add attributes to a variant group
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
     When I add available attributes Name, Price and Comment
+    And I visit the "Attributes" tab
     And I visit the "Product information" group
     Then I should see the Name field
     When I visit the "Marketing" group
@@ -56,6 +58,7 @@ Feature: Add attributes to a variant group
     And I am on the "caterpillar_boots" variant group page
     When I visit the "Attributes" tab
     And I add available attribute Name
+    And I visit the "Attributes" tab
     And I fill in the following information:
      | Name | bar |
     And I save the variant group
@@ -69,6 +72,7 @@ Feature: Add attributes to a variant group
     And I am on the "caterpillar_boots" variant group page
     When I visit the "Attributes" tab
     And I add available attribute Name
+    When I visit the "Attributes" tab
     And I add available attribute Description
     Then I am on the attributes page
     When I filter by "Label" with value "Name"

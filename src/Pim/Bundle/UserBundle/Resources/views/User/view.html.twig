@@ -2,7 +2,6 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
 {% set fullname = entity|oro_format_name|default('N/A') %}
-{% oro_title_set({params : {"%username%": fullname }}) %}
 
 {% macro api_data_block(user) %}
 <div class="horizontal">
@@ -17,6 +16,9 @@
 {% endmacro %}
 
 {% block navButtons %}
+    <script type="text/javascript">
+        require('pim/page-title').set({'username': '{{ fullname }}'});
+    </script>
     {% if editRoute is defined %}
         {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-pencil ', 'title' : 'Edit profile', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
     {% else %}
@@ -135,7 +137,6 @@
     #}
 
     {%- set additional_data -%}
-        {% placeholder oro_user_view_additional_data %}
     {%- endset -%}
 
     {% if additional_data is not empty %}

@@ -15,7 +15,7 @@ define(
         'pim/dialog',
         'pim/form',
         'text!pim/template/product/state',
-        'oro/navigation',
+        'pim/router',
         'oro/mediator'
     ],
     function (
@@ -25,7 +25,7 @@ define(
         Dialog,
         BaseForm,
         template,
-        Navigation,
+        router,
         mediator
     ) {
         return BaseForm.extend({
@@ -122,7 +122,7 @@ define(
                 event.preventDefault();
 
                 var doAction = function () {
-                    Navigation.getInstance().setLocation($(event.currentTarget).attr('href'));
+                    router.redirect($(event.currentTarget).attr('href'));
                 };
 
                 this.confirmAction(this.confirmationMessage, this.confirmationTitle, doAction);

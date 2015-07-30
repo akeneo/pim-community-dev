@@ -1,6 +1,4 @@
-{% if elements is not defined %}
-    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-{% endif %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set editMode = form.vars.value.id ? true : false %}
 
