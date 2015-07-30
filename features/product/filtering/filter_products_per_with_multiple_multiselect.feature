@@ -11,7 +11,7 @@ Feature: Filter products with multiples multiselect filters
       | furniture |
       | library   |
     And the following attributes:
-      | code    | label   | type        | useable as grid filter |
+      | code    | label   | type        | useable_as_grid_filter |
       | color   | Color   | multiselect | yes                    |
       | company | Company | multiselect | yes                    |
     And the following "color" attribute options: Black and Green

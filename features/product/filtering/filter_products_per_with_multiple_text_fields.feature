@@ -11,7 +11,7 @@ Feature: Filter products with multiples text fields filters
       | furniture |
       | library   |
     And the following attributes:
-      | code        | label       | type | useable as grid filter |
+      | code        | label       | type | useable_as_grid_filter |
       | name        | Name        | text | yes                    |
       | description | Description | text | yes                    |
     And the following "name" attribute options: Black and Green

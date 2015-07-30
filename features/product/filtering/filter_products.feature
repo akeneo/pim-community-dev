@@ -11,7 +11,7 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | label | localizable | scopable | useable as grid filter |
+      | label | localizable | scopable | useable_as_grid_filter |
       | Name  | yes         | no       | yes                    |
       | Image | no          | yes      | yes                    |
       | Info  | yes         | yes      | yes                    |
