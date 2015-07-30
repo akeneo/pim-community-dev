@@ -36,7 +36,11 @@ define(
             },
             registerTab: function (event) {
                 var tabs = this.state.get('tabs') || [];
-                tabs.push({ code: event.code, label: event.label });
+                tabs.push({
+                    code: event.code,
+                    displayCondition: event.displayCondition,
+                    label: event.label
+                });
 
                 this.state.set('tabs', tabs, {silent: true});
 
@@ -51,9 +55,14 @@ define(
                     return this;
                 }
 
+                var state = this.state.toJSON();
+                state.tabs = _.filter(state.tabs, function (tab) {
+                    return !_.isFunction(tab.displayCondition) || tab.displayCondition();
+                });
+
                 this.$el.html(
                     this.template({
-                        state: this.state.toJSON()
+                        state: state
                     })
                 );
                 this.delegateEvents();
