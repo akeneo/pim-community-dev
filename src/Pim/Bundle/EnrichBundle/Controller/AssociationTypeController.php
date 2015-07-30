@@ -165,8 +165,6 @@ class AssociationTypeController extends AbstractDoctrineController
 
         if ($this->assocTypeHandler->process($associationType)) {
             $this->addFlash('success', 'flash.association type.updated');
-
-            return $this->redirectToRoute('pim_enrich_associationtype_edit', ['id' => $id]);
         }
         $usageCount = $this->assocManager->countForAssociationType($associationType);
 
