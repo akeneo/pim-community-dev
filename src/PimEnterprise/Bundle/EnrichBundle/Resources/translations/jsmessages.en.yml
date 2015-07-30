@@ -38,6 +38,9 @@ pimee_enrich:
             meta:
                 published: Published version
                 owner_groups: Owner groups
+            tab:
+                proposals:
+                    title: Proposals
             confirmation:
                 revert:
                     title: Revert confirmation

@@ -70,3 +70,9 @@ extensions:
         parent: product-edit-form
         targetZone: self
         position: 100
+
+    proposals:
+        module: pimee/product-edit-form/proposals
+        parent: form-tabs
+        targetZone: container
+        position: 120
