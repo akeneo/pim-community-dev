@@ -7,6 +7,8 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
@@ -129,30 +131,78 @@ class FamilyUpdater implements ObjectUpdaterInterface
     {
         $requirements = [];
         foreach ($data as $channelCode => $attributeCodes) {
-            foreach ($attributeCodes as $attributeCode) {
-                if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode)) {
-                    if (null !== $channel = $this->channelRepository->findOneByIdentifier($channelCode)) {
-                        $requirements[] = $this->attrRequiFactory
-                            ->createAttributeRequirement($attribute, $channel, true);
-                    } else {
-                        throw new \InvalidArgumentException(
-                            sprintf('Channel with "%s" code does not exist', $channelCode)
-                        );
-                    }
-                } else {
-                    throw new \InvalidArgumentException(
-                        sprintf('Attribute with "%s" code does not exist', $attributeCode)
-                    );
-                }
-            }
+            $requirements = array_merge(
+                $requirements,
+                $this->createAttributeRequirementsByChannel($attributeCodes, $channelCode)
+            );
         }
 
         $family->setAttributeRequirements($requirements);
     }
 
     /**
+     * Creates attribute requirements for the given channel and add identifier if needed
+     *
+     * @param array  $attributeCodes
+     * @param string $channelCode
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return AttributeRequirementInterface[]
+     */
+    protected function createAttributeRequirementsByChannel(array $attributeCodes, $channelCode)
+    {
+        $hasIdentifier = false;
+        $requirements  = [];
+        foreach ($attributeCodes as $attributeCode) {
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            if (null === $attribute) {
+                throw new \InvalidArgumentException(
+                    sprintf('Attribute with "%s" code does not exist', $attributeCode)
+                );
+            }
+            if ('pim_catalog_identifier' === $attribute->getAttributeType()) {
+                $hasIdentifier = true;
+            }
+
+            $requirements[] = $this->createAttributeRequirement($attribute, $channelCode);
+        }
+
+        if (!$hasIdentifier) {
+            $requirements[] = $this->createAttributeRequirement(
+                $this->attributeRepository->getIdentifier(),
+                $channelCode
+            );
+        }
+
+        return $requirements;
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $channelCode
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return AttributeRequirementInterface
+     */
+    protected function createAttributeRequirement(AttributeInterface $attribute, $channelCode)
+    {
+        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
+        if (null === $channel) {
+            throw new \InvalidArgumentException(
+                sprintf('Channel with "%s" code does not exist', $channelCode)
+            );
+        }
+
+        return $this->attrRequiFactory->createAttributeRequirement($attribute, $channel, true);
+    }
+
+    /**
      * @param FamilyInterface $family
      * @param array           $data
+     *
+     * @throws \InvalidArgumentException
      */
     protected function addAttributes(FamilyInterface $family, array $data)
     {
@@ -170,6 +220,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
     /**
      * @param FamilyInterface $family
      * @param string          $data
+     *
+     * @throws \InvalidArgumentException
      */
     protected function setAttributeAsLabel(FamilyInterface $family, $data)
     {
