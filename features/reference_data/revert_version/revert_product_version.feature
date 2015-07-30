@@ -7,9 +7,9 @@ Feature: Revert a product to a previous version
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code        | label       | type                        | property-reference_data_name |
-      | main_fabric | Main fabric | reference_data_multiselect  | fabrics                      |
-      | main_color  | Main color  | reference_data_simpleselect | color                        |
+      | code        | label       | type                        | reference_data_name |
+      | main_fabric | Main fabric | reference_data_multiselect  | fabrics             |
+      | main_color  | Main color  | reference_data_simpleselect | color               |
     And the following reference data:
       | type   | code         | label        |
       | color  | red          |              |

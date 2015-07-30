@@ -7,9 +7,9 @@ Feature: On a product edit/show display impacted attributes
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code            | group | label           | type                        | property-reference_data_name |
-      | new_sole_fabric | info  | New sole fabric | reference_data_multiselect  | fabrics                      |
-      | new_sole_color  | info  | New sole color  | reference_data_simpleselect | color                        |
+      | code            | group | label           | type                        | reference_data_name |
+      | new_sole_fabric | info  | New sole fabric | reference_data_multiselect  | fabrics             |
+      | new_sole_color  | info  | New sole color  | reference_data_simpleselect | color               |
     And the following "new_sole_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following "new_sole_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
     And I am logged in as "Julia"
