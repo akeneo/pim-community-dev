@@ -8,7 +8,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class ImmutableValidatorSpec extends ObjectBehavior
 {
@@ -27,7 +28,8 @@ class ImmutableValidatorSpec extends ObjectBehavior
         $context,
         $entityManager,
         UnitOfWork $unitOfWork,
-        Immutable $constraint
+        Immutable $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $family = new Family();
         $family->setCode('myUpdatedCode');
@@ -35,8 +37,11 @@ class ImmutableValidatorSpec extends ObjectBehavior
         $entityManager->getUnitOfWork()->willReturn($unitOfWork);
         $unitOfWork->getOriginalEntityData($family)->willReturn(['code' => 'MyOriginalCode']);
 
-        $context->addViolationAt('code', 'This property cannot be changed.')
-            ->shouldBeCalled();
+        $context->buildViolation('This property cannot be changed.')
+            ->shouldBeCalled()
+            ->willReturn($violation);
+        $violation->atPath('code')->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $constraint->properties = ['code'];
         $this->validate($family, $constraint);
@@ -54,7 +59,7 @@ class ImmutableValidatorSpec extends ObjectBehavior
         $entityManager->getUnitOfWork()->willReturn($unitOfWork);
         $unitOfWork->getOriginalEntityData($family)->willReturn(['code' => 'MyOriginalCode']);
 
-        $context->addViolationAt(Argument::any(), Argument::any())
+        $context->buildViolation(Argument::any(), Argument::any())
             ->shouldNotBeCalled();
 
         $constraint->properties = ['code'];

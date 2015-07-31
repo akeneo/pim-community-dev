@@ -73,10 +73,10 @@ class UniqueValueValidator extends ConstraintValidator
                 $valueData = $this->formatData($productValue->getData());
                 $attributeCode = $productValue->getAttribute()->getCode();
                 if (null !== $valueData && '' !== $valueData) {
-                    $this->context->addViolation(
+                    $this->context->buildViolation(
                         $constraint->message,
                         ['%value%' => $valueData, '%attribute%' => $attributeCode]
-                    );
+                    )->addViolation();
                 }
             }
         }

@@ -11,7 +11,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxis;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 {
@@ -33,7 +34,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
     ) {
         $product->getGroups()->willReturn(null);
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($product, $uniqueVariantAxisConstraint);
@@ -47,7 +48,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
     ) {
         $notVariantGroup->getType()->willReturn($groupTypeInterface);
         $groupTypeInterface->isVariant()->willReturn(false);
-        $context->addViolation(Argument::cetera())
+        $context->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($notVariantGroup, $uniqueVariantAxisConstraint);
@@ -89,7 +90,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $tShirtVariantGroup->getLabel()->willReturn('Groupe TShirt');
 
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($tShirtVariantGroup, $uniqueVariantAxisConstraint);
@@ -105,7 +106,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         AttributeInterface $colorAttribute,
         ProductValueInterface $sizeProductValue,
         ProductValueInterface $colorProductValue,
-        UniqueVariantAxis $uniqueVariantAxisConstraint
+        UniqueVariantAxis $uniqueVariantAxisConstraint,
+        ConstraintViolationBuilderInterface $violation
+
     ) {
         $tShirtGroupType->isVariant()->willReturn(true);
 
@@ -126,13 +129,14 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $tShirtVariantGroup->getLabel()->willReturn('Groupe TShirt');
 
-        $context->addViolation(
+        $context->buildViolation(
             'Group "%variant group%" already contains another product with values "%values%"',
             [
                 '%variant group%' => 'Groupe TShirt',
                 '%values%' => 'size: XL, color: Red',
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()
+        ->willReturn($violation);
 
         $this->validate($tShirtVariantGroup, $uniqueVariantAxisConstraint);
     }
@@ -145,7 +149,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $product->getGroups()->willReturn(null);
 
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($product, $uniqueVariantAxisConstraint);
@@ -210,7 +214,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $productRepository->findAllForVariantGroup($tShirtVariantGroup, $criteria)->willReturn([]);
         $productRepository->findAllForVariantGroup($clothesVariantGroup, $criteria)->willReturn([]);
 
-        $context->addViolation()->shouldNotBeCalled(Argument::cetera());
+        $context->buildViolation()->shouldNotBeCalled(Argument::cetera());
 
         $this->validate($redTShirtProduct, $uniqueVariantAxisConstraint);
     }
@@ -228,7 +232,8 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         ProductValueInterface $sizeProductValue,
         ProductValueInterface $colorProductValue,
         ProductInterface $redTShirtProduct2,
-        UniqueVariantAxis $uniqueVariantAxisConstraint
+        UniqueVariantAxis $uniqueVariantAxisConstraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $redTShirtProduct->getGroups()->willReturn([$tShirtVariantGroup, $clothesVariantGroup]);
 
@@ -274,13 +279,14 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $productRepository->findAllForVariantGroup($tShirtVariantGroup, $criteria)->willReturn([]);
         $productRepository->findAllForVariantGroup($clothesVariantGroup, $criteria)->willReturn([$redTShirtProduct2]);
 
-        $context->addViolation(
+        $context->buildViolation(
             'Group "%variant group%" already contains another product with values "%values%"',
             [
                 '%variant group%' => 'Clothes',
                 '%values%' => 'size: XL, color: Red',
             ]
-        )->shouldBeCalled();
+        )->shouldBeCalled()
+        ->willReturn($violation);
 
         $this->validate($redTShirtProduct, $uniqueVariantAxisConstraint);
     }

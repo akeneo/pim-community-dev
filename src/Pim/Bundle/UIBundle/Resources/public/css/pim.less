@@ -7,6 +7,12 @@ body {
   color: @textColor;
   background-color: @backgroundColor-white;
 
+  &.login-page {
+    background-image: url("/bundles/pimui/images/background.svg");
+    background-size: cover;
+    background-color: @color-new-blue-light;
+  }
+
   &.konami:hover {
     cursor: url("/bundles/pimui/images/unicorn-akeneo_43.png"), pointer !important;
   }
@@ -66,10 +72,12 @@ table.grid {
     display: table-cell;
     i {
       opacity: 0;
-      margin: 0 2px;
-      padding: 0 5px;
+      width: 26px;
+      height: 20px;
+      line-height: 20px;
+      text-align: center;
       border: 1px solid #ccc;
-      .border-radius(3px);
+      .border-radius(2px);
     }
   }
 }
@@ -108,7 +116,8 @@ tr:hover>.action-cell a.action>i {
 
 .btn-group>.dropdown-menu li {
   a:hover {
-    background: @color-purple_light;
+    background: #f3f3f3;
+    color: @textColor;
   }
   &.disabled a {
     color: @textColor + #555;
@@ -566,6 +575,8 @@ span.link-label {
       font-size: 12px;
       padding-left: 20px;
       padding-right: 25px;
+      color: @textColor;
+      font-weight: 400;
 
       &:hover {
         cursor: pointer;
@@ -627,7 +638,6 @@ span.link-label {
 }
 
 body {
-  overflow: hidden !important;
   min-height: 600px;
 }
 
@@ -648,9 +658,9 @@ body {
 header.tab-header {
   height: 44px;
   border-left: none;
-  border-bottom: solid 1px #e5e5e5;
-  background: #f9f9f9;
-  padding: 0 20px;
+  border-bottom: solid 1px #ccc;
+  background: @color-new-grey;
+  padding: 0;
   .display-flex();
   justify-content: flex-start;
 
@@ -669,7 +679,7 @@ h3.tab-header {
 
 .attribute-actions {
   .attribute-edit-actions {
-    margin-right: 10px;
+    margin-right: 0;
   }
 
   & > div {
@@ -677,7 +687,7 @@ h3.tab-header {
   }
 
   .attribute-edit-actions, .attribute-copy-actions {
-    padding: 8px 0;
+    padding: 0;
     .display-flex();
 
     .other-actions {
@@ -719,10 +729,9 @@ h3.tab-header {
   }
 
   .attribute-copy-actions {
-    max-width: @max-field-width + 10px;
     .flex(1);
     margin-left: 10px;
-    border-left: 1px solid #e5e5e5;
+    border-left: 1px solid #ccc;
   }
 }
 
@@ -750,8 +759,7 @@ h3.tab-header {
   & > header {
     margin: 0 0 7px 0;
     padding: 15px 10px 15px 20px;
-    background: #F7F7F9;
-    border-bottom: 1px solid #ddd;
+    background: #f7f7f9;
 
     & > div {
       .display-flex();
@@ -764,9 +772,9 @@ h3.tab-header {
       .align-items(center);
 
       .product-label {
-        font-size: 17px;
-        font-weight: 300;
-        color: @color-form-info;
+        font-size: 18px;
+        font-weight: 400;
+        color: @color-new-purple-medium;
       }
     }
   }
@@ -823,7 +831,7 @@ h3.tab-header {
         height: 44px;
         border-left: 1px solid #ddd;
         border-right: none;
-        background: #f9f9f9;
+        background: @color-new-grey;
       }
     }
 
@@ -841,7 +849,7 @@ h3.tab-header {
   margin-top: 5px;
 
   .btn {
-    background: none;
+    background: @color-new-grey;
     font-weight: bold;
     font-size: 12px;
     border-color: #e5e5e5;
@@ -851,10 +859,10 @@ h3.tab-header {
     border-radius: 1px;
 
     &.active {
-      background: #555;
-      color: white;
+      background: darken(@color-new-grey, 10%);
       text-shadow: none;
       border-color: #555;
+      box-shadow: none;
     }
   }
 }
@@ -1172,7 +1180,7 @@ h3.tab-header {
       }
 
       .unit {
-        max-width: 150px;
+        width: 150px;
       }
     }
   }
@@ -1517,8 +1525,6 @@ h3.tab-header {
 .product-edit-form {
   & > header .btn {
     background-image: none;
-    padding: 3px 15px;
-    height: 35px;
     text-shadow: none;
     box-shadow: none;
   }
@@ -1543,7 +1549,7 @@ h3.tab-header {
     background-image: none;
 
     .caret {
-      margin-top: 11px;
+      margin-top: 14px;
     }
 
     .flag-language .language {
@@ -1556,6 +1562,10 @@ h3.tab-header {
 
 .product-edit-form > header .actions .btn-group {
   font-weight: 200;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .product-edit-form > header .btn-dropdown {
@@ -1567,7 +1577,7 @@ h3.tab-header {
     }
 
     &:not(:first-child) {
-      margin-left: 0px;
+      margin-left: 0;
       border-left: none;
     }
 
@@ -1581,29 +1591,23 @@ h3.tab-header {
 .btn-dropdown {
   &.enabled > a, & > .enabled {
     opacity: 1;
-    background-color: #dae9de;
-    color: #67b373;
-    border: 1px solid #67b373;
+    background-color: darken(#a1a9b7, 10%);
+    color: #fff;
+    border: none;
 
     .caret {
-      border-top-color: #67b373;
+      border-top-color: #fff;
     }
   }
 
   &.disabled > a, & > .disabled {
     opacity: 1;
-    background-color: #ededed;
-    color: #ccc;
-    border: 1px solid #ccc;
-
-    .caret {
-      border-top-color: #ccc;
-    }
+    border: none;
   }
 }
 
 .product-status {
-  padding: 4px 0 4px 15px;
+  padding: 0 10px;
 }
 
 .updated-status {

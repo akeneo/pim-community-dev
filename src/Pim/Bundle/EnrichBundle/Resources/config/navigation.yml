@@ -35,9 +35,9 @@ oro_menu_config:
         pim_enrich_attributegroup:
             label: pim_menu.item.attribute_group
             route: pim_enrich_attributegroup_index
-            aclResourceId: pim_enrich_attribute_group_index
+            aclResourceId: pim_enrich_attributegroup_index
             extras:
-                routes: ['/^pim_enrich_attribute_group_\w+$/']
+                routes: ['/^pim_enrich_attributegroup_\w+$/']
         pim_enrich_categorytree:
             label: pim_menu.item.category
             route: pim_enrich_categorytree_index
@@ -84,18 +84,24 @@ oro_menu_config:
             extras:
                 routes: ['/^pim_enrich_group_\w+$/']
                 position: 40
-        pim_enrich_association_type:
+        pim_enrich_associationtype:
             label: pim_menu.item.association_type
-            route: pim_enrich_association_type_index
-            aclResourceId: pim_enrich_association_type_index
+            route: pim_enrich_associationtype_index
+            aclResourceId: pim_enrich_associationtype_index
             extras:
-                routes: ['/^pim_enrich_association_type_\w+$/']
-        pim_enrich_group_type:
+                routes: ['/^pim_enrich_associationtype_\w+$/']
+        pim_enrich_grouptype:
             label: pim_menu.item.group_type
-            route: pim_enrich_group_type_index
-            aclResourceId: pim_enrich_group_type_index
+            route: pim_enrich_grouptype_index
+            aclResourceId: pim_enrich_grouptype_index
             extras:
-                routes: ['/^pim_enrich_group_type_\w+$/']
+                routes: ['/^pim_enrich_grouptype_\w+$/']
+        pim_enrich_job_tracker:
+            label: job_tracker.tab.title
+            route: pim_enrich_job_tracker_index
+            aclResourceId: pim_enrich_job_tracker_index
+            extras:
+                routes: ['/^pim_enrich_job_tracker_\w+$/']
 
     tree:
         application_menu:
@@ -112,11 +118,14 @@ oro_menu_config:
                         pim_enrich_attributegroup: ~
                         pim_enrich_attribute: ~
                         pim_enrich_family: ~
-                        pim_enrich_association_type: ~
-                        pim_enrich_group_type: ~
+                        pim_enrich_associationtype: ~
+                        pim_enrich_grouptype: ~
                         pim_enrich_currency: ~
                         pim_enrich_locale: ~
                         pim_enrich_channel: ~
+                system_tab:
+                    children:
+                        pim_enrich_job_tracker: ~
 
 oro_titles:
     oro_default:                           pim_title.dashboard
@@ -142,10 +151,10 @@ oro_titles:
     pim_enrich_group_edit:                 pim_title.group.edit
     pim_enrich_variant_group_index:        pim_title.variant_group.index
     pim_enrich_variant_group_edit:         pim_title.variant_group.edit
-    pim_enrich_association_type_index:     pim_title.association_type.index
-    pim_enrich_association_type_edit:      pim_title.association_type.edit
-    pim_enrich_group_type_index:           pim_title.group_type.index
-    pim_enrich_group_type_edit:            pim_title.group_type.edit
+    pim_enrich_associationtype_index:      pim_title.association_type.index
+    pim_enrich_associationtype_edit:       pim_title.association_type.edit
+    pim_enrich_grouptype_index:            pim_title.group_type.index
+    pim_enrich_grouptype_edit:             pim_title.group_type.edit
     pim_enrich_mass_edit_action_choose:    pim_title.mass_edit_action.choose
     pim_enrich_mass_edit_action_configure: pim_title.mass_edit_action.configure
     pim_enrich_mass_edit_action_perform:   pim_title.mass_edit_action.configure

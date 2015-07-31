@@ -39,6 +39,7 @@ services:
             - '@pim_enrich.normalizer.version'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.manager.locale'
+            - '@pim_enrich.provider.structure_version.product'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

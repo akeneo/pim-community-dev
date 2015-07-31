@@ -29,7 +29,7 @@ services:
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_import_export.repository.job_instance'
-            - '@security.context'
+            - '@security.token_storage'
             - '@pim_connector.launcher.simple_job_launcher'
             - '@oro_datagrid.datagrid.manager'
 

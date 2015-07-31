@@ -7,7 +7,8 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Boolean;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class BooleanValidatorSpec extends ObjectBehavior
 {
@@ -29,10 +30,10 @@ class BooleanValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_null_value($context, Boolean $constraint)
     {
         $context
-            ->addViolationAt(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
         $context
-            ->addViolation(Argument::any())
+            ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
         $this->validate(null, $constraint);
@@ -41,7 +42,7 @@ class BooleanValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_when_validates_boolean_value($context, Boolean $constraint)
     {
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate(true, $constraint);
@@ -51,7 +52,7 @@ class BooleanValidatorSpec extends ObjectBehavior
     function it_does_not_add_violation_when_validates_boolean_like_value($context, Boolean $constraint)
     {
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate(1, $constraint);
@@ -60,33 +61,39 @@ class BooleanValidatorSpec extends ObjectBehavior
         $this->validate('0', $constraint);
     }
 
-    function it_adds_violation_when_validating_non_boolean_value($context, Boolean $constraint)
-    {
+    function it_adds_violation_when_validating_non_boolean_value(
+        $context,
+        Boolean $constraint,
+        ConstraintViolationBuilderInterface $violation
+    ) {
         $context
-            ->addViolation(
+            ->buildViolation(
                 $constraint->message,
                 ['%attribute%' => '', '%givenType%' => 'integer']
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate(666, $constraint);
 
         $context
-            ->addViolation(
+            ->buildViolation(
                 $constraint->message,
                 ['%attribute%' => '', '%givenType%' => 'string']
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate('foo', $constraint);
         $this->validate('true', $constraint);
 
         $context
-            ->addViolation(
+            ->buildViolation(
                 $constraint->message,
                 ['%attribute%' => '', '%givenType%' => 'array']
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate(['foo'], $constraint);
         $this->validate([true], $constraint);
@@ -104,7 +111,7 @@ class BooleanValidatorSpec extends ObjectBehavior
         $productValue->getBoolean()->willReturn(true);
 
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($productValue, $constraint);
@@ -122,7 +129,7 @@ class BooleanValidatorSpec extends ObjectBehavior
         $productValue->getInteger()->willReturn(null);
 
         $context
-            ->addViolation(Argument::cetera())
+            ->buildViolation(Argument::cetera())
             ->shouldNotBeCalled();
 
         $this->validate($productValue, $constraint);
@@ -132,7 +139,8 @@ class BooleanValidatorSpec extends ObjectBehavior
         $context,
         Boolean $constraint,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $productValue->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('foo');
@@ -140,11 +148,12 @@ class BooleanValidatorSpec extends ObjectBehavior
         $productValue->getInteger()->willReturn(666);
 
         $context
-            ->addViolation(
+            ->buildViolation(
                 $constraint->message,
                 ['%attribute%' => 'foo', '%givenType%' => 'integer']
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($productValue, $constraint);
     }

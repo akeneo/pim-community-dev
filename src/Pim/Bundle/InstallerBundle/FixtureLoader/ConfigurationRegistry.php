@@ -236,7 +236,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
             $reflection = new \ReflectionClass($class);
             $path = dirname($reflection->getFileName()) . '/Resources/config/fixtures.yml';
             if (file_exists($path)) {
-                $config = Yaml::parse($path) + $config;
+                $config = Yaml::parse(file_get_contents($path)) + $config;
                 $resources[] = new FileResource($path);
             }
         }

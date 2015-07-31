@@ -12,10 +12,10 @@ Feature: Validate unique attribute of a product
       | number | Number      | number | yes    |
       | date   | Date        | date   | yes    |
     And the following families:
-      | code        | label-en_US | attributes  |
-      | with_text   | With Text   | sku, text   |
-      | with_number | With Number | sku, number |
-      | with_date   | With Date   | sku, date   |
+      | code        | label-en_US | attributes  | requirements-ecommerce | requirements-mobile |
+      | with_text   | With Text   | sku, text   | sku                    | sku                 |
+      | with_number | With Number | sku, number | sku                    | sku                 |
+      | with_date   | With Date   | sku, date   | sku                    | sku                 |
     And the following products:
       | sku     | family      |
       | text1   | with_text   |

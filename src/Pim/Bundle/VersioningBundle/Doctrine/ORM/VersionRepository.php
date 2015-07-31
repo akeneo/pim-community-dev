@@ -44,6 +44,14 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     /**
      * {@inheritdoc}
      */
+    public function getNewestLogEntryForRessources($resourceNames)
+    {
+        return $this->findOneBy(['resourceName' => $resourceNames], ['loggedAt' => 'desc'], 1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPendingVersions($limit = null)
     {
         return $this->findBy(['pending' => true], ['loggedAt' => 'asc'], $limit);

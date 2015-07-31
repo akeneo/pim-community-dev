@@ -21,11 +21,13 @@ class PimVersioningExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('builders.yml');
         $loader->load('entities.yml');
+        $loader->load('event_subscribers.yml');
+        $loader->load('factories.yml');
         $loader->load('guessers.yml');
         $loader->load('managers.yml');
-        $loader->load('builders.yml');
-        $loader->load('event_subscribers.yml');
+        $loader->load('savers.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
@@ -34,7 +36,7 @@ class PimVersioningExtension extends Extension
         }
 
         $file = __DIR__.'/../Resources/config/pim_versioning_entities.yml';
-        $entities = Yaml::parse(realpath($file));
+        $entities = Yaml::parse(file_get_contents(realpath($file)));
         $container->setParameter('pim_versioning.versionable_entities', $entities['versionable']);
 
         $this->loadSerializerConfig($configs, $container);
@@ -49,8 +51,8 @@ class PimVersioningExtension extends Extension
     protected function loadSerializerConfig(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/serializer'));
+        $loader->load('flat.yml');
         $loader->load('serializer.yml');
         $loader->load('structured.yml');
-        $loader->load('flat.yml');
     }
 }

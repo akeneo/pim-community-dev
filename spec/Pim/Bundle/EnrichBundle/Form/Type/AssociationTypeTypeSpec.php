@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AssociationTypeTypeSpec extends ObjectBehavior
 {
@@ -21,7 +21,7 @@ class AssociationTypeTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim_enrich_association_type');
+        $this->getName()->shouldReturn('pim_enrich_associationtype');
     }
 
     function it_builds_form(FormBuilderInterface $builder)
@@ -43,7 +43,7 @@ class AssociationTypeTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
     }
 
-    function it_sets_default_options(OptionsResolverInterface $resolver)
+    function it_sets_default_options(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

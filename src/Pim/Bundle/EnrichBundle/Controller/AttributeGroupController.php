@@ -23,9 +23,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * AttributeGroup controller
@@ -63,7 +63,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
+     * @param TokenStorageInterface    $tokenStorage
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
@@ -81,7 +81,7 @@ class AttributeGroupController extends AbstractDoctrineController
         Request $request,
         EngineInterface $templating,
         RouterInterface $router,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -99,7 +99,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $request,
             $templating,
             $router,
-            $securityContext,
+            $tokenStorage,
             $formFactory,
             $validator,
             $translator,
@@ -120,7 +120,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * Attribute group index
      *
      * @Template
-     * @AclAncestor("pim_enrich_attribute_group_index")
+     * @AclAncestor("pim_enrich_attributegroup_index")
      *
      * @return Response
      */
@@ -137,13 +137,13 @@ class AttributeGroupController extends AbstractDoctrineController
      * Create attribute group
      *
      * @Template()
-     * @AclAncestor("pim_enrich_attribute_group_create")
+     * @AclAncestor("pim_enrich_attributegroup_create")
      *
      * @return array
      */
     public function createAction()
     {
-        if ($this->securityFacade->isGranted('pim_enrich_attribute_group_create')) {
+        if ($this->securityFacade->isGranted('pim_enrich_attributegroup_create')) {
             $group = new AttributeGroup();
 
             if ($this->formHandler->process($group)) {
@@ -177,7 +177,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param AttributeGroup $group
      *
      * @Template
-     * @AclAncestor("pim_enrich_attribute_group_edit")
+     * @AclAncestor("pim_enrich_attributegroup_edit")
      *
      * @return array
      */
@@ -204,7 +204,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @AclAncestor("pim_enrich_attribute_group_sort")
+     * @AclAncestor("pim_enrich_attributegroup_sort")
      *
      * @return Response
      */
@@ -241,7 +241,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @throws DeleteException
      *
-     * @AclAncestor("pim_enrich_attribute_group_remove")
+     * @AclAncestor("pim_enrich_attributegroup_remove")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -297,7 +297,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request $request The request object
      * @param int     $id      The group id to add attributes to
      *
-     * @AclAncestor("pim_enrich_attribute_group_add_attribute")
+     * @AclAncestor("pim_enrich_attributegroup_add_attribute")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -310,7 +310,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $this->getGroupedAttributes(),
             $availableAttributes
         );
-        $attributesForm->bind($request);
+        $attributesForm->submit($request);
 
         $this->manager->addAttributes($group, $availableAttributes->getAttributes());
         $this->addFlash('success', 'flash.attribute group.attributes added');
@@ -324,7 +324,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param int $groupId
      * @param int $attributeId
      *
-     * @AclAncestor("pim_enrich_attribute_group_remove_attribute")
+     * @AclAncestor("pim_enrich_attributegroup_remove_attribute")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

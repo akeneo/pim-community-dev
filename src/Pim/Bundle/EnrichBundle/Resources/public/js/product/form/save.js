@@ -20,16 +20,17 @@ define(
         'pim/i18n',
         'pim/user-context'
     ],
-    function ($,
-            _,
-            mediator,
-            BaseForm,
-            messenger,
-            LoadingMask,
-            ProductManager,
-            FieldManager,
-            i18n,
-            UserContext
+    function (
+        $,
+        _,
+        mediator,
+        BaseForm,
+        messenger,
+        LoadingMask,
+        ProductManager,
+        FieldManager,
+        i18n,
+        UserContext
     ) {
         return BaseForm.extend({
             className: 'btn-group',
@@ -77,35 +78,33 @@ define(
 
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-                mediator.trigger('product:action:pre_save');
+                mediator.trigger('pim_enrich:form:entity:pre_save');
 
                 return ProductManager
                     .save(productId, product)
-                    .done(_.bind(ProductManager.generateMissing, this))
-                    .done(_.bind(function (data) {
+                    .then(ProductManager.generateMissing)
+                    .then(_.bind(function (data) {
                         messenger.notificationFlashMessage(
                             'success',
                             this.updateSuccessMessage
                         );
 
-                        this.setData(data);
+                        this.setData(data, options);
 
-                        if (!options || !options.silent) {
-                            mediator.trigger('product:action:post_update', data);
-                        }
+                        mediator.trigger('pim_enrich:form:entity:post_fetch', data);
                     }, this))
                     .fail(_.bind(function (response) {
                         switch (response.status) {
                             case 400:
                                 mediator.trigger(
-                                    'entity:action:validation_error',
+                                    'pim_enrich:form:entity:bad_request',
                                     {'sentData': product, 'response': response.responseJSON}
                                 );
                                 break;
                             case 500:
                                 /* global console */
                                 console.log('Errors:', response.responseJSON);
-                                mediator.trigger('entity:error:save', response.responseJSON);
+                                mediator.trigger('pim_enrich:form:entity:error:save', response.responseJSON);
                                 break;
                             default:
                         }
@@ -114,7 +113,8 @@ define(
                             'error',
                             this.updateFailureMessage
                         );
-                    }, this)).always(function () {
+                    }, this))
+                    .always(function () {
                         loadingMask.hide().$el.remove();
                     });
             }

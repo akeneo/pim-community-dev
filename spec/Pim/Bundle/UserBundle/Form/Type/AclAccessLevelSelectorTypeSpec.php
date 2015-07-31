@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\UserBundle\Form\Type;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AclAccessLevelSelectorTypeSpec extends ObjectBehavior
 {
@@ -19,7 +19,7 @@ class AclAccessLevelSelectorTypeSpec extends ObjectBehavior
         $this->getParent()->shouldReturn('checkbox');
     }
 
-    function it_sets_the_default_acl_choices(OptionsResolverInterface $resolver)
+    function it_sets_the_default_acl_choices(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults(

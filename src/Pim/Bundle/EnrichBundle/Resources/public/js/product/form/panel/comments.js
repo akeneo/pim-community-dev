@@ -22,7 +22,6 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
-            code: 'history',
             comments: [],
             events: {
                 'keyup .comment-create textarea, .reply-to-comment textarea': 'toggleButtons',
@@ -45,8 +44,8 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                if (!this.configured) {
-                    return;
+                if (!this.configured || this.code !== this.getParent().state.get('currentPanel')) {
+                    return this;
                 }
 
                 this.loadData().done(_.bind(function (data) {

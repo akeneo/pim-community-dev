@@ -175,12 +175,12 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function addViolation(Constraint $constraint, $variantLabel, $values)
     {
-        $this->context->addViolation(
+        $this->context->buildViolation(
             $constraint->message,
-            array(
+            [
                 '%variant group%' => $variantLabel,
                 '%values%'        => $values
-            )
-        );
+            ]
+        )->addViolation();
     }
 }

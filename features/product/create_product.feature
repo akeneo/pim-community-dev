@@ -13,15 +13,25 @@ Feature: Product creation
     And I am logged in as "Julia"
     And I am on the products page
 
-  Scenario: Successfully create a product
+  Scenario: Successfully create a product without family
     Given I create a new product
     Then I should see the SKU and Family fields
     And I fill in the following information in the popin:
       | SKU | caterpillar_1 |
     And I press the "Save" button in the popin
-    And I wait 5 seconds
     Then I should be on the product "caterpillar_1" edit page
     And I should see "caterpillar_1"
+
+  Scenario: Successfully create a product with family
+    Given I create a new product
+    Then I should see the SKU and Family fields
+    And I fill in the following information in the popin:
+      | SKU    | caterpillar_1 |
+      | Family | Sandals       |
+    And I press the "Save" button in the popin
+    Then I should be on the product "caterpillar_1" edit page
+    And I should see "caterpillar_1"
+    And I should see "Family: sandals"
 
   Scenario: Fail to create a product with an already used code
     Given I create a new product

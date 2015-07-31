@@ -199,7 +199,7 @@ class Base extends Page
     {
         $element = $this->getConfirmDialog();
 
-        $button = $element->find('css', 'a.btn.ok');
+        $button = $element->find('css', '.ok');
 
         if (!$button) {
             throw new \Exception('Could not find the confirmation button');

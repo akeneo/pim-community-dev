@@ -11,9 +11,9 @@ Feature: Edit a variant group adding/removing products
       | mug       | Mug         |
       | furniture | Furniture   |
     And the following attributes:
-      | code  | label | type         | useableAsGridFilter |
-      | color | Color | simpleselect | 1                   |
-      | size  | Size  | simpleselect | 1                   |
+      | code  | label | type         | useable_as_grid_filter |
+      | color | Color | simpleselect | yes                    |
+      | size  | Size  | simpleselect | yes                    |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
     And the following products:
