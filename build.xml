@@ -87,7 +87,7 @@
                 <include name="pim_parameters.yml" />
             </fileset>
         </replaceregexp>
-        <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
+        <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" overwrite="true"/>
         <replaceregexp match="pim-behat" replace="${behat.base_url}" byline="true">
             <fileset dir="${basedir}">
                 <include name="behat.yml" />
@@ -96,6 +96,16 @@
         <replaceregexp match="tags: .*$" replace="tags: ${behat.tags}" byline="true">
             <fileset dir="${basedir}">
                 <include name="behat.yml" />
+            </fileset>
+        </replaceregexp>
+        <condition property="hasBuildTags">
+            <and>
+                <length string="${buildTags}" trim="true" when="greater" length="0"/>
+            </and>
+        </condition>
+        <replaceregexp match="tags: (.*)$" replace="tags: \1&amp;&amp;${buildTags}" byline="true">
+            <fileset dir="${basedir}">
+                <include name="behat.yml" if="hasBuildTags" />
             </fileset>
         </replaceregexp>
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />

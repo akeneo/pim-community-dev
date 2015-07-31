@@ -23,7 +23,7 @@ else
     XDEBUG=$2
     DB_PREFIX=$3
     PROFILE_PREFIX=$4
-    BEHAT_CMD=`echo $* | sed -e "s/$CONCURRENCY//" -e "s/$XDEBUG//" -e "s/$DB_PREFIX//" -e "s/$PROFILE_PREFIX//"`
+    BEHAT_CMD=${@:5}
 
     if [ $XDEBUG != 'xdebug' ] && [ $XDEBUG != 'noxdebug' ] ; then
         echo "Invalid xdebug parameter [$XDEBUG]"
