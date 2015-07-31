@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 
 /**
@@ -36,7 +37,7 @@ class OptionPresenter extends AbstractProductValuePresenter
      */
     public function supportsChange($attributeType)
     {
-        return 'pim_catalog_simpleselect' === $attributeType;
+        return AttributeTypes::OPTION_SIMPLE_SELECT === $attributeType;
     }
 
     /**

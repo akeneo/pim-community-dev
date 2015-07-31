@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+
 /**
  * Present changes on boolean data
  *
@@ -31,7 +33,7 @@ class BooleanPresenter extends AbstractProductValuePresenter implements Translat
      */
     public function supportsChange($attributeType)
     {
-        return 'pim_catalog_boolean' === $attributeType;
+        return AttributeTypes::BOOLEAN === $attributeType;
     }
 
     /**
