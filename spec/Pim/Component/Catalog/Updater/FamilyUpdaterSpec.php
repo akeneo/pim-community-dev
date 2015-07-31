@@ -62,17 +62,17 @@ class FamilyUpdaterSpec extends ObjectBehavior
         FamilyTranslation $translation,
         FamilyInterface $family,
         AttributeRepositoryInterface $attributeRepository,
-        AttributeInterface $attribute1,
-        AttributeInterface $attribute2,
-        AttributeInterface $attribute3,
-        AttributeInterface $attribute4,
-        AttributeRequirementInterface $attributeRequirement1,
-        AttributeRequirementInterface $attributeRequirement2,
-        AttributeRequirementInterface $attributeRequirement3,
-        AttributeRequirementInterface $attributeRequirement4,
-        AttributeRequirementInterface $attributeRequirement5,
-        ChannelInterface $channel1,
-        ChannelInterface $channel2,
+        AttributeInterface $skuAttribute,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descAttribute,
+        AttributeInterface $priceAttribute,
+        AttributeRequirementInterface $skuMobileRqrmt,
+        AttributeRequirementInterface $nameMobileRqrmt,
+        AttributeRequirementInterface $skuPrintRqrmt,
+        AttributeRequirementInterface $namePrintRqrmt,
+        AttributeRequirementInterface $descPrintRqrmt,
+        ChannelInterface $mobileChannel,
+        ChannelInterface $printChannel,
         FamilyInterface $family
     ) {
         $values = [
@@ -81,7 +81,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
             'attribute_as_label'  => 'name',
             'requirements'        => [
                 'mobile' => ['sku', 'name'],
-                'print'  => ['sku', 'name', 'description'],
+                'print'  => ['name', 'description'],
             ],
             'labels'              => [
                 'fr_FR' => 'Moniteurs',
@@ -89,37 +89,44 @@ class FamilyUpdaterSpec extends ObjectBehavior
             ],
         ];
 
-        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute1);
-        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute2);
-        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute3);
-        $attributeRepository->findOneByIdentifier('price')->willReturn($attribute4);
-        $channelRepository->findOneByIdentifier('mobile')->willReturn($channel1);
-        $channelRepository->findOneByIdentifier('print')->willReturn($channel2);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($skuAttribute);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descAttribute);
+        $attributeRepository->findOneByIdentifier('price')->willReturn($priceAttribute);
+        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
 
-        $attrRequiFactory->createAttributeRequirement($attribute1, $channel1, true)->willReturn($attributeRequirement1);
-        $attrRequiFactory->createAttributeRequirement($attribute2, $channel1, true)->willReturn($attributeRequirement2);
-        $attrRequiFactory->createAttributeRequirement($attribute1, $channel2, true)->willReturn($attributeRequirement3);
-        $attrRequiFactory->createAttributeRequirement($attribute2, $channel2, true)->willReturn($attributeRequirement4);
-        $attrRequiFactory->createAttributeRequirement($attribute3, $channel2, true)->willReturn($attributeRequirement5);
+        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $nameAttribute->getAttributeType()->willReturn('pim_catalog_text');
+        $descAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
+        $priceAttribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($mobileChannel);
+        $channelRepository->findOneByIdentifier('print')->willReturn($printChannel);
+
+        $attrRequiFactory->createAttributeRequirement($skuAttribute, $mobileChannel, true)->willReturn($skuMobileRqrmt);
+        $attrRequiFactory->createAttributeRequirement($nameAttribute, $mobileChannel, true)->willReturn($nameMobileRqrmt);
+        $attrRequiFactory->createAttributeRequirement($skuAttribute, $printChannel, true)->willReturn($skuPrintRqrmt);
+        $attrRequiFactory->createAttributeRequirement($nameAttribute, $printChannel, true)->willReturn($namePrintRqrmt);
+        $attrRequiFactory->createAttributeRequirement($descAttribute, $printChannel, true)->willReturn($descPrintRqrmt);
 
         $family
             ->setAttributeRequirements(
                 [
-                    $attributeRequirement1,
-                    $attributeRequirement2,
-                    $attributeRequirement3,
-                    $attributeRequirement4,
-                    $attributeRequirement5
+                    $skuMobileRqrmt,
+                    $nameMobileRqrmt,
+                    $namePrintRqrmt,
+                    $descPrintRqrmt,
+                    $skuPrintRqrmt
                 ]
             )
             ->shouldBeCalled();
 
         $family->setCode('mycode')->shouldBeCalled();
 
-        $family->addAttribute($attribute1)->shouldBeCalled();
-        $family->addAttribute($attribute2)->shouldBeCalled();
-        $family->addAttribute($attribute1)->shouldBeCalled();
-        $family->addAttribute($attribute1)->shouldBeCalled();
+        $family->addAttribute($skuAttribute)->shouldBeCalled();
+        $family->addAttribute($nameAttribute)->shouldBeCalled();
+        $family->addAttribute($skuAttribute)->shouldBeCalled();
+        $family->addAttribute($skuAttribute)->shouldBeCalled();
 
         $family->setLocale('en_US')->shouldBeCalled();
         $family->setLocale('fr_FR')->shouldBeCalled();
@@ -128,12 +135,12 @@ class FamilyUpdaterSpec extends ObjectBehavior
         $translation->setLabel('label en us');
         $translation->setLabel('label fr fr');
 
-        $family->addAttribute($attribute1)->shouldBeCalled();
-        $family->addAttribute($attribute2)->shouldBeCalled();
-        $family->addAttribute($attribute3)->shouldBeCalled();
-        $family->addAttribute($attribute4)->shouldBeCalled();
+        $family->addAttribute($skuAttribute)->shouldBeCalled();
+        $family->addAttribute($nameAttribute)->shouldBeCalled();
+        $family->addAttribute($descAttribute)->shouldBeCalled();
+        $family->addAttribute($priceAttribute)->shouldBeCalled();
 
-        $family->setAttributeAsLabel($attribute2)->shouldBeCalled();
+        $family->setAttributeAsLabel($nameAttribute)->shouldBeCalled();
 
         $this->update($family, $values, []);
     }

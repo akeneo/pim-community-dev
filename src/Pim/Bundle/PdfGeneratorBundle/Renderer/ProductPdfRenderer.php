@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -17,9 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProductPdfRenderer implements RendererInterface
 {
-    /** @var string */
-    const IMAGE_ATTRIBUTE_TYPE = 'pim_catalog_image';
-
     /** @var string */
     const PDF_FORMAT = 'pdf';
 
@@ -138,7 +138,7 @@ class ProductPdfRenderer implements RendererInterface
         $attributes = [];
 
         foreach ($this->getAttributes($product, $locale) as $attribute) {
-            if ($attribute->getAttributeType() === static::IMAGE_ATTRIBUTE_TYPE) {
+            if (AttributeTypes::IMAGE === $attribute->getAttributeType()) {
                 $attributes[$attribute->getCode()] = $attribute;
             }
         }

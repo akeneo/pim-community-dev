@@ -85,6 +85,6 @@ class PriceCollectionType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_price_collection';
+        return AttributeTypes::PRICE_COLLECTION;
     }
 }

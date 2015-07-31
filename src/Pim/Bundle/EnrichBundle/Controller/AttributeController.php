@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -59,8 +60,8 @@ class AttributeController extends AbstractDoctrineController
 
     /** @var array */
     protected $choiceAttributeTypes = [
-        'pim_catalog_simpleselect',
-        'pim_catalog_multiselect'
+        AttributeTypes::OPTION_SIMPLE_SELECT,
+        AttributeTypes::OPTION_MULTI_SELECT
     ];
 
     /** @var BulkSaverInterface */
@@ -354,7 +355,7 @@ class AttributeController extends AbstractDoctrineController
      */
     protected function validateRemoval(AttributeInterface $attribute)
     {
-        if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
             $errorMessage = 'flash.attribute.identifier not removable';
             $messageParameters = [];
         } else {

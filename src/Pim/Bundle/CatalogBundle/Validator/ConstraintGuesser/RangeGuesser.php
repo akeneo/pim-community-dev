@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Range;
@@ -23,9 +24,9 @@ class RangeGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             array(
-                'pim_catalog_metric',
-                'pim_catalog_number',
-                'pim_catalog_date',
+                AttributeTypes::METRIC,
+                AttributeTypes::NUMBER,
+                AttributeTypes::DATE,
             )
         );
     }
@@ -37,7 +38,7 @@ class RangeGuesser implements ConstraintGuesserInterface
     {
         $constraints = array();
 
-        if ('pim_catalog_date' === $attribute->getAttributeType()) {
+        if (AttributeTypes::DATE === $attribute->getAttributeType()) {
             $min = $attribute->getDateMin();
             $max = $attribute->getDateMax();
         } else {

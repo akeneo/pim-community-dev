@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Boolean;
@@ -23,7 +24,7 @@ class BooleanGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             [
-                'pim_catalog_boolean',
+                AttributeTypes::BOOLEAN,
             ]
         );
     }

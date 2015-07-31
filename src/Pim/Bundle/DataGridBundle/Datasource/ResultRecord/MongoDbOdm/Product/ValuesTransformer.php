@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product\ReferenceDataTransformer;
 
 /**
@@ -63,7 +64,7 @@ class ValuesTransformer
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
 
-        if ($attribute['attributeType'] === 'pim_catalog_date' && isset($value[$backendType])) {
+        if (AttributeTypes::DATE === $attribute['attributeType'] && isset($value[$backendType])) {
             $mongoDate = $value[$backendType];
             $value[$backendType] = $dateTransformer->transform($mongoDate);
         }
@@ -82,7 +83,7 @@ class ValuesTransformer
         $attributeCode = $attribute['code'];
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
-        if ($attribute['attributeType'] === 'pim_catalog_image' && isset($value[$backendType])) {
+        if (AttributeTypes::IMAGE === $attribute['attributeType'] && isset($value[$backendType])) {
             $normalizedData = $result['normalizedData'];
             $value[$backendType] = $normalizedData[$attributeCode];
         }

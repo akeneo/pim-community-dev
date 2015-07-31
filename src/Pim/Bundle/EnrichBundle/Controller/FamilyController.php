@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -283,7 +284,7 @@ class FamilyController extends AbstractDoctrineController
 
         if (false === $family->hasAttribute($attribute)) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.attribute not found'));
-        } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+        } elseif (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.identifier not removable'));
         } elseif ($attribute === $family->getAttributeAsLabel()) {
             throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));

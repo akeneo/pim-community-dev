@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
@@ -35,7 +36,7 @@ class EntitySorter implements AttributeSorterInterface
         return in_array(
             $attribute->getAttributeType(),
             [
-                'pim_catalog_simpleselect'
+                AttributeTypes::OPTION_SIMPLE_SELECT
             ]
         );
     }
