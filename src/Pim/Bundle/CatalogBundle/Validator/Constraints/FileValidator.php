@@ -71,7 +71,9 @@ class FileValidator extends ConstraintValidator
             $limitInBytes = $constraint->maxSize;
 
             if ($file->getSize() > $limitInBytes) {
-                list($sizeAsString, $limitAsString, $suffix) = $this->factorizeSizes($file->getSize(), $limitInBytes, $constraint->binaryFormat);
+                $factorizeSizes = $this->factorizeSizes($file->getSize(), $limitInBytes, $constraint->binaryFormat);
+                list($sizeAsString, $limitAsString, $suffix) = $factorizeSizes;
+
                 $this->context->buildViolation($constraint->maxSizeMessage)
                     ->setParameter('{{ file }}', $this->formatValue($file->getOriginalFilename()))
                     ->setParameter('{{ size }}', $sizeAsString)
