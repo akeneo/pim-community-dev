@@ -20,15 +20,4 @@ interface FileFactoryInterface
      * @return FileInterface
      */
     public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias);
-
-    /**
-     * @param FileInterface $file
-     * @param string        $destFsAlias
-     * @param string        $key
-     *
-     * @return FileInterface
-     *
-     * TODO: drop this
-     */
-    public function createFromFile(FileInterface $file, $destFsAlias, $key = null);
 }
