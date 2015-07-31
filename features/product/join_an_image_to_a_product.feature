@@ -28,7 +28,7 @@ Feature: Join an image to a product
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product
     And I open "akeneo.jpg" in the current window
-    Then I should see the text the uploaded image
+    Then I should see the uploaded image
 
   Scenario: Successfully remove an image
     When I attach file "akeneo.jpg" to "Visual"
