@@ -8,6 +8,8 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/mediator',
+        'oro/messenger',
         'oro/datagrid-builder',
         'pim/form',
         'pim/user-context',
@@ -16,6 +18,8 @@ define(
     function (
         $,
         _,
+        mediator,
+        messenger,
         datagridBuilder,
         BaseForm,
         UserContext,
@@ -31,6 +35,10 @@ define(
              * @return {Promise}
              */
             configure: function () {
+                this.listenTo(mediator, 'product:action:proposal:post_approve:success', this.onPostApproveSuccess);
+                this.listenTo(mediator, 'product:action:proposal:post_approve:error', this.onPostApproveError);
+                this.listenTo(mediator, 'product:action:proposal:post_reject:success', this.onPostRejectSuccess);
+
                 this.trigger('tab:register', {
                     code: this.code,
                     displayCondition: _.bind(function () { return this.getFormData().meta.is_owner }, this),
@@ -42,21 +50,29 @@ define(
                     paramName: 'product'
                 };
 
-                //mediator.on('datagrid:selectModel:' + this.datagrid.name, _.bind(this.selectModel, this));
-                //mediator.on('datagrid:unselectModel:' + this.datagrid.name, _.bind(this.unselectModel, this));
-                //mediator.on('datagrid_collection_set_after', _.bind(this.updateChecked, this));
-                //mediator.on('datagrid_collection_set_after', _.bind(this.setDatagrid, this));
-                //mediator.on('grid_load:complete', _.bind(this.updateChecked, this));
-                //mediator.once('column_form_listener:initialized', _.bind(function onColumnListenerReady(gridName) {
-                //    if (!this.configured) {
-                //        mediator.trigger(
-                //            'column_form_listener:set_selectors:' + gridName,
-                //            { included: '#asset-appendfield' }
-                //        );
-                //    }
-                //}, this));
-
                 return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            onPostApproveSuccess: function (product) {
+                this.setData(product, {silent: true});
+                messenger.notificationFlashMessage(
+                    'success',
+                    _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
+                );
+            },
+
+            onPostApproveError: function (message) {
+                messenger.notificationFlashMessage(
+                    'error',
+                    _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
+                );
+            },
+
+            onPostRejectSuccess: function () {
+                messenger.notificationFlashMessage(
+                    'success',
+                    _.__('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
+                );
             },
 
             /**

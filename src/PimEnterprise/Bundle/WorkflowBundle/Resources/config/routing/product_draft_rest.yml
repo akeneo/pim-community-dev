@@ -1,0 +1,17 @@
+pimee_workflow_product_draft_ready:
+    path: /{productId}/send-draft
+    defaults: { _controller: pimee_workflow.controller.product_draft_rest:readyAction }
+    requirements:
+        _method: POST
+
+pimee_workflow_product_draft_rest_approve:
+    path: /rest/{id}/approve
+    defaults: { _controller: pimee_workflow.controller.product_draft_rest:approveAction }
+    requirements:
+        _method: POST
+
+pimee_workflow_product_draft_rest_reject:
+    path: /rest/{id}/reject
+    defaults: { _controller: pimee_workflow.controller.product_draft_rest:rejectAction }
+    requirements:
+        _method: POST

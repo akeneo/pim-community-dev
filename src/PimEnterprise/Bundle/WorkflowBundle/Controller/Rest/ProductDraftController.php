@@ -18,11 +18,13 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Product draft rest controller
@@ -97,7 +99,69 @@ class ProductDraftController
     }
 
     /**
-     * Find a product draft for a product
+     * Approve a product draft
+     *
+     * @param mixed $id
+     *
+     * @throws \LogicException
+     * @throws AccessDeniedHttpException
+     *
+     * @return JsonResponse
+     */
+    public function approveAction($id)
+    {
+        $productDraft = $this->findProductDraftOr404($id);
+
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+            throw new \LogicException('A product draft that is not ready can not be approved');
+        }
+
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        try {
+            $this->manager->approve($productDraft);
+        } catch (ValidatorException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], 400);
+        }
+
+        return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
+    }
+
+    /**
+     * Reject a product draft
+     *
+     * @param mixed $draftId
+     *
+     * @throws \LogicException
+     * @throws AccessDeniedHttpException
+     *
+     * @return JsonResponse
+     */
+    public function rejectAction($id)
+    {
+        $productDraft = $this->findProductDraftOr404($id);
+
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $this->manager->refuse($productDraft);
+
+        return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
+    }
+
+    /**
+     * Find a product draft for the current user and specified product
      *
      * @param ProductInterface $product
      *
@@ -119,7 +183,7 @@ class ProductDraftController
     /**
      * Find a product by its id
      *
-     * @param $productId
+     * @param mixed $productId
      *
      * @throws NotFoundHttpException
      *
@@ -133,5 +197,24 @@ class ProductDraftController
         }
 
         return $product;
+    }
+
+    /**
+     * Find a product draft by its id
+     *
+     * @param mixed $draftId
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return ProductDraftInterface
+     */
+    protected function findProductDraftOr404($draftId)
+    {
+        $productDraft = $this->repository->find($draftId);
+        if (null === $productDraft) {
+            throw new NotFoundHttpException(sprintf('Draft with id %d not found', $draftId));
+        }
+
+        return $productDraft;
     }
 }

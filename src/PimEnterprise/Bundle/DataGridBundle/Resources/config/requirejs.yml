@@ -1,3 +1,5 @@
 config:
     paths:
-        'oro/datagrid/expand-cell': 'bundles/pimenterprisedatagrid/js/datagrid/cell/expand-cell.js'
+        oro/datagrid/expand-cell: pimenterprisedatagrid/js/datagrid/cell/expand-cell
+        oro/datagrid/approve-proposal-action: pimenterprisedatagrid/js/datagrid/action/approve-proposal-action
+        oro/datagrid/reject-proposal-action: pimenterprisedatagrid/js/datagrid/action/reject-proposal-action
