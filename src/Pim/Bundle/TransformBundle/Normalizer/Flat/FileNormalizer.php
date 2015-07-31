@@ -20,7 +20,7 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
     /**
      * {@inheritdoc}
      */
-    public function normalize($file, $format = null, array $context = array())
+    public function normalize($file, $format = null, array $context = [])
     {
         return $this->doNormalize($file, $format, $context);
     }
@@ -28,7 +28,7 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function doNormalize($file, $format = null, array $context = array())
+    protected function doNormalize($file, $format = null, array $context = [])
     {
         /**
          * "prepare_copy" is used for medias export
@@ -38,7 +38,7 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
          *          'exportPath' => 'files/SNKRS-1B/side_view/akene-mobile.jpg'
          *      ]
          */
-        if (isset($context['prepare_copy']) && true === $context['prepare_copy']) {
+        if (isset($context['prepare_copy']) && true === $context['prepare_copy'] && isset($context['value'])) {
             $identifier = isset($context['identifier']) ? $context['identifier'] : null;
 
             return [
@@ -68,11 +68,14 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
          */
         $identifier = isset($context['identifier']) ? $context['identifier'] : null;
 
-        return [
-            $this->getFieldName($file, $context) => $this->getExportPath($context['value'], $identifier),
-        ];
-    }
+        if (isset($context['value'])) {
+            return [
+                $this->getFieldName($file, $context) => $this->getExportPath($context['value'], $identifier),
+            ];
+        }
 
+        return [];
+    }
 
     /**
      * {@inheritdoc}
