@@ -1003,7 +1003,7 @@ abstract class AbstractAttribute implements AttributeInterface
     public function setAttributeType($type)
     {
         $this->attributeType = $type;
-        if ($this->attributeType === AttributeTypes::IDENTIFIER) {
+        if (AttributeTypes::IDENTIFIER === $this->attributeType) {
             $this->required = true;
         }
 

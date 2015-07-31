@@ -355,7 +355,7 @@ class AttributeController extends AbstractDoctrineController
      */
     protected function validateRemoval(AttributeInterface $attribute)
     {
-        if ($attribute->getAttributeType() === AttributeTypes::IDENTIFIER) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
             $errorMessage = 'flash.attribute.identifier not removable';
             $messageParameters = [];
         } else {

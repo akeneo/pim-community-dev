@@ -408,7 +408,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAttributes()
     {
-        $attributes = array();
+        $attributes = [];
 
         foreach ($this->values as $value) {
             $attributes[] = $value->getAttribute();
@@ -436,7 +436,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getOrderedGroups()
     {
-        $groups = array();
+        $groups = [];
 
         foreach ($this->getAttributes() as $attribute) {
             $group = $attribute->getGroup();
@@ -509,7 +509,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getCategoryCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getCategories() as $category) {
             $codes[] = $category->getCode();
         }
@@ -523,7 +523,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getGroupCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getGroups() as $group) {
             $codes[] = $group->getCode();
         }
@@ -642,11 +642,11 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getMedia()
     {
-        $media = array();
+        $media = [];
         foreach ($this->getValues() as $value) {
             if (in_array(
                 $value->getAttribute()->getAttributeType(),
-                array(AttributeTypes::IMAGE, AttributeTypes::FILE)
+                [AttributeTypes::IMAGE, AttributeTypes::FILE]
             )) {
                 $media[] = $value->getData();
             }

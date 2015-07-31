@@ -23,10 +23,10 @@ class RegexGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 AttributeTypes::TEXT,
                 AttributeTypes::IDENTIFIER,
-            )
+            ]
         );
     }
 
@@ -35,10 +35,10 @@ class RegexGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if ('regexp' === $attribute->getValidationRule() && $pattern = $attribute->getValidationRegexp()) {
-            $constraints[] = new Assert\Regex(array('pattern' => $pattern));
+            $constraints[] = new Assert\Regex(['pattern' => $pattern]);
         }
 
         return $constraints;

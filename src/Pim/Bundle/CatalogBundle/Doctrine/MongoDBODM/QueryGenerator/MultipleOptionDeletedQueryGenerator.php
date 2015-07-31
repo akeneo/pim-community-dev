@@ -39,6 +39,6 @@ class MultipleOptionDeletedQueryGenerator extends AbstractQueryGenerator
     public function supports($entity, $field)
     {
         return parent::supports($entity, $field) &&
-            $entity->getAttribute()->getAttributeType() === AttributeTypes::OPTION_MULTI_SELECT;
+            AttributeTypes::OPTION_MULTI_SELECT === $entity->getAttribute()->getAttributeType();
     }
 }

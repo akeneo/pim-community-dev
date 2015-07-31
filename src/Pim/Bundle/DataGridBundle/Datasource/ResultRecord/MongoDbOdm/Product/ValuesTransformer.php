@@ -64,7 +64,7 @@ class ValuesTransformer
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
 
-        if ($attribute['attributeType'] === AttributeTypes::DATE && isset($value[$backendType])) {
+        if (AttributeTypes::DATE === $attribute['attributeType'] && isset($value[$backendType])) {
             $mongoDate = $value[$backendType];
             $value[$backendType] = $dateTransformer->transform($mongoDate);
         }
@@ -83,7 +83,7 @@ class ValuesTransformer
         $attributeCode = $attribute['code'];
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
-        if ($attribute['attributeType'] === AttributeTypes::IMAGE && isset($value[$backendType])) {
+        if (AttributeTypes::IMAGE === $attribute['attributeType'] && isset($value[$backendType])) {
             $normalizedData = $result['normalizedData'];
             $value[$backendType] = $normalizedData[$attributeCode];
         }

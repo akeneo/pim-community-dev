@@ -138,7 +138,7 @@ class ProductPdfRenderer implements RendererInterface
         $attributes = [];
 
         foreach ($this->getAttributes($product, $locale) as $attribute) {
-            if ($attribute->getAttributeType() === AttributeTypes::IMAGE) {
+            if (AttributeTypes::IMAGE === $attribute->getAttributeType()) {
                 $attributes[$attribute->getCode()] = $attribute;
             }
         }

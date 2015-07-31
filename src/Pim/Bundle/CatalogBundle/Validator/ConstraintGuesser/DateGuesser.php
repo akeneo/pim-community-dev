@@ -21,12 +21,7 @@ class DateGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AttributeInterface $attribute)
     {
-        return in_array(
-            $attribute->getAttributeType(),
-            array(
-                AttributeTypes::DATE,
-            )
-        );
+        return AttributeTypes::DATE === $attribute->getAttributeType();
     }
 
     /**
@@ -34,8 +29,6 @@ class DateGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        $constraints = [new Date()];
-
-        return $constraints;
+        return [new Date()];
     }
 }

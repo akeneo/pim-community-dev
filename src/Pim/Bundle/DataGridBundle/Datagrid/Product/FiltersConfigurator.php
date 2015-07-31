@@ -65,13 +65,13 @@ class FiltersConfigurator implements ConfiguratorInterface
                 $filterConfig = $filterConfig + array(
                     ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
                     'label'                             => $attribute['label'],
-                    'enabled'                           => ($attributeType === AttributeTypes::IDENTIFIER),
+                    'enabled'                           => (AttributeTypes::IDENTIFIER === $attributeType),
                     'order'                             => $attribute['sortOrder'],
                     'group'                             => $attribute['group'],
                     'groupOrder'                        => $attribute['groupOrder']
                 );
 
-                if ($attributeType === AttributeTypes::METRIC) {
+                if (AttributeTypes::METRIC === $attributeType) {
                     $filterConfig['family'] = $attribute['metricFamily'];
                 }
 

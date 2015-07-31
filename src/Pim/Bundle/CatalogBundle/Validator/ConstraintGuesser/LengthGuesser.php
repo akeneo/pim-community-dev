@@ -29,11 +29,11 @@ class LengthGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 AttributeTypes::TEXT,
                 AttributeTypes::TEXTAREA,
                 AttributeTypes::IDENTIFIER,
-            )
+            ]
         );
     }
 
@@ -42,7 +42,7 @@ class LengthGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         $characterLimit = AttributeTypes::TEXTAREA === $attribute->getAttributeType() ?
             static::TEXTAREA_FIELD_LEMGTH :
@@ -52,7 +52,7 @@ class LengthGuesser implements ConstraintGuesserInterface
             $characterLimit = min($maxCharacters, $characterLimit);
         }
 
-        $constraints[] = new Assert\Length(array('max' => $characterLimit));
+        $constraints[] = new Assert\Length(['max' => $characterLimit]);
 
         return $constraints;
     }
