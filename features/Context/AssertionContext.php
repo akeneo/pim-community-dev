@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\ResponseTextException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -718,6 +719,20 @@ class AssertionContext extends RawMinkContext
                 implode(', ', $string->getLines())
             )
         );
+    }
+
+    /**
+     * @Given /^I should see the sequential edit progression:$/
+     * @param PyStringNode $text
+     *
+     * @throws ResponseTextException
+     * @throws \Exception
+     */
+    public function iShouldSeeTheSequentialEditProgression(PyStringNode $text)
+    {
+        $this->getCurrentPage()->waitForProgressionBar();
+
+        $this->assertSession()->pageTextContains((string) $text);
     }
 
     /**

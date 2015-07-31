@@ -1447,6 +1447,18 @@ class Edit extends Form
     }
 
     /**
+     * @throws \Exception
+     *
+     * @return string
+     */
+    public function waitForProgressionBar()
+    {
+        $this->spin(function () {
+            return $this->find('css', '#sequentialEdit .progress-bar');
+        }, 20);
+    }
+
+    /**
      * Find a completeness cell from channel and locale codes
      *
      * @param string $channelCode (channel code)
