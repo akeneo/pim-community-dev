@@ -39,7 +39,7 @@ services:
     oro_security.security_facade:
         class: %oro_security.security_facade.class%
         arguments:
-            - @security.context
+            - @security.authorization_checker
             - @oro_security.acl.annotation_provider
             - @oro_security.acl.object_identity_factory
             - @logger

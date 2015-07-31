@@ -108,8 +108,8 @@ class UserController extends Controller
      */
     public function deleteAction($id)
     {
-        $securityToken = $this->get('security.context')->getToken();
-        $currentUser = $securityToken ? $securityToken->getUser() : null;
+        $tokenStorage = $this->get('security.token_storage')->getToken();
+        $currentUser = $tokenStorage ? $tokenStorage->getUser() : null;
         if (is_object($currentUser) && $currentUser->getId() != $id) {
             $em = $this->get('doctrine.orm.entity_manager');
             $userClass = $this->container->getParameter('oro_user.entity.class');

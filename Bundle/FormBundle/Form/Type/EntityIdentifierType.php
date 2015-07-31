@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Oro\Bundle\FormBundle\Form\DataTransformer\ArrayToStringTransformer;
 use Oro\Bundle\FormBundle\Form\DataTransformer\EntitiesToIdsTransformer;
@@ -72,7 +72,7 @@ class EntityIdentifierType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(
@@ -83,63 +83,53 @@ class EntityIdentifierType extends AbstractType
                 'values_delimiter' => ','
             )
         )
-        ->setAllowedValues(
-            array(
-                'multiple' => array(true, false),
-            )
-        );
-        $resolver->setRequired(array('class'));
+        ->setAllowedValues('multiple', [true, false])
+        ->setRequired(array('class'));
 
         $registry = $this->registry;
-        $emNormalizer = function (Options $options, $em) use ($registry) {
-            if (null !== $em) {
-                if ($em instanceof EntityManager) {
-                    return $em;
-                } elseif (is_string($em)) {
-                    $em = $registry->getManager($em);
+
+        $resolver
+            ->setNormalizer('em', function (Options $options, $em) use ($registry) {
+                if (null !== $em) {
+                    if ($em instanceof EntityManager) {
+                        return $em;
+                    } elseif (is_string($em)) {
+                        $em = $registry->getManager($em);
+                    } else {
+                        throw new FormException(
+                            sprintf(
+                                'Option "em" should be a string or entity manager object, %s given',
+                                is_object($em) ? get_class($em) : gettype($em)
+                            )
+                        );
+                    }
                 } else {
+                    $em = $registry->getManagerForClass($options['class']);
+                }
+
+                if (null === $em) {
                     throw new FormException(
                         sprintf(
-                            'Option "em" should be a string or entity manager object, %s given',
-                            is_object($em) ? get_class($em) : gettype($em)
+                            'Class "%s" is not a managed Doctrine entity. Did you forget to map it?',
+                            $options['class']
                         )
                     );
                 }
-            } else {
-                $em = $registry->getManagerForClass($options['class']);
-            }
 
-            if (null === $em) {
-                throw new FormException(
-                    sprintf(
-                        'Class "%s" is not a managed Doctrine entity. Did you forget to map it?',
-                        $options['class']
-                    )
-                );
-            }
+                return $em;
+            })
+            ->setNormalizer('queryBuilder', function (Options $options, $queryBuilder) {
+                if (null !== $queryBuilder && !is_callable($queryBuilder)) {
+                    throw new FormException(
+                        sprintf(
+                            'Option "queryBuilder" should be a callable, %s given',
+                            is_object($queryBuilder) ? get_class($queryBuilder) : gettype($queryBuilder)
+                        )
+                    );
+                }
 
-            return $em;
-        };
-
-        $queryBuilderNormalizer = function (Options $options, $queryBuilder) {
-            if (null !== $queryBuilder && !is_callable($queryBuilder)) {
-                throw new FormException(
-                    sprintf(
-                        'Option "queryBuilder" should be a callable, %s given',
-                        is_object($queryBuilder) ? get_class($queryBuilder) : gettype($queryBuilder)
-                    )
-                );
-            }
-
-            return $queryBuilder;
-        };
-
-        $resolver->setNormalizers(
-            array(
-                'em' => $emNormalizer,
-                'queryBuilder' => $queryBuilderNormalizer,
-            )
-        );
+                return $queryBuilder;
+            });
     }
 
     /**

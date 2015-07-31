@@ -4,18 +4,16 @@ namespace Oro\Bundle\ConfigBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
 
 class FormFieldType extends AbstractType
 {
     /**
-     * Pass target field options to field form type
-     *
-     * @param OptionsResolverInterface $resolver
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(

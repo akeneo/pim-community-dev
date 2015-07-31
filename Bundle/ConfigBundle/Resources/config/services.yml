@@ -16,7 +16,7 @@ services:
         class:                        %oro_config.user.class%
         arguments:                    ["@doctrine.orm.entity_manager"]
         calls:
-             - [setSecurity, ["@security.context"]]
+             - [setSecurity, ["@security.token_storage"]]
         tags:
             -  { name: oro_config.manager }
 

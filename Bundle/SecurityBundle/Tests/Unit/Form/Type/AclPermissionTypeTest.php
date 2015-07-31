@@ -47,6 +47,6 @@ class AclPermissionTypeTest extends \PHPUnit_Framework_TestCase
                     'privileges_config' => array()
                 )
             );
-        $this->formType->setDefaultOptions($resolver);
+        $this->formType->configureOptions($resolver);
     }
 }

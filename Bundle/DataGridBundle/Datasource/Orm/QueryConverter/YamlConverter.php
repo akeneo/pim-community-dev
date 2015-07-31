@@ -16,7 +16,7 @@ class YamlConverter implements QueryConverterInterface
     public function parse($value, QueryBuilder $qb)
     {
         if (!is_array($value)) {
-            $value = Yaml::parse($value);
+            $value = Yaml::parse(file_get_contents($value));
         }
 
         $processor = new Processor();

@@ -5,7 +5,7 @@ namespace Oro\Bundle\FormBundle\Form\Extension;
 use Oro\Bundle\FormBundle\Validator\ConstraintFactory;
 
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
 
 class ConstraintAsOptionExtension extends AbstractTypeExtension
@@ -26,9 +26,9 @@ class ConstraintAsOptionExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $constraintsNormalizer = function (Options $options, $constraints) {
+        $resolver->setNormalizer('constraints', function (Options $options, $constraints) {
             $constraints = is_object($constraints) ? array($constraints) : (array) $constraints;
 
             $constraintObjects = array();
@@ -43,9 +43,7 @@ class ConstraintAsOptionExtension extends AbstractTypeExtension
             }
 
             return $constraintObjects;
-        };
-
-        $resolver->setNormalizers(array('constraints' => $constraintsNormalizer));
+        });
     }
 
     /**

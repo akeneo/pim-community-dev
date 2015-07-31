@@ -3,7 +3,7 @@
 namespace Oro\Bundle\FilterBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SelectRowFilterType extends AbstractChoiceType
 {
@@ -47,7 +47,7 @@ class SelectRowFilterType extends AbstractChoiceType
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
             array(

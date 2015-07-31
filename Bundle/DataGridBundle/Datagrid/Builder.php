@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -26,7 +26,7 @@ class Builder
     /** @var string */
     protected $acceptorClass;
 
-    /** @var EventDispatcher */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /** @var DatasourceInterface[] */
@@ -41,7 +41,7 @@ class Builder
     public function __construct(
         $baseDatagridClass,
         $acceptorClass,
-        EventDispatcher $eventDispatcher,
+        EventDispatcherInterface $eventDispatcher,
         SecurityFacade $securityFacade
     ) {
         $this->baseDatagridClass = $baseDatagridClass;

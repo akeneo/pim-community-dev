@@ -44,7 +44,7 @@ class NumberFilterTypeTest extends AbstractTypeTestCase
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptionsDataProvider()
+    public function configureOptionsDataProvider()
     {
         return array(
             array(

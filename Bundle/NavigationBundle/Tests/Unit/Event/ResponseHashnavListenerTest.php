@@ -27,7 +27,7 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
 
     protected $templating;
     protected $event;
-    protected $securityContext;
+    protected $tokenStorage;
 
     public function setUp()
     {
@@ -46,9 +46,9 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getResponse')
             ->will($this->returnValue($this->response));
 
-        $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
         $this->templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
-        $this->listener = new ResponseHashnavListener($this->securityContext, $this->templating);
+        $this->listener = new ResponseHashnavListener($this->tokenStorage, $this->templating);
     }
 
     public function testPlainRequest()
@@ -66,7 +66,7 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
         $this->response->setStatusCode(302);
         $this->response->headers->add(array('location' => self::TEST_URL));
 
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue(false));
 

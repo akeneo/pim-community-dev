@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\FormBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
@@ -27,15 +27,36 @@ class OroDateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
+        $placeholderDefault = function (Options $options) {
+            return $options['required'] ? null : '';
+        };
+
         $resolver->setDefaults(
-            array(
-                'format'         => 'yyyy-MM-dd',
-                'widget'         => 'single_text',
-                'placeholder'    => 'oro.form.click_here_to_select',
-            )
-        );
+            [
+                'format'      => 'yyyy-MM-dd',
+                'widget'      => 'single_text',
+                'placeholder' => 'oro.form.click_here_to_select',
+            ]
+        )->setNormalizer('placeholder', function (Options $options, $placeholder) use ($placeholderDefault) {
+            if (is_string($placeholder)) {
+                return $placeholder;
+            } elseif (is_array($placeholder)) {
+                $default = $placeholderDefault($options);
+
+                return array_merge(
+                    array('year' => $default, 'month' => $default, 'day' => $default),
+                    $placeholder
+                );
+            }
+
+            return array(
+                'year'  => $placeholder,
+                'month' => $placeholder,
+                'day'   => $placeholder,
+            );
+        });
     }
 
     /**

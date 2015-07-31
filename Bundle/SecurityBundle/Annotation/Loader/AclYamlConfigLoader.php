@@ -18,7 +18,7 @@ class AclYamlConfigLoader extends AbstractLoader implements AclAnnotationLoaderI
         foreach ($this->bundleDirectories as $bundleDir) {
             $file = $bundleDir . '/Resources/config/acl.yml';
             if (is_file($file)) {
-                $config = Yaml::parse(realpath($file));
+                $config = Yaml::parse(file_get_contents(realpath($file)));
                 foreach ($config as $id => $data) {
                     $data['id'] = $id;
                     $storage->add(new AclAnnotation($data));

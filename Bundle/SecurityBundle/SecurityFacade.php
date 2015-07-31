@@ -3,16 +3,16 @@
 namespace Oro\Bundle\SecurityBundle;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 
 class SecurityFacade
 {
     /**
-     * @var SecurityContextInterface
+     * @var AuthorizationCheckerInterface
      */
-    private $securityContext;
+    private $authorizationChecker;
 
     /**
      * @var AclAnnotationProvider
@@ -32,18 +32,18 @@ class SecurityFacade
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
-     * @param AclAnnotationProvider    $annotationProvider
-     * @param ObjectIdentityFactory    $objectIdentityFactory
-     * @param LoggerInterface          $logger
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param AclAnnotationProvider         $annotationProvider
+     * @param ObjectIdentityFactory         $objectIdentityFactory
+     * @param LoggerInterface               $logger
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         AclAnnotationProvider $annotationProvider,
         ObjectIdentityFactory $objectIdentityFactory,
         LoggerInterface $logger
     ) {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
         $this->annotationProvider = $annotationProvider;
         $this->objectIdentityFactory = $objectIdentityFactory;
         $this->logger = $logger;
@@ -66,7 +66,7 @@ class SecurityFacade
             $this->logger->debug(
                 sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
             );
-            $isGranted = $this->securityContext->isGranted(
+            $isGranted = $this->authorizationChecker->isGranted(
                 $annotation->getPermission(),
                 $this->objectIdentityFactory->get($annotation)
             );
@@ -106,17 +106,17 @@ class SecurityFacade
             && $annotation = $this->annotationProvider->findAnnotationById($attributes)
         ) {
             $this->logger->debug(sprintf('Check an access using "%s" ACL annotation.', $annotation->getId()));
-            $isGranted = $this->securityContext->isGranted(
+            $isGranted = $this->authorizationChecker->isGranted(
                 $annotation->getPermission(),
                 $this->objectIdentityFactory->get($annotation)
             );
         } elseif (is_string($object)) {
-            $isGranted = $this->securityContext->isGranted(
+            $isGranted = $this->authorizationChecker->isGranted(
                 $attributes,
                 $this->objectIdentityFactory->get($object)
             );
         } else {
-            $isGranted = $this->securityContext->isGranted($attributes, $object);
+            $isGranted = $this->authorizationChecker->isGranted($attributes, $object);
         }
 
         return $isGranted;

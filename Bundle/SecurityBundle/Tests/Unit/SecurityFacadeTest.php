@@ -13,7 +13,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
     private $facade;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    private $securityContext;
+    private $tokenStorage;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $annotationProvider;
@@ -26,7 +26,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
         $this->annotationProvider =
             $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider')
                 ->disableOriginalConstructor()
@@ -38,7 +38,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
         $this->logger = $this->getMock('Psr\Log\LoggerInterface');
 
         $this->facade = new SecurityFacade(
-            $this->securityContext,
+            $this->tokenStorage,
             $this->annotationProvider,
             $this->objectIdentityFactory,
             $this->logger
@@ -68,7 +68,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($annotation))
             ->will($this->returnValue($oid));
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST_PERMISSION'), $this->identicalTo($oid))
             ->will($this->returnValue(false));
@@ -107,7 +107,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($annotation))
             ->will($this->returnValue($oid));
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST_PERMISSION'), $this->identicalTo($oid))
             ->will($this->returnValue(true));
@@ -142,7 +142,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($annotation))
             ->will($this->returnValue($oid));
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST_PERMISSION'), $this->identicalTo($oid))
             ->will($this->returnValue(true));
@@ -196,11 +196,11 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($classAnnotation))
             ->will($this->returnValue($classOid));
-        $this->securityContext->expects($this->at(0))
+        $this->tokenStorage->expects($this->at(0))
             ->method('isGranted')
             ->with($this->equalTo('TEST_PERMISSION'), $this->identicalTo($oid))
             ->will($this->returnValue(true));
-        $this->securityContext->expects($this->at(1))
+        $this->tokenStorage->expects($this->at(1))
             ->method('isGranted')
             ->with($this->equalTo('TEST_PERMISSION_CLASS'), $this->identicalTo($classOid))
             ->will($this->returnValue(false));
@@ -254,11 +254,11 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->identicalTo($classAnnotation))
             ->will($this->returnValue($classOid));
-        $this->securityContext->expects($this->at(0))
+        $this->tokenStorage->expects($this->at(0))
             ->method('isGranted')
             ->with($this->equalTo('TEST_PERMISSION'), $this->identicalTo($oid))
             ->will($this->returnValue(true));
-        $this->securityContext->expects($this->at(1))
+        $this->tokenStorage->expects($this->at(1))
             ->method('isGranted')
             ->with($this->equalTo('TEST_PERMISSION_CLASS'), $this->identicalTo($classOid))
             ->will($this->returnValue(true));
@@ -289,7 +289,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($annotation));
         $this->logger->expects($this->once())
             ->method('debug');
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TEST_PERMISSION'), $this->identicalTo($oid))
             ->will($this->returnValue(true));
@@ -304,7 +304,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->method('findAnnotationById')
             ->with('TestRole')
             ->will($this->returnValue(null));
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('TestRole'), $this->equalTo(null))
             ->will($this->returnValue(true));
@@ -317,7 +317,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
     {
         $this->annotationProvider->expects($this->never())
             ->method('findAnnotationById');
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo(array('TestRole1', 'TestRole2')), $this->equalTo(null))
             ->will($this->returnValue(true));
@@ -336,7 +336,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with($this->equalTo($obj))
             ->will($this->returnValue($oid));
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('PERMISSION'), $oid)
             ->will($this->returnValue(true));
@@ -350,7 +350,7 @@ class SecurityFacadeTest extends \PHPUnit_Framework_TestCase
         $obj = new \stdClass();
         $this->annotationProvider->expects($this->never())
             ->method('findAnnotationById');
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('isGranted')
             ->with($this->equalTo('PERMISSION'), $this->equalTo($obj))
             ->will($this->returnValue(true));

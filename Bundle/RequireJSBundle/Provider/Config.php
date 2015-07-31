@@ -127,7 +127,7 @@ class Config
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/requirejs.yml')) {
-                $requirejs = Yaml::parse(realpath($file));
+                $requirejs = Yaml::parse(file_get_contents(realpath($file)));
                 $config = array_replace_recursive($config, $requirejs);
             }
         }

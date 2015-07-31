@@ -254,7 +254,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
      * @param array $expectedChoices
      * @param boolean $expectTranslation
      *
-     * @dataProvider setDefaultOptionsDataProvider
+     * @dataProvider configureOptionsDataProvider
      */
     public function testSetDefaultOptions(array $choiceListOptions, array $expectedChoices, $expectTranslation = false)
     {
@@ -312,7 +312,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
         }
 
         // test
-        $this->type->setDefaultOptions($optionsResolver);
+        $this->type->configureOptions($optionsResolver);
     }
 
     /**
@@ -343,7 +343,7 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
     /**
      * @return array
      */
-    public function setDefaultOptionsDataProvider()
+    public function configureOptionsDataProvider()
     {
         $testChoiceEntities = $this->getTestChoiceEntities($this->testChoices);
 

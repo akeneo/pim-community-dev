@@ -12,9 +12,9 @@ class NavigationItemBuilderBuilderTest extends \PHPUnit_Framework_TestCase
     protected $em;
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface
      */
-    protected $securityContext;
+    protected $tokenStorage;
 
     /**
      * @var NavigationItemBuilder
@@ -28,12 +28,12 @@ class NavigationItemBuilderBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+        $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
         $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
         $this->factory = $this->getMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
-        $this->builder = new NavigationItemBuilder($this->securityContext, $this->em, $this->factory);
+        $this->builder = new NavigationItemBuilder($this->tokenStorage, $this->em, $this->factory);
     }
 
     public function testBuildAnonUser()
@@ -43,7 +43,7 @@ class NavigationItemBuilderBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue('anon.'));
 
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($token));
 
@@ -74,7 +74,7 @@ class NavigationItemBuilderBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getUser')
             ->will($this->returnValue($user));
 
-        $this->securityContext->expects($this->once())
+        $this->tokenStorage->expects($this->once())
             ->method('getToken')
             ->will($this->returnValue($token));
 

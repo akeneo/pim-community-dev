@@ -2,26 +2,26 @@
 
 namespace Oro\Bundle\ConfigBundle\Config;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserConfigManager extends ConfigManager
 {
     /**
-     * @var SecurityContextInterface
+     * @var TokenStorageInterface
      */
-    protected $security;
+    protected $tokenStorage;
 
     /**
-     * DI setter for security context
+     * DI setter for token storage
      *
-     * @param SecurityContextInterface $security
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function setSecurity(SecurityContextInterface $security)
+    public function setSecurity(TokenStorageInterface $tokenStorage)
     {
-        $this->security = $security;
+        $this->tokenStorage = $tokenStorage;
 
         // if we have a user - try to merge his scoped settings into global settings array
-        if ($token = $this->security->getToken()) {
+        if ($token = $this->tokenStorage->getToken()) {
             if (is_object($user = $token->getUser())) {
                 foreach ($user->getGroups() as $group) {
                     $this->loadStoredSettings('group', $group->getId());

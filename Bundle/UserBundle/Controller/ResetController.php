@@ -117,7 +117,7 @@ class ResetController extends Controller
 
             // force user logout
             $session->invalidate();
-            $this->get('security.context')->setToken(null);
+            $this->get('security.token_storage')->setToken(null);
 
             return $this->redirect($this->generateUrl('oro_user_security_login'));
         }

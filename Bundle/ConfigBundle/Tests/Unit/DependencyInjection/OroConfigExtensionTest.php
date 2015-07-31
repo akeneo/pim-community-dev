@@ -91,8 +91,8 @@ class OroConfigExtensionTest extends \PHPUnit_Framework_TestCase
             $this->getMockClass('Doctrine\Common\Persistence\ObjectManager')
         );
         $container->register(
-            'security.context',
-            $this->getMockClass('Symfony\Component\Security\Core\SecurityContextInterface')
+            'security.token_storage',
+            $this->getMockClass('Symfony\Component\Security\Core\TokenStorageInterface')
         );
         $container->compile();
 
