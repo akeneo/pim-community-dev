@@ -25,7 +25,8 @@ define(
 
             template: _.template(
                 [
-                    '<a href="<%= url ? \'#\' + url : \'javascript: void(0);\' %>"<%= viewed ? \'\' : \'class="new"\' %>>',
+                    '<a href="<%= url ? \'#\' + url : \'javascript: void(0);\' %>"',
+                    '<%= viewed ? \'\' : \'class="new"\' %>>',
                         '<i class="icon-<%= icon %>"></i>',
                         '<%= message %>',
                         '<i class="icon-<%= viewed ? \'trash\' : \'eye-close\' %> action"></i>',
