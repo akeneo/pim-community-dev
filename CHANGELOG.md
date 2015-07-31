@@ -1,3 +1,6 @@
+# 0.4.x-dev
+ - fix deprecated use of Yaml:parse() to allow Symfony upgrade
+
 # 0.2.4 (2014-11-07)
  - Add a method unitExistsInFamily in MeasureManager
 
