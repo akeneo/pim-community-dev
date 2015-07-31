@@ -18,7 +18,7 @@ class AddUserSubscriberSpec extends ObjectBehavior
         TokenInterface $token,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->beConstructedWith($tokenStorage, $authorizationChecker);
+        $this->beConstructedWith($authorizationChecker, $tokenStorage);
 
         $authorizationChecker->isGranted(Argument::any())->willReturn(true);
     }
