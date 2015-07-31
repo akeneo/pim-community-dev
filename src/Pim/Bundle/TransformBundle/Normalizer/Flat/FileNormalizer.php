@@ -3,19 +3,28 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Akeneo\Component\FileStorage\Model\FileInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
 /**
  * @author    Julien Janvier <janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: spec it
  */
 class FileNormalizer extends AbstractProductValueDataNormalizer
 {
     /** @var string[] */
     protected $supportedFormats = ['csv', 'flat'];
+
+    /** @var FileExporterPathGeneratorInterface */
+    protected $pathGenerator;
+
+    /**
+     * @param FileExporterPathGeneratorInterface $pathGenerator
+     */
+    public function __construct(FileExporterPathGeneratorInterface $pathGenerator)
+    {
+        $this->pathGenerator = $pathGenerator;
+    }
 
     /**
      * {@inheritdoc}
@@ -44,7 +53,7 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
             return [
                 'storageAlias' => $file->getStorage(),
                 'filePath'     => $file->getKey(),
-                'exportPath'   => $this->getExportPath($context['value'], $identifier)
+                'exportPath'   => $this->pathGenerator->generate($context['value'], ['identifier' => $identifier])
             ];
         }
 
@@ -69,8 +78,10 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
         $identifier = isset($context['identifier']) ? $context['identifier'] : null;
 
         if (isset($context['value'])) {
+            $exportPath = $this->pathGenerator->generate($context['value'], ['identifier' => $identifier]);
+
             return [
-                $this->getFieldName($file, $context) => $this->getExportPath($context['value'], $identifier),
+                $this->getFieldName($file, $context) => $exportPath,
             ];
         }
 
@@ -83,27 +94,5 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof FileInterface && in_array($format, $this->supportedFormats);
-    }
-
-    //TODO: should be a service
-    protected function getExportPath(ProductValueInterface $value, $identifier = null)
-    {
-        if (null === $file = $value->getMedia()) {
-            return '';
-        }
-
-        $attribute = $value->getAttribute();
-
-        $identifier = null !== $identifier ? $identifier : $value->getEntity()->getIdentifier();
-        $target = sprintf('files/%s/%s', $identifier, $attribute->getCode());
-
-        if ($attribute->isLocalizable()) {
-            $target .= '/' . $value->getLocale();
-        }
-        if ($attribute->isScopable()) {
-            $target .= '/' . $value->getScope();
-        }
-
-        return $target . '/' . $file->getOriginalFilename();
     }
 }
