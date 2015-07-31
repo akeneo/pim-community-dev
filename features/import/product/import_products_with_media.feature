@@ -82,7 +82,7 @@ Feature: Import media with products
     Then there should be 0 products
     And I should see "skipped 2"
     And I should see "values[frontView].media: The file extension is not allowed (allowed extensions: gif, jpg)"
-    And I should see "values[userManual].media: The file is too large (3 MB). Allowed maximum size is 1 MB"
+    And I should see "values[userManual].media: The file is too large (3.15 MB). Allowed maximum size is 1 MB"
 
   Scenario: Import several times the same media
     Given the following CSV file to import:
