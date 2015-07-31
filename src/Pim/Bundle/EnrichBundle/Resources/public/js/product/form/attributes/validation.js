@@ -23,17 +23,12 @@ define(
     function ($, _, Backbone, BaseForm, mediator, messenger, FieldManager, ValidationError, UserContext) {
         return BaseForm.extend({
             validationErrors: {},
-            initialize: function () {
-                this.stopListening(mediator, 'product:action:post_update');
-                this.listenTo(mediator, 'product:action:post_update', this.onPostUpdate);
+            configure: function () {
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.onPostUpdate);
+                this.listenTo(mediator, 'pim_enrich:form:entity:bad_request', this.onValidationError);
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
 
-                this.stopListening(mediator, 'entity:action:validation_error');
-                this.listenTo(mediator, 'entity:action:validation_error', this.onValidationError);
-
-                this.stopListening(mediator, 'field:extension:add');
-                this.listenTo(mediator, 'field:extension:add', this.addExtension);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             onPostUpdate: function () {
                 this.validationErrors = {};
@@ -45,6 +40,8 @@ define(
                 if (this.validationErrors[''] && this.validationErrors[''].message) {
                     messenger.notificationFlashMessage('error', this.validationErrors[''].message);
                 }
+
+                mediator.trigger('pim_enrich:form:entity:validation_error', event);
             },
             addExtension: function (event) {
                 var field = event.field;

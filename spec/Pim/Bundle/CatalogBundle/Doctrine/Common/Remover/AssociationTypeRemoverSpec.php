@@ -34,11 +34,16 @@ class AssociationTypeRemoverSpec extends ObjectBehavior
         $optionsResolver->resolveRemoveOptions([])->willReturn(['flush' => true]);
         $eventDispatcher->dispatch(
             AssociationTypeEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->remove($associationType)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(
+            AssociationTypeEvents::POST_REMOVE,
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
+        )->shouldBeCalled();
 
         $this->remove($associationType);
     }

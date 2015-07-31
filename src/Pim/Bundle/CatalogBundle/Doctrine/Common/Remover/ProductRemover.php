@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -9,7 +10,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Product remover
@@ -60,12 +60,14 @@ class ProductRemover implements RemoverInterface
         }
 
         $options = $this->optionsResolver->resolveRemoveOptions($options);
-        $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new GenericEvent($product));
-        $this->objectManager->remove($product);
-        $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new GenericEvent($product));
+        $productId = $product->getId();
+        $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new RemoveEvent($product, $productId));
 
+        $this->objectManager->remove($product);
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new RemoveEvent($product, $productId));
     }
 }

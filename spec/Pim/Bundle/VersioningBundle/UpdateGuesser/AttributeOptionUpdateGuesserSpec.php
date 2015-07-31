@@ -26,8 +26,6 @@ class AttributeOptionUpdateGuesserSpec extends ObjectBehavior
 
         $option->getAttribute()->willReturn($attribute);
         $optionValue->getOption()->willReturn($option);
-
-        $this->beConstructedWith($registry, 'product');
     }
 
     function it_is_an_update_guesser()

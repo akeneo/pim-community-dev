@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
+use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -9,7 +10,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Association type remover
@@ -39,7 +39,7 @@ class AssociationTypeRemover implements RemoverInterface
         RemovingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->objectManager = $objectManager;
+        $this->objectManager   = $objectManager;
         $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -60,11 +60,20 @@ class AssociationTypeRemover implements RemoverInterface
         }
 
         $options = $this->optionsResolver->resolveRemoveOptions($options);
-        $this->eventDispatcher->dispatch(AssociationTypeEvents::PRE_REMOVE, new GenericEvent($associationType));
+        $associationTypeId = $associationType->getId();
+        $this->eventDispatcher->dispatch(
+            AssociationTypeEvents::PRE_REMOVE,
+            new RemoveEvent($associationType, $associationTypeId)
+        );
 
         $this->objectManager->remove($associationType);
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(
+            AssociationTypeEvents::POST_REMOVE,
+            new RemoveEvent($associationType, $associationTypeId)
+        );
     }
 }

@@ -150,7 +150,7 @@ define([
                 );
 
                 productValue.data = value;
-                mediator.trigger('entity:form:edit:update_state');
+                mediator.trigger('pim_enrich:form:entity:update_state');
             }
         });
     }

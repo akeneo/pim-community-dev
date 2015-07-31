@@ -1,5 +1,7 @@
 # 1.4.x
 
+# 1.4.0-alpha (2015-07-31)
+
 ## Features
 
 ## Technical improvements
@@ -176,6 +178,8 @@
 - Remove the option 'flush_only_object' from `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver`, `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver`, `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseRemover`
 - Replace the arguments MediaManager and MediaFactory by RawFileFetcherInterface and RawFileStorerInterface in the constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`
 - Add an argument MountManager in the constructor of `Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier`
+- Add an argument `Pim/Bundle/VersioningBundle/Factory/VersionFactory` in the constructor of `Pim/Bundle/VersioningBundle/Builder/VersionBuilder`
+- Add an argument `Symfony\Component\EventDispatcher\EventDispatcher` in the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover`
 
 # 1.3.x
 

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Builder;
 
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -15,17 +16,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VersionBuilder
 {
-    /**
-     * @var NormalizerInterface
-     */
+    /** @var NormalizerInterface */
     protected $normalizer;
+
+    /** @var VersionFactory */
+    protected $versionFactory;
 
     /**
      * @param NormalizerInterface $normalizer
+     * @param VersionFactory      $versionFactory
      */
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(NormalizerInterface $normalizer, VersionFactory $versionFactory)
     {
-        $this->normalizer = $normalizer;
+        $this->normalizer     = $normalizer;
+        $this->versionFactory = $versionFactory;
     }
 
     /**
@@ -51,7 +55,7 @@ class VersionBuilder
 
         $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
-        $version = new Version($resourceName, $resourceId, $author, $context);
+        $version = $this->versionFactory->create($resourceName, $resourceId, $author, $context);
         $version->setVersion($versionNumber)
             ->setSnapshot($snapshot)
             ->setChangeset($changeset);
@@ -71,9 +75,12 @@ class VersionBuilder
      */
     public function createPendingVersion($versionable, $author, array $changeset, $context = null)
     {
-        $resourceName = ClassUtils::getClass($versionable);
-
-        $version = new Version($resourceName, $versionable->getId(), $author, $context);
+        $version = $this->versionFactory->create(
+            ClassUtils::getClass($versionable),
+            $versionable->getId(),
+            $author,
+            $context
+        );
         $version->setChangeset($changeset);
 
         return $version;
