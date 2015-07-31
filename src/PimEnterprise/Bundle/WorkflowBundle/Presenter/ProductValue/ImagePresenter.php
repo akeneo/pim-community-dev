@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -29,7 +30,7 @@ class ImagePresenter extends FilePresenter
      */
     public function supports(ProductValueInterface $value)
     {
-        return 'pim_catalog_image' === $value->getAttribute()->getAttributeType()
+        return AttributeTypes::IMAGE === $value->getAttribute()->getAttributeType()
             && $value->getData() instanceof ProductMediaInterface
             && 0 === strpos($value->getData()->getMimeType(), 'image');
     }

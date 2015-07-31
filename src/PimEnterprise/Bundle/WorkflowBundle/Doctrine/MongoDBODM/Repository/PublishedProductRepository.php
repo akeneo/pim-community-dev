@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -267,7 +268,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     {
         $qb = $this->createQueryBuilder('pp');
 
-        if ($option->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect') {
+        if ($option->getAttribute()->getAttributeType() === AttributeTypes::OPTION_SIMPLE_SELECT) {
             $qb->field("values.option")->equals($option->getId());
         } else {
             $qb->field("values.optionIds")->equals($option->getId());

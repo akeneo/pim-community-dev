@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -28,7 +29,7 @@ class DatePresenter implements ProductValuePresenterInterface
      */
     public function supports(ProductValueInterface $value)
     {
-        return 'pim_catalog_date' === $value->getAttribute()->getAttributeType();
+        return AttributeTypes::DATE === $value->getAttribute()->getAttributeType();
     }
 
     /**
