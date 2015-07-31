@@ -25,7 +25,6 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane history-panel',
-            code: 'history',
             loading: false,
             versions: [],
             actions: {},
@@ -40,11 +39,15 @@ define(
                     label: _.__('pim_enrich.form.product.panel.history.title')
                 });
 
-                mediator.on('product:action:post_update', _.bind(this.refreshHistory, this));
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.refreshHistory);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
+                if (this.code !== this.getParent().state.get('currentPanel')) {
+                    return this;
+                }
+
                 if (0 === this.versions.length) {
                     this.refreshHistory();
 
@@ -52,7 +55,6 @@ define(
                 }
 
                 if (this.getFormData().meta) {
-
                     this.$el.html(
                         this.template({
                             versions: this.versions,
@@ -61,7 +63,6 @@ define(
                         })
                     );
 
-                    mediator.trigger('history:rendered:before');
                     if (this.getParent().getParent().state.get('fullPanel') && this.actions) {
                         _.each(this.$el.find('td.actions'), _.bind(function (element) {
                             _.each(this.actions, _.bind(function (action) {
@@ -69,7 +70,6 @@ define(
                             }, this));
                         }, this));
                     }
-                    mediator.trigger('history:rendered:after');
 
                     this.delegateEvents();
                     this.renderExtensions();
@@ -82,6 +82,7 @@ define(
                 if (this.loading) {
                     return;
                 }
+
                 this.loading = true;
                 if (this.getFormData().meta) {
                     $.getJSON(

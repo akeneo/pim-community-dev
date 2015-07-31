@@ -25,10 +25,10 @@ Feature: Edit a product
     And I fill in the following information:
       | Heel color  | Red              |
       | Sole fabric | [neoprene], Silk |
-    When I press the "Save" button
+    When I save the product
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "Red"
-    Then the product Sole fabric should be "[neoprene], Silk"
+    Then the product Heel color should be "red"
+    Then the product Sole fabric should be "neoprene, silk"
 
   Scenario: Successfully edit reference data values to a product
     Given I am logged in as "Mary"
@@ -39,12 +39,12 @@ Feature: Edit a product
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
-      | Heel color  | [blue]             |
+      | Heel color  | [blue]               |
       | Sole fabric | Cashmerewool, Silk |
-    When I press the "Save" button
+    When I save the product
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "[blue]"
-    Then the product Sole fabric should be "Cashmerewool, Silk"
+    Then the product Heel color should be "blue"
+    Then the product Sole fabric should be "cashmerewool, silk"
 
   Scenario: Successfully remove reference data values to a product
     Given I am logged in as "Mary"
@@ -56,6 +56,6 @@ Feature: Edit a product
     And I visit the "Other" group
     And I fill in the following information:
       | Sole fabric |  |
-    When I press the "Save" button
+    When I save the product
     Then I should be on the product "high-heels" edit page
     Then the product Sole fabric should be ""

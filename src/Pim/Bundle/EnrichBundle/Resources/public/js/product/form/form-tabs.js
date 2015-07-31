@@ -24,14 +24,13 @@ define(
             },
             initialize: function () {
                 this.state = new Backbone.Model();
-
                 this.listenTo(this.state, 'change', this.render);
-                this.listenTo(mediator, 'form-tabs:change:tab', _.bind(this.setCurrentTab, this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
                 this.onExtensions('tab:register',  _.bind(this.registerTab, this));
+                this.listenTo(mediator, 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

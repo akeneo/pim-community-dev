@@ -11,7 +11,7 @@ Feature: Filter products with multiples number fields filters
       | furniture |
       | library   |
     And the following attributes:
-      | code      | label     | type   | useable as grid filter |
+      | code      | label     | type   | useable_as_grid_filter |
       | component | Component | number | yes                    |
       | supplier  | Supplier  | number | yes                    |
     And the following "component" attribute options: Black and Green

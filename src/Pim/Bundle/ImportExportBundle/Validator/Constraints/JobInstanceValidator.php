@@ -37,11 +37,11 @@ class JobInstanceValidator extends ConstraintValidator
     {
         if ($entity instanceof \Akeneo\Bundle\BatchBundle\Entity\JobInstance) {
             if (!$this->connectorRegistry->getJob($entity)) {
-                $this->context->addViolationAt(
-                    $constraint->property,
+                $this->context->buildViolation(
                     $constraint->message,
                     ['%job_type%' => $entity->getType()]
-                );
+                )->atPath($constraint->property)
+                ->addViolation();
             }
         }
     }

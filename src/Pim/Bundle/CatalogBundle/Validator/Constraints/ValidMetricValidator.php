@@ -64,9 +64,13 @@ class ValidMetricValidator extends ConstraintValidator
         $unit   = $this->propertyAccessor->getValue($object, $unitProperty);
 
         if (!array_key_exists($family, $this->measures)) {
-            $this->context->addViolationAt($familyProperty, $constraint->familyMessage);
+            $this->context->buildViolation($constraint->familyMessage)
+                ->atPath($familyProperty)
+                ->addViolation();
         } elseif (!array_key_exists($unit, $this->measures[$family]['units'])) {
-            $this->context->addViolationAt($unitProperty, $constraint->unitMessage);
+            $this->context->buildViolation($constraint->unitMessage)
+                ->atPath($unitProperty)
+                ->addViolation();
         }
     }
 }

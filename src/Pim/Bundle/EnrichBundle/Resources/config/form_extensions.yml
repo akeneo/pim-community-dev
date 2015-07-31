@@ -2,6 +2,11 @@ extensions:
     product-edit-form:
         module: pim/product-edit-form
 
+    cache-invalidator:
+        module: pim/product-edit-form/cache-invalidator
+        parent: product-edit-form
+        position: 100
+
     sequential-edit:
         module: pim/product-edit-form/sequential-edit
         parent: product-edit-form

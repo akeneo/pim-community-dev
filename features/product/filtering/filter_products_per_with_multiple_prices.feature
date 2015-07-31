@@ -11,7 +11,7 @@ Feature: Filter products with multiples prices filters
       | furniture |
       | library   |
     And the following attributes:
-      | code      | label     | type   | useable as grid filter |
+      | code      | label     | type   | useable_as_grid_filter |
       | margin    | Margin    | prices | yes                    |
       | transport | Transport | prices | yes                    |
     And the following "margin" attribute options: Black and Green

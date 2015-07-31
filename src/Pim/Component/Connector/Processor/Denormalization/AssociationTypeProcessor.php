@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Factory\AssociationTypeFactory;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * AssociationType import processor

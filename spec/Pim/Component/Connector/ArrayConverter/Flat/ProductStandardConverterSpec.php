@@ -167,7 +167,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $columnsMerger,
         AttributeInterface $attribute
     ) {
-        $item = ['sku' => '1069978', 'enabled' => 1];
+        $item = ['sku' => '1069978', 'enabled' => true];
 
         $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku']);
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
@@ -192,7 +192,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $columnsMerger,
         $fieldConverter
     ) {
-        $item = ['sku' => '1069978', 'enabled' => 1];
+        $item = ['sku' => '1069978', 'enabled' => true];
 
         $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku']);
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);

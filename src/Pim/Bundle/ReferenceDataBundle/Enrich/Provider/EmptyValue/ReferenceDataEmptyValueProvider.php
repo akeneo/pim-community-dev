@@ -27,6 +27,8 @@ class ReferenceDataEmptyValueProvider implements EmptyValueProviderInterface
      */
     public function supports($element)
     {
-        return $element instanceof AttributeInterface && null !== $element->getReferenceDataName();
+        return $element instanceof AttributeInterface &&
+            null !== $element->getReferenceDataName() &&
+            '' !== $element->getReferenceDataName();
     }
 }

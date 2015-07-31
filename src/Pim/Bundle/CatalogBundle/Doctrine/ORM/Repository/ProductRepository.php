@@ -460,6 +460,10 @@ class ProductRepository extends EntityRepository implements
         $pqb->addFilter($attribute->getCode(), Operators::EQUALS, $identifier);
         $result = $qb->getQuery()->execute();
 
+        if (empty($result)) {
+            return null;
+        }
+
         return reset($result);
     }
 
@@ -472,6 +476,10 @@ class ProductRepository extends EntityRepository implements
         $pqb->addFilter('id', '=', $id);
         $qb = $pqb->getQueryBuilder();
         $result = $qb->getQuery()->execute();
+
+        if (empty($result)) {
+            return null;
+        }
 
         return reset($result);
     }

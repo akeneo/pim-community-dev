@@ -25,7 +25,7 @@ final class ProductEvents
      * This event is thrown before a product is removed.
      *
      * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
@@ -35,7 +35,7 @@ final class ProductEvents
      * This event is thrown after a product has been removed.
      *
      * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */

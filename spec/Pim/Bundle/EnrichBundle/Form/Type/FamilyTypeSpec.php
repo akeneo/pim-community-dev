@@ -8,7 +8,7 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FamilyTypeSpec extends ObjectBehavior
 {
@@ -65,7 +65,7 @@ class FamilyTypeSpec extends ObjectBehavior
         $builder->add('attributeRequirements', 'collection', Argument::any())->shouldHaveBeenCalled();
     }
 
-    function it_sets_the_default_form_data_class(OptionsResolverInterface $resolver)
+    function it_sets_the_default_form_data_class(OptionsResolver $resolver)
     {
         $resolver->setDefaults(['data_class' => 'Pim\Bundle\CatalogBundle\Entity\Family'])->shouldBeCalled();
         $this->setDefaultOptions($resolver);

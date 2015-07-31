@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AttributeOptionValueTypeSpec extends ObjectBehavior
 {
@@ -34,7 +34,7 @@ class AttributeOptionValueTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
     }
 
-    function it_sets_default_option(OptionsResolverInterface $resolver)
+    function it_sets_default_option(OptionsResolver $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 

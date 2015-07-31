@@ -9,7 +9,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstance as JobInstanceConstraint;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class JobInstanceValidatorSpec extends ObjectBehavior
 {
@@ -26,7 +27,7 @@ class JobInstanceValidatorSpec extends ObjectBehavior
 
     function it_validates_only_job_instance($context, $object, Constraint $constraint)
     {
-        $context->addViolationAt(Argument::cetera())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($object, $constraint);
     }
@@ -39,7 +40,7 @@ class JobInstanceValidatorSpec extends ObjectBehavior
         JobInterface $job
     ) {
         $connectorRegistry->getJob($jobInstance)->willReturn($job);
-        $context->addViolationAt(Argument::cetera())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($jobInstance, $constraint);
     }
@@ -48,18 +49,22 @@ class JobInstanceValidatorSpec extends ObjectBehavior
         $connectorRegistry,
         $context,
         JobInstanceConstraint $constraint,
-        JobInstance $jobInstance
+        JobInstance $jobInstance,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $connectorRegistry->getJob($jobInstance)->willReturn(null);
         $jobInstance->getType()->willReturn('import');
 
         $context
-            ->addViolationAt(
-                $constraint->property,
+            ->buildViolation(
                 $constraint->message,
                 ['%job_type%' => 'import']
             )
-            ->shouldBeCalled();
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $violation->atPath($constraint->property)->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($jobInstance, $constraint);
     }

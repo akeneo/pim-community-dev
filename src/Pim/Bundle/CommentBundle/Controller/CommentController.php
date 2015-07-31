@@ -8,8 +8,8 @@ use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Comment controller
@@ -21,8 +21,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class CommentController
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var ManagerRegistry */
     protected $doctrine;
@@ -34,17 +34,17 @@ class CommentController
     protected $commentClassName;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param ManagerRegistry          $doctrine
-     * @param CommentManager           $commentManager
+     * @param TokenStorageInterface $tokenStorage
+     * @param ManagerRegistry       $doctrine
+     * @param CommentManager        $commentManager
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         ManagerRegistry $doctrine,
         CommentManager $commentManager,
         $commentClassName
     ) {
-        $this->securityContext  = $securityContext;
+        $this->tokenStorage     = $tokenStorage;
         $this->doctrine         = $doctrine;
         $this->commentManager   = $commentManager;
         $this->commentClassName = $commentClassName;
@@ -88,7 +88,7 @@ class CommentController
      */
     public function getUser()
     {
-        if (null === $token = $this->securityContext->getToken()) {
+        if (null === $token = $this->tokenStorage->getToken()) {
             return null;
         }
 

@@ -8,7 +8,8 @@ use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantGroup;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class UniqueVariantGroupValidatorSpec extends ObjectBehavior
 {
@@ -39,7 +40,7 @@ class UniqueVariantGroupValidatorSpec extends ObjectBehavior
         $variantType->isVariant()->willReturn(true);
         $groupType->isVariant()->willReturn(false);
 
-        $context->addViolation(Argument::any())->shouldNotBeCalled();
+        $context->buildViolation(Argument::any())->shouldNotBeCalled();
 
         $this->validate($mug, $onlyOneVariantGroup);
     }
@@ -50,7 +51,8 @@ class UniqueVariantGroupValidatorSpec extends ObjectBehavior
         ProductInterface $mug,
         CustomGroupInterface $mugVariantGroup,
         CustomGroupInterface $otherGroup,
-        GroupTypeInterface $variantType
+        GroupTypeInterface $variantType,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $mug->getGroups()->willReturn([$mugVariantGroup, $otherGroup]);
 
@@ -63,8 +65,9 @@ class UniqueVariantGroupValidatorSpec extends ObjectBehavior
 
         $mug->getIdentifier()->willReturn('mug');
         $context
-            ->addViolation($onlyOneVariantGroup->message, ['%groups%' => 'mug, other', '%product%' => 'mug'])
-            ->shouldBeCalled();
+            ->buildViolation($onlyOneVariantGroup->message, ['%groups%' => 'mug, other', '%product%' => 'mug'])
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($mug, $onlyOneVariantGroup);
     }

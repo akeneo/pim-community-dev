@@ -38,9 +38,11 @@ class UserPreferencesValidator extends ConstraintValidator
         if (is_callable(array($user, 'getCatalogLocale'))) {
             $locale = $user->getCatalogLocale();
             if (!$locale) {
-                $this->context->addViolation($constraint->missingLocaleMsg);
+                $this->context->buildViolation($constraint->missingLocaleMsg)
+                    ->addViolation();
             } elseif (!$locale->isActivated()) {
-                $this->context->addViolation($constraint->inactiveLocaleMsg);
+                $this->context->buildViolation($constraint->inactiveLocaleMsg)
+                    ->addViolation();
             }
         }
     }
@@ -55,7 +57,8 @@ class UserPreferencesValidator extends ConstraintValidator
     {
         if (is_callable(array($user, 'getCatalogScope'))) {
             if (!$user->getCatalogScope()) {
-                $this->context->addViolation($constraint->missingScopeMsg);
+                $this->context->buildViolation($constraint->missingScopeMsg)
+                    ->addViolation();
             }
         }
     }
@@ -71,9 +74,11 @@ class UserPreferencesValidator extends ConstraintValidator
         if (is_callable(array($user, 'getDefaultTree'))) {
             $tree = $user->getDefaultTree();
             if (!$tree) {
-                $this->context->addViolation($constraint->missingTreeMsg);
+                $this->context->buildViolation($constraint->missingTreeMsg)
+                    ->addViolation();
             } elseif (!$tree->isRoot()) {
-                $this->context->addViolation($constraint->invalidTreeMsg);
+                $this->context->buildViolation($constraint->invalidTreeMsg)
+                    ->addViolation();
             }
         }
     }

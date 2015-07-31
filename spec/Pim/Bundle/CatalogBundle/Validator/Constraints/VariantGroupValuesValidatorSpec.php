@@ -11,7 +11,8 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValues;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class VariantGroupValuesValidatorSpec extends ObjectBehavior
 {
@@ -63,7 +64,7 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
 
         $template->getValuesData()->willReturn([]);
 
-        $context->addViolation(Argument::cetera())->shouldNotBeCalled();
+        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($variantGroup, $constraint);
     }
@@ -75,7 +76,8 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         VariantGroupValues $constraint,
         $attributeRepository,
         AttributeInterface $axisAttribute,
-        $context
+        $context,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $variantGroup->getType()->willReturn($type);
         $variantGroup->getCode()->willReturn('tshirt');
@@ -92,7 +94,9 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
             '%group%'      => 'tshirt',
             '%attributes%' => '"size"'
         ];
-        $context->addViolation($constraint->message, $violationData)->shouldBeCalled();
+        $context->buildViolation($constraint->message, $violationData)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($variantGroup, $constraint);
     }
@@ -103,7 +107,8 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
         ProductTemplateInterface $template,
         VariantGroupValues $constraint,
         $attributeRepository,
-        $context
+        $context,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $variantGroup->getType()->willReturn($type);
         $variantGroup->getCode()->willReturn('tshirt');
@@ -119,7 +124,9 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
             '%group%'      => 'tshirt',
             '%attributes%' => '"sku"'
         ];
-        $context->addViolation($constraint->message, $violationData)->shouldBeCalled();
+        $context->buildViolation($constraint->message, $violationData)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($variantGroup, $constraint);
 
@@ -129,7 +136,9 @@ class VariantGroupValuesValidatorSpec extends ObjectBehavior
             '%group%'      => 'tshirt',
             '%attributes%' => '"sku", "barcode"'
         ];
-        $context->addViolation($constraint->message, $violationData)->shouldBeCalled();
+        $context->buildViolation($constraint->message, $violationData)
+            ->shouldBeCalled()
+            ->willReturn($violation);
 
         $this->validate($variantGroup, $constraint);
     }

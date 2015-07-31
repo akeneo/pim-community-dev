@@ -11,7 +11,7 @@ Feature: Filter products with multiples simpleselect filters
       | furniture |
       | library   |
     And the following attributes:
-      | code    | label   | type         | useable as grid filter |
+      | code    | label   | type         | useable_as_grid_filter |
       | color   | Color   | simpleselect | yes                    |
       | company | Company | simpleselect | yes                    |
     And the following "color" attribute options: Black and Green

@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Resolve product saving options for single or bulk save
@@ -52,19 +51,15 @@ class ProductSavingOptionsResolver implements SavingOptionsResolverInterface
     }
 
     /**
-     * @return OptionsResolverInterface
+     * @return OptionsResolver
      */
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush', 'recalculate', 'schedule']);
-        $resolver->setAllowedTypes(
-            [
-                'flush'             => 'bool',
-                'recalculate'       => 'bool',
-                'schedule'          => 'bool'
-            ]
-        );
+        $resolver->setDefined(['flush', 'recalculate', 'schedule'])
+            ->setAllowedTypes('flush', 'bool')
+            ->setAllowedTypes('recalculate', 'bool')
+            ->setAllowedTypes('schedule', 'bool');
 
         return $resolver;
     }

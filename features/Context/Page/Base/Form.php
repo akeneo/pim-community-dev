@@ -2,6 +2,7 @@
 
 namespace Context\Page\Base;
 
+use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
@@ -30,6 +31,7 @@ class Form extends Base
                 'Associations list'               => ['css' => '#associations-list'],
                 'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
                 'Panel selector'                  => ['css' => '.panel-selector'],
+                'Panel container'                 => ['css' => '.panel-container'],
                 'Groups'                          => ['css' => '.tab-groups'],
                 'Form Groups'                     => ['css' => '.attribute-group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
@@ -50,6 +52,9 @@ class Form extends Base
     public function save()
     {
         $this->pressButton('Save');
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $this->getSession()->wait(10000, '!$.active');
+        }
     }
 
     /**
@@ -91,6 +96,20 @@ class Form extends Base
         if (!$elt->find('css', sprintf('button.active[data-panel="%s"]', strtolower($panel)))) {
             $elt->find('css', sprintf('button[data-panel]:contains("%s")', $panel))->click();
         }
+    }
+
+    /**
+     * Close the specified panel
+     *
+     * @param string $panel
+     */
+    public function closePanel()
+    {
+        $elt = $this->spin(function () {
+            return $this->getElement('Panel container')->find('css', 'header .close');
+        });
+
+        $elt->click();
     }
 
     /**
@@ -280,6 +299,7 @@ class Form extends Base
         });
 
         $field->attachFile($path);
+        $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');
     }
 
     /**

@@ -1,7 +1,8 @@
 parameters:
-    pim_versioning.event_subscriber.addversion.class: Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber
-    pim_versioning.event_subscriber.adduser.class:    Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber
-    pim_versioning.event_subscriber.addcontext.class: Pim\Bundle\VersioningBundle\EventSubscriber\AddContextSubscriber
+    pim_versioning.event_subscriber.addversion.class:         Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber
+    pim_versioning.event_subscriber.adduser.class:            Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber
+    pim_versioning.event_subscriber.addcontext.class:         Pim\Bundle\VersioningBundle\EventSubscriber\AddContextSubscriber
+    pim_versioning.event_subscriber.add_remove_version.class: Pim\Bundle\VersioningBundle\EventSubscriber\AddRemoveVersionSubscriber
 
 services:
     pim_versioning.event_subscriber.addversion:
@@ -17,7 +18,8 @@ services:
     pim_versioning.event_subscriber.adduser:
         class: %pim_versioning.event_subscriber.adduser.class%
         arguments:
-            - '@security.context'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -25,5 +27,16 @@ services:
         class: %pim_versioning.event_subscriber.addcontext.class%
         arguments:
             - '@pim_versioning.context.version'
+        tags:
+            - { name: kernel.event_subscriber}
+
+    pim_versioning.event_subscriber.add_remove_version:
+        class: %pim_versioning.event_subscriber.add_remove_version.class%
+        arguments:
+            - '@pim_versioning.factory.version'
+            - '@pim_versioning.repository.version'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@pim_versioning.saver.version'
         tags:
             - { name: kernel.event_subscriber}

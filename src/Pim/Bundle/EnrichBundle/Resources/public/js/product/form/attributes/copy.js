@@ -55,7 +55,7 @@ define(
                 this.locale = UserContext.get('catalogLocale');
                 this.scope  = UserContext.get('catalogScope');
 
-                this.listenTo(mediator, 'field:extension:add', this.addFieldExtension);
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -154,7 +154,7 @@ define(
                         );
 
                         oldValue.data = copyField.value.data;
-                        mediator.trigger('entity:form:edit:update_state');
+                        mediator.trigger('pim_enrich:form:entity:update_state');
                         copyField.setSelected(false);
                     }
                 }, this));

@@ -10,13 +10,14 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserContextSpec extends ObjectBehavior
 {
     function let(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
@@ -28,9 +29,10 @@ class UserContextSpec extends ObjectBehavior
         ChannelInterface $ecommerce,
         ChannelInterface $mobile,
         CategoryInterface $firstTree,
-        CategoryInterface $secondTree
+        CategoryInterface $secondTree,
+        RequestStack $requestStack
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $en->getCode()->willReturn('en_US');
@@ -49,14 +51,24 @@ class UserContextSpec extends ObjectBehavior
         $channelManager->getChannels()->willReturn([$mobile, $ecommerce]);
         $categoryManager->getTrees()->willReturn([$firstTree, $secondTree]);
 
-        $this->beConstructedWith($securityContext, $localeManager, $channelManager, $categoryManager, 'en_US');
+        $this->beConstructedWith(
+            $tokenStorage,
+            $localeManager,
+            $channelManager,
+            $categoryManager,
+            $requestStack,
+            'en_US'
+        );
     }
 
-    function it_provides_locale_from_the_request_if_it_has_been_set(Request $request, $fr)
+    function it_provides_locale_from_the_request_if_it_has_been_set(
+        RequestStack $requestStack,
+        Request $request,
+        $fr)
     {
+        $requestStack->getCurrentRequest()->willReturn($request);
         $request->get('dataLocale')->willReturn('fr_FR');
 
-        $this->setRequest($request);
         $this->getCurrentLocale()->shouldReturn($fr);
     }
 

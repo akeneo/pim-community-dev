@@ -11,6 +11,9 @@ config:
                 - jquery.jstree
 
     config:
+        pim/product-edit-form/cache-invalidator:
+            events:
+                - 'pim_enrich:form:entity:post_fetch'
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
@@ -115,6 +118,7 @@ config:
         pim/form-builder:                                          pimenrich/js/form/builder
         pim/form-registry:                                         pimenrich/js/form/registry
         pim/form-config-provider:                                  pimenrich/js/form/config-provider
+        pim/product-edit-form/cache-invalidator:                   pimenrich/js/form/cache-invalidator
         pim/product-edit-form/product-label:                       pimenrich/js/product/form/product-label
         pim/product-edit-form/attributes:                          pimenrich/js/product/form/attributes
         pim/product-edit-form/attributes/copy:                     pimenrich/js/product/form/attributes/copy

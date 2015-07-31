@@ -138,7 +138,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
             'url'                   => 'pim_ui_ajaxentity_list?&class=class&dataLocale=locale&collectionId='
         );
         $resolver = new OptionsResolver();
-        $this->type->setDefaultOptions($resolver);
+        $this->type->configureOptions($resolver);
         $this->assertEquals($expected, $resolver->resolve($options));
     }
 }

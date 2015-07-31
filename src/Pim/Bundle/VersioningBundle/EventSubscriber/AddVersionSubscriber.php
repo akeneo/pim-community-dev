@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
@@ -207,7 +208,7 @@ class AddVersionSubscriber implements EventSubscriber
         $om = $this->versionManager->getObjectManager();
         if ($version->getChangeset()) {
             $om->persist($version);
-            $om->getUnitOfWork()->computeChangeSet($om->getClassMetadata(get_class($version)), $version);
+            $om->getUnitOfWork()->computeChangeSet($om->getClassMetadata(ClassUtils::getClass($version)), $version);
         } else {
             $om->remove($version);
         }

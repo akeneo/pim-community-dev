@@ -220,7 +220,7 @@ class YamlReader extends FileReader implements
      */
     protected function getFileData()
     {
-        $fileData = current(Yaml::parse($this->filePath));
+        $fileData = current(Yaml::parse(file_get_contents($this->filePath)));
 
         foreach ($fileData as $key => $row) {
             if ($this->codeField && !isset($row[$this->codeField])) {

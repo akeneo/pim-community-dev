@@ -6,12 +6,13 @@ use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BaseRemoverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, RemovingOptionsResolverInterface $optionsResolver)
+    function let(ObjectManager $objectManager, RemovingOptionsResolverInterface $optionsResolver, EventDispatcherInterface $eventDispatcher)
     {
-        $this->beConstructedWith($objectManager, $optionsResolver, 'Pim\Bundle\CatalogBundle\Model\GroupTypeInterface');
+        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher, 'Pim\Bundle\CatalogBundle\Model\GroupTypeInterface');
     }
 
     function it_is_a_remover()

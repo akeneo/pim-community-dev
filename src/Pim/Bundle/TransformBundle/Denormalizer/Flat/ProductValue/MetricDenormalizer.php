@@ -5,7 +5,6 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Metric flat denormalizer used for attribute types:
@@ -97,13 +96,13 @@ class MetricDenormalizer extends AbstractValueDenormalizer
     /**
      * Define context requirements
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    protected function configContext(OptionsResolverInterface $resolver)
+    protected function configContext(OptionsResolver $resolver)
     {
         $resolver
             ->setRequired(['value'])
-            ->setOptional(
+            ->setDefined(
                 ['entity', 'locale_code', 'product', 'scope_code', 'use_relative_media_path', 'metric_unit']
             );
     }

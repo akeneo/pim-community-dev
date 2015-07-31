@@ -7,5 +7,11 @@ function (_, Backbone) {
      * @export oro/mediator
      * @name   oro.mediator
      */
-    return _.extend({}, Backbone.Events);
+    return _.extend({
+        clear: function (namespace) {
+            this._events = _.omit(this._events, function (event, code) {
+                return 0 === code.indexOf(namespace);
+            });
+        }
+    }, Backbone.Events);
 });

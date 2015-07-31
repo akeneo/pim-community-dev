@@ -21,12 +21,7 @@ define(
         return BaseForm.extend({
             template: _.template(variantGroupTemplate),
             configure: function () {
-                mediator.off(null, null, 'context:product:form:attribute:variant-group');
-                mediator.on(
-                    'field:extension:add',
-                    _.bind(this.addExtension, this),
-                    'context:product:form:attribute:variant-group'
-                );
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
