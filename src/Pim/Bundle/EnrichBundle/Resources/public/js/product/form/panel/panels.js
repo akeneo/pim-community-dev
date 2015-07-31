@@ -13,9 +13,10 @@ define(
         'underscore',
         'backbone',
         'pim/form',
+        'oro/mediator',
         'text!pim/template/product/panel/container'
     ],
-    function ($, _, Backbone, BaseForm, template) {
+    function ($, _, Backbone, BaseForm, mediator, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-container closed',
@@ -33,6 +34,7 @@ define(
             configure: function () {
                 this.onExtensions('panel:register', _.bind(this.registerPanel, this));
                 this.listenTo(this.getParent().state, 'change:fullPanel', this.render);
+                this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

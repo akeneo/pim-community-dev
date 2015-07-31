@@ -39,3 +39,6 @@ services:
             - '@pim_serializer'
             - %pim_versioning.entity.version.class%
             - '@doctrine.odm.mongodb.document_manager'
+
+    pim_versioning.object_manager.version:
+        alias: doctrine.odm.mongodb.document_manager

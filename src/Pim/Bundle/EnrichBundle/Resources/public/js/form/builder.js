@@ -40,16 +40,12 @@ define(
         };
 
         return {
-            build: function buildRootForm(formName) {
-                var deferred = $.Deferred();
-
-                buildForm(formName).done(function (form) {
-                    form.configure().done(function () {
-                        deferred.resolve(form);
+            build: function (formName) {
+                return buildForm(formName).done(function (form) {
+                    return form.configure().done(function () {
+                        return form;
                     });
                 });
-
-                return deferred.promise();
             }
         };
     }

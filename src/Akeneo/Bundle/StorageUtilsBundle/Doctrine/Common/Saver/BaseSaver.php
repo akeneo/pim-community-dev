@@ -36,9 +36,9 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
         SavingOptionsResolverInterface $optionsResolver,
         $savedClass
     ) {
-        $this->objectManager = $objectManager;
+        $this->objectManager   = $objectManager;
         $this->optionsResolver = $optionsResolver;
-        $this->savedClass = $savedClass;
+        $this->savedClass      = $savedClass;
     }
 
     /**

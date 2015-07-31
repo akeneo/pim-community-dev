@@ -250,12 +250,12 @@ Feature: Display the completeness of a product
     When I open the "Completeness" panel
     Then I should see the completeness summary
     Then I change the family of the product to ""
-    Then I should see "No family defined. Please define a family to calculate the completeness of this product."
+    Then I should see the text "No family defined. Please define a family to calculate the completeness of this product."
     Then I change the family of the product to "Sneakers"
     Then I should not see "No family defined. Please define a family to calculate the completeness of this product."
     And I should see the completeness summary
     Then I change the family of the product to "Boots"
-    Then I should see "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
+    Then I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
 
   @jira https://akeneo.atlassian.net/browse/PIM-4489
   Scenario: Don't display the completeness if the family is not defined on product creation

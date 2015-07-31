@@ -34,6 +34,7 @@ Feature: Display the product history
     And I should see history:
       | version | property           | value      |
       | 1       | Weather conditions | cold,snowy |
+    When I close the "history" panel
     When I edit the "weather_conditions" attribute
     And I visit the "Values" tab
     And I remove the "snowy" option
@@ -60,6 +61,7 @@ Feature: Display the product history
     And I should see history:
       | version | property   | value        |
       | 1       | categories | winter_boots |
+    When I close the "history" panel
     When I edit the "winter_boots" category
     And I press the "Delete" button
     And I confirm the deletion
@@ -84,6 +86,7 @@ Feature: Display the product history
     And I should see history:
       | version | property   | value                                    |
       | 1       | categories | men_2014,men_2015_autumn,men_2015_winter |
+    When I close the "history" panel
     When I edit the "men_2015_autumn" category
     And I press the "Delete" button
     And I confirm the deletion
@@ -109,6 +112,7 @@ Feature: Display the product history
     And I should see history:
       | version | property     | value    |
       | 1       | Manufacturer | Converse |
+    When I close the "history" panel
     When I edit the "manufacturer" attribute
     And I press the "Delete" button
     And I confirm the deletion
@@ -135,6 +139,7 @@ Feature: Display the product history
       | version | property           | value      |
       | 1       | Weather conditions | cold,snowy |
       | 1       | Comment            | nice boots |
+    When I close the "history" panel
     When I edit the "weather_conditions" attribute
     And I press the "Delete" button
     And I confirm the deletion
@@ -175,6 +180,7 @@ Feature: Display the product history
     And I should see history:
       | version | property  | value |
       | 2       | Price USD | 19.00 |
+    When I close the "history" panel
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
     And I remove the "Price" attribute
@@ -203,6 +209,7 @@ Feature: Display the product history
       | version | property    | value      |
       | 1       | Length      | 30         |
       | 1       | Length unit | CENTIMETER |
+    When I close the "history" panel
     When I visit the "Attributes" tab
     And I change the "Length" to "35 CENTIMETER"
     And I save the product
@@ -212,6 +219,7 @@ Feature: Display the product history
     And I should see history:
       | version | property | value   |
       | 2       | Length   | 35      |
+    When I close the "history" panel
     When I visit the "Attributes" tab
     And I remove the "Length" attribute
     And I confirm the deletion
@@ -240,6 +248,7 @@ Feature: Display the product history
     And I should see history:
       | version | property  | value           |
       | 2       | Side view | .*SNKRS-1R\.png |
+    When I close the "history" panel
     When I visit the "Attributes" tab
     And I visit the "Media" group
     And I remove the "Side view" file

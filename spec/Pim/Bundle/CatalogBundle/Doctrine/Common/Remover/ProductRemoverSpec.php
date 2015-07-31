@@ -34,7 +34,7 @@ class ProductRemoverSpec extends ObjectBehavior
         $optionsResolver->resolveRemoveOptions([])->willReturn(['flush' => true]);
         $eventDispatcher->dispatch(
             ProductEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $objectManager->remove($product)->shouldBeCalled();
@@ -42,7 +42,7 @@ class ProductRemoverSpec extends ObjectBehavior
 
         $eventDispatcher->dispatch(
             ProductEvents::POST_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
 
         $this->remove($product);

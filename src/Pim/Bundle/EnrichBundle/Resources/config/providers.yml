@@ -1,11 +1,12 @@
 parameters:
-    pim_enrich.provider.colors.class: Pim\Bundle\EnrichBundle\Provider\ColorsProvider
-    pim_enrich.provider.form_extension.class: Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider
-    pim_enrich.provider.field.registry.class: Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderRegistry
-    pim_enrich.provider.field.base.class: Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
-    pim_enrich.provider.field.wysiwyg.class: Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
-    pim_enrich.provider.empty_value.registry.class: Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderRegistry
-    pim_enrich.provider.empty_value.base.class: Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
+    pim_enrich.provider.colors.class:                    Pim\Bundle\EnrichBundle\Provider\ColorsProvider
+    pim_enrich.provider.form_extension.class:            Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider
+    pim_enrich.provider.field.registry.class:            Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderRegistry
+    pim_enrich.provider.field.base.class:                Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
+    pim_enrich.provider.field.wysiwyg.class:             Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
+    pim_enrich.provider.empty_value.registry.class:      Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderRegistry
+    pim_enrich.provider.empty_value.base.class:          Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
+    pim_enrich.provider.structure_version.product.class: Pim\Bundle\EnrichBundle\Provider\StructureVersion\ProductStructureVersionProvider
 
 services:
     # Color management
@@ -41,3 +42,18 @@ services:
         class: %pim_enrich.provider.empty_value.base.class%
         tags:
             - { name: pim_enrich.provider.empty_value, priority: 100 }
+
+    # Structure version provider
+    pim_enrich.provider.structure_version.product:
+        class: %pim_enrich.provider.structure_version.product.class%
+        arguments:
+            - '@pim_versioning.repository.version'
+        calls:
+            - [addResource, ['%pim_catalog.entity.association_type.class%']]
+            - [addResource, ['%pim_catalog.entity.attribute.class%']]
+            - [addResource, ['%pim_catalog.entity.attribute_group.class%']]
+            - [addResource, ['%pim_catalog.entity.category.class%']]
+            - [addResource, ['%pim_catalog.entity.channel.class%']]
+            - [addResource, ['%pim_catalog.entity.family.class%']]
+            - [addResource, ['%pim_catalog.entity.group.class%']]
+            - [addResource, ['%pim_catalog.entity.locale.class%']]
