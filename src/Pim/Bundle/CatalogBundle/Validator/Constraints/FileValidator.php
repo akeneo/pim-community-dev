@@ -66,6 +66,7 @@ class FileValidator extends ConstraintValidator
      */
     protected function validateFileSize(FileInterface $file, Constraint $constraint)
     {
+        // comes from Symfony\Component\Validator\Constraints\FileValidator
         if ($constraint->maxSize) {
             $limitInBytes = $constraint->maxSize;
 
