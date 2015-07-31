@@ -5,6 +5,7 @@ define(function (require) {
     var _ = require('underscore');
     var TemplateController = require('pim/controller/template');
     var router = require('pim/router');
+    require('jquery.form');
 
     return TemplateController.extend({
         events: {
@@ -14,14 +15,13 @@ define(function (require) {
             var $form = $(event.currentTarget);
 
             router.showLoadingMask();
-            $.ajax({
-                type: $form.prop('method'),
-                url:  $form.prop('action'),
-                data: $form.serialize()
-            }).always(_.bind(function (template) {
-                this.renderTemplate(template);
-                router.hideLoadingMask();
-            }, this));
+
+            $form.ajaxSubmit({
+                complete: _.bind(function (xhr) {
+                    this.renderTemplate(xhr.responseText);
+                    router.hideLoadingMask();
+                }, this)
+            });
 
             return false;
         }

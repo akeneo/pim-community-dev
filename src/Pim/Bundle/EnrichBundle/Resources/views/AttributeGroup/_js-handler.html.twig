@@ -1,7 +1,7 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'backbone', 'jquery-ui-full', 'jquery.sidebarize', 'bootstrap'],
-    function ($, Backbone){
+    ['jquery', 'pim/router', 'jquery-ui-full', 'jquery.sidebarize', 'bootstrap'],
+    function ($, router){
         'use strict';
         $(function() {
             function updateSortOrder() {
@@ -41,7 +41,7 @@ require(
                 }).html(
                     $('<i>', { 'class': 'icon-plus-sign' })
                 ).on('click', function() {
-                    Backbone.history.navigate('{{ path("pim_enrich_attributegroup_create") }}', { trigger: true });
+                    router.redirectToRoute('pim_enrich_attributegroup_create');
                 }).tooltip());
             {% endif %}
 
