@@ -1,5 +1,7 @@
 # 1.4.x
 
+# 1.4.0-alpha (2015-07-31)
+
 ## Technical improvements
 - Product edit form revamp
 - Mass approve or reject proposals

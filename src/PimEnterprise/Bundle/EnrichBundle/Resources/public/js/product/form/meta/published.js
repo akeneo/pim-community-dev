@@ -13,7 +13,7 @@ define(
             className: 'published-version',
             template: _.template(formTemplate),
             configure: function () {
-                mediator.on('product:action:post_update', _.bind(this.render, this));
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
