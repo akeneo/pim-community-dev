@@ -100,6 +100,7 @@
         </replaceregexp>
         <condition property="hasBuildTags">
             <and>
+                <isset property="buildTags" />
                 <length string="${buildTags}" trim="true" when="greater" length="0"/>
             </and>
         </condition>
