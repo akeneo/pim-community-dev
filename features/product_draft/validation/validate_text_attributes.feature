@@ -24,6 +24,8 @@ Feature: Validate text attributes of a product
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
+  # will be fixed in PIM-4641
+  @skip
   Scenario: Validate the unique constraint of text attribute
     Given I change the Email to "bar@example.com"
     And I save the product

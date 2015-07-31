@@ -270,7 +270,6 @@ Feature: Revert a product to a previous version
     Given the following product:
       | sku     | family | price  |
       | t-shirt | tees   | 49 EUR |
-      | marcel  | tees   |        |
     Given I am on the "t-shirt" product page
     And I visit the "Marketing" group
     And I change the "Price" to "39 EUR"
@@ -279,6 +278,11 @@ Feature: Revert a product to a previous version
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
       | price | 49.00 EUR |
+
+  Scenario: Successfully revert a pim_catalog_price_collection attribute with empty value
+    Given the following product:
+      | sku     | family | price  |
+      | marcel  | tees   |        |
     Given I am on the "marcel" product page
     And I visit the "Attributes" tab
     And I visit the "Marketing" group
@@ -286,8 +290,9 @@ Feature: Revert a product to a previous version
     And I save the product
     When I open the history
     When I revert the product version number 1
-    Then the product "marcel" should have the following values:
-      | price |  |
+    And I visit the "Attributes" tab
+    And I visit the "Marketing" group
+    Then the product Price should be ""
 
   Scenario: Successfully revert a pim_catalog_simpleselect attribute
     Given the following product:

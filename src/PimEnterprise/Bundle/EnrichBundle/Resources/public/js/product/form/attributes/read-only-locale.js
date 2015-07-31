@@ -13,16 +13,9 @@ define(
     function ($, _, Backbone, BaseForm, FieldManager, PermissionManager, mediator) {
         return BaseForm.extend({
             configure: function () {
-                mediator.off(null, null, 'context:product:form:attribute:read-only-locale');
-                mediator.on(
-                    'field:extension:add',
-                    _.bind(this.addExtension, this),
-                    'context:product:form:attribute:read-only-locale'
-                );
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
 
-                return $.when(
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             addExtension: function (event) {
                 event.promises.push(
