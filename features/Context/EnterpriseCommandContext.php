@@ -152,7 +152,19 @@ class EnterpriseCommandContext extends CommandContext
                 );
             }
 
-            assertEquals($proposal->getChanges(), $expectedResult);
+            $changes = $proposal->getChanges();
+            foreach ($changes['values'] as $key => $value) {
+                foreach ($value as $key2 => $data) {
+                    $data = $data['data'];
+                    if (isset($data['filePath']) && isset($data['originalFilename'])) {
+                        $filenameLength = strlen($data['originalFilename']);
+                        $changes['values'][$key][$key2]['data']['filePath'] =
+                            substr($data['filePath'], -$filenameLength);
+                    }
+                }
+            }
+
+            assertEquals($changes, $expectedResult);
         }
     }
 
