@@ -68,6 +68,8 @@
 - Add argument `Symfony\Component\Security\Core\SecurityContextInterface` in constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper`
 - Remove the option 'flush_only_object' from `Akeneo/Bundle/RuleEngineBundle/Doctrine/Common/Saver/RuleDefinitionSaver`
 - Remove argument MediaManager in constructor of  `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter`
+- MediaPublisher is now deprecated use `PimEnterprise/Bundle/WorkflowBundle/Publisher/Product/FilePublisher` instead
+- Replace argument MediaManager by RawFileStorerInterface in `PimEnterprise/Bundle/MassEditAction/Operation/EditCommonAttributes` constructor
 
 # 1.3.x
 
