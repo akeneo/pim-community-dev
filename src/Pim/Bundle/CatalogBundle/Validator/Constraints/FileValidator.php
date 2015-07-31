@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 
 /**
  * Validate files linked to product (need to validate extension and size).
@@ -16,6 +16,14 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
  */
 class FileValidator extends ConstraintValidator
 {
+    protected static $suffices = [
+        1                            => 'bytes',
+        BaseFileValidator::KB_BYTES  => 'kB',
+        BaseFileValidator::MB_BYTES  => 'MB',
+        BaseFileValidator::KIB_BYTES => 'KiB',
+        BaseFileValidator::MIB_BYTES => 'MiB',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -58,37 +66,69 @@ class FileValidator extends ConstraintValidator
      */
     protected function validateFileSize(FileInterface $file, Constraint $constraint)
     {
-        // comes from Symfony\Component\Validator\Constraints\FileValidator
         if ($constraint->maxSize) {
-            $fileSize = null !== $file->getUploadedFile() ?
-                $file->getUploadedFile()->getSize() :
-                $file->getSize()
-            ;
+            $limitInBytes = $constraint->maxSize;
 
-            if (ctype_digit((string) $constraint->maxSize)) {
-                $size = $fileSize;
-                $limit = (int) $constraint->maxSize;
-                $suffix = 'bytes';
-            } elseif (preg_match('/^\d++k$/', $constraint->maxSize)) {
-                $size = round($fileSize / 1000, 2);
-                $limit = (int) $constraint->maxSize;
-                $suffix = 'kB';
-            } elseif (preg_match('/^\d++M$/', $constraint->maxSize)) {
-                $size = round($fileSize / 1000000, 2);
-                $limit = (int) $constraint->maxSize;
-                $suffix = 'MB';
-            } else {
-                throw new ConstraintDefinitionException(sprintf('"%s" is not a valid maximum size', $constraint->maxSize));
-            }
+            if ($file->getSize() > $limitInBytes) {
+                list($sizeAsString, $limitAsString, $suffix) = $this->factorizeSizes($file->getSize(), $limitInBytes, $constraint->binaryFormat);
+                $this->context->buildViolation($constraint->maxSizeMessage)
+                    ->setParameter('{{ file }}', $this->formatValue($file->getOriginalFilename()))
+                    ->setParameter('{{ size }}', $sizeAsString)
+                    ->setParameter('{{ limit }}', $limitAsString)
+                    ->setParameter('{{ suffix }}', $suffix)
+                    ->setCode(File::TOO_LARGE_ERROR)
+                    ->addViolation();
 
-            if ($size > $limit) {
-                $this->context->buildViolation($constraint->maxSizeMessage, [
-                    '{{ size }}'   => $size,
-                    '{{ limit }}'  => $limit,
-                    '{{ suffix }}' => $suffix,
-                    '{{ file }}'   => $this->formatValue($file->getOriginalFilename()),
-                ])->addViolation();
+                return;
             }
         }
+    }
+
+    /**
+     * Convert the limit to the smallest possible number
+     * (i.e. try "MB", then "kB", then "bytes")
+     */
+    protected function factorizeSizes($size, $limit, $binaryFormat)
+    {
+        if ($binaryFormat) {
+            $coef = BaseFileValidator::MIB_BYTES;
+            $coefFactor = BaseFileValidator::KIB_BYTES;
+        } else {
+            $coef = BaseFileValidator::MB_BYTES;
+            $coefFactor = BaseFileValidator::KB_BYTES;
+        }
+
+        $limitAsString = (string) ($limit / $coef);
+
+        // Restrict the limit to 2 decimals (without rounding! we
+        // need the precise value)
+        while (self::moreDecimalsThan($limitAsString, 2)) {
+            $coef /= $coefFactor;
+            $limitAsString = (string) ($limit / $coef);
+        }
+
+        // Convert size to the same measure, but round to 2 decimals
+        $sizeAsString = (string) round($size / $coef, 2);
+
+        // If the size and limit produce the same string output
+        // (due to rounding), reduce the coefficient
+        while ($sizeAsString === $limitAsString) {
+            $coef /= $coefFactor;
+            $limitAsString = (string) ($limit / $coef);
+            $sizeAsString = (string) round($size / $coef, 2);
+        }
+
+        return [$sizeAsString, $limitAsString, self::$suffices[$coef]];
+    }
+
+    /**
+     * @param $double
+     * @param $numberOfDecimals
+     *
+     * @return bool
+     */
+    protected static function moreDecimalsThan($double, $numberOfDecimals)
+    {
+        return strlen((string) $double) > strlen(round($double, $numberOfDecimals));
     }
 }

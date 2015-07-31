@@ -95,12 +95,15 @@ class FileValidatorSpec extends ObjectBehavior
         $file->getOriginalFilename()->willReturn('my file.jpg');
 
         $context
-            ->buildViolation(
-                $constraint->maxSizeMessage,
-                Argument::any()
-            )
+            ->buildViolation($constraint->maxSizeMessage)
             ->shouldBeCalled()
             ->willReturn($violation);
+        $violation->setParameter('{{ file }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ size }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ limit }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setParameter('{{ suffix }}', Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($file, $constraint);
     }
