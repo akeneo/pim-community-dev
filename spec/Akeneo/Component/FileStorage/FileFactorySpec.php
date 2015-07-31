@@ -52,6 +52,7 @@ class FileFactorySpec extends ObjectBehavior
         $file->getSize()->willReturn(filesize(__FILE__));
         $file->getExtension()->willReturn('php');
         $file->getKey()->willReturn('1/2/3/4/12345_my_file.php');
+        $file->getHash()->willReturn(sha1_file(__FILE__));
 
         $newFile = $this->createFromFile($file, 'destination');
         $newFile->shouldBeValidFile();
@@ -66,6 +67,7 @@ class FileFactorySpec extends ObjectBehavior
         $file->getSize()->willReturn(filesize(__FILE__));
         $file->getExtension()->willReturn('php');
         $file->getKey()->willReturn('8/9/1/0/8910_just_another_file.php');
+        $file->getHash()->willReturn(sha1_file(__FILE__));
 
         $newFile = $this->createFromFile($file, 'destination', '1/2/3/4/12345_my_file.php');
         $newFile->shouldBeValidFile();
@@ -83,7 +85,8 @@ class FileFactorySpec extends ObjectBehavior
                     $subject->getMimeType() === 'text/x-php' &&
                     $subject->getSize() === filesize(__FILE__) &&
                     $subject->getExtension() === 'php' &&
-                    $subject->getStorage() === 'destination';
+                    $subject->getStorage() === 'destination' &&
+                    $subject->getHash() === sha1_file(__FILE__);
             }
         ];
     }

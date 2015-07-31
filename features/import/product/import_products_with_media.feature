@@ -97,8 +97,8 @@ Feature: Import media with products
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     And import directory of "footwear_product_import" contains the following media:
-      | sneakers-manual.txt |
-      | bic-core-148.txt    |
+      | fanatic-freewave-76.txt |
+      | warranty.txt            |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
@@ -107,5 +107,40 @@ Feature: Import media with products
       | warranty   | warranty.txt |
       | userManual | warranty.txt |
     And the product "fanatic-freewave-76" should have the following values:
-      | warranty   | warranty.txt |
+      | warranty   | warranty.txt            |
       | userManual | fanatic-freewave-76.txt |
+
+  Scenario: Successfully skip a product without media modification
+    Given the following product:
+      | sku                 | name-en_US          | userManual              |
+      | bic-core-148        | Bic Core 148        | bic-core-148.txt        |
+      | fanatic-freewave-76 | Fanatic Freewave 76 | fanatic-freewave-76.txt |
+      | fanatic-freewave-41 | Fanatic Freewave 41 |                         |
+      | fanatic-freewave-37 | Fanatic Freewave 37 | fanatic-freewave-76.txt |
+    And the following CSV file to import:
+      """
+      sku;name-en_US;userManual
+      bic-core-148;Bic Core 148;bic-core-148.txt
+      fanatic-freewave-76;Fanatic Freewave 76;bic-core-148.txt
+      fanatic-freewave-41;Fanatic Freewave 41;fanatic-freewave-76.txt
+      fanatic-freewave-37;Fanatic Freewave 37;
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath          | %file to import% |
+    And import directory of "footwear_product_import" contains the following media:
+      | bic-core-148.txt        |
+      | fanatic-freewave-76.txt |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 4 products
+    And I should see "processed 3"
+    And I should see "skipped product (no differences) 1"
+    And the product "bic-core-148" should have the following values:
+      | userManual | bic-core-148.txt |
+    And the product "fanatic-freewave-76" should have the following values:
+      | userManual | bic-core-148.txt |
+    And the product "fanatic-freewave-41" should have the following values:
+      | userManual | fanatic-freewave-76.txt |
+    And the product "fanatic-freewave-37" should have the following values:
+      | userManual | **empty** |

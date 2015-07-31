@@ -37,6 +37,7 @@ class FileFactory implements FileFactoryInterface
     public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias)
     {
         $pathInfo = $this->pathGenerator->generate($rawFile);
+        $sha1 = sha1_file($rawFile->getPathname());
 
         if ($rawFile instanceof UploadedFile) {
             $originalFilename = $rawFile->getClientOriginalName();
@@ -56,6 +57,7 @@ class FileFactory implements FileFactoryInterface
         $file->setOriginalFilename($originalFilename);
         $file->setSize($size);
         $file->setExtension($extension);
+        $file->setHash($sha1);
         $file->setStorage($destFsAlias);
 
         return $file;
@@ -63,6 +65,8 @@ class FileFactory implements FileFactoryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: drop this
      */
     public function createFromFile(FileInterface $file, $destFsAlias, $key = null)
     {
@@ -75,6 +79,7 @@ class FileFactory implements FileFactoryInterface
         $newFile->setOriginalFilename($file->getOriginalFilename());
         $newFile->setSize($file->getSize());
         $newFile->setExtension($file->getExtension());
+        $newFile->setHash($file->getHash());
         $newFile->setStorage($destFsAlias);
         $newFile->setKey($key);
 

@@ -2,31 +2,32 @@
 
 namespace Pim\Component\Catalog\Comparator\Attribute;
 
+use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 
 /**
- * Comparator which calculate change set for medias
+ * Comparator which calculate change set for files
  *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: remove this class
  */
-class MediaComparator implements ComparatorInterface
+class FileComparator implements ComparatorInterface
 {
-    /** @staticvar string */
-    const SEPATATOR_FILE = '/';
+    /** @var  FileRepositoryInterface */
+    protected $repository;
 
     /** @var array */
     protected $types;
 
     /**
-     * @param array $types
+     * @param array                   $types
+     * @param FileRepositoryInterface $repository
      */
-    public function __construct(array $types)
+    public function __construct(array $types, FileRepositoryInterface $repository)
     {
         $this->types = $types;
+        $this->repository = $repository;
     }
 
     /**
@@ -45,12 +46,12 @@ class MediaComparator implements ComparatorInterface
         $default = ['locale' => null, 'scope' => null, 'data' => ['filePath' => null]];
         $originals = array_merge($default, $originals);
 
-        if ($this->getHashFile($data['data']['filePath']) === $this->getHashFile($originals['data']['filePath'])) {
-            return null;
+        if (null !== $originals['data']['filePath']) {
+            $originalFile = $this->repository->findOneByIdentifier($originals['data']['filePath']);
+            if (null !== $originalFile && $originalFile->getHash() === $this->getHashFile($data['data']['filePath'])) {
+                return null;
+            }
         }
-
-        $filename = strrchr($data['data']['filePath'], DIRECTORY_SEPARATOR);
-        $data['data']['filename'] = str_replace(DIRECTORY_SEPARATOR, '', $filename);
 
         return $data;
     }

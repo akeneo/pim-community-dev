@@ -29,6 +29,10 @@ Akeneo\Component\FileStorage\Model\File:
         extension:
             type: string
             length: 255
+        hash:
+            type: string
+            length: 100
+            nullable: true
         storage:
             type: string
             length: 255

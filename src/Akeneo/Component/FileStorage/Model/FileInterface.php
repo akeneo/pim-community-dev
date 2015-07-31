@@ -95,6 +95,18 @@ interface FileInterface
     /**
      * @return string
      */
+    public function getHash();
+
+    /**
+     * @param string $hash
+     *
+     * @return FileInterface
+     */
+    public function setHash($hash);
+
+    /**
+     * @return string
+     */
     public function getStorage();
 
     /**

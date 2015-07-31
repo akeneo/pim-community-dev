@@ -35,6 +35,9 @@ class File implements FileInterface
     protected $extension;
 
     /** @var string */
+    protected $hash;
+
+    /** @var string */
     protected $storage;
 
     /** @var bool */
@@ -149,6 +152,24 @@ class File implements FileInterface
     public function setExtension($extension)
     {
         $this->extension = $extension;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
 
         return $this;
     }

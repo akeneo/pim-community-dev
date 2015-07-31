@@ -27,6 +27,8 @@ interface FileFactoryInterface
      * @param string        $key
      *
      * @return FileInterface
+     *
+     * TODO: drop this
      */
     public function createFromFile(FileInterface $file, $destFsAlias, $key = null);
 }

@@ -1,6 +1,6 @@
 parameters:
     pim_catalog.comparator.registry.class:          Pim\Component\Catalog\Comparator\ComparatorRegistry
-    pim_catalog.comparator.attribute.media.class:   Pim\Component\Catalog\Comparator\Attribute\MediaComparator
+    pim_catalog.comparator.attribute.file.class:    Pim\Component\Catalog\Comparator\Attribute\FileComparator
     pim_catalog.comparator.attribute.prices.class:  Pim\Component\Catalog\Comparator\Attribute\PricesComparator
     pim_catalog.comparator.attribute.metric.class:  Pim\Component\Catalog\Comparator\Attribute\MetricComparator
     pim_catalog.comparator.attribute.option.class:  Pim\Component\Catalog\Comparator\Attribute\OptionComparator
@@ -19,10 +19,11 @@ services:
     ##
     # Comparators of product values
     ##
-    pim_catalog.comparator.attribute.media:
-        class: %pim_catalog.comparator.attribute.media.class%
+    pim_catalog.comparator.attribute.file:
+        class: %pim_catalog.comparator.attribute.file.class%
         arguments:
             - ['pim_catalog_file', 'pim_catalog_image']
+            - '@akeneo_file_storage.repository.file'
         tags:
             - { name: pim_catalog.attribute.comparator }
 
