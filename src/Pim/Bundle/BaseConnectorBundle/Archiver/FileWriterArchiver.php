@@ -5,7 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Gaufrette\Filesystem;
+use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 
@@ -46,7 +46,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
                         '%filename%' => basename($writer->getPath()),
                     ]
                 );
-                $this->filesystem->write($key, file_get_contents($writer->getPath()), true);
+                $this->filesystem->put($key, file_get_contents($writer->getPath()));
             }
         }
     }

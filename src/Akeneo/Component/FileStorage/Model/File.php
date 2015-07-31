@@ -20,7 +20,7 @@ class File implements FileInterface
     protected $key;
 
     /** @var string */
-    protected $guid;
+    protected $uuid;
 
     /** @var string */
     protected $originalFilename;
@@ -35,7 +35,13 @@ class File implements FileInterface
     protected $extension;
 
     /** @var string */
+    protected $hash;
+
+    /** @var string */
     protected $storage;
+
+    /** @var bool */
+    protected $removed = false;
 
     //TODDO: check if we really need it
     /** @var UploadedFile */
@@ -50,19 +56,30 @@ class File implements FileInterface
     }
 
     /**
+     * TODO: interface if needed
      * {@inheritdoc}
      */
-    public function getGuid()
+    public function setId($id)
     {
-        return $this->guid;
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setGuid($guid)
+    public function getUuid()
     {
-        $this->guid = $guid;
+        return $this->uuid;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
 
         return $this;
     }
@@ -142,6 +159,24 @@ class File implements FileInterface
     /**
      * {@inheritdoc}
      */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getStorage()
     {
         return $this->storage;
@@ -191,5 +226,31 @@ class File implements FileInterface
         $this->uploadedFile = $uploadedFile;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRemoved($removed)
+    {
+        $this->removed = $removed;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getOriginalFilename();
     }
 }

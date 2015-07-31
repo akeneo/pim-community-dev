@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**

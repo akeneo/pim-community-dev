@@ -35,14 +35,14 @@ interface FileInterface
     /**
      * @return string
      */
-    public function getGuid();
+    public function getUuid();
 
     /**
-     * @param string $guid
+     * @param string $uuid
      *
      * @return FileInterface
      */
-    public function setGuid($guid);
+    public function setUuid($uuid);
 
     /**
      * @return string
@@ -95,6 +95,18 @@ interface FileInterface
     /**
      * @return string
      */
+    public function getHash();
+
+    /**
+     * @param string $hash
+     *
+     * @return FileInterface
+     */
+    public function setHash($hash);
+
+    /**
+     * @return string
+     */
     public function getStorage();
 
     /**
@@ -119,4 +131,16 @@ interface FileInterface
      * @return FileInterface|null
      */
     public function setUploadedFile(UploadedFile $uploadedFile = null);
+
+    /**
+     * @param bool $removed
+     *
+     * @return FileInterface
+     */
+    public function setRemoved($removed);
+
+    /**
+     * @return bool
+     */
+    public function isRemoved();
 }

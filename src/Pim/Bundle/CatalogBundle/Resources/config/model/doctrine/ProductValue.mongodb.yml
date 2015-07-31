@@ -51,3 +51,6 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             embedded: true
             type: one
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
+        media:
+            type: entity
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInterface

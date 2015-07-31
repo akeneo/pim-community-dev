@@ -13,6 +13,7 @@ parameters:
     pim_enrich.controller.group.class:                   Pim\Bundle\EnrichBundle\Controller\GroupController
     pim_enrich.controller.association_type.class:        Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.media.class:                   Pim\Bundle\EnrichBundle\Controller\MediaController
+    pim_enrich.controller.file_display.class:            Pim\Bundle\EnrichBundle\Controller\FileDisplayController
     pim_enrich.controller.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\VariantGroupController
     pim_enrich.controller.group_type.class:              Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.completeness.class:            Pim\Bundle\EnrichBundle\Controller\CompletenessController
@@ -205,14 +206,26 @@ services:
             - '@pim_enrich.form.association_type'
             - '@pim_catalog.remover.association_type'
 
-    pim_enrich.controller.media:
+#    pim_enrich.controller.media:
+#        scope: request
+#        class: %pim_enrich.controller.media.class%
+#        arguments:
+#            - '@liip_imagine'
+#            - '@liip_imagine.filter.manager'
+#            - '@liip_imagine.cache.manager'
+#            - '@pim_filesystem'
+
+    pim_enrich.controller.file_display:
         scope: request
-        class: %pim_enrich.controller.media.class%
+        class: %pim_enrich.controller.file_display.class%
+        calls:
+            - [ setContainer, [ '@service_container' ] ]
         arguments:
-            - '@liip_imagine'
-            - '@liip_imagine.filter.manager'
+            - '@liip_imagine.controller'
             - '@liip_imagine.cache.manager'
-            - '@pim_filesystem'
+            - '@oneup_flysystem.mount_manager'
+            - '@liip_imagine.filter.manager'
+            - [ 'storage', 'tmpStorage' ]
 
     pim_enrich.controller.variant_group:
         scope: request
@@ -355,7 +368,8 @@ services:
     pim_enrich.controller.rest.media:
         class: %pim_enrich.controller.rest.media.class%
         arguments:
-            - %upload_dir%
+            - '@validator'
+            - %tmp_storage_dir%
 
     pim_enrich.controller.rest.product:
         class: %pim_enrich.controller.rest.product.class%

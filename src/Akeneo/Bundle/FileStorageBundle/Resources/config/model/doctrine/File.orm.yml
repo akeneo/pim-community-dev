@@ -12,7 +12,7 @@ Akeneo\Component\FileStorage\Model\File:
             length: 255
             unique: true
             column: file_key
-        guid:
+        uuid:
             type: string
             length: 255
             unique: true
@@ -28,7 +28,11 @@ Akeneo\Component\FileStorage\Model\File:
             nullable: true
         extension:
             type: string
-            length: 20
+            length: 255
+        hash:
+            type: string
+            length: 100
+            nullable: true
         storage:
             type: string
             length: 255

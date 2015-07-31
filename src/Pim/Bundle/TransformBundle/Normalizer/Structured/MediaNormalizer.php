@@ -13,6 +13,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: should be deleted
  */
 class MediaNormalizer implements NormalizerInterface
 {
@@ -39,16 +41,22 @@ class MediaNormalizer implements NormalizerInterface
     {
         $file = $object->getFile();
         if (null !== $file && $file instanceof UploadedFile) {
+            //TODO: normally this part should be removed
             // happens in case of mass edition
             return [
                 'originalFilename' => $file->getClientOriginalName(),
                 'filePath'         => $file->getPathname(),
             ];
+        } elseif (null !== $file) {
+            return [
+                'originalFilename' => $file->getOriginalFilename(),
+                'filePath' => $file->getKey(),
+            ];
         }
 
         return [
-            'originalFilename' => $object->getOriginalFilename(),
-            'filePath'         => $this->manager->getFilePath($object, false),
+            'originalFilename' => null,
+            'filePath'         => null,
         ];
     }
 

@@ -42,9 +42,8 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
-            - '@pim_catalog.manager.media'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
             - '@pim_catalog.manager.product_mass_action'
-            - %upload_dir%
         tags:
             -
                 name: pim_enrich.mass_edit_action

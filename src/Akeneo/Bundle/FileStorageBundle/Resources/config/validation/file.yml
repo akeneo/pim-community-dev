@@ -1,5 +1,47 @@
 Akeneo\Component\FileStorage\Model\File:
-    #TODO: add other properties
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: key
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: uuid
     properties:
+        key:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+            - NotBlank: ~
+        uuid:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+            - NotBlank: ~
+        originalFilename:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+            - NotBlank: ~
+        mimeType:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+            - NotBlank: ~
+        size:
+            - Type:
+                type: int
+            - NotBlank: ~
+        extension:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+            - NotBlank: ~
+        storage:
+            - Type:
+                type: string
+            - Length:
+                max: 255
+            - NotBlank: ~
         uploadedFile:
-            - File: ~
+            - File: { groups: [upload, Default] }

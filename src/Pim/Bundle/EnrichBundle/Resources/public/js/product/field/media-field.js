@@ -16,9 +16,10 @@ define([
         'text!pim/template/product/field/media',
         'pim/dialog',
         'oro/mediator',
+        'oro/navigation',
         'jquery.slimbox'
     ],
-    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, Navigation) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             events: {
@@ -41,7 +42,7 @@ define([
             getMediaUrl: function (value) {
                 if (value && value.filePath) {
                     var filename = value.filePath;
-                    filename = filename.substring(filename.lastIndexOf('/') + 1);
+                    filename = encodeURIComponent(filename);
                     return Routing.generate('pim_enrich_media_show', {
                         filename: filename
                     });
@@ -84,6 +85,8 @@ define([
                     'scope':  this.context.scope
                 };
 
+                var navigation = Navigation.getInstance();
+
                 $.ajax({
                     url: Routing.generate('pim_enrich_media_rest_post'),
                     type: 'POST',
@@ -99,10 +102,19 @@ define([
 
                         return myXhr;
                     }, this)
-                }).done(_.bind(function (data) {
+                })
+                .done(_.bind(function (data) {
                     this.setUploadContextValue(data);
                     this.render();
-                }, this)).then(_.bind(function () {
+                }, this))
+                .fail(function(xhr) {
+                    var message = xhr.responseJSON && xhr.responseJSON.message ?
+                        xhr.responseJSON.message :
+                        _.__('pim_enrich.entity.product.error.upload');
+                    navigation.addFlashMessage('error', message);
+                    navigation.afterRequest();
+                })
+                .always(_.bind(function () {
                     this.$('> .media-field .progress').css({opacity: 0});
                     this.setReady(true);
                     this.uploadContext = {};

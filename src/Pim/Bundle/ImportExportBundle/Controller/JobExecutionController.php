@@ -5,7 +5,6 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Gaufrette\StreamMode;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
@@ -201,11 +200,12 @@ class JobExecutionController extends AbstractDoctrineController
 
         return new StreamedResponse(
             function () use ($stream) {
-                $stream->open(new StreamMode('rb'));
-                while (!$stream->eof()) {
-                    echo $stream->read(8192);
+                while (!feof($stream)) {
+                    $buffer = fread($stream, 1024);
+                    echo $buffer;
+                    ob_flush();
                 }
-                $stream->close();
+                fclose($stream);
             },
             200,
             array('Content-Type' => 'application/octet-stream')

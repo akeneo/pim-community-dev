@@ -3,12 +3,17 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
+use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 
 class CsvProductWriterSpec extends ObjectBehavior
 {
-    function let(StepExecution $stepExecution)
+    function let(StepExecution $stepExecution, MountManager $mountManager, RawFileFetcherInterface $fileFetcher)
     {
+        $this->beConstructedWith($mountManager, $fileFetcher);
         $this->setStepExecution($stepExecution);
     }
 
@@ -83,38 +88,40 @@ class CsvProductWriterSpec extends ObjectBehavior
         $this->isWithHeader()->shouldReturn(false);
     }
 
-    function it_writes_product_data_in_file_and_copy_medias($stepExecution)
+    function it_writes_product_data_in_file_and_copies_medias($mountManager, $fileFetcher, $stepExecution, Filesystem $fs)
     {
         $file = new \SplFileInfo(realpath(__DIR__.'/../../../../../../features/Context/fixtures/product_export_with_non_utf8_characters.csv'));
-        $media = ['filePath' => $file->getPathname(), 'exportPath' => 'test.csv'];
+
+        $media = ['filePath' => '1/2/3/4/1234-the-file.csv', 'exportPath' => 'test.csv', 'storageAlias' => 'storage'];
+        $mountManager->getFilesystem('storage')->willReturn($fs);
+        $fileFetcher->fetch('1/2/3/4/1234-the-file.csv', $fs)->willReturn($file);
 
         $this->write([['product' => 'my-product', 'media' => [$media]]]);
         $this->getWrittenFiles()->shouldReturn(['/tmp/test.csv' => 'test.csv']);
         $stepExecution->addWarning()->shouldNotBeCalled();
     }
 
-    function it_does_not_copy_not_found_media($stepExecution)
+    function it_does_not_copy_medias_that_are_not_present_on_the_filesystem($mountManager, $fileFetcher, $stepExecution, Filesystem $fs)
     {
-        $media = ['filePath' => 'not-found.csv', 'exportPath' => 'test.csv'];
+        $media = ['filePath' => 'not-found.csv', 'exportPath' => 'test.csv', 'storageAlias' => 'storage'];
+        $mountManager->getFilesystem('storage')->willReturn($fs);
+        $fileFetcher->fetch('not-found.csv', $fs)->willThrow(new \LogicException());
 
         $this->write([['product' => 'my-product', 'media' => [$media]]]);
         $this->getWrittenFiles()->shouldReturn([]);
-        $stepExecution->addWarning('csv_product_writer', 'The media has not been found or is not currently available', [], $media)
+        $stepExecution->addWarning('csv_product_writer', 'The media has not been found on the file storage', [], $media)
             ->shouldBeCalled();
     }
 
-    function it_does_not_copy_with_wrong_directory($stepExecution)
+    function it_does_not_copy_medias_that_are_not_downloadable($mountManager, $fileFetcher, $stepExecution, Filesystem $fs)
     {
-        $file = new \SplFileInfo(realpath(__DIR__.'/../../../../../../features/Context/fixtures/product_export_with_non_utf8_characters.csv'));
-        $media = ['filePath' => $file->getPathname(), 'exportPath' => null];
-
-        $previousReporting = error_reporting();
-        error_reporting(0);
+        $media = ['filePath' => 'not-downlaodable.csv', 'exportPath' => 'test.csv', 'storageAlias' => 'storage'];
+        $mountManager->getFilesystem('storage')->willReturn($fs);
+        $fileFetcher->fetch('not-downlaodable.csv', $fs)->willThrow(new FileTransferException());
 
         $this->write([['product' => 'my-product', 'media' => [$media]]]);
         $this->getWrittenFiles()->shouldReturn([]);
-        $stepExecution->addWarning('csv_product_writer', 'The media has not been copied', [], $media)
+        $stepExecution->addWarning('csv_product_writer', 'Impossible to copy the media from the file storage', [], $media)
             ->shouldBeCalled();
-        error_reporting($previousReporting);
     }
 }

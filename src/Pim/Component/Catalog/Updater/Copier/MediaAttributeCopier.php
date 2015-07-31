@@ -2,12 +2,12 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
+use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use League\Flysystem\MountManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -19,31 +19,37 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class MediaAttributeCopier extends AbstractAttributeCopier
 {
-    /** @var MediaManager */
-    protected $mediaManager;
+    /** @var RawFileFetcherInterface */
+    protected $rawFileFetcher;
 
-    /** @var MediaFactory */
-    protected $mediaFactory;
+    /** @var RawFileStorerInterface */
+    protected $rawFileStorer;
+
+    /** @var MountManager */
+    protected $mountManager;
 
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param MediaManager             $mediaManager
-     * @param MediaFactory             $mediaFactory
+     * @param RawFileFetcherInterface  $rawFileFetcher
+     * @param RawFileStorerInterface   $rawFileStorer
+     * @param MountManager             $mountManager
      * @param array                    $supportedFromTypes
      * @param array                    $supportedToTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        MediaManager $mediaManager,
-        MediaFactory $mediaFactory,
+        RawFileFetcherInterface $rawFileFetcher,
+        RawFileStorerInterface $rawFileStorer,
+        MountManager $mountManager,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
-        $this->mediaManager       = $mediaManager;
-        $this->mediaFactory       = $mediaFactory;
+        $this->rawFileFetcher     = $rawFileFetcher;
+        $this->rawFileStorer      = $rawFileStorer;
+        $this->mountManager       = $mountManager;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes   = $supportedToTypes;
     }
@@ -106,57 +112,14 @@ class MediaAttributeCopier extends AbstractAttributeCopier
                 $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
-            $mediaHasFileName = false;
-            if (null !== $fromValue->getMedia()) {
-                $originalFileName = $fromValue->getMedia()->getOriginalFilename();
-                if (!empty($originalFileName)) {
-                    $mediaHasFileName = true;
-                }
-            }
+            //TODO: remove the hardcoded storage
+            $filesystem = $this->mountManager->getFilesystem('storage');
 
-            if ($mediaHasFileName) {
-                $this->duplicateMedia($toProduct, $fromValue, $toValue);
-            } else {
-                $this->deleteMedia($toValue);
-            }
+            $rawFile = $this->rawFileFetcher->fetch($fromValue->getMedia()->getKey(), $filesystem);
+            $file = $this->rawFileStorer->store($rawFile, 'storage', false);
+
+            $file->setOriginalFilename($fromValue->getMedia()->getOriginalFilename());
+            $toValue->setMedia($file);
         }
-    }
-
-    /**
-     * TODO: remove this method after the refactoring of the product media manager
-     *
-     * @param ProductValueInterface $toValue
-     */
-    protected function deleteMedia(ProductValueInterface $toValue)
-    {
-        if (null !== $media = $toValue->getMedia()) {
-            $media->setOriginalFilename(null);
-            $media->setFilename(null);
-            $media->setMimeType(null);
-        }
-    }
-
-    /**
-     * TODO: remove this method after the refactoring of the product media manager
-     *
-     * @param ProductInterface      $product
-     * @param ProductValueInterface $fromValue
-     * @param ProductValueInterface $toValue
-     */
-    protected function duplicateMedia(
-        ProductInterface $product,
-        ProductValueInterface $fromValue,
-        ProductValueInterface $toValue
-    ) {
-        if (null === $toValue->getMedia()) {
-            $media = $this->mediaFactory->createMedia();
-            $toValue->setMedia($media);
-        }
-
-        $this->mediaManager->duplicate(
-            $fromValue->getMedia(),
-            $toValue->getMedia(),
-            $this->mediaManager->generateFilenamePrefix($product, $fromValue)
-        );
     }
 }
