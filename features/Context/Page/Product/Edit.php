@@ -286,10 +286,12 @@ class Edit extends Form
                 $actual = $this->getMetricFieldValue($fieldContainer);
                 break;
             case 'multiSelect':
-                $actual = $this->getMultiSelectFieldValue($fieldContainer);
+                $actual   = $this->getMultiSelectFieldValue($fieldContainer);
                 $expected = $this->listToArray($expected);
                 sort($actual);
                 sort($expected);
+                $actual   = implode(', ', $actual);
+                $expected = implode(', ', $expected);
                 break;
             case 'select':
                 $actual = $this->getSelectFieldValue($fieldContainer);
