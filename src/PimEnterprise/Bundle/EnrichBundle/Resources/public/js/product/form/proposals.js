@@ -12,6 +12,7 @@ define(
         'oro/messenger',
         'oro/datagrid-builder',
         'pim/form',
+        'pim/product-manager',
         'pim/user-context',
         'text!pimee/template/product/tab/proposals'
     ],
@@ -22,6 +23,7 @@ define(
         messenger,
         datagridBuilder,
         BaseForm,
+        ProductManager,
         UserContext,
         template
     ) {
@@ -54,11 +56,14 @@ define(
             },
 
             onPostApproveSuccess: function (product) {
-                this.setData(product, {silent: true});
-                messenger.notificationFlashMessage(
-                    'success',
-                    _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
-                );
+                ProductManager.generateMissing(product)
+                    .then(_.bind(function (product) {
+                        this.setData(product, {silent: true});
+                        messenger.notificationFlashMessage(
+                            'success',
+                            _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
+                        );
+                    }, this));
             },
 
             onPostApproveError: function (message) {
