@@ -15,6 +15,7 @@ parameters:
     pim_catalog.mongodb.normalizer.attribute_option.class:  Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
     pim_catalog.mongodb.normalizer.product_price.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
     pim_catalog.mongodb.normalizer.media.class:             Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MediaNormalizer
+    pim_catalog.mongodb.normalizer.file.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FileNormalizer
     pim_catalog.mongodb.normalizer.metric.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MetricNormalizer
     pim_catalog.mongodb.normalizer.datetime.class:          Pim\Bundle\CatalogBundle\MongoDB\Normalizer\DateTimeNormalizer
     pim_catalog.event_subscriber.mongodb.set_products.class:  Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\SetProductsSubscriber
@@ -139,6 +140,12 @@ services:
 
     pim_catalog.mongodb.normalizer.media:
         class: %pim_catalog.mongodb.normalizer.media.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.mongodb.normalizer.file:
+        class: %pim_catalog.mongodb.normalizer.file.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }

@@ -29,7 +29,7 @@ class FileDenormalizerSpec extends ObjectBehavior
     {
         $repository->findOneByIdentifier('key/of/file.txt')->willReturn($file);
 
-        $this->denormalize('key/of/file.txt', Argument::cetera())->shouldReturn($file);
+        $this->denormalize(['filePath' => 'key/of/file.txt'], Argument::cetera())->shouldReturn($file);
     }
 
     function it_supports_denormalization_of_files_and_images_from_json()
