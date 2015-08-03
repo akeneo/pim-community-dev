@@ -37,16 +37,22 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var array Normalizer context */
     protected $normalizerContext;
 
+    /** @var array */
+    protected $mediaAttributeTypes;
+
     /**
      * @param Serializer     $serializer
      * @param ChannelManager $channelManager
+     * @param array          $mediaAttributeTypes
      */
     public function __construct(
         Serializer $serializer,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        array $mediaAttributeTypes
     ) {
-        $this->serializer     = $serializer;
-        $this->channelManager = $channelManager;
+        $this->serializer          = $serializer;
+        $this->channelManager      = $channelManager;
+        $this->mediaAttributeTypes = $mediaAttributeTypes;
     }
 
     /**
@@ -55,7 +61,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     public function process($product)
     {
         $data['media'] = [];
-        $mediaValues = $this->getMediaProductValues($product);
+        $mediaValues   = $this->getMediaProductValues($product);
 
         foreach ($mediaValues as $mediaValue) {
             $data['media'][] = $this->serializer->normalize(
@@ -156,14 +162,10 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
         $values = [];
         foreach ($product->getValues() as $value) {
 
-            //TODO: check that
-            if (//null !== $value->getMedia() &&
-                in_array(
-                    $value->getAttribute()->getAttributeType(),
-                    //TODO: change that
-                    array('pim_catalog_image', 'pim_catalog_file')
-                )
-            ) {
+            if (in_array(
+                $value->getAttribute()->getAttributeType(),
+                $this->mediaAttributeTypes
+            )) {
                 $values[] = $value;
             }
         }
