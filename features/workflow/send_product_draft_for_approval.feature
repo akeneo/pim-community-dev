@@ -19,7 +19,7 @@ Feature: Send a product draft for approval
     And I save the product
     Then its status should be "In progress"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3980
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully send my product draft for approval
     When I change the "Name" to "Baggy"
     And I save the product

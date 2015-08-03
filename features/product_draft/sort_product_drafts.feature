@@ -17,7 +17,7 @@ Feature: Sort product drafts
       | white-boots | ready       | Mary   |
     And I am logged in as "Julia"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3980
+  @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully sort product drafts in the grid
     Given I edit the "black-boots" product
     When I visit the "Proposals" tab

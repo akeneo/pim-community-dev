@@ -19,7 +19,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I am logged in as "Mary"
     And I am on the products page
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3980
+  @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully creates proposal on products I don't own
     Given I mass-edit products viewable1, viewable2 and owned
     And I choose the "Edit common attributes" operation
