@@ -13,7 +13,7 @@ services:
             - '@akeneo_batch.connectors'
             - export
             - '@pim_import_export.form.type.job_instance'
-            - '@pim_import_export.factory.job_instance'
+            - '@akeneo_batch.job_instance_factory'
             - '@pim_connector.launcher.simple_job_launcher'
 
     pim_import_export.controller.import_profile:
@@ -24,7 +24,7 @@ services:
             - '@akeneo_batch.connectors'
             - import
             - '@pim_import_export.form.type.job_instance'
-            - '@pim_import_export.factory.job_instance'
+            - '@akeneo_batch.job_instance_factory'
             - '@pim_connector.launcher.simple_job_launcher'
 
     pim_import_export.controller.export_execution:
