@@ -240,12 +240,11 @@ Feature: Review a product draft
     Then I should not be able to view the "Delete" action of the row which contains "Old attribute not used anymore"
     And I should see "Can't be deleted"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3980
+  @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Successfully display the original value in the copy panel
-    Given Mary proposed the following change to "my-jacket":
-      | field | value       |
-      | SKU   | your-jacket |
+    Given the following product drafts:
+      | product   | author | result                                                                 | status |
+      | my-jacket | mary   | {"values":{"sku":[{"locale":null,"scope":null,"data":"your-jacket"}]}} | ready  |
     And I am logged in as "Mary"
     And I edit the "my-jacket" product
-    Then I display the tooltip for the "SKU" attribute modified
-    Then I should see "my-jacket" in the popover
+    Then the SKU original value for scope "mobile" and locale "en_US" should be "my-jacket"
