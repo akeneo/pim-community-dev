@@ -8,25 +8,29 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CategoryRightFilterSpec extends ObjectBehavior
 {
-    function let(SecurityContextInterface $securityContext, CategoryAccessRepository $categoryAccessRepo)
-    {
-        $this->beConstructedWith($securityContext, $categoryAccessRepo);
+    function let(
+        TokenStorageInterface $tokenStorage,
+        CategoryAccessRepository $categoryAccessRepo,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        $this->beConstructedWith($tokenStorage, $categoryAccessRepo, $authorizationChecker);
     }
 
     function it_filters_a_category_collection_depending_on_user_s_permissions(
-        $securityContext,
+        $tokenStorage,
         $categoryAccessRepo,
         CategoryInterface $bootCategory,
         CategoryInterface $shirtCategory,
         TokenInterface $token,
         User $user
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([3,4]);
@@ -42,12 +46,12 @@ class CategoryRightFilterSpec extends ObjectBehavior
     }
 
     function it_filters_a_category_depending_on_user_s_permissions(
-        $securityContext,
+        $authorizationChecker,
         CategoryInterface $category
     ) {
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(true);
         $this->filterObject($category, 'view')->shouldReturn(false);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(false);
         $this->filterObject($category, 'view')->shouldReturn(true);
     }
 

@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Replace "product updated" flash by "product draft updated" if necessary
@@ -27,22 +27,22 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var ObjectRepository */
     protected $repository;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param ObjectRepository         $repository
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ObjectRepository              $repository
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ObjectRepository $repository
     ) {
-        $this->securityContext = $securityContext;
-        $this->repository = $repository;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->repository           = $repository;
     }
 
     /**
@@ -97,6 +97,6 @@ class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInte
             return false;
         }
 
-        return $this->securityContext->isGranted(Attributes::OWN, $product);
+        return $this->authorizationChecker->isGranted(Attributes::OWN, $product);
     }
 }

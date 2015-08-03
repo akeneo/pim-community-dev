@@ -6,33 +6,33 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class AttributeEditRightFilterSpec extends ObjectBehavior
 {
-    public function let(SecurityContextInterface $securityContext)
+    public function let(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->beConstructedWith($securityContext);
+        $this->beConstructedWith($authorizationChecker);
     }
 
     public function it_does_not_filter_an_attribute_if_the_user_is_granted_to_edit_attribute_group(
-        $securityContext,
+        $authorizationChecker,
         AttributeInterface $price,
         AttributeGroupInterface $marketing
     ) {
         $price->getGroup()->willReturn($marketing);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $marketing)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $marketing)->willReturn(true);
 
         $this->filterObject($price, 'pim:product_value:edit', [])->shouldReturn(false);
     }
 
     public function it_filters_an_attribute_if_the_user_is_not_granted_to_edit_attribute_group(
-        $securityContext,
+        $authorizationChecker,
         AttributeInterface $price,
         AttributeGroupInterface $marketing
     ) {
         $price->getGroup()->willReturn($marketing);
-        $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $marketing)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $marketing)->willReturn(false);
 
         $this->filterObject($price, 'pim:product_value:edit', [])->shouldReturn(true);
     }

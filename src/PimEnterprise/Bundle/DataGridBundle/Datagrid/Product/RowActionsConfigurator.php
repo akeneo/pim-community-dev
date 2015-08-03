@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Row actions configurator for product grid
@@ -33,8 +33,8 @@ class RowActionsConfigurator implements ConfiguratorInterface
     /** @var ConfigurationRegistry */
     protected $registry;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var ProductRepositoryInterface */
     protected $productRepository;
@@ -43,21 +43,21 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected $localeRepository;
 
     /**
-     * @param ConfigurationRegistry      $registry
-     * @param SecurityContextInterface   $securityContext
-     * @param ProductRepositoryInterface $productRepository
-     * @param LocaleRepositoryInterface  $localeRepository
+     * @param ConfigurationRegistry         $registry
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ProductRepositoryInterface    $productRepository
+     * @param LocaleRepositoryInterface     $localeRepository
      */
     public function __construct(
         ConfigurationRegistry $registry,
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductRepositoryInterface $productRepository,
         LocaleRepositoryInterface $localeRepository
     ) {
-        $this->registry = $registry;
-        $this->securityContext = $securityContext;
-        $this->productRepository = $productRepository;
-        $this->localeRepository = $localeRepository;
+        $this->registry             = $registry;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->productRepository    = $productRepository;
+        $this->localeRepository     = $localeRepository;
     }
 
     /**
@@ -81,9 +81,9 @@ class RowActionsConfigurator implements ConfiguratorInterface
             $product = $this->productRepository->findOneById($record->getValue('id'));
             $locale = $this->localeRepository->findOneBy(['code' => $record->getValue('dataLocale')]);
 
-            $editGranted = $this->securityContext->isGranted(Attributes::EDIT, $product);
-            $ownershipGranted = $editGranted ? $this->securityContext->isGranted(Attributes::OWN, $product) : false;
-            $localeGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale);
+            $editGranted = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
+            $ownershipGranted = $editGranted ? $this->authorizationChecker->isGranted(Attributes::OWN, $product) : false;
+            $localeGranted = $this->authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale);
 
             return [
                 'show'            => !$editGranted || !$localeGranted,

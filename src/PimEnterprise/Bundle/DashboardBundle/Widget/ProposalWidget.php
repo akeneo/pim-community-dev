@@ -15,7 +15,8 @@ use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Widget to display proposals
@@ -24,8 +25,8 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ProposalWidget implements WidgetInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var ProductDraftRepositoryInterface */
     protected $repository;
@@ -33,21 +34,27 @@ class ProposalWidget implements WidgetInterface
     /** @var UserManager */
     protected $userManager;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
      * Constructor
      *
-     * @param SecurityContextInterface        $securityContext
+     * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftRepositoryInterface $ownershipRepository
      * @param UserManager                     $userManager
+     * @param TokenStorageInterface           $tokenStorage
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftRepositoryInterface $ownershipRepository,
-        UserManager $userManager
+        UserManager $userManager,
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->securityContext = $securityContext;
-        $this->repository      = $ownershipRepository;
-        $this->userManager     = $userManager;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->repository           = $ownershipRepository;
+        $this->userManager          = $userManager;
+        $this->tokenStorage         = $tokenStorage;
     }
 
     /**
@@ -83,7 +90,7 @@ class ProposalWidget implements WidgetInterface
             return [];
         }
 
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $result = [];
         $proposals = $this->repository->findApprovableByUser($user, 10);
 
@@ -106,7 +113,7 @@ class ProposalWidget implements WidgetInterface
      */
     protected function isDisplayable()
     {
-        return $this->securityContext->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY);
+        return $this->authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY);
     }
 
     /**

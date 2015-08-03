@@ -8,8 +8,9 @@ use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Unpublish tasklet for published products
@@ -18,6 +19,9 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class UnpublishProductTasklet extends AbstractProductPublisherTasklet
 {
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
     /** @var ProductQueryBuilderFactoryInterface */
     protected $publishedPqbFactory;
 
@@ -27,7 +31,8 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet
      * @param ValidatorInterface                  $validator
      * @param ObjectDetacherInterface             $objectDetacher
      * @param UserManager                         $userManager
-     * @param SecurityContextInterface            $securityContext
+     * @param TokenStorageInterface               $tokenStorage
+     * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
      */
     public function __construct(
@@ -36,7 +41,8 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductQueryBuilderFactoryInterface $publishedPqbFactory
     ) {
         parent::__construct(
@@ -45,10 +51,11 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet
             $validator,
             $objectDetacher,
             $userManager,
-            $securityContext
+            $tokenStorage
         );
 
-        $this->publishedPqbFactory = $publishedPqbFactory;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->publishedPqbFactory  = $publishedPqbFactory;
     }
 
     /**
@@ -64,7 +71,7 @@ class UnpublishProductTasklet extends AbstractProductPublisherTasklet
         foreach ($paginator as $productsPage) {
             $invalidProducts = [];
             foreach ($productsPage as $index => $product) {
-                $isAuthorized = $this->securityContext->isGranted(Attributes::OWN, $product);
+                $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 
                 if ($isAuthorized) {
                     $this->stepExecution->incrementSummaryInfo('mass_unpublished');

@@ -28,6 +28,6 @@ services:
         class: %pimee_datagrid.datagrid.product.row_actions_configurator.class%
         arguments:
             - '@pim_datagrid.datagrid.product.configuration_registry'
-            - '@security.context'
+            - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.locale'

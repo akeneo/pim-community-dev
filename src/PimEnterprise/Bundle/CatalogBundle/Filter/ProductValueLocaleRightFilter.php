@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Product Value filter
@@ -26,20 +26,20 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ProductValueLocaleRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var LocaleManager */
     protected $localeManager;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param LocaleManager            $localeManager
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param LocaleManager                 $localeManager
      */
-    public function __construct(SecurityContextInterface $securityContext, LocaleManager $localeManager)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, LocaleManager $localeManager)
     {
-        $this->securityContext = $securityContext;
-        $this->localeManager   = $localeManager;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->localeManager        = $localeManager;
     }
 
     /**
@@ -52,7 +52,7 @@ class ProductValueLocaleRightFilter extends AbstractFilter implements Collection
         }
 
         return $productValue->getAttribute()->isLocalizable() &&
-            !$this->securityContext->isGranted(
+            !$this->authorizationChecker->isGranted(
                 Attributes::VIEW_PRODUCTS,
                 $this->localeManager->getLocaleByCode($productValue->getLocale())
             );

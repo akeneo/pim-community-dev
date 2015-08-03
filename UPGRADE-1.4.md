@@ -42,7 +42,54 @@ To migrate all drafts structure to new JSON structure, you can execute the follo
     php upgrades/1.3-1.4/common/migrate_draft.php --env=YOUR_ENV
 ```
 
+## MIGRATION TO SYMFONY 2.7
 
+PIM has been migrated to Symfony 2.7.
+You can read this guide to see all modifications: https://gist.github.com/mickaelandrieu/5211d0047e7a6fbff925.
+ 
+You can execute the following commands in your project folder:
+
+```
+    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\OptionsResolver\\OptionsResolverInterface;/use Symfony\\Component\\OptionsResolver\\OptionsResolver;/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/public function setDefaultOptions(OptionsResolverInterface $resolver)/public function configureOptions(OptionsResolver $resolver)/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/var OptionsResolverInterface/var OptionsResolver/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/* @return OptionsResolverInterface/* @return OptionsResolver/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\ValidatorInterface;/use Symfony\\Component\\Validator\\Validator\\ValidatorInterface;/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Form\\Extension\\Core\\View\\ChoiceView;/use Symfony\\Component\\Form\\ChoiceList\\View\\ChoiceView;/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Form\\Tests\\Extension\\Core\\Type\\TypeTestCase;/use Symfony\\Component\\Form\\Test\\TypeTestCase;/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\MetadataFactoryInterface;/use Symfony\\Component\\Validator\\Mapping\\Factory\\MetadataFactoryInterface;/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\ExecutionContextInterface;/use Symfony\\Component\\Validator\\Context\\ExecutionContextInterface;/g'
+```
+
+In 2.7, the `Symfony\Component\Security\Core\SecurityContext` is marked as deprecated in favor of the `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` (see: http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements).
+
+```
+   isGranted  => AuthorizationCheckerInterface
+   getToken   => TokenStorageInterface
+   setToken   => TokenStorageInterface
+```
+
+To use TokenStorageInterface:
+```
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Security\\Core\\SecurityContextInterface;/use Symfony\\Component\\Security\\Core\\Authentication\\Token\\Storage\\TokenStorageInterface;/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/SecurityContextInterface/TokenStorageInterface/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/$this->securityContext/$this->tokenStorage/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/getSecurityContext/getTokenStorage/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/security.context/security.token_storage/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/SecurityContext::/Security::/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/$securityContext/$tokenStorage/g'
+```
+
+To use AuthorizationCheckerInterface:
+```
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Security\\Core\\SecurityContextInterface;/use Symfony\\Component\\Security\\Core\\Authorization\\AuthorizationCheckerInterface;/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/SecurityContextInterface/AuthorizationCheckerInterface/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/$this->securityContext/$this->authorizationChecker/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/getSecurityContext/getAuthorizationChecker/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/security.context/security.authorization_checker/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/SecurityContext::/Security::/g'
+    find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/$securityContext/$authorizationChecker/g'
+```
 
 ## Partially fix BC breaks
 

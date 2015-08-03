@@ -42,13 +42,13 @@ class SupportedOperatorConditionValidator extends ConstraintValidator
         $operator = $productCondition->getOperator();
 
         if (null !== $filter && !empty($operator) && !$filter->supportsOperator($operator)) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 $constraint->message,
                 [
                     '%field%'    => $productCondition->getField(),
                     '%operator%' => $productCondition->getOperator(),
                 ]
-            );
+            )->addViolation();
         }
     }
 }

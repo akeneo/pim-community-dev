@@ -7,9 +7,9 @@ Feature: Unpublish many products at once
   Background:
     Given a "footwear" catalog configuration
     And the following attributes:
-      | code        | label       | type                        | property-reference_data_name |
-      | main_fabric | Main fabric | reference_data_multiselect  | fabrics                        |
-      | main_color  | Main color  | reference_data_simpleselect | color                          |
+      | code        | label       | type                        | reference_data_name |
+      | main_fabric | Main fabric | reference_data_multiselect  | fabrics             |
+      | main_color  | Main color  | reference_data_simpleselect | color               |
     And I am logged in as "Julia"
     And the following "main_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
     And the following "main_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
@@ -20,7 +20,7 @@ Feature: Unpublish many products at once
       | yellow-sneakers | Yellow     | Nylon                   |
     And I am logged in as "Julia"
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-4600
+  @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully unpublish several products with reference data
     And I am on the published page
     Then the grid should contain 3 elements

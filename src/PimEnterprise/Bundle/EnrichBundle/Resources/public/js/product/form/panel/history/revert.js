@@ -57,19 +57,20 @@ define(
                             }
                         ).done(
                             _.bind(function () {
-                                ProductManager.clear(this.getFormData().meta.id);
+                                // TODO: We shouldn't force product fetching,
+                                // we should use request response (cf. send for approval)
                                 ProductManager.get(this.getFormData().meta.id).done(_.bind(function (product) {
-                                    this.getRoot().setData(product);
-
                                     navigation.addFlashMessage(
                                         'success',
                                         _.__('pimee_enrich.entity.product.flash.product_reverted')
                                     );
                                     navigation.afterRequest();
-
                                     loadingMask.hide().$el.remove();
-                                    mediator.trigger('product:action:post_revert', product);
-                                    mediator.trigger('product:action:post_update', product);
+
+                                    this.setData(product);
+
+                                    mediator.trigger('pim_enrich:form:entity:post_fetch', product);
+                                    mediator.trigger('pim_enrich:form:entity:post_revert', product);
                                 }, this));
                             }, this)
                         ).fail(

@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Helper for proposal datagrid
@@ -26,19 +26,19 @@ class GridHelper
     /** @var ProductDraftRepositoryInterface $draftRepository */
     protected $draftRepository;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
      * @param ProductDraftRepositoryInterface $draftRepository
-     * @param SecurityContextInterface        $securityContext
+     * @param AuthorizationCheckerInterface   $authorizationChecker
      */
     public function __construct(
         ProductDraftRepositoryInterface $draftRepository,
-        SecurityContextInterface $securityContext
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
-        $this->draftRepository = $draftRepository;
-        $this->securityContext = $securityContext;
+        $this->draftRepository      = $draftRepository;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -49,8 +49,8 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            if (null !== $this->securityContext &&
-                false === $this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $record->getRootEntity())
+            if (null !== $this->authorizationChecker &&
+                false === $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $record->getRootEntity())
             ) {
                 return ['approve' => false, 'refuse' => false];
             }

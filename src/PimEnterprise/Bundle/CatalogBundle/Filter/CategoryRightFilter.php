@@ -15,7 +15,8 @@ use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * A category filter which handles permissions
@@ -24,20 +25,28 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class CategoryRightFilter extends AbstractFilter
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param CategoryAccessRepository $categoryAccessRepo
+     * @param TokenStorageInterface         $tokenStorage
+     * @param CategoryAccessRepository      $categoryAccessRepo
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContextInterface $securityContext, CategoryAccessRepository $categoryAccessRepo)
-    {
-        $this->securityContext    = $securityContext;
-        $this->categoryAccessRepo = $categoryAccessRepo;
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        CategoryAccessRepository $categoryAccessRepo,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
+        $this->tokenStorage         = $tokenStorage;
+        $this->categoryAccessRepo   = $categoryAccessRepo;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -46,7 +55,7 @@ class CategoryRightFilter extends AbstractFilter
     public function filterCollection($categories, $type, array $options = [])
     {
         $filteredCategories = [];
-        $user = $this->securityContext->getToken()->getUser();
+        $user = $this->tokenStorage->getToken()->getUser();
         $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
 
         foreach ($categories as $key => $category) {
@@ -67,7 +76,7 @@ class CategoryRightFilter extends AbstractFilter
             throw new \LogicException('This filter only handles objects of type "CategoryInterface"');
         }
 
-        return !$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category);
+        return !$this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category);
     }
 
     /**

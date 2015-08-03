@@ -50,12 +50,12 @@ class ValueConditionValidator extends ConstraintValidator
                 ]
             );
         } catch (\Exception $e) {
-            $this->context->addViolation(
+            $this->context->buildViolation(
                 $constraint->message,
                 [
                     '%message%' => $e->getMessage(),
                 ]
-            );
+            )->addViolation();
         }
     }
 }

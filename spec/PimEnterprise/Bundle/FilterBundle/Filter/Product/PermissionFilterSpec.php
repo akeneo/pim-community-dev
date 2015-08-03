@@ -11,29 +11,27 @@ use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class PermissionFilterSpec extends ObjectBehavior
 {
     function let(
         FormFactoryInterface $factory,
         FilterUtility $utility,
-        SecurityContextInterface $securityContext,
         CategoryAccessRepository $accessRepository,
         TokenInterface $token,
         User $user,
         ProductCategoryRepositoryInterface $productRepository,
-        QueryBuilder $qb
+        TokenStorageInterface $tokenStorage
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $this->beConstructedWith($factory, $utility, $securityContext, $productRepository, $accessRepository);
+        $this->beConstructedWith($factory, $utility, $tokenStorage, $productRepository, $accessRepository);
     }
 
     function it_applies_a_filter_on_owned_products_with_granted_categories(
-        $utility,
         FilterDatasourceAdapterInterface $datasource,
         $accessRepository,
         $productRepository,
@@ -54,10 +52,8 @@ class PermissionFilterSpec extends ObjectBehavior
     }
 
     function it_applies_a_filter_on_owned_products_without_granted_categories(
-        $utility,
         FilterDatasourceAdapterInterface $datasource,
         $accessRepository,
-        $manager,
         $productRepository,
         $user,
         $qb

@@ -2,7 +2,6 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -10,8 +9,8 @@ use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ProductCategoryManagerSpec extends ObjectBehavior
 {
@@ -26,24 +25,23 @@ class ProductCategoryManagerSpec extends ObjectBehavior
     }
 
     function let(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductCategoryRepositoryInterface $productRepo,
         CategoryRepositoryInterface $categoryRepo,
         CategoryAccessRepository $accessRepo,
-        TokenInterface $token,
-        User $user
+        TokenStorageInterface $tokenStorage
     ) {
         $this->beConstructedWith(
             $productRepo,
             $categoryRepo,
-            $securityContext,
-            $accessRepo
+            $authorizationChecker,
+            $accessRepo,
+            $tokenStorage
         );
     }
 
     function it_gets_product_count_for_granted_trees(
-        $securityContext,
-        $productRepo,
+        $authorizationChecker,
         $categoryRepo,
         ProductInterface $product,
         CategoryInterface $firstTree,
@@ -58,12 +56,12 @@ class ProductCategoryManagerSpec extends ObjectBehavior
         $secondTree->getId()->willReturn(2);
 
         $categoryRepo->getPath($firstCat)->willReturn([0 => $firstTree, 1 => $firstCat]);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(true);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $firstCat)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $firstCat)->willReturn(false);
 
         $categoryRepo->getPath($secondCat)->willReturn([0 => $secondTree, 1 => $secondCat]);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(true);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $secondCat)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $secondCat)->willReturn(true);
 
         $categoryRepo->getChildren(null, true, 'created', 'DESC')->willReturn([0 => $firstTree, 1 => $secondTree]);
 

@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AccessRepositoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Add permissions to datagrid listener
@@ -25,24 +25,24 @@ class AddPermissionsToGridListener
     /** @var AccessRepositoryInterface */
     protected $accessRepository;
 
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /** @var string */
     protected $accessLevel;
 
     /**
      * @param AccessRepositoryInterface $accessRepository
-     * @param SecurityContextInterface  $securityContext
+     * @param TokenStorageInterface     $tokenStorage
      * @param string                    $accessLevel
      */
     public function __construct(
         AccessRepositoryInterface $accessRepository,
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         $accessLevel
     ) {
         $this->accessRepository = $accessRepository;
-        $this->securityContext  = $securityContext;
+        $this->tokenStorage     = $tokenStorage;
         $this->accessLevel      = $accessLevel;
     }
 
@@ -56,7 +56,7 @@ class AddPermissionsToGridListener
         $datasource = $event->getDatagrid()->getDatasource();
 
         // Prepare subquery
-        $user  = $this->securityContext->getToken()->getUser();
+        $user  = $this->tokenStorage->getToken()->getUser();
         $subQB = $this->accessRepository->getGrantedEntitiesQB($user, $this->accessLevel);
 
         $datasource->getRepository()->addGridAccessQB(

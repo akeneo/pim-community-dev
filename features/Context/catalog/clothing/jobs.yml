@@ -217,7 +217,7 @@ jobs:
     refuse_product_draft:
         connector: Akeneo CSV Connector
         alias:     refuse_product_draft
-        label:     Mass refuse product drafts
+        label:     Mass reject product drafts
         type:      mass_edit
     clothing_asset_import:
         connector: Akeneo CSV Connector

@@ -9,4 +9,4 @@ services:
             - '@pim_versioning.manager.version'
             - '@pimee_workflow.saver.product_delegating'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@security.context'
+            - '@security.authorization_checker'

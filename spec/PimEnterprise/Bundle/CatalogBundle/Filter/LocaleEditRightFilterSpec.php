@@ -5,25 +5,25 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Filter;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class LocaleEditRightFilterSpec extends ObjectBehavior
 {
-    public function let(SecurityContextInterface $securityContext)
+    public function let(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->beConstructedWith($securityContext);
+        $this->beConstructedWith($authorizationChecker);
     }
 
-    public function it_does_not_filter_a_locale_if_the_user_is_granted_to_edit_this_locale($securityContext, LocaleInterface $enUS)
+    public function it_does_not_filter_a_locale_if_the_user_is_granted_to_edit_this_locale($authorizationChecker, LocaleInterface $enUS)
     {
-        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $enUS)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $enUS)->willReturn(true);
 
         $this->filterObject($enUS, 'pim:locale:edit', [])->shouldReturn(false);
     }
 
-    public function it_filters_a_locale_if_the_user_is_not_granted_to_edit_this_locale($securityContext, LocaleInterface $enUS)
+    public function it_filters_a_locale_if_the_user_is_not_granted_to_edit_this_locale($authorizationChecker, LocaleInterface $enUS)
     {
-        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $enUS)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $enUS)->willReturn(false);
 
         $this->filterObject($enUS, 'pim:locale:edit', [])->shouldReturn(true);
     }

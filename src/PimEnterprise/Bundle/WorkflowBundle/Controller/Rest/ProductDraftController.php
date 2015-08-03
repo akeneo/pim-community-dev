@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
@@ -20,7 +20,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -30,8 +31,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductDraftController
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var ProductDraftRepositoryInterface */
     protected $repository;
@@ -45,50 +46,31 @@ class ProductDraftController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var UserContext */
-    protected $userContext;
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /**
-     * @param SecurityContextInterface        $securityContext
+     * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftRepositoryInterface $repository
      * @param ProductDraftManager             $manager
      * @param ProductRepositoryInterface      $productRepository
      * @param NormalizerInterface             $normalizer
-     * @param UserContext                     $userContext
+     * @param TokenStorageInterface           $tokenStorage
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftRepositoryInterface $repository,
         ProductDraftManager $manager,
         ProductRepositoryInterface $productRepository,
         NormalizerInterface $normalizer,
-        UserContext $userContext
+        TokenStorageInterface $tokenStorage
     ) {
-        $this->securityContext   = $securityContext;
-        $this->repository        = $repository;
-        $this->manager           = $manager;
-        $this->productRepository = $productRepository;
-        $this->normalizer        = $normalizer;
-        $this->userContext       = $userContext;
-    }
-
-    /**
-     * Get the draft corresponding to the specified product and the current user.
-     * Does not return anything if the user owns the product, even if the draft exists.
-     *
-     * @param int|string $id
-     *
-     * @return JsonResponse
-     */
-    public function getAction($id)
-    {
-        $productDraft = $this->findDraftForProduct($id);
-
-        if (null === $productDraft || $this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
-            return new JsonResponse();
-        }
-
-        return new JsonResponse($this->normalizer->normalize($productDraft, 'internal_api'));
+        $this->authorizationChecker = $authorizationChecker;
+        $this->repository           = $repository;
+        $this->manager              = $manager;
+        $this->productRepository    = $productRepository;
+        $this->normalizer           = $normalizer;
+        $this->tokenStorage         = $tokenStorage;
     }
 
     /**
@@ -96,42 +78,60 @@ class ProductDraftController
      *
      * @param int|string $id
      *
-     * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
      *
      * @return JsonResponse
      */
-    public function readyAction($id)
+    public function readyAction($productId)
     {
-        if (null === $productDraft = $this->repository->find($id)) {
-            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
-        }
+        $product      = $this->findProductOr404($productId);
+        $productDraft = $this->findDraftForProductOr404($product);
 
-        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
         $this->manager->markAsReady($productDraft);
 
-        return new JsonResponse($this->normalizer->normalize($productDraft, 'internal_api'));
+        return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
     }
 
     /**
-     * Find a product draft for a product by the product id
+     * Find a product draft for a product
      *
-     * @param string $id the product id
+     * @param ProductInterface $product
      *
-     * @return ProductDraftInterface|null
+     * @throws NotFoundHttpException
+     *
+     * @return ProductDraftInterface
      */
-    protected function findDraftForProduct($id)
+    protected function findDraftForProductOr404(ProductInterface $product)
     {
-        $product = $this->productRepository->findOneById($id);
-
-        if ($product) {
-            $username = $this->userContext->getUser()->getUsername();
-            $productDraft = $this->repository->findUserProductDraft($product, $username);
-
-            return $productDraft;
+        $username     = $this->tokenStorage->getToken()->getUsername();
+        $productDraft = $this->repository->findUserProductDraft($product, $username);
+        if (null === $productDraft) {
+            throw new NotFoundHttpException(sprintf('Draft for product %d not found', $product->getId()));
         }
+
+        return $productDraft;
+    }
+
+    /**
+     * Find a product by its id
+     *
+     * @param $productId
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return ProductInterface
+     */
+    protected function findProductOr404($productId)
+    {
+        $product = $this->productRepository->findOneById($productId);
+        if (null === $product) {
+            throw new NotFoundHttpException(sprintf('Product with id %d not found', $productId));
+        }
+
+        return $product;
     }
 }

@@ -7,6 +7,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
             - %pimee_product_asset.model.variation.class%
 
     pimee_product_asset.remover.channel_configuration:
@@ -14,6 +15,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
             - %pimee_product_asset.model.channel_variations_configuration.class%
 
     pimee_product_asset.remover.asset:

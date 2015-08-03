@@ -26,5 +26,4 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation:
             joinColumn:
                 name: rule_id
                 referencedColumnName: id
-            joinColumn:
                 onDelete: CASCADE

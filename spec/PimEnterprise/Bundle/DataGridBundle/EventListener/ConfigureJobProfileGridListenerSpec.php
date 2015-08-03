@@ -7,11 +7,11 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class ConfigureJobProfileGridListenerSpec extends ObjectBehavior
 {
-    function let(SecurityContextInterface $security)
+    function let(AuthorizationCheckerInterface $security)
     {
         $this->beConstructedWith($security);
     }

@@ -8,7 +8,8 @@ use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorCondition;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class SupportedOperatorConditionValidatorSpec extends ObjectBehavior
 {
@@ -33,17 +34,17 @@ class SupportedOperatorConditionValidatorSpec extends ObjectBehavior
         $context,
         ProductConditionInterface $condition,
         FilterInterface $filter,
-        SupportedOperatorCondition $constraint
+        SupportedOperatorCondition $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $condition->getField()->willReturn('description');
         $condition->getOperator()->willReturn('NOT SUPPORTED');
         $filter->supportsOperator('NOT SUPPORTED')->willReturn(false);
         $registry->getFilter('description')->willReturn($filter);
 
-        $context->addViolation(
-            Argument::any(),
-            ['%field%' => 'description', '%operator%' => 'NOT SUPPORTED']
-        )->shouldBeCalled();
+        $context->buildViolation(Argument::any(), ['%field%' => 'description', '%operator%' => 'NOT SUPPORTED'])
+            ->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($condition, $constraint);
     }

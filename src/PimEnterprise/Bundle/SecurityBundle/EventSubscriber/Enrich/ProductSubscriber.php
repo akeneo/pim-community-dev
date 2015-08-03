@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Product listener used to handle permissions.
@@ -26,26 +26,22 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class ProductSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var SecurityContextInterface
-     */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
-     * @param UserContext              $userContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param UserContext                   $userContext
      */
-    public function __construct(SecurityContextInterface $securityContext, UserContext $userContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, UserContext $userContext)
     {
-        $this->securityContext = $securityContext;
-        $this->userContext     = $userContext;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->userContext          = $userContext;
     }
 
     /**
@@ -67,11 +63,11 @@ class ProductSubscriber implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        if (false === $this->securityContext->isGranted(Attributes::EDIT, $event->getSubject())) {
+        if (false === $this->authorizationChecker->isGranted(Attributes::EDIT, $event->getSubject())) {
             throw new AccessDeniedException();
         }
         $locale = $this->userContext->getCurrentLocale();
-        if (false === $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)) {
+        if (false === $this->authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)) {
             throw new AccessDeniedException();
         }
     }

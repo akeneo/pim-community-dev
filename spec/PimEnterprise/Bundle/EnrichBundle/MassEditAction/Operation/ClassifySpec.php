@@ -8,24 +8,26 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 class ClassifySpec extends ObjectBehavior
 {
     function let(
         CategoryManager $categoryManager,
         BulkSaverInterface $productSaver,
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         TokenInterface $token,
         User $user,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        TokenStorageInterface $tokenStorage
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $categoryManager->getEntityRepository()->willReturn($categoryRepository);
 
-        $this->beConstructedWith($categoryManager, $productSaver, $securityContext);
+        $this->beConstructedWith($categoryManager, $productSaver, $authorizationChecker);
     }
 
     function it_is_initializable()

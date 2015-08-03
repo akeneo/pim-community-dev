@@ -39,7 +39,7 @@ class AssetRemover extends BaseRemover
         $removedClass,
         EventDispatcherInterface $eventDispatcher
     ) {
-        parent::__construct($objectManager, $optionsResolver, $removedClass);
+        parent::__construct($objectManager, $optionsResolver, $eventDispatcher, $removedClass);
 
         $this->eventDispatcher = $eventDispatcher;
     }

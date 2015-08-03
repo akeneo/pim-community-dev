@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Published product controller
@@ -27,29 +27,28 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class PublishedProductRestController
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /** @var PublishedProductManager */
     protected $manager;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param PublishedProductManager  $manager
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param PublishedProductManager       $manager
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
+        AuthorizationCheckerInterface $authorizationChecker,
         PublishedProductManager $manager
     ) {
-        $this->securityContext = $securityContext;
-        $this->manager         = $manager;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->manager              = $manager;
     }
 
     /**
      * Publish a product
      *
      * @param Request        $request
-     * @param integer|string $id
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      *
@@ -60,7 +59,7 @@ class PublishedProductRestController
     {
         $product = $this->findOr404($request->query->get('originalId'));
 
-        $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
+        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
         if (!$isOwner) {
             throw new AccessDeniedException();
         }
@@ -74,7 +73,6 @@ class PublishedProductRestController
      * Unpublish a product
      *
      * @param Request        $request
-     * @param integer|string $id
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      *
@@ -85,7 +83,7 @@ class PublishedProductRestController
     {
         $published = $this->findPublishedOr404($request->query->get('originalId'));
 
-        $isOwner = $this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct());
+        $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $published->getOriginalProduct());
         if (!$isOwner) {
             throw new AccessDeniedException();
         }
@@ -98,7 +96,7 @@ class PublishedProductRestController
     /**
      * Find a published product by its original product id or return a 404 response
      *
-     * @param integer|string $id
+     * @param integer|string $originalProductId
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
@@ -121,7 +119,7 @@ class PublishedProductRestController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param integer|string $id
+     * @param integer|string $originalProductId
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface

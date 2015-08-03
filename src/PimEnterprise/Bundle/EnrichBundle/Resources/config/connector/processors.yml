@@ -13,7 +13,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.repository.job_configuration'
             - '@oro_user.manager'
-            - '@security.context'
+            - '@security.token_storage'
 
     pimee_enrich.mass_edit.add_product_value.processor:
         class: %pimee_enrich.connector.processor.mass_edit.product.add_value_with_permissions.class%
@@ -22,4 +22,5 @@ services:
             - '@pim_catalog.validator.product'
             - '@pim_connector.repository.job_configuration'
             - '@oro_user.manager'
-            - '@security.context'
+            - '@security.authorization_checker'
+            - '@security.token_storage'

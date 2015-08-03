@@ -63,11 +63,11 @@ class ApproveTasklet extends AbstractReviewTasklet
             throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
         }
 
-        if (!$this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
             throw new DraftNotReviewableException(self::ERROR_CANNOT_EDIT_ATTR);
         }
 

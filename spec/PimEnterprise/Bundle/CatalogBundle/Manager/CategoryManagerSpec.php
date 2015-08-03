@@ -13,7 +13,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
@@ -28,8 +28,8 @@ class CategoryManagerSpec extends ObjectBehavior
         CategoryFactory $categoryFactory,
         EventDispatcherInterface $eventDispatcher,
         CategoryAccessRepository $categoryAccessRepo,
-        SecurityContextInterface $securityContext,
-        CategoryRepositoryInterface $assetCategoryRepo
+        CategoryRepositoryInterface $assetCategoryRepo,
+        AuthorizationCheckerInterface $context
     ) {
         $om->getRepository(Argument::any())->willReturn($productCategoryRepo);
         $this->beConstructedWith(
@@ -39,7 +39,7 @@ class CategoryManagerSpec extends ObjectBehavior
             Argument::any(),
             $eventDispatcher,
             $categoryAccessRepo,
-            $securityContext,
+            $context,
             $assetCategoryRepo
         );
     }
@@ -94,11 +94,11 @@ class CategoryManagerSpec extends ObjectBehavior
         $productCategoryRepo,
         CategoryInterface $childOne,
         CategoryInterface $childTwo,
-        $securityContext
+        $context
     ) {
         $productCategoryRepo->getChildrenByParentId(42)->willReturn([$childOne, $childTwo]);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->shouldBeCalled();
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->shouldBeCalled();
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->shouldBeCalled();
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->shouldBeCalled();
         $this->getGrantedChildren(42);
     }
 
@@ -123,7 +123,7 @@ class CategoryManagerSpec extends ObjectBehavior
         CategoryInterface $parent,
         CategoryInterface $childOne,
         CategoryInterface $childTwo,
-        $securityContext
+        $context
     ) {
         $productCategoryRepo->getPath($childTwo)->willReturn(
             [0 => $parent, 1 => $childOne, 2 => $childTwo]
@@ -132,9 +132,9 @@ class CategoryManagerSpec extends ObjectBehavior
         $childOne->getId()->willReturn(1);
         $childTwo->getId()->willReturn(2);
 
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $parent)->willReturn(true);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->willReturn(true);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $parent)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(true);
         $productCategoryRepo->getTreeFromParents([3, 1, 2])->willReturn(
             [
                 0 => [
@@ -150,9 +150,9 @@ class CategoryManagerSpec extends ObjectBehavior
                 ]
             ]
         );
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $parent)->willReturn(true);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->willReturn(true);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $parent)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(true);
 
         $this->getGrantedFilledTree($parent, new ArrayCollection([$childTwo]));
     }

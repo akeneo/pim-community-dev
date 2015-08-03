@@ -12,10 +12,11 @@ use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 {
@@ -24,14 +25,16 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
-        SecurityContextInterface $securityContext
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->beConstructedWith(
             $productFieldUpdater,
             $validator,
             $jobConfigurationRepo,
             $userManager,
-            $securityContext
+            $authorizationChecker,
+            $tokenStorage
         );
     }
 
@@ -47,7 +50,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
     }
 
     function it_processes(
-        $securityContext,
+        $authorizationChecker,
+        $tokenStorage,
         $userManager,
         $validator,
         StepExecution $stepExecution,
@@ -63,12 +67,12 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
 
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $userManager->findUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
 
-        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
@@ -79,7 +83,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
     }
 
     function it_processes_without_permissions(
-        $securityContext,
+        $authorizationChecker,
+        $tokenStorage,
         $userManager,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -99,12 +104,12 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         )->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 
-        $securityContext->setToken(Argument::any())->shouldBeCalled();
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
 
         $userManager->findUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
 
-        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(

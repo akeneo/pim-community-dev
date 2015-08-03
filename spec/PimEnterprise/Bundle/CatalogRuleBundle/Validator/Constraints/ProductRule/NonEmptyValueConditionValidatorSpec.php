@@ -7,7 +7,8 @@ use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductConditionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\NonEmptyValueCondition;
 use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class NonEmptyValueConditionValidatorSpec extends ObjectBehavior
 {
@@ -29,12 +30,14 @@ class NonEmptyValueConditionValidatorSpec extends ObjectBehavior
     function it_adds_a_violation_if_the_operator_is_not_empty_and_the_value_is_empty(
         $context,
         ProductConditionInterface $condition,
-        NonEmptyValueCondition $constraint
+        NonEmptyValueCondition $constraint,
+        ConstraintViolationBuilderInterface $violation
     ) {
         $condition->getOperator()->willReturn('foo');
         $condition->getValue()->willReturn(null);
 
-        $context->addViolation(Argument::any(), [])->shouldBeCalled();
+        $context->buildViolation(Argument::any(), Argument::any())->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($condition, $constraint);
     }

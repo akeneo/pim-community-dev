@@ -56,7 +56,7 @@ class AssetEventSubscriberSpec extends ObjectBehavior
 
         $publishedProducts->count()->willReturn(0);
 
-        $this->isAssetRemovable($event)->shouldReturn($event);
+        $this->checkPublishedProductConsistency($event)->shouldReturn($event);
     }
 
     function it_throws_an_exception_if_the_asset_is_used_in_a_published_product(
@@ -87,6 +87,6 @@ class AssetEventSubscriberSpec extends ObjectBehavior
                     'Impossible to remove an asset linked to a published product'
                 )
             )
-            ->during('isAssetRemovable', [$event]);
+            ->during('checkPublishedProductConsistency', [$event]);
     }
 }

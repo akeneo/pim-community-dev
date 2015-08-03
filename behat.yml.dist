@@ -17,6 +17,7 @@ default:
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat
+                debug: false
         SensioLabs\Behat\PageObjectExtension\Extension: ~
 
 jenkins-1:

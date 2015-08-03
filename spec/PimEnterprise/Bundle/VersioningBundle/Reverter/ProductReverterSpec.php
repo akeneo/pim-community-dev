@@ -13,7 +13,7 @@ use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductReverterSpec extends ObjectBehavior
 {
@@ -21,7 +21,7 @@ class ProductReverterSpec extends ObjectBehavior
         ManagerRegistry $registry,
         DenormalizerInterface $denormalizer,
         SaverInterface $saver,
-        Validator $validator,
+        ValidatorInterface $validator,
         TranslatorInterface $translator
     ) {
         $this->beConstructedWith($registry, $denormalizer, $saver, $validator, $translator);
