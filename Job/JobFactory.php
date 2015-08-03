@@ -1,4 +1,5 @@
 <?php
+
 namespace Akeneo\Bundle\BatchBundle\Job;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

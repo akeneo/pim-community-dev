@@ -8,31 +8,37 @@ CHANGELOG
 
 - PIM-4678: Remove execution detail in mail notifications
 
+### Improvements
+
+- Move the JobInstanceFactory from Akeneo PIM
+- Fix inconsistencies with ItemStep and item elements interfaces and methods flush() and initialize()
+- Add a command to create job instances
+
 0.4.2
 -----
 
 ### Bug fixes
 
- - Fix missing akeneo_batch.entity.job_execution.class parameter
- - Fix erroneous class name in DoctrineJobRepository
+- Fix missing akeneo_batch.entity.job_execution.class parameter
+- Fix erroneous class name in DoctrineJobRepository
 
 0.4.1
 -----
 
 ### Features
 
- - Added the `SimpleJobLauncher` to ease job launches
+- Added the `SimpleJobLauncher` to ease job launches
 
 ### Improvements
 
- - Introduced PHPspec as a dev dependency
+- Introduced PHPspec as a dev dependency
 
 0.4.0
 -----
 
 ### Improvements
 
- - The `--no-log` option is now used instead of the console related `--no-debug` option
+- The `--no-log` option is now used instead of the console related `--no-debug` option
 
 0.3.6 (2015-08-03)
 ------------------

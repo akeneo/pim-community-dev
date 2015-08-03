@@ -229,7 +229,9 @@ class ItemStep extends AbstractStep
             if ($element instanceof StepExecutionAwareInterface) {
                 $element->setStepExecution($stepExecution);
             }
-            $element->initialize();
+            if (method_exists($element, 'initialize')) {
+                $element->initialize();
+            }
         }
     }
 
@@ -239,7 +241,9 @@ class ItemStep extends AbstractStep
     public function flushStepElements()
     {
         foreach ($this->getConfigurableStepElements() as $element) {
-            $element->flush();
+            if (method_exists($element, 'flush')) {
+                $element->flush();
+            }
         }
     }
 

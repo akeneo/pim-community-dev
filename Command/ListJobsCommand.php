@@ -28,6 +28,7 @@ class ListJobsCommand extends ContainerAwareCommand
     {
         $this
             ->setName('akeneo:batch:list-jobs')
+            ->setDescription('List the existing job instances')
             ->addOption(
                 'type',
                 't',
