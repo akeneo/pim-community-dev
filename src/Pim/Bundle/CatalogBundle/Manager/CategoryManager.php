@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 
 /**
  * Category manager
@@ -21,22 +23,35 @@ class CategoryManager
     /** @var string */
     protected $categoryClass;
 
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
     /**
-     * Constructor
-     *
-     * @param ObjectManager $om
-     * @param string        $categoryClass
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param ObjectManager               $om
+     * @param string                      $categoryClass
      */
-    public function __construct(ObjectManager $om, $categoryClass)
+    public function __construct(CategoryRepositoryInterface $categoryRepository, ObjectManager $om, $categoryClass)
     {
-        $this->om = $om;
-        $this->categoryClass = $categoryClass;
+        $this->categoryRepository = $categoryRepository;
+        $this->om                 = $om;
+        $this->categoryClass      = $categoryClass;
+    }
+
+    /**
+     * @return CategoryRepositoryInterface
+     */
+    public function getCategoryRepository()
+    {
+        return $this->categoryRepository;
     }
 
     /**
      * Return object manager
      *
      * @return ObjectManager
+     *
+     * @deprecated will be removed in future versions
      */
     public function getObjectManager()
     {
@@ -66,9 +81,9 @@ class CategoryManager
     /**
      * Return the entity repository reponsible for the category
      *
-     * @return CategoryRepository
+     * @return CategoryRepositoryInterface
      *
-     * TODO: Inject CategoryRepository
+     * @deprecated will be removed in future versions
      */
     public function getEntityRepository()
     {
@@ -93,7 +108,7 @@ class CategoryManager
      */
     public function getTrees()
     {
-        return $this->getEntityRepository()->getChildren(null, true, 'created', 'DESC');
+        return $this->categoryRepository->getChildren(null, true, 'created', 'DESC');
     }
 
     /**
@@ -101,16 +116,14 @@ class CategoryManager
      * If the $selectNodeId is provided, all the children
      * level needed to provides the selectNode are returned
      *
-     * @param int $parentId
-     * @param int $selectNodeId
+     * @param int      $parentId
+     * @param int|bool $selectNodeId
      *
      * @return ArrayCollection
      */
     public function getChildren($parentId, $selectNodeId = false)
     {
-        $children = array();
-
-        $entityRepository = $this->getEntityRepository();
+        $entityRepository = $this->categoryRepository;
 
         if ($selectNodeId === false) {
             $children = $entityRepository->getChildrenByParentId($parentId);
@@ -126,8 +139,8 @@ class CategoryManager
      */
     public function getTreeChoices()
     {
-        $trees = $this->getTrees();
-        $choices = array();
+        $trees   = $this->getTrees();
+        $choices = [];
         foreach ($trees as $tree) {
             $choices[$tree->getId()] = $tree->getLabel();
         }
@@ -144,7 +157,7 @@ class CategoryManager
      */
     public function getCategoriesByIds($categoriesIds)
     {
-        return $this->getEntityRepository()->getCategoriesByIds($categoriesIds);
+        return $this->categoryRepository->getCategoriesByIds($categoriesIds);
     }
 
     /**
@@ -159,11 +172,11 @@ class CategoryManager
      */
     public function getFilledTree(CategoryInterface $root, Collection $categories)
     {
-        $parentsIds = array();
+        $parentsIds = [];
 
         foreach ($categories as $category) {
-            $categoryParentsIds = array();
-            $path = $this->getEntityRepository()->getPath($category);
+            $categoryParentsIds = [];
+            $path               = $this->categoryRepository->getPath($category);
 
             if ($path[0]->getId() === $root->getId()) {
                 foreach ($path as $pathItem) {
@@ -174,7 +187,7 @@ class CategoryManager
         }
         $parentsIds = array_unique($parentsIds);
 
-        return $this->getEntityRepository()->getTreeFromParents($parentsIds);
+        return $this->categoryRepository->getTreeFromParents($parentsIds);
     }
 
     /**
@@ -186,9 +199,7 @@ class CategoryManager
      */
     public function getTreeByCode($code)
     {
-        return $this
-            ->getEntityRepository()
-            ->findOneBy(array('code' => $code, 'parent' => null));
+        return $this->categoryRepository->findOneBy(['code' => $code, 'parent' => null]);
     }
 
     /**
@@ -200,9 +211,7 @@ class CategoryManager
      */
     public function getCategoryByCode($code)
     {
-        return $this
-            ->getEntityRepository()
-            ->findOneBy(array('code' => $code));
+        return $this->categoryRepository->findOneBy(['code' => $code]);
     }
 
     /**
@@ -216,9 +225,9 @@ class CategoryManager
      */
     public function move($categoryId, $parentId, $prevSiblingId)
     {
-        $repo     = $this->getEntityRepository();
-        $category = $repo->find($categoryId);
-        $parent   = $repo->find($parentId);
+        $repo        = $this->categoryRepository;
+        $category    = $repo->find($categoryId);
+        $parent      = $repo->find($parentId);
         $prevSibling = null;
 
         $category->setParent($parent);
@@ -227,6 +236,7 @@ class CategoryManager
             $prevSibling = $repo->find($prevSiblingId);
         }
 
+        // Gedmo/Tree virtual methods
         if (is_object($prevSibling)) {
             $repo->persistAsNextSiblingOf($category, $prevSibling);
         } else {
@@ -247,11 +257,11 @@ class CategoryManager
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {
-        $childPath = $this->getEntityRepository()->getPath($childNode);
+        $childPath = $this->categoryRepository->getPath($childNode);
         //Removing last part of the path as it's the node itself
         //which cannot be is own ancestor
         array_pop($childPath);
-        $childCount = 0;
+        $childCount  = 0;
         $parentFound = false;
 
         while ($childCount < count($childPath) && (!$parentFound)) {

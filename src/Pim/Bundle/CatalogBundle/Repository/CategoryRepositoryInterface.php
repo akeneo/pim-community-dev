@@ -101,8 +101,8 @@ interface CategoryRepositoryInterface extends
      * down to the node specified by select node id. Otherwise, the
      * whole tree will be returned
      *
-     * @param int $parentId
-     * @param int $selectNodeId
+     * @param int      $parentId
+     * @param int|bool $selectNodeId
      *
      * @return ArrayCollection
      */
