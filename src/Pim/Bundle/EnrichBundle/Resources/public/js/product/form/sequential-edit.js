@@ -54,11 +54,13 @@ define(
                 });
 
                 return $.when(
-                    FetcherRegistry.getFetcher('sequential-edit').fetchAll().then(
-                        _.bind(function (sequentialEdit) {
-                            this.model.set(sequentialEdit);
-                        }, this)
-                    ),
+                    FetcherRegistry.getFetcher('sequential-edit')
+                        .fetchAll()
+                        .then(_.bind(
+                            function (sequentialEdit) {
+                                this.model.set(sequentialEdit);
+                            }, this)
+                        ),
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
             },
