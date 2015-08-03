@@ -654,7 +654,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $label
+     * @param string $fieldName
      * @param string $expected
      *
      * @Then /^the product ([^"]*) should be empty$/
@@ -663,9 +663,9 @@ class WebUser extends RawMinkContext
      * @throws \LogicException
      * @throws ExpectationException
      */
-    public function theProductFieldValueShouldBe($label, $expected = '')
+    public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $this->getCurrentPage()->compareFieldValue($label, $expected);
+        $this->getCurrentPage()->compareFieldValue($fieldName, $expected);
     }
 
     /**
@@ -740,6 +740,20 @@ class WebUser extends RawMinkContext
                 )
             );
         }
+    }
+
+    /**
+     * @param string $fieldName
+     * @param string $locale
+     * @param string $scope
+     * @param string $expected
+     *
+     * @Then /^the ([^"]*) copy value for scope "([^"]*)" and locale "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCopyValueShouldBe($fieldName, $scope, $locale, $expected)
+    {
+        $this->getCurrentPage()->compareWith($locale, $scope);
+        $this->getCurrentPage()->compareFieldValue($fieldName, $expected, true);
     }
 
     /**
