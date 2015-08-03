@@ -2,7 +2,6 @@
 
 namespace spec\Akeneo\Component\FileStorage;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileStorage\PathGeneratorInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -42,37 +41,6 @@ class FileFactorySpec extends ObjectBehavior
         $file = $this->createFromRawFile($rawFile, 'destination');
         $file->shouldBeValidFile();
     }
-
-    function it_create_a_file_from_another_file($pathGenerator, FileInterface $file)
-    {
-        $pathGenerator->generateUuid(Argument::any())->willReturn('12345');
-
-        $file->getMimeType()->willReturn('text/x-php');
-        $file->getOriginalFilename()->willReturn('FileFactorySpec.php');
-        $file->getSize()->willReturn(filesize(__FILE__));
-        $file->getExtension()->willReturn('php');
-        $file->getKey()->willReturn('1/2/3/4/12345_my_file.php');
-        $file->getHash()->willReturn(sha1_file(__FILE__));
-
-        $newFile = $this->createFromFile($file, 'destination');
-        $newFile->shouldBeValidFile();
-    }
-
-    function it_create_a_file_from_another_file_with_a_given_key($pathGenerator, FileInterface $file)
-    {
-        $pathGenerator->generateUuid(Argument::any())->willReturn('12345');
-
-        $file->getMimeType()->willReturn('text/x-php');
-        $file->getOriginalFilename()->willReturn('FileFactorySpec.php');
-        $file->getSize()->willReturn(filesize(__FILE__));
-        $file->getExtension()->willReturn('php');
-        $file->getKey()->willReturn('8/9/1/0/8910_just_another_file.php');
-        $file->getHash()->willReturn(sha1_file(__FILE__));
-
-        $newFile = $this->createFromFile($file, 'destination', '1/2/3/4/12345_my_file.php');
-        $newFile->shouldBeValidFile();
-    }
-
 
     public function getMatchers()
     {

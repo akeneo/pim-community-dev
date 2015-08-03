@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -152,8 +153,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         try {
             //TODO: find another way
             $rawFile = new UploadedFile($data['filePath'], $data['originalFilename']);
-            //TODO: do not hardcode storage
-            $file = $this->storer->store($rawFile, 'storage', false);
+            $file = $this->storer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
         } catch (FileNotFoundException $e) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),

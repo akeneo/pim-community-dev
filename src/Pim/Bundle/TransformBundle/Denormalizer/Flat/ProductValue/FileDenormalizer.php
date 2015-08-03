@@ -4,6 +4,7 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Pim\Component\Catalog\FileStorage;
 
 /**
  * Denormalize a product media
@@ -46,8 +47,7 @@ class FileDenormalizer extends AbstractValueDenormalizer
         }
 
         if (is_file($data)) {
-            //TODO: do not hardcode storage
-            return $this->storer->store(new \SplFileInfo($data), 'storage');
+            return $this->storer->store(new \SplFileInfo($data), FileStorage::CATALOG_STORAGE_ALIAS);
         }
 
         return $this->repository->findOneByIdentifier($data);

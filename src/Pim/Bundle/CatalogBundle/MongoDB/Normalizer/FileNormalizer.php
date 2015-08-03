@@ -1,31 +1,25 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Normalizer;
+namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * File normalizer
+ * Normalizes a file when normalizes a product value as mongodb_json
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FileNormalizer implements NormalizerInterface
 {
-    /** @var string[] */
-    protected $supportedFormats = ['internal_api'];
-
     /**
      * {@inheritdoc}
      */
     public function normalize($file, $format = null, array $context = [])
     {
-        return [
-            'filePath' => $file->getKey(),
-            'originalFilename' => $file->getOriginalFilename(),
-        ];
+        return ['filename' => $file->getKey(), 'originalFilename' => $file->getOriginalFilename()];
     }
 
     /**
@@ -33,6 +27,6 @@ class FileNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof FileInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof FileInterface && 'mongodb_json' === $format;
     }
 }

@@ -6,6 +6,7 @@ use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\FileStorage;
 use Prophecy\Argument;
 use Prophecy\Exception\Prediction\FailedPredictionException;
 
@@ -30,10 +31,10 @@ class FileExporterSpec extends ObjectBehavior
             mkdir(sys_get_temp_dir() . '/spec/export', 0777, true);
         }
 
-        $mountManager->getFilesystem('storage')->willReturn($filesystem);
+        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($filesystem);
         $fileFetcher->fetch('1/2/3/123_file.txt', $filesystem)->willReturn($rawFile);
 
-        $this->export('1/2/3/123_file.txt', sys_get_temp_dir() . '/spec/export/file.txt', 'storage');
+        $this->export('1/2/3/123_file.txt', sys_get_temp_dir() . '/spec/export/file.txt', FileStorage::CATALOG_STORAGE_ALIAS);
 
         if (!file_exists(sys_get_temp_dir() . '/spec/export/file.txt')) {
             throw new FailedPredictionException(

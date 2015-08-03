@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -45,8 +46,11 @@ class ProductTemplateMediaManager
                 $value->setMedia(null);
             } elseif (null !== $value->getMedia() && null !== $value->getMedia()->getUploadedFile()) {
                 $mediaHandled = true;
-                //TODO: do not hardcode 'storage'
-                $file = $this->fileStorer->store($value->getMedia()->getUploadedFile(), 'storage', true);
+                $file = $this->fileStorer->store(
+                    $value->getMedia()->getUploadedFile(),
+                    FileStorage::CATALOG_STORAGE_ALIAS,
+                    true
+                );
                 $value->setMedia($file);
             }
         }

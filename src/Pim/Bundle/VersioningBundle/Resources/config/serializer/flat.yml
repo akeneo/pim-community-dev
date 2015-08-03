@@ -109,6 +109,8 @@ services:
 
     pim_versioning.serializer.normalizer.flat.file:
         class: %pim_serializer.normalizer.flat.file.class%
+        arguments:
+            - '@pim_connector.writer.file.media_exporter_path_generator'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 

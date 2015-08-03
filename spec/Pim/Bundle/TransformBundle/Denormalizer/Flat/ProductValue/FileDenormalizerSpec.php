@@ -6,6 +6,7 @@ use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\FileStorage;
 use Prophecy\Argument;
 
 class FileDenormalizerSpec extends ObjectBehavior
@@ -31,7 +32,7 @@ class FileDenormalizerSpec extends ObjectBehavior
     {
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
 
-        $storer->store(Argument::any(), 'storage')->willReturn($file);
+        $storer->store(Argument::any(), FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($file);
         $this->denormalize($pathname, 'File')->shouldReturn($file);
 
         unlink($pathname);

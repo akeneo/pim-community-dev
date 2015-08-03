@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\FileStorage;
 use Prophecy\Argument;
 
 class MediaAttributeCopierSpec extends ObjectBehavior
@@ -98,10 +99,10 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $fromMedia->getOriginalFilename()->willReturn('akeneo.jpg');
         $fromMedia->getKey()->willReturn('key');
 
-        $mountManager->getFilesystem('storage')->willReturn($fileSystem);
+        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
 
         $rawFileFetcher->fetch('key', $fileSystem)->willReturn($rawFile);
-        $rawFileStorer->store($rawFile, 'storage', false)->willReturn($file);
+        $rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($file);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
@@ -152,10 +153,10 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $fromMedia->getOriginalFilename()->willReturn('akeneo.jpg');
         $fromMedia->getKey()->willReturn('key');
 
-        $mountManager->getFilesystem('storage')->willReturn($fileSystem);
+        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
 
         $rawFileFetcher->fetch('key', $fileSystem)->willReturn($rawFile);
-        $rawFileStorer->store($rawFile, 'storage', false)->willReturn($file);
+        $rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($file);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);

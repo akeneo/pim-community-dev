@@ -2,7 +2,6 @@
 
 namespace Akeneo\Component\FileStorage;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -61,28 +60,5 @@ class FileFactory implements FileFactoryInterface
         $file->setStorage($destFsAlias);
 
         return $file;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * TODO: drop this
-     */
-    public function createFromFile(FileInterface $file, $destFsAlias, $key = null)
-    {
-        $uuid = $this->pathGenerator->generateUuid($file->getOriginalFilename());
-        $key = null !== $key ? $key : $file->getKey();
-
-        $newFile = new $this->fileClass();
-        $newFile->setUuid($uuid);
-        $newFile->setMimeType($file->getMimeType());
-        $newFile->setOriginalFilename($file->getOriginalFilename());
-        $newFile->setSize($file->getSize());
-        $newFile->setExtension($file->getExtension());
-        $newFile->setHash($file->getHash());
-        $newFile->setStorage($destFsAlias);
-        $newFile->setKey($key);
-
-        return $newFile;
     }
 }
