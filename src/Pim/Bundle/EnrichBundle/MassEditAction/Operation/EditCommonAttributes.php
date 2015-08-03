@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -200,7 +201,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
             $media = $productValue->getMedia();
 
             if (null !== $media && null !== $media->getUploadedFile()) {
-                $file = $this->rawFileStorer->store($media->getUploadedFile(), 'storage', true);
+                $file = $this->rawFileStorer->store($media->getUploadedFile(), FileStorage::CATALOG_STORAGE_ALIAS, true);
                 $productValue->setMedia($file);
             }
         }

@@ -8,6 +8,7 @@ use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\FileStorage;
 
 class CsvProductWriterSpec extends ObjectBehavior
 {
@@ -92,8 +93,8 @@ class CsvProductWriterSpec extends ObjectBehavior
     {
         $file = new \SplFileInfo(realpath(__DIR__.'/../../../../../../features/Context/fixtures/product_export_with_non_utf8_characters.csv'));
 
-        $media = ['filePath' => '1/2/3/4/1234-the-file.csv', 'exportPath' => 'test.csv', 'storageAlias' => 'storage'];
-        $mountManager->getFilesystem('storage')->willReturn($fs);
+        $media = ['filePath' => '1/2/3/4/1234-the-file.csv', 'exportPath' => 'test.csv', 'storageAlias' => FileStorage::CATALOG_STORAGE_ALIAS];
+        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fs);
         $fileFetcher->fetch('1/2/3/4/1234-the-file.csv', $fs)->willReturn($file);
 
         $this->write([['product' => 'my-product', 'media' => [$media]]]);
@@ -103,8 +104,8 @@ class CsvProductWriterSpec extends ObjectBehavior
 
     function it_does_not_copy_medias_that_are_not_present_on_the_filesystem($mountManager, $fileFetcher, $stepExecution, Filesystem $fs)
     {
-        $media = ['filePath' => 'not-found.csv', 'exportPath' => 'test.csv', 'storageAlias' => 'storage'];
-        $mountManager->getFilesystem('storage')->willReturn($fs);
+        $media = ['filePath' => 'not-found.csv', 'exportPath' => 'test.csv', 'storageAlias' => FileStorage::CATALOG_STORAGE_ALIAS];
+        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fs);
         $fileFetcher->fetch('not-found.csv', $fs)->willThrow(new \LogicException());
 
         $this->write([['product' => 'my-product', 'media' => [$media]]]);
@@ -115,8 +116,8 @@ class CsvProductWriterSpec extends ObjectBehavior
 
     function it_does_not_copy_medias_that_are_not_downloadable($mountManager, $fileFetcher, $stepExecution, Filesystem $fs)
     {
-        $media = ['filePath' => 'not-downlaodable.csv', 'exportPath' => 'test.csv', 'storageAlias' => 'storage'];
-        $mountManager->getFilesystem('storage')->willReturn($fs);
+        $media = ['filePath' => 'not-downlaodable.csv', 'exportPath' => 'test.csv', 'storageAlias' => FileStorage::CATALOG_STORAGE_ALIAS];
+        $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fs);
         $fileFetcher->fetch('not-downlaodable.csv', $fs)->willThrow(new FileTransferException());
 
         $this->write([['product' => 'my-product', 'media' => [$media]]]);

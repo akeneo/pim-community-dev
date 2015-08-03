@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\Catalog\FileStorage;
 
 /**
  * Copy a media value attribute in other media value attribute
@@ -112,11 +113,10 @@ class MediaAttributeCopier extends AbstractAttributeCopier
                 $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
-            //TODO: remove the hardcoded storage
-            $filesystem = $this->mountManager->getFilesystem('storage');
+            $filesystem = $this->mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
 
             $rawFile = $this->rawFileFetcher->fetch($fromValue->getMedia()->getKey(), $filesystem);
-            $file = $this->rawFileStorer->store($rawFile, 'storage', false);
+            $file = $this->rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
 
             $file->setOriginalFilename($fromValue->getMedia()->getOriginalFilename());
             $toValue->setMedia($file);

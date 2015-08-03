@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 use Prophecy\Argument;
 
@@ -24,14 +25,14 @@ class FileNormalizerSpec extends ObjectBehavior
     {
         $pathGenerator->generate($value, Argument::any())->willReturn('path/to/export/file.txt');
         $file->getKey()->willReturn('key/of/file.txt');
-        $file->getStorage()->willReturn('storage');
+        $file->getStorage()->willReturn(FileStorage::CATALOG_STORAGE_ALIAS);
 
         $this->normalize(
             $file,
             null,
             ['identifier' => null, 'value' => $value, 'prepare_copy' => true]
         )->shouldReturn([
-            'storageAlias' => 'storage',
+            'storageAlias' => FileStorage::CATALOG_STORAGE_ALIAS,
             'filePath' => 'key/of/file.txt',
             'exportPath' => 'path/to/export/file.txt',
         ]);
@@ -52,7 +53,7 @@ class FileNormalizerSpec extends ObjectBehavior
     {
         $pathGenerator->generate($value, Argument::any())->willReturn('path/to/export/file.txt');
         $file->getKey()->willReturn('key/of/file.txt');
-        $file->getStorage()->willReturn('storage');
+        $file->getStorage()->willReturn(FileStorage::CATALOG_STORAGE_ALIAS);
 
         $this->normalize(
             $file,

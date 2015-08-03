@@ -7,6 +7,7 @@ use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\FileStorage;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -47,7 +48,7 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $fileValue->getMedia()->willReturn($fileMedia);
         $fileMedia->isRemoved()->willReturn(false);
         $fileMedia->getUploadedFile()->willReturn($uploadedFile);
-        $fileStorer->store($uploadedFile, 'storage', true)->willReturn($fileMediaUploaded);
+        $fileStorer->store($uploadedFile, FileStorage::CATALOG_STORAGE_ALIAS, true)->willReturn($fileMediaUploaded);
         $fileValue->setMedia($fileMediaUploaded)->shouldBeCalled();
 
         $this->handleProductTemplateMedia($template);
