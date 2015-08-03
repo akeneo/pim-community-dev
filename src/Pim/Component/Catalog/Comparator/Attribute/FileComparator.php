@@ -46,6 +46,11 @@ class FileComparator implements ComparatorInterface
         $default = ['locale' => null, 'scope' => null, 'data' => ['filePath' => null]];
         $originals = array_merge($default, $originals);
 
+        if (isset($data['data']['filePath'])
+            && isset($originals['data']['filePath']) && $data['data']['filePath'] === $originals['data']['filePath']) {
+            return null;
+        }
+
         if (null !== $originals['data']['filePath']) {
             $originalFile = $this->repository->findOneByIdentifier($originals['data']['filePath']);
             if (null !== $originalFile && $originalFile->getHash() === $this->getHashFile($data['data']['filePath'])) {
