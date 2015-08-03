@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.3.6 (2015-08-03)
+------------------
+
+### Bug fixes
+
+- PIM-4678: Remove execution detail in mail notifications
+
 0.3.5
 -----
 
@@ -47,6 +54,14 @@ CHANGELOG
 ### BC Breaks
 
  - Database schema has changed. Please read UPGRADE.md
+
+
+0.2.8 (2015-08-03)
+------------------
+
+### Bug fixes
+
+- PIM-4678: Remove execution detail in mail notifications
 
 0.2.7 (2015-01-07)
 ------------------

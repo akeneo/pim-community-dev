@@ -6,8 +6,6 @@ Ended on {{ jobExecution.endTime|date("Y-m-d") }} at {{ jobExecution.endTime|dat
 Results:
 {% for stepExecution in jobExecution.stepExecutions %}
   - {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
-    - {{ stepExecution.readCount }} item(s) read
-    - {{ stepExecution.writeCount }} item(s) written
 {% endfor %}
 
 --

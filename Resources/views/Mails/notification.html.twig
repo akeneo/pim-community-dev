@@ -9,11 +9,8 @@
     Results:<br />
     <ul>
         {% for stepExecution in jobExecution.stepExecutions %}
-        <li>{{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
-            <ul>
-                <li>{{ stepExecution.readCount }} item(s) read</li>
-                <li>{{ stepExecution.writeCount }} item(s) written</li>
-            </ul>
+        <li>
+            {{ stepExecution.stepName|trans }} [{{ stepExecution.status }}]
         </li>
         {% endfor %}
     </ul>
