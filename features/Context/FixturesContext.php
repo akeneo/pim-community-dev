@@ -271,6 +271,10 @@ class FixturesContext extends RawMinkContext
             $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
+        foreach ($data as $key => $value) {
+            $data[$key] = $this->replacePlaceholders($value);
+        }
+
         // use the processor part of the import system
         $product = $this->loadFixture('products', $data);
         $this->getProductSaver()->save($product, ['recalculate' => false]);

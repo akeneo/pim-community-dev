@@ -112,11 +112,11 @@ Feature: Import media with products
 
   Scenario: Successfully skip a product without media modification
     Given the following product:
-      | sku                 | name-en_US          | userManual              |
-      | bic-core-148        | Bic Core 148        | bic-core-148.txt        |
-      | fanatic-freewave-76 | Fanatic Freewave 76 | fanatic-freewave-76.txt |
-      | fanatic-freewave-41 | Fanatic Freewave 41 |                         |
-      | fanatic-freewave-37 | Fanatic Freewave 37 | fanatic-freewave-76.txt |
+      | sku                 | name-en_US          | userManual                         |
+      | bic-core-148        | Bic Core 148        | %fixtures%/bic-core-148.txt        |
+      | fanatic-freewave-76 | Fanatic Freewave 76 | %fixtures%/fanatic-freewave-76.txt |
+      | fanatic-freewave-41 | Fanatic Freewave 41 |                                    |
+      | fanatic-freewave-37 | Fanatic Freewave 37 | %fixtures%/fanatic-freewave-76.txt |
     And the following CSV file to import:
       """
       sku;name-en_US;userManual
