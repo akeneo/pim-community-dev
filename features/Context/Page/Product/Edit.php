@@ -48,6 +48,7 @@ class Edit extends Form
                 'Comment threads'         => ['css' => '.comment-threads'],
                 'Meta zone'               => ['css' => '.baseline > .meta'],
                 'Modal'                   => ['css' => '.modal'],
+                'Progress bar'            => ['css' => '.progress-bar']
             ]
         );
     }
@@ -1454,7 +1455,7 @@ class Edit extends Form
     public function waitForProgressionBar()
     {
         $this->spin(function () {
-            return $this->find('css', '#sequentialEdit .progress-bar');
+            return $this->getElement('Progress bar');
         }, 20);
     }
 

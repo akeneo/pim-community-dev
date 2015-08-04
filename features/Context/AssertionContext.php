@@ -722,11 +722,12 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @Given /^I should see the sequential edit progression:$/
      * @param PyStringNode $text
      *
      * @throws ResponseTextException
      * @throws \Exception
+     *
+     * @Then /^I should see the sequential edit progression:$/
      */
     public function iShouldSeeTheSequentialEditProgression(PyStringNode $text)
     {
