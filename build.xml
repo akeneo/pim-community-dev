@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="pim" default="build">
+<project name="pim" default="build"
+    xmlns:if="ant:if"
+    xmlns:unless="ant:unless"
+>
     <property name="symfony.upload.dir" value="product" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
@@ -315,10 +318,11 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <arg value="${behat.concurrency}" />
-            <arg value="${behat.xdebug}" />
-            <arg value="${symfony.database.name}_" />
-            <arg value="${behat.profile.prefix}-" />
+            <arg value="-c ${behat.concurrency}" />
+            <arg value="-x ${behat.xdebug}" />
+            <arg value="-d${symfony.database.name}_" />
+            <arg value="-p${behat.profile.prefix}-" />
+            <arg value="-f ${behat.features}" unless:blank="${behat.features}"/>
             <arg value="${basedir}/bin/behat ${behat.options}" />
             <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
@@ -417,7 +421,6 @@
     <target name="setupdb" description="Setup db">
         <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
-          <arg value="--task=db" />
           <arg value="--force" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
@@ -430,7 +433,6 @@
     <target name="setupdb-test" description="Setup db for test env">
         <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
-          <arg value="--task=db" />
           <arg value="--env=test" />
           <arg value="--force" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
