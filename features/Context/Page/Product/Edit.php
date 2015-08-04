@@ -48,6 +48,7 @@ class Edit extends Form
                 'Comment threads'         => ['css' => '.comment-threads'],
                 'Meta zone'               => ['css' => '.baseline > .meta'],
                 'Modal'                   => ['css' => '.modal'],
+                'Progress bar'            => ['css' => '.progress-bar']
             ]
         );
     }
@@ -1444,6 +1445,18 @@ class Edit extends Form
         return $this->spin(function () use ($family) {
             return $this->getElement('Meta zone')->find('css', '.family .product-family')->getHTML();
         });
+    }
+
+    /**
+     * @throws \Exception
+     *
+     * @return string
+     */
+    public function waitForProgressionBar()
+    {
+        $this->spin(function () {
+            return $this->getElement('Progress bar');
+        }, 30);
     }
 
     /**
