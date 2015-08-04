@@ -38,6 +38,15 @@ pimee_enrich:
             meta:
                 published: Published version
                 owner_groups: Owner groups
+            tab:
+                proposals:
+                    title: Proposals
+                    messages:
+                        approve:
+                            success: The proposal has been applied successfully.
+                            error: The proposal can't be applied due to the following error: {{ error }}
+                        reject:
+                            success: The proposal has been rejected.
             confirmation:
                 revert:
                     title: Revert confirmation

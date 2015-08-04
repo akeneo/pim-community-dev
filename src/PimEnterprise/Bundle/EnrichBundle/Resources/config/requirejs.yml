@@ -20,6 +20,7 @@ config:
         pimee/product-edit-form/meta/published:                       pimenterpriseenrich/js/product/form/meta/published
         pimee/product-edit-form/panel/history/published:              pimenterpriseenrich/js/product/form/panel/history/published
         pimee/product-edit-form/panel/history/revert:                 pimenterpriseenrich/js/product/form/panel/history/revert
+        pimee/product-edit-form/proposals:                            pimenterpriseenrich/js/product/form/proposals
         pimee/product-edit-form/publish:                              pimenterpriseenrich/js/product/form/publish
         pimee/product-edit-form/save:                                 pimenterpriseenrich/js/product/form/save
         pimee/product-edit-form/send-for-approval:                    pimenterpriseenrich/js/product/form/send-for-approval
@@ -36,3 +37,4 @@ config:
         pimee/template/product/submit-draft:                            pimenterpriseenrich/templates/product/submit-draft.html
         pimee/template/product/tab/attribute/modified-by-draft:         pimenterpriseenrich/templates/product/tab/attributes/modified-by-draft.html
         pimee/template/product/tab/attribute/smart-attribute:           pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
+        pimee/template/product/tab/proposals:                           pimenterpriseenrich/templates/product/tab/proposals.html

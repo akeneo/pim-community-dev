@@ -1,0 +1,12 @@
+services:
+    pimee_datagrid.extension.action.type.approve_proposal:
+        class: %oro_datagrid.extension.action.type.ajax.class%
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: approve-proposal }
+
+    pimee_datagrid.extension.action.type.reject_proposal:
+        class: %oro_datagrid.extension.action.type.ajax.class%
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: reject-proposal }

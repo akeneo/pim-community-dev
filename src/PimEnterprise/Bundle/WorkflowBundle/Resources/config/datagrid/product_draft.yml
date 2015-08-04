@@ -29,29 +29,27 @@ datagrid:
             id: ~
             approve_link:
                 type: url
-                route: pimee_workflow_product_draft_approve
+                route: pimee_workflow_product_draft_rest_approve
                 params:
                     - id
-                    - dataLocale
             refuse_link:
                 type: url
-                route: pimee_workflow_product_draft_refuse
+                route: pimee_workflow_product_draft_rest_reject
                 params:
                     - id
-                    - dataLocale
         actions:
             approve:
-                type: navigate
+                type: approve-proposal
                 label: pimee_workflow.product_draft.action.approve
                 icon: ok
                 link: approve_link
             refuse:
-                type: navigate
+                type: reject-proposal
                 label: pimee_workflow.product_draft.action.refuse
                 icon: remove
                 link: refuse_link
             remove:
-                type: navigate
+                type: reject-proposal
                 label: pimee_workflow.product_draft.action.remove
                 icon: trash
                 link: refuse_link

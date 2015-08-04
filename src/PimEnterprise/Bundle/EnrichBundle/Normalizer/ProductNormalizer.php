@@ -113,6 +113,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                     $this->serializer->normalize($published->getVersion(), 'internal_api', $context) :
                     null,
                 'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
+                'is_owner'     => $this->authorizationChecker->isGranted(Attributes::OWN, $product),
                 'working_copy' => $workingCopy,
                 'draft_status' => $draftStatus
             ]
