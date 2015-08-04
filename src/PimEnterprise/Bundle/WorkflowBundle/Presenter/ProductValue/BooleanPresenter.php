@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAware;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
@@ -35,7 +36,7 @@ class BooleanPresenter implements ProductValuePresenterInterface, TranslatorAwar
      */
     public function supports(ProductValueInterface $value)
     {
-        return 'pim_catalog_boolean' === $value->getAttribute()->getAttributeType();
+        return AttributeTypes::BOOLEAN === $value->getAttribute()->getAttributeType();
     }
 
     /**

@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+
 /**
  * Present text data
  *
@@ -23,7 +25,7 @@ class TextPresenter extends AbstractProductValuePresenter
      */
     public function supportsChange($attributeType)
     {
-        return 'pim_catalog_textarea' === $attributeType;
+        return AttributeTypes::TEXTAREA === $attributeType;
     }
 
     /**

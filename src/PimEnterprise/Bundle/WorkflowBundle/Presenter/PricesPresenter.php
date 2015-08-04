@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+
 /**
  * Present changes on prices
  *
@@ -23,7 +25,7 @@ class PricesPresenter extends AbstractProductValuePresenter
      */
     public function supportsChange($attributeType)
     {
-        return 'pim_catalog_price_collection' === $attributeType;
+        return AttributeTypes::PRICE_COLLECTION === $attributeType;
     }
 
     /**

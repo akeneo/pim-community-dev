@@ -11,10 +11,12 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -37,6 +39,7 @@ class CategoryManager extends BaseCategoryManager
     /**
      * Constructor
      *
+     * @param CategoryRepositoryInterface   $categoryRepository
      * @param ObjectManager                 $om
      * @param string                        $categoryClass
      * @param EventDispatcherInterface      $eventDispatcher
@@ -44,13 +47,14 @@ class CategoryManager extends BaseCategoryManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
+        CategoryRepositoryInterface $categoryRepository,
         ObjectManager $om,
         $categoryClass,
         EventDispatcherInterface $eventDispatcher,
         CategoryAccessRepository $categoryAccessRepo,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
-        parent::__construct($om, $categoryClass, $eventDispatcher);
+        parent::__construct($categoryRepository, $om, $categoryClass, $eventDispatcher);
 
         $this->categoryAccessRepo = $categoryAccessRepo;
         $this->authorizationChecker = $authorizationChecker;
@@ -128,7 +132,7 @@ class CategoryManager extends BaseCategoryManager
     protected function filterGrantedFilledTree(&$filledTree)
     {
         foreach ($filledTree as $categoryIdx => &$categoryData) {
-            $isLeaf = is_object($categoryData);
+            $isLeaf   = is_object($categoryData);
             $category = $isLeaf ? $categoryData : $categoryData['item'];
 
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {

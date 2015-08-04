@@ -16,11 +16,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager');
-    }
-
     function let(
         CategoryAccessRepository $categoryAccessRepository,
         ObjectManager $om,
@@ -30,12 +25,18 @@ class CategoryManagerSpec extends ObjectBehavior
     ) {
         $om->getRepository(Argument::any())->willReturn($categoryRepository);
         $this->beConstructedWith(
+            $categoryRepository,
             $om,
             Argument::any(),
             $eventDispatcher,
             $categoryAccessRepository,
             $context
         );
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager');
     }
 
     function it_gets_accessible_trees_for_display(
@@ -104,8 +105,7 @@ class CategoryManagerSpec extends ObjectBehavior
         $categoryRepository,
         CategoryInterface $parent,
         CategoryInterface $childOne,
-        CategoryInterface $childTwo,
-        $context
+        CategoryInterface $childTwo
     ) {
         $categoryRepository->getPath($childTwo)->willReturn(
             [0 => $parent, 1 => $childOne, 2 => $childTwo]

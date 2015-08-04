@@ -70,6 +70,7 @@
 - Remove argument `Pim\Bundle\CatalogBundle\Manager\MediaManager` in constructor of  `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter`
 - `PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\MediaPublisher` is now deprecated use `PimEnterprise/Bundle/WorkflowBundle/Publisher/Product/FilePublisher` instead
 - Replace argument `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\RawFileRawFileStorerInterface` in `PimEnterprise/Bundle/MassEditAction/Operation/EditCommonAttributes` constructor
+- Constructor of `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
 # 1.3.x
 

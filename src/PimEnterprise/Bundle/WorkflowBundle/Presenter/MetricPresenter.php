@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+
 /**
  * Present change on metric data
  *
@@ -25,7 +27,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
      */
     public function supportsChange($attributeType)
     {
-        return 'pim_catalog_metric' === $attributeType;
+        return AttributeTypes::METRIC === $attributeType;
     }
 
     /**

@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -39,7 +40,7 @@ class FilePresenter implements PresenterInterface
     public function supports($data)
     {
         return $data instanceof ProductValueInterface
-            && 'pim_catalog_file' === $data->getAttribute()->getAttributeType();
+            && AttributeTypes::FILE === $data->getAttribute()->getAttributeType();
     }
 
     /**
