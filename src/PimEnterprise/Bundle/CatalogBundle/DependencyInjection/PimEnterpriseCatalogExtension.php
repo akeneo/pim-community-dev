@@ -29,6 +29,7 @@ class PimEnterpriseCatalogExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('comparators.yml');
         $loader->load('completeness_checkers.yml');
         $loader->load('entities.yml');
         $loader->load('filters.yml');
