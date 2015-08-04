@@ -140,4 +140,11 @@ interface CategoryRepositoryInterface extends
      * @return array - list of Nodes in path
      */
     public function getPath($node);
+
+    /**
+     * Return the categories sorted by tree and ordered
+     *
+     * @return array
+     */
+    public function getOrderedAndSortedByTreeCategories();
 }
