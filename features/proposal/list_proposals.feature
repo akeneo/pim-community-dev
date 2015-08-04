@@ -6,11 +6,11 @@ Feature: List proposals
 
   Background:
     Given an "apparel" catalog configuration
-    And the following category accesses:
-      | category        | user group | access |
-      | 2014_collection | Redactor   | edit   |
-      | 2015_collection | Redactor   | edit   |
-      | 2015_collection | Manager    | edit   |
+    And the following product category accesses:
+      | product category | user group | access |
+      | 2014_collection  | Redactor   | edit   |
+      | 2015_collection  | Redactor   | edit   |
+      | 2015_collection  | Manager    | edit   |
     And the following products:
       | sku     | family   | categories      |
       | tshirt  | tshirts  | 2014_collection |
