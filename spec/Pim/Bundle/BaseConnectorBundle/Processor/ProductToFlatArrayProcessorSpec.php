@@ -15,9 +15,9 @@ use Symfony\Component\Serializer\Serializer;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
-    function let(Serializer $serializer, ChannelManager $channelManager, Filesystem $filesystem)
+    function let(Serializer $serializer, ChannelManager $channelManager)
     {
-        $this->beConstructedWith($serializer, $channelManager, $filesystem);
+        $this->beConstructedWith($serializer, $channelManager, ['pim_catalog_file', 'pim_catalog_image']);
     }
 
     function it_is_initializable()
@@ -60,8 +60,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_media(
-        $filesystem,
         $channelManager,
+        Filesystem $filesystem,
         ChannelInterface $channel,
         ProductInterface $product,
         FileInterface $media1,
