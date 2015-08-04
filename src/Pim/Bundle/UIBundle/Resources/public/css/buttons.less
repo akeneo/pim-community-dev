@@ -79,9 +79,17 @@
   }
 }
 
-.btn.btn-submit, .btn.btn-next {
+.btn.btn-submit, .btn.btn-next, .btn.send-comment {
   background-color: @color-new-green;
-  padding: 0 10px 0 44px;
+  border: none;
+
+  &.send-comment {
+    padding: 0 10px;
+  }
+
+  &:not(.send-comment) {
+    padding: 0 10px 0 44px;
+  }
 
   i {
     .icon-button();
