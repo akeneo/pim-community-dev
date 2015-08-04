@@ -174,7 +174,7 @@ class ProductDraftController
         $username     = $this->tokenStorage->getToken()->getUsername();
         $productDraft = $this->repository->findUserProductDraft($product, $username);
         if (null === $productDraft) {
-            throw new NotFoundHttpException(sprintf('Draft for product %d not found', $product->getId()));
+            throw new NotFoundHttpException(sprintf('Draft for product %s not found', $product->getId()));
         }
 
         return $productDraft;
@@ -193,7 +193,7 @@ class ProductDraftController
     {
         $product = $this->productRepository->findOneById($productId);
         if (null === $product) {
-            throw new NotFoundHttpException(sprintf('Product with id %d not found', $productId));
+            throw new NotFoundHttpException(sprintf('Product with id %s not found', $productId));
         }
 
         return $product;
@@ -212,7 +212,7 @@ class ProductDraftController
     {
         $productDraft = $this->repository->find($draftId);
         if (null === $productDraft) {
-            throw new NotFoundHttpException(sprintf('Draft with id %d not found', $draftId));
+            throw new NotFoundHttpException(sprintf('Draft with id %s not found', $draftId));
         }
 
         return $productDraft;

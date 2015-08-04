@@ -92,16 +92,6 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
-     * @param $source
-     *
-     * @Step\When /^I switch the copy source to "([^"]*)"$/
-     */
-    public function iSwitchTheCopySourceTo($source)
-    {
-        $this->getCurrentPage()->switchCopySource($source);
-    }
-
-    /**
      * @param string $fieldName
      * @param string $scope
      * @param string $locale

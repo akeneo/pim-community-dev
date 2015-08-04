@@ -116,7 +116,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
             if (isset($data['result'])) {
                 $changes = json_decode($data['result'], true);
-                if (!is_array($changes)) {
+                if (null === $changes) {
                     throw new \InvalidArgumentException(
                         sprintf(
                             'Draft changeset for product "%s" proposed by "%s" is not valid JSON',

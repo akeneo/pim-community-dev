@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Proposals tab extension
  *
@@ -37,13 +38,13 @@ define(
              * @return {Promise}
              */
             configure: function () {
-                this.listenTo(mediator, 'product:action:proposal:post_approve:success', this.onPostApproveSuccess);
-                this.listenTo(mediator, 'product:action:proposal:post_approve:error', this.onPostApproveError);
-                this.listenTo(mediator, 'product:action:proposal:post_reject:success', this.onPostRejectSuccess);
+                this.listenTo(mediator, 'pim_enrich:form:proposal:post_approve:success', this.onPostApproveSuccess);
+                this.listenTo(mediator, 'pim_enrich:form:proposal:post_approve:error', this.onPostApproveError);
+                this.listenTo(mediator, 'pim_enrich:form:proposal:post_reject:success', this.onPostRejectSuccess);
 
                 this.trigger('tab:register', {
                     code: this.code,
-                    displayCondition: _.bind(function () { return this.getFormData().meta.is_owner }, this),
+                    isVisible: _.bind(function () { return this.getFormData().meta.is_owner }, this),
                     label: _.__('pimee_enrich.entity.product.tab.proposals.title')
                 });
 
@@ -55,10 +56,17 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
+            /**
+             * Callback triggered when a proposal is successfully approved from the grid
+             *
+             * @param {Object} product
+             */
             onPostApproveSuccess: function (product) {
                 ProductManager.generateMissing(product)
                     .then(_.bind(function (product) {
-                        this.setData(product, {silent: true});
+                        this.setData(product);
+                        mediator.trigger('pim_enrich:form:entity:post_fetch', product);
+
                         messenger.notificationFlashMessage(
                             'success',
                             _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
@@ -66,6 +74,12 @@ define(
                     }, this));
             },
 
+
+            /**
+             * Callback triggered when an error happens on proposal approval from the grid
+             *
+             * @param {string} message
+             */
             onPostApproveError: function (message) {
                 messenger.notificationFlashMessage(
                     'error',
@@ -73,6 +87,10 @@ define(
                 );
             },
 
+
+            /**
+             * Callback triggered when a proposal is rejected from the grid
+             */
             onPostRejectSuccess: function () {
                 messenger.notificationFlashMessage(
                     'success',

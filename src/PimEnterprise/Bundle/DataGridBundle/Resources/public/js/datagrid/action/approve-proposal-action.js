@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Approve proposal action
  *
@@ -8,6 +9,9 @@ define(
     ['oro/mediator', 'oro/datagrid/ajax-action'],
     function (mediator, AjaxAction) {
         return AjaxAction.extend({
+            /**
+             * @inheritdoc
+             */
             getMethod: function () {
                 return 'POST';
             },
@@ -18,10 +22,9 @@ define(
              * @param product
              */
             _onAjaxSuccess: function (product) {
-                this.datagrid.hideLoading();
                 this.datagrid.collection.fetch();
 
-                mediator.trigger('product:action:proposal:post_approve:success', product);
+                mediator.trigger('pim_enrich:form:proposal:post_approve:success', product);
             },
 
             /**
@@ -32,7 +35,7 @@ define(
             _onAjaxError: function (jqXHR) {
                 this.datagrid.hideLoading();
 
-                mediator.trigger('product:action:proposal:post_approve:error', jqXHR.responseJSON.message);
+                mediator.trigger('pim_enrich:form:proposal:post_approve:error', jqXHR.responseJSON.message);
             }
         });
     }
