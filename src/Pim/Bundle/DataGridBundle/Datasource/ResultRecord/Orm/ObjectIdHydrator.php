@@ -65,9 +65,9 @@ class ObjectIdHydrator implements HydratorInterface
 
         foreach ($orders as $order) {
             foreach ($order->getParts() as $part) {
-                $parts = explode(' ', $part);
-                if (isset($parts[0]) && isset($newSelects[$parts[0]])) {
-                    $qb->addSelect($newSelects[$parts[0]]);
+                $alias = explode(' ', $part)[0];
+                if (isset($newSelects[$alias])) {
+                    $qb->addSelect($alias);
                 }
             }
         }

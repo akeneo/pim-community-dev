@@ -1456,7 +1456,7 @@ class Edit extends Form
     {
         $this->spin(function () {
             return $this->getElement('Progress bar');
-        }, 20);
+        }, 30);
     }
 
     /**
