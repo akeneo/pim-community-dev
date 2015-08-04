@@ -250,6 +250,20 @@ class Grid extends Index
     }
 
     /**
+     * Indicate if the grid is empty (i.e. has the "No records found" div)
+     *
+     * @return bool
+     */
+    public function isGridEmpty()
+    {
+        $noDataDiv = $this->getElement('Grid')
+            ->getParent()
+            ->find('css', '.no-data');
+
+        return $noDataDiv && $noDataDiv->isVisible();
+    }
+
+    /**
      * Get toolbar count
      *
      * @throws \InvalidArgumentException
