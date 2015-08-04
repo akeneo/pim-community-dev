@@ -242,12 +242,12 @@ class ProductAssetController extends Controller
                     $this->assetSaver->save($asset);
                 }
 
-                $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.create.success');
+                $this->setFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.create.success');
 
                 $route  = 'pimee_product_asset_edit';
                 $params = ['id' => $asset->getId()];
             } catch (\Exception $e) {
-                $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.create.error');
+                $this->setFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.create.error');
 
                 $route  = 'pimee_product_asset_index';
                 $params = [];
@@ -262,9 +262,9 @@ class ProductAssetController extends Controller
                 foreach ($errors as $error) {
                     $message .= $error->getMessage() . ' ';
                 }
-                $this->addFlash($request, 'error', $message);
+                $this->setFlash($request, 'error', $message);
             } else {
-                $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.create.error');
+                $this->setFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.create.error');
             }
 
             return $this->redirect($this->generateUrl('pimee_product_asset_index'));
@@ -332,9 +332,9 @@ class ProductAssetController extends Controller
                     AssetEvent::POST_UPLOAD_FILES,
                     new AssetEvent($productAsset)
                 );
-                $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+                $this->setFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
-                $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
+                $this->setFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
             }
 
             return $this->redirectAfterEdit($request, ['id' => $id]);
@@ -393,9 +393,9 @@ class ProductAssetController extends Controller
         try {
             $this->assetFilesUpdater->deleteReferenceFile($reference);
             $this->referenceSaver->save($reference, ['schedule' => false]);
-            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_reference.flash.delete.success');
+            $this->setFlash($request, 'success', 'pimee_product_asset.enrich_reference.flash.delete.success');
         } catch (\Exception $e) {
-            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_reference.flash.delete.error');
+            $this->setFlash($request, 'error', 'pimee_product_asset.enrich_reference.flash.delete.error');
         }
 
         $parameters = ['id' => $asset->getId()];
@@ -424,9 +424,9 @@ class ProductAssetController extends Controller
         try {
             $this->assetFilesUpdater->deleteVariationFile($variation);
             $this->variationSaver->save($variation, ['schedule' => true]);
-            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_variation.flash.delete.success');
+            $this->setFlash($request, 'success', 'pimee_product_asset.enrich_variation.flash.delete.success');
         } catch (\Exception $e) {
-            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_variation.flash.delete.error');
+            $this->setFlash($request, 'error', 'pimee_product_asset.enrich_variation.flash.delete.error');
         }
 
         $parameters = ['id' => $asset->getId()];
@@ -459,9 +459,9 @@ class ProductAssetController extends Controller
                 AssetEvent::POST_UPLOAD_FILES,
                 new AssetEvent($asset)
             );
-            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+            $this->setFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
         } catch (\Exception $e) {
-            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
+            $this->setFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
         }
 
         $parameters = ['id' => $asset->getId()];
@@ -493,9 +493,9 @@ class ProductAssetController extends Controller
                 AssetEvent::POST_UPLOAD_FILES,
                 new AssetEvent($asset)
             );
-            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+            $this->setFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
         } catch (\Exception $e) {
-            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
+            $this->setFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
         }
 
         $parameters = ['id' => $asset->getId()];
@@ -542,16 +542,16 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * Add flash message
+     * Set flash message
      *
      * @param Request $request    the request
      * @param string  $type       the flash type
      * @param string  $message    the flash message
      * @param array   $parameters the flash message parameters
      */
-    protected function addFlash(Request $request, $type, $message, array $parameters = [])
+    protected function setFlash(Request $request, $type, $message, array $parameters = [])
     {
-        $request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
+        $request->getSession()->set($type, new Message($message, $parameters));
     }
 
     /**
