@@ -45,8 +45,6 @@ datagrid:
                 type: field
                 frontend_type: date
                 label: pimee_product_asset.updatedAt.label
-        properties:
-            id: ~
         sorters:
             columns:
                 code:
