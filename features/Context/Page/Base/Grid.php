@@ -252,7 +252,7 @@ class Grid extends Index
     /**
      * Indicate if the grid is empty (i.e. has the "No records found" div)
      *
-     * @return boolean
+     * @return bool
      */
     public function isGridEmpty()
     {

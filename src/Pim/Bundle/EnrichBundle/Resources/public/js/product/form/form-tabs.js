@@ -38,7 +38,7 @@ define(
                 var tabs = this.state.get('tabs') || [];
                 tabs.push({
                     code: event.code,
-                    displayCondition: event.displayCondition,
+                    isVisible: event.isVisible,
                     label: event.label
                 });
 
@@ -57,7 +57,7 @@ define(
 
                 var state = this.state.toJSON();
                 state.tabs = _.filter(state.tabs, function (tab) {
-                    return !_.isFunction(tab.displayCondition) || tab.displayCondition();
+                    return !_.isFunction(tab.isVisible) || tab.isVisible();
                 });
 
                 this.$el.html(
