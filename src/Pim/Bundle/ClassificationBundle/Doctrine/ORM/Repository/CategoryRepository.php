@@ -328,4 +328,15 @@ class CategoryRepository extends NestedTreeRepository implements
 
         return $sameRoot && $isAncestor;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrderedAndSortedByTreeCategories()
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder = $queryBuilder->orderBy('c.root')->addOrderBy('c.left');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
