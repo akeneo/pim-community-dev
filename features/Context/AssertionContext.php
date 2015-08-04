@@ -38,6 +38,20 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * Checks, that page does not contain specified text.
+     *
+     * @Then /^(?:|I )should not see the text "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function assertPageNotContainsText($text)
+    {
+        $this->getMainContext()->spin(function () use ($text) {
+            $this->assertSession()->pageTextNotContains($text);
+
+            return true;
+        }, 5);
+    }
+
+    /**
      * @param string $expectedTitle
      *
      * @Then /^I should see the title "([^"]*)"$/
@@ -733,7 +747,11 @@ class AssertionContext extends RawMinkContext
     {
         $this->getCurrentPage()->waitForProgressionBar();
 
-        $this->assertSession()->pageTextContains((string) $text);
+        $this->getMainContext()->spin(function () use ($text) {
+            $this->assertSession()->pageTextContains((string) $text);
+
+            return true;
+        });
     }
 
     /**

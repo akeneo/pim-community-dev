@@ -21,7 +21,7 @@ define([
                 return $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
                     .then(this.generateMissing)
                     .then(function (product) {
-                        mediator.trigger('pim_enrich:form:product:action:post_fetch', product);
+                        mediator.trigger('pim_enrich:form:product:post_fetch', product);
 
                         return product;
                     })
@@ -34,7 +34,7 @@ define([
                     contentType: 'application/json',
                     data: JSON.stringify(data)
                 }).then(_.bind(function (product) {
-                    mediator.trigger('pim_enrich:form:entity:action:post_save', product);
+                    mediator.trigger('pim_enrich:form:entity:post_save', product);
 
                     return product;
                 }, this));

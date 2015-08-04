@@ -29,6 +29,8 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
  */
 class NavigationContext extends RawMinkContext implements PageObjectAwareInterface
 {
+    use SpinCapableTrait;
+
     /**
      * @var string|null
      */
@@ -631,8 +633,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheProductEditPage(Product $product)
     {
-        $expectedAddress = $this->getPage('Product edit')->getUrl(['id' => $product->getId()]);
-        $this->assertAddress($expectedAddress);
+        $this->spin(function () use ($product) {
+            $expectedAddress = $this->getPage('Product edit')->getUrl(['id' => $product->getId()]);
+            $this->assertAddress($expectedAddress);
+
+            return true;
+        });
+
         $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.product-label');
         });

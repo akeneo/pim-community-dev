@@ -13,9 +13,10 @@ define(
         'pim/form',
         'text!pim/template/product/back-to-grid',
         'routing',
-        'pim/user-context'
+        'pim/user-context',
+        'oro/navigation'
     ],
-    function (_, BaseForm, template, Routing, UserContext) {
+    function (_, BaseForm, template, Routing, UserContext, Navigation) {
         return BaseForm.extend({
             className: 'btn-group',
             template: _.template(template),
@@ -25,16 +26,16 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                this.$el.html(
-                    this.template({
-                        path: Routing.generate(
-                            'pim_enrich_product_index',
-                            {
-                                dataLocale: UserContext.get('catalogLocale')
-                            }
-                        )
-                    })
-                );
+                this.$el.html(this.template({
+                    path: Routing.generate(
+                        'pim_enrich_product_index',
+                        {
+                            dataLocale: UserContext.get('catalogLocale')
+                        }
+                    )
+                }));
+
+                Navigation.getInstance().processClicks(this.$('a'));
 
                 return this;
             }

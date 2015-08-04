@@ -29,10 +29,10 @@ trait SpinCapableTrait
 
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
 
-        $infos = sprintf('Timeout thrown by %s::%s()', $backtrace[1]['class'], $backtrace[1]['function']);
+        $infos = sprintf('Timeout thrown by %s::%s()', $backtrace[0]['class'], $backtrace[0]['function']);
 
-        if (isset($backtrace[1]['file']) && isset($backtrace[1]['line'])) {
-            $infos .= PHP_EOL . sprintf('file %s, line %d', $backtrace[1]['file'], $backtrace[1]['line']);
+        if (isset($backtrace[0]['file']) && isset($backtrace[0]['line'])) {
+            $infos .= PHP_EOL . sprintf('file %s, line %d', $backtrace[0]['file'], $backtrace[0]['line']);
             $infos .= PHP_EOL . sprintf('message : %s', $message);
         }
 

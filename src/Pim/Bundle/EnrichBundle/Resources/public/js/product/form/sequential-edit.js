@@ -170,7 +170,11 @@ define(
                 }, this));
             },
             followLink: function (event) {
-                this.goToProduct(event.currentTarget.dataset.id);
+                mediator.trigger('pim_enrich:form:state:confirm', {
+                    action: _.bind(function () {
+                        this.goToProduct(event.currentTarget.dataset.id);
+                    }, this)
+                });
             },
             goToProduct: function (id) {
                 Navigation.getInstance().setLocation(

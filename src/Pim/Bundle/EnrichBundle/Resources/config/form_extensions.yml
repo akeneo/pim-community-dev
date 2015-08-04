@@ -5,7 +5,7 @@ extensions:
     cache-invalidator:
         module: pim/product-edit-form/cache-invalidator
         parent: product-edit-form
-        position: 100
+        position: 1000
 
     sequential-edit:
         module: pim/product-edit-form/sequential-edit

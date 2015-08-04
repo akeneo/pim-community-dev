@@ -147,17 +147,20 @@ class Edit extends Form
      */
     public function switchLocale($localeCode, $copy = false)
     {
-        $dropdown = $this->getElement($copy ? 'Copy locales dropdown' : 'Locales dropdown');
-        $toggle = $dropdown->find('css', '.dropdown-toggle');
-        if (!$toggle) {
-            throw new \Exception('Could not find locale switcher.');
-        }
+        $dropdown = $this->getElement(
+            $copy ? 'Copy locales dropdown' : 'Locales dropdown',
+            20,
+            'Could not find locale switcher'
+        );
+
+        $toggle = $this->spin(function () use ($dropdown) {
+            return $dropdown->find('css', '.dropdown-toggle');
+        });
         $toggle->click();
 
-        $option = $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
-        if (!$option) {
-            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $localeCode));
-        }
+        $option = $this->spin(function () use ($dropdown, $localeCode) {
+            return $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
+        }, 20, sprintf('Could not find locale "%s" in switcher', $localeCode));
         $option->click();
     }
 
@@ -167,19 +170,22 @@ class Edit extends Form
      *
      * @throws \Exception
      */
-    public function switchScope($scope, $copy = false)
+    public function switchScope($scopeCode, $copy = false)
     {
-        $dropdown = $this->getElement($copy ? 'Copy channel dropdown' : 'Channel dropdown');
-        $toggle = $dropdown->find('css', '.dropdown-toggle');
-        if (!$toggle) {
-            throw new \Exception('Could not find scope switcher.');
-        }
+        $dropdown = $this->getElement(
+            $copy ? 'Copy channel dropdown' : 'Channel dropdown',
+            20,
+            'Could not find scope switcher'
+        );
+
+        $toggle = $this->spin(function () use ($dropdown) {
+            return $dropdown->find('css', '.dropdown-toggle');
+        });
         $toggle->click();
 
-        $option = $dropdown->find('css', sprintf('a[data-scope="%s"]', $scope));
-        if (!$option) {
-            throw new \Exception(sprintf('Could not find scope "%s" in switcher.', $scope));
-        }
+        $option = $this->spin(function () use ($dropdown, $scopeCode) {
+            return $dropdown->find('css', sprintf('a[data-scope="%s"]', $scopeCode));
+        }, 20, sprintf('Could not find scope "%s" in switcher', $scopeCode));
         $option->click();
     }
 
@@ -191,16 +197,14 @@ class Edit extends Form
     public function switchCopySource($source)
     {
         $dropdown = $this->getElement('Copy source dropdown');
-        $toggle = $dropdown->find('css', '.dropdown-toggle');
-        if (!$toggle) {
-            throw new \Exception('Could not find copy source switcher.');
-        }
+        $toggle = $this->spin(function () use ($dropdown) {
+            return $dropdown->find('css', '.dropdown-toggle');
+        }, 20, 'Could not find copy source switcher.');
         $toggle->click();
 
-        $option = $dropdown->find('css', sprintf('a[data-source="%s"]', $source));
-        if (!$option) {
-            throw new \Exception(sprintf('Could not find source "%s" in switcher.', $source));
-        }
+        $option = $this->spin(function () use ($dropdown, $source) {
+            return $dropdown->find('css', sprintf('a[data-source="%s"]', $source));
+        }, 20, sprintf('Could not find source "%s" in switcher', $source));
         $option->click();
     }
 
@@ -398,15 +402,13 @@ class Edit extends Form
             $label = explode(' in ', $label)[0];
         }
 
-        $labelNode = $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
-        if (!$labelNode) {
-            throw new ElementNotFoundException($this->getSession(), 'label ', 'value', $label);
-        }
+        $labelNode = $this->spin(function () use ($label) {
+            return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
+        });
 
-        $container = $labelNode->getParent()->getParent()->getParent();
-        if (!$container) {
-            throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $label);
-        }
+        $container = $this->spin(function () use ($labelNode) {
+            return $labelNode->getParent()->getParent()->getParent();
+        });
 
         $container->name = $label;
 
@@ -433,9 +435,13 @@ class Edit extends Form
         }
 
         if ($element) {
-            $label = $element->find('css', sprintf('label:contains("%s")', $labelContent));
+            $label = $this->spin(function () use ($labelContent) {
+                return $element->find('css', sprintf('label:contains("%s")', $labelContent));
+            });
         } else {
-            $label = $this->find('css', sprintf('label:contains("%s")', $labelContent));
+            $label = $this->spin(function () use ($labelContent) {
+                return $this->find('css', sprintf('label:contains("%s")', $labelContent));
+            });
         }
 
         if (!$label) {
@@ -1017,15 +1023,7 @@ class Edit extends Form
      */
     public function findCompletenessContent()
     {
-        $completenessContent = $this->spin(function () {
-            return $this->getElement('Completeness')->getParent();
-        });
-
-        if (!$completenessContent) {
-            throw new \InvalidArgumentException('Completeness content not found !!!');
-        }
-
-        return $completenessContent;
+        return $this->getElement('Completeness', 20, 'Completeness content not found !!!');
     }
 
     /**
