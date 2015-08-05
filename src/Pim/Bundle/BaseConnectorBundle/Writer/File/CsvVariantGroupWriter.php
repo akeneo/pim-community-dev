@@ -53,7 +53,7 @@ class CsvVariantGroupWriter extends CsvWriter
      */
     protected function copyMedia(array $media)
     {
-        $target = sprintf('%s/%s', dirname($this->getPath()), $media['exportPath']);
+        $target = dirname($this->getPath()) . DIRECTORY_SEPARATOR . $media['exportPath'];
 
         if (!is_dir(dirname($target))) {
             mkdir(dirname($target), 0777, true);
