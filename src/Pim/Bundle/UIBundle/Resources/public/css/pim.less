@@ -149,7 +149,7 @@ a.back-link i {
 
 /** Dashboard ********************************************************************************************************/
 .dashboard {
-  background-color:#f1f1f1;
+  background-color:white;
   &.quick-launchpad > .container {
     padding-top: 30px;
   }
@@ -157,10 +157,8 @@ a.back-link i {
     margin-bottom: 20px;
     &>div.clearfix {
       overflow: hidden;
-      border: 1px solid #b6b6b6;
-      background-color: lighten(@color-light_grey, 4%);
-      .border-radius(5px);
-      .box-shadow(1px 1px 5px rgba(50, 50, 50, 0.2));
+      border: 1px solid #CbCbd2;
+      background-color: white;
     }
   }
   .btn.shortcut {
@@ -174,11 +172,13 @@ a.back-link i {
   }
   h3 {
     margin: 0;
+    font-size: 18px;
+    color: @color-new-purple-medium;
+    font-weight: normal;
   }
   &.header {
-    background-color: #fff;
-    padding: 5px 20px;
-    border-bottom: 1px solid #f7f7f7;
+    background-color: #F7F7F9;
+    padding: 15px;
   }
 }
 
@@ -188,13 +188,20 @@ hr.small {
 
 /** widgets **********************************************************************************************************/
 .widget-header {
-  padding: 2px 2px 3px 10px;
+  padding: 0 10px;
   font-weight: bold;
-  background: linear-gradient(@backgroundColor-white, @color-light_grey);
   border-bottom: 1px solid #ccc;
+  line-height: 44px;
+  color: @color-new-purple-medium;
+  background-color: #F7F7F9;
+
   .btn-refresh {
     margin-right: 3px;
     margin-top: 1px;
+
+    i {
+      color: black;
+    }
   }
 }
 
@@ -212,14 +219,16 @@ a[data-toggle-channel] {
 }
 
 #completeness-widget {
+  width: 100%;
+
   .progress {
     height: 10px;
-    margin-bottom: 5px;
-    background-image: linear-gradient(to bottom, #e4e4e4, #eee);
+    margin-bottom: 0px;
+    margin-top: 18px;
     border-radius: 6px;
   }
   .progress-cell {
-    padding: 10px 10px 0 10px;
+    padding: 0 10px 0 10px;
     margin-right: 15px;
     margin-left: 15px;
     div.center {
@@ -236,20 +245,26 @@ a[data-toggle-channel] {
     }
   }
   tr.channel {
+    background-color: #ECECF0;
+    line-height: 34px;
+
     &:first-of-type {
       border-top: none;
     }
     border-top: 1px solid #c2c2c2;
-    border-bottom: 1px solid #c2c2c2;
-    background: linear-gradient(#f2f2f2, #e8e8e8);
+    
     td {
-      padding: 2px 5px;
+      padding: 0;
     }
   }
+
+  tr:not(.channel) {
+      border-top: 1px solid #c2c2c2;
+  }
+
   td {
-    padding: 5px;
-    font-size: 13px;
-    vertical-align: top;
+    padding: 15px 0;
+    font-size: 12px;
   }
   td:nth-child(1) {
     width: 5%;
@@ -262,6 +277,13 @@ a[data-toggle-channel] {
   }
   td:nth-child(4) {
     width: 60%;
+  }
+}
+
+#last-operations-widget {
+  .label {
+    border-radius: 0;
+    text-shadow: none;
   }
 }
 

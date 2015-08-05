@@ -216,6 +216,8 @@ a.add-attribute-option {
 .has-switch {
   margin-right: 3px;
   margin-bottom: -6px;
+  border-radius: 0px;
+
   label {
     z-index: 10;
   }
@@ -224,7 +226,10 @@ a.add-attribute-option {
     font-size: 12px;
     font-weight: bold;
     &.switch-primary, &.switch-left {
-      .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
+      background-color: @color-new-green;
+      background-image: none;
+      border-radius: 0;
+      text-shadow: none;
     }
   }
   &>div.switch-off,
