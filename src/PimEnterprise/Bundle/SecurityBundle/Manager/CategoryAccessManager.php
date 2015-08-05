@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
