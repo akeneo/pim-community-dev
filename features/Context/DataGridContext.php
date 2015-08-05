@@ -149,6 +149,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @Then /^the row "([^"]*)" should contain the images:$/
+     */
+    public function theRowShouldContainImages($code, TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->assertColumnContainsImage($code, $data['column'], $data['value']);
+        }
+    }
+
+    /**
      * @param string $row
      * @param string $column
      * @param string $expectation
@@ -187,6 +200,38 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                     implode(',', $actual)
                 )
             );
+        }
+    }
+
+    /**
+     * @param string $row
+     * @param string $column
+     * @param string $titleExpectation
+     *
+     * @throws ExpectationException
+     */
+    public function assertColumnContainsImage($row, $column, $titleExpectation)
+    {
+        $node = $this->datagrid->getColumnNode($column, $row);
+
+        if ('**empty**' === $titleExpectation) {
+            if (null !== $node->find('css', 'img')) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting column "%s" to be empty, but one image found.', $column)
+                );
+            }
+        } else {
+            $locator = sprintf('img[title="%s"]', $titleExpectation);
+
+            if (null === $node->find('css', $locator)) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting column "%s" to contain "%s".',
+                        $column,
+                        implode(',', $titleExpectation)
+                    )
+                );
+            }
         }
     }
 

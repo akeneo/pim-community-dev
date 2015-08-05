@@ -206,6 +206,7 @@ services:
             - '@pim_enrich.form.association_type'
             - '@pim_catalog.remover.association_type'
 
+# TODO: remove
 #    pim_enrich.controller.media:
 #        scope: request
 #        class: %pim_enrich.controller.media.class%
@@ -223,9 +224,9 @@ services:
         arguments:
             - '@liip_imagine.controller'
             - '@liip_imagine.cache.manager'
-            - '@oneup_flysystem.mount_manager'
             - '@liip_imagine.filter.manager'
-            - [ 'storage', 'tmpStorage' ]
+            - '@oneup_flysystem.mount_manager'
+            - ['storage']
 
     pim_enrich.controller.variant_group:
         scope: request
@@ -369,6 +370,7 @@ services:
         class: %pim_enrich.controller.rest.media.class%
         arguments:
             - '@validator'
+            - '@akeneo_file_storage.file_storage.path_generator'
             - %tmp_storage_dir%
 
     pim_enrich.controller.rest.product:

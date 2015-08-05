@@ -13,7 +13,7 @@ class FlysystemLoaderSpec extends ObjectBehavior
     {
         $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($filesystem);
 
-        $this->beConstructedWith($mountManager, FileStorage::CATALOG_STORAGE_ALIAS);
+        $this->beConstructedWith($mountManager, [FileStorage::CATALOG_STORAGE_ALIAS]);
     }
 
     function it_is_a_loader()
@@ -25,6 +25,7 @@ class FlysystemLoaderSpec extends ObjectBehavior
     {
         $filepath = '2/f/a/4/2fa4afe5465afe5655age_flower.png';
 
+        $filesystem->has($filepath)->willReturn(true);
         $filesystem->read($filepath)->willReturn('IMAGE CONTENT');
         $filesystem->getMimetype($filepath)->willReturn('image/png');
 

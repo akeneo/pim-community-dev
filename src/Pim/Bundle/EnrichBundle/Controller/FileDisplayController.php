@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use League\Flysystem\FileNotFoundException;
+use Akeneo\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\MountManager;
 use Liip\ImagineBundle\Controller\ImagineController;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Liip\ImagineBundle\Model\Binary;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -28,87 +28,74 @@ class FileDisplayController extends Controller
     /** @var CacheManager */
     protected $cacheManager;
 
-    /** @var MountManager */
-    protected $mountManager;
-
     /** @var FilterManager */
     protected $filterManager;
 
-    /** @var string */
-    protected $filesystemName;
+    /** @var MountManager */
+    protected $mountManager;
 
+    /** @var string */
+    protected $filesystemAliases;
+
+    /**
+     * @param ImagineController $imagineController
+     * @param CacheManager      $cacheManager
+     * @param FilterManager     $filterManager
+     * @param MountManager      $mountManager
+     * @param array             $filesystemAliases
+     */
     public function __construct(
         ImagineController $imagineController,
         CacheManager $cacheManager,
-        MountManager $mountManager,
         FilterManager $filterManager,
-        $filesystemName
+        MountManager $mountManager,
+        array $filesystemAliases
     ) {
         $this->imagineController = $imagineController;
         $this->cacheManager      = $cacheManager;
-        $this->mountManager      = $mountManager;
         $this->filterManager     = $filterManager;
-        $this->filesystemName    = $filesystemName;
+        $this->mountManager      = $mountManager;
+        $this->filesystemAliases = $filesystemAliases;
     }
 
     /**
      * @param Request $request
      * @param string  $filename
+     * @param string  $filter
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function showAction(Request $request, $filename)
+    public function showAction(Request $request, $filename, $filter = null)
     {
-        $filepath = $filename;
-        $filter = $request->query->get('filter');
+        $filename = urldecode($filename);
 
         try {
-            if (null !== $filter) {
-                $imageResponse = $this->imagineController->filterAction($request, $filepath, $filter);
-            } else {
-                // TODO: Change the way we read the distant files
-                $filesystem = $this->getFilesystem();
-                $content = $filesystem->read($filename);
-                $mimeType = $filesystem->getMimetype($filename);
-                $imageResponse = new Response($content);
-
-                if (null !== $mimeType) {
-                    $imageResponse->headers->set('Content-Type', $mimeType);
-                }
-            }
-        } catch (FileNotFoundException $e) {
-            $imageResponse = $this->getFallbackImageResponse($filter);
+            return $this->imagineController->filterAction($request, $filename, $filter);
+        } catch (NotFoundHttpException $e) {
+            return new RedirectResponse($request->getUriForPath('/bundles/pimenrich/img/img_generic.png'));
         }
-
-        return $imageResponse;
     }
 
     /**
-     * @return \League\Flysystem\FilesystemInterface
-     */
-    protected function getFilesystem()
-    {
-        return $this->mountManager->getFilesystem($this->filesystemName);
-    }
-
-    /**
-     * @param string $filter
+     * @param string $filename
      *
-     * @return Response
+     * @return StreamedFileResponse
      */
-    protected function getFallbackImageResponse($filter = null)
+    public function downloadAction($filename)
     {
-        $path = realpath(__DIR__ . '/../' . self::FALLBACK_IMAGE_PATH);
-        $content = file_get_contents($path);
+        $filename = urldecode($filename);
 
-        $binary = new Binary($content, 'image/png');
-        if (null !== $filter) {
-            $binary = $this->filterManager->applyFilter($binary, $filter);
+        foreach ($this->filesystemAliases as $alias) {
+            $fs = $this->mountManager->getFilesystem($alias);
+            if ($fs->has($filename)) {
+                $stream = $fs->readStream($filename);
+
+                return new StreamedFileResponse($stream);
+            }
         }
 
-        $imageResponse = new Response($binary->getContent());
-        $imageResponse->headers->set('Content-Type', 'image/png');
-
-        return $imageResponse;
+        throw $this->createNotFoundException(
+            sprintf('File with key "%s" could not be found.', $filename)
+        );
     }
 }
