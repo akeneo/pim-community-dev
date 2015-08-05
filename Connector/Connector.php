@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  *
- * @todo Refactor all related classes to remove manual extension from this class, then remove it
+ * @deprecated will be removed in future version
  */
 class Connector extends Bundle
 {
