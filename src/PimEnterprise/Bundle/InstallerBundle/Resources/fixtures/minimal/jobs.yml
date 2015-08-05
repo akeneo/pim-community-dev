@@ -91,7 +91,7 @@ jobs:
         label:     Demo asset category import
         type:      import
         configuration:
-            filePath:      /tmp/assets.csv
+            filePath:      /tmp/assets_categories.csv
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'

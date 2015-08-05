@@ -13,7 +13,7 @@ Feature: Browse jobs
     Then the grid should contain 7 elements
     And I should see export profiles clothing_attribute_export, clothing_category_export, clothing_group_export, clothing_product_export and clothing_rule_export
     And I am on the imports page
-    And the grid should contain 6 elements
+    And the grid should contain 7 elements
     And I should see import profiles clothing_attribute_import, clothing_group_import, clothing_product_import, clothing_rule_import and clothing_product_proposal_import
 
   Scenario: Successfully view job profiles depending on given permissions for administrator
@@ -21,4 +21,4 @@ Feature: Browse jobs
     And I am on the exports page
     Then the grid should contain 9 elements
     And I am on the imports page
-    Then the grid should contain 9 elements
+    Then the grid should contain 10 elements
