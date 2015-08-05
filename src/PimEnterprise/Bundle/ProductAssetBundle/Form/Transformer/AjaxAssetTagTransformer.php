@@ -150,6 +150,7 @@ class AjaxAssetTagTransformer implements DataTransformerInterface
             }
 
             $entity->$setMethod($value);
+            // TODO: saving should be moved elsewhere
             $this->saver->save($entity);
             $transformedValue = $entity;
         }
