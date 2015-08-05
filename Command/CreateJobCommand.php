@@ -50,7 +50,9 @@ class CreateJobCommand extends ContainerAwareCommand
         $rawConfig = json_decode($jsonConfig);
 
         $factory = $this->getJobInstanceFactory();
-        $jobInstance = $factory->createJobInstance($connector, $type, $job);
+        $jobInstance = $factory->createJobInstance($type);
+        $jobInstance->setConnector($connector);
+        $jobInstance->setAlias($job);
         $jobInstance->setCode($code);
         $jobInstance->setLabel($label);
         $jobInstance->setRawConfiguration($rawConfig);

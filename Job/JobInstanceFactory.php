@@ -25,14 +25,12 @@ class JobInstanceFactory
     /**
      * Create a job instance
      *
-     * @param string $connector
      * @param string $type
-     * @param string $alias
      *
      * @return JobInstance
      */
-    public function createJobInstance($connector = null, $type = null, $alias = null)
+    public function createJobInstance($type = null)
     {
-        return new $this->jobInstanceClass($connector, $type, $alias);
+        return new $this->jobInstanceClass(null, $type);
     }
 }
