@@ -94,14 +94,6 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
-     * @param $field
-     */
-    public function openSelect2($field)
-    {
-        $this->getCurrentPage()->findField($field)->click();
-    }
-
-    /**
      * @params string       $field
      * $params string|array $tags
      *
@@ -113,23 +105,23 @@ class EnterpriseWebUser extends BaseWebUser
             $tags = $this->convertCommaSeparatedToArray($tags);
         }
 
-        $this->openSelect2($field);
-        $search = $this->getCurrentPage()->find('css', 'ul.select2-results');
-
-        $results = $this->getMainContext()->spin(function () use ($search) {
-            return $search->findAll('css', 'li.select2-result');
-        });
+        $select2 = $this->getCurrentPage()->findField($field);
+        $search  = $this->getCurrentPage()->find('css', '.select2-results');
         foreach ($tags as $tag) {
-            if (!$search->isVisible()) {
-                $this->openSelect2($field);
-            }
+            $select2->click();
+            // Impossible to use NodeElement::setValue() since the Selenium2 implementation emulates the change event
+            // by hitting the TAB key, which results in closing select2 choices
+            $this->getSession()->executeScript(
+                sprintf('$(\'.select2-search-field .select2-input\').val(\'%s\').trigger(\'paste\');', $tag)
+            );
 
-            foreach ($results as $result) {
-                if ($result->getText() === $tag) {
-                    $result->click();
-                    break;
-                }
-            }
+            $item = $this->getMainContext()->spin(function () use ($search, $tag) {
+                return $search->find(
+                    'css',
+                    sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $tag)
+                );
+            }, 5);
+            $item->click();
         }
     }
 
@@ -183,7 +175,7 @@ class EnterpriseWebUser extends BaseWebUser
     protected function getSelect2Choices($field, $tags = null)
     {
         $select2Label   = $this->getCurrentPage()->find('css', sprintf('label:contains("%s")', $field));
-        $currentChoices = $select2Label->getParent()->findAll('css', 'li.select2-search-choice');
+        $currentChoices = $select2Label->getParent()->findAll('css', '.select2-search-choice');
 
         if (null !== $tags) {
             $choices = [];
@@ -210,7 +202,7 @@ class EnterpriseWebUser extends BaseWebUser
     protected function removeTags(array $tagElements)
     {
         foreach ($tagElements as $tag) {
-            $removeLink = $tag->find('css', 'a.select2-search-choice-close');
+            $removeLink = $tag->find('css', '.select2-search-choice-close');
             $removeLink->click();
 
             $this->getMainContext()->spin(function () use ($removeLink) {

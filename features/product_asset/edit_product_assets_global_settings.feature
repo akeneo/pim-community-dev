@@ -21,7 +21,7 @@ Feature: Edit product assets global settings
     And I visit the "Global settings" tab
     And the field Description should contain "My new description"
 
-  Scenario: Successfully add tags to an asset
+  Scenario: Successfully add existing tags to an asset
     Given I am on the "blue_shirt" asset page
     And I visit the "Global settings" tab
     When I add the following tags in the "Tags" select2 : pattern, stripes, neckline
@@ -29,6 +29,15 @@ Feature: Edit product assets global settings
     Then I should be on the "blue_shirt" asset edit page
     And I visit the "Global settings" tab
     And the field Tags should contain "solid_color, men, pattern, stripes, neckline"
+
+  Scenario: Successfully add a new tag to an asset
+    Given I am on the "blue_shirt" asset page
+    And I visit the "Global settings" tab
+    When I add the following tags in the "Tags" select2 : new_tag
+    And I press the "Save" button
+    Then I should be on the "blue_shirt" asset edit page
+    And I visit the "Global settings" tab
+    And the field Tags should contain "solid_color, men, new_tag"
 
   Scenario: Successfully remove tags from an asset
     Given I am on the "blue_shirt" asset page
