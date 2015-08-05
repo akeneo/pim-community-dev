@@ -155,4 +155,11 @@ interface CategoryRepositoryInterface extends
      * @return bool
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode);
+
+    /**
+     * Return the categories sorted by tree and ordered
+     *
+     * @return array
+     */
+    public function getOrderedAndSortedByTreeCategories();
 }
