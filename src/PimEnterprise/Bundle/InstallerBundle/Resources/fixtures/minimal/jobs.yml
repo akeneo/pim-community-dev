@@ -85,3 +85,14 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/asset_category.csv
+    csv_asset_category_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_asset_category_import
+        label:     Demo asset category import
+        type:      import
+        configuration:
+            filePath:      /tmp/assets.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
