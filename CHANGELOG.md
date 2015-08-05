@@ -1,4 +1,6 @@
 # 1.4.x
+## Bug fixes
+- PIM-4443: Exporting a product with an attribute with a numeric code gives an error, full numeric codes for entities are now forbidden except for products
 
 # 1.4.0-BETA1 (2015-07-31)
 
