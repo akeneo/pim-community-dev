@@ -9,9 +9,8 @@ use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 class AssetCategoryReaderSpec extends ObjectBehavior
 {
-    function let(
-        CategoryRepositoryInterface $assetCategoryRepository
-    ) {
+    function let(CategoryRepositoryInterface $assetCategoryRepository)
+    {
         $this->beConstructedWith($assetCategoryRepository);
     }
 
