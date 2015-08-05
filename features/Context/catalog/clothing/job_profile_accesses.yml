@@ -8,6 +8,9 @@ job_profile_accesses:
     clothing_category_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
+    clothing_asset_category_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     clothing_group_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]

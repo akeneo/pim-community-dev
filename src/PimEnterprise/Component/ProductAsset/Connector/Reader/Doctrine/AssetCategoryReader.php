@@ -3,44 +3,47 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Reader\Doctrine;
+namespace PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
- * Get rules definition
+ * Get asset categories
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionReader extends AbstractConfigurableStepElement implements
+class AssetCategoryReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
-    /** @var RuleDefinitionRepositoryInterface */
-    protected $ruleRepository;
+    /** @var CategoryRepositoryInterface */
+    protected $assetCategoryRepository;
+
+    /** @var bool Checks if all asset categories are sent to the processor */
+    protected $isExecuted = false;
 
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var bool Checks if all rules are sent to the processor */
-    protected $isExecuted = false;
+    /** @var \ArrayIterator */
+    protected $results;
 
     /**
-     * @param RuleDefinitionRepositoryInterface $ruleRepository
+     * @param CategoryRepositoryInterface $assetCategoryRepository
      */
-    public function __construct(RuleDefinitionRepositoryInterface $ruleRepository)
+    public function __construct(CategoryRepositoryInterface $assetCategoryRepository)
     {
-        $this->ruleRepository = $ruleRepository;
+        $this->assetCategoryRepository = $assetCategoryRepository;
     }
 
     /**
@@ -48,19 +51,18 @@ class RuleDefinitionReader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        if ($this->isExecuted) {
-            return null;
+        if (!$this->isExecuted) {
+            $this->isExecuted = true;
+
+            $this->results = $this->getResults();
         }
 
-        $results = $this->getResults();
-
-        $this->isExecuted = true;
-
-        foreach ($results as $result) {
+        if (null !== $result = $this->results->current()) {
+            $this->results->next();
             $this->stepExecution->incrementSummaryInfo('read');
         }
 
-        return $results;
+        return $result;
     }
 
     /**
@@ -84,6 +86,6 @@ class RuleDefinitionReader extends AbstractConfigurableStepElement implements
      */
     protected function getResults()
     {
-        return $this->ruleRepository->findAll();
+        return new \ArrayIterator($this->assetCategoryRepository->getOrderedAndSortedByTreeCategories());
     }
 }

@@ -75,3 +75,13 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    csv_asset_category_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_asset_category_export
+        label:     Demo asset category export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/asset_category.csv

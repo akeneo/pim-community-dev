@@ -88,6 +88,7 @@ pimee_product_asset:
     jobs:
         csv_asset_import.title: Asset import in csv
         csv_tag_import.title: Tag import in csv
+        csv_asset_category_export.title: Asset category export in csv
     notAvailable:
         label: not available
     asset:
