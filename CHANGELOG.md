@@ -1,4 +1,6 @@
 # 1.4.x
+## Bug fixes
+- PIM-4443: Exporting a product with an attribute with a numeric code gives an error, full numeric codes for entities are now forbidden except for products
 
 ## BC breaks
 - Move `Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory`` to `Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory``

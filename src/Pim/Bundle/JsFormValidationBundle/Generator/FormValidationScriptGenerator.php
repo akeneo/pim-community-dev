@@ -154,67 +154,12 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
                     }
                 }
             }
-
-            $errorMapping = isset($formView->vars['error_mapping']) ? $formView->vars['error_mapping'] : null;
-            if (!empty($metadata->getters)) {
-                foreach ($metadata->getters as $getterMetadata) {
-                    /* @var $getterMetadata \Symfony\Component\Validator\Mapping\GetterMetadata  */
-                    if (!empty($getterMetadata->constraints)) {
-                        if ($gettersLibraries->findLibrary($getterMetadata) === null) {
-                            // You have to provide getter templates in the following location
-                            // {EntityBundle}/Resources/views/Getters/{EntityName}.{GetterMethod}.js.twig
-                            // or all templates in one place:
-                            // app/Resources/APYJsFormValidationBundle/views/Getters/{EntityName}.{GetterMethod}.js.twig
-                            continue;
-                        }
-                        foreach ($getterMetadata->constraints as $constraint) {
-                            /* @var $constraint \Symfony\Component\Validator\Validator */
-                            $getterName = $getterMetadata->getName();
-                            $jsHandlerCallback = $gettersLibraries->getKey($getterMetadata, '_');
-                            $constraintName = $this->getConstraintName($constraint);
-                            $constraintProperties = get_object_vars($constraint);
-                            $exist = array_intersect($formValidationGroups, $constraintProperties['groups']);
-                            if (!empty($exist)) {
-                                if (!$gettersLibraries->has($getterMetadata)) {
-                                    $gettersLibraries->add($getterMetadata);
-                                }
-                                if (!$fieldsConstraints->hasLibrary($constraintName)) {
-                                    $library =
-                                        "APYJsFormValidationBundle:Constraints:{$constraintName}Validator.js.twig";
-                                    $fieldsConstraints->addLibrary($constraintName, $library);
-                                }
-                                if (!empty($errorMapping[$getterName]) && is_string($errorMapping[$getterName])) {
-                                    $fieldName = $errorMapping[$getterName];
-                                    //'type' property is set in RepeatedTypeExtension class
-                                    if (!empty($formView->children[$fieldName]) &&
-                                        isset($formView->children[$fieldName]->vars['type']) &&
-                                        $formView->children[$fieldName]->vars['type'] == 'repeated') {
-                                        $repeatedNames = array_keys($formView->children[$fieldName]->vars['value']);
-                                        //Listen first repeated element
-                                        $fieldId =
-                                            $formView->children[$fieldName]->vars['id'] . "_" . $repeatedNames[0];
-                                    } else {
-                                        $fieldId = $formView->children[$fieldName]->vars['id'];
-                                    }
-                                } else {
-                                    $fieldId = '.';
-                                }
-                                if (!isset($aGetters[$fieldId][$jsHandlerCallback])) {
-                                    $aGetters[$fieldId][$jsHandlerCallback] = array();
-                                }
-
-                                unset($constraintProperties['groups']);
-
-                                $aGetters[$fieldId][$jsHandlerCallback][] = array(
-                                    'name'       => $constraintName,
-                                    'parameters' => json_encode($constraintProperties),
-                                );
-                            }
-                        }
-                    }
-                }
-            }
         }
+
+        /*
+         * PIM-4443: we removed the original $metadata->getters implementation to avoid issues with
+         * cascade validation and getter (validation of the code of the attribute group of an attribute)
+         */
 
         if (isset($entityName)) {
             $constraintsTarget = $metadata->properties;
