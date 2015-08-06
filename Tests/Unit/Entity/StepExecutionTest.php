@@ -163,8 +163,7 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $expectedString = "id=0, name=[my_step_execution], status=[2], exitCode=[EXECUTING], exitDescription=[], "
-            ."readCount=0, writeCount=0, filterCount=0";
+        $expectedString = "id=0, name=[my_step_execution], status=[2], exitCode=[EXECUTING], exitDescription=[]";
         $this->assertEquals($expectedString, (string) $this->stepExecution);
     }
 

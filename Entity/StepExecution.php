@@ -619,8 +619,7 @@ class StepExecution
      */
     public function __toString()
     {
-        $summary = 'id=%d, name=[%s], status=[%s], exitCode=[%s], exitDescription=[%s], '.
-            'readCount=%d, writeCount=%d, filterCount=%d';
+        $summary = 'id=%d, name=[%s], status=[%s], exitCode=[%s], exitDescription=[%s]';
 
         return sprintf(
             $summary,
@@ -628,10 +627,7 @@ class StepExecution
             $this->stepName,
             $this->status,
             $this->exitCode,
-            $this->exitDescription,
-            $this->readCount,
-            $this->writeCount,
-            $this->filterCount
+            $this->exitDescription
         );
     }
 }
