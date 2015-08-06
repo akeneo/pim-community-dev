@@ -37,26 +37,11 @@
     {% endset %}
 
     {% set subtitle %}
-        <div id="locale-switcher" class="btn-group sub-title">
-            <span class="product-name dropdown-toggle" data-toggle="dropdown">
-                {{ dataLocale.code|flag }}
-                <i class="icon-caret-down"></i>
-            </span>
-            <ul class="dropdown-menu">
-                {% for locale in locales %}
-                    <li class="{{ locale.code == dataLocale.code ? 'active' : '' }}">
-                        <a href="{{ path('pim_enrich_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale_label(locale.code) }}">
-                            <span class="indicator">
-                                {% if locale.code == dataLocale.code %}
-                                    <i class="icon-circle"></i>
-                                {% endif %}
-                            </span>
-                            {{ locale.code|flag }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
+            'locales':           locales,
+            'currentLocaleCode': dataLocale.code,
+            'routeName':         'pim_enrich_product_index'
+        } only %}
         {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': 'product-grid' })) }}
     {% endset %}
 
