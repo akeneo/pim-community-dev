@@ -1,0 +1,65 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+
+{% block content %}
+    <div id="mass-upload-wrapper">
+        <div class="navigation clearfix navbar-extra">
+            <div class="navbar-buttons pull-right">
+                <button class="btn btn-publish schedule">{{ 'schedule'|trans|capitalize }}</button>
+                <button class="btn fileinput-button">{{ 'Add files'|trans|capitalize }}</button>
+                <button class="btn btn-primary start" type="submit">{{ 'pimee_product_asset.mass_upload.start'|trans|capitalize }}</button>
+                <button class="btn cancel" type="reset">{{ 'pimee_product_asset.mass_upload.cancel'|trans|capitalize }}</button>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="grid-container">
+                <table class="grid table table-striped" class="files">
+                    <thead>
+                    <tr>
+                        <th class="preview">{{ 'medias'|trans|capitalize }}</th>
+                        <th class="filename">{{ 'filename'|trans|capitalize }}</th>
+                        <th class="filetype">{{ 'filetype'|trans|capitalize }}</th>
+                        <th class="status">{{ 'status'|trans|capitalize }}</th>
+                        <th class="dz-progress-wrapper">{{ 'progress'|trans|capitalize }}</th>
+                        <th class="action-cell">{{ 'actions'|trans|capitalize }}</th>
+                    </tr>
+                    </thead>
+                    <tbody id="previews">
+                    <tr id="template" class="file-row">
+                        <td class="preview">
+                            <span class="preview"><img data-dz-thumbnail/></span>
+                        </td>
+                        <td class="filename">
+                            <p class="name" data-dz-name></p>
+                            <strong class="error text-danger" data-dz-errormessage></strong>
+                        </td>
+                        <td class="filetype">
+                            <p class="dz-type" data-dz-type></p>
+                        </td>
+                        <td class="status">
+                            <p class="dz-status"></p>
+                        </td>
+                        <td class="dz-progress-wrapper">
+                            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
+                                 aria-valuemax="100" aria-valuenow="0">
+                                <div class="bar" style="width:0%;" data-dz-uploadprogress></div>
+                            </div>
+                        </td>
+                        <td class="action-cell">
+                            <button data-dz-remove class="btn btn-warning cancel">{{ 'Cancel'|trans|capitalize }}</button>
+                            <button data-dz-remove class="btn btn-danger delete">{{ 'Delete'|trans|capitalize }}</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            require(['pimee/productasset/mass-upload'], function (massUpload) {
+                var myDropzone = new massUpload();
+            });
+        </script>
+
+    </div>
+{% endblock %}

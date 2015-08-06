@@ -56,9 +56,21 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($reference)
+    public function findOneByIdentifier($assetCode)
     {
-        return $this->findOneBy(['code' => $reference]);
+        return $this->findOneBy(['code' => $assetCode]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByCode($assetCode, $hydrationMode = Query::HYDRATE_OBJECT)
+    {
+        $qb = $this->createQueryBuilder('asset')
+            ->where('asset.code = :assetCode')
+            ->setParameter(':assetCode', $assetCode, \PDO::PARAM_STR);
+
+        return $qb->getQuery()->getOneOrNullResult($hydrationMode);
     }
 
     /**

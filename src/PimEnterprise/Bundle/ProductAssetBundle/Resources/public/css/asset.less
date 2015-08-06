@@ -193,3 +193,78 @@
 
   .asset-uploader();
 }
+
+#mass-upload-wrapper {
+
+  .btn.schedule {
+    display: none;
+  }
+
+  #total-progress {
+    opacity: 0;
+    transition: opacity 0.3s linear;
+  }
+
+  th.preview {
+    width: 80px;
+  }
+
+  th.filetype {
+    width: 10%;
+  }
+
+  th.status {
+    width: 10%;
+  }
+
+  th.dz-progress-wrapper {
+    width: 20%;
+  }
+
+  .file-row {
+    td.preview {
+      width: 80px;
+      height: 80px;
+    }
+
+    .progress.success .bar {
+      background: green linear-gradient(to bottom, #67B373, #68FF80);
+    }
+
+    /* Hide the delete button initially */
+    .delete {
+      display: none;
+    }
+
+    p.dz-status {
+      text-align: center;
+      width: 50px;
+      font-weight: bold;
+      font-size: smaller;
+      padding: 3px;
+    }
+
+    p.dz-status.added {
+      color: white;
+      background-color: #008000;
+    }
+
+    p.dz-status.error {
+      color: white;
+      background-color: #a10000;
+    }
+
+    .text-danger {
+      color: #a10000;
+    }
+
+    /* Hide the start and cancel buttons and show the delete button */
+    &.dz-success .cancel {
+      display: none;
+    }
+
+    &.dz-success .delete {
+      display: block;
+    }
+  }
+}

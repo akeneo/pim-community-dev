@@ -1,0 +1,43 @@
+parameters:
+    pimee_product_asset.uploader.class:              PimEnterprise\Component\ProductAsset\Upload\Uploader
+    pimee_product_asset.upload_checker.class:        PimEnterprise\Component\ProductAsset\Upload\UploadChecker
+    pimee_product_asset.upload_scheduler.class:      PimEnterprise\Component\ProductAsset\Upload\Scheduler
+    pimee_product_asset.mass-upload_processor.class: PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadProcessor
+    pimee_product_asset.mass-upload.tasklet.class:   PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet
+
+services:
+    pimee_product_asset.uploader:
+        class: %pimee_product_asset.uploader.class%
+        arguments:
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '%tmp_storage_dir%'
+
+    pimee_product_asset.upload_checker:
+        class: %pimee_product_asset.upload_checker.class%
+        arguments:
+            - '@pimee_product_asset.uploader'
+            - '@pimee_product_asset.repository.asset'
+
+    pimee_product_asset.upload_scheduler:
+        class: %pimee_product_asset.upload_scheduler.class%
+        arguments:
+            - '@pimee_product_asset.uploader'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+
+    pimee_product_asset.mass_upload_processor:
+        class: %pimee_product_asset.mass-upload_processor.class%
+        arguments:
+            - '@pimee_product_asset.uploader'
+            - '@pimee_product_asset.upload_scheduler'
+            - '@pimee_product_asset.factory.asset'
+            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.saver.asset'
+            - '@pimee_product_asset.updater.files'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@pim_catalog.repository.locale'
+
+    pimee_product_asset.mass_upload.tasklet:
+        class: %pimee_product_asset.mass-upload.tasklet.class%
+        arguments:
+            - '@pimee_product_asset.mass_upload_processor'
+            - '@pim_notification.manager.notification'

@@ -1,5 +1,6 @@
 parameters:
-    pimee_product_asset.controller.product_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController
+    pimee_product_asset.controller.product_asset.class:      PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController
+    pimee_product_asset.controller.rest.mass_upload.class:   PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\MassUploadController
     pimee_product_asset.controller.rest.product_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\ProductAssetController
 
 services:
@@ -31,6 +32,17 @@ services:
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_internal_api_serializer'
+
+    pimee_product_asset.controller.rest.mass_upload:
+        class: %pimee_product_asset.controller.rest.mass_upload.class%
+        arguments:
+            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.uploader'
+            - '@pimee_product_asset.upload_checker'
+            - '@pimee_product_asset.upload_scheduler'
+            - '@security.token_storage'
+            - '@pim_connector.launcher.simple_job_launcher'
+            - '@pim_import_export.repository.job_instance'
 
     pimee_product_asset.controller.category_tree:
         scope: request

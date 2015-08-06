@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Factory;
 
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
@@ -55,6 +56,11 @@ class AssetFactory
     public function create($isLocalized = false)
     {
         $asset = new $this->assetClass();
+
+        if (!$asset instanceof AssetInterface) {
+            throw new \InvalidArgumentException('$asset must be an instance of AssetInterface');
+        }
+
         if ($isLocalized) {
             foreach ($this->localeRepository->getActivatedLocales() as $locale) {
                 $reference = $this->referenceFactory->create($locale);

@@ -72,3 +72,37 @@ pimee_product_asset_dispatch:
     requirements:
         id: '[0-9a-f]+'
     methods: [GET]
+
+pimee_product_asset_rest_verify_upload:
+    path: /rest/upload/verify/{filename}
+    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:verifyAction, _format: json }
+    methods: [GET]
+    requirements:
+        filename: "['\s\w._-]+\.[a-zA-Z0-9]+"
+
+pimee_product_asset_mass_upload:
+    path: /mass-upload
+    defaults: { _controller: pimee_product_asset.controller.product_asset:massUploadAction }
+    methods: [GET]
+
+pimee_product_asset_mass_upload_rest_schedule:
+    path: /rest/mass-upload/schedule
+    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:scheduleAction, _format: json }
+    methods: [GET]
+
+pimee_product_asset_mass_upload_rest_list:
+    path: /rest/mass-upload
+    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:listAction, _format: json }
+    methods: [GET]
+
+pimee_product_asset_upload:
+    path: /upload
+    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:uploadAction, _format: json }
+    methods: [POST]
+
+pimee_product_asset_delete:
+    path: /rest/upload/delete/{filename}
+    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:deleteUploadedFileAction, _format: json }
+    methods: [DELETE]
+    requirements:
+        filename: '[\w._-]+'

@@ -33,8 +33,10 @@ class ProductAssetController
      * @param AssetRepositoryInterface $assetRepository
      * @param NormalizerInterface      $assetNormalizer
      */
-    public function __construct(AssetRepositoryInterface $assetRepository, NormalizerInterface $assetNormalizer)
-    {
+    public function __construct(
+        AssetRepositoryInterface $assetRepository,
+        NormalizerInterface $assetNormalizer
+    ) {
         $this->assetRepository = $assetRepository;
         $this->assetNormalizer = $assetNormalizer;
     }

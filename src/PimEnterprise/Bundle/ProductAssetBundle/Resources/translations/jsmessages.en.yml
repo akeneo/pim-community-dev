@@ -22,4 +22,20 @@ pimee_product_asset:
                 message: Are you sure you want to delete this item ?
             reset:
                 title:   Reset variations
-                message: Are you sure you want to reset all variations ?
+                message: Are you sure you want to reset all the variations ?
+    mass_upload:
+        menu: Upload assets
+        new: A new asset will be created
+        scheduled: Files scheduled for asset processing
+        canceled: Upload successfully canceled
+        error:
+            upload: An error occured while uploading
+            code: Invalid code format for asset
+            locale: An asset exists but is not localizable
+            exists: A file with the same name is already scheduled for upload
+            conflicts: File names conflict
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Mass upload

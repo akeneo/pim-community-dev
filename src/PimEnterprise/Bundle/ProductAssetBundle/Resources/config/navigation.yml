@@ -5,7 +5,7 @@ oro_menu_config:
             route: pimee_product_asset_index
             aclResourceId: pimee_product_asset_index
             extras:
-                routes: ['/^pimee_product_asset_\w+$/']
+                routes: ['/^pimee_product_asset_(?!mass)\w+$/']
                 position: 80
         pim_asset_categorytree:
             label: pimee_product_asset.category.menu
@@ -15,9 +15,20 @@ oro_menu_config:
                 routes: ['/^pimee_product_asset_categorytree_\w+$/']
                 position: 90
 
+        pim_asset_mass_upload:
+            label: pimee_product_asset.mass_upload.menu
+            route: pimee_product_asset_mass_upload
+            aclResourceId: pimee_product_asset_index
+            extras:
+                routes: ['/^pimee_product_asset_mass_upload$/']
+                position: 10
+
     tree:
         application_menu:
             children:
+                pim_import_tab:
+                    children:
+                        pim_asset_mass_upload: ~
                 pim_enrich_tab:
                     children:
                         pim_asset_tab: ~
@@ -27,3 +38,4 @@ oro_titles:
     pimee_product_asset_view: pimee_product_asset.page_tab.title.view
     pimee_product_asset_edit: pimee_product_asset.page_tab.title.edit
     pimee_product_asset_index: pimee_product_asset.menu
+    pimee_product_asset_mass_upload: pimee_product_asset.mass_upload.menu

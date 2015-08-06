@@ -14,6 +14,7 @@ namespace PimEnterprise\Component\ProductAsset\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
@@ -96,4 +97,14 @@ interface AssetRepositoryInterface extends
      * @return AssetInterface[]
      */
     public function findExpiringAssets(\DateTime $now, $delay = 5);
+
+    /**
+     * Retrieve an asset by its code
+     *
+     * @param string $assetCode
+     * @param int    $hydrationMode
+     *
+     * @return AssetInterface|array|null
+     */
+    public function findOneByCode($assetCode, $hydrationMode = Query::HYDRATE_OBJECT);
 }

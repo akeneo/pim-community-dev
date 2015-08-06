@@ -75,3 +75,12 @@ connector:
                         reader:    pimee_product_asset.reader.file.csv_channel_configuration
                         processor: pimee_product_asset.processor.denormalization.channel_configuration.flat
                         writer:    pimee_product_asset.writer.doctrine.channel_configuration
+        apply_assets_mass_upload:
+            title: assets_mass_upload
+            type:  mass_upload
+            steps:
+                perform:
+                    title: assets_mass_upload
+                    class: "%pim_connector.step.tasklet.class%"
+                    services:
+                        tasklet: pimee_product_asset.mass_upload.tasklet

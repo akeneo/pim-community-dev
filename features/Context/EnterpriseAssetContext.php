@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Behat\Context\Step;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Asset\Edit;
@@ -19,6 +20,8 @@ use Symfony\Component\DependencyInjection\Container;
  */
 class EnterpriseAssetContext extends RawMinkContext
 {
+    use SpinCapableTrait;
+
     /**
      * @Then /^I delete the reference file$/
      * @Then /^I delete the (\S+) variation file$/
@@ -229,6 +232,90 @@ class EnterpriseAssetContext extends RawMinkContext
 
         $this->getAssetFileUpdater()->deleteVariationFile($variation);
         $this->getVariationsaver()->save($variation, ['schedule' => true]);
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^I select the assets to upload:$/
+     */
+    public function iSelectAssetsToUpload(TableNode $table)
+    {
+        $fullPath = '';
+
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
+                . DIRECTORY_SEPARATOR;
+        }
+
+        foreach ($table->getHash() as $data) {
+            $this->getMainContext()->executeScript(
+                "document.querySelector('.dz-hidden-input').style.visibility = 'visible';
+            document.querySelector('.dz-hidden-input').style.height = '10px';
+            document.querySelector('.dz-hidden-input').style.width = '10px';
+            document.querySelector('.dz-hidden-input').style.display = 'block';"
+            );
+            $uploadContainer = $this->getCurrentPage()->find('css', '.dz-hidden-input');
+
+            $file = $fullPath . $data['name'];
+            if (is_file($file)) {
+                $uploadContainer->attachFile($file);
+            }
+        }
+    }
+
+    /**
+     * @Then /^I should see "([^"]+)" for asset "([^"]+)"$/
+     *
+     * @param string $text
+     * @param string $asset
+     *
+     * @throws ElementNotFoundException
+     */
+    public function iShouldSeeForAssetUpload($text, $asset)
+    {
+        $this->spin(function () use ($text, $asset) {
+            $assetElements = $this->getCurrentPage()
+                ->findAll('css', sprintf('td:contains("%s")', $asset));
+
+            $found = null;
+
+            if (!is_array($assetElements)) {
+                $assetElements = [$assetElements];
+            }
+
+            foreach ((array) $assetElements as $assetElement) {
+                $row = $assetElement->getParent();
+                $found = $row->find('css', sprintf('td:contains("%s")', $text));
+                if ($found) {
+                    break;
+                }
+            }
+
+            return $found;
+        }, 10, sprintf('Unable to find %s for asset %s', $text, $asset));
+    }
+
+    /**
+     * @When /^I (start|schedule) assets mass upload$/
+     */
+    public function iStartAssetMassUpload($action)
+    {
+        $actionButton = null;
+
+        if ('start' === $action) {
+            $actionButton = $this->getCurrentPage()->find('css', '.btn:contains("Start upload")');
+        }
+        if ('schedule' === $action) {
+            $actionButton = $this->getCurrentPage()->find('css', '.btn:contains("Schedule")');
+        }
+        if (!$actionButton) {
+            throw new ElementNotFoundException($this->getSession(),
+                sprintf('Unable to find the %s buton for mass upload', $action)
+            );
+        }
+        $actionButton->click();
+        $this->getMainContext()->wait();
     }
 
     /**

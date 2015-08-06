@@ -127,3 +127,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/asset.csv
+    apply_assets_mass_upload:
+        connector: Akeneo CSV Connector
+        alias:     apply_assets_mass_upload
+        label:     Process mass uploaded assets
+        type:      mass_upload

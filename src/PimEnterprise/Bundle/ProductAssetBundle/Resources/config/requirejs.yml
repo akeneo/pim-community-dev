@@ -11,8 +11,9 @@ config:
         # Extensions
         pimee/picker/asset-grid: pimenterpriseproductasset/js/picker/asset-grid
 
-        pimee/productasset/variations: pimenterpriseproductasset/js/form/variations
-        pimee/productasset/uploader:   pimenterpriseproductasset/js/form/uploader
+        pimee/productasset/variations:  pimenterpriseproductasset/js/form/variations
+        pimee/productasset/uploader:    pimenterpriseproductasset/js/form/uploader
+        pimee/productasset/mass-upload: pimenterpriseproductasset/js/mass-upload
 
     config:
         pim/fetcher-registry:
