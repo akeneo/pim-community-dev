@@ -23,11 +23,6 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess:
             column: edit_items
             options:
                 default: false
-        ownItems:
-            type: boolean
-            column: own_items
-            options:
-                default: false
     manyToOne:
         category:
             targetEntity: PimEnterprise\Component\ProductAsset\Model\Category
