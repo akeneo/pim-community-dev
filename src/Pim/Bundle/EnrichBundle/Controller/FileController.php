@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileDisplayController extends Controller
+class FileController extends Controller
 {
     /** @staticvar string */
     const FALLBACK_IMAGE_PATH = 'Resources/public/img/img_generic.png';

@@ -1,9 +1,9 @@
 pim_enrich_media_show:
     path: /show/{filename}/{filter}
-    defaults: { _controller: pim_enrich.controller.file_display:showAction, filter: null }
+    defaults: { _controller: pim_enrich.controller.file:showAction, filter: null }
     methods: [GET]
 
 pim_enrich_media_download:
     path: /download/{filename}
-    defaults: { _controller: pim_enrich.controller.file_display:downloadAction, filter: null }
+    defaults: { _controller: pim_enrich.controller.file:downloadAction, filter: null }
     methods: [GET]

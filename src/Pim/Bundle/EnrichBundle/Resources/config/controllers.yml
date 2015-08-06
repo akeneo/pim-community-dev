@@ -13,7 +13,7 @@ parameters:
     pim_enrich.controller.group.class:                   Pim\Bundle\EnrichBundle\Controller\GroupController
     pim_enrich.controller.association_type.class:        Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.media.class:                   Pim\Bundle\EnrichBundle\Controller\MediaController
-    pim_enrich.controller.file_display.class:            Pim\Bundle\EnrichBundle\Controller\FileDisplayController
+    pim_enrich.controller.file.class:                    Pim\Bundle\EnrichBundle\Controller\FileController
     pim_enrich.controller.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\VariantGroupController
     pim_enrich.controller.group_type.class:              Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.completeness.class:            Pim\Bundle\EnrichBundle\Controller\CompletenessController
@@ -216,9 +216,9 @@ services:
 #            - '@liip_imagine.cache.manager'
 #            - '@pim_filesystem'
 
-    pim_enrich.controller.file_display:
+    pim_enrich.controller.file:
         scope: request
-        class: %pim_enrich.controller.file_display.class%
+        class: %pim_enrich.controller.file.class%
         calls:
             - [ setContainer, [ '@service_container' ] ]
         arguments:
