@@ -43,9 +43,9 @@ class AssetType extends AbstractType
             'tags',
             'pim_ajax_asset_tag',
             [
-                'class'    => $this->tagClass,
-                'multiple' => true,
-                'attr'     => ['data-tags' => '']
+                'class'        => $this->tagClass,
+                'multiple'     => true,
+                'is_creatable' => true,
             ]
         );
         $builder->add('endOfUseAt', 'oro_date', ['required' => false]);
