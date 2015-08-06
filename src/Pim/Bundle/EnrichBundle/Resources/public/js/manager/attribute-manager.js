@@ -156,16 +156,14 @@ define([
 
             /**
              * Generate missing product associations
-             * @param Array values
              *
-             * @return Array
+             * @param {Array} values
+             *
+             * @return {Array}
              */
-            generateMissingAssociations: function(values) {
-                values['products'] = _.has(values, 'products') ? values['products'] : [];
-                values['groups'] = _.has(values, 'groups') ? values['groups'] : [];
-
-                values['products'].sort();
-                values['groups'].sort();
+            generateMissingAssociations: function (values) {
+                values.products = _.result(values, 'products', []).sort();
+                values.groups = _.result(values, 'groups', []).sort();
 
                 return values;
             }

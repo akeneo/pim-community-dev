@@ -22,7 +22,7 @@ Feature: Associate a product
     When I visit the "Associations" tab
     And I select the "Cross sell" association
     And I check the row "shoelaces"
-    And I press the "Save" button
+    And I save the product
     Then I should see the text "1 products and 0 groups"
     Then the row "shoelaces" should be checked
 
@@ -32,7 +32,7 @@ Feature: Associate a product
     And I select the "Upsell" association
     And I press the "Show groups" button
     And I check the row "Caterpillar boots"
-    And I press the "Save" button
+    And I save the product
     And I select the "Upsell" association
     And I press the "Show groups" button
     Then I should see the text "0 products and 1 groups"
@@ -51,7 +51,7 @@ Feature: Associate a product
     And I check the row "Similar boots"
     And I press the "Show products" button
     And I check the rows "shoelaces, gray-boots, brown-boots and green-boots"
-    And I press the "Save" button
+    And I save the product
     And I select the "Cross sell" association
     Then I should see the text "4 products and 1 groups"
     And I select the "Upsell" association
@@ -67,7 +67,7 @@ Feature: Associate a product
     And I select the "Cross sell" association
     And I check the row "shoelaces"
     And I check the row "black-boots"
-    And I press the "Save" button
+    And I save the product
     Then the row "shoelaces" should be checked
     And the row "black-boots" should be checked
     And I should be able to sort the rows by Is associated
@@ -94,7 +94,7 @@ Feature: Associate a product
     When I select the "Substitution" association
     And I press the "Show groups" button
     Then the row "similar_boots" should be checked
-    When I press the "Save" button
+    When I save the product
     And I select the "Cross sell" association
     And I uncheck the rows "black-boots"
     And I select the "Upsell" association
@@ -114,16 +114,16 @@ Feature: Associate a product
     And I select the "Cross sell" association
     And I check the row "gray-boots"
     And I check the row "black-boots"
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
     And I visit the "Attributes" tab
-    Then I should see "There are unsaved changes."
-    When I press the "Save" button
-    Then I should not see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
+    When I save the product
+    Then I should not see the text "There are unsaved changes."
     When I visit the "Associations" tab
     And I select the "Cross sell" association
     And I uncheck the rows "black-boots"
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
     And I check the rows "black-boots"
     # Wait for the fade-out of the message
     And I wait 1 seconds
-    Then I should not see "There are unsaved changes."
+    Then I should not see the text "There are unsaved changes."

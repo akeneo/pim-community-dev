@@ -97,7 +97,7 @@ define([
                         );
                     });
 
-                    product.values = values;
+                    product.values       = values;
                     product.associations = associations;
 
                     return product;

@@ -250,10 +250,10 @@ define(
 
                     if (selectedAssociations &&
                         selectedAssociations[associationType] &&
-                        selectedAssociations[associationType][gridType])
-                    {
-                        $(appendFieldId).val(selectedAssociations[associationType][gridType]['select'].join(','));
-                        $(removeFieldId).val(selectedAssociations[associationType][gridType]['unselect'].join(','));
+                        selectedAssociations[associationType][gridType]
+                    ) {
+                        $(appendFieldId).val(selectedAssociations[associationType][gridType].select.join(','));
+                        $(removeFieldId).val(selectedAssociations[associationType][gridType].unselect.join(','));
                     }
 
                     mediator.trigger(
@@ -263,8 +263,8 @@ define(
                 });
             },
             selectModel: function (model, datagrid) {
-                var assocType = this.state.get('currentAssociationType');
-                var assocTarget = this.getDatagridTarget(datagrid);
+                var assocType           = this.state.get('currentAssociationType');
+                var assocTarget         = this.getDatagridTarget(datagrid);
                 var currentAssociations = this.getCurrentAssociations(datagrid);
 
                 currentAssociations.push(datagrid.getModelIdentifier(model, this.identifierAttribute));
@@ -274,11 +274,10 @@ define(
                 this.updateSelectedAssociations('select', datagrid, model.id);
             },
             unselectModel: function (model, datagrid) {
-                var assocType = this.state.get('currentAssociationType');
-                var assocTarget = this.getDatagridTarget(datagrid);
-                var currentAssociations = this.getCurrentAssociations(datagrid);
+                var assocType           = this.state.get('currentAssociationType');
+                var assocTarget         = this.getDatagridTarget(datagrid);
+                var currentAssociations = _.uniq(this.getCurrentAssociations(datagrid));
 
-                currentAssociations = _.uniq(currentAssociations);
                 var index = currentAssociations.indexOf(datagrid.getModelIdentifier(model, this.identifierAttribute));
                 if (-1 !== index) {
                     currentAssociations.splice(index, 1);
@@ -298,16 +297,18 @@ define(
             /**
              * Update the user session selection to be able to restore it if he switches tabs
              *
-             * @param {String} action
+             * @param {string} action
              * @param {Object} datagrid
-             * @param {String|int} id
+             * @param {string|int} id
              */
             updateSelectedAssociations: function (action, datagrid, id) {
-                var assocType = this.state.get('currentAssociationType');
-                var assocTarget = this.getDatagridTarget(datagrid);
+                var assocType     = this.state.get('currentAssociationType');
+                var assocTarget   = this.getDatagridTarget(datagrid);
                 var selectedAssoc = this.state.get('selectedAssociations') || {};
                 selectedAssoc[assocType] = selectedAssoc[assocType] || [];
-                selectedAssoc[assocType][assocTarget] = selectedAssoc[assocType][assocTarget] || {'select':[], 'unselect':[]};
+                if (!selectedAssoc[assocType][assocTarget]) {
+                    selectedAssoc[assocType][assocTarget] = {'select': [], 'unselect': []};
+                }
 
                 var revertAction = 'select' === action ? 'unselect' : 'select';
                 var index = selectedAssoc[assocType][assocTarget][revertAction].indexOf(id);
@@ -316,7 +317,9 @@ define(
                     selectedAssoc[assocType][assocTarget][revertAction].splice(index, 1);
                 } else {
                     selectedAssoc[assocType][assocTarget][action].push(id);
-                    selectedAssoc[assocType][assocTarget][action] = _.uniq(selectedAssoc[assocType][assocTarget][action]);
+                    selectedAssoc[assocType][assocTarget][action] = _.uniq(
+                        selectedAssoc[assocType][assocTarget][action]
+                    );
                 }
 
                 this.state.set('selectedAssociations', selectedAssoc);
@@ -328,8 +331,8 @@ define(
              * Update the form data (product) associations
              *
              * @param {Array} currentAssociations
-             * @param {String} assocType
-             * @param {String} assocTarget
+             * @param {string} assocType
+             * @param {string} assocTarget
              */
             updateFormDataAssociations: function (currentAssociations, assocType, assocTarget) {
                 var modelAssociations = this.getFormData().associations;
@@ -344,7 +347,7 @@ define(
              *
              * @param {Object} datagrid
              *
-             * @returns {String}
+             * @returns {string}
              */
             getDatagridTarget: function (datagrid) {
                 var assocTarget = null;
