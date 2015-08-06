@@ -976,6 +976,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 assertEquals($data['description'], $asset->getDescription());
             }
 
+            if (array_key_exists('categories', $data)) {
+                assertEquals($data['categories'], $asset->getCategoryCodes());
+            }
+
             if (array_key_exists('tags', $data)) {
                 assertEquals($data['tags'], $asset->getTagCodes());
             }
