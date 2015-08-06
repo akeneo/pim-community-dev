@@ -1,5 +1,8 @@
 # 1.4.x
 
+## BC breaks
+- Move `Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory`` to `Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory``
+
 # 1.4.0-BETA1 (2015-07-31)
 
 ## Features

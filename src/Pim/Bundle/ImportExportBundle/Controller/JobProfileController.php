@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
-use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
+use Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -121,7 +121,7 @@ class JobProfileController extends AbstractDoctrineController
      */
     public function createAction(Request $request)
     {
-        $jobInstance = $this->jobInstanceFactory->createJobInstance(null, $this->getJobType(), null);
+        $jobInstance = $this->jobInstanceFactory->createJobInstance($this->getJobType());
         $form = $this->createForm($this->jobInstanceType, $jobInstance);
 
         if ($request->isMethod('POST')) {

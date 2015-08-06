@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Akeneo\Bundle\BatchBundle\Connector\Connector;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PhpSpec\ObjectBehavior;
 
@@ -25,11 +24,11 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($jobinstance, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_job_instance(JobInstance $jobinstance, Connector $connector)
+    function it_normalizes_job_instance(JobInstance $jobinstance)
     {
         $jobinstance->getCode()->willReturn('product_export');
         $jobinstance->getLabel()->willReturn('Product export');
-        $jobinstance->getConnector()->willReturn($connector);
+        $jobinstance->getConnector()->willReturn('myconnector');
         $jobinstance->getType()->willReturn('EXPORT');
         $jobinstance->getRawConfiguration()->willReturn(
             [
@@ -41,7 +40,7 @@ class JobInstanceNormalizerSpec extends ObjectBehavior
             [
                 'code'          => 'product_export',
                 'label'         => 'Product export',
-                'connector'     => $connector,
+                'connector'     => 'myconnector',
                 'type'          => 'EXPORT',
                 'configuration' => '{"delimiter":";"}'
             ]
