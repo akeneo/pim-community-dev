@@ -50,3 +50,13 @@ connector:
                         writer:    pimee_product_asset.writer.doctrine.category
                     parameters:
                         batchSize: 1
+        csv_asset_export:
+            title: pimee_product_asset.jobs.csv_asset_export.title
+            type:  export
+            steps:
+                export:
+                    title: pimee_product_asset.jobs.csv_asset_export.title
+                    services:
+                        reader:    pimee_product_asset.reader.orm.asset
+                        processor: pimee_product_asset.processor.normalization.asset.flat
+                        writer:    pim_base_connector.writer.file.csv
