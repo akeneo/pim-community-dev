@@ -14,11 +14,13 @@ class AssetStandardConverterSpec extends ObjectBehavior
             'localized'     => 0,
             'description'   => 'My awesome description',
             'qualification' => 'dog,flowers',
+            'categories'    => 'cat1,cat2,cat3',
             'end_of_use'    => '2018-02-01',
         ];
 
         $this->convert($fields)->shouldReturn([
             'tags'        => ['dog', 'flowers'],
+            'categories'  => ['cat1', 'cat2', 'cat3'],
             'code'        => 'mycode',
             'localized'   => false,
             'description' => 'My awesome description',
