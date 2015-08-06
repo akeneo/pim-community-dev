@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider\Field;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -15,18 +16,18 @@ class BaseFieldProvider implements FieldProviderInterface
 {
     /** @var array */
     protected $fields = [
-        'pim_catalog_boolean'          => 'akeneo-switch-field',
-        'pim_catalog_date'             => 'akeneo-datepicker-field',
-        'pim_catalog_file'             => 'akeneo-media-uploader-field',
-        'pim_catalog_image'            => 'akeneo-media-uploader-field',
-        'pim_catalog_metric'           => 'akeneo-metric-field',
-        'pim_catalog_multiselect'      => 'akeneo-multi-select-field',
-        'pim_catalog_number'           => 'akeneo-number-field',
-        'pim_catalog_price_collection' => 'akeneo-price-collection-field',
-        'pim_catalog_simpleselect'     => 'akeneo-simple-select-field',
-        'pim_catalog_identifier'       => 'akeneo-text-field',
-        'pim_catalog_text'             => 'akeneo-text-field',
-        'pim_catalog_textarea'         => 'akeneo-textarea-field'
+        AttributeTypes::BOOLEAN              => 'akeneo-switch-field',
+        AttributeTypes::DATE                 => 'akeneo-datepicker-field',
+        AttributeTypes::FILE                 => 'akeneo-media-uploader-field',
+        AttributeTypes::IMAGE                => 'akeneo-media-uploader-field',
+        AttributeTypes::METRIC               => 'akeneo-metric-field',
+        AttributeTypes::OPTION_MULTI_SELECT  => 'akeneo-multi-select-field',
+        AttributeTypes::NUMBER               => 'akeneo-number-field',
+        AttributeTypes::PRICE_COLLECTION     => 'akeneo-price-collection-field',
+        AttributeTypes::OPTION_SIMPLE_SELECT => 'akeneo-simple-select-field',
+        AttributeTypes::IDENTIFIER           => 'akeneo-text-field',
+        AttributeTypes::TEXT                 => 'akeneo-text-field',
+        AttributeTypes::TEXTAREA             => 'akeneo-textarea-field'
     ];
 
     /**

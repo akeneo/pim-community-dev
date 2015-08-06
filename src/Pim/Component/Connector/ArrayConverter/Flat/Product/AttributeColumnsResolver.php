@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
@@ -91,13 +92,13 @@ class AttributeColumnsResolver
                     $field = $value['attribute'];
                 }
 
-                if ('pim_catalog_price_collection' === $value['type']) {
+                if (AttributeTypes::PRICE_COLLECTION === $value['type']) {
                     $this->attributesFields[] = $field;
                     foreach ($currencyCodes as $currencyCode) {
                         $currencyField = sprintf('%s-%s', $field, $currencyCode);
                         $this->attributesFields[] = $currencyField;
                     }
-                } elseif ('pim_catalog_metric' === $value['type']) {
+                } elseif (AttributeTypes::METRIC === $value['type']) {
                     $this->attributesFields[] = $field;
                     $metricField = sprintf('%s-%s', $field, 'unit');
                     $this->attributesFields[] = $metricField;

@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
@@ -59,7 +60,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
                 $requirement = $this->requirementFactory->createAttributeRequirement(
                     $attribute,
                     $entity,
-                    'pim_catalog_identifier' === $attribute->getAttributeType()
+                    AttributeTypes::IDENTIFIER === $attribute->getAttributeType()
                 );
                 $requirement->setFamily($family);
                 $entityManager->persist($requirement);

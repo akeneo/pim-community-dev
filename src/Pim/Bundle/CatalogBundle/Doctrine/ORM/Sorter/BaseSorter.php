@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
@@ -39,12 +40,12 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     ) {
         $this->supportedAttributes = array_merge(
             [
-                'pim_catalog_identifier',
-                'pim_catalog_text',
-                'pim_catalog_textarea',
-                'pim_catalog_number',
-                'pim_catalog_boolean',
-                'pim_catalog_date'
+                AttributeTypes::IDENTIFIER,
+                AttributeTypes::TEXT,
+                AttributeTypes::TEXTAREA,
+                AttributeTypes::NUMBER,
+                AttributeTypes::BOOLEAN,
+                AttributeTypes::DATE
             ],
             $supportedAttributes
         );

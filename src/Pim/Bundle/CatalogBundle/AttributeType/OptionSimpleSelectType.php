@@ -59,6 +59,6 @@ class OptionSimpleSelectType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_simpleselect';
+        return AttributeTypes::OPTION_SIMPLE_SELECT;
     }
 }

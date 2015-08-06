@@ -17,7 +17,7 @@ config:
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
-                attributeGroup:
+                attribute-group:
                     module: pim/base-fetcher
                     options:
                         urls:

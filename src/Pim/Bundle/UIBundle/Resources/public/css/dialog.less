@@ -4,7 +4,7 @@
 /* jQuery UI dialog ***************************************************************************************************/
 
 .ui-dialog {
-  .border-radius(6px);
+  border-radius: 0;
   box-shadow: 0 1px 22px rgba(0,0,0,.4);
   z-index: 900;
   background: @bodyBackground;
@@ -18,12 +18,14 @@
 }
 
 .ui-dialog-titlebar {
-  .border-radius(@baseBorderRadius @baseBorderRadius 0 0);
+  border-radius: 0;
   cursor: move;
-  padding: 6px 15px;
-  #gradient .vertical(@color-dialogHeader_top, @color-dialogHeader_bottom);
+  padding: 0 15px;
+  background-color: @color-new-purple-medium;
   position: relative;
   padding-right: 30px;
+  height: 44px;
+  line-height: 44px;
 }
 
 .ui-dialog-titlebar-close {
@@ -31,7 +33,7 @@
 }
 
 .ui-dialog-title {
-  font-weight: bold;
+  font-weight: normal;
   color: #fff;
   font-size: 13px;
   display: block;
@@ -47,16 +49,11 @@
   border: 0;
 }
 
-.ui-widget-content {
-  border: 1px solid #c3c3c3;
-  border-width: 1px 0;
-}
-
 .ui-dialog-buttonpane {
   background-color: @color-grey_tab;
   background-image: none;
   border-top: none;
-  .border-radius(0 0 5px 5px);
+  border-radius: 0;
 }
 
 .ui-dialog-buttonset button {

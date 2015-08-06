@@ -118,7 +118,7 @@ define(
                 return AttributeManager.getAvailableOptionalAttributes(this.getFormData());
             },
             loadAttributeGroups: function () {
-                return FetcherRegistry.getFetcher('attributeGroup').fetchAll().done(_.bind(function (attributeGroups) {
+                return FetcherRegistry.getFetcher('attribute-group').fetchAll().done(_.bind(function (attributeGroups) {
                     this.attributeGroups = attributeGroups;
                 }, this));
             },

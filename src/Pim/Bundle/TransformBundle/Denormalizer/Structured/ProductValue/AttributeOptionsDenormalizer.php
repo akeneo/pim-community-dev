@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -33,7 +34,7 @@ class AttributeOptionsDenormalizer extends AbstractValueDenormalizer implements 
         foreach ($data as $optionCode) {
             $option = $this->serializer->denormalize(
                 $optionCode,
-                'pim_catalog_simpleselect',
+                AttributeTypes::OPTION_SIMPLE_SELECT,
                 $format,
                 $context
             );

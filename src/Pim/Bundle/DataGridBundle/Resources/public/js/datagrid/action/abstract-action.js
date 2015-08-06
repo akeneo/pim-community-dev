@@ -207,6 +207,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             action.datagrid.showLoading();
             $.ajax({
                 url: action.getLink(),
+                method: action.getMethod(),
                 data: action.getActionParameters(),
                 context: action,
                 dataType: 'json',
@@ -252,6 +253,10 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
                     parameters
                 )
             );
+        },
+
+        getMethod: function () {
+            return 'GET';
         },
 
         /**

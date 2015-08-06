@@ -16,32 +16,52 @@ usage() {
     exit 1;
 }
 
-if [ $# -lt 5 ] ; then
+APP_ROOT=`dirname $0`/../../../..
+FEATURES_DIR=$APP_ROOT/features;
+
+while getopts "c:x:d:p:f:" opt; do
+  case $opt in
+    f)
+        declare -a FEATURES_PARAM=($OPTARG)
+        FEATURES=();
+        for MY_FEATURE in ${FEATURES_PARAM[@]}; do
+            FEATURES+=($FEATURES_DIR/$MY_FEATURE);
+        done
+        ;;
+    c)
+        CONCURRENCY=$OPTARG
+        ;;
+    x)
+        XDEBUG=$OPTARG
+        ;;
+    d)
+        DB_PREFIX=$OPTARG
+        ;;
+    p)
+        PROFILE_PREFIX=$OPTARG
+        ;;
+    \?)
+        usage
+    ;;
+  esac
+done
+
+shift $(expr $OPTIND - 1 );
+
+BEHAT_CMD=$*;
+
+if [ $XDEBUG != 'xdebug' ] && [ $XDEBUG != 'noxdebug' ] ; then
+    echo "Invalid xdebug parameter [$XDEBUG]"
     usage
-else
-    CONCURRENCY=$1
-    XDEBUG=$2
-    DB_PREFIX=$3
-    PROFILE_PREFIX=$4
-    BEHAT_CMD=`echo $* | sed -e "s/$CONCURRENCY//" -e "s/$XDEBUG//" -e "s/$DB_PREFIX//" -e "s/$PROFILE_PREFIX//"`
+fi
 
-    if [ $XDEBUG != 'xdebug' ] && [ $XDEBUG != 'noxdebug' ] ; then
-        echo "Invalid xdebug parameter [$XDEBUG]"
-        usage
-    fi
-
-    expr $CONCURRENCY + 0 > /dev/null 2>&1
-    if [ $? != 0 ]; then
-        echo "Invalid concurrency parameter [$CONCURRENCY]"
-        usage
-    fi
+expr $CONCURRENCY + 0 > /dev/null 2>&1
+if [ $? != 0 ]; then
+    echo "Invalid concurrency parameter [$CONCURRENCY]"
+    usage
 fi
 
 ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/_$//"`
-
-APP_ROOT=`dirname $0`/../../../..
-
-FEATURES_DIR=$APP_ROOT/features
 
 if [ "$XDEBUG" = 'xdebug' ]; then
     PHP_EXTENSION_DIR=`php -i | grep extension_dir | cut -d ' ' -f3`
@@ -57,8 +77,6 @@ fi
 
 export DISPLAY=:0
 
-FEATURES_NAMES=""
-
 # Install the assets and db on all environments
 cd $APP_ROOT
 for PROC in `seq 1 $CONCURRENCY`; do
@@ -71,8 +89,11 @@ for PROC in `seq 1 $CONCURRENCY`; do
 done
 cd -
 
-FEATURES=`find $FEATURES_DIR/ -name *.feature`
-for FEATURE in $FEATURES; do
+if [ ${#FEATURES[@]} -eq 0 ]; then
+    FEATURES=(`find $FEATURES_DIR/ -name *.feature`)
+fi
+
+for FEATURE in ${FEATURES[@]}; do
 
     FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
 
@@ -129,4 +150,3 @@ else
     rm $OUTPUT
     exit 0;
 fi
-

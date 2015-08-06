@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
@@ -35,7 +36,7 @@ class SingleIdentifierAttributeValidator extends ConstraintValidator
      */
     public function validate($attribute, Constraint $constraint)
     {
-        if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+        if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
             $identifier = $this->attributeRepository->getIdentifier();
 
             if ($identifier && $identifier->getId() !== $attribute->getId()) {

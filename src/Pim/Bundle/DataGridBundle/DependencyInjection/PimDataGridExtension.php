@@ -21,27 +21,27 @@ class PimDataGridExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('actions.yml');
+        $loader->load('adapters.yml');
+        $loader->load('attribute_types.yml');
+        $loader->load('configurators.yml');
         $loader->load('controllers.yml');
         $loader->load('data_sources.yml');
         $loader->load('entities.yml');
-        $loader->load('registry.yml');
-        $loader->load('formatters.yml');
-        $loader->load('selectors.yml');
-        $loader->load('sorters.yml');
-        $loader->load('pagers.yml');
-        $loader->load('extensions.yml');
-        $loader->load('actions.yml');
-        $loader->load('hydrators.yml');
-        $loader->load('mass_actions.yml');
         $loader->load('event_listeners.yml');
-        $loader->load('attribute_types.yml');
+        $loader->load('extensions.yml');
         $loader->load('form_types.yml');
+        $loader->load('formatters.yml');
+        $loader->load('hydrators.yml');
         $loader->load('managers.yml');
+        $loader->load('mass_actions.yml');
+        $loader->load('pagers.yml');
+        $loader->load('registry.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
-        $loader->load('configurators.yml');
-        $loader->load('adapters.yml');
+        $loader->load('selectors.yml');
+        $loader->load('sorters.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

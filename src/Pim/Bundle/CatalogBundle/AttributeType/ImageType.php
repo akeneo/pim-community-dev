@@ -42,6 +42,6 @@ class ImageType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_image';
+        return AttributeTypes::IMAGE;
     }
 }

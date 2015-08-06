@@ -41,8 +41,8 @@ define(
 
         return {
             build: function (formName) {
-                return buildForm(formName).done(function (form) {
-                    return form.configure().done(function () {
+                return buildForm(formName).then(function (form) {
+                    return form.configure().then(function () {
                         return form;
                     });
                 });
