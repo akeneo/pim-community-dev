@@ -22,19 +22,19 @@ Feature: Validate file attributes of a product
   Scenario: Validate the max file size constraint of file attribute
     Given I attach file "akeneo.jpg" to "Brief"
     And I save the product
-    Then I should see "The file is too large (10.58 kB). Allowed maximum size is 10 kB."
+    Then I should see the text "The file is too large (10.58 kB). Allowed maximum size is 10 kB."
 
   Scenario: Validate the max file size constraint of scopable file attribute
     Given I attach file "akeneo.jpg" to "Attachment"
     And I save the product
-    Then I should see "The file is too large (10.58 kB). Allowed maximum size is 10 kB."
+    Then I should see the text "The file is too large (10.58 kB). Allowed maximum size is 10 kB."
 
   Scenario: Validate the allowed extensions constraint of file attribute
     Given I attach file "fanatic-freewave-76.gif" to "Brief"
     And I save the product
-    Then I should see "The file extension is not allowed (allowed extensions: jpg)."
+    Then I should see the text "The file extension is not allowed (allowed extensions: jpg)."
 
   Scenario: Validate the allowed extensions constraint of scopable file attribute
     Given I attach file "fanatic-freewave-76.gif" to "Attachment"
     And I save the product
-    Then I should see "The file extension is not allowed (allowed extensions: jpg)."
+    Then I should see the text "The file extension is not allowed (allowed extensions: jpg)."
