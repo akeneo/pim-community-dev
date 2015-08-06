@@ -16,6 +16,8 @@
   line-height: 34px;
   height: 34px;
   font-weight: normal;
+  overflow: hidden;
+
   .transition();
 
   &.icons-holder-text {
@@ -76,6 +78,32 @@
 
   &:hover {
     background-color: darken(@color-new-green, 10%);
+  }
+}
+
+.btn.attribute-choice {
+  background-color: #f1f4f9;
+  border-radius: 2px;
+  overflow: hidden;
+  text-align: left;
+  padding: 0 10px 0 70px;
+  height: 50px;
+  line-height: 50px;
+
+  i {
+      .icon-button();
+      text-align: center;
+      height: 50px;
+      width: 50px;
+      line-height: 50px;
+      background-color: darken(#f1f4f9, 10%);
+  }
+
+  &:hover, &:active, &:focus{
+    background-image: none;
+    border: none;
+    box-shadow: none;
+    background-color: darken(#f1f4f9, 10%);
   }
 }
 
