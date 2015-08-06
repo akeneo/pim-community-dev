@@ -88,11 +88,9 @@ Feature: Revert a product to a previous version
       | sku  | family |
       | jean | pants  |
     Given I am on the "jean" product page
-    Given I add a new option to the "Weather conditions" attribute
-    When I fill in the following information in the popin:
+    Given I add a new option to the "Weather conditions" attribute:
       | Code | very_wet      |
       | en   | Extremely wet |
-    And I press the "Add" button in the popin
     And I save the product
     And I open the history
     When I revert the product version number 1
@@ -103,7 +101,6 @@ Feature: Revert a product to a previous version
     And the following product:
       | sku   | name-fr_FR | family |
       | jeans | Nice jeans | pants  |
-    And I am logged in as "Julia"
     When I edit the "jeans" product
     And I fill in the following information:
       | Name | Really nice jeans |

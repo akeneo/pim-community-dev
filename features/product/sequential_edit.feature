@@ -14,6 +14,7 @@ Feature: Edit sequentially some products
       | white_sandal | sandals  |
       | boot         | boots    |
       | sneaker      | sneakers |
+    Then I logout
     And I am logged in as "Julia"
     And I am on the products page
     And I sort by "SKU" value ascending

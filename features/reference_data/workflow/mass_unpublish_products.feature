@@ -18,7 +18,6 @@ Feature: Unpublish many products at once
       | red-heels       | Red        | Spandex, Neoprene, Wool |
       | blue-sneakers   | Blue       | Nylon                   |
       | yellow-sneakers | Yellow     | Nylon                   |
-    And I am logged in as "Julia"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully unpublish several products with reference data
