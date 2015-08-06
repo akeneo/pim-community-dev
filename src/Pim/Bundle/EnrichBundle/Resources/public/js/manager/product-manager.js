@@ -6,21 +6,29 @@ define([
         'oro/mediator',
         'routing',
         'pim/attribute-manager',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/product-edit-form/cache-invalidator'
     ], function (
         $,
         _,
         mediator,
         Routing,
         AttributeManager,
-        FetcherRegistry
+        FetcherRegistry,
+        CacheInvalidator
     ) {
         return {
             productValues: null,
             get: function (id) {
                 return $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
-                    .then(this.generateMissing)
+                    .then(_.bind(function (product) {
+                        var cacheInvalidator = new CacheInvalidator();
+                        cacheInvalidator.checkStructureVersion(product);
+
+                        return this.generateMissing(product);
+                    }, this))
                     .then(function (product) {
+
                         mediator.trigger('pim_enrich:form:product:post_fetch', product);
 
                         return product;
@@ -66,7 +74,6 @@ define([
                     FetcherRegistry.getFetcher('currency').fetchAll(),
                     AttributeManager.getAttributesForProduct(product)
                 ).then(function (attributes, locales, channels, currencies, productAttributes) {
-                    var deferred = new $.Deferred();
                     var values = {};
                     product.values = Array.isArray(product.values) && 0 === product.values.length ? {} : product.values;
 
@@ -84,10 +91,8 @@ define([
 
                     product.values = values;
 
-                    deferred.resolve(product);
-
-                    return deferred.promise();
-                }).promise();
+                    return product;
+                });
             }
         };
     }

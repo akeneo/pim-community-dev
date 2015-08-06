@@ -30,4 +30,44 @@ final class GroupEvents
      * @staticvar string
      */
     const POST_REMOVE = 'pim_catalog.post_remove.group';
+
+    /**
+     * This event is thrown before a group gets saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_SAVE = 'pim_catalog.pre_save.group';
+
+    /**
+     * This event is thrown after a group gets saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_SAVE = 'pim_catalog.post_save.group';
+
+    /**
+     * This event is thrown before several groups get saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_SAVE_ALL = 'pim_catalog.pre_save_all.group';
+
+    /**
+     * This event is thrown after several groups have been saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_SAVE_ALL = 'pim_catalog.post_save_all.group';
 }

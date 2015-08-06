@@ -241,10 +241,17 @@ class WebUser extends RawMinkContext
         $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
 
         $expandButton = $this->getMainContext()->spin(function () {
-            return $this->getCurrentPage()->find('css', '.expand-history');
+            $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
+
+            if ($expandHistory && $expandHistory->isValid()) {
+                $expandHistory->click();
+
+                return true;
+            }
+
+            return false;
         });
 
-        $expandButton->click();
         $this->wait();
     }
 
@@ -676,7 +683,11 @@ class WebUser extends RawMinkContext
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $this->getCurrentPage()->compareFieldValue($fieldName, $expected);
+        $this->spin(function () use ($fieldName, $expected) {
+            $this->getCurrentPage()->compareFieldValue($fieldName, $expected);
+
+            return true;
+        });
     }
 
     /**
@@ -1015,11 +1026,11 @@ class WebUser extends RawMinkContext
     /**
      * @param string $field
      *
-     * @When /^I add a new option to the "([^"]*)" attribute$/
+     * @When /^I add a new option to the "([^"]*)" attribute:$/
      *
      * @throws ExpectationException
      */
-    public function iAddANewOptionToTheAttribute($field)
+    public function iAddANewOptionToTheAttribute($field, TableNode $table)
     {
         if (null === $link = $this->getCurrentPage()->getAddOptionLinkFor($field)) {
             throw $this->createExpectationException(
@@ -1031,7 +1042,16 @@ class WebUser extends RawMinkContext
         }
 
         $link->click();
-        $this->wait();
+
+        $this->getCurrentPage()->fillPopinFields($table->getRowsHash());
+
+        $addButton = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.modal .btn.ok');
+        });
+
+        $addButton->click();
+
+        $this->getMainContext()->wait(10000);
     }
 
     /**

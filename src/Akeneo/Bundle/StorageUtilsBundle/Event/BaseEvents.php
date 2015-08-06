@@ -25,9 +25,49 @@ final class BaseEvents
      * This event is thrown after a generic entity gets removed.
      *
      * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
     const POST_REMOVE = 'pim_catalog.post_remove.object';
+
+    /**
+     * This event is thrown before a generic entity gets saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_SAVE = 'pim_catalog.pre_save.object';
+
+    /**
+     * This event is thrown after a generic entity gets saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_SAVE = 'pim_catalog.post_save.object';
+
+    /**
+     * This event is thrown before several generic entities get saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_SAVE_ALL = 'pim_catalog.pre_save_all.object';
+
+    /**
+     * This event is thrown after several generic entities have been saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_SAVE_ALL = 'pim_catalog.post_save_all.object';
 }

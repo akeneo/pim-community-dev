@@ -435,6 +435,22 @@ class Form extends Base
     }
 
     /**
+     * Fill field in a simple popin
+     *
+     * @param array $fields
+     */
+    public function fillPopinFields($fields)
+    {
+        foreach ($fields as $field => $value) {
+            $field = $this->spin(function () use ($field) {
+                return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $field));
+            });
+
+            $field->setValue($value);
+        }
+    }
+
+    /**
      * Find a price field
      *
      * @param string $name
@@ -634,8 +650,7 @@ class Form extends Base
             if (trim($value)) {
                 $label->getParent()->find('css', 'input[type="text"]')->click();
                 $this->getSession()->wait(100000, "$('div:contains(\"Searching\")').length == 0");
-
-                $option = $this->find('css', sprintf('li:contains("%s")', trim($value)));
+                $option = $this->find('css', sprintf('.select2-result:contains("%s")', trim($value)));
 
                 if (!$option) {
                     throw new \InvalidArgumentException(

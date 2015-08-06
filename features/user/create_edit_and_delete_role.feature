@@ -14,12 +14,12 @@ Feature: Create and delete a user role
       | Role | Dummy role |
     When I save the role
     Then the grid should contain 4 elements
-    And I should see "Dummy role"
+    And I should see the text "Dummy role"
     When I edit the "Dummy role" user role
     And I fill in the following information:
       | Role | VeryDummyRole |
     When I save the role
-    Then I should see "VeryDummyRole"
+    Then I should see the text "VeryDummyRole"
     Given I am on the user roles page
     When I click on the "Delete" action of the row which contains "VeryDummyRole"
     Then I should see a confirm dialog with the following content:
@@ -29,7 +29,7 @@ Feature: Create and delete a user role
     Then I should not see "VeryDummyRole"
     When I click on the "Delete" action of the row which contains "Administrator"
     And I cancel the deletion
-    And I should see "Administrator"
+    And I should see the text "Administrator"
     And the grid should contain 3 elements
 
   @javascript
