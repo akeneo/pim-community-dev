@@ -28,14 +28,14 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    title: pim_base_connector.jobs.fixtures_asset_category_csv.validation.title
-                    class: %pim_base_connector.step.validator.class%
+                    title: pim_connector.jobs.csv_product_import.validation.title
+                    class: %pim_connector.step.validator.class%
                     services:
-                        charsetValidator: pim_base_connector.validator.step.charset_validator
-                import:
-                    title:     pim_installer.jobs.fixtures_asset_category_csv.import.title
+                        charsetValidator: pim_connector.validator.item.charset_validator
+                import_asset_category:
+                    title:         pimee_product_asset.jobs.csv_asset_category_import.title
                     services:
-                        reader:    pim_connector.reader.file.csv_category
+                        reader:    pimee_product_asset.reader.file.csv_asset_category
                         processor: pimee_product_asset.processor.denormalization.category.flat
                         writer:    pimee_product_asset.writer.doctrine.category
                     parameters:

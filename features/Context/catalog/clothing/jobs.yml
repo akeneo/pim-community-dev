@@ -239,3 +239,14 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    clothing_asset_category_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_asset_category_import
+        label:     Demo asset category import
+        type:      import
+        configuration:
+            filePath:      /tmp/assets_categories.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'

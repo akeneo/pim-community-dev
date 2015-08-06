@@ -24,6 +24,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\Tag;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -518,6 +519,26 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return CategoryInterface
+     */
+    public function getAssetCategory($code)
+    {
+        $assetCategory = $this->getAssetCategoryRepository()->findOneByIdentifier($code);
+
+        if (null === $assetCategory) {
+            throw new \InvalidArgumentException(sprintf('Could not find a category with code "%s"', $code));
+        }
+
+        $this->refresh($assetCategory);
+
+        return $assetCategory;
+    }
+
+    /**
      * @Given /^I should see the following proposals:$/
      *
      * @param TableNode $table
@@ -973,6 +994,28 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $this->refresh($tag);
 
             assertEquals($data['code'], $tag->getCode());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following assets categories:$/
+     */
+    public function thereShouldBeTheFollowingAssetsCategories(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $assetCategory = $this->getAssetCategory($data['code']);
+            $this->refresh($assetCategory);
+
+            assertEquals($data['label-en_US'], $assetCategory->getTranslation('en_US')->getLabel());
+            assertEquals($data['label-fr_FR'], $assetCategory->getTranslation('fr_FR')->getLabel());
+            assertEquals($data['label-de_DE'], $assetCategory->getTranslation('de_DE')->getLabel());
+            if (empty($data['parent'])) {
+                assertNull($assetCategory->getParent());
+            } else {
+                assertEquals($data['parent'], $assetCategory->getParent()->getCode());
+            }
         }
     }
 
