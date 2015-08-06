@@ -40,31 +40,32 @@ class AjaxOptionController
      */
     public function listAction(Request $request)
     {
-        $query = $request->query;
+        $query      = $request->query;
+        $search     = $query->get('search');
         $repository = $this->doctrine->getRepository($query->get('class'));
 
         if ($repository instanceof OptionRepositoryInterface) {
             $choices = $repository->getOptions(
                 $query->get('dataLocale'),
                 $query->get('collectionId'),
-                $query->get('search'),
+                $search,
                 $query->get('options', [])
             );
         } elseif ($repository instanceof ReferenceDataRepositoryInterface) {
             $choices['results'] = $repository->findBySearch(
-                $query->get('search'),
+                $search,
                 $query->get('options', [])
             );
         } elseif ($repository instanceof SearchableRepositoryInterface) {
             $choices['results'] = $repository->findBySearch(
-                $query->get('search'),
+                $search,
                 $query->get('options', [])
             );
         } elseif (method_exists($repository, 'getOptions')) {
             $choices = $repository->getOptions(
                 $query->get('dataLocale'),
                 $query->get('collectionId'),
-                $query->get('search'),
+                $search,
                 $query->get('options', [])
             );
         } else {
@@ -74,6 +75,12 @@ class AjaxOptionController
                     $query->get('class')
                 )
             );
+        }
+
+        if ($query->get('isCreatable') && 0 === count($choices['results'])) {
+            $choices['results'] = [
+                ['id' => $search, 'text' => $search]
+            ];
         }
 
         return new JsonResponse($choices);
