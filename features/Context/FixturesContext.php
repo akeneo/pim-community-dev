@@ -10,6 +10,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
+use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
@@ -1552,11 +1553,12 @@ class FixturesContext extends RawMinkContext
     public function iDeleteProductMediaFromFilesystem($productName)
     {
         $product      = $this->getProduct($productName);
-        $mediaManager = $this->getMediaManager();
         $allMedia     = $product->getMedia();
+        $mountManager = $this->getMountManager();
         foreach ($allMedia as $media) {
-            if ($media) {
-                unlink($mediaManager->getFilePath($media));
+            if (null !== $media) {
+                $fs = $mountManager->getFilesystem($media->getStorage());
+                $fs->delete($media->getKey());
             }
         }
     }
@@ -2220,11 +2222,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     * @return MountManager
      */
-    protected function getMediaManager()
+    protected function getMountManager()
     {
-        return $this->getContainer()->get('pim_catalog.manager.media');
+        return $this->getContainer()->get('oneup_flysystem.mount_manager');
     }
 
     /**

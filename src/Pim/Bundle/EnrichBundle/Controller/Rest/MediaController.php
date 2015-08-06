@@ -70,6 +70,7 @@ class MediaController
                 $pathData['file_name']
             );
         } catch (FileException $e) {
+            //TODO: a message goes here
             return new JsonResponse(null, 400);
         }
 
