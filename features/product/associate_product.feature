@@ -33,6 +33,8 @@ Feature: Associate a product
     And I press the "Show groups" button
     And I check the row "Caterpillar boots"
     And I press the "Save" button
+    And I select the "Upsell" association
+    And I press the "Show groups" button
     Then I should see the text "0 products and 1 groups"
     Then the row "Caterpillar boots" should be checked
 
@@ -69,3 +71,59 @@ Feature: Associate a product
     Then the row "shoelaces" should be checked
     And the row "black-boots" should be checked
     And I should be able to sort the rows by Is associated
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4670
+  Scenario: Keep association selection between tabs
+    Given I edit the "charcoal-boots" product
+    When I visit the "Associations" tab
+    And I select the "Cross sell" association
+    And I check the row "gray-boots"
+    And I check the row "black-boots"
+    And I select the "Pack" association
+    And I check the row "glossy-boots"
+    And I select the "Substitution" association
+    And I press the "Show groups" button
+    And I check the row "similar_boots"
+    And I visit the "Attributes" tab
+    And I visit the "Associations" tab
+    And I select the "Cross sell" association
+    Then the row "gray-boots" should be checked
+    And the row "black-boots" should be checked
+    When I select the "Pack" association
+    Then the row "glossy-boots" should be checked
+    When I select the "Substitution" association
+    And I press the "Show groups" button
+    Then the row "similar_boots" should be checked
+    When I press the "Save" button
+    And I select the "Cross sell" association
+    And I uncheck the rows "black-boots"
+    And I select the "Upsell" association
+    And I check the rows "shoelaces"
+    And I check the rows "black-boots"
+    And I press the "Show groups" button
+    And I check the rows "caterpillar_boots"
+    And I select the "Cross sell" association
+    Then the row "caterpillar_boots" should not be checked
+    And I press the "Show products" button
+    Then the row "black-boots" should not be checked
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4668
+  Scenario: Detect unsaved changes when modifying associations
+    Given I edit the "charcoal-boots" product
+    When I visit the "Associations" tab
+    And I select the "Cross sell" association
+    And I check the row "gray-boots"
+    And I check the row "black-boots"
+    Then I should see "There are unsaved changes."
+    And I visit the "Attributes" tab
+    Then I should see "There are unsaved changes."
+    When I press the "Save" button
+    Then I should not see "There are unsaved changes."
+    When I visit the "Associations" tab
+    And I select the "Cross sell" association
+    And I uncheck the rows "black-boots"
+    Then I should see "There are unsaved changes."
+    And I check the rows "black-boots"
+    # Wait for the fade-out of the message
+    And I wait 1 seconds
+    Then I should not see "There are unsaved changes."
