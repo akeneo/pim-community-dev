@@ -218,7 +218,7 @@ class ProductDraftProcessor extends AbstractProcessor
 
             $this->stepExecution->incrementSummaryInfo('proposal_skipped');
 
-            throw new InvalidItemException('No diff between current product and this proposal', $item);
+            return null;
         }
 
         $productDraft->setStatus(ProductDraft::READY);
