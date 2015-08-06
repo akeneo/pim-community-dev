@@ -49,14 +49,29 @@ class ListJobsCommand extends ContainerAwareCommand
             $criteria['type'] = $type;
         }
         $jobs = $this->getJobManager()->getRepository('AkeneoBatchBundle:JobInstance')
-            ->findBy($criteria, ['code' => 'desc']);
+            ->findBy($criteria, ['type' => 'asc', 'code' => 'asc']);
+        $table = $this->buildTable($jobs);
+        $table->render($output);
+    }
+
+    /**
+     * @param array $jobs
+     *
+     * @return \Symfony\Component\Console\Helper\HelperInterface
+     */
+    protected function buildTable(array $jobs)
+    {
+        $helperSet = $this->getHelperSet();
+        $rows = [];
+        $ind = 0;
         foreach ($jobs as $job) {
-            if (static::LIST_ALL === $type) {
-                $output->writeln(sprintf("%s\t%s", $job->getType(), $job->getCode()));
-            } else {
-                $output->writeln($job->getCode());
-            }
+            $rows[] = [$job->getType(), $job->getCode()];
         }
+        $headers = ['type', 'code'];
+        $table = $helperSet->get('table');
+        $table->setHeaders($headers)->setRows($rows);
+
+        return $table;
     }
 
     /**
