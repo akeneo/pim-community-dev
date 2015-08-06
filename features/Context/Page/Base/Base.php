@@ -31,6 +31,16 @@ class Base extends Page
     ];
 
     /**
+     * {@inheritdoc}
+     */
+    public function getElement($name, $timeout = 20, $message = 'no message')
+    {
+        return $this->spin(function () use ($name) {
+            return parent::getElement($name);
+        }, $timeout, $message);
+    }
+
+    /**
      * Verify that page is loaded after login
      */
     public function verifyAfterLogin()

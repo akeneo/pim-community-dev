@@ -238,6 +238,8 @@ class WebUser extends RawMinkContext
     public function iOpenTheHistory()
     {
         $this->getCurrentPage()->openPanel('History');
+        $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
+
         $expandButton = $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.expand-history');
         });
@@ -381,22 +383,30 @@ class WebUser extends RawMinkContext
         $linkCount         = $this->getPage($pageName)->countLocaleLinks($copy);
         $expectedLinkCount = count($table->getHash());
 
-        if ($linkCount !== $expectedLinkCount) {
-            throw $this->createExpectationException(
-                sprintf('Expected to see %d items in the locale switcher, saw %d', $expectedLinkCount, $linkCount)
-            );
-        }
+        $this->spin(function () use ($pageName, $copy, $table) {
+            $linkCount         = $this->getPage($pageName)->countLocaleLinks($copy);
+            $expectedLinkCount = count($table->getHash());
+
+            return $linkCount === $expectedLinkCount;
+        }, 20, sprintf('Expected to see %d items in the locale switcher, saw %d', $expectedLinkCount, $linkCount));
 
         foreach ($table->getHash() as $data) {
-            if (!$this->getPage($pageName)->findLocaleLink($data['locale'], $data['language'], $data['flag'], $copy)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Could not find locale "%s %s" in the locale switcher',
+            $this->spin(
+                function () use ($pageName, $data, $copy) {
+                    return $this->getPage($pageName)->findLocaleLink(
                         $data['locale'],
-                        $data['language']
-                    )
-                );
-            }
+                        $data['language'],
+                        $data['flag'],
+                        $copy
+                    );
+                },
+                5,
+                sprintf(
+                    'Could not find locale "%s %s" in the locale switcher',
+                    $data['locale'],
+                    $data['language']
+                )
+            );
         }
     }
 
@@ -528,6 +538,7 @@ class WebUser extends RawMinkContext
         $page       = $this->getCurrentPage();
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
+        $this->wait();
 
         $group = $this->getFixturesContext()->findAttributeGroup($group);
 
@@ -1271,10 +1282,14 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheFile($field)
     {
+        $this->getMainContext()->wait();
         $script = sprintf("$('label:contains(\"%s\")').parents('.form-field').find('.clear-field').click();", $field);
         if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
+
+        $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');
+        $this->getMainContext()->wait();
     }
 
     /**
