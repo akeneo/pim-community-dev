@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\FileStorage\PathGeneratorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,16 +20,21 @@ class MediaController
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var PathGeneratorInterface */
+    protected $pathGenerator;
+
     /** @var string */
     protected $uploadDir;
 
     /**
-     * @param ValidatorInterface $validator
-     * @param string             $uploadDir
+     * @param ValidatorInterface     $validator
+     * @param PathGeneratorInterface $pathGenerator
+     * @param string                 $uploadDir
      */
-    public function __construct(ValidatorInterface $validator, $uploadDir)
+    public function __construct(ValidatorInterface $validator, PathGeneratorInterface $pathGenerator, $uploadDir)
     {
         $this->validator = $validator;
+        $this->pathGenerator = $pathGenerator;
         $this->uploadDir = $uploadDir;
     }
 
@@ -56,10 +62,12 @@ class MediaController
             return new JsonResponse($errors, 400);
         }
 
+        $pathData = $this->pathGenerator->generate($file);
+
         try {
             $movedFile = $file->move(
-                $this->uploadDir,
-                uniqid() . '_' . $file->getClientOriginalName()
+                $this->uploadDir . DIRECTORY_SEPARATOR . $pathData['path'],
+                $pathData['file_name']
             );
         } catch (FileException $e) {
             return new JsonResponse(null, 400);

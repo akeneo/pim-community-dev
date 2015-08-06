@@ -34,16 +34,30 @@ define([
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
-                        templateContext.mediaUrl = this.getMediaUrl(templateContext.value.data);
+                        templateContext.mediaDownloadUrl = this.getMediaDownloadUrl(templateContext.value.data);
+                        templateContext.mediaThumbnailUrl = this.getMediaShowUrl(templateContext.value.data, 'thumbnail_small');
+                        templateContext.mediaPreviewUrl = this.getMediaShowUrl(templateContext.value.data, 'preview');
                         templateContext.inUpload = !this.isReady();
                         return templateContext;
                     }, this));
             },
-            getMediaUrl: function (value) {
+            getMediaShowUrl: function (value, filter) {
                 if (value && value.filePath) {
                     var filename = value.filePath;
                     filename = encodeURIComponent(filename);
                     return Routing.generate('pim_enrich_media_show', {
+                        filename: filename,
+                        filter: filter
+                    });
+                }
+
+                return null;
+            },
+            getMediaDownloadUrl: function (value) {
+                if (value && value.filePath) {
+                    var filename = value.filePath;
+                    filename = encodeURIComponent(filename);
+                    return Routing.generate('pim_enrich_media_download', {
                         filename: filename
                     });
                 }
@@ -55,7 +69,9 @@ define([
                     .then(_.bind(function (context) {
                         var copyContext = $.extend(true, {}, context);
                         copyContext.value = value;
-                        copyContext.mediaUrl = this.getMediaUrl(value.data);
+                        copyContext.mediaDownloadUrl = this.getMediaDownloadUrl(value.data);
+                        copyContext.mediaThumbnailUrl = this.getMediaShowUrl(value.data, 'thumbnail_small');
+                        copyContext.mediaPreviewUrl = this.getMediaShowUrl(value.data, 'preview');
                         copyContext.context.locale = value.locale;
                         copyContext.context.scope = value.scope;
                         copyContext.editMode = 'view';
@@ -136,7 +152,7 @@ define([
                 }
             },
             previewImage: function () {
-                var mediaUrl = this.getMediaUrl(this.getCurrentValue().data);
+                var mediaUrl = this.getMediaShowUrl(this.getCurrentValue().data, 'preview');
                 if (mediaUrl) {
                     $.slimbox(mediaUrl, '', {overlayOpacity: 0.3});
                 }

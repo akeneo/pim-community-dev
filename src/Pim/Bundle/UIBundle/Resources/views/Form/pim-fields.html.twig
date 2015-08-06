@@ -161,7 +161,7 @@
                 <label class="upload-zone file{% if empty %} empty{% endif %}{% if disabled %} disabled{% endif %}">
                     <div class="upload-info">
                         {% if not empty %}
-                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
+                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
                                 <i class="icon-file upload-preview"></i>
                             </a>
                             {% set filename = form.vars.value.originalFilename %}
@@ -225,8 +225,8 @@
                 <label class="upload-zone image{% if empty %} empty{% endif %}{% if disabled %} disabled{% endif %}">
                     <div class="upload-info">
                         {% if not empty %}
-                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
-                                <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key, 'filter': 'thumbnail_small' }) }}">
+                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode, 'filter': 'preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
+                                <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode, 'filter': 'thumbnail_small' }) }}">
                             </a>
                             {% set filename = form.vars.value.originalFilename %}
                             {% if filename|length > 20 %}

@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Imagine\Loader;
 
-use League\Flysystem\FileNotFoundException;
 use League\Flysystem\MountManager;
 use Liip\ImagineBundle\Binary\Loader\LoaderInterface;
+use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Liip\ImagineBundle\Model\Binary;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 /**
  * Image loader for Flysystem
@@ -20,16 +21,16 @@ class FlysystemLoader implements LoaderInterface
     protected $mountManager;
 
     /** @var string */
-    protected $filesystemName;
+    protected $filesystemAliases;
 
     /**
      * @param MountManager $mountManager
-     * @param string       $filesystemName
+     * @param array        $filesystemAliases
      */
-    public function __construct(MountManager $mountManager, $filesystemName)
+    public function __construct(MountManager $mountManager, array $filesystemAliases)
     {
-        $this->mountManager   = $mountManager;
-        $this->filesystemName = $filesystemName;
+        $this->mountManager      = $mountManager;
+        $this->filesystemAliases = $filesystemAliases;
     }
 
     /**
@@ -37,29 +38,81 @@ class FlysystemLoader implements LoaderInterface
      */
     public function find($path)
     {
-        $filesystem = $this->getFilesystem();
+        $content = $this->retrieveContentFileFromVfs($path);
 
-        try {
-            // TODO: Use another system to read files to prevent memory overflow
-            $contents = $filesystem->read($path);
-        } catch (FileNotFoundException $e) {
-            // TODO: Return null of throw an exception?
+        if (null === $content) {
+            if (is_file($path)) {
+                $content = $this->retrieveContentFileFromLocal($path);
+            } else {
+                throw new NotLoadableException(sprintf('Unable to read the file "%s" from the filesystem.', $path));
+            }
         }
 
-        $mimeType = $filesystem->getMimetype($path);
-
-        if (false === $mimeType) {
-            return $contents;
-        }
-
-        return new Binary($contents, $mimeType);
+        return $content;
     }
 
     /**
-     * @return \League\Flysystem\FilesystemInterface
+     * Retrieve a file content from a virtual file system.
+     * In case no filesystem has this file registered, null is returned.
+     *
+     * @param string $path
+     *
+     * @return Binary|null|string
+     * @throws NotLoadableException
      */
-    protected function getFilesystem()
+    protected function retrieveContentFileFromVfs($path)
     {
-        return $this->mountManager->getFilesystem($this->filesystemName);
+        $content = null;
+        $mimeType = null;
+
+        foreach ($this->filesystemAliases as $alias) {
+            $fs = $this->mountManager->getFilesystem($alias);
+            if ($fs->has($path)) {
+                //TODO: we should use readStream, the problem is that
+                // \Liip\ImagineBundle\Model\Binary expects the full content...
+                $content = $fs->read($path);
+                $mimeType = $fs->getMimetype($path);
+            }
+        }
+
+        if (null === $content) {
+            // the path is not stored on any vfs
+            return null;
+        }
+
+        if (false === $content) {
+            throw new NotLoadableException(sprintf('Unable to read the file "%s" from the filesystem.', $path));
+        }
+
+        if (false === $mimeType || null === $mimeType) {
+            return $content;
+        }
+
+        return new Binary($content, $mimeType);
+    }
+
+    /**
+     * The file can have been stored locally, for example when we upload an image in the product
+     * edit form, it is temporary stored in /tmp/pim/file_storage/xxx
+     *
+     * @param string $path
+     *
+     * @return Binary|string
+     * @throws NotLoadableException
+     */
+    protected function retrieveContentFileFromLocal($path)
+    {
+        $content = file_get_contents($path);
+        $mimeType = MimeTypeGuesser::getInstance()->guess($path);
+
+        if (false === $content) {
+            throw new NotLoadableException(sprintf('Unable to read the file "%s".', $path));
+        }
+
+        if (null === $mimeType) {
+            return $content;
+        }
+
+        return new Binary($content, $mimeType);
     }
 }

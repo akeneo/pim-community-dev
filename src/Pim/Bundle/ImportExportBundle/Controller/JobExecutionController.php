@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
@@ -156,9 +157,9 @@ class JobExecutionController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimImportExportBundle:%sExecution:show.html.twig', ucfirst($this->getJobType())),
-            array(
+            [
                 'execution' => $jobExecution,
-            )
+            ]
         );
     }
 
@@ -196,20 +197,9 @@ class JobExecutionController extends AbstractDoctrineController
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 
-        $stream       = $this->archivist->getArchive($jobExecution, $archiver, $key);
+        $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
-        return new StreamedResponse(
-            function () use ($stream) {
-                while (!feof($stream)) {
-                    $buffer = fread($stream, 1024);
-                    echo $buffer;
-                    ob_flush();
-                }
-                fclose($stream);
-            },
-            200,
-            array('Content-Type' => 'application/octet-stream')
-        );
+        return new StreamedFileResponse($stream);
     }
 
     /**
