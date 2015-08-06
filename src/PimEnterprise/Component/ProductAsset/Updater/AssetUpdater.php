@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Classification\Repository\TagRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -28,16 +29,21 @@ class AssetUpdater implements ObjectUpdaterInterface
     /** @var TagRepositoryInterface */
     protected $tagRepository;
 
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
     /** @var PropertyAccessor */
     protected $accessor;
 
     /**
-     * @param TagRepositoryInterface $tagRepository
+     * @param TagRepositoryInterface      $tagRepository
+     * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(TagRepositoryInterface $tagRepository)
+    public function __construct(TagRepositoryInterface $tagRepository, CategoryRepositoryInterface $categoryRepository)
     {
-        $this->tagRepository = $tagRepository;
-        $this->accessor      = PropertyAccess::createPropertyAccessor();
+        $this->tagRepository      = $tagRepository;
+        $this->categoryRepository = $categoryRepository;
+        $this->accessor           = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -74,6 +80,9 @@ class AssetUpdater implements ObjectUpdaterInterface
             case 'tags':
                 $this->setTags($asset, $data);
                 break;
+            case 'categories':
+                $this->setCategories($asset, $data);
+                break;
             case 'end_of_use':
                 $this->validateDateFormat($data);
                 $asset->setEndOfUseAt(new \DateTime($data));
@@ -89,12 +98,29 @@ class AssetUpdater implements ObjectUpdaterInterface
      */
     protected function setTags(AssetInterface $asset, $data)
     {
+        $asset->getTags()->clear();
         foreach ($data as $tagCode) {
-            if (null !== $tag = $this->tagRepository->findOneByIdentifier($tagCode)) {
-                $asset->addTag($tag);
-            } else {
+            if (null === $tag = $this->tagRepository->findOneByIdentifier($tagCode)) {
                 throw new \InvalidArgumentException(sprintf('Tag with "%s" code does not exist', $tagCode));
             }
+
+            $asset->addTag($tag);
+        }
+    }
+
+    /**
+     * @param AssetInterface $asset
+     * @param mixed          $data
+     */
+    protected function setCategories(AssetInterface $asset, $data)
+    {
+        $asset->getCategories()->clear();
+        foreach ($data as $categoryCode) {
+            if (null === $category = $this->categoryRepository->findOneByIdentifier($categoryCode)) {
+                throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $categoryCode));
+            }
+
+            $asset->addCategory($category);
         }
     }
 

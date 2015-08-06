@@ -31,6 +31,7 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *      'code'          => 'mycode',
      *      'localized'     => 0,
      *      'description'   => 'My awesome description',
+     *      'categories'    => 'myCat1,myCat2,myCat3'
      *      'qualification' => 'dog,flowers,cities,animal,sunset',
      *      'end_of_use'    => '2018-02-01',
      * ]
@@ -40,21 +41,26 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *      'code'        => 'mycode',
      *      'localized'   => false,
      *      'description' => 'My awesome description',
+     *      'categories'  => [
+     *          'myCat1',
+     *          'myCat2',
+     *          'myCat3',
+     *      ],
      *      'tags'        => [
      *          'dog',
      *          'flowers',
      *          'cities',
      *          'animal',
-     *          'sunset'
+     *          'sunset',
      *      ],
-     *      'end_of_use'  => '2018-02-01'
+     *      'end_of_use'  => '2018-02-01',
      * ]
      */
     public function convert(array $item, array $options = [])
     {
         $this->validate($item);
 
-        $convertedItem = ['tags' => []];
+        $convertedItem = ['tags' => [], 'categories' => []];
         foreach ($item as $field => $data) {
             if ('' !== $data) {
                 $convertedItem = $this->convertField($convertedItem, $field, $data);
@@ -84,6 +90,9 @@ class AssetStandardConverter implements StandardArrayConverterInterface
                 break;
             case 'qualification':
                 $convertedItem['tags'] = explode(',', $data);
+                break;
+            case 'categories':
+                $convertedItem['categories'] = explode(',', $data);
                 break;
         }
 
