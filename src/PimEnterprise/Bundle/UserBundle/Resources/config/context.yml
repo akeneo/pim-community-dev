@@ -8,11 +8,12 @@ services:
         decorates: pim_user.context.user
         arguments:
             - '@security.token_storage'
-            - '@pim_catalog.manager.locale'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.category'
             - '@pimee_product_asset.repository.category'
             - '@pim_catalog.filter.chained'
             - '@request_stack'
             - '@security.authorization_checker'
+            - '@pim_catalog.builder.choices'
             - %locale%
