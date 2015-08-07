@@ -3,11 +3,12 @@
 namespace spec\Pim\Bundle\UserBundle\Context;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -18,8 +19,8 @@ class UserContextSpec extends ObjectBehavior
 {
     function let(
         SecurityContextInterface $securityContext,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
         TokenInterface $token,
         User $user,
         LocaleInterface $en,
@@ -30,7 +31,8 @@ class UserContextSpec extends ObjectBehavior
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
         CategoryRepositoryInterface $productCategoryRepo,
-        RequestStack $requestStack
+        RequestStack $requestStack,
+        ChoicesBuilderInterface $choicesBuilder
     ) {
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -43,20 +45,21 @@ class UserContextSpec extends ObjectBehavior
         $fr->isActivated()->willReturn(true);
         $de->isActivated()->willReturn(true);
 
-        $localeManager->getLocaleByCode('en_US')->willReturn($en);
-        $localeManager->getLocaleByCode('fr_FR')->willReturn($fr);
-        $localeManager->getLocaleByCode('de_DE')->willReturn($de);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($en);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($fr);
+        $localeRepository->findOneByIdentifier('de_DE')->willReturn($de);
 
-        $localeManager->getActiveLocales()->willReturn([$en, $fr, $de]);
-        $channelManager->getChannels()->willReturn([$mobile, $ecommerce]);
+        $localeRepository->getActivatedLocales()->willReturn([$en, $fr, $de]);
+        $channelRepository->findOneBy([])->willReturn($mobile);
         $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree]);
 
         $this->beConstructedWith(
             $securityContext,
-            $localeManager,
-            $channelManager,
+            $localeRepository,
+            $channelRepository,
             $productCategoryRepo,
             $requestStack,
+            $choicesBuilder,
             'en_US'
         );
     }
@@ -83,10 +86,10 @@ class UserContextSpec extends ObjectBehavior
         $this->getCurrentLocale()->shouldReturn($en);
     }
 
-    function it_throws_an_exception_if_there_are_no_activated_locales($localeManager)
+    function it_throws_an_exception_if_there_are_no_activated_locales($localeRepository)
     {
-        $localeManager->getLocaleByCode('en_US')->willReturn(null);
-        $localeManager->getActiveLocales()->willReturn([]);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn(null);
+        $localeRepository->getActivatedLocales()->willReturn([]);
 
         $this
             ->shouldThrow(new \Exception('There are no activated locales'))
