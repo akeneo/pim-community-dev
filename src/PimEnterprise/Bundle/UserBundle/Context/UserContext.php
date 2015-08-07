@@ -11,11 +11,12 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Context;
 
+use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
 use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
@@ -36,6 +37,7 @@ class UserContext extends BaseUserContext
 
     /** @staticvar string */
     const USER_PUBLISHED_PRODUCT_CATEGORY_TYPE = 'published_product';
+
     /** @var CategoryRepositoryInterface */
     protected $assetCategoryRepo;
 
@@ -47,8 +49,8 @@ class UserContext extends BaseUserContext
 
     /**
      * @param TokenStorageInterface         $tokenStorage
-     * @param LocaleManager                 $localeManager
-     * @param ChannelManager                $channelManager
+     * @param LocaleRepositoryInterface     $localeRepository
+     * @param ChannelRepositoryInterface    $channelRepository
      * @param CategoryRepositoryInterface   $productCategoryRepo
      * @param CategoryRepositoryInterface   $assetCategoryRepo
      * @param ChainedFilter                 $chainedFilter
@@ -58,23 +60,25 @@ class UserContext extends BaseUserContext
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $productCategoryRepo,
         CategoryRepositoryInterface $assetCategoryRepo,
         ChainedFilter $chainedFilter,
         RequestStack $requestStack,
         AuthorizationCheckerInterface $authorizationChecker,
+        ChoicesBuilderInterface $choicesBuilder,
         $defaultLocale
     ) {
         $this->tokenStorage         = $tokenStorage;
-        $this->localeManager        = $localeManager;
-        $this->channelManager       = $channelManager;
+        $this->localeRepository     = $localeRepository;
+        $this->channelRepository    = $channelRepository;
         $this->productCategoryRepo  = $productCategoryRepo;
         $this->assetCategoryRepo    = $assetCategoryRepo;
         $this->chainedFilter        = $chainedFilter;
         $this->requestStack         = $requestStack;
         $this->authorizationChecker = $authorizationChecker;
+        $this->choicesBuilder       = $choicesBuilder;
         $this->defaultLocale        = $defaultLocale;
     }
 
