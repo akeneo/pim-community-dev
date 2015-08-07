@@ -16,10 +16,12 @@ use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -123,7 +125,8 @@ class ProductAssetController extends Controller
         RemoverInterface $assetRemover,
         EventDispatcherInterface $eventDispatcher,
         AssetFactory $assetFactory,
-        FileFactoryInterface $fileFactory
+        FileFactoryInterface $fileFactory,
+        UserContext $userContext
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -139,6 +142,7 @@ class ProductAssetController extends Controller
         $this->eventDispatcher        = $eventDispatcher;
         $this->assetFactory           = $assetFactory;
         $this->fileFactory            = $fileFactory;
+        $this->userContext            = $userContext;
     }
 
     /**
@@ -151,7 +155,10 @@ class ProductAssetController extends Controller
      */
     public function indexAction()
     {
-        return [];
+        return [
+            'locales'    => $this->getUserLocales(),
+            'dataLocale' => $this->getDataLocale(),
+        ];
     }
 
     /**
@@ -644,5 +651,21 @@ class ProductAssetController extends Controller
         }
 
         return $variation;
+    }
+
+    /**
+     * @return LocaleInterface[]
+     */
+    protected function getUserLocales()
+    {
+        return $this->userContext->getUserLocales();
+    }
+
+    /**
+     * @return LocaleInterface
+     */
+    protected function getDataLocale()
+    {
+        return $this->userContext->getCurrentLocale();
     }
 }

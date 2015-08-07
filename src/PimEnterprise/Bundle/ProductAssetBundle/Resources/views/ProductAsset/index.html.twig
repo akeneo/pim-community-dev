@@ -28,16 +28,23 @@
         {% endif %}
     {% endset %}
 
-    {{ elements.page_header(title, buttons) }}
+    {% set subtitle %}
+        {% include 'PimUIBundle::_locale_switcher.html.twig' with {
+            'locales':           locales,
+            'currentLocaleCode': dataLocale.code,
+            'routeName':         'pimee_product_asset_index'
+        } only %}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, subtitle) }}
 
     {% set categoriesGranted = true %}
     <div class="row-fluid {{ categoriesGranted ? 'has-sidebar': '' }}">
         {% if categoriesGranted %}
-            <div id="tree" data-datalocale="{{ locale_code() }}" data-relatedentity="asset"></div>
+            <div id="tree" data-datalocale="{{ dataLocale.code }}" data-relatedentity="asset"></div>
         {% endif %}
         <div id="product-grid">
-            {{ dataGrid.renderStatefulGrid('asset-grid', { dataLocale: locale_code(), currentUser: app.user }, {}, 'pimee_asset_categorytree') }}
+            {{ dataGrid.renderStatefulGrid('asset-grid', { dataLocale: dataLocale.code, currentUser: app.user }, {}, 'pimee_asset_categorytree') }}
         </div>
     </div>
-
 {% endblock %}
