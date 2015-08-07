@@ -20,6 +20,7 @@ Feature: Product category back to the grid
     Then I should see products purple-sneakers and black-sneakers
     And I should not see products black-boots
 
+  @unstable
   Scenario: Successfully restore category filter with hashnav
     Given I filter by "category" with value "winter_collection"
     And I click on the "black-sneakers" row

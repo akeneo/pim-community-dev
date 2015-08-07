@@ -3,6 +3,7 @@ Feature: Display last operations widget
   As a regular user
   I need to be able to see a last operations widget on the dashboard
 
+  @unstable
   Scenario: Display last operations widget
     Given a "footwear" catalog configuration
     And the following job "footwear_category_export" configuration:
