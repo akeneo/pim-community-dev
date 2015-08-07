@@ -12,6 +12,9 @@ config:
                             list: pimee_security_permissions_rest
 
     paths:
+        pimee/product-view-form:             pimenterpriseenrich/js/product/view-form
+        pimeeenrich-product-view-attributes: pimenterpriseenrich/js/product/form/attributes-view
+
         pimee/manage-permissions:         pimenterpriseenrich/js/manage-permissions
         pimee/product-draft-fetcher:      pimenterpriseenrich/js/fetcher/product-draft-fetcher
         pimee/published-product-manager:  pimenterpriseenrich/js/product/published-product-manager

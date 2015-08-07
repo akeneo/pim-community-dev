@@ -25,6 +25,4 @@ oro_menu_config:
 oro_titles:
     pimee_workflow_published_product_index: pim_title.published_product.index
     pimee_workflow_published_product_view:  pim_title.published_product.view
-    pimee_enrich_product_dispatch:          pim_title.product.dispatch
-    pimee_enrich_product_show:              pim_title.product.show
     pimee_workflow_proposal_index:          pim_title.proposal.index

@@ -115,7 +115,10 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                 'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
                 'is_owner'     => $this->authorizationChecker->isGranted(Attributes::OWN, $product),
                 'working_copy' => $workingCopy,
-                'draft_status' => $draftStatus
+                'draft_status' => $draftStatus,
+                'form'         => $this->authorizationChecker->isGranted(Attributes::EDIT, $product) ?
+                    'product-edit-form' :
+                    'pimeeenrich-product-view-form'
             ]
         );
 

@@ -10,7 +10,6 @@ define(
         'oro/navigation',
         'oro/loading-mask',
         'pim/product-manager',
-        'pim/fetcher-registry',
         'pimee/published-product-manager',
         'routing',
         'pim/dialog'
@@ -24,7 +23,6 @@ define(
         Navigation,
         LoadingMask,
         ProductManager,
-        FetcherRegistry,
         PublishedProductManager,
         Routing,
         Dialog

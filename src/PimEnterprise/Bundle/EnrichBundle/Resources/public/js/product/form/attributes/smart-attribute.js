@@ -14,14 +14,14 @@ define(
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments),
                     RuleManager.getRuleRelations('attribute')
                 );
             },
-            addExtension: function (event) {
+            addFieldExtension: function (event) {
                 event.promises.push(
                     RuleManager.getRuleRelations('attribute').done(_.bind(function (ruleRelations) {
                         var deferred = $.Deferred();

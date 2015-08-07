@@ -8,10 +8,9 @@ define(
     [
         'jquery',
         'underscore',
-        'pim/product-edit-form/save',
-        'pim/fetcher-registry'
+        'pim/product-edit-form/save'
     ],
-    function ($, _, Save, FetcherRegistry) {
+    function ($, _, Save) {
         return Save.extend({
             render: function () {
                 var categories = this.getFormData().categories;
