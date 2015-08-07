@@ -25,4 +25,6 @@ services:
     pimee_product_asset.processor.normalization.asset.flat:
         class: %pimee_product_asset.processor.normalization.asset.class%
         arguments:
-            - '@pim_product_asset.normalizer.asset'
+            - '@pim_serializer'
+            - '@pim_catalog.manager.locale'
+            - '@pim_product_asset.normalizer.flat.asset'
