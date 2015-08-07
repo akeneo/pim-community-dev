@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
-use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 
 /**
  * Category access update guesser
