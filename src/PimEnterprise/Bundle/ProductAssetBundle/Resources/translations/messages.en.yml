@@ -87,6 +87,7 @@ pimee_product_asset:
             new_generation: We generated a new one for you.
     jobs:
         csv_asset_import.title: Asset import in csv
+        csv_asset_export.title: Asset export in csv
         csv_tag_import.title: Tag import in csv
         csv_asset_category_import.title: Asset category import in csv
         csv_asset_category_export.title: Asset category export in csv
