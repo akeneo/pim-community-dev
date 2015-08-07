@@ -12,7 +12,6 @@ parameters:
     pim_enrich.controller.association.class:             Pim\Bundle\EnrichBundle\Controller\AssociationController
     pim_enrich.controller.group.class:                   Pim\Bundle\EnrichBundle\Controller\GroupController
     pim_enrich.controller.association_type.class:        Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
-    pim_enrich.controller.media.class:                   Pim\Bundle\EnrichBundle\Controller\MediaController
     pim_enrich.controller.file.class:                    Pim\Bundle\EnrichBundle\Controller\FileController
     pim_enrich.controller.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\VariantGroupController
     pim_enrich.controller.group_type.class:              Pim\Bundle\EnrichBundle\Controller\GroupTypeController
@@ -205,16 +204,6 @@ services:
             - '@pim_enrich.form.handler.association_type'
             - '@pim_enrich.form.association_type'
             - '@pim_catalog.remover.association_type'
-
-# TODO: remove
-#    pim_enrich.controller.media:
-#        scope: request
-#        class: %pim_enrich.controller.media.class%
-#        arguments:
-#            - '@liip_imagine'
-#            - '@liip_imagine.filter.manager'
-#            - '@liip_imagine.cache.manager'
-#            - '@pim_filesystem'
 
     pim_enrich.controller.file:
         scope: request
