@@ -81,8 +81,8 @@ Feature: Import media with products
     And I wait for the "footwear_product_import" job to finish
     Then there should be 0 products
     And I should see "skipped 2"
-    And I should see "values[frontView].media: The file extension is not allowed (allowed extensions: gif, jpg)"
-    And I should see "values[warranty].media: The file is too large (3 MB). Allowed maximum size is 1 MB."
+    And I should see "frontView: The file extension is not allowed (allowed extensions: gif, jpg)"
+    And I should see "userManual: The file is too large (3.15 MB). Allowed maximum size is 1 MB"
 
   Scenario: Import several times the same media
     Given the following CSV file to import:
@@ -97,8 +97,8 @@ Feature: Import media with products
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     And import directory of "footwear_product_import" contains the following media:
-      | sneakers-manual.txt |
-      | bic-core-148.txt    |
+      | fanatic-freewave-76.txt |
+      | warranty.txt            |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
@@ -107,5 +107,5 @@ Feature: Import media with products
       | warranty   | warranty.txt |
       | userManual | warranty.txt |
     And the product "fanatic-freewave-76" should have the following values:
-      | warranty   | warranty.txt |
+      | warranty   | warranty.txt            |
       | userManual | fanatic-freewave-76.txt |

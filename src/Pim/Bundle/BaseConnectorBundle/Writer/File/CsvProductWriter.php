@@ -75,7 +75,7 @@ class CsvProductWriter extends CsvWriter
         } catch (\LogicException $e) {
             $this->stepExecution->addWarning(
                 $this->getName(),
-                'The media has not been copied',
+                sprintf('The media has not been copied. %s', $e->getMessage()),
                 [],
                 $media
             );

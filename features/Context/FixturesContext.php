@@ -10,6 +10,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
+use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
@@ -117,11 +118,13 @@ class FixturesContext extends RawMinkContext
      */
     public function clearPimFilesystem()
     {
-        // FIXME: Remove gitkeep?
-        $fs = $this->getPimFilesystem();
-        foreach ($fs->keys() as $key) {
-            if (strpos($key, '.') !== 0) {
-                $fs->delete($key);
+        foreach ($this->getPimFilesystems() as $fs) {
+            foreach ($fs->listContents() as $key) {
+                if ('dir' === $key['type']) {
+                    $fs->deleteDir($key['path']);
+                } else {
+                    $fs->delete($key['path']);
+                }
             }
         }
     }
@@ -2254,11 +2257,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Gaufrette\Filesystem
+     * @return Filesystem[]
      */
-    protected function getPimFilesystem()
+    protected function getPimFilesystems()
     {
-        return $this->getContainer()->get('pim_filesystem');
+        return [];
     }
 
     /**

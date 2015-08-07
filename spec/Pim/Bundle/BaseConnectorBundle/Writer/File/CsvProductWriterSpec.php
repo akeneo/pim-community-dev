@@ -113,11 +113,11 @@ class CsvProductWriterSpec extends ObjectBehavior
     function it_does_not_copy_medias_that_are_not_downloadable($fileExporter, $stepExecution, Filesystem $fs)
     {
         $media = ['filePath' => 'copy-error.jpg', 'exportPath' => 'test.jpg', 'storageAlias' => FileStorage::CATALOG_STORAGE_ALIAS];
-        $fileExporter->export('copy-error.jpg', '/tmp/test.jpg', FileStorage::CATALOG_STORAGE_ALIAS)->willThrow(new \LogicException());
+        $fileExporter->export('copy-error.jpg', '/tmp/test.jpg', FileStorage::CATALOG_STORAGE_ALIAS)->willThrow(new \LogicException('Copy error.'));
 
         $this->write([['product' => 'my-product', 'media' => [$media]]]);
         $this->getWrittenFiles()->shouldReturn([]);
-        $stepExecution->addWarning('csv_product_writer', 'The media has not been copied', [], $media)
+        $stepExecution->addWarning('csv_product_writer', 'The media has not been copied. Copy error.', [], $media)
             ->shouldBeCalled();
     }
 }

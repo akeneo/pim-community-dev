@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -74,7 +73,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     public function getFixtures(array $filePaths)
     {
-        $ordered = array();
+        $ordered = [];
 
         foreach ($filePaths as $filePath) {
             if (!is_dir($filePath)) {
@@ -83,7 +82,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
         }
 
         ksort($ordered);
-        $returned = array();
+        $returned = [];
         foreach ($ordered as $fixtures) {
             $returned = array_merge($returned, $fixtures);
         }
@@ -144,13 +143,13 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
 
             $order = $this->getConfigProperty($fixtureName, 'order');
             if (!isset($ordered[$order])) {
-                $ordered[$order] = array();
+                $ordered[$order] = [];
             }
-            $ordered[$order][] = array(
+            $ordered[$order][] = [
                 'path'      => $filePath,
                 'name'      => $fixtureName,
                 'extension' => $pathInfo['extension']
-            );
+            ];
         }
     }
 
@@ -230,8 +229,8 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     protected function parseConfiguration(ConfigCache $configCache)
     {
-        $config = array();
-        $resources = array();
+        $config = [];
+        $resources = [];
         foreach ($this->bundles as $class) {
             $reflection = new \ReflectionClass($class);
             $path = dirname($reflection->getFileName()) . '/Resources/config/fixtures.yml';
@@ -243,15 +242,5 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
         $configCache->write('<?php return ' . var_export($config, true) . ';', $resources);
 
         return $config;
-    }
-
-    /**
-     * Return the MediaManager
-     *
-     * @return MediaManager
-     */
-    public function getMediaManager()
-    {
-        return $this->container->get('pim_catalog.manager.media');
     }
 }
