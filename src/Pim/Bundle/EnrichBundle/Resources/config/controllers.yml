@@ -208,8 +208,6 @@ services:
     pim_enrich.controller.file:
         scope: request
         class: %pim_enrich.controller.file.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
         arguments:
             - '@liip_imagine.controller'
             - '@liip_imagine.cache.manager'

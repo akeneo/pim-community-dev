@@ -19,9 +19,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class FileController extends Controller
 {
-    /** @staticvar string */
-    const FALLBACK_IMAGE_PATH = 'Resources/public/img/img_generic.png';
-
     /** @var ImagineController */
     protected $imagineController;
 
@@ -63,7 +60,7 @@ class FileController extends Controller
      * @param string  $filename
      * @param string  $filter
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function showAction(Request $request, $filename, $filter = null)
     {

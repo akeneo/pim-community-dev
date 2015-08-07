@@ -43,7 +43,6 @@ class File implements FileInterface
     /** @var bool */
     protected $removed = false;
 
-    //TODDO: check if we really need it
     /** @var UploadedFile */
     protected $uploadedFile;
 
@@ -56,7 +55,6 @@ class File implements FileInterface
     }
 
     /**
-     * TODO: interface if needed
      * {@inheritdoc}
      */
     public function setId($id)

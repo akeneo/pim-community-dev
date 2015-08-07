@@ -33,9 +33,9 @@ class MediaController
      */
     public function __construct(ValidatorInterface $validator, PathGeneratorInterface $pathGenerator, $uploadDir)
     {
-        $this->validator = $validator;
+        $this->validator     = $validator;
         $this->pathGenerator = $pathGenerator;
-        $this->uploadDir = $uploadDir;
+        $this->uploadDir     = $uploadDir;
     }
 
     /**
@@ -47,7 +47,7 @@ class MediaController
      */
     public function postAction(Request $request)
     {
-        $file = $request->files->get('file');
+        $file       = $request->files->get('file');
         $violations = $this->validator->validate($file);
 
         if (count($violations) > 0) {

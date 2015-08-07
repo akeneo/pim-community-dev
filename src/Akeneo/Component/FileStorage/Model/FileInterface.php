@@ -19,6 +19,13 @@ interface FileInterface
     public function getId();
 
     /**
+     * @param int $id
+     *
+     * @return FileInterface
+     */
+    public function setId($id);
+
+    /**
      * The key of the file can be either its pathname or a unique identifier.
      *
      * @return string

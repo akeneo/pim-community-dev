@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Validate files linked to product (need to validate extension and size).
@@ -38,7 +38,7 @@ class FileValidator extends ConstraintValidator
     /**
      * Validate if extension is allowed.
      *
-     * @param FileInterface $file      The file that should be validated
+     * @param FileInterface $file       The file that should be validated
      * @param Constraint    $constraint The constraint for the validation
      */
     protected function validateFileExtension(FileInterface $file, Constraint $constraint)
@@ -46,8 +46,7 @@ class FileValidator extends ConstraintValidator
         if (!empty($constraint->allowedExtensions)) {
             $extension = null !== $file->getUploadedFile() ?
                 $file->getUploadedFile()->getClientOriginalExtension() :
-                $file->getExtension()
-            ;
+                $file->getExtension();
 
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->buildViolation(
@@ -94,44 +93,44 @@ class FileValidator extends ConstraintValidator
     protected function factorizeSizes($size, $limit, $binaryFormat)
     {
         if ($binaryFormat) {
-            $coef = BaseFileValidator::MIB_BYTES;
+            $coef       = BaseFileValidator::MIB_BYTES;
             $coefFactor = BaseFileValidator::KIB_BYTES;
         } else {
-            $coef = BaseFileValidator::MB_BYTES;
+            $coef       = BaseFileValidator::MB_BYTES;
             $coefFactor = BaseFileValidator::KB_BYTES;
         }
 
-        $limitAsString = (string) ($limit / $coef);
+        $limitAsString = (string)($limit / $coef);
 
         // Restrict the limit to 2 decimals (without rounding! we
         // need the precise value)
         while (self::moreDecimalsThan($limitAsString, 2)) {
             $coef /= $coefFactor;
-            $limitAsString = (string) ($limit / $coef);
+            $limitAsString = (string)($limit / $coef);
         }
 
         // Convert size to the same measure, but round to 2 decimals
-        $sizeAsString = (string) round($size / $coef, 2);
+        $sizeAsString = (string)round($size / $coef, 2);
 
         // If the size and limit produce the same string output
         // (due to rounding), reduce the coefficient
         while ($sizeAsString === $limitAsString) {
             $coef /= $coefFactor;
-            $limitAsString = (string) ($limit / $coef);
-            $sizeAsString = (string) round($size / $coef, 2);
+            $limitAsString = (string)($limit / $coef);
+            $sizeAsString  = (string)round($size / $coef, 2);
         }
 
         return [$sizeAsString, $limitAsString, self::$suffices[$coef]];
     }
 
     /**
-     * @param $double
-     * @param $numberOfDecimals
+     * @param double $double
+     * @param int    $numberOfDecimals
      *
      * @return bool
      */
     protected static function moreDecimalsThan($double, $numberOfDecimals)
     {
-        return strlen((string) $double) > strlen(round($double, $numberOfDecimals));
+        return strlen((string)$double) > strlen(round($double, $numberOfDecimals));
     }
 }

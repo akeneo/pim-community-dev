@@ -1168,7 +1168,7 @@ class FixturesContext extends RawMinkContext
             $filepath = $directory . DIRECTORY_SEPARATOR . $row['filename'];
             $content = '';
             for ($i = 0; $i < $row['size'] * 1024 * 1024; $i++) {
-                 $content .= $characters[rand(0, count($characters) - 1)];
+                $content .= $characters[rand(0, count($characters) - 1)];
             }
 
             touch($filepath);

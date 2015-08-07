@@ -34,17 +34,18 @@ define([
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
-                        templateContext.mediaDownloadUrl = this.getMediaDownloadUrl(templateContext.value.data);
-                        templateContext.mediaThumbnailUrl = this.getMediaShowUrl(templateContext.value.data, 'thumbnail_small');
-                        templateContext.mediaPreviewUrl = this.getMediaShowUrl(templateContext.value.data, 'preview');
-                        templateContext.inUpload = !this.isReady();
+                        templateContext.mediaDownloadUrl  = this.getMediaDownloadUrl(templateContext.value.data);
+                        templateContext.mediaThumbnailUrl = this.getMediaShowUrl(
+                            templateContext.value.data, 'thumbnail_small'
+                        );
+                        templateContext.mediaPreviewUrl   = this.getMediaShowUrl(templateContext.value.data, 'preview');
+                        templateContext.inUpload          = !this.isReady();
                         return templateContext;
                     }, this));
             },
             getMediaShowUrl: function (value, filter) {
                 if (value && value.filePath) {
-                    var filename = value.filePath;
-                    filename = encodeURIComponent(filename);
+                    var filename = encodeURIComponent(value.filePath);
                     return Routing.generate('pim_enrich_media_show', {
                         filename: filename,
                         filter: filter
@@ -55,8 +56,7 @@ define([
             },
             getMediaDownloadUrl: function (value) {
                 if (value && value.filePath) {
-                    var filename = value.filePath;
-                    filename = encodeURIComponent(filename);
+                    var filename = encodeURIComponent(value.filePath);
                     return Routing.generate('pim_enrich_media_download', {
                         filename: filename
                     });
@@ -69,12 +69,12 @@ define([
                     .then(_.bind(function (context) {
                         var copyContext = $.extend(true, {}, context);
                         copyContext.value = value;
-                        copyContext.mediaDownloadUrl = this.getMediaDownloadUrl(value.data);
+                        copyContext.mediaDownloadUrl  = this.getMediaDownloadUrl(value.data);
                         copyContext.mediaThumbnailUrl = this.getMediaShowUrl(value.data, 'thumbnail_small');
-                        copyContext.mediaPreviewUrl = this.getMediaShowUrl(value.data, 'preview');
-                        copyContext.context.locale = value.locale;
-                        copyContext.context.scope = value.scope;
-                        copyContext.editMode = 'view';
+                        copyContext.mediaPreviewUrl   = this.getMediaShowUrl(value.data, 'preview');
+                        copyContext.context.locale    = value.locale;
+                        copyContext.context.scope     = value.scope;
+                        copyContext.editMode          = 'view';
 
                         return this.renderInput(copyContext);
                     }, this));
@@ -123,7 +123,7 @@ define([
                     this.setUploadContextValue(data);
                     this.render();
                 }, this))
-                .fail(function(xhr) {
+                .fail(function (xhr) {
                     var message = xhr.responseJSON && xhr.responseJSON.message ?
                         xhr.responseJSON.message :
                         _.__('pim_enrich.entity.product.error.upload');

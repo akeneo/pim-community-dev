@@ -93,17 +93,17 @@ services:
     pim_catalog.updater.product_template:
         class: %pim_catalog.updater.product_template.class%
         arguments:
-            - @pim_catalog.updater.product_property_setter
+            - '@pim_catalog.updater.product_property_setter'
 
     pim_catalog.updater.attribute_option:
         class: %pim_catalog.updater.attribute_option.class%
         arguments:
-            - @pim_catalog.repository.attribute
+            - '@pim_catalog.repository.attribute'
 
     pim_catalog.updater.attribute:
         class: %pim_catalog.updater.attribute.class%
         arguments:
-            - @pim_catalog.repository.attribute_group
+            - '@pim_catalog.repository.attribute_group'
             - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
             - '@pim_catalog.repository.locale'
             - '@?pim_reference_data.registry'
@@ -130,16 +130,16 @@ services:
     pim_catalog.updater.variant_group:
         class: %pim_catalog.updater.variant_group.class%
         arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.repository.group_type
-            - @pim_catalog.builder.product
-            - @pim_catalog.updater.product
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.group_type'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
             - %pim_catalog.entity.product_template.class%
 
     pim_catalog.updater.group:
         class: %pim_catalog.updater.group.class%
         arguments:
-            - @pim_catalog.repository.group_type
+            - '@pim_catalog.repository.group_type'
 
     # Setters
     pim_catalog.updater.setter.registry:
@@ -149,8 +149,8 @@ services:
         class: %pim_catalog.updater.setter.abstract.class%
         public: false
         arguments:
-            - @pim_catalog.builder.product
-            - @pim_catalog.validator.helper.attribute
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.validator.helper.attribute'
 
     pim_catalog.updater.setter.text_value:
         class: %pim_catalog.updater.setter.text_value.class%
@@ -164,7 +164,7 @@ services:
         class: %pim_catalog.updater.setter.metric_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - @pim_catalog.factory.metric
+            - '@pim_catalog.factory.metric'
             - ['pim_catalog_metric']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -284,8 +284,8 @@ services:
         class: %pim_catalog.updater.copier.abstract.class%
         public: false
         arguments:
-            - @pim_catalog.builder.product
-            - @pim_catalog.validator.helper.attribute
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.validator.helper.attribute'
 
     pim_catalog.updater.copier.registry:
         class: %pim_catalog.updater.copier.registry.class%
@@ -303,9 +303,9 @@ services:
         class: %pim_catalog.updater.copier.image_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @akeneo_file_storage.file_storage.raw_file.fetcher
-            - @akeneo_file_storage.file_storage.raw_file.storer
-            - @oneup_flysystem.mount_manager
+            - '@akeneo_file_storage.file_storage.raw_file.fetcher'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@oneup_flysystem.mount_manager'
             - ['pim_catalog_image']
             - ['pim_catalog_image']
         tags:
@@ -315,9 +315,9 @@ services:
         class: %pim_catalog.updater.copier.file_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @akeneo_file_storage.file_storage.raw_file.fetcher
-            - @akeneo_file_storage.file_storage.raw_file.storer
-            - @oneup_flysystem.mount_manager
+            - '@akeneo_file_storage.file_storage.raw_file.fetcher'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@oneup_flysystem.mount_manager'
             - ['pim_catalog_file']
             - ['pim_catalog_file']
         tags:
@@ -363,7 +363,7 @@ services:
         class: %pim_catalog.updater.copier.metric_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - @pim_catalog.factory.metric
+            - '@pim_catalog.factory.metric'
             - ['pim_catalog_metric']
             - ['pim_catalog_metric']
         tags:
@@ -439,9 +439,9 @@ services:
     pim_catalog.updater.adder.price_collection_value:
         class: %pim_catalog.updater.adder.price_collection_value.class%
         arguments:
-            - @pim_catalog.builder.product
-            - @pim_catalog.validator.helper.attribute
-            - @pim_catalog.manager.currency
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.manager.currency'
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.adder' }
@@ -461,8 +461,8 @@ services:
     pim_catalog.updater.remover.price_collection_value:
         class: %pim_catalog.updater.remover.price_collection_value.class%
         arguments:
-            - @pim_catalog.validator.helper.attribute
-            - @pim_catalog.manager.currency
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.manager.currency'
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.remover' }

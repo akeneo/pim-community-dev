@@ -12,7 +12,7 @@ namespace Pim\Component\Connector\Writer\File;
 interface FileExporterPathGeneratorInterface
 {
     /**
-     * @param mixed $object     The object from which the file should be retrieved
+     * @param mixed $object  The object from which the file should be retrieved
      * @param array $options
      *
      * @return string the export path of the file

@@ -57,12 +57,13 @@ class FlysystemLoader implements LoaderInterface
      *
      * @param string $path
      *
-     * @return Binary|null|string
      * @throws NotLoadableException
+     *
+     * @return Binary|null|string
      */
     protected function retrieveContentFileFromVfs($path)
     {
-        $content = null;
+        $content  = null;
         $mimeType = null;
 
         foreach ($this->filesystemAliases as $alias) {
@@ -70,7 +71,7 @@ class FlysystemLoader implements LoaderInterface
             if ($fs->has($path)) {
                 //TODO: we should use readStream, the problem is that
                 // \Liip\ImagineBundle\Model\Binary expects the full content...
-                $content = $fs->read($path);
+                $content  = $fs->read($path);
                 $mimeType = $fs->getMimetype($path);
             }
         }
@@ -97,12 +98,13 @@ class FlysystemLoader implements LoaderInterface
      *
      * @param string $path
      *
-     * @return Binary|string
      * @throws NotLoadableException
+     *
+     * @return Binary|string
      */
     protected function retrieveContentFileFromLocal($path)
     {
-        $content = file_get_contents($path);
+        $content  = file_get_contents($path);
         $mimeType = MimeTypeGuesser::getInstance()->guess($path);
 
         if (false === $content) {
