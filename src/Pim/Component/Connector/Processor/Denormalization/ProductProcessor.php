@@ -382,7 +382,11 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function getArrayConverterOptions()
     {
-        return ['mapping' => $this->getMapping(), 'default_values' => $this->getDefaultValues()];
+        return [
+            'mapping'           => $this->getMapping(),
+            'default_values'    => $this->getDefaultValues(),
+            'with_associations' => false
+        ];
     }
 
     /**

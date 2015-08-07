@@ -149,7 +149,7 @@ class ProductAssociationProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
-        $items = $this->arrayConverter->convert($item);
+        $items = $this->arrayConverter->convert($item, ['with_associations' => true]);
         $associations = isset($items['associations']) ? $items['associations'] : [];
 
         return ['associations' => $associations];
