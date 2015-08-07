@@ -10,6 +10,7 @@
  */
 
 namespace PimEnterprise\Bundle\BaseConnectorBundle;
+
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
