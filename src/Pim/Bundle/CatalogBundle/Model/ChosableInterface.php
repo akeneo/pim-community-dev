@@ -12,11 +12,15 @@ namespace Pim\Bundle\CatalogBundle\Model;
 interface ChosableInterface
 {
     /**
+     * Return the value that will be used as key in the choices list
+     *
      * @return string
      */
     public function getChoiceValue();
 
     /**
+     * Return the value that will be used as label in the choices list
+     *
      * @return string
      */
     public function getChoiceLabel();
