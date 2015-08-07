@@ -11,24 +11,32 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normalization;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor;
+use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Processes and transforms rules definition to array of rules
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionProcessor extends DummyProcessor
+class RuleDefinitionProcessor extends Processor
 {
     /** @var NormalizerInterface */
     protected $ruleNormalizer;
 
     /**
+     * @param SerializerInterface $serializer
+     * @param LocaleManager       $localeManager
      * @param NormalizerInterface $ruleNormalizer
      */
-    public function __construct(NormalizerInterface $ruleNormalizer)
-    {
+    public function __construct(
+        SerializerInterface $serializer,
+        LocaleManager $localeManager,
+        NormalizerInterface $ruleNormalizer
+    ) {
+        parent::__construct($serializer, $localeManager);
         $this->ruleNormalizer = $ruleNormalizer;
     }
 
