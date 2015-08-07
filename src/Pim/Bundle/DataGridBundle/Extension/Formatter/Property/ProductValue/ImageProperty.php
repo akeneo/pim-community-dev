@@ -17,15 +17,20 @@ class ImageProperty extends TwigProperty
     protected function convertValue($value)
     {
         $result = $this->getBackendData($value);
+
+        if (null === $result) {
+            return null;
+        }
+
         $fileName = urlencode($result['key']);
         $title    = $result['originalFilename'];
 
-        if ($fileName) {
+        if (!empty($fileName)) {
             return $this->getTemplate()->render(
-                array(
+                [
                     'filename' => $fileName,
                     'title'    => $title
-                )
+                ]
             );
         }
 

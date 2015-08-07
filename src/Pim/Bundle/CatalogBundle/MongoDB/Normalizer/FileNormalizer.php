@@ -19,7 +19,11 @@ class FileNormalizer implements NormalizerInterface
      */
     public function normalize($file, $format = null, array $context = [])
     {
-        return ['filename' => $file->getKey(), 'originalFilename' => $file->getOriginalFilename()];
+        return [
+            'id'               => $file->getId(),
+            'key'              => $file->getKey(),
+            'originalFilename' => $file->getOriginalFilename()
+        ];
     }
 
     /**

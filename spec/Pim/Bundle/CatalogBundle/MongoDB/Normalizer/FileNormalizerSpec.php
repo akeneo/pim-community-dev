@@ -24,9 +24,14 @@ class FileNormalizerSpec extends ObjectBehavior
     {
         $file->getKey()->willReturn('key/of/the/file.pdf');
         $file->getOriginalFilename()->willReturn('myfile.pdf');
+        $file->getId()->willReturn(152);
 
         $this
             ->normalize($file, 'mongodb_json', [])
-            ->shouldReturn(['filename' => 'key/of/the/file.pdf', 'originalFilename' => 'myfile.pdf']);
+            ->shouldReturn([
+                'id' => 152,
+                'key' => 'key/of/the/file.pdf',
+                'originalFilename' => 'myfile.pdf',
+            ]);
     }
 }
