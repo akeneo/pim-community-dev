@@ -39,6 +39,7 @@ Feature: Add products to a variant group
     And the product "sandal-white-39" should have the following value:
       | name-en_US | old name |
 
+  @unstable
   Scenario: Successfully add products in variant groups, history should be updated with a variant group context
     Given I am on the "SANDAL" variant group page
     Then the grid should contain 3 elements
@@ -51,8 +52,8 @@ Feature: Add products to a variant group
     And I visit the "History" tab
     And I should see history:
       | version | author                                                            | property | value           |
-      | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 1       | Admin Doe - admin@example.com                                     | sku      | sandal-white-37 |
+      | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
 
   Scenario: Successfully delete a variant groups, product history should be updated without context
     Given I am on the "SANDAL" variant group page
