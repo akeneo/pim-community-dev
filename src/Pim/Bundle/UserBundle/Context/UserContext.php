@@ -3,10 +3,12 @@
 namespace Pim\Bundle\UserBundle\Context;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,46 +33,51 @@ class UserContext
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var CategoryRepositoryInterface */
+    protected $productCategoryRepo;
 
     /** @var RequestStack */
     protected $requestStack;
 
+    /** @var ChoicesBuilderInterface */
+    protected $choicesBuilder;
+
     /** @var array */
     protected $userLocales;
-
-    /** @var CategoryRepositoryInterface */
-    protected $productCategoryRepo;
 
     /** @var string */
     protected $defaultLocale;
 
     /**
      * @param TokenStorageInterface       $tokenStorage
-     * @param LocaleManager               $localeManager
-     * @param ChannelManager              $channelManager
+     * @param LocaleRepositoryInterface   $localeRepository
+     * @param ChannelRepositoryInterface  $channelRepository
      * @param CategoryRepositoryInterface $productCategoryRepo
      * @param RequestStack                $requestStack
      * @param string                      $defaultLocale
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $productCategoryRepo,
         RequestStack $requestStack,
+        ChoicesBuilderInterface $choicesBuilder,
         $defaultLocale
     ) {
         $this->tokenStorage        = $tokenStorage;
-        $this->localeManager       = $localeManager;
-        $this->channelManager      = $channelManager;
-        $this->requestStack        = $requestStack;
-        $this->defaultLocale       = $defaultLocale;
+        $this->localeRepository    = $localeRepository;
+        $this->channelRepository   = $channelRepository;
         $this->productCategoryRepo = $productCategoryRepo;
+        $this->requestStack        = $requestStack;
+        $this->choicesBuilder      = $choicesBuilder;
+        $this->defaultLocale       = $defaultLocale;
     }
 
     /**
@@ -79,7 +86,7 @@ class UserContext
      *
      * @throws \LogicException When there are no activated locales
      *
-     * @return Locale
+     * @return LocaleInterface
      */
     public function getCurrentLocale()
     {
@@ -115,12 +122,12 @@ class UserContext
     /**
      * Returns active locales
      *
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     public function getUserLocales()
     {
         if ($this->userLocales === null) {
-            $this->userLocales = $this->localeManager->getActiveLocales();
+            $this->userLocales = $this->localeRepository->getActivatedLocales();
         }
 
         return $this->userLocales;
@@ -144,13 +151,13 @@ class UserContext
     /**
      * Get user channel
      *
-     * @return Channel
+     * @return ChannelInterface
      */
     public function getUserChannel()
     {
         $catalogScope = $this->getUserOption('catalogScope');
 
-        return $catalogScope ?: current($this->channelManager->getChannels());
+        return $catalogScope ?: $this->channelRepository->findOneBy([]);
     }
 
     /**
@@ -170,7 +177,8 @@ class UserContext
      */
     public function getChannelChoicesWithUserChannel()
     {
-        $channelChoices  = $this->channelManager->getChannelChoices();
+        $channels        = $this->channelRepository->findAll();
+        $channelChoices  = $this->choicesBuilder->buildChoices($channels);
         $userChannelCode = $this->getUserChannelCode();
 
         if (array_key_exists($userChannelCode, $channelChoices)) {
@@ -211,7 +219,7 @@ class UserContext
     /**
      * Get user product category tree
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\CategoryInterface
+     * @return CategoryInterface
      */
     public function getUserProductCategoryTree()
     {
@@ -223,7 +231,7 @@ class UserContext
     /**
      * Returns the request locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getRequestLocale()
     {
@@ -231,7 +239,7 @@ class UserContext
         if (null !== $request) {
             $localeCode = $request->get(self::REQUEST_LOCALE_PARAM);
             if ($localeCode) {
-                $locale = $this->localeManager->getLocaleByCode($localeCode);
+                $locale = $this->localeRepository->findOneByIdentifier($localeCode);
                 if ($locale && $this->isLocaleAvailable($locale)) {
                     return $locale;
                 }
@@ -244,7 +252,7 @@ class UserContext
     /**
      * Returns the user locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getUserLocale()
     {
@@ -256,11 +264,11 @@ class UserContext
     /**
      * Returns the default application locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getDefaultLocale()
     {
-        return $this->localeManager->getLocaleByCode($this->defaultLocale);
+        return $this->localeRepository->findOneByIdentifier($this->defaultLocale);
     }
 
     /**
