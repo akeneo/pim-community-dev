@@ -37,6 +37,7 @@ class RuleDefinitionProcessor extends Processor
         NormalizerInterface $ruleNormalizer
     ) {
         parent::__construct($serializer, $localeManager);
+
         $this->ruleNormalizer = $ruleNormalizer;
     }
 

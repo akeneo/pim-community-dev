@@ -16,6 +16,7 @@ class AssetNormalizerSpec extends ObjectBehavior
     {
         $this->beConstructedWith($normalizer);
     }
+
     function it_is_a_normalizer()
     {
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');

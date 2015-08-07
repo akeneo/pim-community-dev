@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pim\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -63,11 +63,11 @@ class AssetNormalizer implements NormalizerInterface
     /**
      * Normalize the given references
      *
-     * @param ArrayCollection $references
+     * @param Collection $references
      *
      * @return array
      */
-    protected function normalizeReferences(ArrayCollection $references)
+    protected function normalizeReferences(Collection $references)
     {
         $normalizedReferences = [];
         foreach ($references as $reference) {

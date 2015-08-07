@@ -35,9 +35,9 @@ class AssetProcessor extends Processor
         SerializerInterface $serializer,
         LocaleManager $localeManager,
         NormalizerInterface $assetNormalizer
-    )
-    {
+    ) {
         parent::__construct($serializer, $localeManager);
+
         $this->assetNormalizer = $assetNormalizer;
     }
 

@@ -38,8 +38,8 @@ class AssetNormalizer implements NormalizerInterface
      */
     public function normalize($asset, $format = null, array $context = [])
     {
-        $normalizedData = $this->assetNormalizer->normalize($asset, $format, $context);
-        $normalizedData['tags'] = $asset->getTagCodes();
+        $normalizedData               = $this->assetNormalizer->normalize($asset, $format, $context);
+        $normalizedData['tags']       = $asset->getTagCodes();
         $normalizedData['categories'] = $asset->getCategoryCodes();
 
         return $normalizedData;

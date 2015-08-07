@@ -26,15 +26,14 @@ class AssetProcessorSpec extends ObjectBehavior
 
     function it_processes($assetNormalizer, $serializer, $localeManager, AssetInterface $asset)
     {
-        $values =
-            [
-                'code'          => 'mycode',
-                'localized'     => 0,
-                'description'   => 'My awesome description',
-                'categories'    => 'cat1,cat2,cat3',
-                'qualification' => 'dog,flowers',
-                'end_of_use'    => '2018/02/01',
-            ];
+        $values = [
+            'code'          => 'mycode',
+            'localized'     => 0,
+            'description'   => 'My awesome description',
+            'categories'    => 'cat1,cat2,cat3',
+            'qualification' => 'dog,flowers',
+            'end_of_use'    => '2018/02/01',
+        ];
 
         $result = [
             'code,localized,description,categories,qualification,end_of_use',
