@@ -12,7 +12,8 @@ class AssetNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_should_normalize(AssetInterface $asset) {
+    function it_should_normalize(AssetInterface $asset)
+    {
         $normalizedValues = [
             'code'        => 'code',
             'description' => 'my description',

@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AssetNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = ['flat'];
+    protected $supportedFormats = ['structured'];
 
     /** @var NormalizerInterface */
     protected $assetNormalizer;

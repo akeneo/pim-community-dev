@@ -24,13 +24,8 @@ class AssetProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor');
     }
 
-    function it_processes(
-        $assetNormalizer,
-        $serializer,
-        $localeManager,
-        AssetInterface $asset
-    ) {
-
+    function it_processes($assetNormalizer, $serializer, $localeManager, AssetInterface $asset)
+    {
         $values =
             [
                 'code'          => 'mycode',
