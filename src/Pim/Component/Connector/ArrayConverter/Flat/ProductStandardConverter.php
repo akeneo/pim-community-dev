@@ -158,6 +158,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
+        $options['with_required_sku'] = isset($options['with_required_sku']) ? $options['with_required_sku'] : true;
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
 
@@ -168,7 +169,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
 
         $mappedItem = $this->defineDefaultValues($mappedItem, $options['default_values']);
         $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
-        $this->validate($filteredItem);
+        $this->validate($filteredItem, $options['with_required_sku']);
 
         $mergedItems = $this->columnsMerger->merge($filteredItem);
 
@@ -274,12 +275,13 @@ class ProductStandardConverter implements StandardArrayConverterInterface
 
     /**
      * @param array $item
+     * @param bool  $withRequiredSku
      *
      * @throws ArrayConversionException
      */
-    protected function validate(array $item)
+    protected function validate(array $item, $withRequiredSku)
     {
-        $requiredFields[] = $this->attrColumnsResolver->resolveIdentifierField();
+        $requiredFields = $withRequiredSku ? [$this->attrColumnsResolver->resolveIdentifierField()] : [];
         $this->validateRequiredFields($item, $requiredFields);
         $this->validateOptionalFields($item);
         $this->validateFieldValueTypes($item);
