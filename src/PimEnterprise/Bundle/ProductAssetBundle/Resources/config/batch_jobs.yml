@@ -59,4 +59,4 @@ connector:
                     services:
                         reader:    pimee_product_asset.reader.orm.asset
                         processor: pimee_product_asset.processor.normalization.asset.flat
-                        writer:    pim_base_connector.writer.file.csv
+                        writer:    pim_base_connector.writer.file
