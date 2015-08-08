@@ -198,7 +198,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     protected function defineDefaultValues(array $mappedItem, array $defaultValues)
     {
         $enabled = (isset($defaultValues['enabled'])) ? (bool) $defaultValues['enabled'] : true;
-        $mappedItem['enabled'] = $enabled;
+        $mappedItem['enabled'] = isset($mappedItem['enabled']) ? (bool) $mappedItem['enabled'] : $enabled;
 
         return $mappedItem;
     }
