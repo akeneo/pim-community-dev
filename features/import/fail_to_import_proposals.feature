@@ -62,7 +62,7 @@ Feature: Import proposals
     Then there should be 0 proposal
     And I should see:
     """
-    Identifier property "sku" is expected
+    Field "sku" is expected, provided fields are "description-en_US-mobile, description-en_US-tablet, comment, enabled"
     """
     And I should see "Status: FAILED"
 
