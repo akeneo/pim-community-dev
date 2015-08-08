@@ -10,7 +10,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
  * Product Converter
@@ -158,13 +158,20 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
+        $options['with_required_sku'] = isset($options['with_required_sku']) ? $options['with_required_sku'] : true;
+        $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
+        $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
+
         $mappedItem = $item;
         if (isset($options['mapping'])) {
             $mappedItem = $this->columnsMapper->map($item, $options['mapping']);
         }
 
-        $resolvedItem = $this->resolveConverterOptions($mappedItem, $options);
-        $mergedItems = $this->columnsMerger->merge($resolvedItem);
+        $mappedItem = $this->defineDefaultValues($mappedItem, $options['default_values']);
+        $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
+        $this->validate($filteredItem, $options['with_required_sku']);
+
+        $mergedItems = $this->columnsMerger->merge($filteredItem);
 
         $result = [];
         foreach ($mergedItems as $column => $value) {
@@ -180,6 +187,43 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $mappedItem
+     * @param array $defaultValues
+     *
+     * @return array
+     */
+    protected function defineDefaultValues(array $mappedItem, array $defaultValues)
+    {
+        $enabled = (isset($defaultValues['enabled'])) ? (bool) $defaultValues['enabled'] : true;
+        $mappedItem['enabled'] = isset($mappedItem['enabled']) ? (bool) $mappedItem['enabled'] : $enabled;
+
+        return $mappedItem;
+    }
+
+    /**
+     * @param array $mappedItem
+     * @param bool  $withAssociations
+     *
+     * @return array
+     */
+    protected function filterFields(array $mappedItem, $withAssociations)
+    {
+        if (false === $withAssociations) {
+            $isGroupAssPattern   = '/^\w+'.AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX.'$/';
+            $isProductAssPattern = '/^\w+'.AssociationColumnsResolver::PRODUCT_ASSOCIATION_SUFFIX.'$/';
+            foreach (array_keys($mappedItem) as $field) {
+                $isGroup = (1 === preg_match($isGroupAssPattern, $field));
+                $isProduct = (1 === preg_match($isProductAssPattern, $field));
+                if ($isGroup || $isProduct) {
+                    unset($mappedItem[$field]);
+                }
+            }
+        }
+
+        return $mappedItem;
     }
 
     /**
@@ -231,45 +275,97 @@ class ProductStandardConverter implements StandardArrayConverterInterface
 
     /**
      * @param array $item
-     * @param array $options
+     * @param bool  $withRequiredSku
      *
-     * @return array
+     * @throws ArrayConversionException
      */
-    protected function resolveConverterOptions(array $item, array $options = [])
+    protected function validate(array $item, $withRequiredSku)
     {
-        $enabled = (isset($options['default_values']['enabled'])) ? $options['default_values']['enabled'] : true;
-        $resolver = $this->createOptionsResolver();
-        $resolver->setDefaults(['enabled' => $enabled]);
-        $resolvedItem = $resolver->resolve($item);
-
-        return $resolvedItem;
+        $requiredFields = $withRequiredSku ? [$this->attrColumnsResolver->resolveIdentifierField()] : [];
+        $this->validateRequiredFields($item, $requiredFields);
+        $this->validateOptionalFields($item);
+        $this->validateFieldValueTypes($item);
     }
 
     /**
-     * @return OptionsResolver
+     * @param array $item
+     * @param array $requiredFields
+     *
+     * @throws ArrayConversionException
      */
-    protected function createOptionsResolver()
+    protected function validateRequiredFields(array $item, array $requiredFields)
     {
-        $resolver = new OptionsResolver();
+        foreach ($requiredFields as $requiredField) {
+            if (!in_array($requiredField, array_keys($item))) {
+                throw new ArrayConversionException(
+                    sprintf(
+                        'Field "%s" is expected, provided fields are "%s"',
+                        $requiredField,
+                        implode(', ', array_keys($item))
+                    )
+                );
+            }
 
-        $required = [];
-        $optional = array_merge(
+            if ('' === $item[$requiredField]) {
+                throw new ArrayConversionException(
+                    sprintf(
+                        'Field "%s" must be filled',
+                        $requiredField,
+                        implode(', ', array_keys($item))
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * @param array $item
+     *
+     * @throws ArrayConversionException
+     */
+    protected function validateOptionalFields(array $item)
+    {
+        $optionalFields = array_merge(
             ['family', 'enabled', 'categories', 'groups'],
             $this->attrColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );
 
-        $resolver->setRequired($required)
-            ->setDefined($optional)
-            ->setAllowedTypes('family', 'string')
-            ->setAllowedTypes('enabled', ['bool', 'string'])
-            ->setAllowedTypes('categories', 'string')
-            ->setAllowedTypes('groups', 'string')
-            ->setNormalizer('enabled', function ($options, $value) {
-                return (bool) $value;
-            });
+        $unknownFields = [];
+        foreach (array_keys($item) as $field) {
+            if (!in_array($field, $optionalFields)) {
+                $unknownFields[] = $field;
+            }
+        }
 
-        return $resolver;
+        if (0 < count($unknownFields)) {
+            $message = count($unknownFields) > 1 ? 'The fields "%s" do not exist' : 'The field "%s" does not exist';
+
+            throw new ArrayConversionException(sprintf($message, implode(', ', $unknownFields)));
+        }
+    }
+
+    /**
+     * @param array $item
+     *
+     * @throws ArrayConversionException
+     */
+    protected function validateFieldValueTypes(array $item)
+    {
+        $stringFields = ['family', 'categories', 'groups'];
+        $booleanFields = ['enabled'];
+
+        foreach ($item as $field => $value) {
+            if (in_array($field, $stringFields) && !is_string($value)) {
+                throw new ArrayConversionException(
+                    sprintf('The field "%s" should contain a string, "%s" provided', $field, $value)
+                );
+            } elseif (in_array($field, $booleanFields) && !is_bool($value)) {
+                throw new ArrayConversionException(
+                    sprintf('The field "%s" should contain a boolean, "%s" provided', $field, $value)
+                );
+            }
+        }
     }
 
     /**
