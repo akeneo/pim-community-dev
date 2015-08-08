@@ -338,13 +338,10 @@ class ProductStandardConverter implements StandardArrayConverterInterface
             }
         }
 
-        if (count($unknownFields) > 0) {
-            throw new ArrayConversionException(
-                sprintf(
-                    'The fields "%s" do not exist',
-                    implode(', ', $unknownFields)
-                )
-            );
+        if (0 < count($unknownFields)) {
+            $message = count($unknownFields) > 1 ? 'The fields "%s" do not exist' : 'The field "%s" does not exist';
+
+            throw new ArrayConversionException(sprintf($message, implode(', ', $unknownFields)));
         }
     }
 
