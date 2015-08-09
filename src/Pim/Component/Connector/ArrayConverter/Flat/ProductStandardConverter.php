@@ -159,31 +159,14 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     public function convert(array $item, array $options = [])
     {
         $options = $this->prepareOptions($options);
-
-        $mappedItem = $item;
-        if (isset($options['mapping'])) {
-            $mappedItem = $this->columnsMapper->map($item, $options['mapping']);
-        }
-
+        $mappedItem = $this->mapFields($item, $options);
         $mappedItem = $this->defineDefaultValues($mappedItem, $options['default_values']);
         $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
-        $this->validate($filteredItem, $options['with_required_sku']);
-        $mergedItems = $this->columnsMerger->merge($filteredItem);
+        $this->validateItem($filteredItem, $options['with_required_sku']);
+        $mergedItem = $this->columnsMerger->merge($filteredItem);
+        $convertedItem = $this->convertItem($mergedItem);
 
-        $result = [];
-        foreach ($mergedItems as $column => $value) {
-            if ($this->fieldConverter->supportsColumn($column)) {
-                $value = $this->fieldConverter->convert($column, $value);
-            } else {
-                $value = $this->convertValue($column, $value);
-            }
-
-            if (null !== $value) {
-                $result = $this->mergeValueToResult($result, $value);
-            }
-        }
-
-        return $result;
+        return $convertedItem;
     }
 
     /**
@@ -198,6 +181,21 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
 
         return $options;
+    }
+
+    /**
+     * @param array $item
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function mapFields(array $item, array $options)
+    {
+        if (isset($options['mapping'])) {
+            $item = $this->columnsMapper->map($item, $options['mapping']);
+        }
+
+        return $item;
     }
 
     /**
@@ -235,6 +233,29 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         }
 
         return $mappedItem;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return array
+     */
+    protected function convertItem(array $item)
+    {
+        $convertedItem = [];
+        foreach ($item as $column => $value) {
+            if ($this->fieldConverter->supportsColumn($column)) {
+                $value = $this->fieldConverter->convert($column, $value);
+            } else {
+                $value = $this->convertValue($column, $value);
+            }
+
+            if (null !== $value) {
+                $convertedItem = $this->mergeValueToResult($convertedItem, $value);
+            }
+        }
+
+        return $convertedItem;
     }
 
     /**
@@ -290,7 +311,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      *
      * @throws ArrayConversionException
      */
-    protected function validate(array $item, $withRequiredSku)
+    protected function validateItem(array $item, $withRequiredSku)
     {
         $requiredFields = $withRequiredSku ? [$this->attrColumnsResolver->resolveIdentifierField()] : [];
         $this->validateRequiredFields($item, $requiredFields);
