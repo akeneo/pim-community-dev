@@ -93,6 +93,11 @@ class ProductProcessor extends AbstractProcessor
     {
         $convertedItem = $this->convertItemData($item);
         $identifier    = $this->getIdentifier($convertedItem);
+
+        if (null === $identifier) {
+            $this->skipItemWithMessage($item, 'The identifier must be filled');
+        }
+
         $familyCode    = $this->getFamilyCode($convertedItem);
         $filteredItem  = $this->filterItemData($convertedItem);
 
