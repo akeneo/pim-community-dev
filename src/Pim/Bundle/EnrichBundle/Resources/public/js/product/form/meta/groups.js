@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/mediator',
         'backbone',
         'pim/form',
         'routing',
@@ -26,6 +27,7 @@ define(
     function (
         $,
         _,
+        mediator,
         Backbone,
         BaseForm,
         Routing,
@@ -39,13 +41,14 @@ define(
     ) {
         var FormView = BaseForm.extend({
             tagName: 'span',
+            className: 'product-groups',
             template: _.template(formTemplate),
             modalTemplate: _.template(modalTemplate),
             events: {
                 'click a[data-group]': 'displayModal'
             },
             configure: function () {
-                this.listenTo(this.getFormModel(), 'change:groups', this.render);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

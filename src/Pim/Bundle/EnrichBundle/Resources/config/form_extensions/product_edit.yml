@@ -1,218 +1,218 @@
 extensions:
-    product-edit-form:
+    pim-product-edit-form:
         module: pim/product-edit-form
 
-    cache-invalidator:
+    pim-product-edit-form-cache-invalidator:
         module: pim/product-edit-form/cache-invalidator
-        parent: product-edit-form
+        parent: pim-product-edit-form
         position: 1000
 
-    sequential-edit:
+    pim-product-edit-form-sequential-edit:
         module: pim/product-edit-form/sequential-edit
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: sequential
         aclResourceId: pim_enrich_product_edit_attributes
         position: 100
 
-    form-tabs:
+    pim-product-edit-form-form-tabs:
         module: pim/product-edit-form/form-tabs
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: content
         position: 100
 
-    product-label:
+    pim-product-edit-form-product-label:
         module: pim/product-edit-form/product-label
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: title
         position: 100
 
-    back-to-grid:
+    pim-product-edit-form-back-to-grid:
         module: pim/product-edit-form/back-to-grid
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: buttons
         aclResourceId: pim_enrich_product_index
         position: 80
 
-    download-pdf:
+    pim-product-edit-form-download-pdf:
         module: pim/product-edit-form/download-pdf
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: buttons
         aclResourceId: pim_pdf_generator_product_download
         position: 90
 
-    delete:
+    pim-product-edit-form-delete:
         module: pim/product-edit-form/delete
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: buttons
         aclResourceId: pim_enrich_product_remove
         position: 100
 
-    status-switcher:
+    pim-product-edit-form-status-switcher:
         module: pim/product-edit-form/status-switcher
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: buttons
         aclResourceId: pim_enrich_product_change_state
         position: 110
 
-    save-buttons:
+    pim-product-edit-form-save-buttons:
         module: pim/product-edit-form/save-buttons
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: buttons
         position: 120
 
-    save:
+    pim-product-edit-form-save:
         module: pim/product-edit-form/save
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: buttons
         position: 0
 
-    save-and-back:
+    pim-product-edit-form-save-and-back:
         module: pim/product-edit-form/save-and-back
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: buttons
         position: 0
 
-    state:
+    pim-product-edit-form-state:
         module: pim/product-edit-form/state
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: state
         position: 900
 
-    family:
+    pim-product-edit-form-family:
         module: pim/product-edit-form/meta/family
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: meta
         position: 80
 
-    change-family:
+    pim-product-edit-form-change-family:
         module: pim/product-edit-form/meta/change-family
-        parent: family
+        parent: pim-product-edit-form-family
         targetZone: self
         aclResourceId: pim_enrich_product_change_family
         position: 100
 
-    created:
+    pim-product-edit-form-created:
         module: pim/product-edit-form/meta/created
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: meta
         position: 90
 
-    updated:
+    pim-product-edit-form-updated:
         module: pim/product-edit-form/meta/updated
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: meta
         position: 100
 
-    groups:
+    pim-product-edit-form-groups:
         module: pim/product-edit-form/meta/groups
-        parent: product-edit-form
+        parent: pim-product-edit-form
         targetZone: meta
         position: 110
 
-    attributes:
+    pim-product-edit-form-attributes:
         module: pim/product-edit-form/attributes
-        parent: form-tabs
+        parent: pim-product-edit-form-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_edit_attributes
         position: 90
 
-    categories:
+    pim-product-edit-form-categories:
         module: pim/product-edit-form/categories
-        parent: form-tabs
+        parent: pim-product-edit-form-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
         position: 100
 
-    associations:
+    pim-product-edit-form-associations:
         module: pim/product-edit-form/associations
-        parent: form-tabs
+        parent: pim-product-edit-form-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_associations_view
         position: 110
 
-    panels:
+    pim-product-edit-form-panels:
         module: pim/product-edit-form/panel/panels
-        parent: form-tabs
+        parent: pim-product-edit-form-form-tabs
         targetZone: panels
         position: 100
 
-    attribute-group-selector:
+    pim-product-edit-form-attribute-group-selector:
         module: pim/product-edit-form/attributes/attribute-group-selector
-        parent: attributes
+        parent: pim-product-edit-form-attributes
         targetZone: sidebar
         position: 100
 
-    add-attribute:
+    pim-product-edit-form-add-attribute:
         module: pim/product-edit-form/attributes/add-attribute
-        parent: attributes
+        parent: pim-product-edit-form-attributes
         targetZone: other-actions
         aclResourceId: pim_enrich_product_add_attribute
         position: 90
 
-    copy:
+    pim-product-edit-form-copy:
         module: pim/product-edit-form/attributes/copy
-        parent: attributes
+        parent: pim-product-edit-form-attributes
         targetZone: header
         position: 100
 
-    scope-switcher:
+    pim-product-edit-form-scope-switcher:
         module: pim/product-edit-form/scope-switcher
-        parent: attributes
+        parent: pim-product-edit-form-attributes
         targetZone: context-selectors
         position: 100
 
-    locale-switcher:
+    pim-product-edit-form-locale-switcher:
         module: pim/product-edit-form/locale-switcher
-        parent: attributes
+        parent: pim-product-edit-form-attributes
         targetZone: context-selectors
         position: 110
 
-    validation:
+    pim-product-edit-form-validation:
         module: pim/product-edit-form/attributes/validation
-        parent: attributes
+        parent: pim-product-edit-form-attributes
         targetZone: header
         position: 100
 
-    variant-group:
+    pim-product-edit-form-variant-group:
         module: pim/product-edit-form/attributes/variant-group
-        parent: attributes
+        parent: pim-product-edit-form-attributes
         targetZone: self
         position: 100
 
-    completeness:
-        parent: panels
+    pim-product-edit-form-completeness:
         module: pim/product-edit-form/panel/completeness
+        parent: pim-product-edit-form-panels
         targetZone: panel-content
         position: 100
 
-    comments:
-        parent: panels
+    pim-product-edit-form-comments:
         module: pim/product-edit-form/panel/comments
+        parent: pim-product-edit-form-panels
         targetZone: panel-content
         aclResourceId: pim_enrich_product_comment
         position: 110
 
-    history:
-        parent: panels
+    pim-product-edit-form-history:
         module: pim/product-edit-form/panel/history
+        parent: pim-product-edit-form-panels
         targetZone: panel-content
         aclResourceId: pim_enrich_product_history
         position: 120
 
-    selector:
-        parent: panels
+    pim-product-edit-form-selector:
         module: pim/product-edit-form/panel/selector
+        parent: pim-product-edit-form-panels
         position: 100
 
-    copy-scope-switcher:
+    pim-product-edit-form-copy-scope-switcher:
         module: pim/product-edit-form/scope-switcher
-        parent: copy
+        parent: pim-product-edit-form-copy
         targetZone: context-selectors
         position: 100
 
-    copy-locale-switcher:
+    pim-product-edit-form-copy-locale-switcher:
         module: pim/product-edit-form/locale-switcher
-        parent: copy
+        parent: pim-product-edit-form-copy
         targetZone: context-selectors
         position: 110
 

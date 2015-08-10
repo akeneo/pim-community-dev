@@ -252,7 +252,7 @@ a[data-toggle-channel] {
       border-top: none;
     }
     border-top: 1px solid #c2c2c2;
-    
+
     td {
       padding: 0;
     }
@@ -1637,15 +1637,17 @@ h3.tab-header {
   }
 }
 
-.meta .family {
-  flex-shrink: 0;
-  
+.meta {
   i {
     color: @color-new-purple-medium;
 
     &:hover {
       cursor: pointer;
     }
+  }
+
+  .product-family, .product-groups {
+    flex-shrink: 0;
   }
 }
 

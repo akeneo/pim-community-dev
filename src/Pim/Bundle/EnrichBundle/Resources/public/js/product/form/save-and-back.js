@@ -29,21 +29,19 @@ define(
         return BaseForm.extend({
             className: 'btn-group',
             configure: function () {
-                if ('save-buttons' in this.parent.extensions) {
-                    this.parent.extensions['save-buttons'].addButton({
-                        className: 'save-product-and-back',
-                        priority: 150,
-                        label: _.__('pim_enrich.entity.product.btn.save_and_back'),
-                        events: {
-                            'click .save-product-and-back': _.bind(this.saveAndCreate, this)
-                        }
-                    });
-                }
+                this.trigger('save-buttons:register-button', {
+                    className: 'save-product-and-back',
+                    priority: 150,
+                    label: _.__('pim_enrich.entity.product.btn.save_and_back'),
+                    events: {
+                        'click .save-product-and-back': _.bind(this.saveAndCreate, this)
+                    }
+                });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             saveAndCreate: function () {
-                this.parent.extensions.save
+                this.parent.getExtension('save')
                     .save({silent: true})
                     .done(_.bind(function () {
                         messenger.addMessage(

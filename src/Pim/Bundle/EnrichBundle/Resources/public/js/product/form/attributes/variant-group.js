@@ -21,11 +21,11 @@ define(
         return BaseForm.extend({
             template: _.template(variantGroupTemplate),
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            addExtension: function (event) {
+            addFieldExtension: function (event) {
                 var product = this.getFormData();
                 if (!product.variant_group) {
                     return;

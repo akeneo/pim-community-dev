@@ -93,7 +93,7 @@ define(
                     ).then(_.bind(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
-                            this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
+                            this.getExtension('attribute-group-selector').getCurrentAttributeGroup()
                         );
 
                         var fieldPromises = [];
@@ -150,7 +150,7 @@ define(
                 var promises = [];
                 var product = this.getFormData();
 
-                promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
+                promises.push(this.getExtension('attribute-group-selector').updateAttributeGroups(product));
 
                 return $.when.apply($, promises).promise();
             },
@@ -178,7 +178,7 @@ define(
                         }
                     });
 
-                    this.extensions['attribute-group-selector'].setCurrent(
+                    this.getExtension('attribute-group-selector').setCurrent(
                         _.findWhere(attributes, {code: _.first(attributeCodes)}).group
                     );
 
@@ -219,6 +219,8 @@ define(
                                 this.setData(product);
 
                                 mediator.trigger('pim_enrich:form:remove-attribute:after');
+
+                                this.render();
                             }, this)).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',
@@ -269,8 +271,9 @@ define(
                             needRendering = true;
                         }
 
-                        if (attributeGroup !== this.extensions['attribute-group-selector'].getCurrent()) {
-                            this.extensions['attribute-group-selector'].setCurrent(attributeGroup);
+                        var attributeGroupSelector = this.getExtension('attribute-group-selector');
+                        if (attributeGroup !== attributeGroupSelector.getCurrent()) {
+                            attributeGroupSelector.setCurrent(attributeGroup);
                             needRendering = true;
                         }
 

@@ -68,17 +68,17 @@ define(
                 this.delegateEvents();
                 this.initializeDropZones();
 
-                var currentTab = this.extensions[this.state.get('currentTab')];
+                var currentTab = this.getExtension(this.state.get('currentTab'));
                 if (currentTab) {
                     this.renderExtension(currentTab);
                     var zone = this.getZone('container');
                     zone.appendChild(currentTab.el);
                 }
 
-                var panels = this.extensions.panels;
-                if (panels) {
-                    this.renderExtension(panels);
-                    this.getZone('panels').appendChild(panels.el);
+                var panelsExtension = this.getExtension('panels');
+                if (panelsExtension) {
+                    this.renderExtension(panelsExtension);
+                    this.getZone('panels').appendChild(panelsExtension.el);
                 }
 
                 return this;

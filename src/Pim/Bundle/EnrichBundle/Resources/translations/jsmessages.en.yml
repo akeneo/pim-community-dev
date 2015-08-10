@@ -168,6 +168,7 @@ pim_enrich:
                 select: Select
                 all: All
                 all_visible: All visible
+                none: None
             variant_group:
                 updated_by: Updated by variant group
                 switch:

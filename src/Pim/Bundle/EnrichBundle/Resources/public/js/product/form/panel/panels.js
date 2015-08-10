@@ -51,20 +51,21 @@ define(
 
                 this.$el[this.state.get('currentPanel') ? 'removeClass' : 'addClass']('closed');
 
+                var currentPanel = _.findWhere(this.state.get('panels'), {code: this.state.get('currentPanel')});
                 this.$el.html(
                     this.template({
-                        state: this.state.toJSON()
+                        label: currentPanel ? currentPanel.label : this.state.get('currentPanel')
                     })
                 );
                 this.initializeDropZones();
 
                 if (this.state.get('currentPanel')) {
-                    var currentPanel = this.extensions[this.state.get('currentPanel')];
+                    var currentPanel = this.getExtension(this.state.get('currentPanel'));
                     this.renderExtension(currentPanel);
                     this.getZone('panel-content').appendChild(currentPanel.el);
                 }
 
-                var selectorExtension = this.extensions.selector;
+                var selectorExtension = this.getExtension('selector');
                 this.renderExtension(selectorExtension);
                 this.getParent().$('>header').append(selectorExtension.$el);
 

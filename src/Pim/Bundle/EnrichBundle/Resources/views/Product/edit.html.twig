@@ -10,38 +10,6 @@
                 {% endblock breadcrumb %}
             </div>
             {% placeholder pin_button %}
-            <div id="flash-messages">
-                {% block messages %}
-                    <div class="flash-messages-frame">
-                        <div class="flash-messages-holder"></div>
-                    </div>
-                    <script type="text/template" id="message-item-template">
-                        <div class="alert <% if (type) {  %><%= 'alert-' + type %><% } %> fade in top-messages ">
-                            <button type="button" class="close" data-dismiss="alert">&times;</button>
-                            <div class="message"><%= message %></div>
-                        </div>
-                    </script>
-                    <script type="text/javascript">
-                        require(['jquery', 'oro/messenger'],
-                                function($, messenger) {
-                                    messenger.setup({
-                                        container: '#flash-messages .flash-messages-holder',
-                                        template: _.template($.trim($('#message-item-template').html()))
-                                    });
-                                    {% if app.session.flashbag.peekAll|length > 0 %}
-                                    $(function() {
-                                        {% for type, messages in app.session.flashbag.all %}
-                                        {% for message in messages %}
-                                        messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
-                                        {% endfor %}
-                                        {% endfor %}
-                                    });
-                                    {% endif %}
-                                });
-                    </script>
-                {% endblock messages %}
-            </div>
-
         </div>
         {% endblock before_content %}
         <div class="hash-loading-mask"></div>
@@ -58,16 +26,17 @@
                             function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
-                                        FormBuilder.build('pim/product-edit-form')
-                                            .done(function (form) {
-                                                ProductManager.get('{{ productId }}').done(function (product) {
-                                                    document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
-                                                    form.setData(product);
+                                        ProductManager.get('{{ productId }}')
+                                            .then(function (product) {
+                                                FormBuilder.build(product.meta.form)
+                                                    .then(function (form) {
+                                                        document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
+                                                        form.setData(product);
 
-                                                    mediator.trigger('pim_enrich:form:entity:post_fetch', product);
+                                                        mediator.trigger('pim_enrich:form:entity:post_fetch', product);
 
-                                                    form.setElement('#product-edit-form').render();
-                                                });
+                                                        form.setElement('#product-edit-form').render();
+                                                    });
                                             }).fail(function(response, textStatus, errorThrown) {
                                                 switch (response.status) {
                                                     case 400:
@@ -80,7 +49,6 @@
                                 });
                             });
                     </script>
-
                     {% placeholder content_after %}
                 {% endblock content %}
             {% endblock page_container %}

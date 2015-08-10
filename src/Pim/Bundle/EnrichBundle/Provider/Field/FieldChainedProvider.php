@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Provider\EmptyValue;
+namespace Pim\Bundle\EnrichBundle\Provider\Field;
 
 /**
- * EmptyValue provider registry
+ * Field chained provider
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EmptyValueProviderRegistry implements EmptyValueProviderInterface
+class FieldChainedProvider implements FieldProviderInterface
 {
     /** @var array */
     protected $providers = [];
@@ -17,15 +17,15 @@ class EmptyValueProviderRegistry implements EmptyValueProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getEmptyValue($element)
+    public function getField($element)
     {
         foreach ($this->providers as $provider) {
             if ($provider->supports($element)) {
-                return $provider->getEmptyValue($element);
+                return $provider->getField($element);
             }
         }
 
-        throw new \RuntimeException('No compatible EmptyValue provider found.');
+        throw new \RuntimeException('No compatible Field provider found.');
     }
 
     /**
@@ -43,11 +43,11 @@ class EmptyValueProviderRegistry implements EmptyValueProviderInterface
     }
 
     /**
-     * Add a provider to the registry
+     * Add a provider
      *
-     * @param EmptyValueProviderInterface $provider
+     * @param FieldProviderInterface $provider
      */
-    public function addProvider(EmptyValueProviderInterface $provider)
+    public function addProvider(FieldProviderInterface $provider)
     {
         $this->providers[] = $provider;
     }

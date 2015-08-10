@@ -39,7 +39,7 @@ define(
                     label: _.__('pim_enrich.form.product.panel.history.title')
                 });
 
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.refreshHistory);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.refreshHistory);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

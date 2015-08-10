@@ -43,6 +43,7 @@ define(
                 'click .stop-copying': 'stopCopying',
                 'click .select-all': 'selectAll',
                 'click .select-all-visible': 'selectAllVisible',
+                'click .select-none': 'selectNone',
                 'click .copy': 'copy'
             },
 
@@ -116,6 +117,10 @@ define(
                         this.locale,
                         this.scope
                     );
+
+                    if (_.isUndefined(valueToCopy)) {
+                        valueToCopy = AttributeManager.generateValue(field.attribute, this.locale, this.scope)
+                    }
 
                     var copyField = new CopyField();
                     copyField.setLocale(this.locale);
@@ -247,11 +252,29 @@ define(
             },
 
             /**
+             * Mark all fields as unselected
+             */
+            selectNone: function () {
+                this.selectFields([]);
+            },
+
+            /**
+             * Unselect all field
+             */
+            unselectAll: function () {
+                _.each(this.copyFields, function (field) {
+                    field.setSelected(false);
+                });
+            },
+
+            /**
              * Mark specified fields as selected and trigger the select event
              *
              * @param {Field[]} fields
              */
             selectFields: function (fields) {
+                this.unselectAll();
+
                 _.each(fields, _.bind(function (field) {
                     if (this.canBeCopied(field)) {
                         this.getCopyField(field).setSelected(true);

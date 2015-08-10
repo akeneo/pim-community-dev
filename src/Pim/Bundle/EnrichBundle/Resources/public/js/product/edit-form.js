@@ -37,6 +37,10 @@ define(
                 mediator.clear('pim_enrich:form');
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
+                this.onExtensions('save-buttons:register-button', function (button) {
+                    this.getExtension('save-buttons').trigger('save-buttons:add-button', button);
+                });
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {

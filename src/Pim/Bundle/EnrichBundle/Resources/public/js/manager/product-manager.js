@@ -66,7 +66,7 @@ define([
                     return product.values;
                 });
             },
-            generateMissing: function (product) {
+            _generateMissing: function (product) {
                 return $.when(
                     FetcherRegistry.getFetcher('attribute').fetchAll(),
                     FetcherRegistry.getFetcher('locale').fetchAll(),
@@ -93,6 +93,9 @@ define([
 
                     return product;
                 });
+            },
+            generateMissing: function (product) {
+                this._generateMissing(product);
             }
         };
     }

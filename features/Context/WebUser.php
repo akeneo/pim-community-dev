@@ -348,7 +348,7 @@ class WebUser extends RawMinkContext
         }
 
         $badge = $tab->find('css', '.invalid-badge');
-        if (!$badge) {
+        if (!$badge && 0 < (int) $number) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to find "%d" errors in the tab "%s", no errors found',
@@ -356,6 +356,8 @@ class WebUser extends RawMinkContext
                     $name
                 )
             );
+        } elseif (!$badge && 0 === (int) $number) {
+            return;
         }
 
         $errors = $badge->getText();
