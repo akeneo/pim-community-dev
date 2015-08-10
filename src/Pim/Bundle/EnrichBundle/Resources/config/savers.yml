@@ -4,6 +4,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
             - %pim_connector.model.job_configuration.class%
 
     pim_enrich.saver.sequential_edit:
@@ -11,4 +12,5 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
             - %pim_enrich.entity.sequential_edit.class%

@@ -5,6 +5,7 @@ parameters:
     pim_catalog.event_subscriber.timestampable.class:                Pim\Bundle\CatalogBundle\EventSubscriber\TimestampableSubscriber
     pim_catalog.event_subscriber.outdate_indexed_values.class:       Pim\Bundle\CatalogBundle\EventSubscriber\OutdateIndexedValuesSubscriber
     pim_catalog.event_subscriber.category.check_channels.class:      Pim\Bundle\CatalogBundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
+    pim_catalog.event_subscriber.currency_disabling.class:             Pim\Bundle\CatalogBundle\EventSubscriber\CurrencyDisablingSubscriber
 
 services:
     # Subscribers
@@ -56,5 +57,12 @@ services:
         class: %pim_catalog.event_subscriber.category.check_channels.class%
         arguments:
             - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.currency_disabling:
+        class: %pim_catalog.event_subscriber.currency_disabling.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
         tags:
             - { name: kernel.event_subscriber }

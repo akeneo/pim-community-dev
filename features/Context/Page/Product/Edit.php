@@ -259,6 +259,7 @@ class Edit extends Form
      */
     public function fillField($label, $value, Element $element = null)
     {
+        $this->getSession()->wait(5000);
         $isLabel = false;
 
         try {
@@ -629,26 +630,24 @@ class Edit extends Form
             return;
         }
 
-        if (null !== $link = $fieldContainer->find('css', 'a.select2-choice')) {
-            $link->click();
+        $link = $this->spin(function () use ($fieldContainer) {
+            return $fieldContainer->find('css', 'a.select2-choice');
+        }, 20, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
 
-            $item = $this->spin(function () use ($value) {
-                return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
-            });
 
-            $item->click();
+        $link->click();
 
-            $this->getSession()->executeScript(
-                '$(\'.field-input input[type="hidden"].select-field\').trigger(\'change\');'
-            );
+        $item = $this->spin(function () use ($link, $value) {
+            return $this->find('css', sprintf('.select2-results li:contains("%s")', $value));
+        });
 
-            return;
-        }
+        $item->click();
 
-        throw new ExpectationException(
-            sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()),
-            $this->getSession()
+        $this->getSession()->executeScript(
+            '$(\'.field-input input[type="hidden"].select-field\').trigger(\'change\');'
         );
+
+        return;
     }
 
     /**

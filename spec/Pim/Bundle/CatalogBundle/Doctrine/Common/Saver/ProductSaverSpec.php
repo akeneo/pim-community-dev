@@ -5,18 +5,21 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductSaverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
-        ProductSavingOptionsResolver $optionsResolver
+        ProductSavingOptionsResolver $optionsResolver,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager, $optionsResolver);
+        $this->beConstructedWith($objectManager, $completenessManager, $optionsResolver, $eventDispatcher);
     }
 
     function it_is_a_saver()
@@ -33,6 +36,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager,
         $completenessManager,
         $optionsResolver,
+        $eventDispatcher,
         ProductInterface $product
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
@@ -43,6 +47,9 @@ class ProductSaverSpec extends ObjectBehavior
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(ProductEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(ProductEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
     }
 
@@ -50,6 +57,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager,
         $completenessManager,
         $optionsResolver,
+        $eventDispatcher,
         ProductInterface $product
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => false, 'flush' => true, 'schedule' => false])
@@ -60,6 +68,9 @@ class ProductSaverSpec extends ObjectBehavior
         $completenessManager->schedule($product)->shouldNotBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldNotBeCalled();
 
+        $eventDispatcher->dispatch(ProductEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(ProductEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($product, ['recalculate' => false, 'flush' => true, 'schedule' => false]);
     }
 
@@ -67,6 +78,7 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager,
         $completenessManager,
         $optionsResolver,
+        $eventDispatcher,
         ProductInterface $product
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => false, 'flush' => false, 'schedule' => true])
@@ -76,6 +88,9 @@ class ProductSaverSpec extends ObjectBehavior
         $objectManager->flush()->shouldNotBeCalled();
         $completenessManager->schedule($product)->shouldBeCalled();
         $completenessManager->generateMissingForProduct($product)->shouldNotBeCalled();
+
+        $eventDispatcher->dispatch(ProductEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(ProductEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->save($product, ['recalculate' => false, 'flush' => false, 'schedule' => true]);
     }

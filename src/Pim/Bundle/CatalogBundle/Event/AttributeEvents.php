@@ -32,6 +32,26 @@ final class AttributeEvents
     const POST_SAVE = 'pim_catalog.post_save.attribute';
 
     /**
+     * This event is thrown before several attributes get saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_SAVE_ALL = 'pim_catalog.pre_save_all.attribute';
+
+    /**
+     * This event is thrown after several attributes have been saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_SAVE_ALL = 'pim_catalog.post_save_all.attribute';
+
+    /**
      * This event is thrown before an attribute is removed.
      *
      * The event listener receives an

@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
 /**
@@ -143,6 +144,20 @@ SQL;
             ->leftJoin('ch.currencies', 'cu')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChannelCountUsingCurrency(CurrencyInterface $currency)
+    {
+        return (int) $this->createQueryBuilder('c')
+                ->select('count(c.id)')
+                ->innerJoin('c.currencies', 'cu')
+                ->where('cu.id = :currencies')
+                ->setParameter('currencies', [$currency])
+                ->getQuery()
+                ->getSingleScalarResult();
     }
 
     /**

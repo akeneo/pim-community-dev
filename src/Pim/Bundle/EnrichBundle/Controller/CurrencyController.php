@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Exception\LinkedChannelException;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -101,6 +102,8 @@ class CurrencyController extends AbstractDoctrineController
             $this->currencySaver->save($currency);
 
             $this->addFlash('success', 'flash.currency.updated');
+        } catch (LinkedChannelException $e) {
+            $this->addFlash('error', 'flash.currency.error.linked_to_channel');
         } catch (\Exception $e) {
             $this->addFlash('error', 'flash.error ocurred');
         }
