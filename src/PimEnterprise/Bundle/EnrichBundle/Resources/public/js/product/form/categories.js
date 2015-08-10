@@ -18,6 +18,7 @@ define(
                     label: _.__('pim_enrich.form.product.tab.categories.title')
                 });
 
+                // Don't call parent as it will override our 'isVisible' option
                 return BaseForm.prototype.configure.apply(this, arguments);
             }
         });
