@@ -19,8 +19,6 @@ class MediaAttributeGuesser implements GuesserInterface
     protected $transformer;
 
     /**
-     * Constructor
-     *
      * @param PropertyTransformerInterface $transformer
      */
     public function __construct(PropertyTransformerInterface $transformer)

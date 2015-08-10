@@ -42,18 +42,6 @@ interface FileInterface
     /**
      * @return string
      */
-    public function getUuid();
-
-    /**
-     * @param string $uuid
-     *
-     * @return FileInterface
-     */
-    public function setUuid($uuid);
-
-    /**
-     * @return string
-     */
     public function getOriginalFilename();
 
     /**
@@ -124,15 +112,11 @@ interface FileInterface
     public function setStorage($storage);
 
     /**
-     * TODO: drop it asap.
-     *
      * @return UploadedFile
      */
     public function getUploadedFile();
 
     /**
-     * TODO: drop it asap.
-     *
      * @param UploadedFile $uploadedFile
      *
      * @return FileInterface|null

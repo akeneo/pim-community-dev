@@ -35,9 +35,7 @@ class StreamedFileResponse extends StreamedResponse
             fclose($resource);
         };
 
-        if (!isset($headers['Content-Type'])) {
-            $headers['Content-Type'] = 'application/octet-stream';
-        }
+        $headers['Content-Type'] = 'application/octet-stream';
 
         parent::__construct($callback, $status, $headers);
     }

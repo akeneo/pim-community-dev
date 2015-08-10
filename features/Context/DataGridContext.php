@@ -165,7 +165,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function theRowShouldContainImages($code, TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this->assertColumnContainsImage($code, $data['column'], $data['value']);
+            $this->assertColumnContainsImage($code, $data['column'], $data['title']);
         }
     }
 

@@ -18,7 +18,7 @@ class RawFileFetcher implements RawFileFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function fetch($fileKey, FilesystemInterface $filesystem)
+    public function fetch(FilesystemInterface $filesystem, $fileKey)
     {
         if (!$filesystem->has($fileKey)) {
             throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $fileKey));

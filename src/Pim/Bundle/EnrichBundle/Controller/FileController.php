@@ -76,6 +76,8 @@ class FileController extends Controller
     /**
      * @param string $filename
      *
+     * @throws NotFoundHttpException
+     *
      * @return StreamedFileResponse
      */
     public function downloadAction($filename)

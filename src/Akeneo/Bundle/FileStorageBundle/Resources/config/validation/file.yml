@@ -9,12 +9,6 @@ Akeneo\Component\FileStorage\Model\File:
             - Length:
                 max: 255
             - NotBlank: ~
-        uuid:
-            - Type:
-                type: string
-            - Length:
-                max: 255
-            - NotBlank: ~
         originalFilename:
             - Type:
                 type: string
@@ -35,7 +29,7 @@ Akeneo\Component\FileStorage\Model\File:
             - Type:
                 type: string
             - Length:
-                max: 255
+                max: 10
             - NotBlank: ~
         storage:
             - Type:

@@ -14,7 +14,7 @@ class RawFileFetcherSpec extends ObjectBehavior
         $filesystem->has('path/to/file.txt')->willReturn(true);
         $filesystem->readStream('path/to/file.txt')->shouldBeCalled();
 
-        $rawFile = $this->fetch('path/to/file.txt', $filesystem);
+        $rawFile = $this->fetch($filesystem, 'path/to/file.txt');
         $rawFile->shouldBeAnInstanceOf('\SplFileInfo');
         $rawPathname = $rawFile->getWrappedObject()->getPathname();
 
@@ -27,7 +27,7 @@ class RawFileFetcherSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('The file "path/to/file.txt" is not present on the filesystem.')
-        )->during('fetch', ['path/to/file.txt', $filesystem]);
+        )->during('fetch', [$filesystem, 'path/to/file.txt']);
     }
 
     function it_throws_an_exception_when_the_file_can_not_be_read_on_the_filesystem(FilesystemInterface $filesystem)
@@ -37,6 +37,6 @@ class RawFileFetcherSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new FileTransferException('Unable to fetch the file "path/to/file.txt" from the filesystem.')
-        )->during('fetch', ['path/to/file.txt', $filesystem]);
+        )->during('fetch', [$filesystem, 'path/to/file.txt']);
     }
 }

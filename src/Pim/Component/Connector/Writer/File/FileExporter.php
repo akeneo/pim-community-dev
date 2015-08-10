@@ -46,7 +46,7 @@ class FileExporter implements FileExporterInterface
         }
 
         $storageFs = $this->mountManager->getFilesystem($storageAlias);
-        $rawFile = $this->fileFetcher->fetch($key, $storageFs);
+        $rawFile = $this->fileFetcher->fetch($storageFs, $key);
 
         $copied = $this->copyFile($rawFile->getPathname(), $localPathname);
         //TODO: files should also be copied in the archive folder to be able to generate the ZIP file on the fly

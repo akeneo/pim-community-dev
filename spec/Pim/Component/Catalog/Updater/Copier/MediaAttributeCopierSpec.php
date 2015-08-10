@@ -101,7 +101,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
 
-        $rawFileFetcher->fetch('key', $fileSystem)->willReturn($rawFile);
+        $rawFileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
         $rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($file);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
@@ -155,7 +155,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
         $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
 
-        $rawFileFetcher->fetch('key', $fileSystem)->willReturn($rawFile);
+        $rawFileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
         $rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($file);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);

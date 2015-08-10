@@ -47,7 +47,6 @@ class FileFactorySpec extends ObjectBehavior
         return [
             'beValidFile' => function ($subject) {
                 return
-                    $subject->getUuid() === '12345' &&
                     $subject->getKey() === '1/2/3/4/12345_my_file.php' &&
                     $subject->getOriginalFilename() === 'FileFactorySpec.php' &&
                     $subject->getMimeType() === 'text/x-php' &&

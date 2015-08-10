@@ -56,6 +56,6 @@ class PathGenerator implements PathGeneratorInterface
      */
     public function generateUuid($fileName)
     {
-        return sha1($fileName.microtime());
+        return sha1($fileName . microtime());
     }
 }

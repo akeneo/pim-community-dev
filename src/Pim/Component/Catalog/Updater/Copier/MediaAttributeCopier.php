@@ -48,6 +48,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+
         $this->rawFileFetcher     = $rawFileFetcher;
         $this->rawFileStorer      = $rawFileStorer;
         $this->mountManager       = $mountManager;
@@ -115,7 +116,7 @@ class MediaAttributeCopier extends AbstractAttributeCopier
 
             $filesystem = $this->mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
 
-            $rawFile = $this->rawFileFetcher->fetch($fromValue->getMedia()->getKey(), $filesystem);
+            $rawFile = $this->rawFileFetcher->fetch($filesystem, $fromValue->getMedia()->getKey());
             $file = $this->rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
 
             $file->setOriginalFilename($fromValue->getMedia()->getOriginalFilename());

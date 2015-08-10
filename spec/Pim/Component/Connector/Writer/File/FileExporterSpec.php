@@ -32,7 +32,7 @@ class FileExporterSpec extends ObjectBehavior
         }
 
         $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($filesystem);
-        $fileFetcher->fetch('1/2/3/123_file.txt', $filesystem)->willReturn($rawFile);
+        $fileFetcher->fetch($filesystem, '1/2/3/123_file.txt')->willReturn($rawFile);
 
         $this->export('1/2/3/123_file.txt', sys_get_temp_dir() . '/spec/export/file.txt', FileStorage::CATALOG_STORAGE_ALIAS);
 

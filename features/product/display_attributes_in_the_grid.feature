@@ -43,10 +43,10 @@ Feature: Display product attributes in the grid
     And I am on the products page
     When I display the columns sku, side_view and top_view
     Then the row "sneakers" should contain the images:
-      | column    | value      |
+      | column    | title      |
       | Side view | akeneo.jpg |
       | Top view  | **empty**  |
     And the row "sandals" should contain the images:
-      | column    | value       |
+      | column    | title       |
       | Side view | **empty**   |
       | Top view  | akeneo2.jpg |

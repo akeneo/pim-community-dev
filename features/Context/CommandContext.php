@@ -19,6 +19,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class CommandContext extends RawMinkContext
 {
+    /** @var array */
     protected $placeholderValues = [];
 
     /**

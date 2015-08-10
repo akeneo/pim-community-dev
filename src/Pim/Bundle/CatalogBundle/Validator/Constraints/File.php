@@ -15,6 +15,9 @@ use Symfony\Component\Validator\Constraints\File as BaseFile;
  */
 class File extends BaseFile
 {
+    /** @var array */
     public $allowedExtensions = [];
+
+    /** @var string */
     public $extensionsMessage = 'The file extension is not allowed (allowed extensions: %extensions%).';
 }

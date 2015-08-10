@@ -43,6 +43,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+
         $this->storer         = $storer;
         $this->repository     = $repository;
         $this->supportedTypes = $supportedTypes;
@@ -141,7 +142,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      * @param AttributeInterface $attribute
      * @param mixed              $data
      *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException If an invalid filePath is provided
+     * @throws InvalidArgumentException If an invalid filePath is provided
      * @return FileInterface|null
      */
     protected function storeFile(AttributeInterface $attribute, $data)
@@ -151,7 +152,6 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         }
 
         try {
-            //TODO: find another way
             $rawFile = new UploadedFile($data['filePath'], $data['originalFilename']);
             $file = $this->storer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
         } catch (FileNotFoundException $e) {

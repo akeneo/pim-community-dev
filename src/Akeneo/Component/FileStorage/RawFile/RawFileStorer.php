@@ -42,8 +42,8 @@ class RawFileStorer implements RawFileStorerInterface
         FileFactoryInterface $factory
     ) {
         $this->mountManager = $mountManager;
-        $this->saver = $saver;
-        $this->factory = $factory;
+        $this->saver        = $saver;
+        $this->factory      = $factory;
     }
 
     /**
@@ -51,8 +51,6 @@ class RawFileStorer implements RawFileStorerInterface
      */
     public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
     {
-        //TODO: add some logs here
-
         $filesystem = $this->mountManager->getFilesystem($destFsAlias);
         $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
 

@@ -16,13 +16,13 @@ use League\Flysystem\FilesystemInterface;
 interface RawFileFetcherInterface
 {
     /**
-     * @param string              $fileKey
      * @param FilesystemInterface $filesystem
+     * @param string              $fileKey
      *
      * @throws FileTransferException
      * @throws \LogicException
      *
      * @return \SplFileInfo
      */
-    public function fetch($fileKey, FilesystemInterface $filesystem);
+    public function fetch(FilesystemInterface $filesystem, $fileKey);
 }

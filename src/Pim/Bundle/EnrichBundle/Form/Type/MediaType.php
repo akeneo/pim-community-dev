@@ -30,8 +30,7 @@ class MediaType extends FileType
                     'label'    => 'Remove media',
                 ]
             )
-            ->add('id', 'hidden')
-        ;
+            ->add('id', 'hidden');
     }
 
     /**

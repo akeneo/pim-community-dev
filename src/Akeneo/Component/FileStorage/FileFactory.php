@@ -36,22 +36,21 @@ class FileFactory implements FileFactoryInterface
     public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias)
     {
         $pathInfo = $this->pathGenerator->generate($rawFile);
-        $sha1 = sha1_file($rawFile->getPathname());
+        $sha1     = sha1_file($rawFile->getPathname());
 
         if ($rawFile instanceof UploadedFile) {
             $originalFilename = $rawFile->getClientOriginalName();
-            $extension = $rawFile->getClientOriginalExtension();
+            $extension        = $rawFile->getClientOriginalExtension();
         } else {
             $originalFilename = $rawFile->getFilename();
-            $extension = $rawFile->getExtension();
+            $extension        = $rawFile->getExtension();
         }
 
-        $size = filesize($rawFile->getPathname());
+        $size     = filesize($rawFile->getPathname());
         $mimeType = MimeTypeGuesser::getInstance()->guess($rawFile->getPathname());
 
         $file = new $this->fileClass();
         $file->setKey($pathInfo['path'].$pathInfo['file_name']);
-        $file->setUuid($pathInfo['uuid']);
         $file->setMimeType($mimeType);
         $file->setOriginalFilename($originalFilename);
         $file->setSize($size);
