@@ -11,6 +11,7 @@ use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Products quick export
@@ -76,7 +77,8 @@ class ProductExportController
      */
     public function indexAction()
     {
-        $jobInstance      = $this->jobInstanceRepo->findOneBy(['code' => 'csv_product_quick_export']);
+        $jobCode          = $this->request->get('_jobCode');
+        $jobInstance      = $this->jobInstanceRepo->findOneBy(['code' => $jobCode]);
         $filters          = $this->gridFilterAdapter->adapt($this->request);
         $rawConfiguration = addslashes(
             json_encode(
@@ -95,9 +97,9 @@ class ProductExportController
     /**
      * Get a user from the Security Context
      *
-     * @return \Symfony\Component\Security\Core\User\UserInterface|null
+     * @return UserInterface|null
      *
-     * @see Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
+     * @see \Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
      */
     protected function getUser()
     {
