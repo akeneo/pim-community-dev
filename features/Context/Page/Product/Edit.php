@@ -141,7 +141,7 @@ class Edit extends Form
 
     /**
      * @param string $locale
-     * @param bool $copy
+     * @param bool   $copy
      *
      * @throws \Exception
      */
@@ -165,8 +165,8 @@ class Edit extends Form
     }
 
     /**
-     * @param string $scope
-     * @param bool $copy
+     * @param string $scopeCode
+     * @param bool   $copy
      *
      * @throws \Exception
      */
@@ -197,7 +197,7 @@ class Edit extends Form
     public function switchCopySource($source)
     {
         $dropdown = $this->getElement('Copy source dropdown');
-        $toggle = $this->spin(function () use ($dropdown) {
+        $toggle   = $this->spin(function () use ($dropdown) {
             return $dropdown->find('css', '.dropdown-toggle');
         }, 20, 'Could not find copy source switcher.');
         $toggle->click();
@@ -264,7 +264,7 @@ class Edit extends Form
         try {
             $fieldContainer = $this->findFieldContainer($label);
         } catch (ElementNotFoundException $e) {
-            $isLabel = true;
+            $isLabel        = true;
             $fieldContainer = $this->extractLabelElement($label, $element);
         }
 
@@ -334,7 +334,7 @@ class Edit extends Form
                 $actual = $this->getMediaFieldValue($subContainer);
                 break;
             case 'switch':
-                $actual = $this->isSwitchFieldChecked($subContainer);
+                $actual   = $this->isSwitchFieldChecked($subContainer);
                 $expected = ('on' === $expected);
                 break;
             case 'text':
@@ -361,7 +361,7 @@ class Edit extends Form
 
     /**
      * @param string $label
-     * @param bool $copy
+     * @param bool   $copy
      *
      * @throws ElementNotFoundException
      *
@@ -379,7 +379,7 @@ class Edit extends Form
 
         $fieldContainer = $this->findFieldContainer($label);
         $subContainer   = $fieldContainer->find('css', $copy ? '.copy-container .form-field' : '.form-field');
-        $field = $this->spin(function () use ($subContainer) {
+        $field          = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.field-input input, .field-input textarea');
         }, 10);
 
@@ -402,9 +402,13 @@ class Edit extends Form
             $label = explode(' in ', $label)[0];
         }
 
-        $labelNode = $this->spin(function () use ($label) {
-            return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
-        });
+        try {
+            $labelNode = $this->spin(function () use ($label) {
+                return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
+            }, 10);
+        } catch (\Exception $e) {
+            throw new ElementNotFoundException($this->getSession());
+        }
 
         $container = $this->spin(function () use ($labelNode) {
             return $labelNode->getParent()->getParent()->getParent();
@@ -426,7 +430,7 @@ class Edit extends Form
     protected function extractLabelElement($field, $element)
     {
         $subLabelContent = null;
-        $labelContent = $field;
+        $labelContent    = $field;
 
         if (strstr($field, 'USD') || strstr($field, 'EUR')) {
             if (false !== strpos($field, ' ')) {
@@ -435,20 +439,20 @@ class Edit extends Form
         }
 
         if ($element) {
-            $label = $this->spin(function () use ($labelContent) {
+            $label = $this->spin(function () use ($element, $labelContent) {
                 return $element->find('css', sprintf('label:contains("%s")', $labelContent));
-            });
+            }, 10, sprintf('unable to find label %s in element : %s', $labelContent, $element->getHtml()));
         } else {
             $label = $this->spin(function () use ($labelContent) {
                 return $this->find('css', sprintf('label:contains("%s")', $labelContent));
-            });
+            }, 10, sprintf('unable to find label %s', $labelContent));
         }
 
         if (!$label) {
             $label = new \StdClass();
         }
 
-        $label->labelContent = $labelContent;
+        $label->labelContent    = $labelContent;
         $label->subLabelContent = $subLabelContent;
 
         return $label;
@@ -677,7 +681,7 @@ class Edit extends Form
         $fieldClasses = $field->getAttribute('class');
         if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $fieldClasses, $matches)) {
             $select2Selector = sprintf('.%s div.field-input > input', $matches[0]);
-            $script = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
+            $script          = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
             $this->getSession()->executeScript($script);
         }
 
@@ -1295,7 +1299,7 @@ class Edit extends Form
                 ->find('css', 'div.bar')
                 ->getAttribute('data-ratio');
 
-            if ($actualRatio . '%' !==  $ratio) {
+            if ($actualRatio . '%' !== $ratio) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'Expected to find ratio %s for %s:%s, found %s%%',
