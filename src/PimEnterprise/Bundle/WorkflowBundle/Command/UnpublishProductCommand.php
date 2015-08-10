@@ -43,8 +43,7 @@ class UnpublishProductCommand extends ContainerAwareCommand
         }
 
         $publishedProductManager = $this->getContainer()->get('pimee_workflow.manager.published_product');
-
-        $unpublishedProduct = $publishedProductManager->unpublish($product);
+        $publishedProductManager->unpublish($product);
 
         $output
             ->writeln(
