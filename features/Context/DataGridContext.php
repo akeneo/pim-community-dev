@@ -236,7 +236,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                     sprintf(
                         'Expecting column "%s" to contain "%s".',
                         $column,
-                        implode(',', $titleExpectation)
+                        $titleExpectation
                     )
                 );
             }

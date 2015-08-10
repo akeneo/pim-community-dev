@@ -22,9 +22,9 @@ interface RawFileStorerInterface
      * transforms it as a \Akeneo\Component\FileStorage\Model\FileInterface
      * and save it to the database.
      *
-     * @param \SplFileInfo $rawFile         file to store
-     * @param string       $destFsAlias     alias of the destination filesystem
-     * @param bool         $deleteRawFile   should the raw file be deleted once stored in the VFS or not ?
+     * @param \SplFileInfo $rawFile       file to store
+     * @param string       $destFsAlias   alias of the destination filesystem
+     * @param bool         $deleteRawFile should the raw file be deleted once stored in the VFS or not ?
      *
      * @throws FileTransferException
      * @throws FileRemovalException

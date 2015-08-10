@@ -80,13 +80,6 @@ services:
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
-    pim_versioning.serializer.normalizer.flat.media:
-        class: %pim_serializer.normalizer.flat.media.class%
-        arguments:
-            - '@pim_catalog.manager.media'
-        tags:
-            - { name: pim_versioning.serializer.normalizer, priority: 90 }
-
     pim_versioning.serializer.normalizer.flat.metric:
         class: %pim_serializer.normalizer.flat.metric.class%
         tags:

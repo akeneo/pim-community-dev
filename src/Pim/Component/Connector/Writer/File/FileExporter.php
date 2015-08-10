@@ -32,8 +32,8 @@ class FileExporter implements FileExporterInterface
     public function __construct(MountManager $mountManager, RawFileFetcherInterface $fileFetcher)
     {
         $this->mountManager = $mountManager;
-        $this->fileFetcher = $fileFetcher;
-        $this->localFs = new Filesystem();
+        $this->fileFetcher  = $fileFetcher;
+        $this->localFs      = new Filesystem();
     }
 
     /**

@@ -43,7 +43,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /**
      * @param Serializer     $serializer
      * @param ChannelManager $channelManager
-     * @param array          $mediaAttributeTypes
+     * @param string[]       $mediaAttributeTypes
      */
     public function __construct(
         Serializer $serializer,
@@ -161,7 +161,6 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     {
         $values = [];
         foreach ($product->getValues() as $value) {
-
             if (in_array(
                 $value->getAttribute()->getAttributeType(),
                 $this->mediaAttributeTypes

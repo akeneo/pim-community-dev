@@ -11,7 +11,6 @@ parameters:
     pim_catalog.manager.family.class:              Pim\Bundle\CatalogBundle\Manager\FamilyManager
     pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
     pim_catalog.manager.locale.class:              Pim\Bundle\CatalogBundle\Manager\LocaleManager
-    pim_catalog.manager.media.class:               Pim\Bundle\CatalogBundle\Manager\MediaManager
     pim_catalog.manager.product.class:             Pim\Bundle\CatalogBundle\Manager\ProductManager
     pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
@@ -57,14 +56,6 @@ services:
             - '@pim_catalog.repository.category'
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.category.class%
-
-    pim_catalog.manager.media:
-        class: %pim_catalog.manager.media.class%
-        arguments:
-            - '@pim_filesystem'
-            - %upload_dir%
-            - '@pim_catalog.factory.media'
-            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_catalog.manager.attribute:
         class: %pim_catalog.manager.attribute.class%

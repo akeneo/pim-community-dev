@@ -9,7 +9,6 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
@@ -75,9 +74,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     const POST_UPDATE = 'pim_base_connector.direct_to_db_writer.post_update';
 
-    /** @var MediaManager */
-    protected $mediaManager;
-
     /** @var DocumentManager */
     protected $documentManager;
 
@@ -106,7 +102,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
-     * @param MediaManager             $mediaManager
      * @param DocumentManager          $documentManager
      * @param PendingMassPersister     $pendingPersister
      * @param NormalizerInterface      $normalizer
@@ -116,7 +111,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param CacheClearer             $cacheClearer
      */
     public function __construct(
-        MediaManager $mediaManager,
         DocumentManager $documentManager,
         PendingMassPersister $pendingPersister,
         NormalizerInterface $normalizer,
@@ -125,7 +119,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $productClass,
         CacheClearer $cacheClearer
     ) {
-        $this->mediaManager     = $mediaManager;
         $this->documentManager  = $documentManager;
         $this->pendingPersister = $pendingPersister;
         $this->normalizer       = $normalizer;
@@ -142,8 +135,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     {
         $this->collection = $this->documentManager->getDocumentCollection($this->productClass);
 
-        $productsToInsert = array();
-        $productsToUpdate = array();
+        $productsToInsert = [];
+        $productsToUpdate = [];
         foreach ($products as $product) {
             if (null === $product->getId()) {
                 $productsToInsert[] = $product;
@@ -152,8 +145,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
                 $productsToUpdate[] = $product;
             }
         }
-
-        $this->mediaManager->handleAllProductsMedias($products);
 
         $this->eventDispatcher->dispatch(self::PRE_INSERT, new GenericEvent($productsToInsert));
         $this->eventDispatcher->dispatch(self::PRE_UPDATE, new GenericEvent($productsToUpdate));
@@ -239,7 +230,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**

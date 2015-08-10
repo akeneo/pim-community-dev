@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * Normalizes a file when normalizes a product value as mongodb_json
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FileNormalizer implements NormalizerInterface
@@ -19,7 +19,11 @@ class FileNormalizer implements NormalizerInterface
      */
     public function normalize($file, $format = null, array $context = [])
     {
-        return ['filename' => $file->getKey(), 'originalFilename' => $file->getOriginalFilename()];
+        return [
+            'id'               => $file->getId(),
+            'key'              => $file->getKey(),
+            'originalFilename' => $file->getOriginalFilename()
+        ];
     }
 
     /**

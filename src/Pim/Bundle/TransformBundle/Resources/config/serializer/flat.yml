@@ -14,8 +14,6 @@ parameters:
 
     pim_serializer.normalizer.flat.collection.class:        Pim\Bundle\TransformBundle\Normalizer\Flat\CollectionNormalizer
     pim_serializer.normalizer.flat.datetime.class:          Pim\Bundle\TransformBundle\Normalizer\Flat\DateTimeNormalizer
-    #TODO: remove it
-    pim_serializer.normalizer.flat.media.class:             Pim\Bundle\TransformBundle\Normalizer\Flat\MediaNormalizer
     pim_serializer.normalizer.flat.metric.class:            Pim\Bundle\TransformBundle\Normalizer\Flat\MetricNormalizer
     pim_serializer.normalizer.flat.option.class:            Pim\Bundle\TransformBundle\Normalizer\Flat\AttributeOptionNormalizer
     pim_serializer.normalizer.flat.price.class:             Pim\Bundle\TransformBundle\Normalizer\Flat\PriceNormalizer
@@ -125,14 +123,6 @@ services:
 
     pim_serializer.normalizer.flat.datetime:
         class: %pim_serializer.normalizer.flat.datetime.class%
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    # TODO: should be deleted
-    pim_serializer.normalizer.flat.media:
-        class: %pim_serializer.normalizer.flat.media.class%
-        arguments:
-            - '@pim_catalog.manager.media'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

@@ -18,9 +18,10 @@ interface FileExporterInterface
      * @param string $localPathname
      * @param string $storageAlias
      *
-     * @return bool
      * @throws \LogicException
      * @throws FileTransferException
+     *
+     * @return bool
      */
     public function export($key, $localPathname, $storageAlias);
 }

@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-
 /**
  * Interface for fixture loader configuration
  *
@@ -75,11 +73,4 @@ interface ConfigurationRegistryInterface
      * @return \Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface
      */
     public function getReader($name, $extension);
-
-    /**
-     * Return the MediaManager
-     *
-     * @return MediaManager
-     */
-    public function getMediaManager();
 }

@@ -21,13 +21,13 @@ class FileFactory implements FileFactoryInterface
     protected $fileClass;
 
     /**
-     * @param PathGeneratorInterface    $pathGenerator
-     * @param string                    $fileClass
+     * @param PathGeneratorInterface $pathGenerator
+     * @param string                 $fileClass
      */
     public function __construct(PathGeneratorInterface $pathGenerator, $fileClass)
     {
         $this->pathGenerator = $pathGenerator;
-        $this->fileClass = $fileClass;
+        $this->fileClass     = $fileClass;
     }
 
     /**
