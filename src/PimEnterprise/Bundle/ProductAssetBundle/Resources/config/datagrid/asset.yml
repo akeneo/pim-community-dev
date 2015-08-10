@@ -91,6 +91,13 @@ datagrid:
                 updatedAt:
                     type:      date
                     data_name: asset.updatedAt
+                scope:
+                    type:      product_scope
+                    label:     Scope
+                    data_name: ~
+                    options:
+                        field_options:
+                            choices: '@pim_catalog.manager.channel->getChannelChoices'
         actions:
             edit:
                 type:      tab-redirect
