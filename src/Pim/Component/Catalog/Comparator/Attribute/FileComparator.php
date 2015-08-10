@@ -48,7 +48,8 @@ class FileComparator implements ComparatorInterface
 
         if (isset($data['data']['filePath']) &&
             isset($originals['data']['filePath']) &&
-            $data['data']['filePath'] === $originals['data']['filePath']) {
+            $data['data']['filePath'] === $originals['data']['filePath']
+        ) {
             return null;
         }
 

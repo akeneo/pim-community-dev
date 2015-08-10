@@ -229,7 +229,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      */
     protected function parseConfiguration(ConfigCache $configCache)
     {
-        $config = [];
+        $config    = [];
         $resources = [];
         foreach ($this->bundles as $class) {
             $reflection = new \ReflectionClass($class);
