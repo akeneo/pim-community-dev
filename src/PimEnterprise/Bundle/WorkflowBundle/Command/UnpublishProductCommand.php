@@ -3,6 +3,9 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,8 +16,6 @@ use Symfony\Component\Validator\Constraints\Null;
  * Unpublishes a product
  *
  * @author Yann Simon
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class UnpublishProductCommand extends ContainerAwareCommand
 {
@@ -35,15 +36,21 @@ class UnpublishProductCommand extends ContainerAwareCommand
         $identifier = $input->getArgument('identifier');
         $product    = $this->getProduct($identifier);
 
-        if($product === null)
-        {
+        if (null === $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));
 
             return 1;
         }
 
-        $publishedProductManager = $this->getContainer()->get('pimee_workflow.manager.published_product');
-        $publishedProductManager->unpublish($product);
+        $publishedProduct = $this->getPublishedProduct($product);
+        if (null === $publishedProduct) {
+            $output->writeln(sprintf('<error>published product with identifier "%s" not found<error>', $identifier));
+
+            return 1;
+        }
+
+        $publishedProductManager = $this->getPublishedProductManager();
+        $publishedProductManager->unpublish($publishedProduct);
 
         $output
             ->writeln(
@@ -65,5 +72,33 @@ class UnpublishProductCommand extends ContainerAwareCommand
         $repository = $this->getContainer()->get('pim_catalog.repository.product');
 
         return $repository->findOneByIdentifier($identifier);
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return PublishedProductInterface|null
+     */
+    protected function getPublishedProduct(ProductInterface $product)
+    {
+        $repository = $this->getPublishedProductRepository();
+
+        return $repository->findOneByOriginalProduct($product);
+    }
+
+    /**
+     * @return PublishedProductRepositoryInterface
+     */
+    protected function getPublishedProductRepository()
+    {
+        return $this->getContainer()->get('pimee_workflow.repository.published_product');
+    }
+
+    /**
+     * @return PublishedProductManager
+     */
+    protected function getPublishedProductManager()
+    {
+        return $this->getContainer()->get('pimee_workflow.manager.published_product');
     }
 }
