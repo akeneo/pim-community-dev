@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.datagrid.extension.formatter.property.asset.thumbnail_property.class: PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Extension\Formatter\Property\Asset\ThumbnailProperty
+    pimee_product_asset.datagrid.extension.formatter.property.asset.thumbnail_property.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\Asset\ThumbnailProperty
 
 services:
     pimee_product_asset.datagrid.extension.formatter.property.asset.thumbnail_property:

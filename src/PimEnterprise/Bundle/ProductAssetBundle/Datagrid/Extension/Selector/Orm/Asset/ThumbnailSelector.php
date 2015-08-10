@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Extension\Selector\Orm\Asset;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Selector\Orm\Asset;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;

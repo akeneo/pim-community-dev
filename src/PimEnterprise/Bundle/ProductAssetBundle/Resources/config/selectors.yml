@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.datagrid.extension.selector.orm.asset_thumbnail.class: PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Extension\Selector\Orm\Asset\ThumbnailSelector
+    pimee_product_asset.datagrid.extension.selector.orm.asset_thumbnail.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Selector\Orm\Asset\ThumbnailSelector
 
 services:
     pimee_product_asset.datagrid.extension.selector.orm.asset_thumbnail:

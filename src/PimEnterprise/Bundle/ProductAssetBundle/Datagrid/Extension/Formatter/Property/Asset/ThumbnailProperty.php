@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Extension\Formatter\Property\Asset;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\Asset;
 
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
 
