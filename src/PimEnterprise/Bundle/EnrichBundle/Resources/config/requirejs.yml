@@ -3,10 +3,16 @@ config:
         pimee/product-edit-form/send-for-approval:
             routes:
                 ready: pimee_workflow_product_draft_ready
+        pim/fetcher-registry:
+            fetchers:
+                permission:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pimee_security_permissions_rest
 
     paths:
         pimee/manage-permissions:         pimenterpriseenrich/js/manage-permissions
-        pimee/permission-manager:         pimenterpriseenrich/js/product/permission-manager
         pimee/product-draft-fetcher:      pimenterpriseenrich/js/fetcher/product-draft-fetcher
         pimee/published-product-manager:  pimenterpriseenrich/js/product/published-product-manager
         pimee/rule-manager:               pimenterpriseenrich/js/product/rule-manager

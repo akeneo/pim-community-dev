@@ -7,10 +7,10 @@ define(
         'backbone',
         'pim/form',
         'pim/field-manager',
-        'pimee/permission-manager',
+        'pim/fetcher-registry',
         'oro/mediator'
     ],
-    function ($, _, Backbone, BaseForm, FieldManager, PermissionManager, mediator) {
+    function ($, _, Backbone, BaseForm, FieldManager, FetcherRegistry, mediator) {
         return BaseForm.extend({
             configure: function () {
                 this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
@@ -19,8 +19,7 @@ define(
             },
             addExtension: function (event) {
                 event.promises.push(
-                    PermissionManager.getPermissions().done(_.bind(function (permissions) {
-                        var deferred = $.Deferred();
+                    FetcherRegistry.getFetcher('permission').fetchAll().then(_.bind(function (permissions) {
                         var field = event.field;
 
                         if (field.attribute.localizable) {
@@ -30,9 +29,8 @@ define(
                                 field.setEditable(false);
                             }
                         }
-                        deferred.resolve();
 
-                        return deferred.promise();
+                        return event;
                     }, this))
                 );
 

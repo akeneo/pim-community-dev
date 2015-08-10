@@ -51,10 +51,10 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
         EventDispatcherInterface $eventDispatcher,
         $ruleDefinitionClass
     ) {
+        $this->objectManager       = $objectManager;
+        $this->optionsResolver     = $optionsResolver;
+        $this->eventDispatcher     = $eventDispatcher;
         $this->ruleDefinitionClass = $ruleDefinitionClass;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->objectManager = $objectManager;
-        $this->optionsResolver = $optionsResolver;
     }
 
     /**

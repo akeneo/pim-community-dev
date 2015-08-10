@@ -10,7 +10,7 @@ define(
         'oro/navigation',
         'oro/loading-mask',
         'pim/product-manager',
-        'pimee/permission-manager',
+        'pim/fetcher-registry',
         'pimee/published-product-manager',
         'routing',
         'pim/dialog'
@@ -24,7 +24,7 @@ define(
         Navigation,
         LoadingMask,
         ProductManager,
-        PermissionManager,
+        FetcherRegistry,
         PublishedProductManager,
         Routing,
         Dialog
@@ -39,17 +39,11 @@ define(
             configure: function () {
                 this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
 
-                return $.when(
-                    PermissionManager.getPermissions().then(_.bind(function (permissions) {
-                        this.permissions = permissions;
-                    }, this)),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
                 var categories = this.getFormData().categories;
-                var isOwner = !categories.length ||
-                    !!_.intersection(this.permissions.categories.OWN_PRODUCTS, categories).length;
+                var isOwner = this.getFormData().meta.is_owner;
 
                 if (!isOwner) {
                     return this.remove();

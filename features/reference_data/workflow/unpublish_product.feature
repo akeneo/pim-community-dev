@@ -17,7 +17,6 @@ Feature: Unpublish a product
       | sku          | main_color | main_fabric             |
       | red-heels    | Red        | Spandex, Neoprene, Wool |
       | yellow-heels | Yellow     | Wool                    |
-    And I am logged in as "Julia"
 
   Scenario: Successfully unpublish a product with reference data
     And I am on the "red-heels" published show page
