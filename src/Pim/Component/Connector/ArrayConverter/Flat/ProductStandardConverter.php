@@ -158,35 +158,44 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
+        $options = $this->prepareOptions($options);
+        $mappedItem = $this->mapFields($item, $options);
+        $mappedItem = $this->defineDefaultValues($mappedItem, $options['default_values']);
+        $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
+        $this->validateItem($filteredItem, $options['with_required_sku']);
+        $mergedItem = $this->columnsMerger->merge($filteredItem);
+        $convertedItem = $this->convertItem($mergedItem);
+
+        return $convertedItem;
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function prepareOptions(array $options)
+    {
         $options['with_required_sku'] = isset($options['with_required_sku']) ? $options['with_required_sku'] : true;
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
 
-        $mappedItem = $item;
+        return $options;
+    }
+
+    /**
+     * @param array $item
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function mapFields(array $item, array $options)
+    {
         if (isset($options['mapping'])) {
-            $mappedItem = $this->columnsMapper->map($item, $options['mapping']);
+            $item = $this->columnsMapper->map($item, $options['mapping']);
         }
 
-        $mappedItem = $this->defineDefaultValues($mappedItem, $options['default_values']);
-        $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
-        $this->validate($filteredItem, $options['with_required_sku']);
-
-        $mergedItems = $this->columnsMerger->merge($filteredItem);
-
-        $result = [];
-        foreach ($mergedItems as $column => $value) {
-            if ($this->fieldConverter->supportsColumn($column)) {
-                $value = $this->fieldConverter->convert($column, $value);
-            } else {
-                $value = $this->convertValue($column, $value);
-            }
-
-            if (null !== $value) {
-                $result = $this->mergeValueToResult($result, $value);
-            }
-        }
-
-        return $result;
+        return $item;
     }
 
     /**
@@ -224,6 +233,29 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         }
 
         return $mappedItem;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return array
+     */
+    protected function convertItem(array $item)
+    {
+        $convertedItem = [];
+        foreach ($item as $column => $value) {
+            if ($this->fieldConverter->supportsColumn($column)) {
+                $value = $this->fieldConverter->convert($column, $value);
+            } else {
+                $value = $this->convertValue($column, $value);
+            }
+
+            if (null !== $value) {
+                $convertedItem = $this->mergeValueToResult($convertedItem, $value);
+            }
+        }
+
+        return $convertedItem;
     }
 
     /**
@@ -279,7 +311,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      *
      * @throws ArrayConversionException
      */
-    protected function validate(array $item, $withRequiredSku)
+    protected function validateItem(array $item, $withRequiredSku)
     {
         $requiredFields = $withRequiredSku ? [$this->attrColumnsResolver->resolveIdentifierField()] : [];
         $this->validateRequiredFields($item, $requiredFields);
@@ -300,16 +332,6 @@ class ProductStandardConverter implements StandardArrayConverterInterface
                 throw new ArrayConversionException(
                     sprintf(
                         'Field "%s" is expected, provided fields are "%s"',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-
-            if ('' === $item[$requiredField]) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" must be filled',
                         $requiredField,
                         implode(', ', array_keys($item))
                     )
