@@ -140,14 +140,14 @@ class Form extends Base
     public function getFormTab($tab)
     {
         try {
-            $elt = $this->spin(function () use ($tab) {
+            $node = $this->spin(function () use ($tab) {
                 return $this->getElement('Form tabs')->find('css', sprintf('a:contains("%s")', $tab));
             }, 5);
         } catch (\Exception $e) {
-            $elt = null;
+            $node = null;
         }
 
-        return $elt;
+        return $node;
     }
 
     /**
