@@ -29,7 +29,7 @@
     {% endset %}
 
     {% set subtitle %}
-        {% include 'PimUIBundle::_locale_switcher.html.twig' with {
+        {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
             'locales':           locales,
             'currentLocaleCode': dataLocale.code,
             'routeName':         'pimee_product_asset_index'
