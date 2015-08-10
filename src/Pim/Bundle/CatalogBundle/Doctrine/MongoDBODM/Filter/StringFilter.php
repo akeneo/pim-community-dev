@@ -146,16 +146,23 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     protected function checkValue($field, $value)
     {
-        if (!is_string($value) && !is_array($value)) {
-            throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
-        }
-
         if (is_array($value)) {
-            foreach ($value as $stringValue) {
-                if (!is_string($stringValue)) {
-                    throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
-                }
+            foreach ($value as $scalarValue) {
+                $this->checkScalarValue($field, $scalarValue);
             }
+        } else {
+            $this->checkScalarValue($field, $value);
+        }
+    }
+
+    /**
+     * @param string $field
+     * @param mixed  $value
+     */
+    protected function checkScalarValue($field, $value)
+    {
+        if (!is_string($value) && null !== $value) {
+            throw InvalidArgumentException::stringExpected($field, 'filter', 'string', gettype($value));
         }
     }
 
