@@ -46,3 +46,15 @@ connector:
                     class: "%pim_enrich.step.mass_edit.step.class%"
                     services:
                         cleaner: pim_enrich.connector.item.mass_edit.temporary_file_cleaner
+        csv_published_product_quick_export:
+            title: csv_published_product_quick_export
+            type: quick_export
+            steps:
+                perform:
+                    title: csv_published_product_quick_export
+                    services:
+                        reader:    pimee_workflow.connector.reader.mass_edit.published_product
+                        processor: pim_enrich.connector.processor.quick_export.product_to_flat_array
+                        writer:    pim_base_connector.writer.file.csv_product
+                    parameters:
+                        batch_size: 1000

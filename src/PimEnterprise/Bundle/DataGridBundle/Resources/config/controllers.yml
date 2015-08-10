@@ -1,10 +1,12 @@
 services:
     pimee_datagrid.controller.published_product_export:
         class: %pim_datagrid.controller.product_export.class%
-        parent: pim_datagrid.controller.export
         scope: request
         arguments:
-            - '@pimee_workflow.repository.published_product'
-            - '@pim_catalog.manager.locale'
-            - '@pim_catalog.context.catalog'
-            - '@pim_datagrid.extension.mass_action.util.product_fields_builder'
+            - '@request'
+            - '@pim_datagrid.extension.mass_action.dispatcher'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_import_export.repository.job_instance'
+            - '@security.token_storage'
+            - '@pim_connector.launcher.simple_job_launcher'
+            - '@oro_datagrid.datagrid.manager'

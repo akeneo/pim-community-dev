@@ -19,3 +19,13 @@ jobs:
         alias:     unpublish_product
         label:     Mass unpublish products
         type:      mass_edit
+    csv_published_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: csv_published_product_quick_export
+        label: CSV published product quick export
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/published-products-quick-export.csv
