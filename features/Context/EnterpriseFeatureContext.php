@@ -437,11 +437,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $popoverContent = $this->getMainContext()->spin(function () use ($search) {
             return $this->getSession()->getPage()
                 ->find('css', sprintf('.popover .popover-content:contains("%s")', $search));
-        });
-
-        if (!$popoverContent) {
-            throw $this->createExpectationException(sprintf('The popover does not contain %s', $search));
-        }
+        }, 30, sprintf('The popover does not contain %s', $search));
     }
 
     /**

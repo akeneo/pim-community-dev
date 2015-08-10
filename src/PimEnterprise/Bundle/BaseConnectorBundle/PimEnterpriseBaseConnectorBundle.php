@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\BaseConnectorBundle;
 
-use Akeneo\Bundle\BatchBundle\Connector\Connector;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Enterprise BaseConnectorBundle
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class PimEnterpriseBaseConnectorBundle extends Connector
+class PimEnterpriseBaseConnectorBundle extends Bundle
 {
     /**
      * {@inheritdoc}

@@ -28,8 +28,8 @@ define(
                 this.currentSource = _.first(this.sources);
                 this.listenTo(mediator, 'pim_enrich:form:draft:show_working_copy', this.showWorkingCopy);
 
-                this.onExtensions('source_switcher:render:before', this.onSourceSwitcherRender);
-                this.onExtensions('source_switcher:source_change', this.onSourceChange);
+                this.onExtensions('pim_enrich:form:source_switcher:render:before', this.onSourceSwitcherRender);
+                this.onExtensions('pim_enrich:form:source_switcher:source_change', this.onSourceChange);
 
                 return Copy.prototype.configure.apply(this, arguments);
             },

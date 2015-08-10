@@ -179,12 +179,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $stepExecution->incrementSummaryInfo('proposal_skipped')->shouldBeCalled();
 
-        $this
-            ->shouldThrow(new InvalidItemException('No diff between current product and this proposal', $values['original_values']))
-            ->during(
-                'process',
-                [$values['original_values']]
-            );
+        $this->process($values['original_values'])->shouldReturn(null);
     }
 
     function it_skips_a_proposal_when_product_is_invalid(

@@ -18,7 +18,6 @@ Feature: Publish many products at once
       | red-heels       | Red        | Spandex, Neoprene, Wool |
       | blue-sneakers   | Blue       | Nylon                   |
       | yellow-sneakers | Yellow     | Nylon                   |
-    And I am logged in as "Julia"
 
   Scenario: Successfully publish several products with reference data
     Given I am on the published index page

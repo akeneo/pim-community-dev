@@ -126,7 +126,18 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
 
             if (isset($data['result'])) {
-                $productDraft->setChanges(json_decode($data['result'], true));
+                $changes = json_decode($data['result'], true);
+                if (null === $changes) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Draft changeset for product "%s" proposed by "%s" is not valid JSON',
+                            $data['product'],
+                            $data['author']
+                        )
+                    );
+                }
+
+                $productDraft->setChanges($changes);
             }
 
             $manager->persist($productDraft);

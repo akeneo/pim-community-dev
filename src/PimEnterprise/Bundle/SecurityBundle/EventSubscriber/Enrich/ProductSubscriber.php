@@ -16,8 +16,8 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Product listener used to handle permissions.
