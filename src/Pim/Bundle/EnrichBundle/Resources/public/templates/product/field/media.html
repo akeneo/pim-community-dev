@@ -10,6 +10,9 @@
             </div>
         <% } else { %>
             <div class="preview">
+                <% mediaThumbnailUrl = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'thumbnail_small') %>
+                <% mediaPreviewUrl   = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'preview') %>
+                <% mediaDownloadUrl  = mediaUrlGenerator.getMediaDownloadUrl(value.data.filePath) %>
                 <% if ('pim_catalog_image' === attribute.type && null != mediaThumbnailUrl) { %>
                     <div class="file"><img src="<%= mediaThumbnailUrl %>"/></div>
                 <% } else { %>
