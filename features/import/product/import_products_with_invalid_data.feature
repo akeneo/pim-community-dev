@@ -213,7 +213,7 @@ Feature: Execute a job
       | name-en_US | Bic Core 148 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
-  Scenario: Products with empty SKU makes the import fails
+  Scenario: Skip products with empty SKU
     Given the following CSV file to import:
       """
       sku;name-en_US
@@ -227,9 +227,9 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "Status: FAILED"
-    And I should see "Attribute or field \"sku\" expects a string as data, \"NULL\" given"
-    And there should be 0 product
+    And I should see "The identifier must be filled"
+    And I should see "skipped 3"
+    And there should be 1 product
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip products with a SKU that has just been created

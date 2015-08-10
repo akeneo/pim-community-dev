@@ -21,7 +21,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see " The option \"comment-fr_FR-mobile\" does not exist."
+    And I should see " The field \"comment-fr_FR-mobile\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3374
   Scenario: Skip import with a not expected channel for a global attribute
@@ -36,7 +36,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see " The option \"comment-mobile\" does not exist."
+    And I should see " The field \"comment-mobile\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3375
   Scenario: Skip import with a not expected locale for a global attribute
@@ -51,7 +51,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see " The option \"comment-fr_FR\" does not exist."
+    And I should see " The field \"comment-fr_FR\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3372
   Scenario: Skip import with a not available locale for a localizable attribute
@@ -66,7 +66,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see " The option \"name-fr_CA\" does not exist."
+    And I should see " The field \"name-fr_CA\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3370
   Scenario: Skip import with a not existing channel for a scopable attribute
@@ -81,7 +81,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see " The option \"description-en_US-noexistingchannel\" does not exist."
+    And I should see " The field \"description-en_US-noexistingchannel\" does not exist"
 
 
   @jira https://akeneo.atlassian.net/browse/PIM-3312
@@ -97,7 +97,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see " The option \"description-en_US-wrongchannel\" does not exist."
+    Then I should see " The field \"description-en_US-wrongchannel\" does not exist"
     And I should see "FAILED"
     And there should be 0 product
 
@@ -114,7 +114,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see " The option \"price-FCFA\" does not exist."
+    Then I should see " The field \"price-FCFA\" does not exist"
     And I should see "FAILED"
     And there should be 0 product
 
@@ -131,7 +131,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The option \"description-wronglocale-ecommerce\" does not exist."
+    Then I should see "The field \"description-wronglocale-ecommerce\" does not exist"
     And I should see "FAILED"
     And there should be 0 product
 
@@ -152,7 +152,7 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The option \"locale_specific_attribute-fr_FR\" does not exist."
+    Then I should see "The field \"locale_specific_attribute-fr_FR\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3369
   Scenario: Skip import with a not available locale for channel of a localizable attribute
@@ -167,4 +167,18 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see " The option \"description-fr_FR-print\" does not exist."
+    And I should see " The field \"description-fr_FR-print\" does not exist"
+
+  Scenario: Skip import with many not existing fields
+    Given the following CSV file to import:
+      """
+      sku;unknownfield1;unknownfield2
+      SKU-001;"data 1";"data 2"
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "Status: FAILED"
+    And I should see " The fields \"unknownfield1, unknownfield2\" do not exist"

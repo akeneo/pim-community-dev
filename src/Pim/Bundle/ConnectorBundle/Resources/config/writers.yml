@@ -1,4 +1,5 @@
 parameters:
+    pim_connector.writer.dummy_item.class:                         Pim\Component\Connector\Writer\DummyItemWriter
     pim_connector.writer.doctrine.base.class:                      Pim\Component\Connector\Writer\Doctrine\BaseWriter
     pim_connector.writer.doctrine.product.class:                   Pim\Component\Connector\Writer\Doctrine\ProductWriter
     pim_connector.writer.doctrine.product_association.class:       Pim\Component\Connector\Writer\Doctrine\ProductAssociationWriter
@@ -7,6 +8,11 @@ parameters:
     pim_connector.writer.file.media_exporter_path_generator.class: Pim\Component\Connector\Writer\File\MediaExporterPathGenerator
 
 services:
+    # Dummy writer
+    pim_connector.writer.dummy_item:
+        class: %pim_connector.writer.dummy_item.class%
+
+    # Database writers
     pim_connector.writer.doctrine.attribute_option:
         class: %pim_connector.writer.doctrine.base.class%
         arguments:

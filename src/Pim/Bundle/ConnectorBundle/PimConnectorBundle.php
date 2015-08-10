@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\ConnectorBundle;
 
-use Akeneo\Bundle\BatchBundle\Connector\Connector;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterConverterPass;
 use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Connector bundle
@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimConnectorBundle extends Connector
+class PimConnectorBundle extends Bundle
 {
     /**
      * {@inheritdoc}
