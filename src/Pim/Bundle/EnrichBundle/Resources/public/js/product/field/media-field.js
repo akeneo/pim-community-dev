@@ -17,9 +17,10 @@ define([
         'pim/dialog',
         'oro/mediator',
         'oro/navigation',
+        'pim/media-url-generator',
         'jquery.slimbox'
     ],
-    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, Navigation) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, Navigation, MediaUrlGenerator) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             events: {
@@ -34,47 +35,22 @@ define([
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
-                        templateContext.mediaDownloadUrl  = this.getMediaDownloadUrl(templateContext.value.data);
-                        templateContext.mediaThumbnailUrl = this.getMediaShowUrl(
-                            templateContext.value.data, 'thumbnail_small'
-                        );
-                        templateContext.mediaPreviewUrl   = this.getMediaShowUrl(templateContext.value.data, 'preview');
                         templateContext.inUpload          = !this.isReady();
+                        templateContext.mediaUrlGenerator = MediaUrlGenerator;
+
                         return templateContext;
                     }, this));
             },
-            getMediaShowUrl: function (value, filter) {
-                if (value && value.filePath) {
-                    var filename = encodeURIComponent(value.filePath);
-                    return Routing.generate('pim_enrich_media_show', {
-                        filename: filename,
-                        filter: filter
-                    });
-                }
 
-                return null;
-            },
-            getMediaDownloadUrl: function (value) {
-                if (value && value.filePath) {
-                    var filename = encodeURIComponent(value.filePath);
-                    return Routing.generate('pim_enrich_media_download', {
-                        filename: filename
-                    });
-                }
-
-                return null;
-            },
             renderCopyInput: function (value) {
                 return this.getTemplateContext()
                     .then(_.bind(function (context) {
                         var copyContext = $.extend(true, {}, context);
                         copyContext.value = value;
-                        copyContext.mediaDownloadUrl  = this.getMediaDownloadUrl(value.data);
-                        copyContext.mediaThumbnailUrl = this.getMediaShowUrl(value.data, 'thumbnail_small');
-                        copyContext.mediaPreviewUrl   = this.getMediaShowUrl(value.data, 'preview');
                         copyContext.context.locale    = value.locale;
                         copyContext.context.scope     = value.scope;
                         copyContext.editMode          = 'view';
+                        copyContext.mediaUrlGenerator = MediaUrlGenerator;
 
                         return this.renderInput(copyContext);
                     }, this));
