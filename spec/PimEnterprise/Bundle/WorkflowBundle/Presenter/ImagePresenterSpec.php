@@ -2,8 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ImagePresenterSpec extends ObjectBehavior
@@ -19,8 +21,8 @@ class ImagePresenterSpec extends ObjectBehavior
     }
 
     function it_supports_media(
-        Model\ProductValueInterface $value,
-        Model\AttributeInterface $attribute
+        ProductValueInterface $value,
+        AttributeInterface $attribute
     ) {
         $attribute->getAttributeType()->willReturn('pim_catalog_image');
         $value->getAttribute()->willReturn($attribute);
@@ -30,32 +32,31 @@ class ImagePresenterSpec extends ObjectBehavior
 
     function it_presents_old_and_new_images_side_by_side(
         $generator,
-        Model\ProductValueInterface $value,
-        Model\ProductMedia $media
+        ProductValueInterface $value,
+        FileInterface $media
     ) {
-        $file2 = new \SplFileInfo(__FILE__);
-
         $value->getMedia()->willReturn($media);
-        $media->getFilename()->willReturn(__FILE__);
-        $media->getOriginalFilename()->willReturn('original_bar.jpg');
+        $media->getKey()->willReturn('key/of/the/media.jpg');
+        $media->getHash()->willReturn('54qsfda8e7r54f');
+        $media->getOriginalFilename()->willReturn('original_foo.jpg');
 
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => __FILE__], true)
-            ->willReturn(__FILE__);
+            ->generate(
+                'pim_enrich_media_show',
+                ['filename' => urlencode('key/of/the/media.jpg'), 'filter' => 'thumbnail']
+            )
+            ->willReturn('url/of/the/media.jpg');
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => __FILE__, 'filter' => 'thumbnail'])
-            ->willReturn(__FILE__);
-        $generator
-            ->generate('pim_enrich_media_show', ['filename' => $file2->getFilename()], true)
-            ->willReturn($file2->getPath());
-        $generator
-            ->generate('pim_enrich_media_show', ['filename' => $file2->getFilename(), 'filter' => 'thumbnail'])
-            ->willReturn($file2->getPath());
+            ->generate(
+                'pim_enrich_media_show',
+                ['filename' => urlencode('key/of/the/change.jpg'), 'filter' => 'thumbnail']
+            )
+            ->willReturn('url/of/the/change.jpg');
 
         $change = [
             'data' => [
-                'filename' => $file2->getFilename(),
-                'filePath' => $file2->getPath(),
+                'hash' => '98az7er654ert4s',
+                'filePath' => 'key/of/the/change.jpg',
                 'originalFilename' => 'change_bar.jpg',
             ]
         ];
@@ -64,54 +65,56 @@ class ImagePresenterSpec extends ObjectBehavior
             ->present($value, $change)
             ->shouldReturn(sprintf(
                 '<ul class="diff">' .
-                '<li class="base file"><img src="%s" title="original_bar.jpg" /></li>' .
+                '<li class="base file"><img src="%s" title="original_foo.jpg" /></li>' .
                 '<li class="changed file"><img src="%s" title="change_bar.jpg" /></li>' .
                 '</ul>',
-                __FILE__,
-                $file2->getPath()
+                'url/of/the/media.jpg',
+                'url/of/the/change.jpg'
             ));
     }
 
     function it_presents_only_old_image_if_no_new_one_is_provided(
         $generator,
-        Model\ProductValueInterface $value,
-        Model\ProductMedia $media
+        ProductValueInterface $value,
+        FileInterface $media
     ) {
-        $file = new \SplFileInfo(__FILE__);
         $value->getMedia()->willReturn($media);
-        $media->getFilename()->willReturn($file->getFilename());
-        $media->getOriginalFilename()->willReturn('bar.jpg');
+        $media->getKey()->willReturn('key/of/the/media.jpg');
+        $media->getHash()->willReturn('54qsfda8e7r54f');
+        $media->getOriginalFilename()->willReturn('original_foo.jpg');
 
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename()], true)
-            ->willReturn($file->getPath());
-        $generator
-            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename(), 'filter' => 'thumbnail'])
-            ->willReturn('/media/uploaded_bar.jpg');
+            ->generate(
+                'pim_enrich_media_show',
+                ['filename' => urlencode('key/of/the/media.jpg'), 'filter' => 'thumbnail']
+            )
+            ->willReturn('url/of/the/media.jpg');
 
         $this->present($value, ['data' => []])->shouldReturn(
             '<ul class="diff">' .
-            '<li class="base file"><img src="/media/uploaded_bar.jpg" title="bar.jpg" /></li>' .
+            '<li class="base file"><img src="url/of/the/media.jpg" title="original_foo.jpg" /></li>' .
             '</ul>'
         );
     }
 
     function it_presents_only_new_image_if_there_is_no_old_one(
         $generator,
-        Model\ProductValueInterface $value
+        ProductValueInterface $value
     ) {
-        $file = new \SplFileInfo(__FILE__);
         $value->getMedia()->willReturn(null);
 
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => $file->getFilename(), 'filter' => 'thumbnail'])
-            ->willReturn('/media/bar.jpg');
+            ->generate(
+                'pim_enrich_media_show',
+                ['filename' => urlencode('key/of/the/change.png'), 'filter' => 'thumbnail']
+            )
+            ->willReturn('url/of/the/change.png');
 
         $change = [
             'data' => [
-                'filename' => $file->getFilename(),
-                'filePath' => $file->getPath(),
-                'originalFilename' => 'original_bar.jpg',
+                'hash' => '98az7er654ert4s',
+                'filePath' => 'key/of/the/change.png',
+                'originalFilename' => 'change_foo.png',
             ]
         ];
 
@@ -119,7 +122,7 @@ class ImagePresenterSpec extends ObjectBehavior
             ->present($value, $change)
             ->shouldReturn(
                 '<ul class="diff">' .
-                    '<li class="changed file"><img src="/media/bar.jpg" title="original_bar.jpg" /></li>' .
+                    '<li class="changed file"><img src="url/of/the/change.png" title="change_foo.png" /></li>' .
                 '</ul>'
             );
     }
