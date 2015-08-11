@@ -119,12 +119,35 @@ class Form extends Base
      */
     public function getTabs()
     {
-        $tabs = $this->find('css', $this->elements['Tabs']['css']);
+        $tabs = $this->spin(function () {
+            return $this->find('css', $this->elements['Tabs']['css']);
+        });
+
         if (!$tabs) {
             $tabs = $this->getElement('Oro tabs');
         }
 
         return $tabs->findAll('css', 'a');
+    }
+
+    /**
+     * Get the form tab containg $tab text
+     *
+     * @param string $tab
+     *
+     * @return NodeElement|null
+     */
+    public function getFormTab($tab)
+    {
+        try {
+            $node = $this->spin(function () use ($tab) {
+                return $this->getElement('Form tabs')->find('css', sprintf('a:contains("%s")', $tab));
+            }, 5);
+        } catch (\Exception $e) {
+            $node = null;
+        }
+
+        return $node;
     }
 
     /**

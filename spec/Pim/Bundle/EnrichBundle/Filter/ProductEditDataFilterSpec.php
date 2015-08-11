@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
@@ -27,7 +28,7 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_filters_non_values_data_when_not_granted($securityFacade)
+    function it_filters_non_values_data_when_not_granted($securityFacade, ProductInterface $product)
     {
         $data = [
             'family'        => 'some family',
@@ -40,10 +41,10 @@ class ProductEditDataFilterSpec extends ObjectBehavior
 
         $securityFacade->isGranted(Argument::any())->willReturn(false);
 
-        $this->filterCollection($data, null)->shouldReturn(['values' => []]);
+        $this->filterCollection($data, null, ['product' => $product])->shouldReturn(['values' => []]);
     }
 
-    function it_does_not_filters_non_values_data_when_granted($securityFacade)
+    function it_does_not_filters_non_values_data_when_granted($securityFacade, ProductInterface $product)
     {
         $data = [
             'family'        => 'some family',
@@ -56,7 +57,7 @@ class ProductEditDataFilterSpec extends ObjectBehavior
 
         $securityFacade->isGranted(Argument::any())->willReturn(true);
 
-        $this->filterCollection($data, null)->shouldReturn($data);
+        $this->filterCollection($data, null, ['product' => $product])->shouldReturn($data);
     }
 
     function it_filters_values_data_on_attributes_group_rights(
@@ -65,7 +66,8 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         $localeRepository,
         AttributeInterface $nameAttribute,
         AttributeInterface $descriptionAttribute,
-        LocaleInterface $enLocale
+        LocaleInterface $enLocale,
+        ProductInterface $product
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(true);
@@ -96,7 +98,7 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $this->filterCollection($data, null)->shouldReturn([
+        $this->filterCollection($data, null, ['product' => $product])->shouldReturn([
             'values' => [
                 'description' => [
                     [
@@ -116,7 +118,8 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         AttributeInterface $nameAttribute,
         AttributeInterface $descriptionAttribute,
         LocaleInterface $enLocale,
-        LocaleInterface $svLocale
+        LocaleInterface $svLocale,
+        ProductInterface $product
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
@@ -161,7 +164,7 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $this->filterCollection($data, null)->shouldReturn([
+        $this->filterCollection($data, null, ['product' => $product])->shouldReturn([
             'values' => [
                 'name' => [
                     [
@@ -188,7 +191,8 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         AttributeInterface $nameAttribute,
         AttributeInterface $descriptionAttribute,
         LocaleInterface $enLocale,
-        LocaleInterface $svLocale
+        LocaleInterface $svLocale,
+        ProductInterface $product
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
@@ -228,7 +232,7 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $this->filterCollection($data, null)->shouldReturn([
+        $this->filterCollection($data, null, ['product' => $product])->shouldReturn([
             'values' => [
                 'name' => [
                     [
@@ -253,7 +257,8 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         $attributeRepository,
         $localeRepository,
         AttributeInterface $nameAttribute,
-        LocaleInterface $enLocale
+        LocaleInterface $enLocale,
+        ProductInterface $product
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
@@ -284,7 +289,7 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')
-             ->during('filterCollection', [$data, null]);
+             ->during('filterCollection', [$data, null, ['product' => $product]]);
     }
 
     function it_throws_an_exception_when_values_data_contains_a_non_existant_locale(
@@ -293,7 +298,8 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         $localeRepository,
         AttributeInterface $nameAttribute,
         AttributeInterface $descriptionAttribute,
-        LocaleInterface $enLocale
+        LocaleInterface $enLocale,
+        ProductInterface $product
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
@@ -327,7 +333,7 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')
-             ->during('filterCollection', [$data, null]);
+             ->during('filterCollection', [$data, null, ['product' => $product]]);
     }
 
     function it_throws_an_exception_when_values_data_contains_an_inactive_locale(
@@ -337,7 +343,8 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         AttributeInterface $nameAttribute,
         AttributeInterface $descriptionAttribute,
         LocaleInterface $enLocale,
-        LocaleInterface $inactiveLocale
+        LocaleInterface $inactiveLocale,
+        ProductInterface $product
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
         $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
@@ -372,6 +379,6 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         ];
 
         $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')
-            ->during('filterCollection', [$data, null]);
+            ->during('filterCollection', [$data, null, ['product' => $product]]);
     }
 }

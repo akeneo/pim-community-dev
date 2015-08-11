@@ -231,6 +231,22 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should (not )?see the "([^"]*)" tab$/
+     */
+    public function iShouldSeeTheTab($not, $tab)
+    {
+        $tabElement = $this->getCurrentPage()->getFormTab($tab);
+
+        if ($not && $tabElement) {
+            throw $this->createExpectationException(sprintf('Expecting not to see tab "%s"', $tab));
+        }
+
+        if (!$not && !$tabElement) {
+            throw $this->createExpectationException(sprintf('Expecting to see tab "%s", not found', $tab));
+        }
+    }
+
+    /**
      * @Given /^I open the history$/
      *
      * @throws ExpectationException
