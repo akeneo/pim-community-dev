@@ -12,7 +12,7 @@ parameters:
     pim_enrich.controller.association.class:             Pim\Bundle\EnrichBundle\Controller\AssociationController
     pim_enrich.controller.group.class:                   Pim\Bundle\EnrichBundle\Controller\GroupController
     pim_enrich.controller.association_type.class:        Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
-    pim_enrich.controller.media.class:                   Pim\Bundle\EnrichBundle\Controller\MediaController
+    pim_enrich.controller.file.class:                    Pim\Bundle\EnrichBundle\Controller\FileController
     pim_enrich.controller.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\VariantGroupController
     pim_enrich.controller.group_type.class:              Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.completeness.class:            Pim\Bundle\EnrichBundle\Controller\CompletenessController
@@ -157,7 +157,6 @@ services:
             - '@oro_security.security_facade'
             - '@pim_catalog.manager.product_category'
             - '@pim_catalog.saver.product'
-            - '@pim_catalog.manager.media'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
@@ -205,14 +204,15 @@ services:
             - '@pim_enrich.form.association_type'
             - '@pim_catalog.remover.association_type'
 
-    pim_enrich.controller.media:
+    pim_enrich.controller.file:
         scope: request
-        class: %pim_enrich.controller.media.class%
+        class: %pim_enrich.controller.file.class%
         arguments:
-            - '@liip_imagine'
-            - '@liip_imagine.filter.manager'
+            - '@liip_imagine.controller'
             - '@liip_imagine.cache.manager'
-            - '@pim_filesystem'
+            - '@liip_imagine.filter.manager'
+            - '@oneup_flysystem.mount_manager'
+            - ['storage']
 
     pim_enrich.controller.variant_group:
         scope: request
@@ -355,7 +355,9 @@ services:
     pim_enrich.controller.rest.media:
         class: %pim_enrich.controller.rest.media.class%
         arguments:
-            - %upload_dir%
+            - '@validator'
+            - '@akeneo_file_storage.file_storage.path_generator'
+            - %tmp_storage_dir%
 
     pim_enrich.controller.rest.product:
         class: %pim_enrich.controller.rest.product.class%

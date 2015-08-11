@@ -333,7 +333,20 @@ class Grid extends Index
      */
     public function getColumnValue($column, $row)
     {
-        return $this->getRowCell($this->getRow($row), $this->getColumnPosition($column, true))->getText();
+        return $this->getColumnNode($column, $row)->getText();
+    }
+
+    /**
+     * Get the node in the specified column of the specified row
+     *
+     * @param string $column
+     * @param string $row
+     *
+     * @return NodeElement
+     */
+    public function getColumnNode($column, $row)
+    {
+        return $this->getRowCell($this->getRow($row), $this->getColumnPosition($column, true));
     }
 
     /**

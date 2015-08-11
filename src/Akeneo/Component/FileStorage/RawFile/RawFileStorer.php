@@ -5,7 +5,6 @@ namespace Akeneo\Component\FileStorage\RawFile;
 use Akeneo\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\FileFactoryInterface;
-use Akeneo\Component\FileStorage\PathGeneratorInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
@@ -26,9 +25,6 @@ class RawFileStorer implements RawFileStorerInterface
     /** @var SaverInterface */
     protected $saver;
 
-    /** @var PathGeneratorInterface */
-    protected $pathGenerator;
-
     /** @var MountManager */
     protected $mountManager;
 
@@ -36,30 +32,27 @@ class RawFileStorer implements RawFileStorerInterface
     protected $factory;
 
     /**
-     * @param PathGeneratorInterface $pathGenerator
      * @param MountManager           $mountManager
      * @param SaverInterface         $saver
+     * @param FileFactoryInterface   $factory
      */
     public function __construct(
-        PathGeneratorInterface $pathGenerator,
         MountManager $mountManager,
         SaverInterface $saver,
         FileFactoryInterface $factory
     ) {
-        $this->pathGenerator = $pathGenerator;
         $this->mountManager = $mountManager;
-        $this->saver = $saver;
-        $this->factory = $factory;
+        $this->saver        = $saver;
+        $this->factory      = $factory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function store(\SplFileInfo $localFile, $destFsAlias)
+    public function store(\SplFileInfo $localFile, $destFsAlias, $deleteRawFile = false)
     {
         $filesystem = $this->mountManager->getFilesystem($destFsAlias);
-        $storageData = $this->pathGenerator->generate($localFile);
-        $file = $this->factory->create($localFile, $storageData, $destFsAlias);
+        $file = $this->factory->createFromRawFile($localFile, $destFsAlias);
 
         $error = sprintf(
             'Unable to move the file "%s" to the "%s" filesystem.',
@@ -82,7 +75,10 @@ class RawFileStorer implements RawFileStorerInterface
         }
 
         $this->saver->save($file);
-        $this->deleteRawFile($localFile);
+
+        if (true === $deleteRawFile) {
+            $this->deleteRawFile($localFile);
+        }
 
         return $file;
     }

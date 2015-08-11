@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -25,20 +25,17 @@ class EditCommonAttributesSpec extends ObjectBehavior
         CatalogContext $catalogContext,
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        MediaManager $mediaManager,
+        RawFileStorerInterface $rawFileStorer,
         ProductMassActionManager $massActionManager
     ) {
-        $path = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
-
         $this->beConstructedWith(
             $productBuilder,
             $userContext,
             $catalogContext,
             $attributeRepository,
             $normalizer,
-            $mediaManager,
-            $massActionManager,
-            $path
+            $rawFileStorer,
+            $massActionManager
         );
     }
 

@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -16,21 +19,21 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInterface
 {
-    /** @var string */
-    protected $mediaClass;
+    /** @var RawFileStorerInterface */
+    protected $storer;
 
     /**
-     * @param string $mediaClass
+     * @param RawFileStorerInterface $storer
      */
-    public function __construct($mediaClass)
+    public function __construct(RawFileStorerInterface $storer)
     {
-        $this->mediaClass = $mediaClass;
+        $this->storer = $storer;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         $value = trim($value);
 
@@ -39,9 +42,17 @@ class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInt
         }
 
         try {
-            $file = new File($value);
+            $rawFile = new File($value);
+            $file = $this->storer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS);
         } catch (FileNotFoundException $e) {
-            throw new PropertyTransformerException('File not found: "%value%"', array('%value%' => $value));
+            throw new PropertyTransformerException('File not found: "%value%"', ['%value%' => $value]);
+        } catch (FileTransferException $e) {
+            throw new PropertyTransformerException('Impossible to transfer the file "%value%"', ['%value%' => $value]);
+        } catch (\Exception $e) {
+            throw new PropertyTransformerException(
+                'An error occurred during the process of the file "%value%"',
+                ['%value%' => $value]
+            );
         }
 
         return $file;
@@ -50,17 +61,12 @@ class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInt
     /**
      * {@inheritdoc}
      */
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = [])
     {
         if (null === $data) {
             return;
         }
 
-        $media = $object->getMedia();
-        if (!$media) {
-            $media = new $this->mediaClass();
-            $object->setMedia($media);
-        }
-        $media->setFile($data);
+        $object->setMedia($data);
     }
 }

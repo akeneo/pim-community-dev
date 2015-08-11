@@ -20,29 +20,25 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $reader = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface')
-            ->setMethods(array('setFilePath', 'read'))
+            ->setMethods(['setFilePath', 'read'])
             ->getMock();
         $processor = $this->getMock('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $mediaManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\MediaManager')
-            ->disableOriginalConstructor()
-            ->getMock();
         $loader = new Loader(
             $objectManager,
             $doctrineCache,
             $reader,
             $processor,
             $eventSubscriber,
-            false,
-            $mediaManager
+            false
         );
 
         $reader->expects($this->once())
             ->method('setFilePath')
             ->with($this->equalTo('file'));
 
-        $data1 = array('code' => 'data1');
-        $data2 = array('code' => 'data2');
+        $data1 = ['code' => 'data1'];
+        $data2 = ['code' => 'data2'];
         $reader->expects($this->at(1))
             ->method('read')
             ->will($this->returnValue($data1));

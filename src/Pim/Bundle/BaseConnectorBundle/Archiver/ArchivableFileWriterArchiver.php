@@ -5,7 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Gaufrette\Filesystem;
+use League\Flysystem\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
@@ -27,13 +27,11 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
 
     /**
      * @param ZipFilesystemFactory $factory
-     * @param string               $directory
      * @param Filesystem           $filesystem
      */
-    public function __construct(ZipFilesystemFactory $factory, $directory, Filesystem $filesystem)
+    public function __construct(ZipFilesystemFactory $factory, Filesystem $filesystem)
     {
         $this->factory    = $factory;
-        $this->directory  = $directory;
         $this->filesystem = $filesystem;
     }
 
@@ -54,7 +52,7 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
                 );
 
                 foreach ($writer->getWrittenFiles() as $fullPath => $localPath) {
-                    $filesystem->write($localPath, file_get_contents($fullPath), true);
+                    $filesystem->put($localPath, file_get_contents($fullPath));
                 }
             }
         }
@@ -91,15 +89,18 @@ class ArchivableFileWriterArchiver extends AbstractFilesystemArchiver
      */
     protected function getZipFilesystem(JobExecution $jobExecution, $zipName)
     {
+        $zipPath = strtr(
+            $this->getRelativeArchivePath($jobExecution),
+            ['%filename%' => $zipName]
+        );
+
+        if (!$this->filesystem->has(dirname($zipPath))) {
+            $this->filesystem->createDir(dirname($zipPath));
+        }
+
         return $this->factory->createZip(
-            sprintf(
-                '%s/%s',
-                $this->directory,
-                strtr(
-                    $this->getRelativeArchivePath($jobExecution),
-                    array('%filename%' => $zipName)
-                )
-            )
+            $this->filesystem->getAdapter()->getPathPrefix() .
+            $zipPath
         );
     }
 

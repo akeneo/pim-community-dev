@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 use Prophecy\Argument;
@@ -62,7 +62,6 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         GroupTypeInterface $type,
         GroupTranslation $translatable,
         ProductInterface $product,
-        ProductValueInterface $productValue,
         ProductTemplateInterface $productTemplate
     ) {
         $groupTypeRepository->findOneByIdentifier('VARIANT')->willReturn($type);
@@ -84,9 +83,12 @@ class VariantGroupUpdaterSpec extends ObjectBehavior
         $variantGroup->getProductTemplate()->willReturn($productTemplate);
         $variantGroup->setProductTemplate($productTemplate)->shouldBeCalled();
 
-        $product->getValues()->willReturn(new ArrayCollection([$productValue]));
-        $product->getIdentifier()->willReturn($productValue);
+        $productValue = new ProductValue();
+        $identifierValue = new ProductValue();
+
         $productBuilder->createProduct()->willReturn($product);
+        $product->getValues()->willReturn(new ArrayCollection([$productValue, $identifierValue]));
+        $product->getIdentifier()->willReturn($identifierValue);
 
         $values = [
             'code'         => 'mycode',

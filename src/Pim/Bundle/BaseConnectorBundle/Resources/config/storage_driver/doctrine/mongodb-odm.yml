@@ -6,7 +6,6 @@ services:
     pim_base_connector.writer.direct_to_db.mongodb.product:
         class: %pim_base_connector.writer.direct_to_db.mongodb.product.class%
         arguments:
-            - '@pim_catalog.manager.media'
             - '@doctrine.odm.mongodb.document_manager'
             - '@pim_versioning.doctrine.mongodb.pending_mass_persister'
             - '@pim_serializer'

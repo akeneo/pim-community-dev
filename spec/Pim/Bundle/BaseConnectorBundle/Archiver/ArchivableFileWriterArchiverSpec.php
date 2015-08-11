@@ -8,8 +8,8 @@ use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Job\Job;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
-use Gaufrette\Adapter\Local as LocalAdapter;
-use Gaufrette\Filesystem;
+use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
@@ -19,9 +19,12 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
 {
     function let(
         ZipFilesystemFactory $factory,
-        Filesystem $filesystem
+        Filesystem $filesystem,
+        LocalAdapter $adapter
     ) {
-        $this->beConstructedWith($factory, '/root', $filesystem);
+        $filesystem->getAdapter()->willReturn($adapter);
+        $adapter->getPathPrefix()->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'archivist');
+        $this->beConstructedWith($factory, $filesystem);
     }
 
     function it_is_initializable()
@@ -45,9 +48,9 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
         $writer->getWrittenFiles()->willReturn([]);
-        $writer->getPath()->willReturn('/tmp/tmp');
+        $writer->getPath()->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR  . 'file.csv');
 
-        $filesystem->write(Argument::any())->shouldNotBeCalled();
+        $filesystem->put(Argument::any())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }
@@ -72,12 +75,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
         $writer->getWrittenFiles()->willReturn(['path_one', 'path_two']);
-        $writer->getPath()->willReturn('/tmp/tmp');
-
-        $adapter = new LocalAdapter('/tmp');
-        $fs = new Filesystem($adapter);
-
-        $fs->write('tmp', '', true);
+        $writer->getPath()->willReturn(sys_get_temp_dir() . DIRECTORY_SEPARATOR  . 'file.csv');
 
         $this->supports($jobExecution)->shouldReturn(true);
     }
@@ -114,7 +112,7 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
 
-        $filesystem->write(Argument::any())->shouldNotBeCalled();
+        $filesystem->put(Argument::any())->shouldNotBeCalled();
 
         $this->archive($jobExecution);
     }
@@ -128,6 +126,9 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $factory,
         $filesystem
     ) {
+        $file1 = tempnam(sys_get_temp_dir(), 'spec');
+        $file2 = tempnam(sys_get_temp_dir(), 'spec');
+
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getId()->willReturn(12);
         $jobInstance->getJob()->willReturn($job);
@@ -135,19 +136,18 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $jobInstance->getAlias()->willReturn('alias');
         $job->getSteps()->willReturn([$step]);
         $step->getWriter()->willReturn($writer);
-        $writer->getWrittenFiles()->willReturn(['/tmp/tmp' => 'tmp', '/tmp/tmp2' => 'tmp2']);
-        $writer->getPath()->willReturn('/tmp/tmp');
-
-        $adapter = new LocalAdapter('/tmp');
-        $fs = new Filesystem($adapter);
-
-        $fs->write('tmp', '', true);
-        $fs->write('tmp2', '', true);
+        $writer->getWrittenFiles()->willReturn([$file1 => 'file1', $file2 => 'file2']);
+        $writer->getPath()->willReturn(sys_get_temp_dir());
+        $filesystem->has('type/alias/12/archive')->willReturn(false);
+        $filesystem->createDir('type/alias/12/archive')->shouldBeCalled();
 
         $factory->createZip(Argument::any())->willReturn($filesystem);
-        $filesystem->write('tmp', '', true)->shouldBeCalled();
-        $filesystem->write('tmp2', '', true)->shouldBeCalled();
+        $filesystem->put('file1', '')->shouldBeCalled();
+        $filesystem->put('file2', '')->shouldBeCalled();
 
         $this->archive($jobExecution);
+
+        unlink($file1);
+        unlink($file2);
     }
 }
