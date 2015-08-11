@@ -11,6 +11,7 @@
 
 namespace Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Classification\Model\CategoryInterface;
@@ -43,39 +44,35 @@ class ItemCategoryRepository implements ItemCategoryRepositoryInterface, Categor
     /**
      * {@inherit}
      */
-    public function getItemCountByTree($asset)
+    public function getItemCountByTree($item)
     {
-        $productMetadata = $this->em->getClassMetadata(get_class($asset));
+        $itemMetadata = $this->em->getClassMetadata(ClassUtils::getClass($item));
 
-        $categoryAssoc = $productMetadata->getAssociationMapping('categories');
-
+        $categoryAssoc = $itemMetadata->getAssociationMapping('categories');
         $categoryClass = $categoryAssoc['targetEntity'];
         $categoryTable = $this->em->getClassMetadata($categoryClass)->getTableName();
-
         $categoryAssocTable = $categoryAssoc['joinTable']['name'];
+        $relation = key($categoryAssoc['relationToSourceKeyColumns']);
 
-        $sql = "SELECT" .
-               "    tree.id AS tree_id," .
-               "    COUNT(category_asset.asset_id) AS item_count" .
-               "  FROM $categoryTable tree" .
-               "  JOIN $categoryTable category" .
-               "    ON category.root = tree.id" .
-               "  LEFT JOIN $categoryAssocTable category_asset" .
-               "    ON category_asset.asset_id = :assetId" .
-               "   AND category_asset.category_id = category.id" .
-               " GROUP BY tree.id";
+        $sql = "SELECT tree.id AS tree_id, COUNT(category_item.$relation) AS item_count " .
+               "FROM $categoryTable tree " .
+               "JOIN $categoryTable category ON category.root = tree.id " .
+               "LEFT JOIN $categoryAssocTable category_item ON category_item.category_id = category.id " .
+               "AND category_item.$relation = :itemId " .
+               "GROUP BY tree.id";
 
         $stmt = $this->em->getConnection()->prepare($sql);
-        $stmt->bindValue('assetId', $asset->getId());
+        $stmt->bindValue('itemId', $item->getId());
 
         $stmt->execute();
-        $assetCounts = $stmt->fetchAll();
+        $itemCounts = $stmt->fetchAll();
+
         $trees = [];
-        foreach ($assetCounts as $assetCount) {
-            $tree = [];
-            $tree['itemCount'] = $assetCount['item_count'];
-            $tree['tree'] = $this->em->getRepository($categoryClass)->find($assetCount['tree_id']);
-            $trees[] = $tree;
+        foreach ($itemCounts as $itemCount) {
+            $trees[] = [
+                'itemCount' => $itemCount['item_count'],
+                'tree'      => $this->em->getRepository($categoryClass)->find($itemCount['tree_id']),
+            ];
         }
 
         return $trees;
