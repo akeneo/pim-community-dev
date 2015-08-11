@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Filter;
+namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;

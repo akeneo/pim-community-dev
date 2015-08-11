@@ -81,7 +81,6 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataSaver,
         $variation,
         $variationSaver,
-        $sourceFile,
         $metadataBuilderRegistry,
         \SplFileInfo $inputFileInfo,
         \SplFileInfo $variationFileInfo,
@@ -97,7 +96,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
         $channelConfiguration->getConfiguration()->willReturn(['t1', 't2']);
 
-        $rawFileFetcher->fetch($sourceFile, $filesystem)->willReturn($inputFileInfo);
+        $rawFileFetcher->fetch($filesystem, 'path/to/my_original_file.txt')->willReturn($inputFileInfo);
         $fileTransformer->transform(
             $inputFileInfo,
             ['t1', 't2'],

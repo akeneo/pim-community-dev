@@ -4,10 +4,11 @@ namespace spec\PimEnterprise\Bundle\UserBundle\Context;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -23,29 +24,32 @@ class UserContextSpec extends ObjectBehavior
     }
 
     function let(
-        AuthorizationCheckerInterface $authorizationChecker,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
+        TokenStorageInterface $tokenStorage,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $productCategoryRepo,
         CategoryRepositoryInterface $assetCategoryRepo,
         ChainedFilter $chainedFilter,
+        RequestStack $requestStack,
+        AuthorizationCheckerInterface $authorizationChecker,
+        ChoicesBuilderInterface $choicesBuilder,
         TokenInterface $token,
         User $user,
-        TokenStorageInterface $tokenStorage,
-        RequestStack $requestStack
+        TokenStorageInterface $tokenStorage
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $this->beConstructedWith(
             $tokenStorage,
-            $localeManager,
-            $channelManager,
+            $localeRepository,
+            $channelRepository,
             $productCategoryRepo,
             $assetCategoryRepo,
             $chainedFilter,
             $requestStack,
             $authorizationChecker,
+            $choicesBuilder,
             'en_US'
         );
     }

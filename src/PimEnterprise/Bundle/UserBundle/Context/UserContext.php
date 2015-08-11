@@ -70,15 +70,19 @@ class UserContext extends BaseUserContext
         ChoicesBuilderInterface $choicesBuilder,
         $defaultLocale
     ) {
-        $this->tokenStorage         = $tokenStorage;
-        $this->localeRepository     = $localeRepository;
-        $this->channelRepository    = $channelRepository;
-        $this->productCategoryRepo  = $productCategoryRepo;
+        parent::__construct(
+            $tokenStorage,
+            $localeRepository,
+            $channelRepository,
+            $productCategoryRepo,
+            $requestStack,
+            $choicesBuilder,
+            $defaultLocale
+        );
+
         $this->assetCategoryRepo    = $assetCategoryRepo;
         $this->chainedFilter        = $chainedFilter;
-        $this->requestStack         = $requestStack;
         $this->authorizationChecker = $authorizationChecker;
-        $this->choicesBuilder       = $choicesBuilder;
         $this->defaultLocale        = $defaultLocale;
     }
 
