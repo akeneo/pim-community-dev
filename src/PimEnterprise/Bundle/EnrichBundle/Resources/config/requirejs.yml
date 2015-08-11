@@ -32,6 +32,7 @@ config:
         pimee/product-edit-form/send-for-approval:                    pimenterpriseenrich/js/product/form/send-for-approval
         pimee/product-edit-form/source-switcher:                      pimenterpriseenrich/js/product/form/source-switcher
         pimee/product-edit-form/working-copy:                         pimenterpriseenrich/js/product/form/working-copy
+        pimee/product-edit-form/categories:                           pimenterpriseenrich/js/product/form/categories
 
         # Templates
         pimee/template/product/meta/owner-groups:                       pimenterpriseenrich/templates/product/meta/owner-groups.html

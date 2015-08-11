@@ -1,0 +1,7 @@
+parameters:
+    pimee_catalog.filter.product_edit_data.class: PimEnterprise\Bundle\EnrichBundle\Filter\ProductEditDataFilter
+
+services:
+    pimee_enrich.filter.product_edit_data:
+        class: %pimee_catalog.filter.product_edit_data.class%
+        parent: pim_enrich.filter.product_edit_data
