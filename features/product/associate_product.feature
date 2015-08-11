@@ -31,12 +31,12 @@ Feature: Associate a product
     When I visit the "Associations" tab
     And I select the "Upsell" association
     And I press the "Show groups" button
-    And I check the row "Caterpillar boots"
+    And I check the row "caterpillar_boots"
     And I save the product
     And I select the "Upsell" association
     And I press the "Show groups" button
     Then I should see the text "0 products and 1 groups"
-    Then the row "Caterpillar boots" should be checked
+    Then the row "caterpillar_boots" should be checked
 
   Scenario: Associate a product to multiple products and groups
     Given I edit the "black-boots" product
@@ -46,9 +46,9 @@ Feature: Associate a product
     And I select the "Upsell" association
     And I check the row "glossy-boots"
     And I press the "Show groups" button
-    And I check the row "Caterpillar boots"
+    And I check the row "caterpillar_boots"
     And I select the "Cross sell" association
-    And I check the row "Similar boots"
+    And I check the row "similar_boots"
     And I press the "Show products" button
     And I check the rows "shoelaces, gray-boots, brown-boots and green-boots"
     And I save the product

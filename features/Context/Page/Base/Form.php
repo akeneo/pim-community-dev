@@ -196,7 +196,10 @@ class Form extends Base
 
     public function selectAssociation($assocation)
     {
-        $associations = $this->find('css', $this->elements['Associations list']['css']);
+        $associations = $this->spin(function () {
+            return $this->find('css', $this->elements['Associations list']['css']);
+        });
+
         $associations->clickLink($assocation);
     }
 
