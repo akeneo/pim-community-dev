@@ -15,10 +15,10 @@ Feature: Add a new option to a choice attribute directly from the product edit f
   Scenario: Sucessfully add a new option to a simple select attribute
     Given I visit the "Sizes" group
     And I add a new option to the "Size" attribute:
-      | Code | 47       |
+      | Code | 47xxl    |
       | en   | 47 (XXL) |
     And I save the product
-    Then the product Size should be "47"
+    Then the product Size should be "47xxl"
 
   Scenario: Sucessfully add a new option to a multi select attribute
     Given I add a new option to the "Weather conditions" attribute:
