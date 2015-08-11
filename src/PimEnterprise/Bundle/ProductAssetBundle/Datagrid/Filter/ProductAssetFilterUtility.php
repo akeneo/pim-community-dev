@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Filter;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter;
