@@ -127,16 +127,17 @@ class CategoryTreeController extends BaseCategoryTreeController
      */
     protected function findGrantedCategory($categoryId, $context)
     {
-        $category = $this->findCategory($categoryId);
         $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE];
-
         if (!in_array($context, $allowed)) {
             throw new AccessDeniedException('You can not access this category');
         }
 
         if ($context === self::CONTEXT_MANAGE && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
             throw new AccessDeniedException('You can not access this category');
-        } elseif (false === $this->securityFacade->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+        }
+
+        $category = $this->findCategory($categoryId);
+        if (false === $this->securityFacade->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
             throw new AccessDeniedException('You can not access this category');
         }
 
