@@ -42,4 +42,4 @@ services:
             - '@pim_catalog.remover.category'
             - '@pimee_product_asset.factory.category'
             - '@pimee_product_asset.repository.category'
-            - '@pim_catalog.filter.chained'
+            - '@pimee_product_asset.repository.asset_category_access'

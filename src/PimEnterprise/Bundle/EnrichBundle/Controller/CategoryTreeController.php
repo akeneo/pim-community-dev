@@ -16,12 +16,12 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
 use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
 use Pim\Component\Classification\Factory\CategoryFactory;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -51,8 +51,8 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @staticvar string */
     const CONTEXT_ASSOCIATE = 'associate';
 
-    /** @var ChainedFilter */
-    protected $chainedFilter;
+    /** @var ObjectRepository */
+    protected $categoryAccessRepo;
 
     /**
      * @param Request                     $request
@@ -71,7 +71,7 @@ class CategoryTreeController extends BaseCategoryTreeController
      * @param RemoverInterface            $categoryRemover
      * @param CategoryFactory             $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param ChainedFilter               $chainedFilter
+     * @param CategoryAccessRepository    $categoryAccessRepo
      */
     public function __construct(
         Request $request,
@@ -90,7 +90,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         RemoverInterface $categoryRemover,
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
-        ChainedFilter $chainedFilter
+        CategoryAccessRepository $categoryAccessRepo
     ) {
         parent::__construct(
             $request,
@@ -111,7 +111,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             $categoryRepository
         );
 
-        $this->chainedFilter = $chainedFilter;
+        $this->categoryAccessRepo = $categoryAccessRepo;
     }
 
     /**
@@ -163,12 +163,8 @@ class CategoryTreeController extends BaseCategoryTreeController
             $selectNode = $this->userContext->getAccessibleUserCategoryTree($relatedEntity);
         }
 
-        // TODO: In PIM-4292, check the right permissions depending on $context
-        $trees = $this->categoryRepository->getTrees();
-        $grantedTrees = $this->chainedFilter->filterCollection(
-            $trees,
-            sprintf('pim.internal_api.%s_category.view', $relatedEntity)
-        );
+        $grantedCategoryIds = $this->getGrantedCategories();
+        $grantedTrees = $this->categoryRepository->getTreesGranted($grantedCategoryIds);
 
         return [
             'trees'          => $grantedTrees,
@@ -181,24 +177,30 @@ class CategoryTreeController extends BaseCategoryTreeController
 
     /**
      * {@inheritdoc}
-     *
-     * Override parent to use only granted categories
      */
     protected function getChildrenCategories(Request $request, $selectNode)
     {
-        $categories = parent::getChildrenCategories($request, $selectNode);
+        $parent = $this->findCategory($request->get('id'));
 
-        $context = $request->get('context', false);
-        $relatedEntity = $request->get('related_entity', 'product');
-        $editGranted = $this->securityFacade->isGranted('pim_enrich_product_category_edit');
-
-        if ($editGranted && self::CONTEXT_MANAGE === $context) {
-            return $categories;
+        if (null !== $selectNode) {
+            $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId());
         } else {
-            return $this->chainedFilter->filterCollection(
-                $categories,
-                sprintf('pim.internal_api.%s_category.view', $relatedEntity)
-            );
+            $grantedCategoryIds = $this->getGrantedCategories();
+            $categories = $this->categoryRepository->getChildrenGrantedByParentId($parent, $grantedCategoryIds);
         }
+
+        return $categories;
+    }
+
+    /**
+     * Get granted categories
+     *
+     * @return array
+     */
+    protected function getGrantedCategories()
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        return $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
     }
 }

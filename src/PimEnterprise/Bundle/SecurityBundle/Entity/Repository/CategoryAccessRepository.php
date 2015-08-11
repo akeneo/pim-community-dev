@@ -30,9 +30,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  */
 class CategoryAccessRepository extends EntityRepository
 {
-    /**
-     * @var TableNameBuilder
-     */
+    /** @var TableNameBuilder */
     protected $tableNameBuilder;
 
     /**

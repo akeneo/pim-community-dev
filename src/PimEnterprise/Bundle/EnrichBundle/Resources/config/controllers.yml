@@ -59,7 +59,7 @@ services:
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
-            - '@pim_catalog.filter.chained'
+            - '@pimee_security.repository.category_access'
 
     pim_enrich.controller.file:
         scope: request
