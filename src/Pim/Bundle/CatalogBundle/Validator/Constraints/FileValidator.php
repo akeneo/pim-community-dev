@@ -2,57 +2,51 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Symfony\Component\HttpFoundation\File\File as FileObject;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Constraint.
+ * Validate files linked to product (need to validate extension and size).
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileValidator extends BaseFileValidator
+class FileValidator extends ConstraintValidator
 {
+    protected static $suffices = [
+        1                            => 'bytes',
+        BaseFileValidator::KB_BYTES  => 'kB',
+        BaseFileValidator::MB_BYTES  => 'MB',
+        BaseFileValidator::KIB_BYTES => 'KiB',
+        BaseFileValidator::MIB_BYTES => 'MiB',
+    ];
+
     /**
      * {@inheritdoc}
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof ProductMediaInterface) {
-            $value = $value->getFile();
+        if ($value instanceof FileInterface && (null !== $value->getId() || null !== $value->getUploadedFile())) {
+            $this->validateFileSize($value, $constraint);
+            $this->validateFileExtension($value, $constraint);
         }
-
-        if (null === $value || '' === $value) {
-            return;
-        }
-
-        parent::validate($value, $constraint);
-
-        $this->validateAllowedExtension($value, $constraint);
     }
 
     /**
      * Validate if extension is allowed.
      *
-     * @param mixed      $value      The value that should be validated
-     * @param Constraint $constraint The constraint for the validation
+     * @param FileInterface $file       The file that should be validated
+     * @param Constraint    $constraint The constraint for the validation
      */
-    protected function validateAllowedExtension($value, Constraint $constraint)
+    protected function validateFileExtension(FileInterface $file, Constraint $constraint)
     {
-        if ($constraint->allowedExtensions) {
-            $file = $value instanceof \SplFileInfo ? $value : new \SplFileInfo($value);
-
-            if ($file instanceof UploadedFile) {
-                $extension = $file->getClientOriginalExtension();
-            } elseif ($file instanceof FileObject) {
-                $extension = $file->getExtension();
-            } else {
-                $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
-            }
+        if (!empty($constraint->allowedExtensions)) {
+            $extension = null !== $file->getUploadedFile() ?
+                $file->getUploadedFile()->getClientOriginalExtension() :
+                $file->getExtension();
 
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->buildViolation(
@@ -61,5 +55,82 @@ class FileValidator extends BaseFileValidator
                 )->addViolation();
             }
         }
+    }
+
+    /**
+     * Validate if file size is allowed.
+     *
+     * @param FileInterface $file
+     * @param Constraint    $constraint
+     */
+    protected function validateFileSize(FileInterface $file, Constraint $constraint)
+    {
+        // comes from Symfony\Component\Validator\Constraints\FileValidator
+        if ($constraint->maxSize) {
+            $limitInBytes = $constraint->maxSize;
+
+            if ($file->getSize() > $limitInBytes) {
+                $factorizeSizes = $this->factorizeSizes($file->getSize(), $limitInBytes, $constraint->binaryFormat);
+                list($sizeAsString, $limitAsString, $suffix) = $factorizeSizes;
+
+                $this->context->buildViolation($constraint->maxSizeMessage)
+                    ->setParameter('{{ file }}', $this->formatValue($file->getOriginalFilename()))
+                    ->setParameter('{{ size }}', $sizeAsString)
+                    ->setParameter('{{ limit }}', $limitAsString)
+                    ->setParameter('{{ suffix }}', $suffix)
+                    ->setCode(File::TOO_LARGE_ERROR)
+                    ->addViolation();
+
+                return;
+            }
+        }
+    }
+
+    /**
+     * Convert the limit to the smallest possible number
+     * (i.e. try "MB", then "kB", then "bytes")
+     */
+    protected function factorizeSizes($size, $limit, $binaryFormat)
+    {
+        if ($binaryFormat) {
+            $coef       = BaseFileValidator::MIB_BYTES;
+            $coefFactor = BaseFileValidator::KIB_BYTES;
+        } else {
+            $coef       = BaseFileValidator::MB_BYTES;
+            $coefFactor = BaseFileValidator::KB_BYTES;
+        }
+
+        $limitAsString = (string)($limit / $coef);
+
+        // Restrict the limit to 2 decimals (without rounding! we
+        // need the precise value)
+        while (self::moreDecimalsThan($limitAsString, 2)) {
+            $coef /= $coefFactor;
+            $limitAsString = (string)($limit / $coef);
+        }
+
+        // Convert size to the same measure, but round to 2 decimals
+        $sizeAsString = (string)round($size / $coef, 2);
+
+        // If the size and limit produce the same string output
+        // (due to rounding), reduce the coefficient
+        while ($sizeAsString === $limitAsString) {
+            $coef /= $coefFactor;
+            $limitAsString = (string)($limit / $coef);
+            $sizeAsString  = (string)round($size / $coef, 2);
+        }
+
+        return [$sizeAsString, $limitAsString, self::$suffices[$coef]];
+    }
+
+    /**
+     * @param double $double
+     * @param int    $numberOfDecimals
+     *
+     * @return bool
+     */
+    protected static function moreDecimalsThan($double, $numberOfDecimals)
+    {
+        return strlen((string)$double) > strlen(round($double, $numberOfDecimals));
     }
 }

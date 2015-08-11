@@ -11,7 +11,6 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
@@ -72,9 +71,6 @@ class ProductController extends AbstractDoctrineController
     /** @var SaverInterface */
     protected $productSaver;
 
-    /** @var MediaManager */
-    protected $mediaManager;
-
     /** @var SequentialEditManager */
     protected $seqEditManager;
 
@@ -134,7 +130,6 @@ class ProductController extends AbstractDoctrineController
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
      * @param SaverInterface           $productSaver
-     * @param MediaManager             $mediaManager
      * @param SequentialEditManager    $seqEditManager
      * @param RemoverInterface         $productRemover
      * @param ProductBuilderInterface  $productBuilder
@@ -157,7 +152,6 @@ class ProductController extends AbstractDoctrineController
         SecurityFacade $securityFacade,
         ProductCategoryManager $prodCatManager,
         SaverInterface $productSaver,
-        MediaManager $mediaManager,
         SequentialEditManager $seqEditManager,
         RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder,
@@ -182,7 +176,6 @@ class ProductController extends AbstractDoctrineController
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
         $this->productSaver      = $productSaver;
-        $this->mediaManager      = $mediaManager;
         $this->seqEditManager    = $seqEditManager;
         $this->productRemover    = $productRemover;
         $this->productBuilder    = $productBuilder;

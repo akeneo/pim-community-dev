@@ -19,6 +19,20 @@ use Symfony\Component\Console\Tester\CommandTester;
  */
 class CommandContext extends RawMinkContext
 {
+    /** @var array */
+    protected $placeholderValues = [];
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetPlaceholderValues()
+    {
+        $this->placeholderValues = [
+            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
+            '%fixtures%' => __DIR__ . '/fixtures'
+        ];
+    }
+
     /**
      * @Given /^I launched the completeness calculator$/
      */
@@ -82,7 +96,7 @@ class CommandContext extends RawMinkContext
                 [
                     'command'      => $updateCommand->getName(),
                     'identifier'   => $update['product'],
-                    'json_updates' => $update['actions'],
+                    'json_updates' => $this->sanitizeProductActions($update['actions']),
                     'username'     => $username
                 ]
             );
@@ -127,6 +141,34 @@ class CommandContext extends RawMinkContext
                 $diff
             );
         }
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    public function replacePlaceholders($value)
+    {
+        return strtr($value, $this->placeholderValues);
+    }
+
+    /**
+     * @param string $rawActions
+     *
+     * @return string
+     */
+    protected function sanitizeProductActions($rawActions)
+    {
+        $actions = json_decode($rawActions);
+
+        foreach ($actions as $key => $action) {
+            if (isset($action->data->filePath)) {
+                $action->data->filePath = $this->replacePlaceholders($action->data->filePath);
+            }
+        }
+
+        return json_encode($actions);
     }
 
     /**

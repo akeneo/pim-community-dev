@@ -12,13 +12,13 @@ use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class UserContextSpec extends ObjectBehavior
 {
     function let(
-        SecurityContextInterface $securityContext,
+        TokenStorageInterface $tokenStorage,
         LocaleRepositoryInterface $localeRepository,
         ChannelRepositoryInterface $channelRepository,
         TokenInterface $token,
@@ -34,7 +34,7 @@ class UserContextSpec extends ObjectBehavior
         RequestStack $requestStack,
         ChoicesBuilderInterface $choicesBuilder
     ) {
-        $securityContext->getToken()->willReturn($token);
+        $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $en->getCode()->willReturn('en_US');
@@ -54,7 +54,7 @@ class UserContextSpec extends ObjectBehavior
         $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree]);
 
         $this->beConstructedWith(
-            $securityContext,
+            $tokenStorage,
             $localeRepository,
             $channelRepository,
             $productCategoryRepo,

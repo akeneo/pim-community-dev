@@ -8,7 +8,6 @@ use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
@@ -23,9 +22,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
-    /**  @var MediaManager */
-    protected $mediaManager;
-
     /** @var VersionManager */
     protected $versionManager;
 
@@ -44,18 +40,15 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * Constructor
      *
-     * @param MediaManager                $mediaManager
      * @param VersionManager              $versionManager
      * @param BulkSaverInterface          $productSaver
      * @param BulkObjectDetacherInterface $detacher
      */
     public function __construct(
-        MediaManager $mediaManager,
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkObjectDetacherInterface $detacher
     ) {
-        $this->mediaManager   = $mediaManager;
         $this->versionManager = $versionManager;
         $this->productSaver   = $productSaver;
         $this->detacher       = $detacher;
@@ -106,7 +99,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         foreach ($items as $item) {
             $this->incrementCount($item);
         }
-        $this->mediaManager->handleAllProductsMedias($items);
+
         $this->productSaver->saveAll($items, ['recalculate' => false]);
         $this->detacher->detachAll($items);
     }

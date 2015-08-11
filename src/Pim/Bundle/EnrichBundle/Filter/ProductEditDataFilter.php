@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
@@ -38,6 +39,15 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /** @var LocaleInterface[] */
     protected $locales = [];
 
+    /** @var array */
+    protected $acls = [
+        'family'       => 'pim_enrich_product_change_family',
+        'groups'       => 'pim_enrich_product_add_to_groups',
+        'categories'   => 'pim_enrich_product_categories_view',
+        'enabled'      => 'pim_enrich_product_change_state',
+        'associations' => 'pim_enrich_associations_view'
+    ];
+
     /**
      * @param SecurityFacade               $securityFacade
      * @param ObjectFilterInterface        $objectFilter
@@ -64,15 +74,20 @@ class ProductEditDataFilter implements CollectionFilterInterface
     public function filterCollection($collection, $type, array $options = [])
     {
         $newProductData = [];
+        $allowedToClassify = $this->isAllowedToClassify($options['product']);
 
         foreach ($collection as $type => $data) {
+            $acl = $this->getAclForType($type);
+            $actionGranted = null === $acl || $this->securityFacade->isGranted($acl);
+
+            if ($actionGranted) {
+                $newProductData[$type] = $data;
+            }
+
             if ('values' === $type) {
                 $newProductData['values'] = $this->filterValuesData($data);
-            } else {
-                $acl = $this->getAclForType($type);
-                if (null === $acl || $this->securityFacade->isGranted($acl)) {
-                    $newProductData[$type] = $data;
-                }
+            } elseif ('categories' === $type && !$allowedToClassify) {
+                unset($newProductData['categories']);
             }
         }
 
@@ -92,7 +107,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
      *
      * @return array
      */
-    protected function filterValuesData($valuesData)
+    protected function filterValuesData(array $valuesData)
     {
         $newValuesData = [];
 
@@ -120,6 +135,16 @@ class ProductEditDataFilter implements CollectionFilterInterface
     }
 
     /**
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isAllowedToClassify(ProductInterface $product)
+    {
+        return true;
+    }
+
+    /**
      * Return which ACL should be used to filter data of specified type.
      *
      * @param string
@@ -128,27 +153,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
      */
     protected function getAclForType($type)
     {
-        switch ($type) {
-            case 'family':
-                $acl = 'pim_enrich_product_change_family';
-                break;
-            case 'groups':
-                $acl = 'pim_enrich_product_add_to_groups';
-                break;
-            case 'categories':
-                $acl = 'pim_enrich_product_categories_view';
-                break;
-            case 'enabled':
-                $acl = 'pim_enrich_product_change_state';
-                break;
-            case 'associations':
-                $acl = 'pim_enrich_associations_view';
-                break;
-            default:
-                $acl = null;
-        }
-
-        return $acl;
+        return isset($this->acls[$type]) ? $this->acls[$type] : null;
     }
 
     /**

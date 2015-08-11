@@ -15,6 +15,7 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -381,7 +382,7 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
             if ($form->isValid()) {
                 $data = $form->get('file')->getData();
-                if (null !== $file = $data->getFile()) {
+                if (null !== $file = $data->getUploadedFile()) {
                     $this->file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
 
                     return true;
@@ -558,6 +559,6 @@ class JobProfileController extends AbstractDoctrineController
      */
     protected function createUploadForm()
     {
-        return $this->createForm(new UploadType());
+        return $this->createForm(new UploadType(), null, ['validation_groups' => ['upload']]);
     }
 }

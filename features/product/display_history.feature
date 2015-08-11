@@ -247,7 +247,7 @@ Feature: Display the product history
     Then there should be 2 updates
     And I should see history:
       | version | property  | value           |
-      | 2       | Side view | .*SNKRS-1R\.png |
+      | 2       | Side view | .*SNKRS_1R\.png |
     When I close the "history" panel
     When I visit the "Attributes" tab
     And I visit the "Media" group

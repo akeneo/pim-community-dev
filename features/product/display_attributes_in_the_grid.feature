@@ -32,3 +32,21 @@ Feature: Display product attributes in the grid
       | column             | value     |
       | Manufacturer       | [lacoste] |
       | Weather conditions | [cloudy]  |
+
+  Scenario: Successfully display image attributes
+    Given the "footwear" catalog configuration
+    And the following products:
+      | sku      | side_view             | top_view               |
+      | sneakers | %fixtures%/akeneo.jpg |                        |
+      | sandals  |                       | %fixtures%/akeneo2.jpg |
+    And I am logged in as "Mary"
+    And I am on the products page
+    When I display the columns sku, side_view and top_view
+    Then the row "sneakers" should contain the images:
+      | column    | title      |
+      | Side view | akeneo.jpg |
+      | Top view  | **empty**  |
+    And the row "sandals" should contain the images:
+      | column    | title       |
+      | Side view | **empty**   |
+      | Top view  | akeneo2.jpg |

@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -62,9 +61,8 @@ class LoaderFactory
         $processor = $this->configRegistry->getProcessor($name, $extension);
         $class = $this->configRegistry->getClass($name);
         $multiple = $this->configRegistry->isMultiple($name);
-        $mediaManager = $this->configRegistry->getMediaManager();
 
-        return $this->createLoader($objectManager, $reader, $processor, $class, $multiple, $mediaManager);
+        return $this->createLoader($objectManager, $reader, $processor, $class, $multiple);
     }
 
     /**
@@ -75,7 +73,6 @@ class LoaderFactory
      * @param ItemProcessorInterface $processor
      * @param string                 $class
      * @param bool                   $multiple
-     * @param MediaManager           $mediaManager
      *
      * @return LoaderInterface
      */
@@ -84,8 +81,7 @@ class LoaderFactory
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         $class,
-        $multiple,
-        MediaManager $mediaManager
+        $multiple
     ) {
         return new $class(
             $objectManager,
@@ -93,8 +89,7 @@ class LoaderFactory
             $reader,
             $processor,
             $this->eventDispatcher,
-            $multiple,
-            $mediaManager
+            $multiple
         );
     }
 }

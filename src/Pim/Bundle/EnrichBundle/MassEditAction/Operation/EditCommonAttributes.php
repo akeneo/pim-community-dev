@@ -2,18 +2,18 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -52,11 +52,8 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var MediaManager */
-    protected $mediaManager;
-
-    /** @var string */
-    protected $uploadDir;
+    /** @var RawFileStorerInterface */
+    protected $rawFileStorer;
 
     /** @var ProductMassActionManager */
     protected $massActionManager;
@@ -67,9 +64,8 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param CatalogContext               $catalogContext
      * @param AttributeRepositoryInterface $attributeRepository
      * @param NormalizerInterface          $normalizer
-     * @param MediaManager                 $mediaManager
+     * @param RawFileStorerInterface       $rawFileStorer
      * @param ProductMassActionManager     $massActionManager
-     * @param string                       $uploadDir
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
@@ -77,9 +73,8 @@ class EditCommonAttributes extends AbstractMassEditOperation
         CatalogContext $catalogContext,
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        MediaManager $mediaManager,
-        ProductMassActionManager $massActionManager,
-        $uploadDir
+        RawFileStorerInterface $rawFileStorer,
+        ProductMassActionManager $massActionManager
     ) {
         $this->productBuilder      = $productBuilder;
         $this->userContext         = $userContext;
@@ -88,8 +83,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->values              = new ArrayCollection();
         $this->normalizer          = $normalizer;
         $this->attributeRepository = $attributeRepository;
-        $this->mediaManager        = $mediaManager;
-        $this->uploadDir           = $uploadDir;
+        $this->rawFileStorer       = $rawFileStorer;
         $this->massActionManager   = $massActionManager;
     }
 
@@ -198,37 +192,23 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      *
-     * Before sending configuration to the job, we move uploaded files
-     * from '/tmp/' directory to the upload directory.
-     *
+     * Before sending configuration to the job, we store uploaded files.
      * This way, the job process can have access to uploaded files.
      */
     public function finalize()
     {
-        foreach ($this->values as $productValue) {
+        foreach ($this->getValues() as $productValue) {
             $media = $productValue->getMedia();
 
-            if (null !== $media && null !== $media->getFile()) {
-                $tmpFile = $media->getFile();
-                $name = sprintf('%s-%s', uniqid(), time());
-                $movedFile = $tmpFile->move($this->uploadDir, $name);
-
-                $jobFile = new UploadedFile(
-                    $movedFile->getPathname(),
-                    $tmpFile->getClientOriginalName(),
-                    $tmpFile->getClientMimeType(),
-                    $tmpFile->getClientSize(),
-                    $tmpFile->getError()
-                );
-
-                $media->setFile($jobFile);
-                $productValue->setMedia($media);
+            if (null !== $media && null !== $media->getUploadedFile()) {
+                $file = $this->rawFileStorer->store($media->getUploadedFile(), FileStorage::CATALOG_STORAGE_ALIAS, true);
+                $productValue->setMedia($file);
             }
         }
     }
 
     /**
-     * Initializes self::allAtributes with values from the repository
+     * Initializes self::allAttributes with values from the repository
      *
      * @return array
      */

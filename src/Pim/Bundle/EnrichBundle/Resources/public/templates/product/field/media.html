@@ -10,18 +10,21 @@
             </div>
         <% } else { %>
             <div class="preview">
-                <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
-                    <div class="file"><img src="<%= mediaUrl %>"/></div>
+                <% mediaThumbnailUrl = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'thumbnail_small') %>
+                <% mediaPreviewUrl   = mediaUrlGenerator.getMediaShowUrl(value.data.filePath, 'preview') %>
+                <% mediaDownloadUrl  = mediaUrlGenerator.getMediaDownloadUrl(value.data.filePath) %>
+                <% if ('pim_catalog_image' === attribute.type && null != mediaThumbnailUrl) { %>
+                    <div class="file"><img src="<%= mediaThumbnailUrl %>"/></div>
                 <% } else { %>
                     <div class="file"><i class="icon icon-file"></i></div>
                 <% } %>
                 <div class="info">
                     <span class="filename" title="<%= value.data.originalFilename %>"><%= value.data.originalFilename %></span>
                     <span class="actions">
-                        <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
+                        <% if ('pim_catalog_image' === attribute.type && null != mediaPreviewUrl) { %>
                             <span class="open-media"><i class="icon icon-eye-open"></i></span>
                         <% } %>
-                        <a href="<%= mediaUrl %>" class="download-file" download><i class="icon icon-cloud-download"></i></a>
+                        <a href="<%= mediaDownloadUrl %>" class="download-file" download><i class="icon icon-cloud-download"></i></a>
                         <span class="clear-field"><i class="icon icon-trash"></i></span>
                     </span>
                 </div>

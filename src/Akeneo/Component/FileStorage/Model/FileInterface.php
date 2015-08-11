@@ -19,6 +19,13 @@ interface FileInterface
     public function getId();
 
     /**
+     * @param int $id
+     *
+     * @return FileInterface
+     */
+    public function setId($id);
+
+    /**
      * The key of the file can be either its pathname or a unique identifier.
      *
      * @return string
@@ -31,18 +38,6 @@ interface FileInterface
      * @return FileInterface
      */
     public function setKey($key);
-
-    /**
-     * @return string
-     */
-    public function getGuid();
-
-    /**
-     * @param string $guid
-     *
-     * @return FileInterface
-     */
-    public function setGuid($guid);
 
     /**
      * @return string
@@ -95,6 +90,18 @@ interface FileInterface
     /**
      * @return string
      */
+    public function getHash();
+
+    /**
+     * @param string $hash
+     *
+     * @return FileInterface
+     */
+    public function setHash($hash);
+
+    /**
+     * @return string
+     */
     public function getStorage();
 
     /**
@@ -105,18 +112,26 @@ interface FileInterface
     public function setStorage($storage);
 
     /**
-     * TODO: drop it asap.
-     *
      * @return UploadedFile
      */
     public function getUploadedFile();
 
     /**
-     * TODO: drop it asap.
-     *
      * @param UploadedFile $uploadedFile
      *
      * @return FileInterface|null
      */
     public function setUploadedFile(UploadedFile $uploadedFile = null);
+
+    /**
+     * @param bool $removed
+     *
+     * @return FileInterface
+     */
+    public function setRemoved($removed);
+
+    /**
+     * @return bool
+     */
+    public function isRemoved();
 }
