@@ -33,6 +33,17 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     ];
 
     /**
+     * @BeforeScenario
+     */
+    public function resetPlaceholderValues()
+    {
+        $this->placeholderValues = [
+            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
+            '%fixtures%' => __DIR__ . '/fixtures'
+        ];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function createProduct($data)
@@ -589,6 +600,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 ],
                 $data
             );
+
+            $data['value'] = $this->replacePlaceholders($data['value']);
 
             $rule = $this->getRule($data['rule']);
             $content = $rule->getContent();

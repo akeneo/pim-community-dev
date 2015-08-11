@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
@@ -49,9 +48,6 @@ class ProductDraftManager
     /** @var EventDispatcherInterface */
     protected $dispatcher;
 
-    /** @var MediaManager */
-    protected $mediaManager;
-
     /** @var SaverInterface */
     protected $productDraftSaver;
 
@@ -65,7 +61,6 @@ class ProductDraftManager
      * @param ProductDraftRepositoryInterface $repository
      * @param ProductDraftApplierInterface    $applier
      * @param EventDispatcherInterface        $dispatcher
-     * @param MediaManager                    $mediaManager
      * @param SaverInterface                  $productDraftSaver
      * @param RemoverInterface                $productDraftRemover
      */
@@ -76,7 +71,6 @@ class ProductDraftManager
         ProductDraftRepositoryInterface $repository,
         ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
-        MediaManager $mediaManager,
         SaverInterface $productDraftSaver,
         RemoverInterface $productDraftRemover
     ) {
@@ -86,7 +80,6 @@ class ProductDraftManager
         $this->repository = $repository;
         $this->applier = $applier;
         $this->dispatcher = $dispatcher;
-        $this->mediaManager = $mediaManager;
         $this->productDraftSaver = $productDraftSaver;
         $this->productDraftRemover = $productDraftRemover;
     }
@@ -102,7 +95,6 @@ class ProductDraftManager
 
         $product = $productDraft->getProduct();
         $this->applier->apply($product, $productDraft);
-        $this->mediaManager->handleProductMedias($product);
 
         $this->productDraftRemover->remove($productDraft, ['flush' => false]);
         $this->workingCopySaver->save($product);

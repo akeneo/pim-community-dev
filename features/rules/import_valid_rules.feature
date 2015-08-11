@@ -308,7 +308,7 @@ Feature: Import rules
                 - type:  set_value
                   field: side_view
                   value:
-                       filePath:         ../../../features/Context/fixtures/akeneo.jpg
+                       filePath:         %fixtures%/akeneo.jpg
                        originalFilename: akeneo.jpg
     """
     And the following job "clothing_rule_import" configuration:

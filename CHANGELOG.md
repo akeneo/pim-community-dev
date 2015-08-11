@@ -1,5 +1,10 @@
 # 1.4.x
 
+## BC Breaks
+- Media related classes `PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia`, `PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMediaInterface` and `PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\MediaPublisher` have been removed
+- Change constructor of  `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter` to remove argument `Pim\Bundle\CatalogBundle\Manager\MediaManager`
+- Change constructor of `PimEnterprise/Bundle/MassEditAction/Operation/EditCommonAttributes` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\RawFileRawFileStorerInterface`
+
 ## Bug fixes
 PIM-4443: Exporting a product with an attribute with a numeric code gives an error, full numeric codes for entities are now forbidden except for products
 

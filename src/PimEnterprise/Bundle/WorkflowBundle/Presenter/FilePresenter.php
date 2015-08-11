@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -54,20 +54,18 @@ class FilePresenter implements PresenterInterface
         }
 
         $before = '';
-        if (null !== $media) {
-            if (null !== $media->getFilename() && null !== $media->getOriginalFilename()) {
-                $before = sprintf(
-                    '<li class="base file">%s</li>',
-                    $this->createFileElement($media->getFilename(), $media->getOriginalFilename())
-                );
-            }
+        if (null !== $media && null !== $media->getKey() && null !== $media->getOriginalFilename()) {
+            $before = sprintf(
+                '<li class="base file">%s</li>',
+                $this->createFileElement($media->getKey(), $media->getOriginalFilename())
+            );
         }
 
         $after = '';
-        if (isset($change['data']['originalFilename']) && isset($change['data']['filename'])) {
+        if (isset($change['data']['originalFilename']) && isset($change['data']['filePath'])) {
             $after = sprintf(
                 '<li class="changed file">%s</li>',
-                $this->createFileElement($change['data']['filename'], $change['data']['originalFilename'])
+                $this->createFileElement($change['data']['filePath'], $change['data']['originalFilename'])
             );
         }
 
@@ -86,7 +84,7 @@ class FilePresenter implements PresenterInterface
     {
         return sprintf(
             '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
-            $this->generator->generate('pim_enrich_media_show', ['filename' => $filename]),
+            $this->generator->generate('pim_enrich_media_show', ['filename' => urlencode($filename)]),
             $originalFilename
         );
     }
@@ -94,23 +92,16 @@ class FilePresenter implements PresenterInterface
     /**
      * Check diff between old and new file
      *
-     * @param array                 $change
-     * @param ProductMediaInterface $media
+     * @param array         $change
+     * @param FileInterface $file
      *
      * @return bool
      */
-    protected function isDiff(array $change, ProductMediaInterface $media = null)
+    protected function isDiff(array $change, FileInterface $file = null)
     {
-        if (null !== $media && null !== $media->getFilename()) {
-            $data = sha1_file($this->generator->generate('pim_enrich_media_show', [
-                'filename' => $media->getFilename()
-            ], UrlGeneratorInterface::ABSOLUTE_URL));
-        } else {
-            $data = null;
-        }
+        $dataHash   = null !== $file ? $file->getHash() : null;
+        $changeHash = isset($change['data']['hash']) ? $change['data']['hash'] : null;
 
-        $change = isset($change['data']['filePath']) ? sha1_file($change['data']['filePath']) : null;
-
-        return $data !== $change;
+        return $dataHash !== $changeHash;
     }
 }
