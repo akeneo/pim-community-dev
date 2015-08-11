@@ -30,7 +30,7 @@ class AppKernel extends Kernel
             new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle()
         ];
 
-        if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
+        if (in_array($this->getEnvironment(), ['dev', 'test', 'behat'])) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
@@ -92,7 +92,6 @@ class AppKernel extends Kernel
 
             new Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
             new Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
-            new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
             new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle(),
         ];
     }
