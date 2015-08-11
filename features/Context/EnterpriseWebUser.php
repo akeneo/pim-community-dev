@@ -84,6 +84,44 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Then /^the grid locale switcher should contain the following items:$/
+     */
+    public function theGridLocaleSwitcherShouldContainTheFollowingItems(TableNode $table, $page = 'index')
+    {
+        return parent::theLocaleSwitcherShouldContainTheFollowingItems($table, $page);
+    }
+
+    /**
+     * @param string $fieldName
+     * @param string $scope
+     * @param string $locale
+     * @param string $source
+     * @param string $expected
+     *
+     * @Then /^the ([^"]*) copy value for scope "([^"]*)", locale "([^"]*)" and source "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCopyValueForSourceShouldBe($fieldName, $scope, $locale, $source, $expected)
+    {
+        $this->getCurrentPage()->compareWith($locale, $scope, $source);
+        $this->getCurrentPage()->compareFieldValue($fieldName, $expected, true);
+    }
+
+    /**
+     * @param string $fieldName
+     * @param string $scope
+     * @param string $locale
+     * @param string $expected
+     *
+     * @Then /^the ([^"]*) original value for scope "([^"]*)" and locale "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theOriginalValueOfShouldBe($fieldName, $scope, $locale, $expected)
+    {
+        $this->theCopyValueForSourceShouldBe($fieldName, $scope, $locale, 'working_copy', $expected);
+    }
+
+    /**
      * @param string $date
      *
      * @When /^I change the end of use at to "([^"]+)"$/

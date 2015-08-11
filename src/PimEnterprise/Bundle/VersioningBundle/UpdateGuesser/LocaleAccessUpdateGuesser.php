@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
-use PimEnterprise\Bundle\SecurityBundle\Model\LocaleAccessInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use PimEnterprise\Bundle\SecurityBundle\Model\LocaleAccessInterface;
 
 /**
  * Locale access update guesser

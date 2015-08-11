@@ -12,6 +12,7 @@ services:
         arguments:
             - '@pimee_workflow.object_manager.product_draft'
             - '@pim_catalog.saver.product_options_resolver'
+            - '@event_dispatcher'
             - '%pimee_workflow.model.product_draft.class%'
 
     # this product saver delegates to draft or working copy savers depending on user permissions

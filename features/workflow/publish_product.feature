@@ -23,7 +23,6 @@ Feature: Publish a product
     And the following published product:
       | sku       | family  | categories | name-en_US |
       | my-jacket | jackets | jackets    | Jacket1    |
-    And I am logged in as "Julia"
     And I am on the "my-jacket" published show page
     Then I should see "Edit working copy"
 
@@ -31,7 +30,6 @@ Feature: Publish a product
     And the following published product:
       | sku    | family | categories | name-en_US |
       | my-tee | tees   | tshirts    | Tee1       |
-    And I am logged in as "Julia"
     And I am on the "my-tee" published show page
     Then I should not see "Edit working copy"
 

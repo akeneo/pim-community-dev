@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
@@ -42,14 +43,16 @@ class CategoryManager extends BaseCategoryManager
     protected $assetCategoryRepo;
 
     /**
+     * Constructor
+     *
      * @param ObjectManager                 $om
+     * @param CategoryRepositoryInterface   $productCategoryRepo
+     * @param CategoryFactory               $categoryFactory
      * @param string                        $categoryClass
      * @param EventDispatcherInterface      $eventDispatcher
      * @param CategoryAccessRepository      $categoryAccessRepo
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param CategoryRepositoryInterface   $productCategoryRepo
      * @param CategoryRepositoryInterface   $assetCategoryRepo
-     * @param CategoryFactory               $categoryFactory
      */
     public function __construct(
         ObjectManager $om,
@@ -148,7 +151,7 @@ class CategoryManager extends BaseCategoryManager
     protected function filterGrantedFilledTree(&$filledTree)
     {
         foreach ($filledTree as $categoryIdx => &$categoryData) {
-            $isLeaf = is_object($categoryData);
+            $isLeaf   = is_object($categoryData);
             $category = $isLeaf ? $categoryData : $categoryData['item'];
 
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {

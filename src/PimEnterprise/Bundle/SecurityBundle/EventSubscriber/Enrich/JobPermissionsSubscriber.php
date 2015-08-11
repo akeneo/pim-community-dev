@@ -17,8 +17,8 @@ use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Job profile listener used to handle permissions

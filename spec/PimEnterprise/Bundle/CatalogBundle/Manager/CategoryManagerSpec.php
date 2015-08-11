@@ -17,11 +17,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager');
-    }
-
     function let(
         ObjectManager $om,
         CategoryRepositoryInterface $productCategoryRepo,
@@ -33,6 +28,7 @@ class CategoryManagerSpec extends ObjectBehavior
     ) {
         $om->getRepository(Argument::any())->willReturn($productCategoryRepo);
         $this->beConstructedWith(
+            $categoryRepository,
             $om,
             $productCategoryRepo,
             $categoryFactory,
@@ -42,6 +38,11 @@ class CategoryManagerSpec extends ObjectBehavior
             $context,
             $assetCategoryRepo
         );
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager');
     }
 
     function it_gets_accessible_trees_for_display(

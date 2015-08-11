@@ -9,23 +9,13 @@ define(
         'jquery',
         'underscore',
         'pim/product-edit-form/save',
-        'pimee/permission-manager'
+        'pim/fetcher-registry'
     ],
-    function ($, _, Save, PermissionManager) {
+    function ($, _, Save, FetcherRegistry) {
         return Save.extend({
-            permissions: {},
-            configure: function () {
-                return $.when(
-                    PermissionManager.getPermissions().then(_.bind(function (permissions) {
-                        this.permissions = permissions;
-                    }, this)),
-                    Save.prototype.configure.apply(this, arguments)
-                );
-            },
             render: function () {
                 var categories = this.getFormData().categories;
-                var isOwner = !categories.length ||
-                    !!_.intersection(this.permissions.categories.OWN_PRODUCTS, categories).length;
+                var isOwner = this.getFormData().meta.is_owner;
 
                 if (!isOwner) {
                     this.updateSuccessMessage = _.__('pimee_enrich.entity.product_draft.info.update_successful');

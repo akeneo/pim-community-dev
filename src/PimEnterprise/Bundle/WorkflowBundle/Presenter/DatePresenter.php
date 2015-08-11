@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+
 /**
  * Present changes on date data
  *
@@ -26,7 +28,7 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     public function supportsChange($attributeType)
     {
-        return 'pim_catalog_date' === $attributeType;
+        return AttributeTypes::DATE === $attributeType;
     }
 
     /**

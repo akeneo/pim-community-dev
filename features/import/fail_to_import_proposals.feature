@@ -62,7 +62,7 @@ Feature: Import proposals
     Then there should be 0 proposal
     And I should see:
     """
-    Identifier property "sku" is expected
+    Field "sku" is expected, provided fields are "description-en_US-mobile, description-en_US-tablet, comment, enabled"
     """
     And I should see "Status: FAILED"
 
@@ -84,7 +84,6 @@ Feature: Import proposals
     And I launch the import job
     And I wait for the "clothing_product_proposal_import" job to finish
     Then there should be 0 proposal
-    And I should see "No diff between current product and this proposal"
     And I should see "skipped proposal (no differences) 1"
 
   Scenario: Skip a proposal when done on a non existing product
