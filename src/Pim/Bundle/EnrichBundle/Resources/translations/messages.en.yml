@@ -942,13 +942,13 @@ Selected products successfully deleted: Selected products successfully deleted
 pim_mass_edit:
     notification:
         mass_edit:
-            success: Mass edit finished
-            error:   Mass edit failed
-            warning: Mass edit finished with warnings
+            error:   Mass edit %label% failed
+            warning: Mass edit %label% finished with some warnings
+            success: Mass edit %label% finished
         quick_export:
-            success: Quick export finished
-            error:   Quick export failed
-            warning: Quick export finished with warnings
+            error:   Quick export %label% failed
+            warning: Quick export %label% finished with some warnings
+            success: Quick export %label% finished
 
 job_execution.summary:
     mass_edited:        Mass edited
