@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -17,14 +16,12 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class ProductWriterSpec extends ObjectBehavior
 {
     function let(
-        MediaManager $mediaManager,
         VersionManager $versionManager,
         BulkSaverInterface $productSaver,
         BulkObjectDetacherInterface $detacher,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->beConstructedWith(
-            $mediaManager,
             $versionManager,
             $productSaver,
             $detacher,
@@ -87,23 +84,6 @@ class ProductWriterSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
         $productSaver->saveAll($items, ['recalculate' => false])->shouldBeCalled();
-        $this->write($items);
-    }
-
-    function it_handles_media(
-        $mediaManager,
-        StepExecution $stepExecution,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $items = [$product1, $product2];
-
-        $product1->getId()->willReturn('45');
-        $product2->getId()->willReturn(null);
-
-        $mediaManager->handleAllProductsMedias($items)->shouldBeCalled();
-
-        $this->setStepExecution($stepExecution);
         $this->write($items);
     }
 

@@ -34,6 +34,25 @@ Feature: Import proposals
     Then the grid should contain 1 element
     And I should see entity my-jacket
 
+  Scenario: Import proposal with media
+    Given I am logged in as "Mary"
+    And I am on the "clothing_product_proposal_import" import job page
+    When I upload and import the file "proposal_import.zip"
+    And I wait for the "clothing_product_proposal_import" job to finish
+    And I should see "read lines 3"
+    And I should see "created proposal 3"
+    Then there should be 3 proposal
+    And I should get the following proposal:
+      | username                         | product   | result                                                                                                                                |
+      | clothing_product_proposal_import | my-jacket | {"values":{"side_view":[{"locale":null,"scope":null,"data":{"filePath": "jack_003.png", "originalFilename": "jack_003.png"}}]}} |
+    When I logout
+    And I am logged in as "Julia"
+    And I am on the proposals page
+    Then the grid should contain 3 element
+    And I should see entity my-jacket
+    And I should see entity my-jacket2
+    And I should see entity my-jacket3
+
   Scenario: Update a proposal
     Given I am logged in as "Mary"
     And the following product drafts:

@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes as BaseEditCommonAttributes;
@@ -40,9 +40,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
      * @param CatalogContext                $catalogContext
      * @param AttributeRepositoryInterface  $attributeRepository
      * @param NormalizerInterface           $normalizer
-     * @param MediaManager                  $mediaManager
      * @param ProductMassActionManager      $massActionManager
-     * @param string                        $uploadDir
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
@@ -51,9 +49,8 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         CatalogContext $catalogContext,
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        MediaManager $mediaManager,
+        RawFileStorerInterface $rawFileStorer,
         ProductMassActionManager $massActionManager,
-        $uploadDir,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         parent::__construct(
@@ -62,9 +59,8 @@ class EditCommonAttributes extends BaseEditCommonAttributes
             $catalogContext,
             $attributeRepository,
             $normalizer,
-            $mediaManager,
-            $massActionManager,
-            $uploadDir
+            $rawFileStorer,
+            $massActionManager
         );
 
         $this->authorizationChecker = $authorizationChecker;
