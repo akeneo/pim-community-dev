@@ -65,7 +65,6 @@ services:
         class: %pim_connector.array_converter.flat.product_association.class%
         arguments:
             - '@pim_connector.array_converter.flat.product'
-            - '@pim_connector.array_converter.flat.product.association_columns_resolver'
             - '@pim_connector.array_converter.flat.product.attribute_columns_resolver'
 
     pim_connector.array_converter.flat.variant_group:

@@ -25,7 +25,7 @@ Feature: Association type creation
     When I fill in the following information in the popin:
       | Code | =( |
     And I press the "Save" button
-    Then I should see validation error "Association type code may contain only letters, numbers and underscores"
+    Then I should see validation error "Association type code may contain only letters (at least one), numbers and underscores"
 
   Scenario: Fail to create an association type with an already used code
     Given the following association type:
@@ -35,3 +35,10 @@ Feature: Association type creation
       | Code | cross_sell |
     And I press the "Save" button
     Then I should see validation error "This value is already used."
+
+  Scenario: Fail to create an association type with a full numeric code
+    Then I should see the Code field
+    When I fill in the following information in the popin:
+      | Code | 1234 |
+    And I press the "Save" button
+    Then I should see validation error "Association type code may contain only letters (at least one), numbers and underscores"

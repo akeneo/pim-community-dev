@@ -16,6 +16,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
@@ -28,12 +29,14 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -224,7 +227,7 @@ class ProductController extends AbstractDoctrineController
         }
 
         $product = $this->productBuilder->createProduct();
-        $form = $this->createForm('pim_product_create', $product, $this->getCreateFormOptions($product));
+        $form    = $this->createForm('pim_product_create', $product, $this->getCreateFormOptions($product));
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
@@ -234,6 +237,7 @@ class ProductController extends AbstractDoctrineController
                 if ($dataLocale === null) {
                     $dataLocale = $this->getDataLocaleCode();
                 }
+
                 $url = $this->generateUrl(
                     'pim_enrich_product_edit',
                     ['id' => $product->getId(), 'dataLocale' => $dataLocale]
@@ -352,7 +356,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @param array $params
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     protected function redirectAfterEdit($params)
     {
@@ -362,15 +366,15 @@ class ProductController extends AbstractDoctrineController
                 $route = 'pim_enrich_product_edit';
                 break;
             case self::BACK_TO_GRID:
-                $route = 'pim_enrich_product_index';
+                $route  = 'pim_enrich_product_index';
                 $params = [];
                 break;
             case self::CREATE:
-                $route = 'pim_enrich_product_edit';
+                $route                  = 'pim_enrich_product_edit';
                 $params['create_popin'] = true;
                 break;
             case self::SAVE_AND_NEXT:
-                $route = 'pim_enrich_product_edit';
+                $route          = 'pim_enrich_product_edit';
                 $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
 
                 if (null !== $sequentialEdit) {
@@ -393,7 +397,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_product_history")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function historyAction(Request $request, $id)
     {
@@ -450,9 +454,13 @@ class ProductController extends AbstractDoctrineController
         $includeParent = $request->get('include_parent', false);
         $includeParent = ($includeParent === 'true');
 
-        if ($product !== null) {
+        $selectedCategoryIds = $request->get('selected', null);
+        if (null !== $selectedCategoryIds) {
+            $categories = $this->categoryManager->getCategoriesByIds($selectedCategoryIds);
+        } elseif (null !== $product) {
             $categories = $product->getCategories();
         }
+
         $trees = $this->getFilledTree($parent, $categories);
 
         return ['trees' => $trees, 'categories' => $categories];
@@ -476,7 +484,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @param ProductInterface $product
      *
-     * @return []
+     * @return array
      */
     protected function getProductCountByTree(ProductInterface $product)
     {
@@ -496,7 +504,7 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     protected function getUserLocales()
     {
@@ -520,7 +528,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @throws \Exception
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return LocaleInterface
      */
     protected function getDataLocale()
     {
@@ -544,9 +552,9 @@ class ProductController extends AbstractDoctrineController
      *
      * @param int $id the product id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return ProductInterface
      */
     protected function findProductOr404($id)
     {
@@ -569,7 +577,7 @@ class ProductController extends AbstractDoctrineController
      * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
      *
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     protected function getAvailableAttributesForm(
         array $attributes = [],

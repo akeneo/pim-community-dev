@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider\EmptyValue;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -19,20 +20,20 @@ class BaseEmptyValueProvider implements EmptyValueProviderInterface
     public function getEmptyValue($attribute)
     {
         switch ($attribute->getAttributeType()) {
-            case 'pim_catalog_metric':
+            case AttributeTypes::METRIC:
                 $emptyValue = [
                     'data' => null,
                     'unit' => $attribute->getDefaultMetricUnit(),
                 ];
                 break;
-            case 'pim_catalog_multiselect':
-            case 'pim_catalog_price_collection':
+            case AttributeTypes::OPTION_MULTI_SELECT:
+            case AttributeTypes::PRICE_COLLECTION:
                 $emptyValue = [];
                 break;
-            case 'pim_catalog_text':
+            case AttributeTypes::TEXT:
                 $emptyValue = '';
                 break;
-            case 'pim_catalog_boolean':
+            case AttributeTypes::BOOLEAN:
                 $emptyValue = false;
                 break;
             default:

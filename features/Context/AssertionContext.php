@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\ResponseTextException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -29,11 +30,27 @@ class AssertionContext extends RawMinkContext
      */
     public function assertPageContainsText($text)
     {
+        //Remove unecessary escaped antislashes
+        $text = str_replace('\\', '', $text);
         $this->getMainContext()->spin(function () use ($text) {
             $this->assertSession()->pageTextContains($text);
 
             return true;
         });
+    }
+
+    /**
+     * Checks, that page does not contain specified text.
+     *
+     * @Then /^(?:|I )should not see the text "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function assertPageNotContainsText($text)
+    {
+        $this->getMainContext()->spin(function () use ($text) {
+            $this->assertSession()->pageTextNotContains($text);
+
+            return true;
+        }, 5);
     }
 
     /**
@@ -155,7 +172,9 @@ class AssertionContext extends RawMinkContext
                 if ($this->getCurrentPage()->findField($field)) {
                     throw $this->createExpectationException(sprintf('Not expecting to see field "%s"', $field));
                 }
-            } catch (ElementNotFoundException $e) {
+            } catch (\Exception $e) {
+                //If findField raised an exception, it means that the field was not found
+                return;
             }
         }
     }
@@ -719,6 +738,25 @@ class AssertionContext extends RawMinkContext
                 implode(', ', $string->getLines())
             )
         );
+    }
+
+    /**
+     * @param PyStringNode $text
+     *
+     * @throws ResponseTextException
+     * @throws \Exception
+     *
+     * @Then /^I should see the sequential edit progression:$/
+     */
+    public function iShouldSeeTheSequentialEditProgression(PyStringNode $text)
+    {
+        $this->getCurrentPage()->waitForProgressionBar();
+
+        $this->getMainContext()->spin(function () use ($text) {
+            $this->assertSession()->pageTextContains((string) $text);
+
+            return true;
+        });
     }
 
     /**

@@ -6,6 +6,7 @@
                     <a <% if (tree.associated) { %>class="tree-has-product"<% } %>href="javascript:void(0);" id="tree-link-<%= tree.id %>">
                         <i class="icon-ok green"></i>
                         <%= tree.label %>
+                        <span class="badge" data-tree-id="<%= tree.code %>"><%= categoriesCount[tree.id] %></span>
                     </a>
                 </li>
             <% }); %>

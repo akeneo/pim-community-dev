@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -90,7 +91,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         foreach ($family->getAttributeRequirements() as $key => $requirement) {
-            if ('pim_catalog_identifier' === $requirement->getAttribute()->getAttributeType()) {
+            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
                 $requirement->setRequired(true);
                 $form->get('attributeRequirements')->remove($key);
             }

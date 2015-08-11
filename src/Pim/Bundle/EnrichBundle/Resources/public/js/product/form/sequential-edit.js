@@ -49,16 +49,18 @@ define(
             configure: function () {
                 mediator.once('hash_navigation_request:start', function (navigation) {
                     if (navigation.url === Routing.generate('pim_enrich_product_index')) {
-                        FetcherRegistry.clear('sequentialEdit');
+                        FetcherRegistry.clear('sequential-edit');
                     }
                 });
 
                 return $.when(
-                    FetcherRegistry.getFetcher('sequential-edit').fetchAll().then(
-                        _.bind(function (sequentialEdit) {
-                            this.model.set(sequentialEdit);
-                        }, this)
-                    ),
+                    FetcherRegistry.getFetcher('sequential-edit')
+                        .fetchAll()
+                        .then(_.bind(
+                            function (sequentialEdit) {
+                                this.model.set(sequentialEdit);
+                            }, this)
+                        ),
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
             },
@@ -168,7 +170,11 @@ define(
                 }, this));
             },
             followLink: function (event) {
-                this.goToProduct(event.currentTarget.dataset.id);
+                mediator.trigger('pim_enrich:form:state:confirm', {
+                    action: _.bind(function () {
+                        this.goToProduct(event.currentTarget.dataset.id);
+                    }, this)
+                });
             },
             goToProduct: function (id) {
                 Navigation.getInstance().setLocation(

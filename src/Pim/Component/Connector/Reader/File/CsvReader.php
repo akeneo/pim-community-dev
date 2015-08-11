@@ -249,6 +249,8 @@ class CsvReader extends AbstractConfigurableStepElement implements
             }
 
             $data = array_combine($this->fieldNames, $data);
+        } elseif ($this->csv->eof()) {
+            $data = null;
         } else {
             throw new \RuntimeException('An error occurred while reading the csv.');
         }

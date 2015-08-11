@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\View;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -24,8 +25,8 @@ class ProductFormView implements ProductFormViewInterface
      * @var array
      */
     protected $choiceAttributeTypes = array(
-        'pim_catalog_multiselect',
-        'pim_catalog_simpleselect'
+        AttributeTypes::OPTION_MULTI_SELECT,
+        AttributeTypes::OPTION_SIMPLE_SELECT
     );
 
     /** @var FormView|array */
@@ -118,7 +119,7 @@ class ProductFormView implements ProductFormViewInterface
             $classes['localizable'] = true;
         }
 
-        if ('pim_catalog_price_collection' === $attribute->getAttributeType()) {
+        if (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
             $classes['currency'] = true;
         }
 

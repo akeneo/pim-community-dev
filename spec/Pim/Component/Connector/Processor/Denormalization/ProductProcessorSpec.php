@@ -104,7 +104,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
         $converterOptions = [
             "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true]
+            "default_values" => ["enabled" => true],
+            "with_associations" => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -199,7 +200,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
         $converterOptions = [
             "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true]
+            "default_values" => ["enabled" => true],
+            "with_associations" => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -295,7 +297,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
         $converterOptions = [
             "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true]
+            "default_values" => ["enabled" => true],
+            "with_associations" => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -393,7 +396,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
         $converterOptions = [
             "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true]
+            "default_values" => ["enabled" => true],
+            "with_associations" => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -435,6 +439,44 @@ class ProductProcessorSpec extends ObjectBehavior
         $this
             ->process($originalData)
             ->shouldReturn($product);
+    }
+
+    function it_skips_a_product_when_identifier_is_empty(
+        $arrayConverter,
+        $productRepository
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+
+        $originalData = [
+            'sku' => '',
+            'family' => 'TShirt'
+        ];
+        $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => null
+                ],
+            ],
+            'family' => 'Tshirt',
+        ];
+
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true],
+            "with_associations" => false
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $this
+            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->during(
+                'process',
+                [$originalData]
+            );
     }
 
     function it_skips_a_product_when_update_fails(
@@ -489,7 +531,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
         $converterOptions = [
             "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true]
+            "default_values" => ["enabled" => true],
+            "with_associations" => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -587,7 +630,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
         $converterOptions = [
             "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true]
+            "default_values" => ["enabled" => true],
+            "with_associations" => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -689,7 +733,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
         $converterOptions = [
             "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true]
+            "default_values" => ["enabled" => true],
+            "with_associations" => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)

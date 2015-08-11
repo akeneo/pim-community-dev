@@ -119,6 +119,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                 delete this.entityPromises[identifier];
             } else {
                 this.entityListPromise = null;
+                this.entityPromises    = {};
             }
         }
     });

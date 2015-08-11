@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -152,7 +153,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     {
         $media = [];
         foreach ($product->getValues() as $value) {
-            if (in_array($value->getAttribute()->getAttributeType(), ['pim_catalog_image', 'pim_catalog_file'])) {
+            if (in_array($value->getAttribute()->getAttributeType(), [AttributeTypes::IMAGE, AttributeTypes::FILE])) {
                 $media[] = $value->getData();
             }
         }

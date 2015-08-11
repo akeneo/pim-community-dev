@@ -7,11 +7,11 @@ use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
@@ -26,6 +26,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class WebUser extends RawMinkContext
 {
+    use SpinCapableTrait;
+
     protected $windowWidth;
 
     protected $windowHeight;
@@ -236,11 +238,20 @@ class WebUser extends RawMinkContext
     public function iOpenTheHistory()
     {
         $this->getCurrentPage()->openPanel('History');
+        $this->getMainContext()->executeScript("$('.panel-pane.history-panel').css({'height': '90%'});");
+
         $expandButton = $this->getMainContext()->spin(function () {
-            return $this->getCurrentPage()->find('css', '.expand-history');
+            $expandHistory = $this->getCurrentPage()->find('css', '.expand-history');
+
+            if ($expandHistory && $expandHistory->isValid()) {
+                $expandHistory->click();
+
+                return true;
+            }
+
+            return false;
         });
 
-        $expandButton->click();
         $this->wait();
     }
 
@@ -379,22 +390,30 @@ class WebUser extends RawMinkContext
         $linkCount         = $this->getPage($pageName)->countLocaleLinks($copy);
         $expectedLinkCount = count($table->getHash());
 
-        if ($linkCount !== $expectedLinkCount) {
-            throw $this->createExpectationException(
-                sprintf('Expected to see %d items in the locale switcher, saw %d', $expectedLinkCount, $linkCount)
-            );
-        }
+        $this->spin(function () use ($pageName, $copy, $table) {
+            $linkCount         = $this->getPage($pageName)->countLocaleLinks($copy);
+            $expectedLinkCount = count($table->getHash());
+
+            return $linkCount === $expectedLinkCount;
+        }, 20, sprintf('Expected to see %d items in the locale switcher, saw %d', $expectedLinkCount, $linkCount));
 
         foreach ($table->getHash() as $data) {
-            if (!$this->getPage($pageName)->findLocaleLink($data['locale'], $data['language'], $data['flag'], $copy)) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Could not find locale "%s %s" in the locale switcher',
+            $this->spin(
+                function () use ($pageName, $data, $copy) {
+                    return $this->getPage($pageName)->findLocaleLink(
                         $data['locale'],
-                        $data['language']
-                    )
-                );
-            }
+                        $data['language'],
+                        $data['flag'],
+                        $copy
+                    );
+                },
+                5,
+                sprintf(
+                    'Could not find locale "%s %s" in the locale switcher',
+                    $data['locale'],
+                    $data['language']
+                )
+            );
         }
     }
 
@@ -526,6 +545,7 @@ class WebUser extends RawMinkContext
         $page       = $this->getCurrentPage();
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
+        $this->wait();
 
         $group = $this->getFixturesContext()->findAttributeGroup($group);
 
@@ -652,7 +672,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $label
+     * @param string $fieldName
      * @param string $expected
      *
      * @Then /^the product ([^"]*) should be empty$/
@@ -661,9 +681,13 @@ class WebUser extends RawMinkContext
      * @throws \LogicException
      * @throws ExpectationException
      */
-    public function theProductFieldValueShouldBe($label, $expected = '')
+    public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $this->getCurrentPage()->compareFieldValue($label, $expected);
+        $this->spin(function () use ($fieldName, $expected) {
+            $this->getCurrentPage()->compareFieldValue($fieldName, $expected);
+
+            return true;
+        });
     }
 
     /**
@@ -738,6 +762,20 @@ class WebUser extends RawMinkContext
                 )
             );
         }
+    }
+
+    /**
+     * @param string $fieldName
+     * @param string $locale
+     * @param string $scope
+     * @param string $expected
+     *
+     * @Then /^the ([^"]*) copy value for scope "([^"]*)" and locale "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCopyValueShouldBe($fieldName, $scope, $locale, $expected)
+    {
+        $this->getCurrentPage()->compareWith($locale, $scope);
+        $this->getCurrentPage()->compareFieldValue($fieldName, $expected, true);
     }
 
     /**
@@ -988,11 +1026,11 @@ class WebUser extends RawMinkContext
     /**
      * @param string $field
      *
-     * @When /^I add a new option to the "([^"]*)" attribute$/
+     * @When /^I add a new option to the "([^"]*)" attribute:$/
      *
      * @throws ExpectationException
      */
-    public function iAddANewOptionToTheAttribute($field)
+    public function iAddANewOptionToTheAttribute($field, TableNode $table)
     {
         if (null === $link = $this->getCurrentPage()->getAddOptionLinkFor($field)) {
             throw $this->createExpectationException(
@@ -1004,7 +1042,16 @@ class WebUser extends RawMinkContext
         }
 
         $link->click();
-        $this->wait();
+
+        $this->getCurrentPage()->fillPopinFields($table->getRowsHash());
+
+        $addButton = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.modal .btn.ok');
+        });
+
+        $addButton->click();
+
+        $this->getMainContext()->wait(10000);
     }
 
     /**
@@ -1255,10 +1302,14 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheFile($field)
     {
+        $this->getMainContext()->wait();
         $script = sprintf("$('label:contains(\"%s\")').parents('.form-field').find('.clear-field').click();", $field);
         if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
+
+        $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');
+        $this->getMainContext()->wait();
     }
 
     /**
@@ -1541,8 +1592,36 @@ class WebUser extends RawMinkContext
         if ($right) {
             $category->rightClick();
         } else {
-            $category->click();
+            try {
+                $checkbox = $this->spin(function () use ($category) {
+                    return $category->find('css', '.jstree-checkbox');
+
+                });
+            } catch (\Exception $e) {
+                $checkbox = null;
+            }
+
+            if (null !== $checkbox) {
+                $checkbox->click();
+            } else {
+                $category->click();
+            }
             $this->wait();
+        }
+    }
+
+    /**
+     * @Then /^I should see (\d+) category count$/
+     *
+     * @param int $count
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeCategoryCount($count)
+    {
+        $badge = $this->getCurrentPage()->find('css', sprintf('span.badge:contains("%d")', $count));
+        if (!$badge) {
+            throw $this->createExpectationException('Catgeroy badge not found');
         }
     }
 

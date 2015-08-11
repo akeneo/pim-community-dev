@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -70,7 +71,7 @@ class ProductFieldsBuilder
     {
         $this->prepareAvailableAttributeIds($productIds);
         $attributeRepo  = $this->productManager->getAttributeRepository();
-        $attributesList = $attributeRepo->findBy(array('id' => $this->getAttributeIds()));
+        $attributesList = $attributeRepo->findBy(['id' => $this->getAttributeIds()]);
         $fieldsList     = $this->prepareFieldsList($attributesList);
 
         return $fieldsList;
@@ -106,7 +107,7 @@ class ProductFieldsBuilder
      */
     protected function prepareFieldsList(array $attributesList = array())
     {
-        $fieldsList = $this->prepareAttributesList($attributesList);
+        $fieldsList   = $this->prepareAttributesList($attributesList);
         $fieldsList[] = ProductNormalizer::FIELD_FAMILY;
         $fieldsList[] = ProductNormalizer::FIELD_CATEGORY;
         $fieldsList[] = ProductNormalizer::FIELD_GROUPS;
@@ -131,7 +132,7 @@ class ProductFieldsBuilder
     {
         $scopeCode   = $this->catalogContext->getScopeCode();
         $localeCodes = $this->localeManager->getActiveCodes();
-        $fieldsList  = array();
+        $fieldsList  = [];
 
         foreach ($attributesList as $attribute) {
             $attCode = $attribute->getCode();
@@ -145,9 +146,9 @@ class ProductFieldsBuilder
                 }
             } elseif ($attribute->isScopable()) {
                 $fieldsList[] = sprintf('%s-%s', $attCode, $scopeCode);
-            } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+            } elseif (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
                 array_unshift($fieldsList, $attCode);
-            } elseif ($attribute->getAttributeType() === 'pim_catalog_price_collection') {
+            } elseif (AttributeTypes::PRICE_COLLECTION === $attribute->getAttributeType()) {
                 foreach ($this->currencyManager->getActiveCodes() as $currencyCode) {
                     $fieldsList[] = sprintf('%s-%s', $attCode, $currencyCode);
                 }

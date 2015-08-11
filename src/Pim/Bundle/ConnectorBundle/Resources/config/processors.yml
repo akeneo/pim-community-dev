@@ -1,4 +1,5 @@
 parameters:
+    pim_connector.processor.dummy_item.class:                          Pim\Component\Connector\Processor\DummyItemProcessor
     pim_connector.processor.denormalization.attribute_option.class:    Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor
     pim_connector.processor.denormalization.attribute.class:           Pim\Component\Connector\Processor\Denormalization\AttributeProcessor
     pim_connector.processor.denormalization.product.class:             Pim\Component\Connector\Processor\Denormalization\ProductProcessor
@@ -10,6 +11,11 @@ parameters:
     pim_connector.processor.denormalization.family.class:              Pim\Component\Connector\Processor\Denormalization\FamilyProcessor
 
 services:
+    # Dummy processor
+    pim_connector.processor.dummy_item:
+        class: %pim_connector.processor.dummy_item.class%
+
+    # Denormalization processors
     pim_connector.processor.denormalization.attribute_option.flat:
         class: %pim_connector.processor.denormalization.attribute_option.class%
         arguments:

@@ -4,15 +4,31 @@
 /* Bootstrap modal ****************************************************************************************************/
 
 .modal {
-  .border-radius(8px 8px 6px 6px);
+  border-radius: 0;
+  border: none;
   top: 20%;
 }
 
 .modal-header {
-  #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-  .border-radius(6px 6px 0 0);
-  h3 {
+  border-radius: 0;
+  border: none;
+  background-image: none;
+  background-color: @color-new-purple-medium;
+
+  .close {
     color: @backgroundColor-white;
+    text-shadow: none;
+    opacity: 1;
+
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+
+  h3 {
+    color: white;
+    font-weight: normal;
+    font-size: 18px;
   }
 }
 

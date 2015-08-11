@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle;
 
-use Akeneo\Bundle\BatchBundle\Connector\Connector;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Base connector bundle
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimBaseConnectorBundle extends Connector
+class PimBaseConnectorBundle extends Bundle
 {
     /**
      * {@inheritdoc}

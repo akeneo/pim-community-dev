@@ -93,6 +93,11 @@ class ProductProcessor extends AbstractProcessor
     {
         $convertedItem = $this->convertItemData($item);
         $identifier    = $this->getIdentifier($convertedItem);
+
+        if (null === $identifier) {
+            $this->skipItemWithMessage($item, 'The identifier must be filled');
+        }
+
         $familyCode    = $this->getFamilyCode($convertedItem);
         $filteredItem  = $this->filterItemData($convertedItem);
 
@@ -382,7 +387,11 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function getArrayConverterOptions()
     {
-        return ['mapping' => $this->getMapping(), 'default_values' => $this->getDefaultValues()];
+        return [
+            'mapping'           => $this->getMapping(),
+            'default_values'    => $this->getDefaultValues(),
+            'with_associations' => false
+        ];
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 
 /**
  * Columns configurator for product grid, first column is identifier, then properties then ordered attributes
@@ -89,8 +90,8 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $this->propertiesColumns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
-        $this->editableColumns = array();
-        $this->primaryColumns  = array();
+        $this->editableColumns = [];
+        $this->primaryColumns  = [];
 
         foreach ($this->propertiesColumns as $columnCode => $columnData) {
             if (isset($columnData['editable'])) {
@@ -111,8 +112,8 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
-        $this->identifierColumn  = array();
-        $this->attributesColumns = array();
+        $this->identifierColumn  = [];
+        $this->attributesColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
             $attributeType     = $attribute['attributeType'];
@@ -130,14 +131,14 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
             if ($attributeTypeConf && $attributeTypeConf['column']) {
                 $columnConfig = $attributeTypeConf['column'];
-                $columnConfig = $columnConfig + array(
+                $columnConfig = $columnConfig + [
                     'label'      => $attribute['label'],
                     'order'      => $attribute['sortOrder'],
                     'group'      => $attribute['group'],
                     'groupOrder' => $attribute['groupOrder']
-                );
+                ];
 
-                if ($attributeType === 'pim_catalog_identifier') {
+                if (AttributeTypes::IDENTIFIER === $attributeType) {
                     $this->identifierColumn[$attributeCode] = $columnConfig;
                 } else {
                     $this->attributesColumns[$attributeCode] = $columnConfig;

@@ -1,6 +1,11 @@
 # 1.4.x
+## Bug fixes
+- PIM-4443: Exporting a product with an attribute with a numeric code gives an error, full numeric codes for entities are now forbidden except for products
 
-# 1.4.0-alpha (2015-07-31)
+## BC breaks
+- Move `Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory`` to `Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory``
+
+# 1.4.0-BETA1 (2015-07-31)
 
 ## Features
 
@@ -178,6 +183,7 @@
 - Add an argument `Symfony\Component\EventDispatcher\EventDispatcher` in the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover`
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\ORM\CategoryReader`, argument is now a `Pim\Component\Classification\Repository\CategoryRepositoryInterface`
 - Change constructor of `Pim\Bundle\UserBundle\Context\UserContext`, replace `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface`, add `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
+- Constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
 # 1.3.x
 
