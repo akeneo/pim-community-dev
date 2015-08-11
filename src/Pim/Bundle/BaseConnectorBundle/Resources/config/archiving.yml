@@ -3,7 +3,6 @@ parameters:
     pim_base_connector.event_listener.invalid_items_collector.class:   Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector
     pim_base_connector.factory.zip_filesystem.class:                   Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory
     pim_base_connector.archiver.invalid_item_csv_archiver.class:       Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver
-    pim_base_connector.archiver.file_reader_archiver.class:            Pim\Bundle\BaseConnectorBundle\Archiver\FileReaderArchiver
     pim_base_connector.archiver.file_writer_archiver.class:            Pim\Bundle\BaseConnectorBundle\Archiver\FileWriterArchiver
     pim_base_connector.archiver.archivable_file_writer_archiver.class: Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver
 
@@ -26,25 +25,17 @@ services:
         arguments:
             - '@pim_base_connector.event_listener.invalid_items_collector'
             - '@pim_base_connector.archiver.invalid_item_csv_writer'
-            - '@pim_archivist_filesystem'
-            - '%archive_dir%'
+            - '@oneup_flysystem.archivist_filesystem'
         tags:
             - { name: pim_base_connector.archiver }
 
     pim_base_connector.archiver.invalid_item_csv_writer:
         parent: pim_base_connector.writer.file.csv
 
-    pim_base_connector.archiver.file_reader_archiver:
-        class: %pim_base_connector.archiver.file_reader_archiver.class%
-        arguments:
-            - '@pim_archivist_filesystem'
-        tags:
-            - { name: pim_base_connector.archiver }
-
     pim_base_connector.archiver.file_writer_archiver:
         class: %pim_base_connector.archiver.file_writer_archiver.class%
         arguments:
-            - '@pim_archivist_filesystem'
+            - '@oneup_flysystem.archivist_filesystem'
         tags:
             - { name: pim_base_connector.archiver }
 
@@ -52,7 +43,6 @@ services:
         class: %pim_base_connector.archiver.archivable_file_writer_archiver.class%
         arguments:
             - '@pim_base_connector.factory.zip_filesystem'
-            - %archive_dir%
-            - '@pim_archivist_filesystem'
+            - '@oneup_flysystem.archivist_filesystem'
         tags:
             - { name: pim_base_connector.archiver }

@@ -14,4 +14,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class FileRepository extends EntityRepository implements FileRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['key'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        return $this->findOneBy(['key' => $identifier]);
+    }
 }

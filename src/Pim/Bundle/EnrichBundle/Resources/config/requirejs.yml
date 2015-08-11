@@ -114,6 +114,9 @@ config:
         pim/attribute-fetcher:              pimenrich/js/fetcher/attribute-fetcher
         pim/completeness-fetcher:           pimenrich/js/fetcher/completeness-fetcher
 
+        # Generator
+        pim/media-url-generator:            pimenrich/js/generator/media-url-generator
+
         # Form
         pim/form-builder:                                          pimenrich/js/form/builder
         pim/form-registry:                                         pimenrich/js/form/registry

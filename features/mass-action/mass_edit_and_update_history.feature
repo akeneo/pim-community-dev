@@ -15,7 +15,6 @@ Feature: Update product history when mass editing products
     And I am on the products page
     And I mass-edit products boots, sandals and sneakers
 
-  @skip
   Scenario: Display history when editing product attributes
     Given I choose the "Edit common attributes" operation
     And I display the Name attribute
@@ -23,90 +22,87 @@ Feature: Update product history when mass editing products
     And I move on to the next step
     And I wait for the "edit-common-attributes" mass-edit job to finish
     When I edit the "boots" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
-      | version | property   | value      |
-      | 2       | name-en_US | cool boots |
+      | version | property | value      |
+      | 2       | Name en  | cool boots |
     When I edit the "sandals" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
-      | version | property   | value      |
-      | 2       | name-en_US | cool boots |
+      | version | property | value      |
+      | 2       | Name en  | cool boots |
     When I edit the "sneakers" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
-      | version | property   | value      |
-      | 2       | name-en_US | cool boots |
+      | version | property | value      |
+      | 2       | Name en  | cool boots |
 
-  @skip
   Scenario: Display history when changing product status
     Given I choose the "Change status (enable / disable)" operation
     And I disable the products
     And I wait for the "change-status" mass-edit job to finish
     When I edit the "boots" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property | value |
       | 2       | enabled  | 0     |
     When I edit the "sandals" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property | value |
       | 2       | enabled  | 0     |
     When I edit the "sneakers" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property | value |
       | 2       | enabled  | 0     |
 
-  @skip
   Scenario: Display history when changing product family
     Given I choose the "Change the family of products" operation
     And I change the Family to "Sandals"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "change-family" mass-edit job to finish
     When I edit the "boots" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property | value   |
       | 2       | family   | sandals |
     When I edit the "sneakers" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property | value   |
       | 2       | family   | sandals |
     When I edit the "sandals" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 1 update
 
-  @skip
   Scenario: Display history when adding products to groups
     Given I choose the "Add to groups" operation
     And I check "Similar boots"
     And I move on to the next step
-    And I wait for the "edit-common-attributes" mass-edit job to finish
+    And I wait for the "add-to-groups" mass-edit job to finish
     When I edit the "boots" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property | value         |
       | 2       | groups   | similar_boots |
     When I edit the "sneakers" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property | value         |
       | 2       | groups   | similar_boots |
     When I edit the "sandals" product
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property | value         |

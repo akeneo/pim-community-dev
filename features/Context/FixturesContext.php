@@ -10,6 +10,8 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
+use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
@@ -117,11 +119,13 @@ class FixturesContext extends RawMinkContext
      */
     public function clearPimFilesystem()
     {
-        // FIXME: Remove gitkeep?
-        $fs = $this->getPimFilesystem();
-        foreach ($fs->keys() as $key) {
-            if (strpos($key, '.') !== 0) {
-                $fs->delete($key);
+        foreach ($this->getPimFilesystems() as $fs) {
+            foreach ($fs->listContents() as $key) {
+                if ('dir' === $key['type']) {
+                    $fs->deleteDir($key['path']);
+                } else {
+                    $fs->delete($key['path']);
+                }
             }
         }
     }
@@ -282,6 +286,10 @@ class FixturesContext extends RawMinkContext
             $data = ['sku' => $data];
         } elseif (isset($data['enabled']) && in_array($data['enabled'], ['yes', 'no'])) {
             $data['enabled'] = ($data['enabled'] === 'yes');
+        }
+
+        foreach ($data as $key => $value) {
+            $data[$key] = $this->replacePlaceholders($value);
         }
 
         // use the processor part of the import system
@@ -1149,6 +1157,8 @@ class FixturesContext extends RawMinkContext
     {
         $extension = strtolower($extension);
 
+        $string = $this->replacePlaceholders($string);
+
         $this->placeholderValues['%file to import%'] = $filename =
             sprintf(
                 '%s/pim-import/behat-import-%s.%s',
@@ -1160,6 +1170,26 @@ class FixturesContext extends RawMinkContext
         @mkdir(dirname($filename), 0777, true);
 
         file_put_contents($filename, (string) $string);
+    }
+
+    /**
+     * @Given /^the following random files:$/
+     */
+    public function theFollowingRandomFiles(TableNode $table)
+    {
+        $directory  = realpath(__DIR__ . '/fixtures/');
+        $characters = range('a', 'z');
+
+        foreach ($table->getHash() as $row) {
+            $filepath = $directory . DIRECTORY_SEPARATOR . $row['filename'];
+            $content = '';
+            for ($i = 0; $i < $row['size'] * 1024 * 1024; $i++) {
+                $content .= $characters[rand(0, count($characters) - 1)];
+            }
+
+            touch($filepath);
+            file_put_contents($filepath, $content);
+        }
     }
 
     /**
@@ -1539,11 +1569,12 @@ class FixturesContext extends RawMinkContext
     public function iDeleteProductMediaFromFilesystem($productName)
     {
         $product      = $this->getProduct($productName);
-        $mediaManager = $this->getMediaManager();
         $allMedia     = $product->getMedia();
+        $mountManager = $this->getMountManager();
         foreach ($allMedia as $media) {
-            if ($media) {
-                unlink($mediaManager->getFilePath($media));
+            if (null !== $media) {
+                $fs = $mountManager->getFilesystem($media->getStorage());
+                $fs->delete($media->getKey());
             }
         }
     }
@@ -2207,11 +2238,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     * @return MountManager
      */
-    protected function getMediaManager()
+    protected function getMountManager()
     {
-        return $this->getContainer()->get('pim_catalog.manager.media');
+        return $this->getContainer()->get('oneup_flysystem.mount_manager');
     }
 
     /**
@@ -2239,11 +2270,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Gaufrette\Filesystem
+     * @return Filesystem[]
      */
-    protected function getPimFilesystem()
+    protected function getPimFilesystems()
     {
-        return $this->getContainer()->get('pim_filesystem');
+        return [];
     }
 
     /**

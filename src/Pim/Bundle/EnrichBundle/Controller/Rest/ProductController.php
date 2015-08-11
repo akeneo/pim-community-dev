@@ -161,7 +161,7 @@ class ProductController
 
         $data = json_decode($request->getContent(), true);
         try {
-            $data = $this->productEditDataFilter->filterCollection($data, null);
+            $data = $this->productEditDataFilter->filterCollection($data, null, ['product' => $product]);
         } catch (ObjectNotFoundException $e) {
             throw new BadRequestHttpException();
         }

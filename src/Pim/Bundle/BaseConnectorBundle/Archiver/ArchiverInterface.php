@@ -46,7 +46,7 @@ interface ArchiverInterface
      * @param JobExecution $jobExecution
      * @param string       $key
      *
-     * @return \Gaufrette\Stream
+     * @return resource
      */
     public function getArchive(JobExecution $jobExecution, $key);
 

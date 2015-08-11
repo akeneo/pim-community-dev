@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -15,20 +16,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductTemplateMediaManager
 {
-    /** @var MediaManager */
-    protected $mediaManager;
-
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var RawFileStorerInterface */
+    protected $fileStorer;
+
     /**
-     * @param MediaManager        $mediaManager
-     * @param NormalizerInterface $normalizer
+     * @param RawFileStorerInterface $fileStorer
+     * @param NormalizerInterface    $normalizer
      */
-    public function __construct(MediaManager $mediaManager, NormalizerInterface $normalizer)
+    public function __construct(RawFileStorerInterface $fileStorer, NormalizerInterface $normalizer)
     {
-        $this->mediaManager = $mediaManager;
-        $this->normalizer   = $normalizer;
+        $this->fileStorer = $fileStorer;
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -40,33 +41,23 @@ class ProductTemplateMediaManager
     {
         $mediaHandled = false;
         foreach ($template->getValues() as $value) {
-            if (null !== $media = $value->getMedia()) {
+            if (null !== $value->getMedia() && true === $value->getMedia()->isRemoved()) {
                 $mediaHandled = true;
-                $filenamePrefix = $media->getFile() ? $this->generateFilenamePrefix($value) : null;
-                $this->mediaManager->handle($media, $filenamePrefix);
+                $value->setMedia(null);
+            } elseif (null !== $value->getMedia() && null !== $value->getMedia()->getUploadedFile()) {
+                $mediaHandled = true;
+                $file = $this->fileStorer->store(
+                    $value->getMedia()->getUploadedFile(),
+                    FileStorage::CATALOG_STORAGE_ALIAS,
+                    true
+                );
+                $value->setMedia($file);
             }
         }
 
         if ($mediaHandled) {
             $this->updateNormalizedValues($template);
         }
-    }
-
-    /**
-     * @param ProductValueInterface $value
-     *
-     * @return string
-     */
-    public function generateFilenamePrefix(ProductValueInterface $value)
-    {
-        return sprintf(
-            '%s-%s-%s-%s-%s',
-            uniqid(),
-            $value->getAttribute()->getCode(),
-            $value->getLocale(),
-            $value->getScope(),
-            time()
-        );
     }
 
     /**

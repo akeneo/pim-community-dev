@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
+use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Gaufrette\StreamMode;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -176,17 +176,7 @@ class JobTrackerController extends Controller
 
         $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
-        return new StreamedResponse(
-            function () use ($stream) {
-                $stream->open(new StreamMode('rb'));
-                while (!$stream->eof()) {
-                    echo $stream->read(self::BLOCK_SIZE);
-                }
-                $stream->close();
-            },
-            200,
-            ['Content-Type' => 'application/octet-stream']
-        );
+        return new StreamedFileResponse($stream);
     }
 
     /**

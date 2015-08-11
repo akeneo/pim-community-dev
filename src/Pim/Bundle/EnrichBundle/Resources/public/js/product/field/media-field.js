@@ -16,9 +16,11 @@ define([
         'text!pim/template/product/field/media',
         'pim/dialog',
         'oro/mediator',
+        'oro/navigation',
+        'pim/media-url-generator',
         'jquery.slimbox'
     ],
-    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, Navigation, MediaUrlGenerator) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             events: {
@@ -33,31 +35,22 @@ define([
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
-                        templateContext.mediaUrl = this.getMediaUrl(templateContext.value.data);
-                        templateContext.inUpload = !this.isReady();
+                        templateContext.inUpload          = !this.isReady();
+                        templateContext.mediaUrlGenerator = MediaUrlGenerator;
+
                         return templateContext;
                     }, this));
             },
-            getMediaUrl: function (value) {
-                if (value && value.filePath) {
-                    var filename = value.filePath;
-                    filename = filename.substring(filename.lastIndexOf('/') + 1);
-                    return Routing.generate('pim_enrich_media_show', {
-                        filename: filename
-                    });
-                }
 
-                return null;
-            },
             renderCopyInput: function (value) {
                 return this.getTemplateContext()
                     .then(_.bind(function (context) {
                         var copyContext = $.extend(true, {}, context);
                         copyContext.value = value;
-                        copyContext.mediaUrl = this.getMediaUrl(value.data);
-                        copyContext.context.locale = value.locale;
-                        copyContext.context.scope = value.scope;
-                        copyContext.editMode = 'view';
+                        copyContext.context.locale    = value.locale;
+                        copyContext.context.scope     = value.scope;
+                        copyContext.editMode          = 'view';
+                        copyContext.mediaUrlGenerator = MediaUrlGenerator;
 
                         return this.renderInput(copyContext);
                     }, this));
@@ -84,6 +77,8 @@ define([
                     'scope':  this.context.scope
                 };
 
+                var navigation = Navigation.getInstance();
+
                 $.ajax({
                     url: Routing.generate('pim_enrich_media_rest_post'),
                     type: 'POST',
@@ -99,10 +94,19 @@ define([
 
                         return myXhr;
                     }, this)
-                }).done(_.bind(function (data) {
+                })
+                .done(_.bind(function (data) {
                     this.setUploadContextValue(data);
                     this.render();
-                }, this)).then(_.bind(function () {
+                }, this))
+                .fail(function (xhr) {
+                    var message = xhr.responseJSON && xhr.responseJSON.message ?
+                        xhr.responseJSON.message :
+                        _.__('pim_enrich.entity.product.error.upload');
+                    navigation.addFlashMessage('error', message);
+                    navigation.afterRequest();
+                })
+                .always(_.bind(function () {
                     this.$('> .media-field .progress').css({opacity: 0});
                     this.setReady(true);
                     this.uploadContext = {};
@@ -124,7 +128,7 @@ define([
                 }
             },
             previewImage: function () {
-                var mediaUrl = this.getMediaUrl(this.getCurrentValue().data);
+                var mediaUrl = this.getMediaShowUrl(this.getCurrentValue().data, 'preview');
                 if (mediaUrl) {
                     $.slimbox(mediaUrl, '', {overlayOpacity: 0.3});
                 }

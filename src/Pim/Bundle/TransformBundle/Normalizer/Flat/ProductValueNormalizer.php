@@ -88,6 +88,8 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 $context['field_name'] = $fieldName;
                 if ('metric' === $entity->getAttribute()->getBackendType()) {
                     $context['decimals_allowed'] = $entity->getAttribute()->isDecimalsAllowed();
+                } elseif ('media' === $entity->getAttribute()->getBackendType()) {
+                    $context['value'] = $entity;
                 }
 
                 $result = $this->serializer->normalize($data, $format, $context);

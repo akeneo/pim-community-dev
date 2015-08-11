@@ -14,41 +14,48 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class FileFactory implements FileFactoryInterface
 {
+    /** @var PathGeneratorInterface */
+    protected $pathGenerator;
+
     /** @var string */
     protected $fileClass;
 
     /**
-     * @param string $fileClass
+     * @param PathGeneratorInterface $pathGenerator
+     * @param string                 $fileClass
      */
-    public function __construct($fileClass)
+    public function __construct(PathGeneratorInterface $pathGenerator, $fileClass)
     {
-        $this->fileClass = $fileClass;
+        $this->pathGenerator = $pathGenerator;
+        $this->fileClass     = $fileClass;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function create(\SplFileInfo $rawFile, array $pathInfo, $destFsAlias)
+    public function createFromRawFile(\SplFileInfo $rawFile, $destFsAlias)
     {
+        $pathInfo = $this->pathGenerator->generate($rawFile);
+        $sha1     = sha1_file($rawFile->getPathname());
+
         if ($rawFile instanceof UploadedFile) {
-            $size = $rawFile->getClientSize();
-            $mimeType = $rawFile->getMimeType();
             $originalFilename = $rawFile->getClientOriginalName();
-            $extension = $rawFile->getClientOriginalExtension();
+            $extension        = $rawFile->getClientOriginalExtension();
         } else {
-            $size = filesize($rawFile->getPathname());
-            $mimeType = MimeTypeGuesser::getInstance()->guess($rawFile->getPathname());
             $originalFilename = $rawFile->getFilename();
-            $extension = $rawFile->getExtension();
+            $extension        = $rawFile->getExtension();
         }
+
+        $size     = filesize($rawFile->getPathname());
+        $mimeType = MimeTypeGuesser::getInstance()->guess($rawFile->getPathname());
 
         $file = new $this->fileClass();
         $file->setKey($pathInfo['path'].$pathInfo['file_name']);
-        $file->setGuid($pathInfo['guid']);
         $file->setMimeType($mimeType);
         $file->setOriginalFilename($originalFilename);
         $file->setSize($size);
         $file->setExtension($extension);
+        $file->setHash($sha1);
         $file->setStorage($destFsAlias);
 
         return $file;
