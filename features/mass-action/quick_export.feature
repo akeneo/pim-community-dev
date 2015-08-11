@@ -22,7 +22,7 @@ Feature: Quick export many products from datagrid
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message               |
-      | success | Quick export finished |
+      | type    | message                                        |
+      | success | Quick export CSV product quick export finished |
     Then I go on the last executed job resume of "csv_product_quick_export"
     And I should see "COMPLETED"

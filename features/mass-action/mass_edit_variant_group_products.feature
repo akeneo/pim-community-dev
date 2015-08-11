@@ -27,8 +27,8 @@ Feature: Apply restrictions when mass editing products with variant groups
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message            |
-      | success | Mass edit finished |
+      | type    | message                                               |
+      | success | Mass edit Mass add products to variant group finished |
 
   @javascript
   Scenario: Add products to a variant group with invalid axis
@@ -49,8 +49,8 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I wait for the "add-to-variant-group" mass-edit job to finish
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                          |
-      | warning | Mass edit finished with warnings |
+      | type    | message                                                                  |
+      | warning | Mass edit Mass add products to variant group finished with some warnings |
     Then I go on the last executed job resume of "add_to_variant_group"
     And I should see "skipped products 2"
     And I should see "first warnings displayed 2/2"
@@ -68,8 +68,8 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I wait for the "add-to-variant-group" mass-edit job to finish
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                          |
-      | warning | Mass edit finished with warnings |
+      | type    | message                                                                  |
+      | warning | Mass edit Mass add products to variant group finished with some warnings |
     Then I go on the last executed job resume of "add_to_variant_group"
     And I should see "skipped products 2"
     And I should see "first warnings displayed 2/2"
