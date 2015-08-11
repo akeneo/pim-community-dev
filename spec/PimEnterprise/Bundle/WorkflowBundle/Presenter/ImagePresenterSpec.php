@@ -112,8 +112,8 @@ class ImagePresenterSpec extends ObjectBehavior
 
         $change = [
             'data' => [
-                'hash' => '98az7er654ert4s',
-                'filePath' => 'key/of/the/change.png',
+                'hash'             => '98az7er654ert4s',
+                'filePath'         => 'key/of/the/change.png',
                 'originalFilename' => 'change_foo.png',
             ]
         ];

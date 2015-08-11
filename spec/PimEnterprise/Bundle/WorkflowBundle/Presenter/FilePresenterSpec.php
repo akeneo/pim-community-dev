@@ -83,8 +83,8 @@ class FilePresenterSpec extends ObjectBehavior
 
         $change = [
             'data' => [
-                'hash' => '98az7er654ert4s',
-                'filePath' => 'key/of/the/change.txt',
+                'hash'             => '98az7er654ert4s',
+                'filePath'         => 'key/of/the/change.txt',
                 'originalFilename' => 'the new change.txt',
             ]
         ];
