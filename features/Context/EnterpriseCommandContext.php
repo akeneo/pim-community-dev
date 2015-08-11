@@ -152,17 +152,7 @@ class EnterpriseCommandContext extends CommandContext
                 );
             }
 
-            $changes = $proposal->getChanges();
-            foreach ($changes['values'] as $key => $value) {
-                foreach ($value as $key2 => $data) {
-                    $data = $data['data'];
-                    if (isset($data['filePath']) && isset($data['originalFilename'])) {
-                        $filenameLength = strlen($data['originalFilename']);
-                        $changes['values'][$key][$key2]['data']['filePath'] =
-                            substr($data['filePath'], -$filenameLength);
-                    }
-                }
-            }
+            $changes = $this->sanitizeDraftFileChanges($proposal->getChanges());
 
             assertEquals($changes, $expectedResult);
         }
@@ -338,6 +328,30 @@ class EnterpriseCommandContext extends CommandContext
                 $diff
             );
         }
+    }
+
+    /**
+     * @param array $changes
+     *
+     * @return array
+     */
+    protected function sanitizeDraftFileChanges(array $changes)
+    {
+        foreach ($changes['values'] as $attributeCode => $change) {
+            foreach ($change as $changeKey => $data) {
+                $data = $data['data'];
+                if (isset($data['filePath']) && isset($data['originalFilename'])) {
+                    $filenameLength = strlen($data['originalFilename']);
+                    $data['filePath'] = substr($data['filePath'], -$filenameLength);
+                }
+                if (isset($data['hash'])) {
+                    unset($data['hash']);
+                }
+                $changes['values'][$attributeCode][$changeKey]['data'] = $data;
+            }
+        }
+
+        return $changes;
     }
 
     /**

@@ -5,7 +5,6 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
@@ -26,7 +25,6 @@ class ProductDraftManagerSpec extends ObjectBehavior
         ProductDraftRepositoryInterface $repository,
         ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
-        MediaManager $mediaManager,
         SaverInterface $saver,
         RemoverInterface $remover
     ) {
@@ -37,7 +35,6 @@ class ProductDraftManagerSpec extends ObjectBehavior
             $repository,
             $applier,
             $dispatcher,
-            $mediaManager,
             $saver,
             $remover
         );
@@ -49,7 +46,6 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher,
         ProductDraftInterface $productDraft,
         ProductInterface $product,
-        $mediaManager,
         $remover
     ) {
         $productDraft->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
@@ -63,7 +59,6 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $applier->apply($product, $productDraft)->shouldBeCalled();
-        $mediaManager->handleProductMedias($product)->shouldBeCalled();
         $workingCopySaver->save($product)->shouldBeCalled();
         $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
 

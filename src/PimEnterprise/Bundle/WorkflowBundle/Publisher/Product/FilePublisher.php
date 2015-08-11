@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,6 +15,7 @@ use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use League\Flysystem\MountManager;
+use Pim\Component\Catalog\FileStorage;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
@@ -64,11 +65,9 @@ class FilePublisher implements PublisherInterface
         $value = $options['value'];
 
         if (null !== $value->getMedia() && null !== $value->getMedia()->getKey()) {
-            //TODO: remove the hardcoded 'storage'
-            $filesystem = $this->mountManager->getFilesystem('storage');
-
-            $rawFile = $this->rawFileFetcher->fetch($file->getKey(), $filesystem);
-            $file = $this->rawFileStorer->store($rawFile, 'storage', false);
+            $filesystem = $this->mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+            $rawFile    = $this->rawFileFetcher->fetch($file->getKey(), $filesystem);
+            $file       = $this->rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
         }
 
         return $file;

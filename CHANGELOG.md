@@ -1,5 +1,10 @@
 # 1.4.x
 
+## BC Breaks
+- Media related classes `PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\MediaPublisher` have been removed
+- Change constructor of  `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter` to remove argument `Pim\Bundle\CatalogBundle\Manager\MediaManager`
+- Change constructor of `PimEnterprise/Bundle/MassEditAction/Operation/EditCommonAttributes` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\RawFileRawFileStorerInterface`
+
 ## Bug fixes
 PIM-4443: Exporting a product with an attribute with a numeric code gives an error, full numeric codes for entities are now forbidden except for products
 
@@ -70,9 +75,6 @@ PIM-4443: Exporting a product with an attribute with a numeric code gives an err
 - Replace argument ObjectManager by SaverInterface and RemoverInterface in `PimEnterprise\Bundle\DataGridBundle\Manager\DatagridViewManager` constructor
 - Add argument `Symfony\Component\Security\Core\SecurityContextInterface` in constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper`
 - Remove the option 'flush_only_object' from `Akeneo/Bundle/RuleEngineBundle/Doctrine/Common/Saver/RuleDefinitionSaver`
-- Remove argument `Pim\Bundle\CatalogBundle\Manager\MediaManager` in constructor of  `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter`
-- `PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\MediaPublisher` is now deprecated use `PimEnterprise/Bundle/WorkflowBundle/Publisher/Product/FilePublisher` instead
-- Replace argument `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\RawFileRawFileStorerInterface` in `PimEnterprise/Bundle/MassEditAction/Operation/EditCommonAttributes` constructor
 - Constructor of `PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
 # 1.3.x
