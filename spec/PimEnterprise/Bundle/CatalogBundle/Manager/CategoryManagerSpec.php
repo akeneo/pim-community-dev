@@ -28,7 +28,6 @@ class CategoryManagerSpec extends ObjectBehavior
     ) {
         $om->getRepository(Argument::any())->willReturn($productCategoryRepo);
         $this->beConstructedWith(
-            $categoryRepository,
             $om,
             $productCategoryRepo,
             $categoryFactory,
