@@ -12,10 +12,10 @@
 namespace PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
@@ -127,7 +127,7 @@ class FilesUpdater implements FilesUpdaterInterface
     protected function updateVariationFile(VariationInterface $variation)
     {
         if (null !== $variation->getFile() && null !== $uploadedFile = $variation->getFile()->getUploadedFile()) {
-            $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+            $file = $this->rawFileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
             $variation->setSourceFile($file);
             $variation->setFile(null);
             $variation->setLocked(true);
@@ -149,7 +149,7 @@ class FilesUpdater implements FilesUpdaterInterface
     protected function updateReferenceFile(ReferenceInterface $reference)
     {
         if (null !== $reference->getFile() && null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
-            $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+            $file = $this->rawFileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
             $reference->setFile($file);
             $this->resetAllVariationsFiles($reference);
         }

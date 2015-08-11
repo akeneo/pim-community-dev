@@ -16,7 +16,7 @@ services:
             - '@akeneo_file_storage.file_storage.raw_file.storer'
             - '@akeneo_file_storage.file_storage.raw_file.fetcher'
             - '@pimee_product_asset.registry.metadata_builder'
-            - 'storage'
+            - 'assetStorage'
 
     pimee_product_asset.variations_collection_files_generator:
         class: %pimee_product_asset.variations_collection_files_generator.class%
