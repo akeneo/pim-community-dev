@@ -195,16 +195,6 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
-     * @param TableNode $table
-     *
-     * @Then /^the grid locale switcher should contain the following items:$/
-     */
-    public function theGridLocaleSwitcherShouldContainTheFollowingItems(TableNode $table, $page = 'index')
-    {
-        return parent::theLocaleSwitcherShouldContainTheFollowingItems($table, $page);
-    }
-
-    /**
      * @params string        $field
      * @params string[]|null $tags
      *
