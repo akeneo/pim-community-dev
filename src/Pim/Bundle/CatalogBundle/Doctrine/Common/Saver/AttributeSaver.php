@@ -60,12 +60,14 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->eventDispatcher->dispatch(AttributeEvents::PRE_SAVE, new GenericEvent($attribute));
+
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($attribute);
 
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }
+
         $this->eventDispatcher->dispatch(AttributeEvents::POST_SAVE, new GenericEvent($attribute));
     }
 
@@ -78,6 +80,8 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
+        $this->eventDispatcher->dispatch(AttributeEvents::PRE_SAVE_ALL, new GenericEvent($attributes));
+
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;
@@ -89,5 +93,7 @@ class AttributeSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(AttributeEvents::POST_SAVE_ALL, new GenericEvent($attributes));
     }
 }

@@ -29,7 +29,7 @@ class VariantGroupUpdateGuesser implements UpdateGuesserInterface
      */
     public function __construct(SmartManagerRegistry $registry, $groupClass)
     {
-        $this->registry = $registry;
+        $this->registry   = $registry;
         $this->groupClass = $groupClass;
     }
 

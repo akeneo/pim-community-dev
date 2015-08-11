@@ -12,8 +12,16 @@
                 'use strict';
                 UserContext.set('catalogLocale', '{{ dataLocale.code }}');
                 $(function() {
-                    $('.has-sidebar').sidebarize();
+                    var sidebarize = function () {
+                        if (2 === $('.has-sidebar').children().length) {
+                            $('.has-sidebar').sidebarize();
 
+                            return;
+                        }
+                        window.setTimeout(sidebarize, 200);
+                    };
+
+                    sidebarize();
                 });
             }
         );

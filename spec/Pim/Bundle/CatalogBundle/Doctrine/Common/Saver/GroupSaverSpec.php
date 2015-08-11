@@ -8,12 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GroupSaverSpec extends ObjectBehavior
 {
@@ -23,7 +26,8 @@ class GroupSaverSpec extends ObjectBehavior
         ProductTemplateMediaManager $templateMediaManager,
         ProductTemplateApplierInterface $templateApplier,
         SavingOptionsResolverInterface $optionsResolver,
-        VersionContext $versionContext
+        VersionContext $versionContext,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -32,6 +36,7 @@ class GroupSaverSpec extends ObjectBehavior
             $templateApplier,
             $versionContext,
             $optionsResolver,
+            $eventDispatcher,
             'Pim\Bundle\CatalogBundle\Model'
         );
     }
@@ -44,6 +49,7 @@ class GroupSaverSpec extends ObjectBehavior
     function it_saves_a_group_and_flushes_by_default(
         $objectManager,
         $optionsResolver,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type
     ) {
@@ -60,6 +66,9 @@ class GroupSaverSpec extends ObjectBehavior
         $group->getCode()->willReturn('my_code');
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($group);
     }
 
@@ -67,6 +76,7 @@ class GroupSaverSpec extends ObjectBehavior
         $optionsResolver,
         $objectManager,
         $productSaver,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type,
         ProductInterface $addedProduct
@@ -89,6 +99,9 @@ class GroupSaverSpec extends ObjectBehavior
             ->saveAll([$addedProduct], ['recalculate' => false, 'schedule' => false])
             ->shouldBeCalled();
 
+        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($group, ['add_products' => [$addedProduct]]);
     }
 
@@ -96,6 +109,7 @@ class GroupSaverSpec extends ObjectBehavior
         $optionsResolver,
         $objectManager,
         $productSaver,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type,
         ProductInterface $removedProduct
@@ -118,11 +132,15 @@ class GroupSaverSpec extends ObjectBehavior
             ->saveAll([$removedProduct], ['recalculate' => false, 'schedule' => false])
             ->shouldBeCalled();
 
+        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($group, ['remove_products' => [$removedProduct]]);
     }
 
     function it_handles_media_values_of_variant_group_product_templates(
         $templateMediaManager,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type,
         ProductTemplateInterface $template
@@ -134,6 +152,9 @@ class GroupSaverSpec extends ObjectBehavior
 
         $templateMediaManager->handleProductTemplateMedia($template)->shouldBeCalled();
 
+        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+
         $this->save($group);
     }
 
@@ -141,6 +162,7 @@ class GroupSaverSpec extends ObjectBehavior
         $optionsResolver,
         $objectManager,
         $templateApplier,
+        $eventDispatcher,
         GroupInterface $group,
         GroupType $type,
         ProductInterface $product,
@@ -169,6 +191,9 @@ class GroupSaverSpec extends ObjectBehavior
         $templateApplier
             ->apply($template, [$product])
             ->shouldBeCalled();
+
+        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->save($group, ['copy_values_to_products' => true]);
     }

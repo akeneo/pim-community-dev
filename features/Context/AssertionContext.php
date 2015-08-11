@@ -30,6 +30,8 @@ class AssertionContext extends RawMinkContext
      */
     public function assertPageContainsText($text)
     {
+        //Remove unecessary escaped antislashes
+        $text = str_replace('\\', '', $text);
         $this->getMainContext()->spin(function () use ($text) {
             $this->assertSession()->pageTextContains($text);
 
@@ -170,7 +172,9 @@ class AssertionContext extends RawMinkContext
                 if ($this->getCurrentPage()->findField($field)) {
                     throw $this->createExpectationException(sprintf('Not expecting to see field "%s"', $field));
                 }
-            } catch (ElementNotFoundException $e) {
+            } catch (\Exception $e) {
+                //If findField raised an exception, it means that the field was not found
+                return;
             }
         }
     }

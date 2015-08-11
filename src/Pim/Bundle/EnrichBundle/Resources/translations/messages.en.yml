@@ -458,6 +458,7 @@ flash:
         not removable: The last channel cannot be removed
     currency:
         updated: Currency successfully updated
+        error.linked_to_channel: You cannot disable a currency linked to a channel.
     family:
         created:                       Family successfully created
         updated:                       Family successfully updated

@@ -60,8 +60,8 @@ define(
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:change-family:after', this.render);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:add-attribute:after', this.render);
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.postSave);
                 this.listenTo(mediator, 'pim_enrich:form:show_attribute', this.showAttribute);
 
                 window.addEventListener('resize', _.bind(this.resize, this));
