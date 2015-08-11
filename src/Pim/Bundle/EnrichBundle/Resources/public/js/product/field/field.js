@@ -59,7 +59,14 @@ define([
                     }, this))
                     .then(_.bind(function (templateContext) {
                         this.$el.html(this.template(templateContext));
-                        this.$('.form-field .field-input').append(this.renderInput(templateContext));
+
+                        if (this.inputCanBeSeen(this.context)) {
+                            this.$('.form-field .field-input').append(this.renderInput(templateContext));
+                        } else {
+                            this.$('.form-field .field-input').append(
+                                _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable')
+                            );
+                        }
 
                         _.each(this.elements, _.bind(function (elements, position) {
                             var $container = this.$('.' + position + '-elements-container');
@@ -91,7 +98,9 @@ define([
                         copyContext.context.scope = value.scope;
                         copyContext.editMode = 'view';
 
-                        return this.renderInput(copyContext);
+                        return this.inputCanBeSeen(copyContext.context) ?
+                            this.renderInput(copyContext) :
+                            _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
                     }, this));
             },
             getTemplateContext: function () {
@@ -99,9 +108,7 @@ define([
 
                 deferred.resolve({
                     type: this.attribute.field_type,
-                    label: this.attribute.label[this.context.uiLocale] ?
-                        this.attribute.label[this.context.uiLocale] :
-                        this.attribute.code,
+                    label: this.getLabel(),
                     value: this.getCurrentValue(),
                     context: this.context,
                     attribute: this.attribute,
@@ -166,13 +173,12 @@ define([
                 }
             },
             canBeSeen: function () {
-                if (this.attribute.localizable &&
-                    this.attribute.is_locale_specific &&
-                    !_.contains(this.attribute.locale_specific_codes, this.context.locale)) {
-                    return false;
-                }
-
                 return true;
+            },
+            inputCanBeSeen: function (context) {
+                return this.attribute.is_locale_specific ?
+                    _.contains(this.attribute.locale_specific_codes, context.locale) :
+                    true;
             },
             getCurrentValue: function () {
                 return AttributeManager.getValue(
@@ -187,6 +193,11 @@ define([
 
                 productValue.data = value;
                 mediator.trigger('pim_enrich:form:entity:update_state');
+            },
+            getLabel: function () {
+                return this.attribute.label[this.context.uiLocale] ?
+                    this.attribute.label[this.context.uiLocale] :
+                    '[' + this.attribute.code + ']';
             }
         });
     }
