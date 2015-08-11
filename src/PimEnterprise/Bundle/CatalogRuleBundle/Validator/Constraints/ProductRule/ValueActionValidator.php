@@ -97,15 +97,14 @@ class ValueActionValidator extends ConstraintValidator
         $fakeValue = $fakeProduct->getValue($action->getField(), $action->getLocale(), $action->getScope());
         if ($fakeValue) {
             $errors = $this->productValidator->validate($fakeValue);
-        }
-
-        foreach ($errors as $error) {
-            $this->context->buildViolation(
-                $constraint->message,
-                [
-                    '%message%' => $error->getMessage(),
-                ]
-            )->addViolation();
+            foreach ($errors as $error) {
+                $this->context->buildViolation(
+                    $constraint->message,
+                    [
+                        '%message%' => $error->getMessage(),
+                    ]
+                )->addViolation();
+            }
         }
     }
 

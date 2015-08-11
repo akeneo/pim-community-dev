@@ -115,14 +115,6 @@ services:
         tags:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
-    pimee_versioning.denormalizer.media:
-        class: %pim_serializer.denormalizer.flat.media.class%
-        arguments:
-            - ['pim_catalog_image', 'pim_catalog_file']
-            - '@pim_catalog.manager.media'
-        tags:
-            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
-
     pimee_versioning.denormalizer.reference_data:
         class: %pim_serializer.denormalizer.flat.reference_data.class%
         arguments:

@@ -1,4 +1,4 @@
 services:
     pimee_workflow.reader.file.csv_product_draft:
-        parent: pim_base_connector.reader.file.csv
-        class: %pim_base_connector.reader.file.csv.class%
+        parent: pim_connector.reader.file.csv_product
+        class: %pim_connector.reader.file.csv_product.class%

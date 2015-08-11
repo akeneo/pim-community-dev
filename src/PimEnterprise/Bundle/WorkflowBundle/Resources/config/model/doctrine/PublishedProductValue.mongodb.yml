@@ -49,9 +49,8 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
             type: many
             targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPriceInterface
         media:
-            embedded: true
-            type: one
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMediaInterface
+            type: entity
+            targetEntity: Akeneo\Component\FileStorage\Model\File
         assets:
             notSaved: true
             type: entities

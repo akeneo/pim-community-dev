@@ -34,27 +34,27 @@
 {% block pim_enrich_image_row %}
     {% spaceless %}
 
-    {% set empty = form.vars.value is null or (form.vars.value.filename is null and form.vars.value.file is null) %}
+    {% set empty = form.vars.value is null or (form.vars.value.key is null and form.vars.value.uploadedFile is null) %}
     {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
         <div class="control-group">
-            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.uploadedFile.vars.id} }) }}
             <div class="controls">
                 <label class="upload-zone image{% if empty %} empty{% endif %}{% if disabled %} disabled{% endif %}">
                     <div class="upload-info">
                         {% if not empty %}
-                            {% if form.vars.value.file is not null %}
+                            {% if form.vars.value.uploadedFile is not null %}
                                 {# The Media object has an UploadedFile #}
                                 {% set empty = false %}
-                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.file.clientOriginalName }}" rel="slimbox">
-                                    <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename, 'filter': 'thumbnail_small' }) }}">
+                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.uploadedFile.key, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.uploadedFile.clientOriginalName }}" rel="slimbox">
+                                    <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.uploadedFile.filename|url_encode, 'filter': 'thumbnail_small' }) }}">
                                 </a>
-                                {% set filename = form.vars.value.file.clientOriginalName %}
+                                {% set filename = form.vars.value.uploadedFile.clientOriginalName %}
                                 {% if filename|length > 20 %}
                                     {% set filename = filename|slice(0, 17) ~ '...' %}
                                 {% endif %}
                             {% else %}
-                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
-                                    <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.filename, 'filter': 'thumbnail_small' }) }}">
+                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
+                                    <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode, 'filter': 'thumbnail_small' }) }}">
                                 </a>
                                 {% set filename = form.vars.value.originalFilename %}
                                 {% if filename|length > 20 %}
@@ -72,22 +72,23 @@
                         </a>
                     {% endif %}
                     {% if empty %}
-                        {{ form_widget(form.file) }}
+                        {{ form_widget(form.uploadedFile) }}
                     {% else %}
-                        {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.uploadedFile, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
                         {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
                     {% endif %}
                 </label>
                 {{ block('form_info') }}
                 {{ form_widget(form.id) }}
-                {{ form_widget(form.copyFrom) }}
+                {#TODO: find the utility of this#}
+                {#{{ form_widget(form.copyFrom) }}#}
             </div>
         </div>
         <script type="text/javascript">
             require(
                 ['pim/fileinput'],
                 function(fileinput) {
-                    fileinput.init('{{ form.file.vars.id }}');
+                    fileinput.init('{{ form.uploadedFile.vars.id }}');
                 }
             );
         </script>
@@ -111,26 +112,26 @@
 {% block pim_enrich_media_row %}
     {% spaceless %}
 
-    {% set empty = form.vars.value is null or (form.vars.value.filename is null and form.vars.value.file is null) %}
+    {% set empty = form.vars.value is null or (form.vars.value.key is null and form.vars.value.uploadedFile is null) %}
     {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
         <div class="control-group">
-            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.uploadedFile.vars.id} }) }}
             <div class="controls">
                 <label class="upload-zone file{% if empty %} empty{% endif %}{% if disabled %} disabled{% endif %}">
                     <div class="upload-info">
                         {% if not empty %}
-                            {% if form.vars.value.file is not null %}
+                            {% if form.vars.value.uploadedFile is not null %}
                                 {# The Media object has an UploadedFile #}
                                 {% set empty = false %}
-                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename}) }}" target="_blank" title="{{ form.vars.value.file.clientOriginalName }}">
+                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.key|url_encode}) }}" target="_blank" title="{{ form.vars.value.uploadedFile.clientOriginalName }}">
                                     <i class="icon-file upload-preview"></i>
                                 </a>
-                                {% set filename = form.vars.value.file.clientOriginalName %}
+                                {% set filename = form.vars.value.uploadedFile.clientOriginalName %}
                                 {% if filename|length > 20 %}
                                     {% set filename = filename|slice(0, 17) ~ '...' %}
                                 {% endif %}
                             {% else %}
-                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.filename }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
+                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.key|url_encode }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
                                     <i class="icon-file upload-preview"></i>
                                 </a>
                                 {% set filename = form.vars.value.originalFilename %}
@@ -149,22 +150,21 @@
                         </a>
                     {% endif %}
                     {% if empty %}
-                        {{ form_widget(form.file) }}
+                        {{ form_widget(form.uploadedFile) }}
                     {% else %}
-                        {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.uploadedFile, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
                         {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
                     {% endif %}
                 </label>
                 {{ block('form_info') }}
                 {{ form_widget(form.id) }}
-                {{ form_widget(form.copyFrom) }}
             </div>
         </div>
         <script type="text/javascript">
             require(
                 ['pim/fileinput'],
                 function(fileinput) {
-                    fileinput.init('{{ form.file.vars.id }}');
+                    fileinput.init('{{ form.uploadedFile.vars.id }}');
                 }
             );
         </script>
