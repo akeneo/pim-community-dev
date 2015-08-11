@@ -46,7 +46,7 @@ interface CategoryRepositoryInterface extends
      *
      * @return Collection of categories
      */
-    public function getCategoriesByIds(array $categoriesIds = array());
+    public function getCategoriesByIds(array $categoriesIds = []);
 
     /**
      * Get a tree filled with children and their parents
@@ -94,6 +94,14 @@ interface CategoryRepositoryInterface extends
      * @return ArrayCollection
      */
     public function getChildrenByParentId($parentId);
+
+    /**
+     * @param CategoryInterface $parent
+     * @param array             $grantedCategoryIds
+     *
+     * @return array
+     */
+    public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = []);
 
     /**
      * Get children tree from a parent id.
@@ -145,6 +153,15 @@ interface CategoryRepositoryInterface extends
      * @return array
      */
     public function getTrees();
+
+    /**
+     * Get trees of granted categories
+     *
+     * @param array $grantedCategoryIds
+     *
+     * @return array
+     */
+    public function getTreesGranted(array $grantedCategoryIds = []);
 
     /**
      * Check if a parent node is an ancestor of a child node
