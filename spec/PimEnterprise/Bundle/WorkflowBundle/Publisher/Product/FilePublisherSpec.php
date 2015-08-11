@@ -20,8 +20,7 @@ class FilePublisherSpec extends ObjectBehavior
         $this->beConstructedWith(
             $rawFileFetcher,
             $rawFileStorer,
-            $mountManager,
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia'
+            $mountManager
         );
     }
 
