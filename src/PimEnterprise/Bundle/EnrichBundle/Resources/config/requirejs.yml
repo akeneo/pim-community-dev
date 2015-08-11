@@ -11,14 +11,21 @@ config:
                         urls:
                             list: pimee_security_permissions_rest
 
-    paths:
-        pimee/product-view-form:             pimenterpriseenrich/js/product/view-form
-        pimeeenrich-product-view-attributes: pimenterpriseenrich/js/product/form/attributes-view
+    map:
+        '*':
+            pim/product-manager: pimee/product-manager
+        pimee/product-manager:
+            pim/product-manager: pim/product-manager
 
-        pimee/manage-permissions:         pimenterpriseenrich/js/manage-permissions
-        pimee/product-draft-fetcher:      pimenterpriseenrich/js/fetcher/product-draft-fetcher
-        pimee/published-product-manager:  pimenterpriseenrich/js/product/published-product-manager
-        pimee/rule-manager:               pimenterpriseenrich/js/product/rule-manager
+    paths:
+        pimee/product-view-form:            pimenterpriseenrich/js/product/view-form
+        pimee/product-view-form/attributes: pimenterpriseenrich/js/product/form/attributes-view
+
+        pimee/manage-permissions:        pimenterpriseenrich/js/manage-permissions
+        pimee/product-draft-fetcher:     pimenterpriseenrich/js/fetcher/product-draft-fetcher
+        pimee/published-product-manager: pimenterpriseenrich/js/product/published-product-manager
+        pimee/rule-manager:              pimenterpriseenrich/js/product/rule-manager
+        pimee/product-manager:           pimenterpriseenrich/js/manager/product-manager
 
         # Form extensions
         pimee/product-edit-form/attributes/copy:                      pimenterpriseenrich/js/product/form/attributes/copy
@@ -38,13 +45,13 @@ config:
         pimee/product-edit-form/categories:                           pimenterpriseenrich/js/product/form/categories
 
         # Templates
-        pimee/template/product/meta/owner-groups:                       pimenterpriseenrich/templates/product/meta/owner-groups.html
-        pimee/template/product/meta/published:                          pimenterpriseenrich/templates/product/meta/published.html
-        pimee/template/product/panel/history/published:                 pimenterpriseenrich/templates/product/panel/history/published.html
-        pimee/template/product/panel/history/revert:                    pimenterpriseenrich/templates/product/panel/history/revert.html
-        pimee/template/product/publish:                                 pimenterpriseenrich/templates/product/publish.html
-        pimee/template/product/source-switcher:                         pimenterpriseenrich/templates/product/source-switcher.html
-        pimee/template/product/submit-draft:                            pimenterpriseenrich/templates/product/submit-draft.html
-        pimee/template/product/tab/attribute/modified-by-draft:         pimenterpriseenrich/templates/product/tab/attributes/modified-by-draft.html
-        pimee/template/product/tab/attribute/smart-attribute:           pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
-        pimee/template/product/tab/proposals:                           pimenterpriseenrich/templates/product/tab/proposals.html
+        pimee/template/product/meta/owner-groups:               pimenterpriseenrich/templates/product/meta/owner-groups.html
+        pimee/template/product/meta/published:                  pimenterpriseenrich/templates/product/meta/published.html
+        pimee/template/product/panel/history/published:         pimenterpriseenrich/templates/product/panel/history/published.html
+        pimee/template/product/panel/history/revert:            pimenterpriseenrich/templates/product/panel/history/revert.html
+        pimee/template/product/publish:                         pimenterpriseenrich/templates/product/publish.html
+        pimee/template/product/source-switcher:                 pimenterpriseenrich/templates/product/source-switcher.html
+        pimee/template/product/submit-draft:                    pimenterpriseenrich/templates/product/submit-draft.html
+        pimee/template/product/tab/attribute/modified-by-draft: pimenterpriseenrich/templates/product/tab/attributes/modified-by-draft.html
+        pimee/template/product/tab/attribute/smart-attribute:   pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
+        pimee/template/product/tab/proposals:                   pimenterpriseenrich/templates/product/tab/proposals.html

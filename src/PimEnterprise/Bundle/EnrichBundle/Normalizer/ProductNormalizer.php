@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -115,10 +115,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                 'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
                 'is_owner'     => $this->authorizationChecker->isGranted(Attributes::OWN, $product),
                 'working_copy' => $workingCopy,
-                'draft_status' => $draftStatus,
-                'form'         => $this->authorizationChecker->isGranted(Attributes::EDIT, $product) ?
-                    'product-edit-form' :
-                    'pimeeenrich-product-view-form'
+                'draft_status' => $draftStatus
             ]
         );
 

@@ -26,3 +26,5 @@ services:
             - '@security.authorization_checker'
             - '@pimee_workflow.builder.draft'
             - '@security.token_storage'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.remover.product_draft'

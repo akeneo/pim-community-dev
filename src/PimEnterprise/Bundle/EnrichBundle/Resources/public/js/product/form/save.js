@@ -20,8 +20,8 @@ define(
                     this.updateSuccessMessage = _.__('pimee_enrich.entity.product_draft.info.update_successful');
                     this.updateFailureMessage = _.__('pimee_enrich.entity.product_draft.info.update_failed');
 
-                    if ('save-buttons' in this.parent.extensions) {
-                        var buttons = this.parent.extensions['save-buttons'].model.get('buttons');
+                    if (this.parent.getExtension('save-buttons')) {
+                        var buttons = this.parent.getExtension('save-buttons').model.get('buttons');
                         var saveButton = _.findWhere(buttons, {className: 'save-product'});
                         if (saveButton) {
                             saveButton.label = _.__('pimee_enrich.entity.product.btn.save_draft');
