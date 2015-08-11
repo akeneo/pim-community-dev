@@ -46,6 +46,18 @@ class FileComparator implements ComparatorInterface
         $default   = ['locale' => null, 'scope' => null, 'data' => ['filePath' => null]];
         $originals = array_merge($default, $originals);
 
+        // compare a local file and a stored file (can happen during an import for instance)
+        if (isset($data['data']['filePath']) &&
+            isset($originals['data']['filePath']) &&
+            is_file($data['data']['filePath'])
+        ) {
+            $originalFile = $this->repository->findOneByIdentifier($originals['data']['filePath']);
+            if (null !== $originalFile && $originalFile->getHash() === $this->getHashFile($data['data']['filePath'])) {
+                return null;
+            }
+        }
+
+        // compare the two stored files by their filepaths
         if (isset($data['data']['filePath']) &&
             isset($originals['data']['filePath']) &&
             $data['data']['filePath'] === $originals['data']['filePath']
@@ -53,11 +65,12 @@ class FileComparator implements ComparatorInterface
             return null;
         }
 
-        if (null !== $originals['data']['filePath']) {
-            $originalFile = $this->repository->findOneByIdentifier($originals['data']['filePath']);
-            if (null !== $originalFile && $originalFile->getHash() === $this->getHashFile($data['data']['filePath'])) {
-                return null;
-            }
+        // compare the two stored files by their hashes
+        if (isset($data['data']['hash']) &&
+            isset($originals['data']['hash']) &&
+            $data['data']['hash'] === $originals['data']['hash']
+        ) {
+            return null;
         }
 
         return $data;

@@ -23,6 +23,7 @@ class FileNormalizer implements NormalizerInterface
         return [
             'filePath'         => $file->getKey(),
             'originalFilename' => $file->getOriginalFilename(),
+            'hash'             => $file->getHash(),
         ];
     }
 

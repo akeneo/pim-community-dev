@@ -35,8 +35,6 @@ parameters:
     pim_serializer.denormalizer.flat.prices.class:                    Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\PricesDenormalizer
     pim_serializer.denormalizer.flat.metric.class:                    Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\MetricDenormalizer
     pim_serializer.denormalizer.flat.datetime.class:                  Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\DateTimeDenormalizer
-    #TODO: remove it
-    pim_serializer.denormalizer.flat.media.class:                     Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\MediaDenormalizer
     pim_serializer.denormalizer.flat.file.class:                      Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\FileDenormalizer
     pim_serializer.denormalizer.flat.reference_data.class:            Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\ReferenceDataDenormalizer
     pim_serializer.denormalizer.flat.reference_data_collection.class: Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\ReferenceDataCollectionDenormalizer

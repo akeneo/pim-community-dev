@@ -12,11 +12,13 @@ class FileNormalizerSpec extends ObjectBehavior
     {
         $file->getKey()->willReturn('key/of/file.txt');
         $file->getOriginalFilename()->willReturn('the file.txt');
+        $file->getHash()->willReturn('98s7qf987a6f4sdqf');
 
         $this->normalize($file)->shouldReturn(
             [
                 'filePath' => 'key/of/file.txt',
-                'originalFilename' => 'the file.txt'
+                'originalFilename' => 'the file.txt',
+                'hash' => '98s7qf987a6f4sdqf'
             ]
         );
     }
