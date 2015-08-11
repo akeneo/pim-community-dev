@@ -1,0 +1,2 @@
+parameters:
+    pim_classifiation.repository.item.class: Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\ItemCategoryRepository
