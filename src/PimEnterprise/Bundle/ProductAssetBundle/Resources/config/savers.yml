@@ -18,6 +18,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
             - %pimee_product_asset.model.tag.class%
 
     pimee_product_asset.saver.reference:
@@ -39,6 +40,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
             - %pimee_product_asset.model.file_metadata.class%
 
     pimee_product_asset.saver.category:
@@ -46,4 +48,5 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
             - %pimee_product_asset.model.category.interface%
