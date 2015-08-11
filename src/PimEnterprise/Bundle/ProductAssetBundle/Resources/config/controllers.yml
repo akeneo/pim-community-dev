@@ -36,7 +36,7 @@ services:
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.manager.category'
-            - '@pim_user.context.user'
+            - '@pimee_user.context.user.asset'
             - '@oro_security.security_facade'
             - '@pim_catalog.saver.category'
             - '@pim_catalog.remover.category'

@@ -12,8 +12,6 @@
 namespace PimEnterprise\Bundle\UserBundle\Context;
 
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
-use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
@@ -32,28 +30,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class UserContext extends BaseUserContext
 {
-    /** @staticvar string */
-    const USER_ASSET_CATEGORY_TYPE = 'asset';
-
-    /** @staticvar string */
-    const USER_PUBLISHED_PRODUCT_CATEGORY_TYPE = 'published_product';
-
-    /** @var CategoryRepositoryInterface */
-    protected $assetCategoryRepo;
-
-    /** @var ChainedFilter */
-    protected $chainedFilter;
-
-    /** @var AuthorizationCheckerInterface */
-    protected $authorizationChecker;
-
     /**
      * @param TokenStorageInterface         $tokenStorage
      * @param LocaleRepositoryInterface     $localeRepository
      * @param ChannelRepositoryInterface    $channelRepository
-     * @param CategoryRepositoryInterface   $productCategoryRepo
-     * @param CategoryRepositoryInterface   $assetCategoryRepo
-     * @param ChainedFilter                 $chainedFilter
+     * @param CategoryRepositoryInterface   $categoryRepository
      * @param RequestStack                  $requestStack
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param ChoicesBuilderInterface       $choicesBuilder
@@ -63,27 +44,19 @@ class UserContext extends BaseUserContext
         TokenStorageInterface $tokenStorage,
         LocaleRepositoryInterface $localeRepository,
         ChannelRepositoryInterface $channelRepository,
-        CategoryRepositoryInterface $productCategoryRepo,
-        CategoryRepositoryInterface $assetCategoryRepo,
-        ChainedFilter $chainedFilter,
+        CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
         AuthorizationCheckerInterface $authorizationChecker,
         ChoicesBuilderInterface $choicesBuilder,
         $defaultLocale
     ) {
-        parent::__construct(
-            $tokenStorage,
-            $localeRepository,
-            $channelRepository,
-            $productCategoryRepo,
-            $requestStack,
-            $choicesBuilder,
-            $defaultLocale
-        );
-
-        $this->assetCategoryRepo    = $assetCategoryRepo;
-        $this->chainedFilter        = $chainedFilter;
+        $this->tokenStorage         = $tokenStorage;
+        $this->localeRepository     = $localeRepository;
+        $this->channelRepository    = $channelRepository;
+        $this->categoryRepository   = $categoryRepository;
+        $this->requestStack         = $requestStack;
         $this->authorizationChecker = $authorizationChecker;
+        $this->choicesBuilder       = $choicesBuilder;
         $this->defaultLocale        = $defaultLocale;
     }
 
@@ -136,83 +109,28 @@ class UserContext extends BaseUserContext
     }
 
     /**
-     * Get user category tree
-     *
-     * @throws \LogicException
-     *
-     * @return CatalogCategoryInterface
-     *
-     * @deprecated Will be removed in 1.5. Please use getAccessibleUserProductCategoryTree() instead.
-     */
-    public function getAccessibleUserTree()
-    {
-        return $this->getAccessibleUserProductCategoryTree();
-    }
-
-    /**
-     * @param string $relatedEntity
-     *
-     * @return CategoryInterface|null
-     *
-     * TODO: In permission reunification (PIM-4292), remove dedicated method and use a single
-     *       method to get trees then filter with the right filter.
-     */
-    public function getAccessibleUserCategoryTree($relatedEntity)
-    {
-        switch ($relatedEntity) {
-            case static::USER_PRODUCT_CATEGORY_TYPE:
-            case static::USER_PUBLISHED_PRODUCT_CATEGORY_TYPE:
-                return $this->getAccessibleUserProductCategoryTree();
-            case static::USER_ASSET_CATEGORY_TYPE:
-                return $this->getAccessibleUserAssetCategoryTree();
-        }
-
-        return null;
-    }
-
-    /**
-     * Get accessible user product category tree
+     * Get accessible user category tree
      *
      * @throws \LogicException
      *
      * @return CategoryInterface
      */
-    public function getAccessibleUserProductCategoryTree()
+    public function getAccessibleUserTree()
     {
-        $defaultTree = $this->getUserOption('defaultTree');
+//        $defaultTree = $this->getUserOption('defaultTree');
+//
+//        if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $defaultTree)) {
+//            return $defaultTree;
+//        }
 
-        if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $defaultTree)) {
-            return $defaultTree;
-        }
-
-        $trees = $this->productCategoryRepo->getTrees();
-        $grantedTrees = $this->chainedFilter->filterCollection($trees, 'pim.internal_api.product_category.view');
+        // TODO: PIM-4292: add granted categories
+        $grantedTrees = $this->categoryRepository->getTrees();
+//        $grantedTrees = $this->chainedFilter->filterCollection($trees, 'pim.internal_api.product_category.view');
 
         if (!empty($grantedTrees)) {
             return current($grantedTrees);
         }
 
         throw new \LogicException('User should have a default product tree');
-    }
-
-    /**
-     * Get accessible user asset category tree
-     *
-     * @throws \LogicException
-     *
-     * @return CategoryInterface
-     */
-    public function getAccessibleUserAssetCategoryTree()
-    {
-        // TODO: Get the default asset category tree
-
-        $trees = $this->assetCategoryRepo->getTrees();
-        $grantedTrees = $this->chainedFilter->filterCollection($trees, 'pim.internal_api.asset_category.view');
-
-        if (!empty($grantedTrees)) {
-            return current($grantedTrees);
-        }
-
-        throw new \LogicException('User should have a default asset tree');
     }
 }
