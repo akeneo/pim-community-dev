@@ -111,7 +111,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $outputFilename     = $this->buildVariationOutputFilename($sourceFile, $channel, $locale);
 
         $storageFilesystem  = $this->mountManager->getFilesystem($this->filesystemAlias);
-        $sourceFileInfo     = $this->rawFileFetcher->fetch($sourceFile, $storageFilesystem);
+        $sourceFileInfo     = $this->rawFileFetcher->fetch($storageFilesystem, $sourceFile->getKey());
         $variationFileInfo  = $this->fileTransformer->transform(
             $sourceFileInfo,
             $rawTransformations,

@@ -4,8 +4,7 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Tag;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
-use PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Filter\ProductAssetFilterUtility;
+use PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Filter\ProductAssetFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;
 
 class TagFilterSpec extends ObjectBehavior

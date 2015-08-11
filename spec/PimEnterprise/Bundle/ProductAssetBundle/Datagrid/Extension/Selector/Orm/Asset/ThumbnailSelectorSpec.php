@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Extension\Selector\Orm\Asset;
+namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Selector\Orm\Asset;
 
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
