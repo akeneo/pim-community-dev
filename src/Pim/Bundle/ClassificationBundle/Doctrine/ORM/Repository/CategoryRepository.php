@@ -169,13 +169,24 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
+    public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = [])
+    {
+        return $this->getChildrenQueryBuilder($parent, true)
+            ->andWhere('node.id IN (:ids)')
+            ->setParameter('ids', $grantedCategoryIds)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getChildrenTreeByParentId($parentId, $selectNodeId = false)
     {
         $children = [];
 
-        $parent = $this->findOneBy(['id' => $parentId]);
-
         if ($selectNodeId === false) {
+            $parent = $this->findOneBy(['id' => $parentId]);
             $children = $this->childrenHierarchy($parent);
         } else {
             $selectNode = $this->findOneBy(['id' => $selectNodeId]);
@@ -184,6 +195,7 @@ class CategoryRepository extends NestedTreeRepository implements
                 $config = $this->listener->getConfiguration($this->_em, $meta->name);
 
                 $selectPath = $this->getPath($selectNode);
+                $parent = $this->findOneBy(['id' => $parentId]);
                 $qb = $this->getNodesHierarchyQueryBuilder($parent);
 
                 // Remove the node itself from his ancestor
@@ -289,7 +301,7 @@ class CategoryRepository extends NestedTreeRepository implements
         }
         $queryBuilder->andWhere('c.root = :rootId')->setParameter('rootId', $treeRootId);
 
-        return $queryBuilder->getQuery()->getResult();
+        return $queryBuilder->getQuerNy()->getResult();
     }
 
     /**
@@ -298,6 +310,21 @@ class CategoryRepository extends NestedTreeRepository implements
     public function getTrees()
     {
         return $this->getChildren(null, true, 'created', 'DESC');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTreesGranted(array $grantedCategoryIds = [])
+    {
+        $qb = $this->getChildrenQueryBuilder(null, true, 'created', 'DESC');
+        $result = $qb
+            ->andWhere('node.id IN (:ids)')
+            ->setParameter('ids', $grantedCategoryIds)
+            ->getQuery()
+            ->getResult();
+
+        return $result;
     }
 
     /**
