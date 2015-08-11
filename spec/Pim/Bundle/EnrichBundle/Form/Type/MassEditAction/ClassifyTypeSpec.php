@@ -16,7 +16,6 @@ class ClassifyTypeSpec extends ObjectBehavior
     ) {
         $categoryRepository->findBy(['parent' => null])->willReturn(['this', 'is', 'a', 'category', 'tree']);
         $categoryManager->getEntityRepository()->willReturn($categoryRepository);
-        $categoryManager->getCategoryRepository()->willReturn($categoryRepository);
 
         $this->beConstructedWith(
             $categoryManager,
