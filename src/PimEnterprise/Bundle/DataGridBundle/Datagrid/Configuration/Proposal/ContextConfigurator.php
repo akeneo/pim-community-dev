@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal;
+namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,12 +24,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ContextConfigurator implements ConfiguratorInterface
 {
-    /** @staticvar string */
-    const REPOSITORY_PARAMETERS_KEY = 'repository_parameters';
-
-    /** @staticvar string */
-    const SOURCE_PATH = '[source][%s]';
-
     /** @var DatagridConfiguration */
     protected $configuration;
 

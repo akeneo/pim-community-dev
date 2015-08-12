@@ -7,4 +7,4 @@ services:
     pim_datagrid.datasource.result_record.hydrator.product_draft:
         class: %pimee_datagrid.datasource.result_record.hydrator.product_draft.class%
         arguments:
-          - '@pim_datagrid.datagrid.request_parameters_extractor'
+          - '@pim_datagrid.datagrid.request.parameters_extractor'

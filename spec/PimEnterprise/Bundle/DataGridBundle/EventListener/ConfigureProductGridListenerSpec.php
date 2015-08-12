@@ -5,11 +5,11 @@ namespace spec\PimEnterprise\Bundle\DataGridBundle\EventListener;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
+use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
+use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator;
 
 class ConfigureProductGridListenerSpec extends ObjectBehavior
 {

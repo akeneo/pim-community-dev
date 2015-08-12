@@ -42,7 +42,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('datagrid/filters.yml');
         $loader->load('datagrid/formatters.yml');
         $loader->load('datagrid/selectors.yml');
-        $loader->load('data_sources.yml');
         $loader->load('events.yml');
         $loader->load('factories.yml');
         $loader->load('filters.yml');
@@ -60,8 +59,8 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('savers.yml');
         $loader->load('selectors.yml');
         $loader->load('services.yml');
-        $loader->load('subscribers.yml');
         $loader->load('steps.yml');
+        $loader->load('subscribers.yml');
         $loader->load('twig_extension.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');

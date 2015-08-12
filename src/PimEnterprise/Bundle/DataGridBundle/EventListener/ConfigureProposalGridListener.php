@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 
 /**
  * Grid listener to configure proposal grid

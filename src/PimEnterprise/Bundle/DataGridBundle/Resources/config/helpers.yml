@@ -1,29 +1,45 @@
 parameters:
-    pimee_datagrid.datagrid.product_draft.grid_helper.class:     PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper
-    pimee_datagrid.datagrid.proposal.grid_helper.class:          PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper
-    pimee_datagrid.datagrid.published_product.grid_helper.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\PublishedProduct\GridHelper
-    pimee_datagrid.datagrid.product_history.grid_helper.class:   PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductHistory\GridHelper
+    pimee_datagrid.datagrid.configuration.product_draft.grid_helper.class:     PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraft\GridHelper
+    pimee_datagrid.datagrid.configuration.proposal.grid_helper.class:          PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper
+    pimee_datagrid.datagrid.configuration.published_product.grid_helper.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\PublishedProduct\GridHelper
+    pimee_datagrid.datagrid.configuration.product_history.grid_helper.class:   PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory\GridHelper
 
 services:
-    pimee_datagrid.datagrid.product_draft.grid_helper:
-        class: %pimee_datagrid.datagrid.product_draft.grid_helper.class%
+    pimee_datagrid.datagrid.configuration.product_draft.grid_helper:
+        class: %pimee_datagrid.datagrid.configuration.product_draft.grid_helper.class%
         arguments:
             - '@security.authorization_checker'
 
-    pimee_datagrid.datagrid.proposal.grid_helper:
-        class: %pimee_datagrid.datagrid.proposal.grid_helper.class%
+    pimee_datagrid.datagrid.configuration.proposal.grid_helper:
+        class: %pimee_datagrid.datagrid.configuration.proposal.grid_helper.class%
         arguments:
             - '@pimee_workflow.repository.product_draft'
             - '@security.authorization_checker'
 
-    pimee_datagrid.datagrid.published_product.grid_helper:
-        class: %pimee_datagrid.datagrid.published_product.grid_helper.class%
+    pimee_datagrid.datagrid.configuration.published_product.grid_helper:
+        class: %pimee_datagrid.datagrid.configuration.published_product.grid_helper.class%
         arguments:
             - '@security.authorization_checker'
             - '@pimee_workflow.repository.published_product'
 
-    pimee_datagrid.datagrid.product_history.grid_helper:
-        class: %pimee_datagrid.datagrid.product_history.grid_helper.class%
+    pimee_datagrid.datagrid.configuration.product_history.grid_helper:
+        class: %pimee_datagrid.datagrid.configuration.product_history.grid_helper.class%
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
+
+    # deprecated, will be removed in 1.5, please use pimee_datagrid.datagrid.configuration.product_draft.grid_helper
+    pimee_datagrid.datagrid.product_draft.grid_helper:
+        alias: pimee_datagrid.datagrid.configuration.product_draft.grid_helper
+
+    # deprecated, will be removed in 1.5, please use pimee_datagrid.datagrid.configuration.proposal.grid_helper
+    pimee_datagrid.datagrid.proposal.grid_helper:
+        alias: pimee_datagrid.datagrid.configuration.proposal.grid_helper
+
+    # deprecated, will be removed in 1.5, please use pimee_datagrid.datagrid.configuration.published_product.grid_helper
+    pimee_datagrid.datagrid.published_product.grid_helper:
+        alias: pimee_datagrid.datagrid.configuration.published_product.grid_helper
+
+    # deprecated, will be removed in 1.5, please use pimee_datagrid.datagrid.configuration.product_history.grid_helper
+    pimee_datagrid.datagrid.product_history.grid_helper:
+        alias: pimee_datagrid.datagrid.configuration.product_history.grid_helper

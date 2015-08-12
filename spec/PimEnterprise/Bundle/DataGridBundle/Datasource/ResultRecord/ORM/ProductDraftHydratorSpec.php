@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 
 class ProductDraftHydratorSpec extends ObjectBehavior
 {

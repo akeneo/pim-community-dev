@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
+namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator as BaseFiltersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator as BaseFiltersConfigurator;
 use PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter;
 
 /**

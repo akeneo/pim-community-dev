@@ -6,5 +6,9 @@ services:
         class: %pimee_product_asset.datagrid.extension.formatter.property.asset.thumbnail_property.class%
         arguments:
             - '@twig'
+            - '@pim_datagrid.datagrid.request.parameters_extractor'
+            - '@pim_user.context.user'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: asset_thumbnail }

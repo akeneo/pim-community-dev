@@ -66,7 +66,7 @@ datagrid:
                 label: Unpublish the product
                 icon:  cloud-download
                 link:  unpublish_link
-        action_configuration: '@pimee_datagrid.datagrid.published_product.grid_helper->getActionConfigurationClosure'
+        action_configuration: '@pimee_datagrid.datagrid.configuration.published_product.grid_helper->getActionConfigurationClosure'
         mass_actions:
             mass_edit:
                 type: edit
