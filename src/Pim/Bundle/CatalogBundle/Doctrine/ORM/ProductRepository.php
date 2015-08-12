@@ -522,16 +522,13 @@ class ProductRepository extends EntityRepository implements
     public function findOneByWithValues($id)
     {
         $qb = $this->findAllByAttributesQB(array(), array('id' => $id));
-        $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
+        $this->addJoinToValueTables($qb);
         $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
         $qb->addSelect('Value');
         $qb->addSelect('Attribute');
-        $qb->addSelect('AttributeTranslations');
         $qb->addSelect('AttributeLocales');
         $qb->leftJoin('Attribute.group', 'AttributeGroup');
         $qb->addSelect('AttributeGroup');
-        $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
-        $qb->addSelect('AGroupTranslations');
 
         return $qb
             ->getQuery()
