@@ -3,6 +3,7 @@
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
+use Pim\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,9 +21,6 @@ class InstallCommand extends ContainerAwareCommand
 {
     /** @staticvar string */
     const APP_NAME = 'Akeneo PIM';
-
-    /** @var array */
-    protected $dirsToClean = ['catalog_storage_dir', 'tmp_storage_dir', 'archive_dir'];
 
     /** @var CommandExecutor */
     protected $commandExecutor;
@@ -70,8 +68,8 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('');
 
         try {
-            foreach ($this->dirsToClean as $directory) {
-                $this->cleanDirectory($this->getContainer()->getParameter($directory));
+            foreach ($this->getDirectoriesContainer()->getDirectories() as $directory) {
+                $this->cleanDirectory($directory);
             }
 
             $this
@@ -171,5 +169,13 @@ class InstallCommand extends ContainerAwareCommand
             $filesystem->remove($folder);
         }
         $filesystem->mkdir($folder);
+    }
+
+    /**
+     * @return PimDirectoriesRegistry
+     */
+    protected function getDirectoriesContainer()
+    {
+        return $this->getContainer()->get('pim_installer.directories_registry');
     }
 }
