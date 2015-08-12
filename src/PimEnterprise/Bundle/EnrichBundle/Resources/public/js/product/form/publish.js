@@ -58,14 +58,14 @@ define(
                 Dialog.confirm(
                     _.__('pimee_enrich.entity.product.confirmation.publish.content'),
                     _.__('pimee_enrich.entity.product.confirmation.publish.title'),
-                    _.bind(this.doPublish, this)
+                    this.doPublish.bind(this)
                 );
             },
             unpublish: function () {
                 Dialog.confirm(
                     _.__('pimee_enrich.entity.product.confirmation.unpublish.content'),
                     _.__('pimee_enrich.entity.product.confirmation.unpublish.title'),
-                    _.bind(this.doUnpublish, this)
+                    this.doUnpublish.bind(this)
                 );
             },
             doPublish: function () {
@@ -83,8 +83,8 @@ define(
                 var method = publish ? PublishedProductManager.publish : PublishedProductManager.unpublish;
                 // TODO: We shouldn't force product fetching, we should use request response (cf. send for approval)
                 method(productId)
-                    .done(_.bind(function () {
-                        ProductManager.get(this.getFormData().meta.id).done(_.bind(function (product) {
+                    .done(function () {
+                        ProductManager.get(this.getFormData().meta.id).done(function (product) {
                             navigation.addFlashMessage(
                                 'success',
                                 _.__(
@@ -99,8 +99,8 @@ define(
 
                             mediator.trigger('pim_enrich:form:entity:post_fetch', product);
                             mediator.trigger('pim_enrich:form:entity:post_publish', product);
-                        }, this));
-                    }, this))
+                        }.bind(this));
+                    }.bind(this))
                     .fail(function () {
                         navigation.addFlashMessage(
                             'error',

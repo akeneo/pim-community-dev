@@ -14,7 +14,9 @@ define(
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
-                    isVisible: _.bind(function () { return this.getFormData().meta.is_owner }, this),
+                    isVisible: function () {
+                        return this.getFormData().meta.is_owner
+                    }.bind(this),
                     label: _.__('pim_enrich.form.product.tab.categories.title')
                 });
 

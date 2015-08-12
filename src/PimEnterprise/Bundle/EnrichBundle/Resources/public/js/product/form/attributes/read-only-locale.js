@@ -19,7 +19,7 @@ define(
             },
             addFieldExtension: function (event) {
                 event.promises.push(
-                    FetcherRegistry.getFetcher('permission').fetchAll().then(_.bind(function (permissions) {
+                    FetcherRegistry.getFetcher('permission').fetchAll().then(function (permissions) {
                         var field = event.field;
 
                         if (field.attribute.localizable) {
@@ -31,7 +31,7 @@ define(
                         }
 
                         return event;
-                    }, this))
+                    }.bind(this))
                 );
 
                 return this;

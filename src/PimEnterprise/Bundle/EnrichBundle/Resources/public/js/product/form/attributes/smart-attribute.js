@@ -23,7 +23,7 @@ define(
             },
             addFieldExtension: function (event) {
                 event.promises.push(
-                    RuleManager.getRuleRelations('attribute').done(_.bind(function (ruleRelations) {
+                    RuleManager.getRuleRelations('attribute').done(function (ruleRelations) {
                         var deferred = $.Deferred();
                         var field = event.field;
                         var ruleRelation = _.findWhere(ruleRelations, {attribute: field.attribute.code});
@@ -38,7 +38,7 @@ define(
                         deferred.resolve();
 
                         return deferred.promise();
-                    }, this))
+                    }.bind(this))
                 );
 
                 return this;

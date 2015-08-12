@@ -98,7 +98,7 @@ define(
                 mediator.trigger('pim_enrich:form:state:confirm', {
                     message: this.confirmationMessage,
                     title: this.confirmationTitle,
-                    action: _.bind(this.submitDraft, this)
+                    action: this.submitDraft.bind(this)
                 });
             },
 
@@ -113,7 +113,7 @@ define(
                     )
                 )
                 .then(ProductManager.generateMissing)
-                .then(_.bind(function (product) {
+                .then(function (product) {
                     this.setData(product);
 
                     mediator.trigger('pim_enrich:form:entity:post_fetch', product);
@@ -122,7 +122,7 @@ define(
                         'success',
                         _.__('pimee_enrich.entity.product_draft.flash.sent_for_approval')
                     );
-                }, this))
+                }.bind(this))
                 .fail(function () {
                     messenger.notificationFlashMessage(
                         'error',

@@ -57,11 +57,11 @@ define(
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:show_attribute', this.showAttribute);
 
-                window.addEventListener('resize', _.bind(this.resize, this));
+                window.addEventListener('resize', this.resize.bind(this));
                 this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
                 FieldManager.clearFields();
 
-                this.onExtensions('attribute-group:change', _.bind(this.render, this));
+                this.onExtensions('attribute-group:change', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -71,44 +71,44 @@ define(
                 }
 
                 this.rendering = true;
-                this.getConfig().done(_.bind(function () {
+                this.getConfig().done(function () {
                     this.$el.html(this.template({}));
                     this.resize();
                     var product = this.getFormData();
                     $.when(
                         FetcherRegistry.getFetcher('family').fetchAll(),
                         ProductManager.getValues(product)
-                    ).then(_.bind(function (families, values) {
+                    ).then(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
                             this.getExtension('attribute-group-selector').getCurrentAttributeGroup()
                         );
 
                         var fieldPromises = [];
-                        _.each(productValues, _.bind(function (productValue, attributeCode) {
+                        _.each(productValues, function (productValue, attributeCode) {
                             fieldPromises.push(this.renderField(product, attributeCode, productValue, families));
-                        }, this));
+                        }.bind(this));
 
                         this.rendering = false;
 
                         return $.when.apply($, fieldPromises);
-                    }, this)).then(_.bind(function () {
+                    }.bind(this)).then(function () {
                         var $productValuesPanel = this.$('.product-values');
                         $productValuesPanel.empty();
 
                         FieldManager.clearVisibleFields();
-                        _.each(arguments, _.bind(function (field) {
+                        _.each(arguments, function (field) {
                             if (field.canBeSeen()) {
                                 field.render();
                                 FieldManager.addVisibleField(field.attribute.code);
                                 $productValuesPanel.append(field.$el);
                             }
-                        }, this));
-                    }, this));
+                        }.bind(this));
+                    }.bind(this));
                     this.delegateEvents();
 
                     this.renderExtensions();
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -160,7 +160,7 @@ define(
             },
             showAttribute: function (event) {
                 AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
-                    .done(_.bind(function (attributeGroups) {
+                    .done(function (attributeGroups) {
                         mediator.trigger('pim_enrich:form:form-tabs:change', this.code);
 
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
@@ -193,7 +193,7 @@ define(
                         }
 
                         FieldManager.getFields()[event.attribute].setFocus();
-                    }, this));
+                    }.bind(this));
             }
         });
     }
