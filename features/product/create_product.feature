@@ -39,3 +39,19 @@ Feature: Product creation
       | SKU | sandals |
     And I press the "Save" button in the popin
     Then I should see validation tooltip "The value sandals is already set on another product for the unique attribute sku"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4706
+  Scenario: Fail to create a product with a comma in the identifier
+    Given I create a new product
+    And I fill in the following information in the popin:
+      | SKU | to,to |
+    And I press the "Save" button in the popin
+    Then I should see validation tooltip "This field should not contain any comma or semicolon."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4706
+  Scenario: Fail to create a product with a semicolon in the identifier
+    Given I create a new product
+    And I fill in the following information in the popin:
+      | SKU | to;to |
+    And I press the "Save" button in the popin
+    Then I should see validation tooltip "This field should not contain any comma or semicolon."

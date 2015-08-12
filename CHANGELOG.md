@@ -193,6 +193,8 @@
 - Constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
 # 1.3.x
+## Bug fixes
+- PIM-4706: Product association import error with identifier containing comma or semicolon
 
 # 1.3.18 (2015-07-09)
 
