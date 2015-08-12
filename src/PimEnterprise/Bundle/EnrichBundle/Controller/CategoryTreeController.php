@@ -170,8 +170,8 @@ class CategoryTreeController extends BaseCategoryTreeController
         return [
             'trees'          => $grantedTrees,
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
-            'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
-            'item_count'     => (bool) $this->getRequest()->get('with_items_count', true),
+            'include_sub'    => (bool) $request->get('include_sub', false),
+            'item_count'     => (bool) $request->get('with_items_count', true),
             'related_entity' => $relatedEntity,
         ];
     }
