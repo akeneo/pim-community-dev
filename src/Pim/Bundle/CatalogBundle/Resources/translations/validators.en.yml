@@ -12,3 +12,4 @@ Option code may contain only letters, numbers and underscores:   Option code may
 This color is already used by another channel:                   This color is already used by another channel
 This value should not be a decimal.:                             This value should not be a decimal.
 file.extensions.message:                                         'The file extension is not allowed (allowed extensions: %extensions%).'
+regex.comma_or_semicolon.message:                                This field should not contain any comma or semicolon.
