@@ -1,6 +1,5 @@
 parameters:
     pimee_enrich.twig.version_extension.class:   PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
-    pim_enrich.twig.category_extension.class:    PimEnterprise\Bundle\EnrichBundle\Twig\CategoryExtension
     pimee_enrich.twig.attribute_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\AttributeExtension
 
 services:
@@ -9,17 +8,23 @@ services:
         tags:
             - { name: twig.extension }
 
-    pim_enrich.twig.category_extension:
-        class: %pim_enrich.twig.category_extension.class%
+    pim_enrich.twig.category_extension.asset:
+        class: %pim_enrich.twig.category_extension.category.class%
         arguments:
-            - '@pim_catalog.repository.category'
-            - '@pim_catalog.repository.product_category'
             - '@pimee_product_asset.repository.category'
             - '@pimee_product_asset.repository.asset_category'
+            - %pim_enrich_max_products_category_removal%
+        tags:
+            - { name: pim_enrich.twig.category_extension, type: asset }
+
+    pim_enrich.twig.category_extension.published_product:
+        class: %pim_enrich.twig.category_extension.category.class%
+        arguments:
+            - '@pim_catalog.repository.category'
             - '@pimee_workflow.repository.published_product_category'
             - %pim_enrich_max_products_category_removal%
         tags:
-            - { name: twig.extension }
+            - { name: pim_enrich.twig.category_extension, type: published_product }
 
     pimee_enrich.twig.attribute_extension:
         class: %pimee_enrich.twig.attribute_extension.class%
