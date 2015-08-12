@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -91,7 +91,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     protected function prepareAxisColumns()
     {
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $axisCodes = array_map(
             function ($attribute) {
@@ -99,7 +99,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             },
             $this->getGroup()->getAxisAttributes()->toArray()
         );
-        $this->axisColumns = array();
+        $this->axisColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
             $attributeType     = $attribute['attributeType'];
@@ -108,9 +108,9 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
             if ($attributeTypeConf && $attributeTypeConf['column']) {
                 if (in_array($attributeCode, $axisCodes)) {
                     $columnConfig = $attributeTypeConf['column'];
-                    $columnConfig = $columnConfig + array(
+                    $columnConfig = $columnConfig + [
                         'label' => $attribute['label'],
-                    );
+                    ];
                     $this->axisColumns[$attributeCode] = $columnConfig;
                 }
             }

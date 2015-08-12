@@ -1,12 +1,13 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,25 +22,10 @@ use Symfony\Component\HttpFoundation\Request;
 class ContextConfigurator implements ConfiguratorInterface
 {
     /** @staticvar string */
-    const SOURCE_PATH = '[source][%s]';
-
-    /** @staticvar string */
     const PRODUCT_STORAGE_KEY = 'product_storage';
 
     /** @staticvar string */
-    const DISPLAYED_LOCALE_KEY = 'locale_code';
-
-    /** @staticvar string */
-    const DISPLAYED_SCOPE_KEY = 'scope_code';
-
-    /** @staticvar string */
-    const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
-
-    /** @staticvar string */
     const DISPLAYED_ATTRIBUTES_KEY = 'displayed_attribute_ids';
-
-    /** @staticvar string */
-    const USEABLE_ATTRIBUTES_KEY = 'attributes_configuration';
 
     /** @staticvar string */
     const CURRENT_GROUP_ID_KEY = 'current_group_id';
@@ -51,13 +37,7 @@ class ContextConfigurator implements ConfiguratorInterface
     const CURRENT_PRODUCT_KEY = 'current_product';
 
     /** @staticvar string */
-    const AVAILABLE_COLUMNS_KEY = 'available_columns';
-
-    /** @staticvar string */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
-
-    /** @staticvar string */
-    const REPOSITORY_PARAMETERS_KEY = 'repository_parameters';
 
     /**
      * @var DatagridConfiguration
