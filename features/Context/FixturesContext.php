@@ -131,18 +131,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @BeforeScenario
-     */
-    public function clearStorageFilesystem()
-    {
-        $storageDir = realpath($this->getContainer()->getParameter('storage_dir'));
-
-        if (false !== $storageDir && is_dir($storageDir)) {
-            exec(sprintf('rm -Rf %s', $storageDir));
-        }
-    }
-
-    /**
      * Magic methods for getting and creating entities
      *
      * @param string $method
