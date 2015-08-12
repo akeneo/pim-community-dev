@@ -29,6 +29,7 @@ parameters:
     pim_catalog.validator.constraint_guesser.unique_value.class:           Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
     pim_catalog.validator.constraint_guesser.price_collection.class:       Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\PriceCollectionGuesser
     pim_catalog.validator.constraint_guesser.metric.class:                 Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\MetricGuesser
+    pim_catalog.validator.constraint_guesser.identifier.class:             Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\IdentifierGuesser
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Bundle\CatalogBundle\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Bundle\CatalogBundle\Validator\Mapping\ProductValueMetadataFactory
     pim_catalog.validator.unique_value_set.class:                          Pim\Bundle\CatalogBundle\Validator\UniqueValuesSet
@@ -211,6 +212,12 @@ services:
     pim_catalog.validator.constraint_guesser.currency:
         public: false
         class: %pim_catalog.validator.constraint_guesser.currency.class%
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.identifier:
+        public: false
+        class: %pim_catalog.validator.constraint_guesser.identifier.class%
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 
