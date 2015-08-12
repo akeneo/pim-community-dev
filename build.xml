@@ -3,7 +3,7 @@
     xmlns:if="ant:if"
     xmlns:unless="ant:unless"
 >
-    <property name="symfony.upload.dir" value="product" />
+    <property name="symfony.catalog.storage.dir" value="catalog" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
@@ -80,7 +80,7 @@
                 <include name="parameters*.yml" />
             </fileset>
         </replaceregexp>
-        <replaceregexp match="upload_dir:.*$" replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%" byline="true">
+        <replaceregexp match="catalog_storage_dir:.*$" replace="catalog_storage_dir: %kernel.root_dir%/file_storage/%catalog.storage.dir%" byline="true">
             <fileset dir="${basedir}/app/config/">
                 <include name="pim_parameters.yml" />
             </fileset>
@@ -262,7 +262,7 @@
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+            <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
 
         <exec executable="php">
@@ -328,7 +328,7 @@
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+            <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -376,7 +376,7 @@
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+            <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -426,7 +426,7 @@
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -439,7 +439,7 @@
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -452,7 +452,7 @@
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
@@ -464,7 +464,7 @@
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
         </exec>
     </target>
 
