@@ -958,6 +958,26 @@ class Edit extends Form
     }
 
     /**
+     * Get the "remove file" button for a media file (trash icon)
+     *
+     * @param $field
+     *
+     * @return NodeElement|null
+     */
+    public function getRemoveFileButtonFor($field)
+    {
+        try {
+            $button = $this->spin(function () use ($field) {
+                return $this->find('css', sprintf('.field-container:contains("%s") .clear-field', $field));
+            }, 5);
+        } catch (\Exception $e) {
+            $button = null;
+        }
+
+        return $button;
+    }
+
+    /**
      * @param string $field
      *
      * @return NodeElement

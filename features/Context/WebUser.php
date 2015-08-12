@@ -1003,6 +1003,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should (not )?be able to remove the file of "([^"]*)"$/
+     */
+    public function iShouldBeAbleToRemoveTheFileOf($not, $field)
+    {
+        $removeFileButton = $this->getPage('Product edit')->getRemoveFileButtonFor($field);
+
+        if ($not && $removeFileButton && $removeFileButton->isVisible()) {
+            throw $this->createExpectationException(
+                sprintf('Remove file button on field "%s" should not be displayed.', $field)
+            );
+        } elseif (!$not && (!$removeFileButton || !$removeFileButton->isVisible())) {
+            throw $this->createExpectationException(
+                sprintf('Remove file button on field "%s" should be displayed.', $field)
+            );
+        }
+    }
+
+    /**
      * @param string $field
      *
      * @When /^I remove the "([^"]*)" attribute$/
