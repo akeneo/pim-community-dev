@@ -18,14 +18,13 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class InstallCommand extends ContainerAwareCommand
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const APP_NAME = 'Akeneo PIM';
 
-    /**
-     * @var CommandExecutor
-     */
+    /** @var array */
+    protected $dirsToClean = ['catalog_storage_dir', 'tmp_storage_dir', 'archive_dir'];
+
+    /** @var CommandExecutor */
     protected $commandExecutor;
 
     /**
@@ -71,14 +70,18 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('');
 
         try {
-            $this->cleanDirectory($this->getContainer()->getParameter('upload_dir'));
-            $this->cleanDirectory($this->getContainer()->getParameter('archive_dir'));
+            foreach ($this->dirsToClean as $directory) {
+                $this->cleanDirectory($this->getContainer()->getParameter($directory));
+            }
 
             $this
                 ->checkStep($input, $output)
                 ->databaseStep($input, $output)
                 ->assetsStep($input, $output);
         } catch (\Exception $e) {
+            $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
+            $output->writeln('');
+
             return $e->getCode();
         }
 
