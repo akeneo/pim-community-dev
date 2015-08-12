@@ -322,7 +322,7 @@ class ProductRepository extends EntityRepository implements
      */
     protected function getAttributeByCode($code)
     {
-        return $this->attributeRepository->findOneByCode($code);
+        return $this->attributeRepository->findOneBy(['code' => $code]);
     }
 
     /**
