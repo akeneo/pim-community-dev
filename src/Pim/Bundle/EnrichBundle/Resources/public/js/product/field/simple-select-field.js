@@ -37,19 +37,19 @@ define(
                     return;
                 }
 
-                createOption(this.attribute).done(_.bind(function (option) {
+                createOption(this.attribute).done(function (option) {
                     if (this.isEditable()) {
                         this.setCurrentValue(option.code);
                     }
 
                     this.render();
-                }, this));
+                }.bind(this));
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
             postRender: function () {
-                this.getChoiceUrl().done(_.bind(function (choiceUrl) {
+                this.getChoiceUrl().done(function (choiceUrl) {
                     this.$('input.select-field').select2('destroy').select2({
                         ajax: {
                             url: choiceUrl,
@@ -73,7 +73,7 @@ define(
                         placeholder: ' ',
                         allowClear: true
                     });
-                }, this));
+                }.bind(this));
             },
             getChoiceUrl: function () {
                 return $.Deferred().resolve(

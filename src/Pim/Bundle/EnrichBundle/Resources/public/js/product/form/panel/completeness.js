@@ -56,7 +56,7 @@ define(
                             this.getFormData().family
                         ),
                         FetcherRegistry.getFetcher('locale').fetchAll()
-                    ).then(_.bind(function (completeness, locales) {
+                    ).then(function (completeness, locales) {
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
@@ -66,7 +66,7 @@ define(
                             })
                         );
                         this.delegateEvents();
-                    }, this));
+                    }.bind(this));
                 }
 
                 return this;

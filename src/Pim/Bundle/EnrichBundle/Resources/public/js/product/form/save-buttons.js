@@ -30,7 +30,7 @@ define(
                     buttons: []
                 });
 
-                this.on('save-buttons:add-button', _.bind(this.addButton, this));
+                this.on('save-buttons:add-button', this.addButton.bind(this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },

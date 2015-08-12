@@ -34,7 +34,7 @@ define(
                     priority: 150,
                     label: _.__('pim_enrich.entity.product.btn.save_and_back'),
                     events: {
-                        'click .save-product-and-back': _.bind(this.saveAndCreate, this)
+                        'click .save-product-and-back': this.saveAndCreate.bind(this)
                     }
                 });
 
@@ -43,7 +43,7 @@ define(
             saveAndCreate: function () {
                 this.parent.getExtension('save')
                     .save({silent: true})
-                    .done(_.bind(function () {
+                    .done(function () {
                         messenger.addMessage(
                             'success',
                             _.__('pim_enrich.entity.product.info.update_successful'),
@@ -51,7 +51,7 @@ define(
                         );
                         var navigation = Navigation.getInstance();
                         navigation.setLocation(Routing.generate('pim_enrich_product_index'));
-                    }, this))
+                    }.bind(this))
                     .fail(function () {
                         messenger.notificationFlashMessage(
                             'error',

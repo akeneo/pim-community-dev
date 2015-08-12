@@ -64,11 +64,11 @@ define(
                     );
 
                     if (this.getParent().getParent().state.get('fullPanel') && this.actions) {
-                        _.each(this.$el.find('td.actions'), _.bind(function (element) {
-                            _.each(this.actions, _.bind(function (action) {
+                        _.each(this.$el.find('td.actions'), function (element) {
+                            _.each(this.actions, function (action) {
                                 $(element).append(action.clone(true));
-                            }, this));
-                        }, this));
+                            }.bind(this));
+                        }.bind(this));
                     }
 
                     this.delegateEvents();
@@ -92,27 +92,27 @@ define(
                                 entityId: this.getFormData().meta.id
                             }
                         )
-                    ).done(_.bind(function (versions) {
-                        this.prepareVersions(versions).done(_.bind(function (versions) {
+                    ).done(function (versions) {
+                        this.prepareVersions(versions).done(function (versions) {
                             this.versions = versions;
                             this.render();
                             this.loading = false;
-                        }, this));
-                    }, this));
+                        }.bind(this));
+                    }.bind(this));
                 }
             },
             prepareVersions: function (versions) {
-                return FetcherRegistry.getFetcher('attribute').fetchAll().then(_.bind(function (attributes) {
-                    _.each(versions, _.bind(function (version) {
-                        _.each(version.changeset, _.bind(function (data, index) {
+                return FetcherRegistry.getFetcher('attribute').fetchAll().then(function (attributes) {
+                    _.each(versions, function (version) {
+                        _.each(version.changeset, function (data, index) {
                             var code = index.split('-').shift();
                             var attribute = _.findWhere(attributes, { code: code });
                             data.label = attribute ? this.getAttributeLabel(attribute, index) : index;
-                        }, this));
-                    }, this));
+                        }.bind(this));
+                    }.bind(this));
 
                     return versions;
-                }, this));
+                }.bind(this));
             },
             getAttributeLabel: function (attribute, key) {
                 var uiLocale = UserContext.get('catalogLocale');

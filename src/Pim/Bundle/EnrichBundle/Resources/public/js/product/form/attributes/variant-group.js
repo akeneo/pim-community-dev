@@ -33,7 +33,7 @@ define(
 
                 event.promises.push(
                     FetcherRegistry.getFetcher('variant-group').fetch(product.variant_group)
-                        .then(_.bind(function (variantGroup) {
+                        .then(function (variantGroup) {
                             var field = event.field;
                             if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
                                 var $element = this.template({
@@ -43,7 +43,7 @@ define(
                                 field.setEditable(false);
                                 field.addElement('footer', 'updated_by', $element);
                             }
-                        }, this))
+                        }.bind(this))
                 );
 
                 return this;

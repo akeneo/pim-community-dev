@@ -27,12 +27,12 @@ define(
                 this.state = new Backbone.Model();
 
                 this.listenTo(this.state, 'change', this.render);
-                window.addEventListener('resize', _.bind(this.resize, this));
+                window.addEventListener('resize', this.resize.bind(this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.onExtensions('panel:register', _.bind(this.registerPanel, this));
+                this.onExtensions('panel:register', this.registerPanel.bind(this));
                 this.listenTo(this.getParent().state, 'change:fullPanel', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
 

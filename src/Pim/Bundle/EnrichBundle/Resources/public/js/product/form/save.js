@@ -42,7 +42,7 @@ define(
                     priority: 200,
                     label: _.__('pim_enrich.entity.product.btn.save'),
                     events: {
-                        'click .save-product': _.bind(this.save, this)
+                        'click .save-product': this.save.bind(this)
                     }
                 });
 
@@ -81,7 +81,7 @@ define(
                 return ProductManager
                     .save(productId, product)
                     .then(ProductManager.generateMissing)
-                    .then(_.bind(function (data) {
+                    .then(function (data) {
                         messenger.notificationFlashMessage(
                             'success',
                             this.updateSuccessMessage
@@ -90,8 +90,8 @@ define(
                         this.setData(data, options);
 
                         mediator.trigger('pim_enrich:form:entity:post_fetch', data);
-                    }, this))
-                    .fail(_.bind(function (response) {
+                    }.bind(this))
+                    .fail(function (response) {
                         switch (response.status) {
                             case 400:
                                 mediator.trigger(
@@ -111,7 +111,7 @@ define(
                             'error',
                             this.updateFailureMessage
                         );
-                    }, this))
+                    }.bind(this))
                     .always(function () {
                         loadingMask.hide().$el.remove();
                     });

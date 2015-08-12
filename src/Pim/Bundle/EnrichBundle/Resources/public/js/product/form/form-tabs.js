@@ -29,7 +29,7 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.onExtensions('tab:register',  _.bind(this.registerTab, this));
+                this.onExtensions('tab:register',  this.registerTab.bind(this));
                 this.listenTo(mediator, 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
 
                 return BaseForm.prototype.configure.apply(this, arguments);

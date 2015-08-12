@@ -52,10 +52,10 @@ define(
                 return $.when(
                     FetcherRegistry.getFetcher('sequential-edit')
                         .fetchAll()
-                        .then(_.bind(
+                        .then(
                             function (sequentialEdit) {
                                 this.model.set(sequentialEdit);
-                            }, this)
+                            }.bind(this)
                         ),
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
@@ -72,7 +72,7 @@ define(
                         'pim_enrich.form.product.sequential_edit.btn.save_and_' + (nextObject ? 'next' : 'finish')
                     ),
                     events: {
-                        'click .save-and-continue': _.bind(this.saveAndContinue, this)
+                        'click .save-and-continue': this.saveAndContinue.bind(this)
                     }
                 });
             },
@@ -83,12 +83,12 @@ define(
 
                 this.addSaveButton();
 
-                this.getTemplateParameters().done(_.bind(function (templateParameters) {
+                this.getTemplateParameters().done(function (templateParameters) {
                     this.$el.html(this.template(templateParameters));
                     this.$('[data-toggle="tooltip"]').tooltip();
                     this.delegateEvents();
                     this.preloadNext();
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -145,7 +145,7 @@ define(
                 }
             },
             saveAndContinue: function () {
-                this.parent.getExtension('save').save({ silent: true }).done(_.bind(function () {
+                this.parent.getExtension('save').save({ silent: true }).done(function () {
                     var objectSet = this.model.get('objectSet');
                     var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
                     var nextObject = objectSet[currentIndex + 1];
@@ -154,13 +154,13 @@ define(
                     } else {
                         this.finish();
                     }
-                }, this));
+                }.bind(this));
             },
             followLink: function (event) {
                 mediator.trigger('pim_enrich:form:state:confirm', {
-                    action: _.bind(function () {
+                    action: function () {
                         this.goToProduct(event.currentTarget.dataset.id);
-                    }, this)
+                    }.bind(this)
                 });
             },
             goToProduct: function (id) {

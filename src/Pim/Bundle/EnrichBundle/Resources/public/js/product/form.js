@@ -43,9 +43,9 @@ define(
                     return extension.configure();
                 });
 
-                return $.when.apply($, extensionPromises).then(_.bind(function () {
+                return $.when.apply($, extensionPromises).then(function () {
                     this.configured = true;
-                }, this));
+                }.bind(this));
             },
 
             /**
@@ -179,10 +179,10 @@ define(
             renderExtensions: function () {
                 this.initializeDropZones();
 
-                _.each(this.extensions, _.bind(function (extension) {
+                _.each(this.extensions, function (extension) {
                     this.getZone(extension.targetZone).appendChild(extension.el);
                     this.renderExtension(extension);
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -249,9 +249,9 @@ define(
              * @param {Function} callback
              */
             onExtensions: function (code, callback) {
-                _.each(this.extensions, _.bind(function (extension) {
+                _.each(this.extensions, function (extension) {
                     this.listenTo(extension, code, callback);
-                }, this));
+                }.bind(this));
             }
         });
     }

@@ -57,14 +57,14 @@ define(
                     return this;
                 }
 
-                GroupManager.getProductGroups(this.getFormData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     this.$el.html(
                         this.template({
                             groups: groups,
                             locale: UserContext.get('catalogLocale')
                         })
                     );
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -74,13 +74,13 @@ define(
                 ).then(_.identity);
             },
             displayModal: function (event) {
-                GroupManager.getProductGroups(this.getFormData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     var group = _.findWhere(groups, { code: event.currentTarget.dataset.group });
 
                     $.when(
                         this.getProductList(group.code),
                         FetcherRegistry.getFetcher('attribute').getIdentifierField()
-                    ).done(_.bind(function (productList, identifier) {
+                    ).done(function (productList, identifier) {
                         var groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,
                             okText: _.__('pim_enrich.entity.product.meta.groups.modal.view_group'),
@@ -119,8 +119,8 @@ define(
                                 )
                             );
                         });
-                    }, this));
-                }, this));
+                    }.bind(this));
+                }.bind(this));
             }
         });
 

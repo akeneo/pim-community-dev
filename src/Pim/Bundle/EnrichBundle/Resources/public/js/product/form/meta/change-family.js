@@ -34,7 +34,7 @@ define(
                 return BaseForm.prototype.render.apply(this, arguments);
             },
             showModal: function () {
-                FetcherRegistry.getFetcher('family').fetchAll().done(_.bind(function (families) {
+                FetcherRegistry.getFetcher('family').fetchAll().done(function (families) {
                     var familyModal = new Backbone.BootstrapModal({
                         allowCancel: true,
                         title: _.__('pim_enrich.form.product.change_family.modal.title'),
@@ -45,24 +45,24 @@ define(
                         })
                     });
 
-                    familyModal.on('ok', _.bind(function () {
+                    familyModal.on('ok', function () {
                         var selectedFamily = familyModal.$('select').select2('val') || null;
 
                         this.getFormModel().set('family', selectedFamily);
-                        ProductManager.generateMissing(this.getFormData()).then(_.bind(function (product) {
+                        ProductManager.generateMissing(this.getFormData()).then(function (product) {
                             mediator.trigger('pim_enrich:form:change-family:before');
 
                             this.setData(product);
 
                             mediator.trigger('pim_enrich:form:change-family:after');
                             familyModal.close();
-                        }, this));
-                    }, this));
+                        }.bind(this));
+                    }.bind(this));
 
                     familyModal.open();
                     familyModal.$('select').select2({ allowClear: true });
                     familyModal.$('.modal-body').css({'line-height': '25px', 'height': 130});
-                }, this));
+                }.bind(this));
             }
         });
 
