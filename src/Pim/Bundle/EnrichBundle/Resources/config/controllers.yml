@@ -212,7 +212,7 @@ services:
             - '@liip_imagine.cache.manager'
             - '@liip_imagine.filter.manager'
             - '@oneup_flysystem.mount_manager'
-            - ['storage']
+            - ['catalogStorage']
 
     pim_enrich.controller.variant_group:
         scope: request
