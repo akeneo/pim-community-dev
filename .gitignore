@@ -15,6 +15,7 @@ app/emails/*
 app/uploads/*
 app/file_storage/*
 app/uploads/product/*
+app/file_storage/*
 app/bootstrap.php.cache
 app/phpunit.xml
 build/

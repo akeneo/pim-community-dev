@@ -5,11 +5,14 @@ define(
 
         var Notification = Backbone.Model.extend({
             defaults: {
-                viewed:  false,
-                url:     null,
-                message: '',
-                id:      null,
-                type:    'success'
+                viewed:            false,
+                url:               null,
+                message:           '',
+                id:                null,
+                type:              'success',
+                createdAt:         null,
+                actionType:        null,
+                actionTypeMessage: null
             }
         });
 
@@ -26,8 +29,10 @@ define(
             template: _.template(
                 [
                     '<a href="<%= url ? url : \'javascript: void(0);\' %>"<%= viewed ? \'\' : \'class="new"\' %>>',
+                        '<i><%= actionTypeMessage %></i>',
                         '<i class="icon-<%= icon %>"></i>',
                         '<%= message %>',
+                        '<i><%= createdAt %></i>',
                         '<i class="icon-<%= viewed ? \'trash\' : \'eye-close\' %> action"></i>',
                     '</a>'
                 ].join('')
@@ -87,7 +92,10 @@ define(
                         viewed: this.model.get('viewed'),
                         message: this.model.get('message'),
                         url: this.model.get('url'),
-                        icon: this.getIcon(this.model.get('type'))
+                        icon: this.getIcon(this.model.get('type')),
+                        createdAt: this.model.get('createdAt'),
+                        actionType: this.model.get('actionType'),
+                        actionTypeMessage: this.model.get('actionTypeMessage')
                     }
                 ));
 

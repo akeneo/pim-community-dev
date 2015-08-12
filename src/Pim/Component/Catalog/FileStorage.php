@@ -9,5 +9,5 @@ namespace Pim\Component\Catalog;
  */
 final class FileStorage
 {
-    const CATALOG_STORAGE_ALIAS = 'storage';
+    const CATALOG_STORAGE_ALIAS = 'catalogStorage';
 }

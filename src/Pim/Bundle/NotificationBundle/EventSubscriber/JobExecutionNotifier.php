@@ -73,7 +73,8 @@ class JobExecutionNotifier implements EventSubscriberInterface
             }
         }
 
-        $type = $jobExecution->getJobInstance()->getType();
+        $jobInstance = $jobExecution->getJobInstance();
+        $type        = $jobInstance->getType();
 
         // TODO: maybe create a registry or something similar to load routes ?
         $this->generateNotification($jobExecution, $user, $type, $status);
@@ -129,6 +130,9 @@ class JobExecutionNotifier implements EventSubscriberInterface
                 ],
                 'messageParams' => [
                     '%label%' => $jobExecution->getJobInstance()->getLabel()
+                ],
+                'context' => [
+                    'actionType' => $type
                 ]
             ]
         );
@@ -153,6 +157,9 @@ class JobExecutionNotifier implements EventSubscriberInterface
                 ],
                 'messageParams' => [
                     '%label%' => $jobExecution->getJobInstance()->getLabel()
+                ],
+                'context' => [
+                    'actionType' => $type
                 ]
             ]
         );
