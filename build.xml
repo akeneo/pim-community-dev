@@ -3,8 +3,8 @@
     xmlns:if="ant:if"
     xmlns:unless="ant:unless"
 >
-    <property name="symfony.catalog.catalog.storage.dir" value="catalog" />
-    <property name="symfony.catalog.asset.storage.dir" value="asset" />
+    <property name="symfony.catalog.storage.dir" value="catalog" />
+    <property name="symfony.asset.storage.dir" value="asset" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpspec,phpcb"/>
 
