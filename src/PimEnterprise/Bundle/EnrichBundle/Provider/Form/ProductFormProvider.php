@@ -33,15 +33,15 @@ class ProductFormProvider implements FormProviderInterface
     {
         $this->authorizationChecker = $authorizationChecker;
     }
+
     /**
      * {@inheritdoc}
      */
     public function getForm($product)
     {
         return $this->authorizationChecker->isGranted(Attributes::EDIT, $product) ?
-            'pim-product-edit-form':
-            'pimee-product-view-form'
-        ;
+            'pim-product-edit-form' :
+            'pimee-product-view-form';
     }
 
     /**

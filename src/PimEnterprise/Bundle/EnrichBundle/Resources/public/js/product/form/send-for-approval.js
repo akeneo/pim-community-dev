@@ -11,6 +11,7 @@ define(
         'underscore',
         'backbone',
         'module',
+        'routing',
         'oro/mediator',
         'oro/messenger',
         'pim/form',
@@ -22,6 +23,7 @@ define(
         _,
         Backbone,
         module,
+        Routing,
         mediator,
         messenger,
         BaseForm,
@@ -112,7 +114,7 @@ define(
                         {productId: this.getProductId()}
                     )
                 )
-                .then(ProductManager.generateMissing)
+                .then(ProductManager.generateMissing.bind(ProductManager))
                 .then(function (product) {
                     this.setData(product);
 

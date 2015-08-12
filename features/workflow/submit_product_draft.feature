@@ -90,7 +90,7 @@ Feature: Submit a modification on a product draft
       | value |
       | dry   |
       | wet   |
-    But the product Weather conditions should be "Dry, Wet, Hot, Cold"
+    But the product Weather conditions should be "dry, wet, hot, cold"
     And I should see that Weather conditions is a modified value
 
   @jira https://akeneo.atlassian.net/browse/PIM-4604

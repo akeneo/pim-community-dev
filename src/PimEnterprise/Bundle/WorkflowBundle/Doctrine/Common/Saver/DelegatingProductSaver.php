@@ -56,7 +56,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     protected $productDraftRepo;
 
     /** @var RemoverInterface */
-    protected $draftRemover;
+    protected $productDraftRemover;
 
     /**
      * @param SaverInterface                  $workingCopySaver
@@ -67,7 +67,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      * @param ProductDraftBuilderInterface    $productDraftBuilder
      * @param TokenStorageInterface           $tokenStorage
      * @param ProductDraftRepositoryInterface $productDraftRepo
-     * @param RemoverInterface                $draftRemover
+     * @param RemoverInterface                $productDraftRemover
      */
     public function __construct(
         SaverInterface $workingCopySaver,
@@ -78,7 +78,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         ProductDraftBuilderInterface $productDraftBuilder,
         TokenStorageInterface $tokenStorage,
         ProductDraftRepositoryInterface $productDraftRepo,
-        RemoverInterface $draftRemover
+        RemoverInterface $productDraftRemover
     ) {
         $this->workingCopySaver     = $workingCopySaver;
         $this->draftSaver           = $draftSaver;
@@ -88,7 +88,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $this->productDraftBuilder  = $productDraftBuilder;
         $this->tokenStorage         = $tokenStorage;
         $this->productDraftRepo     = $productDraftRepo;
-        $this->draftRemover         = $draftRemover;
+        $this->productDraftRemover  = $productDraftRemover;
     }
 
     /**
@@ -110,7 +110,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
                 $this->draftSaver->save($productDraft, $options);
                 $this->objectManager->refresh($product);
             } elseif (null !== $draft = $this->productDraftRepo->findUserProductDraft($product, $this->getUsername())) {
-                $this->draftRemover->remove($draft);
+                $this->productDraftRemover->remove($draft);
             }
         }
     }

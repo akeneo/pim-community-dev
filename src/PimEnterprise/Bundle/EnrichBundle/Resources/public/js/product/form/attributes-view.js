@@ -22,9 +22,7 @@ define(
         'pim/attribute-group-manager',
         'pim/user-context',
         'pim/security-context',
-        'text!pim/template/product/tab/attributes',
-        'pim/dialog',
-        'oro/messenger'
+        'text!pim/template/product/tab/attributes'
     ],
     function (
         $,
@@ -40,9 +38,7 @@ define(
         AttributeGroupManager,
         UserContext,
         SecurityContext,
-        formTemplate,
-        Dialog,
-        messenger
+        formTemplate
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
@@ -75,10 +71,7 @@ define(
                     this.$el.html(this.template({}));
                     this.resize();
                     var product = this.getFormData();
-                    $.when(
-                        FetcherRegistry.getFetcher('family').fetchAll(),
-                        ProductManager.getValues(product)
-                    ).then(function (families, values) {
+                    ProductManager.getValues(product).then(function (values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
                             this.getExtension('attribute-group-selector').getCurrentAttributeGroup()
@@ -86,7 +79,7 @@ define(
 
                         var fieldPromises = [];
                         _.each(productValues, function (productValue, attributeCode) {
-                            fieldPromises.push(this.renderField(product, attributeCode, productValue, families));
+                            fieldPromises.push(this.renderField(product, attributeCode, productValue));
                         }.bind(this));
 
                         this.rendering = false;
@@ -120,7 +113,7 @@ define(
                     );
                 }
             },
-            renderField: function (product, attributeCode, values, families) {
+            renderField: function (product, attributeCode, values) {
                 return FieldManager.getField(attributeCode).then(function (field) {
                     field.setContext({
                         locale: UserContext.get('catalogLocale'),

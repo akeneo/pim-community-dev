@@ -15,7 +15,7 @@ Feature: Send a product draft with reference data for approval
     And I am logged in as "Mary"
     And I edit the "my-jean" product
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully create a new product draft with simple select reference data
     Given I add available attribute Lace color
     And I visit the "Other" group
@@ -24,7 +24,7 @@ Feature: Send a product draft with reference data for approval
     And I save the product
     Then its status should be "In progress"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully send my product draft ith simple select reference data for approval
     Given I add available attribute Lace color
     And I visit the "Other" group
@@ -35,7 +35,7 @@ Feature: Send a product draft with reference data for approval
     Then its status should be "Waiting for approval"
     And I should see "Sent for approval"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully restore the product draft status when I modify a simple select after sending it for approval
     Given I add available attribute Lace color
     And I visit the "Other" group
@@ -48,35 +48,35 @@ Feature: Send a product draft with reference data for approval
     And I save the product
     Then its status should be "In progress"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully create a new product draft with multi select reference data
     Given I add available attribute Sleeve fabric
     And I visit the "Other" group
     Then I fill in the following information:
-      | Sleeve fabric | Leather,Neoprene |
+      | Sleeve fabric | Leather, Neoprene |
     And I save the product
     Then its status should be "In progress"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully send my product draft ith simple multi select reference data for approval
     Given I add available attribute Sleeve fabric
     And I visit the "Other" group
     Then I fill in the following information:
-      | Sleeve fabric | Leather,Neoprene |
+      | Sleeve fabric | Leather, Neoprene |
     And I save the product
     And I press the "Send for approval" button
     Then its status should be "Waiting for approval"
     And I should see "Sent for approval"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully restore the product draft status when I modify a multi select after sending it for approval
     Given I add available attribute Sleeve fabric
     And I visit the "Other" group
     Then I fill in the following information:
-      | Sleeve fabric | Leather,Neoprene |
+      | Sleeve fabric | Leather, Neoprene |
     And I save the product
     And I press the "Send for approval" button
     Then I fill in the following information:
-      | Sleeve fabric | Leather,PVC |
+      | Sleeve fabric | Leather, PVC |
     And I save the product
     Then its status should be "In progress"

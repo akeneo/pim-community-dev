@@ -13,13 +13,13 @@ Feature: Send a product draft for approval
     And I am logged in as "Mary"
     And I edit the "my-pant" product
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully create a new product draft
     When I change the "Name" to "Baggy"
     And I save the product
     Then its status should be "In progress"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully send my product draft for approval
     When I change the "Name" to "Baggy"
     And I save the product
@@ -30,7 +30,7 @@ Feature: Send a product draft for approval
   Scenario: Fail to send a non existing product draft for approval
     Then I should not see "Send for approval"
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4597
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully restore the product draft status when I modify it after sending it for approval
     When I change the "Name" to "Baggy"
     And I save the product

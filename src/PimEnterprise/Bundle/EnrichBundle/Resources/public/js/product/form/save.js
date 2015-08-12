@@ -13,7 +13,6 @@ define(
     function ($, _, Save) {
         return Save.extend({
             render: function () {
-                var categories = this.getFormData().categories;
                 var isOwner = this.getFormData().meta.is_owner;
 
                 if (!isOwner) {

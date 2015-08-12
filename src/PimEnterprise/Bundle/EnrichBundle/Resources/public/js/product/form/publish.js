@@ -40,7 +40,6 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                var categories = this.getFormData().categories;
                 var isOwner = this.getFormData().meta.is_owner;
 
                 if (!isOwner) {

@@ -47,6 +47,12 @@ extensions:
         targetZone: meta
         position: 120
 
+    pim-product-edit-form-meta-draft-status:
+        module: pimee/product-edit-form/meta/draft-status
+        parent: pim-product-edit-form
+        targetZone: meta
+        position: 130
+
     pim-product-edit-form-read-only-locale:
         module: pimee/product-edit-form/attributes/read-only-locale
         parent: pim-product-edit-form-attributes

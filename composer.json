@@ -16,7 +16,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "PIM-4666-dev",
+        "akeneo/pim-community-dev": "1.4.x-dev",
         "oro/platform": "dev-pim-1.4",
         "akeneo/batch-bundle": "0.4.x-dev",
         "akeneo/measure-bundle": "0.4.x-dev",

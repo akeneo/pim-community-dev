@@ -9,6 +9,7 @@ define(
     [
         'jquery',
         'underscore',
+        'routing',
         'oro/mediator',
         'oro/messenger',
         'oro/datagrid-builder',
@@ -20,6 +21,7 @@ define(
     function (
         $,
         _,
+        Routing,
         mediator,
         messenger,
         datagridBuilder,
@@ -45,7 +47,7 @@ define(
                 this.trigger('tab:register', {
                     code: this.code,
                     isVisible: function () {
-                        return this.getFormData().meta.is_owner
+                        return this.getFormData().meta.is_owner;
                     }.bind(this),
                     label: _.__('pimee_enrich.entity.product.tab.proposals.title')
                 });
@@ -76,7 +78,6 @@ define(
                     }.bind(this));
             },
 
-
             /**
              * Callback triggered when an error happens on proposal approval from the grid
              *
@@ -88,7 +89,6 @@ define(
                     _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
                 );
             },
-
 
             /**
              * Callback triggered when a proposal is rejected from the grid

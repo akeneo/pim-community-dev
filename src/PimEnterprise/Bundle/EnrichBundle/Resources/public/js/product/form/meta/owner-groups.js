@@ -15,7 +15,15 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        product: this.getFormData()
+                        label: _.__('pimee_enrich.entity.product.meta.owner_groups') +
+                            ': ' +
+                            _.reduce(
+                                this.getFormData().meta.owner_groups,
+                                function (memo, group) {
+                                    return memo + ('' !== memo ? ', ' : '') + group.name;
+                                },
+                                ''
+                            )
                     })
                 );
 

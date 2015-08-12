@@ -9,17 +9,22 @@
 define(
     [
         'jquery',
+        'backbone',
         'pim/product-edit-form',
         'pim/form',
         'oro/mediator'
     ],
     function (
         $,
+        Backbone,
         EditForm,
         BaseForm,
         mediator
     ) {
         return EditForm.extend({
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
@@ -27,6 +32,12 @@ define(
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * Add read only on fields
+             *
+             * @param {Event} event
+             */
             addFieldExtension: function (event) {
                 event.promises.push($.Deferred().resolve(event.field.setEditable(false)));
             }

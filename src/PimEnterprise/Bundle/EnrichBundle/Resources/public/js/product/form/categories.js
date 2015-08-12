@@ -6,16 +6,17 @@
  */
 define(
     [
+        'underscore',
         'pim/product-edit-form/categories',
         'pim/form'
     ],
-    function (Categories, BaseForm) {
+    function (_, Categories, BaseForm) {
         return Categories.extend({
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
                     isVisible: function () {
-                        return this.getFormData().meta.is_owner
+                        return this.getFormData().meta.is_owner;
                     }.bind(this),
                     label: _.__('pim_enrich.form.product.tab.categories.title')
                 });
