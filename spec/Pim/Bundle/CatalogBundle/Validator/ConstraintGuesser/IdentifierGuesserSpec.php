@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class IdentifierGuesserSpec extends ObjectBehavior
 {
-    function it_does_not_supports_multiselect(AttributeInterface $attribute)
+    function it_does_not_support_multiselect(AttributeInterface $attribute)
     {
         $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
 
