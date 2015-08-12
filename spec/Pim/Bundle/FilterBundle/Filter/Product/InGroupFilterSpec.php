@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Symfony\Component\Form\FormFactoryInterface;

@@ -1,10 +1,11 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
@@ -16,14 +17,10 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
  */
 class FiltersConfigurator implements ConfiguratorInterface
 {
-    /**
-     * @param DatagridConfiguration
-     */
+    /** @var DatagridConfiguration */
     protected $configuration;
 
-    /**
-     * @param ConfigurationRegistry
-     */
+    /** @var ConfigurationRegistry */
     protected $registry;
 
     /**
@@ -40,7 +37,7 @@ class FiltersConfigurator implements ConfiguratorInterface
     public function configure(DatagridConfiguration $configuration)
     {
         $this->configuration = $configuration;
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
 
@@ -62,14 +59,14 @@ class FiltersConfigurator implements ConfiguratorInterface
 
             if ($showFilter && $attributeTypeConf && isset($attributeTypeConf['filter'])) {
                 $filterConfig = $attributeTypeConf['filter'];
-                $filterConfig = $filterConfig + array(
+                $filterConfig = $filterConfig + [
                     ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
                     'label'                             => $attribute['label'],
                     'enabled'                           => (AttributeTypes::IDENTIFIER === $attributeType),
                     'order'                             => $attribute['sortOrder'],
                     'group'                             => $attribute['group'],
                     'groupOrder'                        => $attribute['groupOrder']
-                );
+                ];
 
                 if (AttributeTypes::METRIC === $attributeType) {
                     $filterConfig['family'] = $attribute['metricFamily'];

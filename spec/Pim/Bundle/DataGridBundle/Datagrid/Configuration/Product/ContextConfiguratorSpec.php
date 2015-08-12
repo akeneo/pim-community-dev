@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
+namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -23,6 +23,6 @@ class ContextConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
+        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface');
     }
 }
