@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Twig;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\EnrichBundle\Twig\Category\CategoryExtensionInterface;
+use Pim\Bundle\EnrichBundle\Twig\Category\CategoryExtensionRegistryInterface;
 use Pim\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
  * Twig extension to render category from twig templates
@@ -16,23 +16,15 @@ use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
  */
 class CategoryExtension extends \Twig_Extension
 {
-    /** @var CategoryRepositoryInterface */
-    protected $productCategoryRepo;
+    /** @var CategoryExtensionRegistryInterface */
+    protected $extensionRegistry;
 
-    /** @var ItemCategoryRepositoryInterface */
-    protected $itemProductCatRepo;
-
-    /** @var int */
-    protected $productsLimitForRemoval;
-
-    public function __construct(
-        CategoryRepositoryInterface $productCategoryRepo,
-        ItemCategoryRepositoryInterface $itemProductCatRepo,
-        $productsLimitForRemoval = null
-    ) {
-        $this->productCategoryRepo     = $productCategoryRepo;
-        $this->itemProductCatRepo      = $itemProductCatRepo;
-        $this->productsLimitForRemoval = $productsLimitForRemoval;
+    /**
+     * @param CategoryExtensionRegistryInterface $extensionRegistry
+     */
+    public function __construct(CategoryExtensionRegistryInterface $extensionRegistry)
+    {
+        $this->extensionRegistry = $extensionRegistry;
     }
 
     /**
@@ -173,23 +165,31 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param CategoryInterface $category
      * @param bool              $includeSub
+     * @param string            $relatedEntity
      *
      * @return bool
+     * @throws \Exception
      */
-    public function exceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub)
+    public function exceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub, $relatedEntity = 'product')
     {
-        return null !== $this->productsLimitForRemoval &&
-            $this->countItems($category, $includeSub, 'product') > $this->productsLimitForRemoval;
+        $limitForRemoval = $this->getProductsLimitForRemoval($relatedEntity);
+
+        return null !== $limitForRemoval &&
+            $this->countItems($category, $includeSub, $relatedEntity) > $limitForRemoval;
     }
 
     /**
      * Return the linked products limit for category removal
      *
+     * @param string $relatedEntity
+     *
      * @return int
      */
-    public function getProductsLimitForRemoval()
+    public function getProductsLimitForRemoval($relatedEntity = 'product')
     {
-        return $this->productsLimitForRemoval;
+        $extension = $this->getExtension($relatedEntity);
+
+        return $extension->getProductsLimitForRemoval();
     }
 
     /**
@@ -475,13 +475,14 @@ class CategoryExtension extends \Twig_Extension
     protected function countItems(CategoryInterface $category, $includeSub, $relatedEntity)
     {
         $categoryQb = null;
+        $extension = $this->getExtension($relatedEntity);
 
         if ($includeSub) {
-            $categoryQb = $this->getRelatedEntityRepo($relatedEntity)
+            $categoryQb = $extension->getCategoryRepo()
                 ->getAllChildrenQueryBuilder($category, $includeSub);
         }
 
-        return $this->getRelatedCategoryEntityRepo($relatedEntity)
+        return $extension->getItemCategoryRepo()
             ->getItemsCountInCategory($category, $categoryQb);
     }
 
@@ -538,36 +539,22 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * @param string $relatedEntity
+     * Get type of extension
      *
-     * @throw \LogicException If no repo found for the given $relatedEntity
+     * @param string $type
      *
-     * @return CategoryRepositoryInterface
+     * @return CategoryExtensionInterface
+     *
+     * @throws \Exception
      */
-    protected function getRelatedEntityRepo($relatedEntity)
+    protected function getExtension($type)
     {
-        switch ($relatedEntity) {
-            case 'product':
-                return $this->productCategoryRepo;
-            default:
-                throw new \LogicException(sprintf('No repository for related entity "%s"', $relatedEntity));
-        }
-    }
+        $category = $this->extensionRegistry->get($type);
 
-    /**
-     * @param string $relatedEntity
-     *
-     * @throw \LogicException If no repo found for the given $relatedEntity
-     *
-     * @return ItemCategoryRepositoryInterface
-     */
-    protected function getRelatedCategoryEntityRepo($relatedEntity)
-    {
-        switch ($relatedEntity) {
-            case 'product':
-                return $this->itemProductCatRepo;
-            default:
-                throw new \LogicException(sprintf('No repository for related entity "%s"', $relatedEntity));
+        if (null === $category) {
+            throw new \Exception(sprintf('No extension founded for %s', $type));
         }
+
+        return $category;
     }
 }
