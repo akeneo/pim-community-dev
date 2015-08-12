@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
+use Pim\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,10 +48,9 @@ class CheckRequirementsCommand extends ContainerAwareCommand
             require_once $path;
         }
 
-        $directories = array();
+        $directories = [];
         if ($this->getContainer()->getParameter('kernel.environment') !== 'behat') {
-            $directories[] = $this->getContainer()->getParameter('upload_dir');
-            $directories[] = $this->getContainer()->getParameter('archive_dir');
+            $directories = $this->getDirectoriesContainer()->getDirectories();
         }
 
         return new \PimRequirements($directories);
@@ -97,22 +97,30 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         $table = $this->getHelperSet()->get('table');
 
         $table
-            ->setHeaders(array('Check  ', $header))
-            ->setRows(array());
+            ->setHeaders(['Check  ', $header])
+            ->setRows([]);
 
         foreach ($collection as $requirement) {
             if ($requirement->isFulfilled()) {
-                $table->addRow(array('OK', $requirement->getTestMessage()));
+                $table->addRow(['OK', $requirement->getTestMessage()]);
             } else {
                 $table->addRow(
-                    array(
+                    [
                         $requirement->isOptional() ? 'WARNING' : 'ERROR',
                         $requirement->getHelpText()
-                    )
+                    ]
                 );
             }
         }
 
         $table->render($output);
+    }
+
+    /**
+     * @return PimDirectoriesRegistry
+     */
+    protected function getDirectoriesContainer()
+    {
+        return $this->getContainer()->get('pim_installer.directories_registry');
     }
 }
