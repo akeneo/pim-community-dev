@@ -8,6 +8,7 @@
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu right-align">
+        <li></li>
         <% _.each(secondaryButtons, function (btn) { %>
             <li>
                 <a class="<%= btn.className || '' %>" href="<% if (btn.link) { %><%= btn.link %><% } else { %>javascript:void(0);<% } %>">

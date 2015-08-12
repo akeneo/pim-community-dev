@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3 (11970) - http://www.bohemiancoding.com/sketch -->
+    <title>icon-export</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="icon-export" sketch:type="MSArtboardGroup" fill="#A1A9B7">
+            <path d="M128,121.263158 L128,117.894737 C128,112.907789 126.553263,111.157895 121.263158,111.157895 L6.73684211,111.157895 C1.74989474,111.157895 0,112.808421 0,117.894737 L0,121.263158 C0,126.487579 1.74989474,128 6.73684211,128 L121.263158,128 C126.349474,128 128,126.381474 128,121.263158 L128,121.263158 L128,121.263158 Z M50.5263158,104.421053 L77.4736842,104.421053 C85.8947368,104.421053 87.5789474,102.836211 87.5789474,94.3157895 L87.5789474,57.2631579 L121.263158,57.2631579 L64,0 L6.73684211,57.2631579 L40.4210526,57.2631579 L40.4210526,94.3157895 C40.4210526,102.836211 42.208,104.421053 50.5263158,104.421053 L50.5263158,104.421053 L50.5263158,104.421053 Z" id="Shape" sketch:type="MSShapeGroup"></path>
+        </g>
+    </g>
+</svg>
