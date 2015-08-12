@@ -225,16 +225,20 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getFullProducts(array $productIds, array $attributeIds = array())
+    public function getFullProducts(array $productIds, array $attributeIds = [])
     {
         $qb = $this->getFullProductQB();
         $qb
             ->addSelect('c, assoc, g')
-            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
+            ->leftJoin('v.attribute', 'a')
             ->leftJoin('p.categories', 'c')
             ->leftJoin('p.associations', 'assoc')
             ->leftJoin('p.groups', 'g')
             ->where($qb->expr()->in('p.id', $productIds));
+
+        if (!empty($attributeIds)) {
+            $qb->andWhere($qb->expr()->in('a.id', $attributeIds));
+        }
 
         return $qb->getQuery()->execute();
     }

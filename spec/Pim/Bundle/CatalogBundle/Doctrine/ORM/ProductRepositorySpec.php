@@ -33,7 +33,8 @@ class ProductRepositorySpec extends ObjectBehavior
         Expr $expr,
         AbstractQuery $query,
         ProductQueryBuilder $pqb
-    ) {
+    )
+    {
         $pqbFactory->create()->willReturn($pqb);
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $pqb->getQueryBuilder()->willReturn($queryBuilder);
@@ -62,5 +63,57 @@ class ProductRepositorySpec extends ObjectBehavior
         $query->getOneOrNullResult()->shouldBeCalled();
 
         $this->findOneByWithValues([42]);
+    }
+
+    function it_joins_only_specified_attributes_when_finding_full_products($em, QueryBuilder $queryBuilder, Expr $expr, AbstractQuery $query)
+    {
+        $expr->in('p.id', [42])
+            ->shouldBeCalled()
+            ->willReturn('product where clause');
+
+        $expr->in('a.id', [1, 3, 4])
+            ->shouldBeCalled()
+            ->willReturn('attribute where clause');
+
+        $queryBuilder->select(Argument::any())->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->addSelect(Argument::any())->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::any(), Argument::any())->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled()->willReturn($queryBuilder);
+
+        $queryBuilder->where('product where clause')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->andWhere('attribute where clause')->shouldBeCalled()->willReturn($queryBuilder);
+
+        $em->createQueryBuilder()->willReturn($queryBuilder);
+        $query->execute()->shouldBeCalled();
+
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getQuery()->willReturn($query);
+
+        $this->getFullProducts([42], [1, 3, 4]);
+    }
+
+    function it_does_not_try_to_join_attributes_when_finding_full_products_with_empty_attributes($em, QueryBuilder $queryBuilder, Expr $expr, AbstractQuery $query)
+    {
+        $expr->in('p.id', [42])
+            ->shouldBeCalled()
+            ->willReturn('product where clause');
+
+        $expr->in('a.id', Argument::any())->shouldNotBeCalled();
+
+        $queryBuilder->select(Argument::any())->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->addSelect(Argument::any())->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::any(), Argument::any())->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled()->willReturn($queryBuilder);
+
+        $queryBuilder->where('product where clause')->shouldBeCalled()->willReturn($queryBuilder);
+        $queryBuilder->andWhere(Argument::any())->shouldNotBeCalled();
+
+        $em->createQueryBuilder()->willReturn($queryBuilder);
+        $query->execute()->shouldBeCalled();
+
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getQuery()->willReturn($query);
+
+        $this->getFullProducts([42]);
     }
 }
