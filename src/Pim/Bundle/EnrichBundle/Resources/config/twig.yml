@@ -7,6 +7,9 @@ parameters:
     pim_enrich.twig.object_class_extension.class: Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
     pim_enrich.twig.version_extension.class:      Pim\Bundle\EnrichBundle\Twig\VersionExtension
 
+    pim_enrich.twig.category.registry.class:  Pim\Bundle\EnrichBundle\Twig\Category\CategoryExtensionRegistry
+    pim_enrich.twig.category.extension.class: Pim\Bundle\EnrichBundle\Twig\Category\CategoryExtension
+
 services:
     # Twig extensions
     pim_enrich.twig.locale_extension:
@@ -19,9 +22,7 @@ services:
     pim_enrich.twig.category_extension:
         class: %pim_enrich.twig.category_extension.class%
         arguments:
-            - '@pim_catalog.repository.category'
-            - '@pim_catalog.repository.product_category'
-            - %pim_enrich_max_products_category_removal%
+            - '@pim_enrich.twig.category.registry'
         tags:
             - { name: twig.extension }
 
@@ -58,3 +59,15 @@ services:
         class: %pim_enrich.twig.version_extension.class%
         tags:
             - { name: twig.extension }
+
+    pim_enrich.twig.category_extension.product:
+        class: %pim_enrich.twig.category_extension.class%
+        arguments:
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.product_category'
+            - %pim_enrich_max_products_category_removal%
+        tags:
+            - { name: pim_enrich.twig.category.extension, type: product }
+
+    pim_enrich.twig.category.registry:
+        class: %pim_enrich.twig.category.registry.class%
