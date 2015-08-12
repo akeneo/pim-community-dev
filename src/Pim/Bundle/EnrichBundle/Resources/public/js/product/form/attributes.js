@@ -83,7 +83,7 @@ define(
                 }
 
                 this.rendering = true;
-                this.getConfig().done(function () {
+                this.getConfig().then(function () {
                     this.$el.html(this.template({}));
                     this.resize();
                     var product = this.getFormData();
@@ -199,7 +199,7 @@ define(
                     _.__('pim_enrich.confirmation.delete.product_attribute'),
                     _.__('pim_enrich.confirmation.delete_item'),
                     function () {
-                        FetcherRegistry.getFetcher('attribute').fetch(attributeCode).done(function (attribute) {
+                        FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({
                                 type: 'DELETE',
                                 url: Routing.generate(
@@ -249,7 +249,7 @@ define(
             },
             showAttribute: function (event) {
                 AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
-                    .done(function (attributeGroups) {
+                    .then(function (attributeGroups) {
                         mediator.trigger('pim_enrich:form:form-tabs:change', this.code);
 
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(

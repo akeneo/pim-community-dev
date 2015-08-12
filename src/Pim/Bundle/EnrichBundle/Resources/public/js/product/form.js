@@ -34,7 +34,7 @@ define(
             },
 
             /**
-             * Configure the extension and it's child extensions
+             * Configure the extension and its child extensions
              *
              * @return {Promise}
              */
@@ -52,7 +52,7 @@ define(
              * Add a child extension to this extension
              *
              * @param {string} code      Extension's code
-             * @param {object} extension Backbone module of the extension
+             * @param {Object} extension Backbone module of the extension
              * @param {string} zone      Targeted zone
              * @param {int} position     The position of the extension
              */
@@ -71,10 +71,10 @@ define(
              *
              * @param {string} code
              *
-             * @return {object}
+             * @return {Object}
              */
             getExtension: function (code) {
-                return this.extensions[_.findKey(this.extensions, function(extension) {
+                return this.extensions[_.findKey(this.extensions, function (extension) {
                     var expectedPosition = extension.code.length - code.length;
 
                     return expectedPosition >= 0 && expectedPosition === extension.code.indexOf(code, expectedPosition);
@@ -84,7 +84,7 @@ define(
             /**
              * Set the parent of this extension
              *
-             * @param {object} parent
+             * @param {Object} parent
              */
             setParent: function (parent) {
                 this.parent = parent;
@@ -95,7 +95,7 @@ define(
             /**
              * Get the parent of the extension
              *
-             * @return {object}
+             * @return {Object}
              */
             getParent: function () {
                 return this.parent;
@@ -104,7 +104,7 @@ define(
             /**
              * Get the root extension
              *
-             * @return {object}
+             * @return {Object}
              */
             getRoot: function () {
                 /* jscs:disable safeContextKeyword */
@@ -122,8 +122,8 @@ define(
             /**
              * Set data in the root model
              *
-             * @param {object} data
-             * @param {object} options If silent is setted to true, don't fire events
+             * @param {Object} data
+             * @param {Object} options If silent is setted to true, don't fire events
              *                         pim_enrich:form:entity:pre_update and pim_enrich:form:entity:post_update
              */
             setData: function (data, options) {
@@ -143,9 +143,9 @@ define(
             },
 
             /**
-             * Get the form raw data (vanila javascript object)
+             * Get the form raw data (vanilla javascript object)
              *
-             * @return {object}
+             * @return {Object}
              */
             getFormData: function () {
                 return this.getRoot().model.toJSON();
@@ -154,7 +154,7 @@ define(
             /**
              * Get the form data (backbone model)
              *
-             * @return {object}
+             * @return {Object}
              */
             getFormModel: function () {
                 return this.getRoot().model;
@@ -174,7 +174,7 @@ define(
             /**
              * Render the child extensions
              *
-             * @return {object}
+             * @return {Object}
              */
             renderExtensions: function () {
                 this.initializeDropZones();
@@ -190,9 +190,9 @@ define(
             /**
              * Render a single extension
              *
-             * @param {object} extension
+             * @param {Object} extension
              *
-             * @return {object}
+             * @return {Object}
              */
             renderExtension: function (extension) {
                 /* global console */

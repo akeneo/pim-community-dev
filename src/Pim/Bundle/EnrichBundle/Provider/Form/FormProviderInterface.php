@@ -3,7 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Provider\Form;
 
 /**
- * Form provider interface
+ * Form provider interface. The goal of this class is to provide the form name to render for
+ * the given entity.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

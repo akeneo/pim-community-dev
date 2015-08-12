@@ -174,6 +174,9 @@ class AssertionContext extends RawMinkContext
                 }
             } catch (ElementNotFoundException $e) {
             } catch (\Exception $e) {
+                if ($e instanceof ExpectationException) {
+                    throw $e;
+                }
             }
         }
     }

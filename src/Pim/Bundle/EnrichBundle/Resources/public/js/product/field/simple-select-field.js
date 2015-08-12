@@ -37,7 +37,7 @@ define(
                     return;
                 }
 
-                createOption(this.attribute).done(function (option) {
+                createOption(this.attribute).then(function (option) {
                     if (this.isEditable()) {
                         this.setCurrentValue(option.code);
                     }
@@ -49,7 +49,7 @@ define(
                 return this.fieldTemplate(context);
             },
             postRender: function () {
-                this.getChoiceUrl().done(function (choiceUrl) {
+                this.getChoiceUrl().then(function (choiceUrl) {
                     this.$('input.select-field').select2('destroy').select2({
                         ajax: {
                             url: choiceUrl,
@@ -64,7 +64,7 @@ define(
                         initSelection: function (element, callback) {
                             var id = $(element).val();
                             if ('' !== id) {
-                                $.ajax(choiceUrl).done(function (response) {
+                                $.ajax(choiceUrl).then(function (response) {
                                     var selected = _.findWhere(response.results, {id: id});
                                     callback(selected);
                                 });

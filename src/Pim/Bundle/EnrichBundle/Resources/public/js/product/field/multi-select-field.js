@@ -36,7 +36,7 @@ define(
                 if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
                     return;
                 }
-                createOption(this.attribute).done(function (option) {
+                createOption(this.attribute).then(function (option) {
                     if (this.isEditable()) {
                         var value = this.getCurrentValue().data;
                         value.push(option.code);
@@ -50,7 +50,7 @@ define(
                 return this.fieldTemplate(context);
             },
             postRender: function () {
-                this.getChoiceUrl().done(function (choiceUrl) {
+                this.getChoiceUrl().then(function (choiceUrl) {
                     this.$('input.select-field').select2('destroy').select2({
                         ajax: {
                             url: choiceUrl,
@@ -63,7 +63,7 @@ define(
                             }
                         },
                         initSelection: function (element, callback) {
-                            $.ajax(choiceUrl).done(function (response) {
+                            $.ajax(choiceUrl).then(function (response) {
                                 var results = response.results;
                                 var choices = _.map($(element).val().split(','), function (choice) {
                                     return _.findWhere(results, {id: choice});

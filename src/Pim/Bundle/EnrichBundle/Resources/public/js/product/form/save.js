@@ -80,7 +80,7 @@ define(
 
                 return ProductManager
                     .save(productId, product)
-                    .then(ProductManager.generateMissing)
+                    .then(ProductManager.generateMissing.bind(ProductManager))
                     .then(function (data) {
                         messenger.notificationFlashMessage(
                             'success',

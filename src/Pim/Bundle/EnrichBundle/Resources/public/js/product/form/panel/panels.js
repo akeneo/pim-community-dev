@@ -60,7 +60,7 @@ define(
                 this.initializeDropZones();
 
                 if (this.state.get('currentPanel')) {
-                    var currentPanel = this.getExtension(this.state.get('currentPanel'));
+                    currentPanel = this.getExtension(this.state.get('currentPanel'));
                     this.renderExtension(currentPanel);
                     this.getZone('panel-content').appendChild(currentPanel.el);
                 }

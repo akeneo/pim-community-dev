@@ -66,7 +66,7 @@ define([
                     return product.values;
                 });
             },
-            _generateMissing: function (product) {
+            doGenerateMissing: function (product) {
                 return $.when(
                     FetcherRegistry.getFetcher('attribute').fetchAll(),
                     FetcherRegistry.getFetcher('locale').fetchAll(),
@@ -95,7 +95,7 @@ define([
                 });
             },
             generateMissing: function (product) {
-                this._generateMissing(product);
+                return this.doGenerateMissing(product);
             }
         };
     }

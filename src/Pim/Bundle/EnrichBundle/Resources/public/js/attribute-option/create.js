@@ -28,7 +28,7 @@ define(
             createOption: function () {
                 var deferred = $.Deferred();
 
-                FormBuilder.build('pim/attribute-option-form').done(function (form) {
+                FormBuilder.build('pim-attribute-option-form').done(function (form) {
                     var modal = new Backbone.BootstrapModal({
                         modalOptions: {
                             backdrop: 'static',

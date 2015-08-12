@@ -270,6 +270,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s show', $page), ['id' => $entity->getId()]);
+        $this->wait();
     }
 
     /**

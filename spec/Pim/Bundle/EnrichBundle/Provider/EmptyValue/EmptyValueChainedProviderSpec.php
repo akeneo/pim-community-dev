@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 
-class EmptyValueProviderRegistrySpec extends ObjectBehavior
+class EmptyValueChainedProviderSpec extends ObjectBehavior
 {
     function it_should_register_providers(EmptyValueProviderInterface $provider, AttributeInterface $attribute)
     {

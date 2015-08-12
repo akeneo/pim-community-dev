@@ -39,7 +39,7 @@ define(
 
                 this.onExtensions('save-buttons:register-button', function (button) {
                     this.getExtension('save-buttons').trigger('save-buttons:add-button', button);
-                });
+                }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

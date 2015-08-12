@@ -119,7 +119,7 @@ define(
                     );
 
                     if (_.isUndefined(valueToCopy)) {
-                        valueToCopy = AttributeManager.generateValue(field.attribute, this.locale, this.scope)
+                        valueToCopy = AttributeManager.generateValue(field.attribute, this.locale, this.scope);
                     }
 
                     var copyField = new CopyField();

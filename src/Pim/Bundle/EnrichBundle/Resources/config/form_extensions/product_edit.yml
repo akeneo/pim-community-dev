@@ -155,13 +155,13 @@ extensions:
         targetZone: header
         position: 100
 
-    pim-product-edit-form-scope-switcher:
+    pim-product-edit-form-attribute-scope-switcher:
         module: pim/product-edit-form/scope-switcher
         parent: pim-product-edit-form-attributes
         targetZone: context-selectors
         position: 100
 
-    pim-product-edit-form-locale-switcher:
+    pim-product-edit-form-attribute-locale-switcher:
         module: pim/product-edit-form/locale-switcher
         parent: pim-product-edit-form-attributes
         targetZone: context-selectors

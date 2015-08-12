@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 
-class FieldProviderRegistrySpec extends ObjectBehavior
+class FieldChainedProviderSpec extends ObjectBehavior
 {
     function it_should_register_providers(FieldProviderInterface $provider, AttributeInterface $attribute)
     {

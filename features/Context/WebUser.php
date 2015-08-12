@@ -801,6 +801,29 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $label
+     *
+     * @Then /^the field ([^"]*) should be read only$/
+     *
+     * @throws \LogicException
+     * @throws ExpectationException
+     */
+    public function theFieldShouldBeReadOnly($label)
+    {
+        $this->wait();
+        $field = $this->getCurrentPage()->findField($label);
+
+        if (!$field->hasAttribute('disabled')) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Attribute %s exists but is not read only',
+                    $label
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $fieldName
      * @param string $locale
      * @param string $scope

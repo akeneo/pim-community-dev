@@ -93,7 +93,7 @@ class Form extends Base
             return $this->getElement('Panel selector');
         });
 
-        if (!$elt->find('css', sprintf('button.active[data-panel="%s"]', strtolower($panel)))) {
+        if (!$elt->find('css', sprintf('button.active:contains("%s")', $panel))) {
             $elt->find('css', sprintf('button[data-panel]:contains("%s")', $panel))->click();
         }
     }
@@ -470,6 +470,8 @@ class Form extends Base
             });
 
             $field->setValue($value);
+            $this->getSession()
+                ->executeScript('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');');
         }
     }
 

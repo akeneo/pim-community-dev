@@ -120,7 +120,7 @@ define(
                 $.when(
                     this.loadAssociationTypes(),
                     FetcherRegistry.getFetcher('attribute').getIdentifierField()
-                ).done(function (associationTypes, identifierAttribute) {
+                ).then(function (associationTypes, identifierAttribute) {
                     this.state.set(
                         'currentAssociationType',
                         associationTypes.length ? _.first(associationTypes).code : null
@@ -232,7 +232,7 @@ define(
                 urlParams.alias = alias;
                 urlParams.params = _.clone(params);
 
-                $.get(Routing.generate('pim_datagrid_load', urlParams)).done(function (resp) {
+                $.get(Routing.generate('pim_datagrid_load', urlParams)).then(function (resp) {
                     $('#grid-' + alias).data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
                     require(resp.metadata.requireJSModules, function () {
