@@ -33,3 +33,4 @@ css:
         - bundles/pimui/css/buttons.less
         - bundles/pimui/css/accordion.less
         - bundles/pimui/css/filterbox.less
+        - bundles/pimui/css/notifications.less
