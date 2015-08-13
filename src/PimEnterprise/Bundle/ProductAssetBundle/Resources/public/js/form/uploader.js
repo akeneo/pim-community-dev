@@ -26,7 +26,7 @@ define(
 
             /**
              * Change uploader view when changed
-             * @param event
+             * @param file
              */
             setFileInformations: function (file) {
                 var $inputContainer = this.getUploaderContainer(file);

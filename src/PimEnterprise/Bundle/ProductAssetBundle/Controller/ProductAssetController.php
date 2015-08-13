@@ -232,7 +232,7 @@ class ProductAssetController extends Controller
             try {
                 if (!$isLocalized && null !== $uploadedFile) {
                     $reference = $asset->getReference();
-                    $file = $this->fileFactory->create(
+                    $file = $this->fileFactory->createFromRawFile(
                         $uploadedFile,
                         ['path' => '', 'file_name' => '', 'guid' => ''],
                         FileStorage::ASSET_STORAGE_ALIAS
