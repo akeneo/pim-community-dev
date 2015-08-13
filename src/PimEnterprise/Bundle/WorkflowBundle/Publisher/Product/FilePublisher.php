@@ -12,10 +12,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Akeneo\Component\FileStorage\Model\FileInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
-use League\Flysystem\MountManager;
-use Pim\Component\Catalog\FileStorage;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
@@ -25,51 +21,14 @@ use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
  */
 class FilePublisher implements PublisherInterface
 {
-    /** @var RawFileFetcherInterface */
-    protected $rawFileFetcher;
-
-    /** @var RawFileStorerInterface */
-    protected $rawFileStorer;
-
-    /** @var MountManager */
-    protected $mountManager;
-
-    /**
-     * @param RawFileFetcherInterface $rawFileFetcher
-     * @param RawFileStorerInterface  $rawFileStorer
-     * @param MountManager            $mountManager
-     */
-    public function __construct(
-        RawFileFetcherInterface $rawFileFetcher,
-        RawFileStorerInterface $rawFileStorer,
-        MountManager $mountManager
-    ) {
-        $this->rawFileFetcher = $rawFileFetcher;
-        $this->rawFileStorer  = $rawFileStorer;
-        $this->mountManager   = $mountManager;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function publish($file, array $options = [])
     {
-        if (!isset($options['product'])) {
-            throw new \LogicException('Original product must be known');
-        }
-
-        if (!isset($options['value'])) {
-            throw new \LogicException('Original product value must be known');
-        }
-
-        $value = $options['value'];
-
-        if (null !== $value->getMedia() && null !== $value->getMedia()->getKey()) {
-            $filesystem = $this->mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
-            $rawFile    = $this->rawFileFetcher->fetch($file->getKey(), $filesystem);
-            $file       = $this->rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
-        }
-
+        // we don't have to do something special here,
+        // we return the file because the media
+        // link is copied in the product value via the ValuePublisher
         return $file;
     }
 

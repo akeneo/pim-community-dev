@@ -88,10 +88,7 @@ class ProductReverter
             $data,
             $class,
             'csv',
-            [
-                'entity'                  => $currentObject,
-                'use_relative_media_path' => true
-            ]
+            [ 'entity' => $currentObject ]
         );
 
         $violationsList = $this->validator->validate($revertedObject);
