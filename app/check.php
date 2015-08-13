@@ -42,9 +42,9 @@ foreach ($symfonyRequirements->getRecommendations() as $req) {
 }
 
 if ($checkPassed) {
-    echo_block('success', 'OK', 'Your system is ready to run Symfony2 projects', true);
+    echo_block('success', 'OK', 'Your system is ready to run Symfony2 projects');
 } else {
-    echo_block('error', 'ERROR', 'Your system is not ready to run Symfony2 projects', true);
+    echo_block('error', 'ERROR', 'Your system is not ready to run Symfony2 projects');
 
     echo_title('Fix the following mandatory requirements', 'red');
 
@@ -80,7 +80,7 @@ function get_error_message(Requirement $requirement, $lineSize)
         return;
     }
 
-    $errorMessage  = wordwrap($requirement->getTestMessage(), $lineSize - 3, PHP_EOL.'   ').PHP_EOL;
+    $errorMessage = wordwrap($requirement->getTestMessage(), $lineSize - 3, PHP_EOL.'   ').PHP_EOL;
     $errorMessage .= '   > '.wordwrap($requirement->getHelpText(), $lineSize - 5, PHP_EOL.'   > ').PHP_EOL;
 
     return $errorMessage;
@@ -100,13 +100,13 @@ function echo_style($style, $message)
 {
     // ANSI color codes
     $styles = array(
-        'reset' => "\033[0m",
-        'red' => "\033[31m",
-        'green' => "\033[32m",
-        'yellow' => "\033[33m",
-        'error' => "\033[37;41m",
+        'reset'   => "\033[0m",
+        'red'     => "\033[31m",
+        'green'   => "\033[32m",
+        'yellow'  => "\033[33m",
+        'error'   => "\033[37;41m",
         'success' => "\033[37;42m",
-        'title' => "\033[34m",
+        'title'   => "\033[34m",
     );
     $supports = has_color_support();
 
@@ -121,8 +121,8 @@ function echo_block($style, $title, $message)
     echo PHP_EOL.PHP_EOL;
 
     echo_style($style, str_repeat(' ', $width).PHP_EOL);
-    echo_style($style, str_pad(' ['.$title.']',  $width, ' ', STR_PAD_RIGHT).PHP_EOL);
-    echo_style($style, str_pad($message,  $width, ' ', STR_PAD_RIGHT).PHP_EOL);
+    echo_style($style, str_pad(' ['.$title.']', $width, ' ', STR_PAD_RIGHT).PHP_EOL);
+    echo_style($style, str_pad($message, $width, ' ', STR_PAD_RIGHT).PHP_EOL);
     echo_style($style, str_repeat(' ', $width).PHP_EOL);
 }
 
