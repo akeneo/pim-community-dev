@@ -64,7 +64,7 @@ class Helper
     public function cleanFilesystem()
     {
         $mountManager = $this->container->get('oneup_flysystem.mount_manager');
-        $fs = $mountManager->getFilesystem('storage');
+        $fs = $mountManager->getFilesystem(\PimEnterprise\Component\ProductAsset\FileStorage::ASSET_STORAGE_ALIAS);
         foreach ($fs->listContents() as $directory) {
             $fs->deleteDir($directory['path']);
         }

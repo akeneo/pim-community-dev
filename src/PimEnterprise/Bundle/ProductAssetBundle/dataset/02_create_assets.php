@@ -1,5 +1,7 @@
 <?php
 
+#TODO: drop this file
+
 require_once __DIR__ . '/../../../../../vendor/autoload.php';
 require_once __DIR__ . '/../../../../../app/AppKernel.php';
 require_once __DIR__ . '/Helper.php';
@@ -151,7 +153,7 @@ function addReferenceToAsset(
         }
     }
 
-    $file = $helper->getRawFileStorer()->store($file, 'storage');
+    $file = $helper->getRawFileStorer()->store($file, \PimEnterprise\Component\ProductAsset\FileStorage::ASSET_STORAGE_ALIAS);
 
     $ref->setFile($file);
     $ref->setAsset($asset);

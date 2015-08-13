@@ -22,11 +22,11 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
@@ -235,7 +235,7 @@ class ProductAssetController extends Controller
                     $file = $this->fileFactory->create(
                         $uploadedFile,
                         ['path' => '', 'file_name' => '', 'guid' => ''],
-                        ProductAssetFileSystems::FS_STORAGE
+                        FileStorage::ASSET_STORAGE_ALIAS
                     );
                     $file->setUploadedFile($uploadedFile);
                     $reference->setFile($file);

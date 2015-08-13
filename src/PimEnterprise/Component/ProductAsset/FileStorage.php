@@ -12,13 +12,9 @@
 namespace PimEnterprise\Component\ProductAsset;
 
 /**
- * List of the file systems that are used by the product asset component
- *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-final class ProductAssetFileSystems
+final class FileStorage
 {
-    const FS_PIM_THUMBNAIL = 'pimThumbnail';
-    const FS_FILE_PROCESSING = 'damProcessing';
-    const FS_STORAGE = 'storage';
+    const ASSET_STORAGE_ALIAS = 'assetStorage';
 }
