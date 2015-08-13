@@ -38,9 +38,14 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 class FixturesContext extends RawMinkContext
 {
     protected $locales = [
-        'english' => 'en_US',
-        'french'  => 'fr_FR',
-        'german'  => 'de_DE',
+        'english'    => 'en_US',
+        'french'     => 'fr_FR',
+        'german'     => 'de_DE',
+        'spanish'    => 'es_ES',
+        'italian'    => 'it_IT',
+        'portuguese' => 'pt_PT',
+        'russian'    => 'ru_RU',
+        'japanese'   => 'ja_JP'
     ];
 
     protected $attributeTypes = [
