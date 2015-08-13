@@ -1,5 +1,12 @@
 define(
-    ['backbone', 'jquery', 'underscore', 'routing', 'oro/navigation', 'text!pim/template/notification/notification-list'],
+    [
+        'backbone',
+        'jquery',
+        'underscore',
+        'routing',
+        'oro/navigation',
+        'text!pim/template/notification/notification-list'
+    ],
     function (Backbone, $, _, Routing, Navigation, template) {
         'use strict';
 
