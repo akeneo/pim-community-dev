@@ -272,6 +272,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should see (\d+) versions in the history$/
+     */
+    public function iShouldSeeVersionsInTheHistory($expectedCount)
+    {
+        $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
+
+        if ((int) $expectedCount !== count($actualVersions)) {
+            throw new \Exception(
+                sprintf(
+                    'Expecting %d versions, actually saw %d',
+                    $expectedCount,
+                    count($actualVersions)
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $panel
      *
      * @Given /^I open the "([^"]*)" panel$/
