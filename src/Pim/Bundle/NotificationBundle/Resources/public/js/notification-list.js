@@ -29,11 +29,16 @@ define(
             template: _.template(
                 [
                     '<a href="<%= url ? url : \'javascript: void(0);\' %>"<%= viewed ? \'\' : \'class="new"\' %>>',
-                        '<i><%= actionTypeMessage %></i>',
-                        '<i class="icon-<%= icon %>"></i>',
-                        '<%= message %>',
-                        '<i><%= createdAt %></i>',
+                        '<div class="action-icon <%= actionType.replace("_", "-") %>">',
+                            '<i class="status icon-<%= icon %>"></i>',
+                        '</div>',
+                        '<div class="metas">',
+                            '<span class="title"><%= actionTypeMessage %></span>',
+                            '<span class="message"><%= message %></span>',
+                        '</div>',
+                        '<time><%= createdAt %></time>',
                         '<i class="icon-<%= viewed ? \'trash\' : \'eye-close\' %> action"></i>',
+                        '<button class="btn icons-holder-text"><i class="icon-file-text-alt"></i>Report</button>',
                     '</a>'
                 ].join('')
             ),
