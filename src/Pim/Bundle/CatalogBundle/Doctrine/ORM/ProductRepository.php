@@ -466,16 +466,12 @@ class ProductRepository extends EntityRepository implements
         $qb = $productQb->getQueryBuilder();
         $rootAlias = current($qb->getRootAliases());
         $this->addJoinToValueTables($qb);
-        $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
         $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
         $qb->addSelect('Value');
         $qb->addSelect('Attribute');
-        $qb->addSelect('AttributeTranslations');
         $qb->addSelect('AttributeLocales');
         $qb->leftJoin('Attribute.group', 'AttributeGroup');
         $qb->addSelect('AttributeGroup');
-        $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
-        $qb->addSelect('AGroupTranslations');
         $qb->andWhere(
             $qb->expr()->eq($rootAlias.'.id', $id)
         );
