@@ -37,7 +37,7 @@ asset_categories:
     multiple: true
     csv:
         reader:    pim_base_connector.reader.file.csv_category
-        processor: pimee_base_connector.processor.asset_category
+        processor: pimee_product_asset.processor.denormalization.category.flat
     yml:
         reader:    pim_base_connector.reader.file.yaml_multiple
         processor: pimee_base_connector.processor.asset_category
@@ -53,3 +53,10 @@ assets:
     csv:
         reader:    pimee_product_asset.reader.file.csv_asset
         processor: pimee_product_asset.processor.denormalization.asset.flat
+
+asset_category_accesses:
+    order: 150
+    csv:
+        processor: pimee_base_connector.processor.asset_category_access
+    yml:
+        processor: pimee_base_connector.processor.asset_category_access

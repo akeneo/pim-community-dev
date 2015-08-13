@@ -1,0 +1,42 @@
+asset_categories:
+    asset_main_catalog:
+        label-en_US: Asset main catalog
+    images:
+        parent: asset_main_catalog
+        label-en_US: Images
+    autre:
+        parent: images
+        label-en_US: Other picture
+    situ:
+        parent: images
+        label-en_US: In situ pictures
+    prioritized_images:
+        parent: images
+        label-en_US: Prioritised images
+    print:
+        parent: asset_main_catalog
+        label-en_US: Print
+    videos:
+        parent: asset_main_catalog
+        label-en_US: Videos
+    prioritized_videos:
+        parent: videos
+        label-en_US: Prioritised videos
+    audio:
+        parent: asset_main_catalog
+        label-en_US: Audio
+    client_documents:
+        parent: asset_main_catalog
+        label-en_US: Client documents
+    store_documents:
+        parent: asset_main_catalog
+        label-en_US: Store documents
+    technical_documents:
+        parent: asset_main_catalog
+        label-en_US: Technical documents
+    sales_documents:
+        parent: asset_main_catalog
+        label-en_US: Sales documents
+    archives:
+        parent: asset_main_catalog
+        label-en_US: Archives

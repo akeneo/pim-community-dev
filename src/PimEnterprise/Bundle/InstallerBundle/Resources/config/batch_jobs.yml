@@ -92,6 +92,17 @@ connector:
                         processor: pimee_product_asset.processor.denormalization.asset.flat
                         writer:    pimee_product_asset.writer.doctrine.asset
 
+        fixtures_asset_category_access_yml:
+            title: pim_installer.jobs.fixtures_asset_category_access_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:         pim_installer.jobs.fixtures_asset_category_access_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pimee_base_connector.processor.asset_category_access
+                        writer:    pim_base_connector.writer.doctrine
+
         fixtures_asset_channel_configurations_csv:
             title: pimee_base_connector.jobs.fixtures_asset_channel_configurations_csv.title
             type:  fixtures

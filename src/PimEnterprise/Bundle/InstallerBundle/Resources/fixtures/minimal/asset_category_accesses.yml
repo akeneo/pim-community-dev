@@ -1,0 +1,4 @@
+asset_category_accesses:
+    asset_main_catalog:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
