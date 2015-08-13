@@ -9,6 +9,7 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And the following product:
       | sku   | size | weather_conditions |
       | boots | 40   | wet                |
+      | shoes | 40   | wet                |
     And I am logged in as "Julia"
     And I am on the "boots" product page
 
@@ -27,4 +28,18 @@ Feature: Add a new option to a choice attribute directly from the product edit f
       | Code | very_wet      |
       | en   | Extremely wet |
     And I save the product
-    Then the product Weather conditions should be "wet, very_wet"
+    Then the product Weather conditions should be "Wet, Extremely wet"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4737
+  Scenario: Successfully find a created option in a multiselect attribute through several products
+    Given I should not see the following option:
+      | Weather conditions | very_wet |
+    And I add a new option to the "Weather conditions" attribute
+    When I fill in the following information in the popin:
+      | Code  | very_wet      |
+      | en_US | Extremely wet |
+    And I press the "Save" button in the popin
+    And I save the product
+    And I am on the "shoes" product page
+    When I fill in the following information:
+      | Weather conditions | Extremely wet |
