@@ -111,27 +111,51 @@ class ProductEditDataFilter implements CollectionFilterInterface
     {
         $newValuesData = [];
 
-        foreach ($valuesData as $attributeCode => $contextValues) {
+        foreach ($valuesData as $attributeCode => $values) {
             $attribute = $this->getAttribute($attributeCode);
             if (!$this->objectFilter->filterObject($attribute, 'pim.internal_api.attribute.edit')) {
-                $newContextValues = [];
-
-                foreach ($contextValues as $contextValue) {
-                    if (null === $contextValue['locale'] ||
-                        !$this->objectFilter->filterObject(
-                            $this->getLocale($contextValue['locale']),
-                            'pim.internal_api.locale.edit'
-                        )
-                    ) {
-                        $newContextValues[] = $contextValue;
-                    }
-                }
-
-                $newValuesData[$attributeCode] = $newContextValues;
+                $newValuesData[$attributeCode] = $this->getNewValuesData($attribute, $values);
             }
         }
 
         return array_filter($newValuesData);
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param array              $values
+     *
+     * @throws ObjectNotFoundException
+     *
+     * @return array
+     */
+    protected function getNewValuesData(AttributeInterface $attribute, array $values)
+    {
+        $newValues = [];
+
+        foreach ($values as $value) {
+            $acceptValue = true;
+
+            if (null !== $value['locale']) {
+                $isAuthorizedOnLocale = !$this->objectFilter->filterObject(
+                    $this->getLocale($value['locale']),
+                    'pim.internal_api.locale.edit'
+                );
+
+                $isEditableOnLocale = $attribute->isLocaleSpecific() ?
+                    in_array($value['locale'], $attribute->getLocaleSpecificCodes()) :
+                    true
+                ;
+
+                $acceptValue = $isAuthorizedOnLocale && $isEditableOnLocale;
+            }
+
+            if ($acceptValue) {
+                $newValues[] = $value;
+            }
+        }
+
+        return $newValues;
     }
 
     /**

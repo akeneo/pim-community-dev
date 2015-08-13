@@ -34,7 +34,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         if ($data === null || $data === '') {
             return null;
@@ -89,6 +89,6 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     {
         $resolver
             ->setRequired(['value'])
-            ->setDefined(['entity', 'locale_code', 'product', 'scope_code', 'use_relative_media_path']);
+            ->setDefined(['entity', 'locale_code', 'product', 'scope_code']);
     }
 }

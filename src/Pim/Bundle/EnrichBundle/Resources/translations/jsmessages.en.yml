@@ -175,6 +175,8 @@ pim_enrich:
                     no: No
             optional_attribute:
                 remove: Remove this attribute
+            locale_specific_attribute:
+                unavailable: This locale specific field is not available in this locale
             media:
                 upload: Drag and drop to upload or click here
         attribute_option:

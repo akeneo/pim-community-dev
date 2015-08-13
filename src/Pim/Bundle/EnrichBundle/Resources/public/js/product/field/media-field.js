@@ -128,7 +128,7 @@ define([
                 }
             },
             previewImage: function () {
-                var mediaUrl = this.getMediaShowUrl(this.getCurrentValue().data, 'preview');
+                var mediaUrl = MediaUrlGenerator.getMediaShowUrl(this.getCurrentValue().data, 'preview');
                 if (mediaUrl) {
                     $.slimbox(mediaUrl, '', {overlayOpacity: 0.3});
                 }
