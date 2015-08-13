@@ -126,7 +126,7 @@ services:
     pimee_versioning.denormalizer.reference_data_collection:
         class: %pim_serializer.denormalizer.flat.reference_data_collection.class%
         arguments:
-            - ['pim_reference_data_multiselect']
+            - ['pim_reference_data_multiselect', 'pim_assets_collection']
             - '@?pim_reference_data.repository_resolver'
         tags:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
