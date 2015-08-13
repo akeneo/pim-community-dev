@@ -59,22 +59,24 @@ class StringFilter extends OroStringFilter
      */
     protected function prepareData(FilterDatasourceAdapterInterface $ds, $data)
     {
-        if (!is_array($data)
-            || !array_key_exists('value', $data)
-            || !array_key_exists('type', $data)
-            || (!$data['value'] && FilterType::TYPE_EMPTY !== $data['type'])) {
+        if (!is_array($data) || !array_key_exists('value', $data) || !array_key_exists('type', $data)) {
             return false;
         }
-        $data['value'] = preg_quote($data['value']);
 
-        $data['type']  = isset($data['type']) ? $data['type'] : null;
+        if (FilterType::TYPE_EMPTY === $data['type']) {
+            $data['value'] = '';
 
-        if ('in' === $data['type']) {
-            $data['value'] = explode(',', $data['value']);
+            return $data;
         }
 
-        if ('empty' === $data['type']) {
-            $data['value'] = '';
+        $data['value'] = preg_quote($data['value']);
+
+        if (null === $data['value'] || '' === $data['value']) {
+            return false;
+        }
+
+        if (FilterType::TYPE_IN_LIST === $data['type']) {
+            $data['value'] = explode(',', $data['value']);
         }
 
         return $data;
