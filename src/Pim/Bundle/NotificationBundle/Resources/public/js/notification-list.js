@@ -29,7 +29,7 @@ define(
             template: _.template(
                 [
                     '<a href="<%= url ? url : \'javascript: void(0);\' %>"<%= viewed ? \'\' : \'class="new"\' %>>',
-                        '<div class="action-icon <%= actionType %>">',
+                        '<div class="action-icon <%= actionType.replace("_", "-") %>">',
                             '<i class="status icon-<%= icon %>"></i>',
                         '</div>',
                         '<div class="metas">',
