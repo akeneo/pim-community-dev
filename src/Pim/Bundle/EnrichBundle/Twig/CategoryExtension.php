@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Twig;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\EnrichBundle\Twig\Category\CategoryExtensionInterface;
-use Pim\Bundle\EnrichBundle\Twig\Category\CategoryExtensionRegistryInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
 use Pim\Component\Classification\Model\CategoryInterface;
 
 /**
@@ -16,15 +16,16 @@ use Pim\Component\Classification\Model\CategoryInterface;
  */
 class CategoryExtension extends \Twig_Extension
 {
-    /** @var CategoryExtensionRegistryInterface */
-    protected $extensionRegistry;
+    /** @var CategoryItemsCounterRegistryInterface */
+    protected $categoryItemsCounter;
 
-    /**
-     * @param CategoryExtensionRegistryInterface $extensionRegistry
-     */
-    public function __construct(CategoryExtensionRegistryInterface $extensionRegistry)
+    /** @var int */
+    protected $itemsLimitRemoval;
+
+    public function __construct(CategoryItemsCounterRegistryInterface $categoryItemsCounter, $itemsLimitRemoval = null)
     {
-        $this->extensionRegistry = $extensionRegistry;
+        $this->categoryItemsCounter = $categoryItemsCounter;
+        $this->itemsLimitRemoval    = $itemsLimitRemoval;
     }
 
     /**
@@ -172,10 +173,8 @@ class CategoryExtension extends \Twig_Extension
      */
     public function exceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub, $relatedEntity = 'product')
     {
-        $limitForRemoval = $this->getProductsLimitForRemoval($relatedEntity);
-
-        return null !== $limitForRemoval &&
-            $this->countItems($category, $includeSub, $relatedEntity) > $limitForRemoval;
+        return null !== $this->itemsLimitRemoval &&
+            $this->countItems($category, $includeSub, $relatedEntity) > $this->itemsLimitRemoval;
     }
 
     /**
@@ -185,11 +184,9 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return int
      */
-    public function getProductsLimitForRemoval($relatedEntity = 'product')
+    public function getProductsLimitForRemoval()
     {
-        $extension = $this->getExtension($relatedEntity);
-
-        return $extension->getProductsLimitForRemoval();
+        return $this->itemsLimitRemoval;
     }
 
     /**
@@ -472,18 +469,11 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return int
      */
-    protected function countItems(CategoryInterface $category, $includeSub, $relatedEntity)
+    protected function countItems(CategoryInterface $category, $includeSub, $relatedEntity = 'product')
     {
-        $categoryQb = null;
-        $extension = $this->getExtension($relatedEntity);
+        $categoryItemsCounter = $this->getExtension($relatedEntity);
 
-        if ($includeSub) {
-            $categoryQb = $extension->getCategoryRepo()
-                ->getAllChildrenQueryBuilder($category, $includeSub);
-        }
-
-        return $extension->getItemCategoryRepo()
-            ->getItemsCountInCategory($category, $categoryQb);
+        return $categoryItemsCounter->getItemsCountInCategory($category, $includeSub);
     }
 
     /**
@@ -543,18 +533,18 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param string $type
      *
-     * @return CategoryExtensionInterface
-     *
      * @throws \Exception
+     *
+     * @return CategoryItemsCounterInterface
      */
     protected function getExtension($type)
     {
-        $category = $this->extensionRegistry->get($type);
+        $categoryItemsCounter = $this->categoryItemsCounter->get($type);
 
-        if (null === $category) {
-            throw new \Exception(sprintf('No extension founded for %s', $type));
+        if (null === $categoryItemsCounter) {
+            throw new \Exception(sprintf('No category counter found for %s', $type));
         }
 
-        return $category;
+        return $categoryItemsCounter;
     }
 }
