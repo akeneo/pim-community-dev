@@ -10,6 +10,7 @@ services:
     pimee_product_asset.form.type.asset:
         class: %pimee_product_asset.form.type.asset.class%
         arguments:
+            - %pimee_product_asset.model.asset.class%
             - %pimee_product_asset.model.tag.class%
         tags:
             - { name: form.type, alias: pimee_product_asset }
@@ -22,12 +23,14 @@ services:
     pimee_product_asset.form.type.asset_reference:
         class: %pimee_product_asset.form.type.asset_reference.class%
         arguments:
-            - '%pimee_product_asset.model.reference.class%'
+            - %pimee_product_asset.model.reference.class%
         tags:
             - { name: form.type, alias: pimee_product_asset_reference }
 
     pimee_product_asset.form.type.asset_variation:
         class: %pimee_product_asset.form.type.asset_variation.class%
+        arguments:
+            - %pimee_product_asset.model.variation.class%
         tags:
             - { name: form.type, alias: pimee_product_asset_variation }
 

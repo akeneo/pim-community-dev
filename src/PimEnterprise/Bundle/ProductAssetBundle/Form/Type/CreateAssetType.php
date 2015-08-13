@@ -49,7 +49,7 @@ class CreateAssetType extends AbstractType
                     new Regex(
                         [
                             'pattern' => '/^[a-zA-Z0-9_]+$/',
-                            'message' => 'Attribute code may contain only letters, numbers and underscores.'
+                            'message' => 'Asset code may contain only letters, numbers and underscores.'
                         ]
                     )
                 ],

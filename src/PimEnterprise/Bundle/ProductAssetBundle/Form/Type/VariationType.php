@@ -22,6 +22,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class VariationType extends AbstractType
 {
+    /** @var string */
+    protected $entityClass;
+
+    /**
+     * @param string $entityClass
+     */
+    public function __construct($entityClass)
+    {
+        $this->entityClass = $entityClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,7 +47,7 @@ class VariationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'PimEnterprise\Component\ProductAsset\Model\Variation',
+            'data_class' => $this->entityClass,
         ]);
     }
 
