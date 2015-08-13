@@ -1,6 +1,6 @@
 define(
     ['backbone', 'jquery', 'underscore', 'routing', 'oro/navigation', 'text!pim/template/notification/notification-list'],
-    function (Backbone, $, _, Routing, Navigation, notificationListTpl) {
+    function (Backbone, $, _, Routing, Navigation, template) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
@@ -25,7 +25,7 @@ define(
         var NotificationView = Backbone.View.extend({
             tagName: 'li',
             model: Notification,
-            template: _.template(notificationListTpl),
+            template: _.template(template),
             events: {
                 'click .icon-trash':     'remove',
                 'click .icon-eye-close': 'markAsRead',
