@@ -200,7 +200,8 @@
 - Add an argument `Symfony\Component\EventDispatcher\EventDispatcher` in the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover`
 - Constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
-# 1.3.x
+# 1.3.19 (2015-08-13)
+
 ## Bug fixes
 - PIM-4706: Product association import error with identifier containing comma or semicolon
 - PIM-4748: performances issues with product display with 8 locales (attribute and attribute group translations)
