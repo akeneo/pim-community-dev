@@ -115,6 +115,15 @@ services:
         tags:
             - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
+    pimee_versioning.denormalizer.file:
+        class: %pim_serializer.denormalizer.flat.file.class%
+        arguments:
+            - ['pim_catalog_image', 'pim_catalog_file']
+            - '@akeneo_file_storage.repository.file'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+        tags:
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
+
     pimee_versioning.denormalizer.reference_data:
         class: %pim_serializer.denormalizer.flat.reference_data.class%
         arguments:
