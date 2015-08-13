@@ -1,6 +1,6 @@
 define(
-    ['backbone', 'jquery', 'underscore', 'routing', 'oro/navigation'],
-    function (Backbone, $, _, Routing, Navigation) {
+    ['backbone', 'jquery', 'underscore', 'routing', 'oro/navigation', 'text!pim/template/notification/notification-list'],
+    function (Backbone, $, _, Routing, Navigation, notificationListTpl) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
@@ -25,24 +25,7 @@ define(
         var NotificationView = Backbone.View.extend({
             tagName: 'li',
             model: Notification,
-
-            template: _.template(
-                [
-                    '<a href="<%= url ? url : \'javascript: void(0);\' %>"<%= viewed ? \'\' : \'class="new"\' %>>',
-                        '<div class="action-icon <%= actionType.replace("_", "-") %>">',
-                            '<i class="status icon-<%= icon %>"></i>',
-                        '</div>',
-                        '<div class="metas">',
-                            '<span class="title"><%= actionTypeMessage %></span>',
-                            '<span class="message"><%= message %></span>',
-                        '</div>',
-                        '<time><%= createdAt %></time>',
-                        '<i class="icon-<%= viewed ? \'trash\' : \'eye-close\' %> action"></i>',
-                        '<button class="btn icons-holder-text"><i class="icon-file-text-alt"></i>Report</button>',
-                    '</a>'
-                ].join('')
-            ),
-
+            template: _.template(notificationListTpl),
             events: {
                 'click .icon-trash':     'remove',
                 'click .icon-eye-close': 'markAsRead',
