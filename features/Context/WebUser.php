@@ -272,6 +272,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should see (\d+) versions in the history$/
+     */
+    public function iShouldSeeVersionsInTheHistory($expectedCount)
+    {
+        $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
+
+        if ((int) $expectedCount !== count($actualVersions)) {
+            throw new \Exception(
+                sprintf(
+                    'Expecting %d versions, actually saw %d',
+                    $expectedCount,
+                    count($actualVersions)
+                )
+            );
+        }
+    }
+
+    /**
      * @param string $panel
      *
      * @Given /^I open the "([^"]*)" panel$/
@@ -999,6 +1017,24 @@ class WebUser extends RawMinkContext
                     )
                 );
             }
+        }
+    }
+
+    /**
+     * @Then /^I should (not )?be able to remove the file of "([^"]*)"$/
+     */
+    public function iShouldBeAbleToRemoveTheFileOf($not, $field)
+    {
+        $removeFileButton = $this->getPage('Product edit')->getRemoveFileButtonFor($field);
+
+        if ($not && $removeFileButton && $removeFileButton->isVisible()) {
+            throw $this->createExpectationException(
+                sprintf('Remove file button on field "%s" should not be displayed.', $field)
+            );
+        } elseif (!$not && (!$removeFileButton || !$removeFileButton->isVisible())) {
+            throw $this->createExpectationException(
+                sprintf('Remove file button on field "%s" should be displayed.', $field)
+            );
         }
     }
 

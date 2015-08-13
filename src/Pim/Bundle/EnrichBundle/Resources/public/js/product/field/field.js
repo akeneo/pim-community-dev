@@ -38,6 +38,14 @@ define([
             editable: true,
             ready: true,
             valid: true,
+
+            /**
+             * Initialize this field
+             *
+             * @param {Object} attribute
+             *
+             * @returns {Object}
+             */
             initialize: function (attribute) {
                 this.attribute = attribute;
                 this.model     = new FieldModel({values: []});
@@ -46,6 +54,12 @@ define([
 
                 return this;
             },
+
+            /**
+             * Render this field
+             *
+             * @returns {Object}
+             */
             render: function () {
                 this.setEditable(true);
                 this.setValid(true);
@@ -59,7 +73,14 @@ define([
                     }, this))
                     .then(_.bind(function (templateContext) {
                         this.$el.html(this.template(templateContext));
-                        this.$('.form-field .field-input').append(this.renderInput(templateContext));
+
+                        if (this.inputCanBeSeen(this.context)) {
+                            this.$('.form-field .field-input').append(this.renderInput(templateContext));
+                        } else {
+                            this.$('.form-field .field-input').append(
+                                _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable')
+                            );
+                        }
 
                         _.each(this.elements, _.bind(function (elements, position) {
                             var $container = this.$('.' + position + '-elements-container');
@@ -78,10 +99,28 @@ define([
 
                 return this;
             },
+
+            /**
+             * Render the input inside the field area
+             *
+             * @throws {Error} if this method is not implemented
+             */
             renderInput: function () {
                 throw new Error('You should implement your field template');
             },
+
+            /**
+             * Is called after rendering the input
+             */
             postRender: function () {},
+
+            /**
+             * Render this input in copy mode
+             *
+             * @param {Object} value
+             *
+             * @returns {Promise}
+             */
             renderCopyInput: function (value) {
                 return this.getTemplateContext()
                     .then(_.bind(function (context) {
@@ -91,17 +130,23 @@ define([
                         copyContext.context.scope = value.scope;
                         copyContext.editMode = 'view';
 
-                        return this.renderInput(copyContext);
+                        return this.inputCanBeSeen(copyContext.context) ?
+                            this.renderInput(copyContext) :
+                            _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
                     }, this));
             },
+
+            /**
+             * Get the template context
+             *
+             * @returns {Promise}
+             */
             getTemplateContext: function () {
                 var deferred = $.Deferred();
 
                 deferred.resolve({
                     type: this.attribute.field_type,
-                    label: this.attribute.label[this.context.uiLocale] ?
-                        this.attribute.label[this.context.uiLocale] :
-                        this.attribute.code,
+                    label: this.getLabel(),
                     value: this.getCurrentValue(),
                     context: this.context,
                     attribute: this.attribute,
@@ -112,9 +157,19 @@ define([
 
                 return deferred.promise();
             },
+
+            /**
+             * Update the model linked to this field
+             */
             updateModel: function () {
                 this.valid = true;
             },
+
+            /**
+             * Set values to the model linked to this field
+             *
+             * @param {Array} values
+             */
             setValues: function (values) {
                 if (values.length === 0) {
                     /*global alert: true */
@@ -123,41 +178,108 @@ define([
 
                 this.model.set('values', values);
             },
+
+            /**
+             * Set the context of this field
+             *
+             * @param {Object} context
+             */
             setContext: function (context) {
                 this.context = context;
             },
+
+            /**
+             * Add an element to this field block
+             *
+             * @param {string} position
+             * @param {string} code
+             * @param {Object} element
+             */
             addElement: function (position, code, element) {
                 if (!this.elements[position]) {
                     this.elements[position] = {};
                 }
                 this.elements[position][code] = element;
             },
+
+            /**
+             * Remove an element of this field block, with the given position & code
+             *
+             * @param {string} position
+             * @param {string} code
+             */
             removeElement: function (position, code) {
                 if (this.elements[position] && this.elements[position][code]) {
                     delete this.elements[position][code];
                 }
             },
+
+            /**
+             * Set as valid
+             *
+             * @param {boolean} valid
+             */
             setValid: function (valid) {
                 this.valid = valid;
             },
+
+            /**
+             * Return whether is valid
+             *
+             * @returns {boolean}
+             */
             isValid: function () {
                 return this.valid;
             },
+
+            /**
+             * Set the focus on the input of this field
+             */
             setFocus: function () {
                 this.$('input:first').focus();
             },
+
+            /**
+             * Set this field as editable
+             *
+             * @param {boolean} editable
+             */
             setEditable: function (editable) {
                 this.editable = editable;
             },
+
+            /**
+             * Return whether this field is editable
+             *
+             * @returns {boolean}
+             */
             isEditable: function () {
                 return this.editable;
             },
+
+            /**
+             * Set this field as ready
+             *
+             * @param {boolean} ready
+             */
             setReady: function (ready) {
                 this.ready = ready;
             },
+
+            /**
+             * Return whether this field is ready
+             *
+             * @returns {boolean}
+             */
             isReady: function () {
                 return this.ready;
             },
+
+            /**
+             * Get the current edit mode (can be 'edit' or 'view')
+             *
+             * @returns {string}
+             */
             getEditMode: function () {
                 if (this.editable) {
                     return 'edit';
@@ -165,15 +287,35 @@ define([
                     return 'view';
                 }
             },
-            canBeSeen: function () {
-                if (this.attribute.localizable &&
-                    this.attribute.is_locale_specific &&
-                    !_.contains(this.attribute.locale_specific_codes, this.context.locale)) {
-                    return false;
-                }
 
+            /**
+             * Return whether this field can be seen
+             *
+             * @returns {boolean}
+             */
+            canBeSeen: function () {
                 return true;
             },
+
+            /**
+             * Return whether input of the field can be seen
+             *
+             * @param {Object} context
+             *
+             * @returns {boolean}
+             */
+            inputCanBeSeen: function (context) {
+                return this.attribute.is_locale_specific ?
+                    _.contains(this.attribute.locale_specific_codes, context.locale) :
+                    true;
+            },
+
+            /**
+             * Get current model value for this field, in this format:
+             * {locale: 'en_US', scope: null, data: 'stuff'}
+             *
+             * @returns {Object}
+             */
             getCurrentValue: function () {
                 return AttributeManager.getValue(
                     this.model.get('values'),
@@ -182,11 +324,28 @@ define([
                     this.context.scope
                 );
             },
+
+            /**
+             * Set current model value for this field
+             *
+             * @param {*} value
+             */
             setCurrentValue: function (value) {
                 var productValue = this.getCurrentValue();
 
                 productValue.data = value;
                 mediator.trigger('pim_enrich:form:entity:update_state');
+            },
+
+            /**
+             * Get the label of this field (default is code surrounded by brackets)
+             *
+             * @returns {string}
+             */
+            getLabel: function () {
+                return this.attribute.label[this.context.uiLocale] ?
+                    this.attribute.label[this.context.uiLocale] :
+                    '[' + this.attribute.code + ']';
             }
         });
     }
