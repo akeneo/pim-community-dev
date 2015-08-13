@@ -1,4 +1,4 @@
-# 1.3.19
+# 1.3.19 (2015-08-13)
 
 ## Bug fixes
 - PIM-4706: Product association import error with identifier containing comma or semicolon
