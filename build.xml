@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="pim" default="build"
-    xmlns:if="ant:if"
-    xmlns:unless="ant:unless"
->
+<project name="pim" default="build">
     <property name="symfony.catalog.storage.dir" value="catalog" />
     <property name="symfony.asset.storage.dir" value="asset" />
 
@@ -250,11 +247,10 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh">
-            <arg value="-c${behat.concurrency}" />
-            <arg value="-x${behat.xdebug}" />
-            <arg value="-d${symfony.database.name}_" />
-            <arg value="-p${behat.profile.prefix}-" />
-            <arg value="-f${behat.features}" unless:blank="${behat.features}"/>
+            <arg value="${behat.concurrency}" />
+            <arg value="${behat.xdebug}" />
+            <arg value="${symfony.database.name}_" />
+            <arg value="${behat.profile.prefix}-" />
             <arg value="${basedir}/bin/behat ${behat.options}" />
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
@@ -262,11 +258,10 @@
         </exec>
 
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <arg value="-c${behat.concurrency}" />
-            <arg value="-x${behat.xdebug}" />
-            <arg value="-d${symfony.database.name}_" />
-            <arg value="-p${behat.profile.prefix}-" />
-            <arg value="-f ${behat.features}" unless:blank="${behat.features}"/>
+            <arg value="${behat.concurrency}" />
+            <arg value="${behat.xdebug}" />
+            <arg value="${symfony.database.name}_" />
+            <arg value="${behat.profile.prefix}-" />
             <arg value="${basedir}/bin/behat ${behat.options}" />
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
