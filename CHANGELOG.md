@@ -200,6 +200,11 @@
 - Add an argument `Symfony\Component\EventDispatcher\EventDispatcher` in the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover`
 - Constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
+# 1.3.21
+
+## Bug fixes
+- PIM-4753: Fix updated date issues for Versionable objects
+
 # 1.3.20 (2015-08-14)
 
 ## Bug fixes

@@ -7,10 +7,19 @@ use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Gherkin\Node\PyStringNode;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
+use Pim\Bundle\CommentBundle\Entity\Comment;
+use Pim\Bundle\CommentBundle\Model\CommentInterface;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Doctrine\Common\Util\Inflector;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Util\Inflector;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
@@ -22,9 +31,6 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CommentBundle\Entity\Comment;
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
@@ -1689,6 +1695,36 @@ class FixturesContext extends RawMinkContext
     public function getEntities()
     {
         return $this->entities;
+    }
+
+    /**
+     * @Given /^I set the updated date of the (product "([^"]+)") to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateIs(ProductInterface $product, $identifier, $expected)
+    {
+        $product->setUpdated(new \DateTime($expected));
+
+        $this->getProductSaver()->save($product, ['recalculate' => false]);
+    }
+
+    /**
+     * Asserts that we have less than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertLessThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
+     * Asserts that we have more than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should not be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldNotBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertGreaterThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
     }
 
     /**
