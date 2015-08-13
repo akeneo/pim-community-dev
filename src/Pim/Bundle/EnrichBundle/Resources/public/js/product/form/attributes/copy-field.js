@@ -45,7 +45,7 @@ define([
 
                 var templateContext = {
                     type: this.field.attribute.field_type,
-                    label: this.field.attribute.label[this.field.context.locale],
+                    label: this.field.getLabel(),
                     config: this.field.config,
                     attribute: this.field.attribute,
                     selected: this.selected,
