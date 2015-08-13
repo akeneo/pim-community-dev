@@ -103,7 +103,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
         $resolver
             ->setRequired(['value'])
             ->setDefined(
-                ['entity', 'locale_code', 'product', 'scope_code', 'use_relative_media_path', 'metric_unit']
+                ['entity', 'locale_code', 'product', 'scope_code', 'metric_unit']
             );
     }
 }
