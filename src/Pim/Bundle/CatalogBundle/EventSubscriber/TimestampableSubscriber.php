@@ -4,10 +4,8 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Aims to add timestambable behavior
@@ -25,10 +23,10 @@ class TimestampableSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'prePersist',
             'preUpdate'
-        );
+        ];
     }
 
     /**
@@ -38,10 +36,13 @@ class TimestampableSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $object = $args->getObject();
-        if ($object instanceof TimestampableInterface) {
-            $object->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
-            $object->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
+
+        if (!$object instanceof TimestampableInterface) {
+            return;
         }
+
+        $object->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
+        $object->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
     }
 
     /**
@@ -52,36 +53,15 @@ class TimestampableSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if ($object instanceof ProductValueInterface) {
-            $product = $object->getEntity();
-            if ($product !== null) {
-                $this->updateProductFields($args->getObjectManager(), $product, array('updated'));
-            }
+        if (!$object instanceof TimestampableInterface) {
+            return;
         }
 
-        if ($object instanceof TimestampableInterface) {
-            $object->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
+        // Timestamps are managed by the VersioningBundle in this case
+        if ($object instanceof VersionableInterface) {
+            return;
         }
-    }
 
-    /**
-     * Update product fields when a value is updated (ORM specific)
-     *
-     * @param ObjectManager    $manager
-     * @param ProductInterface $product
-     * @param array            $fields
-     */
-    protected function updateProductFields(ObjectManager $manager, ProductInterface $product, $fields)
-    {
-        $uow = $manager->getUnitOfWork();
-        // ORM specific, for Document the value is embedded
-        if (method_exists($uow, 'scheduleExtraUpdate')) {
-            $now     = new \DateTime('now', new \DateTimeZone('UTC'));
-            $changes = array();
-            foreach ($fields as $field) {
-                $changes[$field] = array(null, $now);
-            }
-            $uow->scheduleExtraUpdate($product, $changes);
-        }
+        $object->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
     }
 }
