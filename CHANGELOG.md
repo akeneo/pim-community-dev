@@ -5,6 +5,7 @@
 - PIM-4748: performances issues with product display with 8 locales (attribute and attribute group translations)
 - PIM-4444: performances issues with product display with 10 locales (attribute and attribute group translations)
 - PIM-4756: Filter issue with the option "start with" "0" on the product grid
+- PIM-4758: Fixed attribute filtering on method getFullProducts (Github issue #3028)
 
 # 1.3.18 (2015-07-09)
 
