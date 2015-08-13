@@ -30,6 +30,7 @@ Feature: Revert a product to a previous version
     And I am on the "shirt" product page
     And I disable the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then product "shirt" should be enabled
 
@@ -38,6 +39,7 @@ Feature: Revert a product to a previous version
     And I am on the "shirt" product page
     And I enable the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then product "shirt" should be disabled
 
@@ -54,6 +56,7 @@ Feature: Revert a product to a previous version
     Then the family of product "jean" should be "jackets"
     And I am on the "jean" product page
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the family of product "jean" should be "pants"
 
@@ -69,6 +72,7 @@ Feature: Revert a product to a previous version
     And I click on the "Summer collection" category
     And I press the "Save" button
     Then I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the category of "sandals" should be "winter_collection"
 
@@ -80,6 +84,7 @@ Feature: Revert a product to a previous version
     And I change the Manufacturer to "Desigual"
     Then I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then I should see a flash message "Product successfully reverted"
 
@@ -93,6 +98,7 @@ Feature: Revert a product to a previous version
       | en   | Extremely wet |
     And I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then I should see a flash message "Product successfully reverted"
 
@@ -106,6 +112,7 @@ Feature: Revert a product to a previous version
       | Name | Really nice jeans |
     And I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     And I visit the "Attributes" tab
     And I visit the "Marketing" group
@@ -123,6 +130,7 @@ Feature: Revert a product to a previous version
     And I change the "Number in stock" to "100"
     And I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     And I save the product
     And the product "jeans" should have the following values:
@@ -131,21 +139,23 @@ Feature: Revert a product to a previous version
   Scenario: Successfully revert a pim_catalog_boolean attribute
     Given the following product:
       | sku   | family | handmade |
-      | jeans | pants  | 0        |
+      | jeans | pants  | 1        |
       | short | pants  |          |
     Given I am on the "jeans" product page
     When I uncheck the "Handmade" switch
     And I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "jeans" should have the following values:
-      | handmade | |
+      | handmade | 1 |
     Given I am on the "short" product page
     And I visit the "Attributes" tab
     And I add available attributes Handmade
     When I check the "Handmade" switch
     And I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     And the product "short" should have the following values:
       | handmade |  |
@@ -160,6 +170,7 @@ Feature: Revert a product to a previous version
     And I change the "Release date" to "2014-05-20"
     And I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     And the product "akeneo-jacket" should have the following values:
       | release_date-mobile | |
@@ -173,6 +184,7 @@ Feature: Revert a product to a previous version
     When I change the "Release date" to "2001-01-01"
     And I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
       | release_date-mobile | |
@@ -186,6 +198,7 @@ Feature: Revert a product to a previous version
     When I change the "Release date" to "2001-01-01"
     And I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "akeneo-jacket" should have the following values:
       | release_date-mobile | 2011-08-17 |
@@ -198,6 +211,7 @@ Feature: Revert a product to a previous version
     When I change the "SKU" to "pantalon"
     And I save the product
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "jeans" should have the following values:
       | sku | jeans |
@@ -212,6 +226,7 @@ Feature: Revert a product to a previous version
     When I change the "Length" to ""
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
       | length | 70.0000 CENTIMETER |
@@ -222,6 +237,7 @@ Feature: Revert a product to a previous version
     When I change the "Length" to "120"
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
       | length |  |
@@ -235,6 +251,7 @@ Feature: Revert a product to a previous version
     And I change the "Weather conditions" to ""
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
       | weather_conditions | [dry], [cold] |
@@ -244,6 +261,7 @@ Feature: Revert a product to a previous version
     And I change the "Weather conditions" to "Hot, Wet"
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
       | weather_conditions |  |
@@ -259,6 +277,7 @@ Feature: Revert a product to a previous version
     And I change the "Number in stock" to "42"
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
       | number_in_stock-tablet |  |
@@ -272,6 +291,7 @@ Feature: Revert a product to a previous version
     And I change the "Price" to "39 EUR"
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
       | price | 49.00 EUR |
@@ -286,6 +306,7 @@ Feature: Revert a product to a previous version
     And I change the "Price" to "19.99 EUR"
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     And I visit the "Attributes" tab
     And I visit the "Marketing" group
@@ -301,6 +322,7 @@ Feature: Revert a product to a previous version
     And I change the "Rating" to "2"
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
       | rating | [4] |
@@ -312,6 +334,7 @@ Feature: Revert a product to a previous version
     And I change the "Rating" to "5"
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
       | rating |  |
@@ -326,6 +349,7 @@ Feature: Revert a product to a previous version
     And I change the "Comment" to "This is not a comment anymore."
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "t-shirt" should have the following values:
       | comment | This is a comment. |
@@ -338,6 +362,7 @@ Feature: Revert a product to a previous version
     And I change the "Comment" to "New comment."
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then the product "marcel" should have the following values:
       | comment |  |
@@ -352,6 +377,7 @@ Feature: Revert a product to a previous version
     And I change the "Description" to "A really nice t-shirt !"
     And I save the product
     When I open the history
+    Then I should see 2 versions in the history
     And I revert the product version number 1
     Then the product "t-shirt" should have the following values:
       | description-en_US-tablet | A nice t-shirt. |
@@ -363,7 +389,8 @@ Feature: Revert a product to a previous version
     And I change the "Description" to "One does not simply fill a description."
     And I save the product
     When I open the history
-  When I revert the product version number 1
+    Then I should see 2 versions in the history
+    When I revert the product version number 1
     Then the product "marcel" should have the following values:
       | comment |  |
 
@@ -382,6 +409,7 @@ Feature: Revert a product to a previous version
     When I remove the "Side view" file
     And I save the product
     When I open the history
+    Then I should see 3 versions in the history
     When I revert the product version number 2
     Then the product "t-shirt" should have the following values:
       | side_view | akeneo.jpg |
@@ -402,6 +430,7 @@ Feature: Revert a product to a previous version
     When I remove the "Datasheet" file
     And I save the product
     When I open the history
+    Then I should see 3 versions in the history
     When I revert the product version number 2
     Then the product "t-shirt" should have the following values:
       | datasheet | bic-core-148.txt |
@@ -424,5 +453,6 @@ Feature: Revert a product to a previous version
     And I press the "Save" button
     Then I am on the "helly-hansen" product page
     And I open the history
+    Then I should see 2 versions in the history
     When I revert the product version number 1
     Then I should see a flash message "Product can not be reverted because it belongs to a variant group"

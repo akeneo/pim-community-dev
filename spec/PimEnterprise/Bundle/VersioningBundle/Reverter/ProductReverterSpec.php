@@ -48,10 +48,7 @@ class ProductReverterSpec extends ObjectBehavior
             'bar',
             'foo',
             'csv',
-            [
-                'entity' => 'qux',
-                'use_relative_media_path' => true
-            ]
+            [ 'entity' => 'qux' ]
         )->willReturn($product);
         $saver->save($product)->shouldBeCalled();
 
@@ -85,10 +82,7 @@ class ProductReverterSpec extends ObjectBehavior
             'bar',
             'foo',
             'csv',
-            [
-                'entity' => 'qux',
-                'use_relative_media_path' => true
-            ]
+            [ 'entity' => 'qux' ]
         )->willReturn($product);
 
         $validator->validate($product)->willReturn($violationsList);
