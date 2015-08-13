@@ -1,3 +1,9 @@
+# 1.2.37
+
+## Bug fixes
+- PIM-4748: remove left joins to fix perf issue with many locales
+- PIM-4780: performance issue due to numerous label
+
 # 1.2.36 (2015-07-06)
 
 ## Bug fixes
