@@ -12,6 +12,7 @@ parameters:
     pim_catalog.validator.constraint.variant_group_values.class:           Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValuesValidator
     pim_catalog.validator.constraint.variant_group_axis.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupAxisValidator
     pim_catalog.validator.constraint.has_variant_axes.class:               Pim\Bundle\CatalogBundle\Validator\Constraints\HasVariantAxesValidator
+    pim_catalog.validator.constraint.family_requirements.class:            Pim\Bundle\CatalogBundle\Validator\Constraints\FamilyRequirementsValidator
     pim_catalog.validator.constraint_guesser.chained.class:                Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:                  Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser
     pim_catalog.validator.constraint_guesser.file.class:                   Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\FileGuesser
@@ -113,6 +114,14 @@ services:
         class: %pim_catalog.validator.constraint.has_variant_axes.class%
         tags:
             - { name: validator.constraint_validator, alias: pim_has_variant_axes_validator }
+
+    pim_catalog.validator.constraint.family_requirements:
+        class: %pim_catalog.validator.constraint.family_requirements.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_requirements_validator }
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:

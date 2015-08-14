@@ -4,6 +4,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
         - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
             properties:
                 - code
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\FamilyRequirements: ~
     properties:
         code:
             - NotBlank: ~
