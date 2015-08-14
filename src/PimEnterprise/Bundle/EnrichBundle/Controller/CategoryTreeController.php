@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
@@ -24,16 +23,11 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Overriden category controller
@@ -54,57 +48,40 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @var ObjectRepository */
     protected $categoryAccessRepo;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
-     * @param Request                     $request
-     * @param EngineInterface             $templating
-     * @param RouterInterface             $router
-     * @param TokenStorageInterface       $tokenStorage
-     * @param FormFactoryInterface        $formFactory
-     * @param ValidatorInterface          $validator
-     * @param TranslatorInterface         $translator
      * @param EventDispatcherInterface    $eventDispatcher
-     * @param ManagerRegistry             $doctrine
      * @param CategoryManager             $categoryManager
      * @param UserContext                 $userContext
-     * @param SecurityFacade              $securityFacade
      * @param SaverInterface              $categorySaver
      * @param RemoverInterface            $categoryRemover
      * @param CategoryFactory             $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
      * @param CategoryAccessRepository    $categoryAccessRepo
+     * @param TokenStorageInterface       $tokenStorage
+     * @param SecurityFacade              $securityFacade
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
         CategoryManager $categoryManager,
         UserContext $userContext,
-        SecurityFacade $securityFacade,
         SaverInterface $categorySaver,
         RemoverInterface $categoryRemover,
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
-        CategoryAccessRepository $categoryAccessRepo
+        CategoryAccessRepository $categoryAccessRepo,
+        TokenStorageInterface $tokenStorage,
+        SecurityFacade $securityFacade
     ) {
         parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
             $eventDispatcher,
-            $doctrine,
             $categoryManager,
             $userContext,
-            $securityFacade,
             $categorySaver,
             $categoryRemover,
             $categoryFactory,
@@ -112,6 +89,8 @@ class CategoryTreeController extends BaseCategoryTreeController
         );
 
         $this->categoryAccessRepo = $categoryAccessRepo;
+        $this->tokenStorage       = $tokenStorage;
+        $this->securityFacade     = $securityFacade;
     }
 
     /**

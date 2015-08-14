@@ -50,16 +50,19 @@ services:
     pim_enrich.controller.category_tree:
         scope: request
         class: %pim_enrich.controller.category_tree.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@event_dispatcher'
             - '@pim_catalog.manager.category'
             - '@pim_user.context.user'
-            - '@oro_security.security_facade'
             - '@pim_catalog.saver.category'
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+        calls:
+            - [ setContainer, [ @service_container ] ]
 
     pim_enrich.controller.file:
         scope: request
