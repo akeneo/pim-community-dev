@@ -9,6 +9,7 @@ define(
     [
         'jquery',
         'underscore',
+        'routing',
         'oro/mediator',
         'oro/messenger',
         'oro/datagrid-builder',
@@ -20,6 +21,7 @@ define(
     function (
         $,
         _,
+        Routing,
         mediator,
         messenger,
         datagridBuilder,
@@ -44,7 +46,9 @@ define(
 
                 this.trigger('tab:register', {
                     code: this.code,
-                    isVisible: _.bind(function () { return this.getFormData().meta.is_owner }, this),
+                    isVisible: function () {
+                        return this.getFormData().meta.is_owner;
+                    }.bind(this),
                     label: _.__('pimee_enrich.entity.product.tab.proposals.title')
                 });
 
@@ -63,7 +67,7 @@ define(
              */
             onPostApproveSuccess: function (product) {
                 ProductManager.generateMissing(product)
-                    .then(_.bind(function (product) {
+                    .then(function (product) {
                         this.setData(product);
                         mediator.trigger('pim_enrich:form:entity:post_fetch', product);
 
@@ -71,9 +75,8 @@ define(
                             'success',
                             _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
                         );
-                    }, this));
+                    }.bind(this));
             },
-
 
             /**
              * Callback triggered when an error happens on proposal approval from the grid
@@ -86,7 +89,6 @@ define(
                     _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
                 );
             },
-
 
             /**
              * Callback triggered when a proposal is rejected from the grid
@@ -133,7 +135,7 @@ define(
                 urlParams.params[this.datagrid.paramName] = this.getProductId();
 
                 $.get(Routing.generate('pim_datagrid_load', urlParams))
-                    .then(_.bind(function (response) {
+                    .then(function (response) {
                         this.$('#grid-' + this.datagrid.name).data({
                             metadata: response.metadata,
                             data: JSON.parse(response.data)
@@ -142,7 +144,7 @@ define(
                         require(response.metadata.requireJSModules, function () {
                             datagridBuilder(_.toArray(arguments));
                         });
-                    }, this));
+                    }.bind(this));
             }
         });
     }

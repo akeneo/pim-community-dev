@@ -13,13 +13,13 @@ define(
     function ($, _, Backbone, BaseForm, FieldManager, FetcherRegistry, mediator) {
         return BaseForm.extend({
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            addExtension: function (event) {
+            addFieldExtension: function (event) {
                 event.promises.push(
-                    FetcherRegistry.getFetcher('permission').fetchAll().then(_.bind(function (permissions) {
+                    FetcherRegistry.getFetcher('permission').fetchAll().then(function (permissions) {
                         var field = event.field;
 
                         if (field.attribute.localizable) {
@@ -31,7 +31,7 @@ define(
                         }
 
                         return event;
-                    }, this))
+                    }.bind(this))
                 );
 
                 return this;

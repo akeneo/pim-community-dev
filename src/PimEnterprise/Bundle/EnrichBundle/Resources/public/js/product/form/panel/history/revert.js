@@ -31,7 +31,7 @@ define(
             template: _.template(revertTemplate),
             render: function () {
                 var $revertAction = $(this.template());
-                $revertAction.on('click', _.bind(this.revert, this));
+                $revertAction.on('click', this.revert.bind(this));
 
                 this.getParent().addAction('revert', $revertAction);
 
@@ -43,7 +43,7 @@ define(
                 Dialog.confirm(
                     _.__('pimee_enrich.entity.product.confirmation.revert.content'),
                     _.__('pimee_enrich.entity.product.confirmation.revert.title'),
-                    _.bind(function () {
+                    function () {
                         var navigation = Navigation.getInstance();
                         var loadingMask = new LoadingMask();
                         loadingMask.render().$el.appendTo(this.getRoot().$el).show();
@@ -56,10 +56,10 @@ define(
                                 method: 'GET'
                             }
                         ).done(
-                            _.bind(function () {
+                            function () {
                                 // TODO: We shouldn't force product fetching,
                                 // we should use request response (cf. send for approval)
-                                ProductManager.get(this.getFormData().meta.id).done(_.bind(function (product) {
+                                ProductManager.get(this.getFormData().meta.id).done(function (product) {
                                     navigation.addFlashMessage(
                                         'success',
                                         _.__('pimee_enrich.entity.product.flash.product_reverted')
@@ -71,8 +71,8 @@ define(
 
                                     mediator.trigger('pim_enrich:form:entity:post_fetch', product);
                                     mediator.trigger('pim_enrich:form:entity:post_revert', product);
-                                }, this));
-                            }, this)
+                                }.bind(this));
+                            }.bind(this)
                         ).fail(
                             function (response) {
                                 loadingMask.hide().$el.remove();
@@ -80,7 +80,7 @@ define(
                                 navigation.afterRequest();
                             }
                         );
-                    }, this)
+                    }.bind(this)
                 );
             }
         });

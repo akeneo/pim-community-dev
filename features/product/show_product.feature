@@ -38,9 +38,18 @@ Feature: Show a product
 
   Scenario: View a product in read only mode
     When I am on the "boots" product show page
-    Then the view mode field SKU should contain "boots"
-    And the view mode field Name should contain "Party boots"
-    And the view mode field Price should contain "80.00 EUR, 90.00 USD"
-    And the view mode field Size should contain "M"
-    And the view mode field Main color should contain "Blue"
-    And I should not see a single form input
+    Then the product SKU should be "boots"
+    And the field SKU should be read only
+    And the product Name should be "Party boots"
+    And the field Name should be read only
+    Given I visit the "Marketing" group
+    Then the product Price in USD should be "90.00"
+    And the field Price should be read only
+    Then the product Price in EUR should be "80.00"
+    And the field Price should be read only
+    Given I visit the "Sizes" group
+    And the product Size should be "M"
+    And the field Size should be read only
+    Given I visit the "Colors" group
+    And the product Main color should be "blue"
+    And the field Main color should be read only
