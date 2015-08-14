@@ -1,0 +1,11 @@
+pim_enrich_published_product_categorytree_listtree:
+    path: /list-tree.{_format}
+    defaults: { _controller: pim_enrich.controller.category_tree.published_product:listTreeAction }
+    requirements:
+        _format: json
+
+pim_enrich_published_product_categorytree_children:
+    path: /children.{_format}
+    defaults: { _controller: pim_enrich.controller.category_tree.published_product:childrenAction }
+    requirements:
+        _format: json

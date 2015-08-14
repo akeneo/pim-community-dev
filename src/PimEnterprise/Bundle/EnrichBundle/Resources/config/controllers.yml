@@ -46,8 +46,8 @@ services:
             - '@pim_internal_api_serializer'
             - '@pim_catalog.resolver.fqcn'
 
-    # overidden to filter categories with a chained filter that handles permissions
-    pim_enrich.controller.category_tree:
+    # overidden to filter categories with a category access repository that handles permissions
+    pim_enrich.controller.category_tree.product:
         scope: request
         class: %pim_enrich.controller.category_tree.class%
         arguments:
@@ -58,6 +58,25 @@ services:
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
+            - 'product'
+            - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
+            - '@oro_security.security_facade'
+        calls:
+            - [ setContainer, [ @service_container ] ]
+
+    pim_enrich.controller.category_tree.published_product:
+        scope: request
+        class: %pim_enrich.controller.category_tree.class%
+        arguments:
+            - '@event_dispatcher'
+            - '@pim_catalog.manager.category'
+            - '@pim_user.context.user'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.repository.category'
+            - 'published_product'
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
             - '@oro_security.security_facade'

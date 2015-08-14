@@ -74,6 +74,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         RemoverInterface $categoryRemover,
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
+        $relatedEntity,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,
         SecurityFacade $securityFacade
@@ -85,42 +86,13 @@ class CategoryTreeController extends BaseCategoryTreeController
             $categorySaver,
             $categoryRemover,
             $categoryFactory,
-            $categoryRepository
+            $categoryRepository,
+            $relatedEntity
         );
 
         $this->categoryAccessRepo = $categoryAccessRepo;
         $this->tokenStorage       = $tokenStorage;
         $this->securityFacade     = $securityFacade;
-    }
-
-    /**
-     * Find a category from its id, trows an exception if not found or not granted
-     *
-     * @param int    $categoryId the category id
-     * @param string $context    the retrieving context
-     *
-     * @throws NotFoundHttpException
-     * @throws AccessDeniedException
-     *
-     * @return CategoryInterface
-     */
-    protected function findGrantedCategory($categoryId, $context)
-    {
-        $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE];
-        if (!in_array($context, $allowed)) {
-            throw new AccessDeniedException('You can not access this category');
-        }
-
-        if ($context === self::CONTEXT_MANAGE && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
-            throw new AccessDeniedException('You can not access this category');
-        }
-
-        $category = $this->findCategory($categoryId);
-        if (false === $this->securityFacade->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
-            throw new AccessDeniedException('You can not access this category');
-        }
-
-        return $category;
     }
 
     /**
@@ -133,7 +105,6 @@ class CategoryTreeController extends BaseCategoryTreeController
     {
         $selectNodeId  = $request->get('select_node_id', -1);
         $context       = $request->get('context', false);
-        $relatedEntity = $request->get('related_entity', 'product');
 
         try {
             $selectNode = $this->findGrantedCategory($selectNodeId, $context);
@@ -151,7 +122,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $request->get('include_sub', false),
             'item_count'     => (bool) $request->get('with_items_count', true),
-            'related_entity' => $relatedEntity,
+            'related_entity' => $this->relatedEntity,
         ];
     }
 
@@ -182,5 +153,35 @@ class CategoryTreeController extends BaseCategoryTreeController
         $user = $this->tokenStorage->getToken()->getUser();
 
         return $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+    }
+
+    /**
+     * Find a category from its id, trows an exception if not found or not granted
+     *
+     * @param int    $categoryId the category id
+     * @param string $context    the retrieving context
+     *
+     * @throws NotFoundHttpException
+     * @throws AccessDeniedException
+     *
+     * @return CategoryInterface
+     */
+    protected function findGrantedCategory($categoryId, $context)
+    {
+        $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE];
+        if (!in_array($context, $allowed)) {
+            throw new AccessDeniedException('You can not access this category');
+        }
+
+        if ($context === self::CONTEXT_MANAGE && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
+            throw new AccessDeniedException('You can not access this category');
+        }
+
+        $category = $this->findCategory($categoryId);
+        if (false === $this->securityFacade->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+            throw new AccessDeniedException('You can not access this category');
+        }
+
+        return $category;
     }
 }

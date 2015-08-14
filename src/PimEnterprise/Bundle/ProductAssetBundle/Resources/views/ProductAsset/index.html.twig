@@ -41,7 +41,7 @@
     {% set categoriesGranted = true %}
     <div class="row-fluid {{ categoriesGranted ? 'has-sidebar': '' }}">
         {% if categoriesGranted %}
-            <div id="tree" data-datalocale="{{ dataLocale.code }}" data-relatedentity="asset"></div>
+            <div id="tree" data-datalocale="{{ locale_code() }}"></div>
         {% endif %}
         <div id="product-grid">
             {{ dataGrid.renderStatefulGrid('asset-grid', { dataLocale: dataLocale.code, currentUser: app.user }, {}, 'pimee_asset_categorytree') }}
