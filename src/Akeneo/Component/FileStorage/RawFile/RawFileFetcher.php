@@ -15,6 +15,17 @@ use League\Flysystem\FilesystemInterface;
  */
 class RawFileFetcher implements RawFileFetcherInterface
 {
+    /** @var FilesystemInterface */
+    protected $tmpFilesystem;
+
+    /**
+     * @param FilesystemInterface $tmpFilesystem
+     */
+    public function __construct(FilesystemInterface $tmpFilesystem)
+    {
+        $this->tmpFilesystem = $tmpFilesystem;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -24,13 +35,17 @@ class RawFileFetcher implements RawFileFetcherInterface
             throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $fileKey));
         }
 
-        $localPathname = tempnam(sys_get_temp_dir(), 'raw_file_fetcher_');
-
         if (false === $stream = $filesystem->readStream($fileKey)) {
             throw new FileTransferException(
                 sprintf('Unable to fetch the file "%s" from the filesystem.', $fileKey)
             );
         }
+
+        if (!$this->tmpFilesystem->has(dirname($fileKey))) {
+            $this->tmpFilesystem->createDir(dirname($fileKey));
+        }
+
+        $localPathname = $this->tmpFilesystem->getAdapter()->getPathPrefix() . $fileKey;
 
         if (false === file_put_contents($localPathname, $stream)) {
             throw new FileTransferException(
