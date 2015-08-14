@@ -216,6 +216,7 @@ services:
             - '@liip_imagine.filter.manager'
             - '@oneup_flysystem.mount_manager'
             - ['catalogStorage']
+            - %kernel.root_dir%/../web/bundles/pimenrich/img/img_generic.png
 
     pim_enrich.controller.variant_group:
         scope: request
