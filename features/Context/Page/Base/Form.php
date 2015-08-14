@@ -511,6 +511,11 @@ class Form extends Base
 
         $allValues = array_filter($allValues);
 
+        if (1 === count($allValues) && null !== $label->getParent()->find('css', 'select')) {
+            $value = array_shift($allValues);
+            $this->fillSelectField($label, $value);
+        }
+
         // Fill in remaining values
         $remainingValues = array_diff($allValues, $selectedTextValues);
 
