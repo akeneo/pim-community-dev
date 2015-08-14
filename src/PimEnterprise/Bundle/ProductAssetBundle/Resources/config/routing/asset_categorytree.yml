@@ -4,6 +4,10 @@ pimee_asset_categorytree_listtree:
     requirements:
         _format: json
 
+pimee_asset_categorytree_movenode:
+    path: /move-node
+    defaults: { _controller: pimee_product_asset.controller.category_tree:moveNodeAction }
+
 pimee_asset_categorytree_children:
     path: /children.{_format}
     defaults: { _controller: pimee_product_asset.controller.category_tree:childrenAction }
@@ -13,3 +17,20 @@ pimee_asset_categorytree_children:
 pimee_asset_categorytree_index:
     path: /
     defaults: { _controller: pimee_product_asset.controller.category_tree:indexAction }
+
+pimee_asset_categorytree_create:
+    path: /create/{parent}
+    defaults: { _controller: pimee_product_asset.controller.category_tree:createAction, parent: null }
+
+pimee_asset_categorytree_edit:
+    path: /{id}/edit
+    defaults: { _controller: pimee_product_asset.controller.category_tree:editAction }
+    requirements:
+        id: \d+
+
+pimee_asset_categorytree_remove:
+    path: /{id}/remove
+    defaults: { _controller: pimee_product_asset.controller.category_tree:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]
