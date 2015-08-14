@@ -73,7 +73,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
 
         if (!$this->isExecuted) {
             $this->isExecuted = true;
-            $this->products = $this->getProductsCursor($configuration['filters']);
+            $this->products   = $this->getProductsCursor($configuration['filters']);
         }
 
         $result = $this->products->current();
@@ -107,7 +107,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /**
      * @param array $filters
      *
-     * @return \Akeneo\Component\StorageUtils\Cursor\CursorInterface
+     * @return CursorInterface
      */
     protected function getProductsCursor(array $filters)
     {
