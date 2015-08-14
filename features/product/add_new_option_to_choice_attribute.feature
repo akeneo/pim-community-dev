@@ -39,7 +39,7 @@ Feature: Add a new option to a choice attribute directly from the product edit f
       | Code  | very_wet      |
       | en_US | Extremely wet |
     And I press the "Save" button in the popin
-    And I save the product
-    And I am on the "shoes" product page
+    And I press "Save and back" on the "Save" dropdown button
+    And I click on the "shoes" row
     When I fill in the following information:
       | Weather conditions | Extremely wet |
