@@ -14,9 +14,9 @@ define([
              * {@inheritdoc}
              */
             configure: function () {
-                _.each(module.config().events, _.bind(function (event) {
+                _.each(module.config().events, function (event) {
                     this.listenTo(mediator, event, this.checkStructureVersion);
-                }, this));
+                }.bind(this));
 
                 this.listenTo(mediator, 'pim_enrich:form:cache:clear', this.clearCache);
 

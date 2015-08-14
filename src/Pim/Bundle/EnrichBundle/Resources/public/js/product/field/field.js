@@ -68,10 +68,10 @@ define([
                 mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises});
 
                 $.when.apply($, promises)
-                    .then(_.bind(function () {
+                    .then(function () {
                         return this.getTemplateContext();
-                    }, this))
-                    .then(_.bind(function (templateContext) {
+                    }.bind(this))
+                    .then(function (templateContext) {
                         this.$el.html(this.template(templateContext));
 
                         if (this.inputCanBeSeen(this.context)) {
@@ -82,20 +82,20 @@ define([
                             );
                         }
 
-                        _.each(this.elements, _.bind(function (elements, position) {
+                        _.each(this.elements, function (elements, position) {
                             var $container = this.$('.' + position + '-elements-container');
                             $container.empty();
-                            _.each(elements, _.bind(function (element) {
+                            _.each(elements, function (element) {
                                 if (typeof element.render === 'function') {
                                     $container.append(element.render().$el);
                                 } else {
                                     $container.append(element);
                                 }
-                            }, this));
-                        }, this));
+                            }.bind(this));
+                        }.bind(this));
                         this.postRender();
                         this.delegateEvents();
-                    }, this));
+                    }.bind(this));
 
                 return this;
             },
@@ -123,7 +123,7 @@ define([
              */
             renderCopyInput: function (value) {
                 return this.getTemplateContext()
-                    .then(_.bind(function (context) {
+                    .then(function (context) {
                         var copyContext = $.extend(true, {}, context);
                         copyContext.value = value;
                         copyContext.context.locale = value.locale;
@@ -133,7 +133,7 @@ define([
                         return this.inputCanBeSeen(copyContext.context) ?
                             this.renderInput(copyContext) :
                             _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
-                    }, this));
+                    }.bind(this));
             },
 
             /**

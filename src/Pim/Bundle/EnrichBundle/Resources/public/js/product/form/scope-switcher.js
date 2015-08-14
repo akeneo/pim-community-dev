@@ -24,7 +24,7 @@ define(
             render: function () {
                 FetcherRegistry.getFetcher('channel')
                     .fetchAll()
-                    .done(_.bind(function (channels) {
+                    .done(function (channels) {
                         if (!this.getParent().getScope()) {
                             this.getParent().setScope(channels[0].code, {silent: true});
                         }
@@ -36,7 +36,7 @@ define(
                             })
                         );
                         this.delegateEvents();
-                    }, this)
+                    }.bind(this)
                 );
 
                 return this;

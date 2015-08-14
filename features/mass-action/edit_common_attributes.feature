@@ -204,6 +204,7 @@ Feature: Edit common attributes of many products at once
       | SKU    | Shoes      |
       | Family | high_heels |
     And I press the "Save" button in the popin
+    Then I should be on the product "Shoes" edit page
     And I am on the products page
     When I mass-edit products Shoes
     And I choose the "Edit common attributes" operation

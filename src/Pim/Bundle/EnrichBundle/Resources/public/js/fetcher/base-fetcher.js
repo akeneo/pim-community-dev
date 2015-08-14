@@ -78,11 +78,11 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          * @return Promise
          */
         fetchByIdentifiers: function (identifiers) {
-            _.each(identifiers, _.bind(function (identifier) {
+            _.each(identifiers, function (identifier) {
                 if (identifier in this.entityPromises) {
                     identifiers = _.without(identifiers, identifier);
                 }
-            }, this));
+            }.bind(this));
 
             if (0 === identifiers.length) {
                 return getObjects(this.entityPromises);
@@ -93,13 +93,13 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                         .then(_.identity),
                     this.getIdentifierField()
                 )
-                .then(_.bind(function (entities, identifierCode) {
-                    _.each(entities, _.bind(function (entity) {
+                .then(function (entities, identifierCode) {
+                    _.each(entities, function (entity) {
                         this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity);
-                    }, this));
+                    }.bind(this));
 
                     return getObjects(this.entityPromises);
-                }, this));
+                }.bind(this));
         },
         /**
          * Get the identifier attribute of the collection

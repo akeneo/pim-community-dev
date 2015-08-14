@@ -9,7 +9,7 @@ pim_enrich_product_create:
     defaults: { _controller: pim_enrich.controller.product:createAction, dataLocale: null }
 
 pim_enrich_product_edit:
-    path: /{id}/edit
+    path: /{id}
     defaults: { _controller: pim_enrich.controller.rest.product:editAction }
     requirements:
         id: '[0-9a-f]+'
@@ -21,13 +21,6 @@ pim_enrich_product_toggle_status:
     requirements:
         id: '[0-9a-f]+'
     methods: [GET, POST]
-
-pim_enrich_product_update:
-    path: /{id}
-    defaults: { _controller: pim_enrich.controller.product:updateAction }
-    requirements:
-        id: '[0-9a-f]+'
-    methods: [POST]
 
 pim_enrich_product_remove:
     path: /{id}/remove
@@ -43,25 +36,6 @@ pim_enrich_product_listcategories:
         id: '[0-9a-f]+'
         categoryId: \d+
         _format: json
-
-pim_enrich_associations:
-    path: /{id}/associations
-    defaults: { _controller: pim_enrich.controller.association:associationsAction }
-    requirements:
-        id: '[0-9a-f]+'
-
-pim_enrich_product_completeness:
-    path: /{id}/completeness
-    defaults: { _controller: pim_enrich.controller.completeness:completenessAction }
-    requirements:
-        id: '[0-9a-f]+'
-
-pim_enrich_product_history:
-    path: /{id}/history.{_format}
-    defaults: { _controller: pim_enrich.controller.product:historyAction, _format: html }
-    requirements:
-        id: '[0-9a-f]+'
-        _format: html|json
 
 pim_enrich_product_rest_get:
     path: /rest/{id}

@@ -35,7 +35,7 @@ define(
                     label: _.__('pim_enrich.form.product.panel.completeness.title')
                 });
 
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.update);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.update);
                 this.listenTo(mediator, 'pim_enrich:form:change-family:after', this.onChangeFamily);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -56,7 +56,7 @@ define(
                             this.getFormData().family
                         ),
                         FetcherRegistry.getFetcher('locale').fetchAll()
-                    ).then(_.bind(function (completeness, locales) {
+                    ).then(function (completeness, locales) {
                         this.$el.html(
                             this.template({
                                 hasFamily: this.getFormData().family !== null,
@@ -66,7 +66,7 @@ define(
                             })
                         );
                         this.delegateEvents();
-                    }, this));
+                    }.bind(this));
                 }
 
                 return this;

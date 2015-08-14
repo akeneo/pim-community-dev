@@ -27,12 +27,12 @@ define(
                 this.state = new Backbone.Model();
 
                 this.listenTo(this.state, 'change', this.render);
-                window.addEventListener('resize', _.bind(this.resize, this));
+                window.addEventListener('resize', this.resize.bind(this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.onExtensions('panel:register', _.bind(this.registerPanel, this));
+                this.onExtensions('panel:register', this.registerPanel.bind(this));
                 this.listenTo(this.getParent().state, 'change:fullPanel', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
 
@@ -51,20 +51,21 @@ define(
 
                 this.$el[this.state.get('currentPanel') ? 'removeClass' : 'addClass']('closed');
 
+                var currentPanel = _.findWhere(this.state.get('panels'), {code: this.state.get('currentPanel')});
                 this.$el.html(
                     this.template({
-                        state: this.state.toJSON()
+                        label: currentPanel ? currentPanel.label : this.state.get('currentPanel')
                     })
                 );
                 this.initializeDropZones();
 
                 if (this.state.get('currentPanel')) {
-                    var currentPanel = this.extensions[this.state.get('currentPanel')];
+                    currentPanel = this.getExtension(this.state.get('currentPanel'));
                     this.renderExtension(currentPanel);
                     this.getZone('panel-content').appendChild(currentPanel.el);
                 }
 
-                var selectorExtension = this.extensions.selector;
+                var selectorExtension = this.getExtension('selector');
                 this.renderExtension(selectorExtension);
                 this.getParent().$('>header').append(selectorExtension.$el);
 

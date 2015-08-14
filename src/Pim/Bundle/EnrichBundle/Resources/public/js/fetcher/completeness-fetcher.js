@@ -19,11 +19,11 @@ define(['jquery', 'underscore', 'routing', 'pim/base-fetcher'], function ($, _, 
 
                 return this.entityPromises[productId];
             } else {
-                return this.entityPromises[productId].then(_.bind(function (completeness) {
+                return this.entityPromises[productId].then(function (completeness) {
                     return (family !== completeness.family) ?
                         {completenesses: {}, family: family} :
                         this.entityPromises[productId];
-                }, this));
+                }.bind(this));
             }
 
         }

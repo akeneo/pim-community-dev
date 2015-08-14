@@ -37,16 +37,14 @@ define(
             updateSuccessMessage: _.__('pim_enrich.entity.product.info.update_successful'),
             updateFailureMessage: _.__('pim_enrich.entity.product.info.update_failed'),
             configure: function () {
-                if ('save-buttons' in this.parent.extensions) {
-                    this.parent.extensions['save-buttons'].addButton({
-                        className: 'save-product',
-                        priority: 200,
-                        label: _.__('pim_enrich.entity.product.btn.save'),
-                        events: {
-                            'click .save-product': _.bind(this.save, this)
-                        }
-                    });
-                }
+                this.trigger('save-buttons:register-button', {
+                    className: 'save-product',
+                    priority: 200,
+                    label: _.__('pim_enrich.entity.product.btn.save'),
+                    events: {
+                        'click .save-product': this.save.bind(this)
+                    }
+                });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -82,8 +80,8 @@ define(
 
                 return ProductManager
                     .save(productId, product)
-                    .then(ProductManager.generateMissing)
-                    .then(_.bind(function (data) {
+                    .then(ProductManager.generateMissing.bind(ProductManager))
+                    .then(function (data) {
                         messenger.notificationFlashMessage(
                             'success',
                             this.updateSuccessMessage
@@ -92,8 +90,8 @@ define(
                         this.setData(data, options);
 
                         mediator.trigger('pim_enrich:form:entity:post_fetch', data);
-                    }, this))
-                    .fail(_.bind(function (response) {
+                    }.bind(this))
+                    .fail(function (response) {
                         switch (response.status) {
                             case 400:
                                 mediator.trigger(
@@ -113,7 +111,7 @@ define(
                             'error',
                             this.updateFailureMessage
                         );
-                    }, this))
+                    }.bind(this))
                     .always(function () {
                         loadingMask.hide().$el.remove();
                     });

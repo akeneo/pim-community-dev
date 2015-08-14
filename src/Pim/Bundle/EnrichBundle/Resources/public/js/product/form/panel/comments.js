@@ -48,7 +48,7 @@ define(
                     return this;
                 }
 
-                this.loadData().done(_.bind(function (data) {
+                this.loadData().done(function (data) {
                     this.comments = data;
 
                     this.$el.html(
@@ -58,7 +58,7 @@ define(
                         })
                     );
                     this.delegateEvents();
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -91,10 +91,10 @@ define(
                     url: Routing.generate('pim_enrich_product_comments_rest_post', { id: this.getFormData().meta.id }),
                     contentType: 'application/json',
                     data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
-                }).done(_.bind(function () {
+                }).done(function () {
                     this.render();
                     messenger.notificationFlashMessage('success', _.__('flash.comment.create.success'));
-                }, this)).fail(function () {
+                }.bind(this)).fail(function () {
                     messenger.notificationFlashMessage('error', _.__('flash.comment.create.error'));
                 });
             },
@@ -104,10 +104,10 @@ define(
                     type: 'POST',
                     headers: { accept: 'application/json' },
                     data: { _method: 'DELETE' }
-                }).done(_.bind(function () {
+                }).done(function () {
                     this.render();
                     messenger.notificationFlashMessage('success', _.__('flash.comment.delete.success'));
-                }, this)).fail(function () {
+                }.bind(this)).fail(function () {
                     messenger.notificationFlashMessage('error', _.__('flash.comment.delete.error'));
                 });
             },
@@ -125,11 +125,11 @@ define(
                     ),
                     contentType: 'application/json',
                     data: JSON.stringify({ 'body': $thread.find('textarea').val()})
-                }).done(_.bind(function () {
+                }).done(function () {
                     $thread.find('textarea').val('');
                     this.render();
                     messenger.notificationFlashMessage('success', _.__('flash.comment.reply.success'));
-                }, this)).fail(function () {
+                }.bind(this)).fail(function () {
                     messenger.notificationFlashMessage('error', _.__('flash.comment.reply.error'));
                 });
             }

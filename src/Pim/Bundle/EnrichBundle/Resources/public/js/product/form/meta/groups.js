@@ -11,6 +11,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/mediator',
         'backbone',
         'pim/form',
         'routing',
@@ -26,6 +27,7 @@ define(
     function (
         $,
         _,
+        mediator,
         Backbone,
         BaseForm,
         Routing,
@@ -39,13 +41,14 @@ define(
     ) {
         var FormView = BaseForm.extend({
             tagName: 'span',
+            className: 'product-groups',
             template: _.template(formTemplate),
             modalTemplate: _.template(modalTemplate),
             events: {
                 'click a[data-group]': 'displayModal'
             },
             configure: function () {
-                this.listenTo(this.getFormModel(), 'change:groups', this.render);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -54,14 +57,14 @@ define(
                     return this;
                 }
 
-                GroupManager.getProductGroups(this.getFormData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     this.$el.html(
                         this.template({
                             groups: groups,
                             locale: UserContext.get('catalogLocale')
                         })
                     );
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -71,13 +74,13 @@ define(
                 ).then(_.identity);
             },
             displayModal: function (event) {
-                GroupManager.getProductGroups(this.getFormData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     var group = _.findWhere(groups, { code: event.currentTarget.dataset.group });
 
                     $.when(
                         this.getProductList(group.code),
                         FetcherRegistry.getFetcher('attribute').getIdentifierField()
-                    ).done(_.bind(function (productList, identifier) {
+                    ).done(function (productList, identifier) {
                         var groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,
                             okText: _.__('pim_enrich.entity.product.meta.groups.modal.view_group'),
@@ -116,8 +119,8 @@ define(
                                 )
                             );
                         });
-                    }, this));
-                }, this));
+                    }.bind(this));
+                }.bind(this));
             }
         });
 

@@ -25,7 +25,7 @@ define(
             render: function () {
                 FetcherRegistry.getFetcher('locale')
                     .fetchAll()
-                    .done(_.bind(function (locales) {
+                    .done(function (locales) {
                         this.$el.html(
                             this.template({
                                 locales: locales,
@@ -34,7 +34,7 @@ define(
                             })
                         );
                         this.delegateEvents();
-                    }, this)
+                    }.bind(this)
                 );
 
                 return this;

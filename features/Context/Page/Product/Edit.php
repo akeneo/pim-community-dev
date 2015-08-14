@@ -21,7 +21,7 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/enrich/product/{id}/edit';
+    protected $path = '/enrich/product/{id}';
 
     /**
      * {@inheritdoc}
@@ -1479,7 +1479,7 @@ class Edit extends Form
     public function changeFamily($family)
     {
         $changeLink = $this->spin(function () {
-            return $this->getElement('Meta zone')->find('css', '.family > .change-family');
+            return $this->getElement('Meta zone')->find('css', '.product-family > .change-family');
         });
 
         $changeLink->click();
@@ -1497,7 +1497,7 @@ class Edit extends Form
         $validationButton->click();
 
         return $this->spin(function () use ($family) {
-            return $this->getElement('Meta zone')->find('css', '.family .product-family')->getHTML();
+            return $this->getElement('Meta zone')->find('css', '.product-family .product-family')->getHTML();
         });
     }
 

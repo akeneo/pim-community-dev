@@ -243,8 +243,6 @@ Feature: Display the completeness of a product
      | column   | value |
      | complete | 50%   |
 
-  # Does not work jira https://akeneo.atlassian.net/browse/PIM-4489
-  @skip-pef
   Scenario: Don't display the completeness if the family is not defined
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel

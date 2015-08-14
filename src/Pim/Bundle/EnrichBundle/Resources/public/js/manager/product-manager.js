@@ -21,12 +21,12 @@ define([
             productValues: null,
             get: function (id) {
                 return $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
-                    .then(_.bind(function (product) {
+                    .then(function (product) {
                         var cacheInvalidator = new CacheInvalidator();
                         cacheInvalidator.checkStructureVersion(product);
 
                         return this.generateMissing(product);
-                    }, this))
+                    }.bind(this))
                     .then(function (product) {
 
                         mediator.trigger('pim_enrich:form:product:post_fetch', product);
@@ -41,11 +41,11 @@ define([
                     url: Routing.generate('pim_enrich_product_rest_get', {id: id}),
                     contentType: 'application/json',
                     data: JSON.stringify(data)
-                }).then(_.bind(function (product) {
+                }).then(function (product) {
                     mediator.trigger('pim_enrich:form:entity:post_save', product);
 
                     return product;
-                }, this));
+                }.bind(this));
             },
             remove: function (id) {
                 return $.ajax({
@@ -57,16 +57,16 @@ define([
             },
             getValues: function (product) {
                 return AttributeManager.getAttributesForProduct(product).then(function (attributes) {
-                    _.each(attributes, _.bind(function (attributeCode) {
+                    _.each(attributes, function (attributeCode) {
                         if (!product.values[attributeCode]) {
                             product.values[attributeCode] = [];
                         }
-                    }, this));
+                    }.bind(this));
 
                     return product.values;
                 });
             },
-            generateMissing: function (product) {
+            doGenerateMissing: function (product) {
                 return $.when(
                     FetcherRegistry.getFetcher('attribute').fetchAll(),
                     FetcherRegistry.getFetcher('locale').fetchAll(),
@@ -93,6 +93,9 @@ define([
 
                     return product;
                 });
+            },
+            generateMissing: function (product) {
+                return this.doGenerateMissing(product);
             }
         };
     }

@@ -41,7 +41,6 @@
                     </script>
                 {% endblock messages %}
             </div>
-
         </div>
         {% endblock before_content %}
         <div class="hash-loading-mask"></div>
@@ -58,16 +57,18 @@
                             function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
-                                        FormBuilder.build('pim/product-edit-form')
-                                            .done(function (form) {
-                                                ProductManager.get('{{ productId }}').done(function (product) {
-                                                    document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
-                                                    form.setData(product);
+                                        ProductManager.get('{{ productId }}')
+                                            .then(function (product) {
+                                                document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
 
-                                                    mediator.trigger('pim_enrich:form:entity:post_fetch', product);
+                                                FormBuilder.build(product.meta.form)
+                                                    .then(function (form) {
+                                                        form.setData(product);
 
-                                                    form.setElement('#product-edit-form').render();
-                                                });
+                                                        mediator.trigger('pim_enrich:form:entity:post_fetch', product);
+
+                                                        form.setElement('#product-edit-form').render();
+                                                    });
                                             }).fail(function(response, textStatus, errorThrown) {
                                                 switch (response.status) {
                                                     case 400:
@@ -80,7 +81,6 @@
                                 });
                             });
                     </script>
-
                     {% placeholder content_after %}
                 {% endblock content %}
             {% endblock page_container %}
