@@ -49,8 +49,8 @@ class UnpublishProductCommand extends ContainerAwareCommand
             return 1;
         }
 
-        $publishedProductManager = $this->getPublishedProductManager();
-        $publishedProductManager->unpublish($publishedProduct);
+        $manager = $this->getPublishedProductManager();
+        $manager->unpublish($publishedProduct);
 
         $output
             ->writeln(

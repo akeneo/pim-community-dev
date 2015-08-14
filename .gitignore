@@ -11,6 +11,7 @@ app/export/*
 app/emails/*
 app/uploads/*
 app/uploads/product/*
+app/file_storage/*
 app/bootstrap.php.cache
 build/
 vendor
