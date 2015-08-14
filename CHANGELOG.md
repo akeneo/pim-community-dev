@@ -1,4 +1,4 @@
-# 1.3.20
+# 1.3.20 (2015-08-14)
 
 ## Bug fixes
 - PIM-4737: Fix a bug with the select2 cache.
