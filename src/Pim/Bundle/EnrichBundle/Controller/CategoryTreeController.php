@@ -7,10 +7,10 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Classification\Factory\CategoryFactory;
+use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -52,6 +52,9 @@ class CategoryTreeController extends Controller
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
+    /** @var string */
+    protected $relatedEntity;
+
     /**
      * Constructor
      *
@@ -62,6 +65,7 @@ class CategoryTreeController extends Controller
      * @param RemoverInterface            $categoryRemover
      * @param CategoryFactory             $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
+     * @param string                      $relatedEntity
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -70,7 +74,8 @@ class CategoryTreeController extends Controller
         SaverInterface $categorySaver,
         RemoverInterface $categoryRemover,
         CategoryFactory $categoryFactory,
-        CategoryRepositoryInterface $categoryRepository
+        CategoryRepositoryInterface $categoryRepository,
+        $relatedEntity
     ) {
         $this->eventDispatcher    = $eventDispatcher;
         $this->categoryManager    = $categoryManager;
@@ -79,6 +84,7 @@ class CategoryTreeController extends Controller
         $this->categoryRemover    = $categoryRemover;
         $this->categoryFactory    = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
+        $this->relatedEntity      = $relatedEntity;
     }
 
     /**
@@ -95,12 +101,11 @@ class CategoryTreeController extends Controller
     public function listTreeAction(Request $request)
     {
         $selectNodeId  = $request->get('select_node_id', -1);
-        $relatedEntity = $request->get('related_entity', 'product');
 
         try {
             $selectNode = $this->findCategory($selectNodeId);
         } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getUserCategoryTree($relatedEntity);
+            $selectNode = $this->userContext->getUserCategoryTree($this->relatedEntity);
         }
 
         return [
@@ -108,7 +113,7 @@ class CategoryTreeController extends Controller
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $request->get('include_sub', false),
             'item_count'     => (bool) $request->get('with_items_count', true),
-            'related_entity' => $relatedEntity
+            'related_entity' => $this->relatedEntity
         ];
     }
 
@@ -179,7 +184,6 @@ class CategoryTreeController extends Controller
         $withItemsCount = (bool) $request->get('with_items_count', false);
         $includeParent  = (bool) $request->get('include_parent', false);
         $includeSub     = (bool) $request->get('include_sub', false);
-        $relatedEntity  = $request->get('related_entity', 'product');
 
         return $this->render(
             $view,
@@ -189,7 +193,7 @@ class CategoryTreeController extends Controller
                 'include_sub'    => $includeSub,
                 'item_count'     => $withItemsCount,
                 'select_node'    => $selectNode,
-                'related_entity' => $relatedEntity
+                'related_entity' => $this->relatedEntity
             ],
             new JsonResponse()
         );
@@ -204,7 +208,7 @@ class CategoryTreeController extends Controller
     public function indexAction()
     {
         return [
-            'type' => 'asset',
+            'related_entity' => $this->relatedEntity,
         ];
     }
 
@@ -220,12 +224,10 @@ class CategoryTreeController extends Controller
      */
     public function createAction(Request $request, $parent = null)
     {
+        $category = $this->categoryFactory->create();
         if ($parent) {
-            $parent   = $this->findCategory($parent);
-            $category = $this->categoryFactory->create();
+            $parent = $this->findCategory($parent);
             $category->setParent($parent);
-        } else {
-            $category = $this->categoryFactory->create();
         }
 
         $category->setCode($request->get('label'));
@@ -247,7 +249,8 @@ class CategoryTreeController extends Controller
         return $this->render(
             sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             [
-                'form' => $form->createView(),
+                'form'           => $form->createView(),
+                'related_entity' => $this->relatedEntity,
             ]
         );
     }
@@ -281,7 +284,8 @@ class CategoryTreeController extends Controller
         return $this->render(
             sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             [
-                'form' => $form->createView(),
+                'form'           => $form->createView(),
+                'related_entity' => $this->relatedEntity,
             ]
         );
     }

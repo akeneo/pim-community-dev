@@ -69,7 +69,7 @@ services:
             - '@pim_catalog.remover.attribute_group'
             - %pim_catalog.entity.attribute.class%
 
-    pim_enrich.controller.category_tree:
+    pim_enrich.controller.category_tree.product:
         scope: request
         class: %pim_enrich.controller.category_tree.class%
         arguments:
@@ -80,6 +80,7 @@ services:
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
+            - 'product'
         calls:
             - [ setContainer, [ @service_container ] ]
 

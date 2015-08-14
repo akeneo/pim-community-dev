@@ -14,12 +14,12 @@
                     }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
                     ).on('click', function () {
-                        Backbone.history.navigate('url={{ path("pim_enrich_categorytree_create") }}', { trigger: true });
+                        Backbone.history.navigate('url={{ path(category_route('categorytree_create', related_entity)) }}', { trigger: true });
                     }).tooltip());
                 {% endif %}
                 // Instantiate sidebar
                 $('#category-tree-container').sidebarize({ buttons: buttons });
-                new TreeManage('#tree');
+                new TreeManage('#tree', '{{ category_route('categorytree_listtree', related_entity) }}', '{{ category_route('categorytree_children', related_entity) }}');
             });
         }
     );

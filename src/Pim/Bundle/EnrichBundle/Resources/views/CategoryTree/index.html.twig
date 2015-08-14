@@ -18,7 +18,7 @@
                     <br/>
                     <br/>
                     {{ 'category.or'|trans }}
-                    <a href="{{ path('pim_enrich_categorytree_create') }}">
+                    <a href="{{ path(category_route('categorytree_create', related_entity)) }}">
                         <span class="label link-label large">{{ 'category.create new'|trans }}</span>
                     </a>
                 {% endif %}
