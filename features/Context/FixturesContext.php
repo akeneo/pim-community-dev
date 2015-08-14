@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
@@ -27,6 +28,7 @@ use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 
 /**
  * A context for creating entities
@@ -1545,6 +1547,36 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^I set the updated date of the (product "([^"]+)") to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateIs(ProductInterface $product, $identifier, $expected)
+    {
+        $product->setUpdated(new \DateTime($expected));
+
+        $this->getProductSaver()->save($product, ['recalculate' => false]);
+    }
+
+    /**
+     * Asserts that we have less than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertLessThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
+     * Asserts that we have more than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should not be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldNotBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertGreaterThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
      * @param string $identifier
      * @param string $attribute
      * @param string $locale
@@ -1990,6 +2022,14 @@ class FixturesContext extends RawMinkContext
     protected function getProductManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.product');
+    }
+
+    /**
+     * @return ProductSaver
+     */
+    protected function getProductSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.product');
     }
 
     /**

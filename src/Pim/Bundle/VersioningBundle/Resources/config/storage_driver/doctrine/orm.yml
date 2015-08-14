@@ -21,3 +21,10 @@ services:
             - '@database_connection'
             - '@doctrine.orm.default_entity_manager'
             - '@pim_catalog.doctrine.table_name_builder'
+
+    pim_versioning.event_subscriber.timestampable:
+        class: %pim_versioning.event_subscriber.timestampable.class%
+        arguments:
+            - @akeneo_storage_utils.doctrine.smart_manager_registry
+        tags:
+            - { name: doctrine.event_subscriber }

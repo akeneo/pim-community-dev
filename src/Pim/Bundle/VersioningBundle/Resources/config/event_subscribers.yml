@@ -1,7 +1,8 @@
 parameters:
-    pim_versioning.event_subscriber.addversion.class: Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber
-    pim_versioning.event_subscriber.adduser.class:    Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber
-    pim_versioning.event_subscriber.addcontext.class: Pim\Bundle\VersioningBundle\EventSubscriber\AddContextSubscriber
+    pim_versioning.event_subscriber.addversion.class:    Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber
+    pim_versioning.event_subscriber.adduser.class:       Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber
+    pim_versioning.event_subscriber.addcontext.class:    Pim\Bundle\VersioningBundle\EventSubscriber\AddContextSubscriber
+    pim_versioning.event_subscriber.timestampable.class: Pim\Bundle\VersioningBundle\EventSubscriber\TimestampableSubscriber
 
 services:
     pim_versioning.event_subscriber.addversion:
