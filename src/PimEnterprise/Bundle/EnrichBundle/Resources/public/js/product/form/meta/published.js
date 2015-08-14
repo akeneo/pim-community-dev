@@ -20,9 +20,7 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        label: _.__('pimee_enrich.entity.product.meta.published') +
-                            ': ' +
-                            this.getFormData().meta.published.version
+                        product: this.getFormData()
                     })
                 );
 
