@@ -1,0 +1,8 @@
+services:
+    pim_enrich.imagine.loader.flysystem:
+        class: %pim_enrich.imagine.loader.flysystem.class%
+        arguments:
+            - '@oneup_flysystem.mount_manager'
+            - ['catalogStorage', 'assetStorage']
+        tags:
+            - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }

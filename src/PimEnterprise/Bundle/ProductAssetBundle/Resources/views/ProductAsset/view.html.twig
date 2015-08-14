@@ -83,7 +83,7 @@
                                         <div class="row-fluid">
 
                                             <figure class="thumbnail">
-                                                <img src="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.key, 'filter': 'thumbnail' }) }}">
+                                                <img src="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.key|url_encode, 'filter': 'thumbnail' }) }}">
                                             </figure>
 
                                             <table class="table">
@@ -97,7 +97,7 @@
                                                     <tr>
                                                         <td>{{ attachment.reference.file.originalFilename }}</td>
                                                         <td>
-                                                            <a class="btn btn-info btn-mini no-hash" download="{{ attachment.reference.file.originalFilename }}" href="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.key }) }}">
+                                                            <a class="btn btn-info btn-mini no-hash" download="{{ attachment.reference.file.originalFilename }}" href="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.key|url_encode }) }}">
                                                                 {{'pimee_product_asset.enrich_asset.view.download'|trans}}
                                                             </a>
                                                         </td>
@@ -143,7 +143,7 @@
                                                                 <td>{{ variation.entity.file.size|number_format(0, '.', ' ') }} ko</td>
                                                                 <td>{{ variation.entity.file.mimeType }}</td>
                                                                 <td>
-                                                                    <a class="btn btn-info btn-mini no-hash" download="{{ variation.entity.file.originalFilename }}" href="{{ path('pim_enrich_media_show', { 'filename': variation.entity.file.key }) }}">
+                                                                    <a class="btn btn-info btn-mini no-hash" download="{{ variation.entity.file.originalFilename }}" href="{{ path('pim_enrich_media_show', { 'filename': variation.entity.file.key|url_encode }) }}">
                                                                         {{'pimee_product_asset.enrich_asset.view.download'|trans}}
                                                                     </a>
                                                                 </td>

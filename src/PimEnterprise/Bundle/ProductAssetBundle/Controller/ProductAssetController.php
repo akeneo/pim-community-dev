@@ -346,6 +346,7 @@ class ProductAssetController extends Controller
 
             return $this->redirectAfterEdit($request, ['id' => $id]);
         } elseif ($assetForm->isSubmitted()) {
+            $this->setFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
             // TODO find a better way
             $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
         }
