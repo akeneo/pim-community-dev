@@ -72,15 +72,16 @@ services:
     pim_enrich.controller.category_tree:
         scope: request
         class: %pim_enrich.controller.category_tree.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@event_dispatcher'
             - '@pim_catalog.manager.category'
             - '@pim_user.context.user'
-            - '@oro_security.security_facade'
             - '@pim_catalog.saver.category'
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
+        calls:
+            - [ setContainer, [ @service_container ] ]
 
     pim_enrich.controller.channel:
         scope: request
