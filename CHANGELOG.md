@@ -1,3 +1,8 @@
+# 1.3.20
+
+## Bug fixes
+- PIM-4737: Fix a bug with the select2 cache.
+
 # 1.3.19 (2015-08-13)
 
 ## Bug fixes
@@ -6,7 +11,6 @@
 - PIM-4444: performances issues with product display with 10 locales (attribute and attribute group translations)
 - PIM-4756: Filter issue with the option "start with" "0" on the product grid
 - PIM-4758: Fixed attribute filtering on method getFullProducts (Github issue #3028)
-- PIM-4737: Fix a bug with the select2 cache.
 
 # 1.3.18 (2015-07-09)
 
