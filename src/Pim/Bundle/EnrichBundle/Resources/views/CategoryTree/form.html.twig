@@ -17,8 +17,8 @@
 {{ JSFV(form) }}
 {{ form_start(form, {
     'action': form.vars.value.id ?
-        path('pim_enrich_categorytree_edit', { id: form.vars.value.id }) :
-        path('pim_enrich_categorytree_create', { parent: parentId }),
+        path(category_route('categorytree_edit', related_entity), { id: form.vars.value.id }) :
+        path(category_route('categorytree_create', related_entity), { parent: parentId }),
     'attr': {
         'data-updated-title': 'confirmation.leave'|trans,
         'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': (entityName ~ '.title')|trans })
@@ -27,7 +27,7 @@
 
     {% set buttons %}
         {% if form.vars.value.id %}
-            {% if exceeds_products_limit_for_removal(form.vars.value, true) %}
+            {% if exceeds_products_limit_for_removal(form.vars.value, true, related_entity) %}
                 {{ elements.link(
                     'btn.delete',
                     null,
@@ -43,9 +43,9 @@
                 ) }}
             {% else %}
                 {{ elements.deleteLink(
-                    path('pim_enrich_categorytree_remove', { id: form.vars.value.id }),
+                    path(category_route('categorytree_remove', related_entity), { id: form.vars.value.id }),
                     'pim_enrich_product_category_remove',
-                    form.vars.value.parent ? path('pim_enrich_categorytree_edit', { id: form.vars.value.parent.id }) : path('pim_enrich_categorytree_create'),
+                    form.vars.value.parent ? path(category_route('categorytree_edit', related_entity), { id: form.vars.value.parent.id }) : path(category_route('categorytree_create', related_entity)),
                     'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
                     ~ 'info.category.remove children'|trans ~ '<br />'
                     ~ 'info.category.keep products'|trans,
@@ -53,7 +53,7 @@
                 ) }}
             {% endif %}
         {% elseif parentId %}
-            {{ elements.backLink(path('pim_enrich_categorytree_edit', { id: parentId }), 'btn.to parent') }}
+            {{ elements.backLink(path(category_route('categorytree_edit', related_entity), { id: parentId }), 'btn.to parent') }}
         {% endif %}
         {{ elements.submitBtn('', 'ok') }}
     {% endset %}
