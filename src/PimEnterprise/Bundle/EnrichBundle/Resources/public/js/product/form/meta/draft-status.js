@@ -20,10 +20,6 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        label: _.__('pimee_enrich.entity.product.meta.draft_status') +
-                            (this.getFormData().meta.draft_status === 0 ?
-                                _.__('pimee_enrich.entity.product.meta.draft.in_progress') :
-                                _.__('pimee_enrich.entity.product.meta.draft.sent_for_approval')),
                         product: this.getFormData()
                     })
                 );
