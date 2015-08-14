@@ -19,9 +19,11 @@ class ThumbnailSelector implements SelectorInterface
         $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
 
         $datasource->getQueryBuilder()
-            ->leftJoin($rootAlias.'.references', 'aReferences')
-            ->leftJoin('aReferences.file', 'aReferencesFile')
-            ->addSelect('aReferencesFile')
-            ->addSelect('aReferences');
+            ->leftJoin($rootAlias . '.references', 'aReferences')
+            ->leftJoin('aReferences.variations', 'rVariations')
+            ->leftJoin('rVariations.file', 'vFile')
+            ->addSelect('aReferences')
+            ->addSelect('rVariations')
+            ->addSelect('vFile');
     }
 }
