@@ -630,8 +630,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     protected function assertAddress($expected)
     {
-        $actual = $this->getSession()->getCurrentUrl();
-        $result = strpos($actual, $expected) !== false;
+        $actualFullUrl   = $this->getSession()->getCurrentUrl();
+        $actualParsedUrl = parse_url($actualFullUrl);
+
+        if (isset($actualParsedUrl['fragment'])) {
+            $actualWithLocale = preg_split('/url=/', $actualParsedUrl['fragment'])[1];
+        } else {
+            $actualWithLocale = $actualParsedUrl['path'];
+        }
+        if (false !== $withoutParams = strstr($actualWithLocale, '?dataLocale=', true)) {
+            $actual = $withoutParams;
+        } else {
+            $actual = $actualWithLocale;
+        }
+
+        $result = parse_url($expected, PHP_URL_PATH) === $actual;
+
         assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actual));
     }
 
