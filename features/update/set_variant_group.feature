@@ -4,16 +4,16 @@ Feature: Update variant group fields
   I need to be able to update the variant group field of a product
 
   Scenario: Successfully update the variant group field
-    Given a "default" catalog configuration
+    Given a "footwear" catalog configuration
     And the following products:
       | sku                              |
       | tshirt1                          |
       | tshirt2                          |
     And the following product groups:
-      | code    | label         | type    |
-      | TSHIRT1 | First tshirt  | VARIANT |
-      | TSHIRT2 | Second tshirt | VARIANT |
-      | TSHIRT3 | Third tshirt  | VARIANT |
+      | code    | label         | type    | axis |
+      | TSHIRT1 | First tshirt  | VARIANT | size |
+      | TSHIRT2 | Second tshirt | VARIANT | size |
+      | TSHIRT3 | Third tshirt  | VARIANT | size |
     Then I should get the following products after apply the following updater to it:
       | product             | actions                                                                                                                                | result                       |
       | tshirt1             | [{"type": "set_data", "field": "variant_group", "data": "TSHIRT1"}]                                                                    | {"variant_group": "TSHIRT1"} |
