@@ -2214,13 +2214,21 @@ class FixturesContext extends RawMinkContext
         if ($object instanceof ProductInterface) {
             $validator = $this->getContainer()->get('pim_catalog.validator.product');
             // TODO: check validation constraint on localizable/scopable value
+            // TODO: fix validation constraint to forbid to add product with empty option in variant group
+            // TODO: fix validation constraint to forbid to add products with same options in variant group (add in same time, then save)
         } else {
             $validator = $this->getContainer()->get('validator');
         }
         $violations = $validator->validate($object);
         if (0 < $violations->count()) {
+
+            $messages = [];
+            foreach ($violations as $violation) {
+                $messages[] = $violation->getMessage();
+            }
+
             throw new \InvalidArgumentException(
-                sprintf('Object "%s" is not valid', ClassUtils::getClass($object))
+                sprintf('Object "%s" is not valid "%s"', ClassUtils::getClass($object), implode(', ', $messages))
             );
         }
     }
