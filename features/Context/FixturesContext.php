@@ -5,6 +5,7 @@ namespace Context;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -2063,9 +2064,9 @@ class FixturesContext extends RawMinkContext
                 $data[$key] = str_replace(' ', '', $value);
             }
         }
-        $family = $this->loadFixture('families', $data);
 
-        $this->persist($family);
+        $family = $this->loadFixture('families', $data);
+        $this->getFamilySaver()->save($family);
 
         return $family;
     }
@@ -2248,6 +2249,14 @@ class FixturesContext extends RawMinkContext
     protected function getProductSaver()
     {
         return $this->getContainer()->get('pim_catalog.saver.product');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getFamilySaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.family');
     }
 
     /**

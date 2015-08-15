@@ -130,19 +130,38 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function setAttributeRequirements(FamilyInterface $family, array $data)
     {
-        $requirements = [];
+        $requirements = $this->getExistingIdentifierRequirements($family);
         foreach ($data as $channelCode => $attributeCodes) {
             $requirements = array_merge(
                 $requirements,
                 $this->createAttributeRequirementsByChannel($attributeCodes, $channelCode)
             );
         }
+        $requirements = $this->addMissingIdentifierRequirements($requirements);
 
         $family->setAttributeRequirements($requirements);
     }
 
     /**
-     * Creates attribute requirements for the given channel and add identifier if needed
+     * @param FamilyInterface $family
+     *
+     * @return AttributeRequirementInterface[]
+     */
+    protected function getExistingIdentifierRequirements(FamilyInterface $family)
+    {
+        $identifierRequirements = [];
+        $existingRequirements = $family->getAttributeRequirements();
+        foreach ($existingRequirements as $requirement) {
+            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
+                $identifierRequirements[] = $requirement;
+            }
+        }
+
+        return $identifierRequirements;
+    }
+
+    /**
+     * Creates attribute requirements for the given channel but skip identifiers
      *
      * @param array  $attributeCodes
      * @param string $channelCode
@@ -153,7 +172,6 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function createAttributeRequirementsByChannel(array $attributeCodes, $channelCode)
     {
-        $hasIdentifier = false;
         $requirements  = [];
         foreach ($attributeCodes as $attributeCode) {
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
@@ -162,18 +180,32 @@ class FamilyUpdater implements ObjectUpdaterInterface
                     sprintf('Attribute with "%s" code does not exist', $attributeCode)
                 );
             }
-            if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
-                $hasIdentifier = true;
+            if (AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
+                $requirements[] = $this->createAttributeRequirement($attribute, $channelCode);
             }
-
-            $requirements[] = $this->createAttributeRequirement($attribute, $channelCode);
         }
 
-        if (!$hasIdentifier) {
-            $requirements[] = $this->createAttributeRequirement(
-                $this->attributeRepository->getIdentifier(),
-                $channelCode
-            );
+        return $requirements;
+    }
+
+    /**
+     * @param AttributeRequirementInterface[] $requirements
+     *
+     * @return AttributeRequirementInterface[]
+     */
+    protected function addMissingIdentifierRequirements(array $requirements)
+    {
+        $channelCodes = $this->channelRepository->getChannelCodes();
+        $existingChannelCode = [];
+        foreach ($requirements as $requirement) {
+            if (AttributeTypes::IDENTIFIER === $requirement->getAttribute()->getAttributeType()) {
+                $existingChannelCode[] = $requirement->getChannelCode();
+            }
+        }
+        $missingChannelCodes = array_diff($channelCodes, $existingChannelCode);
+        $identifier = $this->attributeRepository->getIdentifier();
+        foreach ($missingChannelCodes as $channelCode) {
+            $requirements[] = $this->createAttributeRequirement($identifier, $channelCode);
         }
 
         return $requirements;
