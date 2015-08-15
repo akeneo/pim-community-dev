@@ -1,4 +1,4 @@
-code;label-en_US;attributes;attributeAsLabel;requirements-tablet;requirements-mobile
+code;label-en_US;attributes;attribute_as_label;requirements-tablet;requirements-mobile
 jackets;Jackets;sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,main_color,secondary_color,number_in_stock,handmade,release_date,datasheet,side_view,length;name;sku,name,description,weather_conditions,price,rating,side_view,size,main_color;sku,name,price,size,main_color
 pants;Pants;sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,main_color,secondary_color;name;sku,name,description,weather_conditions,price,rating,side_view,size,main_color;sku,name,price,size,main_color
 tees;Tees;sku,name,manufacturer,description,price,rating,side_view,size,main_color;name;sku,name,description,price,rating,side_view,size,main_color;sku,name,price,size,main_color
