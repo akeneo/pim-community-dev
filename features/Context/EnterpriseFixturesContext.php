@@ -376,7 +376,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $asset->addTag($tag);
                 }
             }
-            if (isset($data['categories'])) {
+            if (isset($data['categories']) && '' !== $data['categories']) {
                 $categories = explode(',', $data['categories']);
                 foreach ($categories as $code) {
                     $category = $this->getAssetCategoryRepository()->findOneByIdentifier(trim($code));
