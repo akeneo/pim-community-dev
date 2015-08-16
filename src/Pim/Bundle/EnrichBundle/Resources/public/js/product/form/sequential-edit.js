@@ -47,39 +47,32 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                mediator.once('hash_navigation_request:start', function (navigation) {
-                    if (navigation.url === Routing.generate('pim_enrich_product_index')) {
-                        FetcherRegistry.clear('sequential-edit');
-                    }
-                });
+                FetcherRegistry.clear('sequential-edit');
 
                 return $.when(
                     FetcherRegistry.getFetcher('sequential-edit')
                         .fetchAll()
-                        .then(_.bind(
+                        .then(
                             function (sequentialEdit) {
                                 this.model.set(sequentialEdit);
-                            }, this)
+                            }.bind(this)
                         ),
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
             },
             addSaveButton: function () {
-                if (!('save-buttons' in this.parent.extensions)) {
-                    return;
-                }
-                var objectSet = this.model.get('objectSet');
+                var objectSet    = this.model.get('objectSet');
                 var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
-                var nextObject = objectSet[currentIndex + 1];
+                var nextObject   = objectSet[currentIndex + 1];
 
-                this.parent.extensions['save-buttons'].addButton({
+                this.trigger('save-buttons:register-button', {
                     className: 'save-and-continue',
                     priority: 250,
                     label: _.__(
                         'pim_enrich.form.product.sequential_edit.btn.save_and_' + (nextObject ? 'next' : 'finish')
                     ),
                     events: {
-                        'click .save-and-continue': _.bind(this.saveAndContinue, this)
+                        'click .save-and-continue': this.saveAndContinue.bind(this)
                     }
                 });
             },
@@ -90,18 +83,16 @@ define(
 
                 this.addSaveButton();
 
-                this.getTemplateParameters().done(_.bind(function (templateParameters) {
+                this.getTemplateParameters().done(function (templateParameters) {
                     this.$el.html(this.template(templateParameters));
                     this.$('[data-toggle="tooltip"]').tooltip();
                     this.delegateEvents();
                     this.preloadNext();
-                }, this));
+                }.bind(this));
 
                 return this;
             },
             getTemplateParameters: function () {
-                var deferred = $.Deferred();
-
                 var objectSet     = this.model.get('objectSet');
                 var currentObject = this.getFormData().meta.id;
                 var index         = objectSet.indexOf(currentObject);
@@ -133,19 +124,15 @@ define(
                     }));
                 }
 
-                $.when.apply($, promises).done(function () {
-                    deferred.resolve(
-                        {
-                            objectCount:    objectSet.length,
-                            currentIndex:   index + 1,
-                            previousObject: previousObject,
-                            nextObject:     nextObject,
-                            ratio:          (index + 1) / objectSet.length * 100
-                        }
-                    );
+                return $.when.apply($, promises).then(function () {
+                    return {
+                        objectCount:    objectSet.length,
+                        currentIndex:   index + 1,
+                        previousObject: previousObject,
+                        nextObject:     nextObject,
+                        ratio:          (index + 1) / objectSet.length * 100
+                    };
                 });
-
-                return deferred.promise();
             },
             preloadNext: function () {
                 var objectSet = this.model.get('objectSet');
@@ -158,7 +145,7 @@ define(
                 }
             },
             saveAndContinue: function () {
-                this.parent.extensions.save.save({ silent: true }).done(_.bind(function () {
+                this.parent.getExtension('save').save({ silent: true }).done(function () {
                     var objectSet = this.model.get('objectSet');
                     var currentIndex = objectSet.indexOf(this.getFormData().meta.id);
                     var nextObject = objectSet[currentIndex + 1];
@@ -167,13 +154,13 @@ define(
                     } else {
                         this.finish();
                     }
-                }, this));
+                }.bind(this));
             },
             followLink: function (event) {
                 mediator.trigger('pim_enrich:form:state:confirm', {
-                    action: _.bind(function () {
+                    action: function () {
                         this.goToProduct(event.currentTarget.dataset.id);
-                    }, this)
+                    }.bind(this)
                 });
             },
             goToProduct: function (id) {

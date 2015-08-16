@@ -43,6 +43,7 @@ define(
                 'click .stop-copying': 'stopCopying',
                 'click .select-all': 'selectAll',
                 'click .select-all-visible': 'selectAllVisible',
+                'click .select-none': 'selectNone',
                 'click .copy': 'copy'
             },
 
@@ -117,6 +118,10 @@ define(
                         this.scope
                     );
 
+                    if (_.isUndefined(valueToCopy)) {
+                        valueToCopy = AttributeManager.generateValue(field.attribute, this.locale, this.scope);
+                    }
+
                     var copyField = new CopyField();
                     copyField.setLocale(this.locale);
                     copyField.setScope(this.scope);
@@ -143,7 +148,7 @@ define(
              * Launch the copy process for selected fields
              */
             copy: function () {
-                _.each(this.copyFields, _.bind(function (copyField) {
+                _.each(this.copyFields, function (copyField) {
                     if (copyField.selected && copyField.field && copyField.field.isEditable()) {
                         var formValues = this.getFormModel().get('values');
                         var oldValue = AttributeManager.getValue(
@@ -157,7 +162,7 @@ define(
                         mediator.trigger('pim_enrich:form:entity:update_state');
                         copyField.setSelected(false);
                     }
-                }, this));
+                }.bind(this));
 
                 this.trigger('copy:copy-fields:after');
             },
@@ -229,14 +234,14 @@ define(
              */
             selectAll: function () {
                 var fieldPromises = [];
-                _.each(this.getSourceData(), _.bind(function (value, attributeCode) {
+                _.each(this.getSourceData(), function (value, attributeCode) {
                     fieldPromises.push(FieldManager.getField(attributeCode));
-                }, this));
+                }.bind(this));
 
                 $.when.apply(this, fieldPromises)
-                    .then(_.bind(function () {
+                    .then(function () {
                         this.selectFields(arguments);
-                    }, this));
+                    }.bind(this));
             },
 
             /**
@@ -247,16 +252,34 @@ define(
             },
 
             /**
+             * Mark all fields as unselected
+             */
+            selectNone: function () {
+                this.selectFields([]);
+            },
+
+            /**
+             * Unselect all field
+             */
+            unselectAll: function () {
+                _.each(this.copyFields, function (field) {
+                    field.setSelected(false);
+                });
+            },
+
+            /**
              * Mark specified fields as selected and trigger the select event
              *
              * @param {Field[]} fields
              */
             selectFields: function (fields) {
-                _.each(fields, _.bind(function (field) {
+                this.unselectAll();
+
+                _.each(fields, function (field) {
                     if (this.canBeCopied(field)) {
                         this.getCopyField(field).setSelected(true);
                     }
-                }, this));
+                }.bind(this));
 
                 this.trigger('copy:select:after');
             }

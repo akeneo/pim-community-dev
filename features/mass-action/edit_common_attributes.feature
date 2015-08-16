@@ -34,8 +34,7 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Color in group "Colors"
     And I should see available attribute Weight in group "Other"
 
-  # TODO: Re enable this test
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-2163
+  @jira https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Allow editing only common attributes define from families
     Given I mass-edit products boots and highheels
     And I choose the "Edit common attributes" operation
@@ -204,6 +203,7 @@ Feature: Edit common attributes of many products at once
       | SKU    | Shoes      |
       | Family | high_heels |
     And I press the "Save" button in the popin
+    Then I should be on the product "Shoes" edit page
     And I am on the products page
     When I mass-edit products Shoes
     And I choose the "Edit common attributes" operation

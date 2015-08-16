@@ -1,0 +1,13 @@
+<p class="text-center unspaced">
+    <% if (loading) { %>
+        <img src="<%= options.imgUrl %>" alt="<%= options.loadingText %>"/>
+    <% } %>
+
+    <% if (!loading && !hasNotifications && !hasMore) { %>
+        <span><%= options.noNotificationsMessage %></span>
+    <% } %>
+
+    <% if (hasNotifications && hasUnread) { %>
+        <button class="btn btn-mini mark-as-read"><%= options.markAsReadMessage %></button>
+    <% } %>
+</p>

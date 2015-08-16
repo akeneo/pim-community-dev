@@ -12,10 +12,11 @@ define(
         'jquery',
         'underscore',
         'backbone',
+        'oro/mediator',
         'pim/form',
         'text!pim/template/product/save-buttons'
     ],
-    function ($, _, Backbone, BaseForm, template) {
+    function ($, _, Backbone, mediator, BaseForm, template) {
         return BaseForm.extend({
             className: 'btn-group submit-form',
             template: _.template(template),
@@ -29,9 +30,12 @@ define(
                     buttons: []
                 });
 
-                this.listenTo(this.model, 'change', this.render);
+                this.on('save-buttons:add-button', this.addButton.bind(this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+            configure: function () {
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
                 var buttons = this.model.get('buttons');

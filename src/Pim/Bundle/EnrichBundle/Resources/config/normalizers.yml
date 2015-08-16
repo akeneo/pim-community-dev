@@ -41,6 +41,7 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.manager.locale'
             - '@pim_enrich.provider.structure_version.product'
+            - '@pim_enrich.provider.form.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -90,8 +91,8 @@ services:
         class: %pim_enrich.normalizer.attribute.class%
         arguments:
             - '@pim_serializer'
-            - '@pim_enrich.provider.field.registry'
-            - '@pim_enrich.provider.empty_value.registry'
+            - '@pim_enrich.provider.field.chained'
+            - '@pim_enrich.provider.empty_value.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

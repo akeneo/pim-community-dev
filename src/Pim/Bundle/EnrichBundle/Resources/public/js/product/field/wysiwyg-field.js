@@ -38,7 +38,7 @@ define(
                         ['insert', ['link']],
                         ['view', ['codeview']]
                     ]
-                }).on('summernote.blur', _.bind(this.updateModel, this));
+                }).on('summernote.blur', this.updateModel.bind(this));
             },
             updateModel: function () {
                 var data = this.$('.field-input:first textarea:first').code();

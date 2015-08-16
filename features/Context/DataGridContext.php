@@ -867,7 +867,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iPressSequentialEditButton()
     {
         $this->getCurrentPage()->sequentialEdit();
-        $this->wait();
+        $this->wait(20000);
         $this->getNavigationContext()->currentPage = 'Product edit';
     }
 

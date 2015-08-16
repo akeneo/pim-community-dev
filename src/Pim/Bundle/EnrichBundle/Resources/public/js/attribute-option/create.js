@@ -28,7 +28,7 @@ define(
             createOption: function () {
                 var deferred = $.Deferred();
 
-                FormBuilder.build('pim/attribute-option-form').done(_.bind(function (form) {
+                FormBuilder.build('pim-attribute-option-form').done(function (form) {
                     var modal = new Backbone.BootstrapModal({
                         modalOptions: {
                             backdrop: 'static',
@@ -46,7 +46,7 @@ define(
                     form.setElement(modal.$('.modal-body')).render();
 
                     modal.on('cancel', deferred.reject);
-                    modal.on('ok', _.bind(function () {
+                    modal.on('ok', function () {
                         form.$('.validation-errors').remove();
 
                         $.ajax({
@@ -63,7 +63,7 @@ define(
                                 _.__('pim_enrich.form.attribute_option.flash.option_created')
                             );
                             deferred.resolve(option);
-                        }).fail(_.bind(function (xhr) {
+                        }).fail(function (xhr) {
                             var response = xhr.responseJSON;
 
                             if (response.children &&
@@ -82,9 +82,9 @@ define(
                                     _.__('pim_enrich.form.attribute_option.flash.error_creating_option')
                                 );
                             }
-                        }, this));
-                    }, this));
-                }, this));
+                        }.bind(this));
+                    }.bind(this));
+                }.bind(this));
 
                 return deferred.promise();
             }

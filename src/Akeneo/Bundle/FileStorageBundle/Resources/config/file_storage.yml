@@ -14,6 +14,8 @@ services:
 
     akeneo_file_storage.file_storage.raw_file.fetcher:
         class: %akeneo_file_storage.file_storage.raw_file.fetcher.class%
+        arguments:
+            - '@oneup_flysystem.tmp_storage_filesystem'
 
     akeneo_file_storage.file_storage.file_factory:
         class: %akeneo_file_storage.file_storage.file_factory.class%

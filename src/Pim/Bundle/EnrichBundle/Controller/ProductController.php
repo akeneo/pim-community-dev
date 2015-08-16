@@ -293,58 +293,6 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * Update product
-     *
-     * @param Request $request
-     * @param int     $id
-     *
-     * @Template("PimEnrichBundle:Product:edit.html.twig")
-     * @AclAncestor("pim_enrich_product_index")
-     *
-     * @return RedirectResponse
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $product = $this->findProductOr404($id);
-
-        $form = $this->createForm(
-            'pim_product_edit',
-            $product,
-            $this->getEditFormOptions($product)
-        );
-
-        $form->submit($request, false);
-
-        if ($form->isValid()) {
-            try {
-                $this->mediaManager->handleProductMedias($product);
-                $this->productSaver->save($product);
-
-                $this->addFlash('success', 'flash.product.updated');
-            } catch (MediaManagementException $e) {
-                $this->addFlash('error', $e->getMessage());
-            }
-
-            $params = [
-                'id'         => $product->getId(),
-                'dataLocale' => $this->getDataLocaleCode(),
-            ];
-            if ($comparisonLocale = $this->getComparisonLocale()) {
-                $params['compareWith'] = $comparisonLocale;
-            }
-
-            return $this->redirectAfterEdit($params);
-        } else {
-            $this->addFlash('error', 'flash.product.invalid');
-        }
-
-        $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-        $trees    = $this->productCatManager->getProductCountByTree($product);
-
-        return $this->getProductEditTemplateParams($form, $product, $channels, $trees);
-    }
-
-    /**
      * Switch case to redirect after saving a product from the edit form
      *
      * @param array $params
@@ -354,28 +302,9 @@ class ProductController extends AbstractDoctrineController
     protected function redirectAfterEdit($params)
     {
         switch ($this->getRequest()->get('action')) {
-            case self::SAVE_AND_FINISH:
-                $this->seqEditManager->removeByUser($this->getUser());
-                $route = 'pim_enrich_product_edit';
-                break;
-            case self::BACK_TO_GRID:
-                $route  = 'pim_enrich_product_index';
-                $params = [];
-                break;
             case self::CREATE:
                 $route                  = 'pim_enrich_product_edit';
                 $params['create_popin'] = true;
-                break;
-            case self::SAVE_AND_NEXT:
-                $route          = 'pim_enrich_product_edit';
-                $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
-
-                if (null !== $sequentialEdit) {
-                    $params['id'] = $sequentialEdit->getNextId($params['id']);
-                }
-                break;
-            default:
-                $route = 'pim_enrich_product_edit';
                 break;
         }
 

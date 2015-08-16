@@ -38,7 +38,7 @@ define(
             },
             configure: function () {
                 this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.onValidationError);
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.onPostUpdate);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -49,14 +49,14 @@ define(
                 var valuesErrors = event.response.values;
                 if (valuesErrors) {
                     AttributeGroupManager.getAttributeGroupsForProduct(product)
-                        .then(_.bind(function (attributeGroups) {
-                            _.each(valuesErrors, _.bind(function (fieldError, attributeCode) {
+                        .then(function (attributeGroups) {
+                            _.each(valuesErrors, function (fieldError, attributeCode) {
                                 var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                                     attributeGroups,
                                     attributeCode
                                 );
                                 this.addToBadge(attributeGroup, 'invalid');
-                            }, this));
+                            }.bind(this));
 
                             if (0 < valuesErrors.length) {
                                 mediator.trigger(
@@ -64,10 +64,10 @@ define(
                                     {attribute: _.first(_.keys(valuesErrors))}
                                 );
                             }
-                        }, this));
+                        }.bind(this));
                 }
             },
-            onPostUpdate: function () {
+            onPostFetch: function () {
                 this.removeBadges();
             },
             render: function () {
@@ -86,7 +86,7 @@ define(
             },
             updateAttributeGroups: function (product) {
                 return AttributeGroupManager.getAttributeGroupsForProduct(product)
-                    .then(_.bind(function (attributeGroups) {
+                    .then(function (attributeGroups) {
                         this.state.set('attributeGroups', attributeGroups);
 
                         if (undefined === this.state.get('current') || !attributeGroups[this.state.get('current')]) {
@@ -94,7 +94,7 @@ define(
                         }
 
                         return this.state.get('attributeGroups');
-                    }, this));
+                    }.bind(this));
             },
             change: function (event) {
                 if (event.currentTarget.dataset.attributeGroup !== this.state.get('current')) {
@@ -139,9 +139,9 @@ define(
                 if (!code) {
                     this.badges = {};
                 } else {
-                    _.each(this.badges, _.bind(function (badge) {
+                    _.each(this.badges, function (badge) {
                         delete badge[code];
-                    }, this));
+                    }.bind(this));
                 }
 
                 this.render();
