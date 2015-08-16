@@ -707,7 +707,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function getAccessManager($type)
     {
-        if ('product category' === $type) {
+        if (in_array($type, ['product category', 'asset category'])) {
             $type = 'category';
         }
 
@@ -798,7 +798,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             return ($action === 'edit') ? Attributes::EDIT_ATTRIBUTES : Attributes::VIEW_ATTRIBUTES;
         }
 
-        if ('product category' === $type || 'locale' === $type) {
+        if (in_array($type, ['product category', 'asset category', 'locale'])) {
             return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
         }
 
@@ -1105,6 +1105,46 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 'command' => $generateCommand->getName(),
             ]
         );
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following assets categor(?:y|ies):$/
+     */
+    public function theFollowingAssetsCategories(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createAssetCategory($data);
+        }
+    }
+
+    /**
+     * @param array|string $data
+     *
+     * @return CategoryInterface
+     */
+    protected function createAssetCategory($data)
+    {
+        if (is_string($data)) {
+            $data = [['code' => $data]];
+        }
+
+        $category = $this->loadFixture('asset_categories', $data);
+
+        /*
+         * When using ODM, one must persist and flush category without product
+         * before adding and persisting products inside it
+         */
+        $assets = $category->getAssets();
+        $this->persist($category, true);
+        foreach ($assets as $asset) {
+            $asset->addCategory($category);
+            // TODO replace by call to a saver
+            $this->flush($asset);
+        }
+
+        return $category;
     }
 
     /**

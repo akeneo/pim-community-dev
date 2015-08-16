@@ -232,6 +232,24 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
+     * @param string $assetCode
+     * @param string $categoryCodes
+     *
+     * @Given /^asset categor(?:y|ies) of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theAssetCategoriesOfShouldBe($assetCode, $categoryCodes)
+    {
+        $asset = $this->getFixturesContext()->getAsset($assetCode);
+
+        $categories = $asset->getCategories()->map(
+            function ($category) {
+                return $category->getCode();
+            }
+        )->toArray();
+        assertEquals($this->getMainContext()->listToArray($categoryCodes), $categories);
+    }
+
+    /**
      * @return EnterpriseFixturesContext
      */
     protected function getFixturesContext()
