@@ -19,7 +19,7 @@
                 {% endif %}
                 // Instantiate sidebar
                 $('#category-tree-container').sidebarize({ buttons: buttons });
-                new TreeManage('#tree', '{{ category_route('categorytree_listtree', related_entity) }}', '{{ category_route('categorytree_children', related_entity) }}');
+                new TreeManage('#tree', '{{ category_pattern(related_entity) }}');
             });
         }
     );
