@@ -10,8 +10,9 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.category'
             - '@request_stack'
-            - '@security.authorization_checker'
             - '@pim_catalog.builder.choices'
+            - '@security.authorization_checker'
+            - '@pimee_security.repository.category_access'
             - %locale%
 
     pimee_user.context.user.asset:
@@ -22,6 +23,7 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pimee_product_asset.repository.category'
             - '@request_stack'
-            - '@security.authorization_checker'
             - '@pim_catalog.builder.choices'
+            - '@security.authorization_checker'
+            - '@pimee_product_asset.repository.asset_category_access'
             - %locale%

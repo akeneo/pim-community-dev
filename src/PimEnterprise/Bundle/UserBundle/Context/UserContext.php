@@ -19,6 +19,7 @@ use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
 use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -30,14 +31,21 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class UserContext extends BaseUserContext
 {
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
+    /** @var CategoryAccessRepository */
+    protected $categoryAccessRepo;
+
     /**
      * @param TokenStorageInterface         $tokenStorage
      * @param LocaleRepositoryInterface     $localeRepository
      * @param ChannelRepositoryInterface    $channelRepository
      * @param CategoryRepositoryInterface   $categoryRepository
      * @param RequestStack                  $requestStack
-     * @param AuthorizationCheckerInterface $authorizationChecker
      * @param ChoicesBuilderInterface       $choicesBuilder
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param CategoryAccessRepository      $categoryAccessRepo
      * @param string                        $defaultLocale
      */
     public function __construct(
@@ -46,8 +54,9 @@ class UserContext extends BaseUserContext
         ChannelRepositoryInterface $channelRepository,
         CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
-        AuthorizationCheckerInterface $authorizationChecker,
         ChoicesBuilderInterface $choicesBuilder,
+        AuthorizationCheckerInterface $authorizationChecker,
+        CategoryAccessRepository $categoryAccessRepo,
         $defaultLocale
     ) {
         $this->tokenStorage         = $tokenStorage;
@@ -55,9 +64,10 @@ class UserContext extends BaseUserContext
         $this->channelRepository    = $channelRepository;
         $this->categoryRepository   = $categoryRepository;
         $this->requestStack         = $requestStack;
-        $this->authorizationChecker = $authorizationChecker;
         $this->choicesBuilder       = $choicesBuilder;
+        $this->authorizationChecker = $authorizationChecker;
         $this->defaultLocale        = $defaultLocale;
+        $this->categoryAccessRepo   = $categoryAccessRepo;
     }
 
     /**
@@ -118,19 +128,33 @@ class UserContext extends BaseUserContext
     public function getAccessibleUserTree()
     {
 //        $defaultTree = $this->getUserOption('defaultTree');
-//
 //        if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $defaultTree)) {
 //            return $defaultTree;
 //        }
 
-        // TODO: PIM-4292: add granted categories
-        $grantedTrees = $this->categoryRepository->getTrees();
-//        $grantedTrees = $this->chainedFilter->filterCollection($trees, 'pim.internal_api.product_category.view');
+        $grantedCategoryIds = $this->getGrantedCategories();
+        $grantedTrees = $this->categoryRepository->getTreesGranted($grantedCategoryIds);
 
         if (!empty($grantedTrees)) {
             return current($grantedTrees);
         }
 
         throw new \LogicException('User should have a default product tree');
+    }
+
+    /**
+     * Get granted categories
+     *
+     * @return array
+     */
+    protected function getGrantedCategories()
+    {
+        $user = $this->getUser();
+
+        if (null === $user) {
+            return [];
+        }
+
+        return $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
     }
 }
