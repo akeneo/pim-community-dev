@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Group;
-
 /**
  * Asset Category Access entity
  *

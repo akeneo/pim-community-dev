@@ -53,8 +53,19 @@ services:
             - %pimee_product_asset.model.category_translation.class%
         tags:
             - { name: form.type, alias: pim_category }
+        calls:
+            - [addEventSubscriber, ['@pimee_product_asset.form.subscriber.category_permissions']]
 
     pimee_product_asset.form.type.category_permissions:
         class: %pimee_product_asset.form.type.category_permissions.class%
         tags:
             - { name: form.type, alias: pimee_product_asset_category_permissions }
+
+    # TODO PIM-4292 move it
+    pimee_product_asset.manager.category_access:
+        class: %pimee_security.manager.category_access.class%
+        arguments:
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - %pimee_security.entity.asset_category_access.class%
+            - %pimee_product_asset.model.category.class%
+            - %pim_user.entity.group.class%
