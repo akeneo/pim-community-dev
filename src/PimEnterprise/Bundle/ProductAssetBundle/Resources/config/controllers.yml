@@ -37,7 +37,7 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.manager.category'
             - '@pimee_user.context.user.asset'
-            - '@pim_catalog.saver.category'
+            - '@pimee_product_asset.saver.category'
             - '@pim_catalog.remover.category'
             - '@pimee_product_asset.factory.category'
             - '@pimee_product_asset.repository.category'
