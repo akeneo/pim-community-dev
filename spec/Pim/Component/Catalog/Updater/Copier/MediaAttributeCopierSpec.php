@@ -118,6 +118,41 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         );
     }
 
+    function it_copies_when_a_source_product_value_has_no_media($builder,
+        $attrValidatorHelper,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute,
+        ProductInterface $product,
+        ProductValueInterface $fromProductValue,
+        ProductValueInterface $toProductValue
+    ) {
+        $fromLocale = 'fr_FR';
+        $toLocale = 'fr_FR';
+        $toScope = 'mobile';
+        $fromScope = 'mobile';
+
+        $fromAttribute->getCode()->willReturn('fromAttributeCode');
+        $toAttribute->getCode()->willReturn('toAttributeCode');
+
+        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
+        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+
+        $fromProductValue->getMedia()->willReturn(null);
+
+        $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
+        $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
+
+        $toProductValue->setMedia(null)->shouldBeCalled();
+
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $fromAttribute,
+            $toAttribute,
+            ['from_locale' => $fromLocale, 'to_locale' => $toLocale, 'from_scope' => $fromScope, 'to_scope' => $toScope]
+        );
+    }
+
     function it_copies_when_a_product_value_has_a_media_but_not_the_target_value(
         $builder,
         $attrValidatorHelper,
