@@ -1,7 +1,6 @@
 parameters:
     pim_datagrid.datagrid.product.context_configurator.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator
     pim_datagrid.datagrid.product.filters_configurator.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator
-    pimee_datagrid.datagrid.product.row_actions_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator
     pimee_datagrid.datagrid.proposal.context_configurator.class:    PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\ContextConfigurator
 
 services:
@@ -24,10 +23,3 @@ services:
         calls:
             - [setRequest, ['@?request=']]
 
-    pimee_datagrid.datagrid.product.row_actions_configurator:
-        class: %pimee_datagrid.datagrid.product.row_actions_configurator.class%
-        arguments:
-            - '@pim_datagrid.datagrid.product.configuration_registry'
-            - '@security.authorization_checker'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.locale'

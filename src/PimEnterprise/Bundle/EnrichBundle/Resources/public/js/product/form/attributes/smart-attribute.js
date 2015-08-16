@@ -14,16 +14,16 @@ define(
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments),
                     RuleManager.getRuleRelations('attribute')
                 );
             },
-            addExtension: function (event) {
+            addFieldExtension: function (event) {
                 event.promises.push(
-                    RuleManager.getRuleRelations('attribute').done(_.bind(function (ruleRelations) {
+                    RuleManager.getRuleRelations('attribute').done(function (ruleRelations) {
                         var deferred = $.Deferred();
                         var field = event.field;
                         var ruleRelation = _.findWhere(ruleRelations, {attribute: field.attribute.code});
@@ -38,7 +38,7 @@ define(
                         deferred.resolve();
 
                         return deferred.promise();
-                    }, this))
+                    }.bind(this))
                 );
 
                 return this;

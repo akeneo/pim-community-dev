@@ -60,7 +60,7 @@ Feature: Publish a product
     And the following product values:
       | product   | attribute  | value                 | scope  |
       | my-jacket | release    | 2013-02-02            |        |
-      | my-jacket | available  | 2013-02-02            | tablet |
+      | my-jacket | available  | 2013-10-03            | tablet |
       | my-jacket | max_length | 25 CENTIMETER         | tablet |
       | my-jacket | popularity | 9                     | tablet |
       | my-jacket | customs    | 100 EUR               | tablet |
@@ -76,6 +76,7 @@ Feature: Publish a product
     And I should see "Release"
     And I should see "February 02, 2013"
     And I should see "Available"
+    And I should see "October 03, 2013"
     And I should see "Length"
     And I should see "25.0000 CENTIMETER"
     And I should see "Popularity"
@@ -86,9 +87,11 @@ Feature: Publish a product
     And I should see "akeneo.jpg"
     And I should see "Manual"
     And I should see "akeneo.txt"
-    And I should not see "March 25, 2014"
     Given I edit the "my-jacket" product
     And I change the Release to "2014-03-25"
+    And I visit the "Other" group
+    And I remove the "Picture" file
+    And I attach file "akeneo2.jpg" to "Picture"
     And I save the product
     When I press the "Publish" button
     And I confirm the publishing
@@ -97,7 +100,9 @@ Feature: Publish a product
     And I should see product my-jacket
     And I am on the "my-jacket" published show page
     And I should see "March 25, 2014"
+    And I should see "akeneo2.jpg"
     And I should not see "February 02, 2013"
+    And I should not see "akeneo.jpg"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Fail to delete attribute options if it's used by a published product

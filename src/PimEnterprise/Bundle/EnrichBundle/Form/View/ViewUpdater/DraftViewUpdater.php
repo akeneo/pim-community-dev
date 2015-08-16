@@ -53,34 +53,4 @@ class DraftViewUpdater implements ViewUpdaterInterface
             }
         }
     }
-
-    /**
-     * Mark a form view as modified
-     *
-     * We do it by inserting the product value id in a "modified" attribute of the form field
-     * This is useful to later load the current product value data
-     *
-     * @param FormView $view
-     */
-    protected function markFieldAsModified(FormView $view)
-    {
-        $value = $view->vars['value'];
-        if (!$value instanceof ProductValueInterface) {
-            return;
-        }
-
-        $url = $this->urlGenerator->generate(
-            'pimee_enrich_product_value_show',
-            [
-                'productId'     => $value->getEntity()->getId(),
-                'attributeCode' => $value->getAttribute()->getCode(),
-                'locale'        => $value->getLocale(),
-                'scope'         => $value->getScope(),
-            ]
-        );
-
-        foreach ($view as $child) {
-            $child->vars['modified'] = $url;
-        }
-    }
 }

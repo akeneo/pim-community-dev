@@ -2,3 +2,10 @@ services:
     pimee_workflow.reader.file.csv_product_draft:
         parent: pim_connector.reader.file.csv_product
         class: %pim_connector.reader.file.csv_product.class%
+
+    pimee_workflow.connector.reader.mass_edit.published_product:
+        class: %pim_enrich.connector.reader.mass_edit.product.class%
+        arguments:
+            - '@pimee_workflow.doctrine.query.published_product_query_factory'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.repository.job_configuration'

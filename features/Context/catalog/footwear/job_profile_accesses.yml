@@ -61,5 +61,7 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
     csv_product_quick_export:
         executeJobProfile: [IT support, Manager, Redactor]
+    csv_published_product_quick_export:
+        executeJobProfile: [IT support, Manager, Redactor]
     edit_common_attributes_with_permission:
         executeJobProfile: [IT support, Manager, Redactor]

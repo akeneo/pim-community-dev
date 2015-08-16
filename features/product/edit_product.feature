@@ -27,12 +27,12 @@ Feature: Edit a product I have access
       | rangers | vintage, classy | rangers    |
       | boots   | boots           | boots      |
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully create, edit and save a product I have access
     Given I am on the "rangers" product page
     And I fill in the following information:
       | Name | My Rangers |
-    When I press the "Save" button
+    When I save the product
     Then I should be on the product "rangers" edit page
     Then the product Name should be "My Rangers"
 

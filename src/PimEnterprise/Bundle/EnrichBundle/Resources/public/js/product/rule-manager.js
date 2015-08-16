@@ -18,9 +18,9 @@ define(
 
                 $.getJSON(
                     Routing.generate('pimee_enrich_rule_relation_get', {'relationType': relationType})
-                ).done(_.bind(function (ruleRelations) {
+                ).done(function (ruleRelations) {
                     this.ruleRelationsPromise.resolve(ruleRelations);
-                }, this));
+                }.bind(this));
 
                 return this.ruleRelationsPromise.promise();
             }

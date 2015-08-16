@@ -86,7 +86,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
         media:
             targetEntity: Akeneo\Component\FileStorage\Model\FileInterface
             cascade:
-                - remove
+                # do not set cascade "remove" otherwise medias will be deleted during an unpublish
                 - persist
                 - refresh
                 - detach

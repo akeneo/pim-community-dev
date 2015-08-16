@@ -27,7 +27,7 @@ Feature: Submit a modification on a product draft
     And I am logged in as "Mary"
     And I edit the "my-jacket" product
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose an identifier attribute change
     When I change the SKU to "your-jacket"
     And I save the product
@@ -35,7 +35,7 @@ Feature: Submit a modification on a product draft
     But the field SKU should contain "your-jacket"
     And I should see that SKU is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a text attribute change
     When I change the Name to "Coat"
     And I save the product
@@ -43,7 +43,7 @@ Feature: Submit a modification on a product draft
     But the field Name should contain "Coat"
     And I should see that Name is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a textarea attribute change
     When I change the Description for scope mobile to "An awesome coat"
     And I save the product
@@ -51,7 +51,7 @@ Feature: Submit a modification on a product draft
     But the product Description for scope "mobile" should be "An awesome coat"
     But I should see that Description is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a number attribute change
     When I visit the "Marketing" group
     And I change the Number in stock for scope mobile to "40"
@@ -60,7 +60,7 @@ Feature: Submit a modification on a product draft
     And the product Number in stock for locale "en_US" and scope "mobile" should be "40"
     And I should see that Number in stock is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a prices collection attribute change
     When I visit the "Marketing" group
     And I change the Price to "90 USD"
@@ -74,7 +74,7 @@ Feature: Submit a modification on a product draft
     But the product Price in EUR should be "150"
     And I should see that Price is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a simple select attribute change
     When I change the Manufacturer to "Nike"
     And I save the product
@@ -82,7 +82,7 @@ Feature: Submit a modification on a product draft
     But the product Manufacturer should be "Nike"
     And I should see that Manufacturer is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a multi select attribute change
     When I change the "Weather conditions" to "Dry, Wet, Hot, Cold"
     And I save the product
@@ -90,10 +90,10 @@ Feature: Submit a modification on a product draft
       | value |
       | dry   |
       | wet   |
-    But the product Weather conditions should be "Dry, Wet, Hot, Cold"
+    But the product Weather conditions should be "dry, wet, hot, cold"
     And I should see that Weather conditions is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a file attribute change
     When I visit the "Media" group
     And I attach file "akeneo.txt" to "Datasheet"
@@ -102,7 +102,7 @@ Feature: Submit a modification on a product draft
     But the product Datasheet should be "akeneo.txt"
     And I should see that Datasheet is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose an image attribute change
     When I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
@@ -111,7 +111,7 @@ Feature: Submit a modification on a product draft
     But the product Side view should be "akeneo.jpg"
     And I should see that Side view is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a boolean attribute change
     When I check the "Handmade" switch
     And I save the product
@@ -119,7 +119,7 @@ Feature: Submit a modification on a product draft
     But the product Handmade should be "on"
     And I should see that Handmade is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully accept a date attribute modification on a product draft
     When I change the Release date for scope mobile to "2014-05-20"
     And I save the product
@@ -127,7 +127,7 @@ Feature: Submit a modification on a product draft
     But the product Release date for scope "mobile" should be "2014-05-20"
     And I should see that Release date is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully accept a metric attribute modification on a product draft
     When I visit the "Sizes" group
     And I change the Length to "40 CENTIMETER"
@@ -136,7 +136,7 @@ Feature: Submit a modification on a product draft
     But the product Length should be "40 CENTIMETER"
     And I should see that Length is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a localized attribute change
     Given I switch the locale to "fr_FR"
     When I change the Nom to "Tricot"
@@ -145,7 +145,7 @@ Feature: Submit a modification on a product draft
     But the product Nom for locale "fr_FR" should be "Tricot"
     And I should see that Nom is a modified value
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4604
+  @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a localized and scoped attribute change
     Given I switch the locale to "fr_FR"
     When I change the Description for scope mobile to "Un beau tricot"

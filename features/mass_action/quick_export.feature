@@ -14,9 +14,23 @@ Feature: Quick export many published products from datagrid
       | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD | 41   | blue  |
     And I am logged in as "Julia"
 
-  # No way to retrieve the downloaded file from Firefox. So we just check here that we can press the
-  # "Quick Export" button
   Scenario: Successfully quick export published products
     Given I am on the published page
-    And I select rows boots, sneakers
+    And I select rows boots, sneakers, sandals, pump
     Then I press "CSV (All attributes)" on the "Quick Export" dropdown button
+    And I wait for the published product quick export to finish
+    When I am on the dashboard page
+    Then I should have 1 new notification
+    And I should see notification:
+      | type    | message               |
+      | success | Quick export finished |
+    Then I go on the last executed job resume of "csv_published_product_quick_export"
+    And I should see "COMPLETED"
+    Then exported file of "csv_published_product_quick_export" should contain:
+    """
+    sku;categories;color;enabled;family;groups;name-en_US;price-EUR;price-USD;size
+    boots;winter_collection;black;1;boots;;"Amazing boots";20.00;25.00;40
+    sneakers;summer_collection;white;1;sneakers;;Sneakers;50.00;60.00;42
+    sandals;summer_collection;red;1;sandals;;Sandals;5.00;5.00;40
+    pump;summer_collection;blue;1;;;Pump;15.00;20.00;41
+    """

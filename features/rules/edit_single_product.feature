@@ -168,18 +168,18 @@ Feature: Read a single product by applying rules
       | rule            | field | operator | value     |
       | rule_sku_jacket | sku   | =        | my-jacket |
     And the following product rule setter actions:
-      | rule            | field              | locale | scope  | value                                                  |
-      | rule_sku_jacket | name               | fr_FR  |        | Veste blanche                                          |
-      | rule_sku_jacket | handmade           |        |        | 1                                                      |
-      | rule_sku_jacket | release_date       |        | tablet | 2015-08-08                                             |
-      | rule_sku_jacket | datasheet          |        |        | akeneo,../../../features/Context/fixtures/akeneo.txt   |
-      | rule_sku_jacket | side_view          |        |        | akeneo2,../../../features/Context/fixtures/akeneo2.jpg |
-      | rule_sku_jacket | length             |        |        | 50,CENTIMETER                                          |
-      | rule_sku_jacket | weather_conditions |        |        | dry,hot                                                |
-      | rule_sku_jacket | number_in_stock    |        | tablet | 8000                                                   |
-      | rule_sku_jacket | size               |        |        | L                                                      |
-      | rule_sku_jacket | price              |        |        | 180,EUR                                                |
-      | rule_sku_jacket | description        | fr_FR  | tablet | En cuir                                                |
+      | rule            | field              | locale | scope  | value                              |
+      | rule_sku_jacket | name               | fr_FR  |        | Veste blanche                      |
+      | rule_sku_jacket | handmade           |        |        | 1                                  |
+      | rule_sku_jacket | release_date       |        | tablet | 2015-08-08                         |
+      | rule_sku_jacket | datasheet          |        |        | akeneo.txt,%fixtures%/akeneo.txt   |
+      | rule_sku_jacket | side_view          |        |        | akeneo2.jpg,%fixtures%/akeneo2.jpg |
+      | rule_sku_jacket | length             |        |        | 50,CENTIMETER                      |
+      | rule_sku_jacket | weather_conditions |        |        | dry,hot                            |
+      | rule_sku_jacket | number_in_stock    |        | tablet | 8000                               |
+      | rule_sku_jacket | size               |        |        | L                                  |
+      | rule_sku_jacket | price              |        |        | 180,EUR                            |
+      | rule_sku_jacket | description        | fr_FR  | tablet | En cuir                            |
     Given the product rule "rule_sku_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | name-fr_FR               | Veste blanche      |

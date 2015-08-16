@@ -258,4 +258,12 @@ class EnterpriseWebUser extends BaseWebUser
             return trim($var);
         }, $exploded);
     }
+
+    /**
+     * @Given /^I wait for the published product quick export to finish$/
+     */
+    public function iWaitForThePublishedProductQuickExportToFinish()
+    {
+        $this->waitForMassEditJobToFinish('csv_published_product_quick_export');
+    }
 }
