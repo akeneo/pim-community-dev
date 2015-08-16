@@ -145,3 +145,8 @@ services:
         class: %akeneo_storage_utils.repository.base_cached_object.class%
         arguments:
             - '@pim_catalog.repository.category'
+
+    pim_catalog.repository.cached_channel:
+        class: %akeneo_storage_utils.repository.base_cached_object.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
