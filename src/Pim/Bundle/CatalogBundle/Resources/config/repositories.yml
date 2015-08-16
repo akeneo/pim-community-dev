@@ -150,3 +150,8 @@ services:
         class: %akeneo_storage_utils.repository.base_cached_object.class%
         arguments:
             - '@pim_catalog.repository.channel'
+
+    pim_catalog.repository.cached_locale:
+        class: %akeneo_storage_utils.repository.base_cached_object.class%
+        arguments:
+            - '@pim_catalog.repository.locale'
