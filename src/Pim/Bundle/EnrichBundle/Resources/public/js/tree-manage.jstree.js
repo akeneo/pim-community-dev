@@ -56,7 +56,7 @@ define(
                                 _format: 'json',
                                 select_node_id: selectedNodeOrTree,
                                 context: 'manage',
-                                with_products_count: 0
+                                with_items_count: 0
                             }
                         )
                     },
@@ -90,7 +90,7 @@ define(
                             return {
                                 id: id,
                                 select_node_id: selectedNode,
-                                with_products_count: 0
+                                with_items_count: 0
                             };
                         }
                     }

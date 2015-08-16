@@ -6,11 +6,11 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
- * Category filter
+ * Product category filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -21,8 +21,8 @@ class CategoryFilter implements FieldFilterInterface
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
-    /** @var ProductCategoryRepositoryInterface */
-    protected $productRepository;
+    /** @var CategoryFilterableRepositoryInterface */
+    protected $itemCategoryRepo;
 
     /** @var ObjectIdResolverInterface */
     protected $objectIdResolver;
@@ -39,21 +39,21 @@ class CategoryFilter implements FieldFilterInterface
     /**
      * Instanciate the base filter
      *
-     * @param CategoryRepositoryInterface        $categoryRepository
-     * @param ProductCategoryRepositoryInterface $productRepository
-     * @param ObjectIdResolverInterface          $objectIdResolver
-     * @param array                              $supportedFields
-     * @param array                              $supportedOperators
+     * @param CategoryRepositoryInterface           $categoryRepository
+     * @param CategoryFilterableRepositoryInterface $itemCategoryRepo
+     * @param ObjectIdResolverInterface             $objectIdResolver
+     * @param array                                 $supportedFields
+     * @param array                                 $supportedOperators
      */
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
-        ProductCategoryRepositoryInterface $productRepository,
+        CategoryFilterableRepositoryInterface $itemCategoryRepo,
         ObjectIdResolverInterface $objectIdResolver,
         array $supportedFields = [],
         array $supportedOperators = []
     ) {
         $this->categoryRepository = $categoryRepository;
-        $this->productRepository  = $productRepository;
+        $this->itemCategoryRepo   = $itemCategoryRepo;
         $this->objectIdResolver   = $objectIdResolver;
         $this->supportedFields    = $supportedFields;
         $this->supportedOperators = $supportedOperators;
@@ -75,24 +75,24 @@ class CategoryFilter implements FieldFilterInterface
 
         switch ($operator) {
             case Operators::IN_LIST:
-                $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, true);
+                $this->itemCategoryRepo->applyFilterByCategoryIds($this->qb, $categoryIds, true);
                 break;
             case Operators::NOT_IN_LIST:
-                $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, false);
+                $this->itemCategoryRepo->applyFilterByCategoryIds($this->qb, $categoryIds, false);
                 break;
             case Operators::IN_CHILDREN_LIST:
                 $categoryIds = $this->getAllChildrenIds($categoryIds);
-                $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, true);
+                $this->itemCategoryRepo->applyFilterByCategoryIds($this->qb, $categoryIds, true);
                 break;
             case Operators::NOT_IN_CHILDREN_LIST:
                 $categoryIds = $this->getAllChildrenIds($categoryIds);
-                $this->productRepository->applyFilterByCategoryIds($this->qb, $categoryIds, false);
+                $this->itemCategoryRepo->applyFilterByCategoryIds($this->qb, $categoryIds, false);
                 break;
             case Operators::UNCLASSIFIED:
-                $this->productRepository->applyFilterByUnclassified($this->qb);
+                $this->itemCategoryRepo->applyFilterByUnclassified($this->qb);
                 break;
             case Operators::IN_LIST_OR_UNCLASSIFIED:
-                $this->productRepository->applyFilterByCategoryIdsOrUnclassified($this->qb, $categoryIds);
+                $this->itemCategoryRepo->applyFilterByCategoryIdsOrUnclassified($this->qb, $categoryIds);
                 break;
         }
 

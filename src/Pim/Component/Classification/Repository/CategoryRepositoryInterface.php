@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Repository;
+namespace Pim\Component\Classification\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\RepositoryInterface as TreeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
 
 /**
  * Category repository interface
@@ -25,7 +25,7 @@ interface CategoryRepositoryInterface extends
     /**
      * Get query builder for all existing category trees
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getTreesQB();
 
@@ -63,7 +63,7 @@ interface CategoryRepositoryInterface extends
      * @param CategoryInterface $category    the requested node
      * @param bool              $includeNode true to include actual node in query result
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false);
 
@@ -101,10 +101,10 @@ interface CategoryRepositoryInterface extends
      * down to the node specified by select node id. Otherwise, the
      * whole tree will be returned
      *
-     * @param int      $parentId
-     * @param int|bool $selectNodeId
+     * @param int  $parentId
+     * @param bool $selectNodeId
      *
-     * @return ArrayCollection
+     * @return array
      */
     public function getChildrenTreeByParentId($parentId, $selectNodeId = false);
 
@@ -140,4 +140,26 @@ interface CategoryRepositoryInterface extends
      * @return array - list of Nodes in path
      */
     public function getPath($node);
+
+    /**
+     * @return array
+     */
+    public function getTrees();
+
+    /**
+     * Check if a parent node is an ancestor of a child node
+     *
+     * @param CategoryInterface $parentNode
+     * @param CategoryInterface $childNode
+     *
+     * @return bool
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode);
+
+    /**
+     * Return the categories sorted by tree and ordered
+     *
+     * @return array
+     */
+    public function getOrderedAndSortedByTreeCategories();
 }

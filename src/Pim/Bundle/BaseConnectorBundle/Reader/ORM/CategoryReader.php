@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
-use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\Reader;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Category reader that reads categories ordered by tree and order inside the tree
@@ -12,17 +15,26 @@ use Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\Reader;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryReader extends Reader
+class CategoryReader extends AbstractConfigurableStepElement implements
+    ItemReaderInterface,
+    StepExecutionAwareInterface
 {
-    /**
-     * @var EntityRepository
-     */
+    /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
+    /** @var StepExecution */
+    protected $stepExecution;
+
+    /** @var bool Checks if all categories are sent to the processor */
+    protected $isExecuted = false;
+
+    /** @var \ArrayIterator */
+    protected $results;
+
     /**
-     * @param EntityRepository $categoryRepository
+     * @param CategoryRepositoryInterface $categoryRepository
      */
-    public function __construct(EntityRepository $categoryRepository)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }
@@ -30,18 +42,43 @@ class CategoryReader extends Reader
     /**
      * {@inheritdoc}
      */
-    public function getQuery()
+    public function read()
     {
-        if (!$this->query) {
-            $qb = $this->categoryRepository->createQueryBuilder('c');
+        if (!$this->isExecuted) {
+            $this->isExecuted = true;
 
-            $qb
-                ->orderBy('c.root')
-                ->addOrderBy('c.left');
-
-            $this->query = $qb->getQuery();
+            $this->results = $this->getResults();
         }
 
-        return $this->query;
+        if (null !== $result = $this->results->current()) {
+            $this->results->next();
+            $this->stepExecution->incrementSummaryInfo('read');
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    protected function getResults()
+    {
+        return new \ArrayIterator($this->categoryRepository->getOrderedAndSortedByTreeCategories());
     }
 }
