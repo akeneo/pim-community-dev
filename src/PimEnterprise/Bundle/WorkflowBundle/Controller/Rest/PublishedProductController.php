@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
+namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class PublishedProductRestController
+class PublishedProductController
 {
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;

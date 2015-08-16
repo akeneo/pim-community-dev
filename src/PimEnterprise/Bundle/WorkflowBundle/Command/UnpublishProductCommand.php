@@ -7,9 +7,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Validator\Constraints\Null;
 
 /**
@@ -49,8 +49,8 @@ class UnpublishProductCommand extends ContainerAwareCommand
             return 1;
         }
 
-        $publishedProductManager = $this->getPublishedProductManager();
-        $publishedProductManager->unpublish($publishedProduct);
+        $manager = $this->getPublishedProductManager();
+        $manager->unpublish($publishedProduct);
 
         $output
             ->writeln(

@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -18,6 +19,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
@@ -50,14 +52,22 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var ProductDraftRepositoryInterface */
+    protected $productDraftRepo;
+
+    /** @var RemoverInterface */
+    protected $productDraftRemover;
+
     /**
-     * @param SaverInterface                $workingCopySaver
-     * @param SaverInterface                $draftSaver
-     * @param ObjectManager                 $objectManager
-     * @param ProductSavingOptionsResolver  $optionsResolver
-     * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param ProductDraftBuilderInterface  $productDraftBuilder
-     * @param TokenStorageInterface         $tokenStorage
+     * @param SaverInterface                  $workingCopySaver
+     * @param SaverInterface                  $draftSaver
+     * @param ObjectManager                   $objectManager
+     * @param ProductSavingOptionsResolver    $optionsResolver
+     * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param ProductDraftBuilderInterface    $productDraftBuilder
+     * @param TokenStorageInterface           $tokenStorage
+     * @param ProductDraftRepositoryInterface $productDraftRepo
+     * @param RemoverInterface                $productDraftRemover
      */
     public function __construct(
         SaverInterface $workingCopySaver,
@@ -66,7 +76,9 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         ProductSavingOptionsResolver $optionsResolver,
         AuthorizationCheckerInterface $authorizationChecker,
         ProductDraftBuilderInterface $productDraftBuilder,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        ProductDraftRepositoryInterface $productDraftRepo,
+        RemoverInterface $productDraftRemover
     ) {
         $this->workingCopySaver     = $workingCopySaver;
         $this->draftSaver           = $draftSaver;
@@ -75,6 +87,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $this->authorizationChecker = $authorizationChecker;
         $this->productDraftBuilder  = $productDraftBuilder;
         $this->tokenStorage         = $tokenStorage;
+        $this->productDraftRepo     = $productDraftRepo;
+        $this->productDraftRemover  = $productDraftRemover;
     }
 
     /**
@@ -91,9 +105,12 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
             $this->workingCopySaver->save($product, $options);
         } else {
             $productDraft = $this->productDraftBuilder->build($product, $this->getUsername());
+
             if (null !== $productDraft) {
                 $this->draftSaver->save($productDraft, $options);
                 $this->objectManager->refresh($product);
+            } elseif (null !== $draft = $this->productDraftRepo->findUserProductDraft($product, $this->getUsername())) {
+                $this->productDraftRemover->remove($draft);
             }
         }
     }

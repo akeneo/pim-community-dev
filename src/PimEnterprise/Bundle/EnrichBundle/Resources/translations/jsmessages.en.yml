@@ -38,6 +38,10 @@ pimee_enrich:
             meta:
                 published: Published version
                 owner_groups: Owner groups
+                draft_status: Draft status
+                draft:
+                    in_progress: In progress
+                    sent_for_approval: Waiting for approval
             tab:
                 proposals:
                     title: Proposals

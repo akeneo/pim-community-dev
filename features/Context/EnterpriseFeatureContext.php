@@ -376,7 +376,9 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function itsStatusShouldBe($status)
     {
-        $info = $this->getSession()->getPage()->find('css', '.navbar-content li:contains("Status")');
+        $info = $this->spin(function () {
+            return $this->getSession()->getPage()->find('css', '.meta .draft-status');
+        });
 
         if (false === strpos($info->getText(), $status)) {
             throw new \LogicException(
