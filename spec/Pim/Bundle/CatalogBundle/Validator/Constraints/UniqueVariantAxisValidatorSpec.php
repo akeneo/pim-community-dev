@@ -108,7 +108,6 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         ProductValueInterface $colorProductValue,
         UniqueVariantAxis $uniqueVariantAxisConstraint,
         ConstraintViolationBuilderInterface $violation
-
     ) {
         $tShirtGroupType->isVariant()->willReturn(true);
 
