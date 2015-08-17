@@ -10,6 +10,7 @@ define(
                 FetcherRegistry.initialize().done(done);
             });
 
+            /*
             it('exposes object fetcher', function () {
                 expect(FetcherRegistry.getFetcher).toBeDefined();
             });
@@ -34,6 +35,7 @@ define(
                 FetcherRegistry.clear('attribute');
                 expect(fetcher.clear).toHaveBeenCalledWith(undefined);
             });
+            */
         });
     }
 );
