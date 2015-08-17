@@ -5,7 +5,7 @@ namespace Context\Page\Category\Node;
 use Context\Page\Category\Tree\Creation as TreeCreation;
 
 /**
- * Category node creation page
+ * Product category node creation page
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -16,5 +16,5 @@ class Creation extends TreeCreation
     /**
      * @var string
      */
-    protected $path = '/enrich/category-tree/create/{id}';
+    protected $path = '/enrich/product-category-tree/create/{id}';
 }

@@ -13,6 +13,7 @@ Feature: Display the product history
       | SKU | sandals-001 |
     And I press the "Save" button in the popin
     And I edit the "sandals-001" product
+    And the history of the product "sandals-001" has been built
     When I open the history
     Then there should be 1 update
     And I should see history:
@@ -27,6 +28,7 @@ Feature: Display the product history
       | boots | cold,snowy         |
     And I am logged in as "Julia"
     When I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 update
     And I should see history:
@@ -39,6 +41,7 @@ Feature: Display the product history
     And I confirm the deletion
     And I save the attribute
     And I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 updates
     And I should see history:
@@ -52,6 +55,7 @@ Feature: Display the product history
       | boots | winter_boots |
     And I am logged in as "Julia"
     When I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 update
     And I should see history:
@@ -62,6 +66,7 @@ Feature: Display the product history
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 2 updates
     And I should see history:
@@ -75,6 +80,7 @@ Feature: Display the product history
       | boots | men_2014,men_2015_autumn,men_2015_winter |
     And I am logged in as "Julia"
     When I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 update
     And I should see history:
@@ -85,6 +91,7 @@ Feature: Display the product history
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 2 updates
     And I should see history:
@@ -99,6 +106,7 @@ Feature: Display the product history
       | boots | Converse     |
     And I am logged in as "Julia"
     When I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 update
     And I should see history:
@@ -109,6 +117,7 @@ Feature: Display the product history
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 updates
     And I should see history:
@@ -123,6 +132,7 @@ Feature: Display the product history
       | boots | cold,snowy         | nice boots |
     And I am logged in as "Julia"
     When I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 update
     And I should see history:
@@ -137,6 +147,7 @@ Feature: Display the product history
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 update
     And I should see history:
@@ -152,6 +163,7 @@ Feature: Display the product history
       | boots | 10 EUR, 20 USD |
     And I am logged in as "Julia"
     When I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 update
     And I should see history:
@@ -162,6 +174,7 @@ Feature: Display the product history
     And I visit the "Marketing" group
     And I change the "Price" to "19 USD"
     And I save the product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 2 updates
     And I should see history:
@@ -173,6 +186,7 @@ Feature: Display the product history
     And I remove the "Price" attribute
     And I confirm the deletion
     And I save the product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 3 updates
     And I should see history:
@@ -188,6 +202,7 @@ Feature: Display the product history
       | boots | 30 CENTIMETER |
     And I am logged in as "Julia"
     When I edit the "boots" product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 1 update
     And I should see history:
@@ -198,6 +213,7 @@ Feature: Display the product history
     When I visit the "Attributes" tab
     And I change the "Length" to "35 CENTIMETER"
     And I save the product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 2 updates
     And I should see history:
@@ -208,6 +224,7 @@ Feature: Display the product history
     And I remove the "Length" attribute
     And I confirm the deletion
     And I save the product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 3 updates
     And I should see history:
@@ -225,6 +242,7 @@ Feature: Display the product history
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"
     And I save the product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 2 updates
     And I should see history:
@@ -235,6 +253,7 @@ Feature: Display the product history
     And I visit the "Media" group
     And I remove the "Side view" file
     And I save the product
+    And the history of the product "boots" has been built
     When I open the history
     Then there should be 3 updates
     And I should see history:

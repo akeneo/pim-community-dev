@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
@@ -27,7 +28,7 @@ class LocaleManager
     /**
      * Get active locales
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
+     * @return LocaleInterface[]
      */
     public function getActiveLocales()
     {
@@ -37,11 +38,11 @@ class LocaleManager
     /**
      * Get disabled locales
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
+     * @return LocaleInterface[]
      */
     public function getDisabledLocales()
     {
-        $criterias = array('activated' => false);
+        $criterias = ['activated' => false];
 
         return $this->getLocales($criterias);
     }
@@ -51,9 +52,9 @@ class LocaleManager
      *
      * @param array $criterias
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
+     * @return LocaleInterface[]
      */
-    public function getLocales($criterias = array())
+    public function getLocales($criterias = [])
     {
         return $this->repository->findBy($criterias);
     }
@@ -63,11 +64,11 @@ class LocaleManager
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @return LocaleInterface
      */
     public function getLocaleByCode($code)
     {
-        return $this->repository->findOneBy(array('code' => $code));
+        return $this->repository->findOneByIdentifier($code);
     }
 
     /**

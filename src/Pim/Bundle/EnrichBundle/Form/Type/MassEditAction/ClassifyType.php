@@ -41,7 +41,7 @@ class ClassifyType extends AbstractType
         $this->categoryManager = $categoryManager;
         $this->categoryClass   = $categoryClass;
         $this->dataClass       = $dataClass;
-        $this->trees           = $categoryManager->getCategoryRepository()->findBy(['parent' => null]);
+        $this->trees           = $categoryManager->getEntityRepository()->findBy(['parent' => null]);
     }
 
     /**

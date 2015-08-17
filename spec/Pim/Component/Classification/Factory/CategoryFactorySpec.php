@@ -15,6 +15,6 @@ class CategoryFactorySpec extends ObjectBehavior
 
     function it_creates_a_category()
     {
-        $this->createCategory()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
+        $this->create()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
     }
 }

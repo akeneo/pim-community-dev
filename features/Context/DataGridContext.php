@@ -290,7 +290,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShowTheFilter($filterName)
     {
-        if (strtolower($filterName) !== 'category') {
+        if (false === strpos(strtolower($filterName), 'category')) {
             $this->wait(30000, '$("div.filter-box").length > 0;');
             $this->datagrid->showFilter($filterName);
             $this->wait();
@@ -305,7 +305,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iHideTheFilter($filterName)
     {
-        if (strtolower($filterName) !== 'category') {
+        if (false === strpos(strtolower($filterName), 'category')) {
             $this->datagrid->hideFilter($filterName);
         }
     }
@@ -586,7 +586,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      * @param string $value
      *
-     * @Then /^I filter by "((?!category)[^"]*)" with value "([^">=<]*)"$/
+     * @Then /^I filter by "([^"]*(?<!category))" with value "([^">=<]*)"$/
      */
     public function iFilterBy($filterName, $value)
     {

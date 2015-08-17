@@ -1,15 +1,14 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Category repository
@@ -17,17 +16,13 @@ use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class CategoryRepository extends NestedTreeRepository implements
     IdentifiableObjectRepositoryInterface,
     CategoryRepositoryInterface
 {
     /**
-     * Get query builder for all existitng category trees
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
     public function getTreesQB()
     {
@@ -35,12 +30,7 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * Count children for a given category.
-     *
-     * @param CategoryInterface $category   the requested node
-     * @param bool              $onlyDirect true to count only direct children
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function countChildren(CategoryInterface $category, $onlyDirect = false)
     {
@@ -57,13 +47,9 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * Get a collection of categories based on the array of id provided
-     *
-     * @param array $categoriesIds
-     *
-     * @return Collection of categories
+     * {@inheritdoc}
      */
-    public function getCategoriesByIds(array $categoriesIds = array())
+    public function getCategoriesByIds(array $categoriesIds = [])
     {
         if (count($categoriesIds) === 0) {
             return new ArrayCollection();
@@ -86,16 +72,12 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * Get a tree filled with children and their parents
-     *
-     * @param array $parentsIds parent ids
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getTreeFromParents(array $parentsIds)
     {
         if (count($parentsIds) === 0) {
-            return array();
+            return [];
         }
 
         $meta = $this->getClassMetadata();
@@ -115,28 +97,7 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * Create a query builder with just a link to the category passed in parameter
-     *
-     * @param CategoryInterface $category
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getNodeQueryBuilder(CategoryInterface $category)
-    {
-        $qb = $this->createQueryBuilder('ps');
-        $qb->where('ps.id = :nodeId')
-           ->setParameter('nodeId', $category->getId());
-
-        return $qb;
-    }
-
-    /**
-     * Shortcut to get all children query builder
-     *
-     * @param CategoryInterface $category    the requested node
-     * @param bool              $includeNode true to include actual node in query result
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * {@inheritdoc}
      */
     public function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false)
     {
@@ -144,11 +105,7 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * Shortcut to get all children ids
-     *
-     * @param CategoryInterface $parent the parent
-     *
-     * @return integer[]
+     * {@inheritdoc}
      */
     public function getAllChildrenIds(CategoryInterface $parent)
     {
@@ -167,7 +124,7 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -175,25 +132,21 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
+
     /**
-     * Return categories ids provided by the categoryQb or by the provided category
-     *
-     * @param CategoryInterface $category
-     * @param QueryBuilder      $categoryQb
-     *
-     * @return array $categoryIds
+     * {@inheritdoc}
      */
     public function getCategoryIds(CategoryInterface $category, QueryBuilder $categoryQb = null)
     {
-        $categoryIds = array();
+        $categoryIds = [];
 
         if (null !== $categoryQb) {
             $categoryAlias = $categoryQb->getRootAlias();
             $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
         } else {
-            $categories = array(array('id' => $category->getId()));
+            $categories = [['id' => $category->getId()]];
         }
 
         foreach ($categories as $category) {
@@ -202,41 +155,30 @@ class CategoryRepository extends NestedTreeRepository implements
 
         return $categoryIds;
     }
+
     /**
-     * Get children from a parent id
-     *
-     * @param int $parentId
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getChildrenByParentId($parentId)
     {
-        $parent = $this->findOneBy(array('id' => $parentId));
+        $parent = $this->findOneBy(['id' => $parentId]);
 
         return $this->getChildren($parent, true);
     }
 
     /**
-     * Get children tree from a parent id.
-     * If the select node id is provided, the tree will be returned
-     * down to the node specified by select node id. Otherwise, the
-     * whole tree will be returned
-     *
-     * @param int $parentId
-     * @param int $selectNodeId
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getChildrenTreeByParentId($parentId, $selectNodeId = false)
     {
-        $children = array();
+        $children = [];
 
-        $parent = $this->findOneBy(array('id' => $parentId));
+        $parent = $this->findOneBy(['id' => $parentId]);
 
         if ($selectNodeId === false) {
             $children = $this->childrenHierarchy($parent);
         } else {
-            $selectNode = $this->findOneBy(array('id' => $selectNodeId));
+            $selectNode = $this->findOneBy(['id' => $selectNodeId]);
             if ($selectNode != null) {
                 $meta = $this->getClassMetadata();
                 $config = $this->listener->getConfiguration($this->_em, $meta->name);
@@ -247,7 +189,7 @@ class CategoryRepository extends NestedTreeRepository implements
                 // Remove the node itself from his ancestor
                 array_pop($selectPath);
 
-                $ancestorsIds = array();
+                $ancestorsIds = [];
 
                 foreach ($selectPath as $ancestor) {
                     $ancestorsIds[] = $ancestor->getId();
@@ -265,29 +207,22 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * Based on the Gedmo\Tree\RepositoryUtils\buildTreeArray, but with
-     * keeping the node as object and able to manage nodes in different branches
-     * (the original implementation works with only depth and associate all
-     * nodes of depth D+1 to the last node of depth D.)
-     *
-     * @param array $nodes Must be sorted by increasing depth
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function buildTreeNode(array $nodes)
     {
-        $vectorMap = array();
-        $tree = array();
+        $vectorMap = [];
+        $tree = [];
         $childrenIndex = $this->repoUtils->getChildrenIndex();
 
         foreach ($nodes as $node) {
             if (!isset($vectorMap[$node->getId()])) {
                 // Node does not exist, and none of his children has
                 // already been in the loop, so we create it.
-                $vectorMap[$node->getId()] = array(
-                    'item'         => $node,
-                    $childrenIndex => array()
-                );
+                $vectorMap[$node->getId()] = [
+                    'item' => $node,
+                    $childrenIndex => []
+                ];
             } else {
                 // Node already existing in the map because a child has been
                 // added to his children array. We still need to add the node
@@ -299,9 +234,9 @@ class CategoryRepository extends NestedTreeRepository implements
                 if (!isset($vectorMap[$node->getParent()->getId()])) {
                     // The parent does not exist in the map, create its
                     // children property
-                    $vectorMap[$node->getParent()->getId()] = array(
-                        $childrenIndex => array()
-                    );
+                    $vectorMap[$node->getParent()->getId()] = [
+                        $childrenIndex => []
+                    ];
                 }
 
                 $vectorMap[$node->getParent()->getId()][$childrenIndex][] =& $vectorMap[$node->getId()];
@@ -318,7 +253,7 @@ class CategoryRepository extends NestedTreeRepository implements
             $nodeIt = 0;
             $foundItemLess = false;
             $nodeIds = array_keys($vectorMap);
-            $nodesByLevel = array();
+            $nodesByLevel = [];
 
             while ($nodeIt < count($nodeIds) && !$foundItemLess) {
                 $nodeId = $nodeIds[$nodeIt];
@@ -344,14 +279,7 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
-     * Search Segment entities from an array of criterias.
-     * Search is done on a "%value%" LIKE expression.
-     * Criterias are joined with a AND operator
-     *
-     * @param int   $treeRootId Tree segment root id
-     * @param array $criterias  Criterias to apply
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function search($treeRootId, $criterias)
     {
@@ -360,6 +288,54 @@ class CategoryRepository extends NestedTreeRepository implements
             $queryBuilder->andWhere('c.'. $key .' LIKE :'. $key)->setParameter($key, '%'. $value .'%');
         }
         $queryBuilder->andWhere('c.root = :rootId')->setParameter('rootId', $treeRootId);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTrees()
+    {
+        return $this->getChildren(null, true, 'created', 'DESC');
+    }
+
+    /**
+     * Create a query builder with just a link to the category passed in parameter
+     *
+     * @param CategoryInterface $category
+     *
+     * @return QueryBuilder
+     */
+    protected function getNodeQueryBuilder(CategoryInterface $category)
+    {
+        $qb = $this->createQueryBuilder('ps');
+        $qb->where('ps.id = :nodeId')
+            ->setParameter('nodeId', $category->getId());
+
+        return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    {
+        $sameRoot = $parentNode->getRoot() === $childNode->getRoot();
+
+        $isAncestor = $childNode->getLeft() > $parentNode->getLeft()
+            && $childNode->getRight() < $parentNode->getRight();
+
+        return $sameRoot && $isAncestor;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrderedAndSortedByTreeCategories()
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+        $queryBuilder = $queryBuilder->orderBy('c.root')->addOrderBy('c.left');
 
         return $queryBuilder->getQuery()->getResult();
     }
