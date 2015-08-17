@@ -4,7 +4,8 @@ namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata as ODMClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadata as ORMClassMetadata;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
@@ -14,6 +15,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ * @require Doctrine\ODM\MongoDB\Mapping\ClassMetadata
+ * @require Doctrine\ODM\MongoDB\UnitOfWork
+ */
 class TimestampableSubscriberSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry)
@@ -44,7 +50,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args,
         ObjectManager $om,
         Version $version,
-        ClassMetadata $metadata
+        ORMClassMetadata $metadata
     ) {
         $registry->getManagerForClass('bar')->willReturn($om);
         $om->getClassMetadata('bar')->willReturn($metadata);
@@ -67,7 +73,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         ORMUnitOfWork $uow,
         Version $version,
         TimestampableInterface $object,
-        ClassMetadata $metadata
+        ORMClassMetadata $metadata
     ) {
         $registry->getManagerForClass('bar')->willReturn($om);
         $om->getClassMetadata('bar')->willReturn($metadata);
@@ -82,16 +88,13 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         $om->getUnitOfWork()->willReturn($uow);
         $om->find('bar', 'foo')->willReturn($object);
 
-        $uow->scheduleForUpdate($object)->shouldBeCalled();
+        $uow->computeChangeSet($metadata, $object)->shouldBeCalled();
 
         $object->setUpdated('foobar')->shouldBeCalled();
 
         $this->prePersist($args);
     }
 
-    /**
-     * @require Doctrine\ODM\MongoDB\DocumentManager
-     */
     function it_applies_on_timestampable_versioned_object_with_a_document_manager(
         $registry,
         LifecycleEventArgs $args,
@@ -99,7 +102,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         ODMUnitOfWork $uow,
         Version $version,
         TimestampableInterface $object,
-        ClassMetadata $metadata
+        ODMClassMetadata $metadata
     ) {
         $registry->getManagerForClass('bar')->willReturn($om);
         $om->getClassMetadata('bar')->willReturn($metadata);
@@ -114,7 +117,7 @@ class TimestampableSubscriberSpec extends ObjectBehavior
         $om->getUnitOfWork()->willReturn($uow);
         $om->find('bar', 'foo')->willReturn($object);
 
-        $uow->scheduleForUpdate($object)->shouldBeCalled();
+        $uow->computeChangeSet($metadata, $object)->shouldBeCalled();
 
         $object->setUpdated('foobar')->shouldBeCalled();
 
