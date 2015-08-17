@@ -3,20 +3,20 @@
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use League\Flysystem\Filesystem;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
+use Pim\Bundle\BaseConnectorBundle\Reader\File\FileReader;
+use Pim\Component\Connector\Reader\File\CsvReader;
 
 /**
- * Archive files written by job execution to provide them through a download button
+ * Archive files read by job execution to provide them through a download button
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileWriterArchiver extends AbstractFilesystemArchiver
+class FileReaderArchiver extends AbstractFilesystemArchiver
 {
     /**
      * @param Filesystem $filesystem
@@ -37,36 +37,30 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
             if (!$step instanceof ItemStep) {
                 continue;
             }
-            $writer = $step->getWriter();
+            $reader = $step->getReader();
 
-            if ($this->isUsableWriter($writer)) {
+            if ($this->isReaderUsable($reader)) {
                 $key = strtr(
                     $this->getRelativeArchivePath($jobExecution),
                     [
-                        '%filename%' => basename($writer->getPath()),
+                        '%filename%' => basename($reader->getFilePath()),
                     ]
                 );
-                $this->filesystem->put($key, file_get_contents($writer->getPath()));
+                $this->filesystem->put($key, file_get_contents($reader->getFilePath()));
             }
         }
     }
 
     /**
-     * Verify if the writer is usable or not
+     * Verify if the reader is usable or not
      *
-     * @param ItemWriterInterface $writer
+     * @param ItemReaderInterface $reader
      *
      * @return bool
      */
-    protected function isUsableWriter(ItemWriterInterface $writer)
+    protected function isReaderUsable(ItemReaderInterface $reader)
     {
-        if ($writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
-            return false;
-        } elseif ($writer instanceof FileWriter && is_file($writer->getPath())) {
-            return true;
-        }
-
-        return false;
+        return $reader instanceof FileReader || $reader instanceof CsvReader;
     }
 
     /**
@@ -74,16 +68,20 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
      */
     public function getName()
     {
-        return 'output';
+        return 'input';
     }
 
     /**
-     * {@inheritdoc}
+     * Check if the job execution is supported
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return bool
      */
     public function supports(JobExecution $jobExecution)
     {
         foreach ($jobExecution->getJobInstance()->getJob()->getSteps() as $step) {
-            if ($step instanceof ItemStep && $this->isUsableWriter($step->getWriter())) {
+            if ($step instanceof ItemStep && $this->isReaderUsable($step->getReader())) {
                 return true;
             }
         }
