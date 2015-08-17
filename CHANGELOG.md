@@ -1,5 +1,7 @@
 # 1.4.x
 
+# 1.4.0-BETA2 (2015-08-17)
+
 ## BC Breaks
 - Media related classes `PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia`, `PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMediaInterface` and `PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\MediaPublisher` have been removed
 - Change constructor of  `PimEnterprise\Bundle\EnrichBundle\Connector\Writer\MassEdit\ProductWriter` to remove argument `Pim\Bundle\CatalogBundle\Manager\MediaManager`
