@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -21,6 +22,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Category Tree Controller
@@ -55,6 +57,9 @@ class CategoryTreeController extends Controller
     /** @var array */
     protected $rawConfiguration;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * Constructor
      *
@@ -65,6 +70,7 @@ class CategoryTreeController extends Controller
      * @param RemoverInterface            $categoryRemover
      * @param CategoryFactory             $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
+     * @param SecurityFacade              $securityFacade
      * @param array                       $rawConfiguration
      */
     public function __construct(
@@ -75,6 +81,7 @@ class CategoryTreeController extends Controller
         RemoverInterface $categoryRemover,
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
+        SecurityFacade $securityFacade,
         array $rawConfiguration
     ) {
         $this->eventDispatcher    = $eventDispatcher;
@@ -84,6 +91,7 @@ class CategoryTreeController extends Controller
         $this->categoryRemover    = $categoryRemover;
         $this->categoryFactory    = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
+        $this->securityFacade     = $securityFacade;
         $this->rawConfiguration   = $rawConfiguration;
     }
 
@@ -93,13 +101,18 @@ class CategoryTreeController extends Controller
      *
      * @param Request $request
      *
+     * @throws AccessDeniedException
+     *
      * @return array
      *
      * @Template
-     * @AclAncestor("pim_enrich_product_category_list")
      */
     public function listTreeAction(Request $request)
     {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
+            throw new AccessDeniedException();
+        }
+
         $selectNodeId  = $request->get('select_node_id', -1);
 
         try {
@@ -122,12 +135,16 @@ class CategoryTreeController extends Controller
      *
      * @param Request $request
      *
-     * @AclAncestor("pim_enrich_product_category_edit")
+     * @throws AccessDeniedException
      *
      * @return Response
      */
     public function moveNodeAction(Request $request)
     {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_edit'))) {
+            throw new AccessDeniedException();
+        }
+
         $categoryId    = $request->get('id');
         $parentId      = $request->get('parent');
         $prevSiblingId = $request->get('prev_sibling');
@@ -148,13 +165,18 @@ class CategoryTreeController extends Controller
      *
      * @param Request $request
      *
+     * @throws AccessDeniedException
+     *
      * @Template
-     * @AclAncestor("pim_enrich_product_category_list")
      *
      * @return array
      */
     public function childrenAction(Request $request)
     {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
+            throw new AccessDeniedException();
+        }
+
         try {
             $parent = $this->findCategory($request->get('id'));
         } catch (NotFoundHttpException $e) {
@@ -201,14 +223,21 @@ class CategoryTreeController extends Controller
 
     /**
      * @Template()
-     * @AclAncestor("pim_enrich_product_category_list")
+     *
+     * @throws AccessDeniedException
      *
      * @return array
      */
     public function indexAction()
     {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
+            throw new AccessDeniedException();
+        }
+
         return [
             'related_entity' => $this->rawConfiguration[0],
+            'can_edit'       => $this->securityFacade->isGranted($this->buildAclName('category_edit')),
+            'can_create'     => $this->securityFacade->isGranted($this->buildAclName('category_create')),
         ];
     }
 
@@ -218,12 +247,16 @@ class CategoryTreeController extends Controller
      * @param Request $request
      * @param int     $parent
      *
-     * @AclAncestor("pim_enrich_product_category_create")
+     * @throws AccessDeniedException
      *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request, $parent = null)
     {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_create'))) {
+            throw new AccessDeniedException();
+        }
+
         $category = $this->categoryFactory->create();
         if ($parent) {
             $parent = $this->findCategory($parent);
@@ -261,12 +294,16 @@ class CategoryTreeController extends Controller
      * @param Request $request
      * @param int     $id
      *
-     * @AclAncestor("pim_enrich_product_category_edit")
+     * @throws AccessDeniedException
      *
      * @return Response
      */
     public function editAction(Request $request, $id)
     {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_edit'))) {
+            throw new AccessDeniedException();
+        }
+
         $category = $this->findCategory($id);
         $this->eventDispatcher->dispatch(CategoryEvents::PRE_EDIT, new GenericEvent($category));
         $form = $this->createForm($this->rawConfiguration[1], $category, $this->getFormOptions($category));
@@ -286,6 +323,8 @@ class CategoryTreeController extends Controller
             [
                 'form'           => $form->createView(),
                 'related_entity' => $this->rawConfiguration[0],
+                'can_edit'       => $this->securityFacade->isGranted($this->buildAclName('category_edit')),
+                'can_create'     => $this->securityFacade->isGranted($this->buildAclName('category_create')),
             ]
         );
     }
@@ -295,12 +334,16 @@ class CategoryTreeController extends Controller
      *
      * @param int $id
      *
-     * @AclAncestor("pim_enrich_product_category_remove")
+     * @throws AccessDeniedException
      *
      * @return Response|RedirectResponse
      */
     public function removeAction($id)
     {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_remove'))) {
+            throw new AccessDeniedException();
+        }
+
         $category = $this->findCategory($id);
         $parent   = $category->getParent();
         $params   = ($parent !== null) ? ['node' => $parent->getId()] : [];
@@ -363,5 +406,15 @@ class CategoryTreeController extends Controller
         }
 
         return $categories;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function buildAclName($name)
+    {
+        return $this->rawConfiguration[2] . '_' . $name;
     }
 }
