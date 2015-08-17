@@ -42,6 +42,7 @@ pimee_enrich:
                 draft:
                     in_progress: In progress
                     sent_for_approval: Waiting for approval
+                    working_copy: Working copy
             tab:
                 proposals:
                     title: Proposals

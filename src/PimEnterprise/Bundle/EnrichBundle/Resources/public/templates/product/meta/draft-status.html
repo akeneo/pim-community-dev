@@ -1,5 +1,5 @@
-<% if (null !== product.meta.draft_status) { %>
-    <span title="<%= _.__('pimee_enrich.entity.product.meta.draft_status') %>: <%= product.meta.draft_status === 0 ? _.__('pimee_enrich.entity.product.meta.draft.in_progress') : _.__('pimee_enrich.entity.product.meta.draft.sent_for_approval') %>">
-        <%= _.__('pimee_enrich.entity.product.meta.draft_status') %>: <%= product.meta.draft_status === 0 ? _.__('pimee_enrich.entity.product.meta.draft.in_progress') : _.__('pimee_enrich.entity.product.meta.draft.sent_for_approval') %>
+<% if (!isOwner) { %>
+    <span title="<%= label %>: <%= draftStatus %>">
+        <%= label %>: <%= draftStatus %>
     </span>
 <% } %>
