@@ -14,8 +14,6 @@ Feature: Filter products with multiples number fields filters
       | code      | label     | type   | useable_as_grid_filter |
       | component | Component | number | yes                    |
       | supplier  | Supplier  | number | yes                    |
-    And the following "component" attribute options: Black and Green
-    And the following "supplier" attribute options: Black and White and Red
     And the following products:
       | sku    | family    | supplier | component |
       | BOOK   | library   |          |           |
@@ -27,11 +25,6 @@ Feature: Filter products with multiples number fields filters
       | POST-1 | furniture | 03       |           |
       | POST-2 | furniture | 03       |           |
       | POST-3 | furniture | 01       |           |
-    And the following product groups:
-      | code   | label  | axis                | type    | products                          |
-      | MUG    | Mug    | component, supplier | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5 |
-      | POSTIT | Postit | supplier            | X_SELL  | POST-1, POST-2, POST-3            |
-      | EMPTY  | Empty  |                     | X_SELL  |                                   |
     And I am logged in as "Mary"
     And I am on the products page
     And I show the filter "Supplier"

@@ -27,11 +27,6 @@ Feature: Filter products with multiples simpleselect filters
       | POST-1 | furniture | red     |       |
       | POST-2 | furniture | white   |       |
       | POST-3 | furniture | black   |       |
-    And the following product groups:
-      | code   | label  | axis           | type    | products                          |
-      | MUG    | Mug    | color, company | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5 |
-      | POSTIT | Postit | company        | VARIANT | POST-1, POST-2, POST-3            |
-      | EMPTY  | Empty  |                | X_SELL  |                                   |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products with the sames attributes
