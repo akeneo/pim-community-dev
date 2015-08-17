@@ -80,7 +80,8 @@ services:
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
-            - ['product', 'pim_category']
+            - '@oro_security.security_facade'
+            - ['product', 'pim_category', 'pim_enrich_product']
         calls:
             - [ setContainer, [ @service_container ] ]
 
