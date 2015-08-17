@@ -58,10 +58,10 @@ services:
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
-            - ['product', 'pim_category']
+            - '@oro_security.security_facade'
+            - ['product', 'pim_category', 'pim_enrich_product']
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
-            - '@oro_security.security_facade'
         calls:
             - [ setContainer, [ @service_container ] ]
 
@@ -76,10 +76,10 @@ services:
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
-            - ['published_product', 'pim_category']
+            - '@oro_security.security_facade'
+            - ['published_product', 'pim_category', 'pim_enrich_product']
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
-            - '@oro_security.security_facade'
         calls:
             - [ setContainer, [ @service_container ] ]
 

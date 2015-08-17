@@ -51,9 +51,6 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
     /**
      * @param EventDispatcherInterface    $eventDispatcher
      * @param CategoryManager             $categoryManager
@@ -62,9 +59,10 @@ class CategoryTreeController extends BaseCategoryTreeController
      * @param RemoverInterface            $categoryRemover
      * @param CategoryFactory             $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
+     * @param SecurityFacade              $securityFacade
+     * @param array                       $rawConfiguration
      * @param CategoryAccessRepository    $categoryAccessRepo
      * @param TokenStorageInterface       $tokenStorage
-     * @param SecurityFacade              $securityFacade
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -74,10 +72,10 @@ class CategoryTreeController extends BaseCategoryTreeController
         RemoverInterface $categoryRemover,
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
+        SecurityFacade $securityFacade,
         array $rawConfiguration,
         CategoryAccessRepository $categoryAccessRepo,
-        TokenStorageInterface $tokenStorage,
-        SecurityFacade $securityFacade
+        TokenStorageInterface $tokenStorage
     ) {
         parent::__construct(
             $eventDispatcher,
@@ -87,22 +85,25 @@ class CategoryTreeController extends BaseCategoryTreeController
             $categoryRemover,
             $categoryFactory,
             $categoryRepository,
+            $securityFacade,
             $rawConfiguration
         );
 
         $this->categoryAccessRepo = $categoryAccessRepo;
         $this->tokenStorage       = $tokenStorage;
-        $this->securityFacade     = $securityFacade;
     }
 
     /**
      * {@inheritdoc}
      *
      * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
-     * @AclAncestor("pim_enrich_category_list")
      */
     public function listTreeAction(Request $request)
     {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
+            throw new AccessDeniedException();
+        }
+
         $selectNodeId  = $request->get('select_node_id', -1);
         $context       = $request->get('context', false);
 
