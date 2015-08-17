@@ -48,10 +48,9 @@ class TimestampableSubscriber implements EventSubscriber
             return;
         }
 
-        $relatedManager = $this->registry->getManagerForClass($version->getResourceName());
-
-        $haveToBeUpdated = $relatedManager->getClassMetadata($version->getResourceName())
-            ->getReflectionClass()
+        $relatedManager  = $this->registry->getManagerForClass($version->getResourceName());
+        $metadata        = $relatedManager->getClassMetadata($version->getResourceName());
+        $haveToBeUpdated = $metadata->getReflectionClass()
             ->implementsInterface('Pim\Bundle\CatalogBundle\Model\TimestampableInterface');
 
         if (!$haveToBeUpdated) {
@@ -59,8 +58,8 @@ class TimestampableSubscriber implements EventSubscriber
         }
 
         $related = $relatedManager->find($version->getResourceName(), $version->getResourceId());
-        $related->setUpdated($version->getLoggedAt());
 
-        $relatedManager->getUnitOfWork()->scheduleForUpdate($related);
+        $related->setUpdated($version->getLoggedAt());
+        $relatedManager->getUnitOfWork()->computeChangeSet($metadata, $related);
     }
 }
