@@ -5,29 +5,29 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint to check that variant group have axis
+ * Constraint to check if localizable value has existing locale, and if not localizable value has no locale
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupAxis extends Constraint
+class LocalizableValue extends Constraint
 {
     /** @var string */
-    public $expectedAxisMessage = 'Variant group "%variant group%" must be defined with at least one axis';
+    public $expectedLocaleMessage = 'Product value for attribute "%attribute%" must be defined with a locale';
 
     /** @var string */
-    public $unexpectedAxisMessage = 'Group "%group%", which is not variant, can not be defined with axes';
+    public $unexpectedLocaleMessage = 'Product value for attribute "%attribute%" must be defined without a locale';
 
     /** @var string */
-    public $invalidAxisMessage = 'Attribute "%attribute%" cannot be used as axis of variant group "%group%"';
+    public $inexistingLocaleMessage = 'Inexisting locale "%locale%" is used to localize the value "%attribute%"';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'pim_variant_group_axis_validator';
+        return 'pim_localizable_value_validator';
     }
 
     /**

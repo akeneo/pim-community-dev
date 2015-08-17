@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -29,20 +30,70 @@ class VariantGroupAxisValidator extends ConstraintValidator
             $isVariantGroup = $variantGroup->getType()->isVariant();
             $hasAxis = count($variantGroup->getAxisAttributes()) > 0;
             if ($isNew && $isVariantGroup && !$hasAxis) {
-                $this->context->buildViolation(
-                    $constraint->expectedAxisMessage,
-                    [
-                        '%variant group%' => $variantGroup->getCode()
-                    ]
-                )->addViolation();
+                $this->addExpectedAxisViolation($constraint, $variantGroup->getCode());
+            } elseif ($isVariantGroup && $hasAxis) {
+                $this->validateAttributeAxis($constraint, $variantGroup);
             } elseif (!$isVariantGroup && $hasAxis) {
-                $this->context->buildViolation(
-                    $constraint->unexpectedAxisMessage,
-                    [
-                        '%group%' => $variantGroup->getCode()
-                    ]
-                )->addViolation();
+                $this->addUnexpectedAxisViolation($constraint, $variantGroup->getCode());
             }
         }
+    }
+
+    /**
+     * @param VariantGroupAxis $constraint
+     * @param GroupInterface   $variantGroup
+     */
+    protected function validateAttributeAxis(VariantGroupAxis $constraint, GroupInterface $variantGroup)
+    {
+        $allowedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT];
+        foreach ($variantGroup->getAxisAttributes() as $attribute) {
+            if (!in_array($attribute->getAttributeType(), $allowedTypes)) {
+                $this->addInvalidAxisViolation($constraint, $variantGroup->getCode(), $attribute->getCode());
+            }
+        }
+    }
+
+    /**
+     * @param VariantGroupAxis $constraint
+     * @param string           $groupCode
+     */
+    protected function addExpectedAxisViolation(VariantGroupAxis $constraint, $groupCode)
+    {
+        $this->context->buildViolation(
+            $constraint->expectedAxisMessage,
+            [
+                '%variant group%' => $groupCode
+            ]
+        )->addViolation();
+    }
+
+    /**
+     * @param VariantGroupAxis $constraint
+     * @param string           $groupCode
+     */
+    protected function addUnexpectedAxisViolation(VariantGroupAxis $constraint, $groupCode)
+    {
+        $this->context->buildViolation(
+            $constraint->unexpectedAxisMessage,
+            [
+                '%group%' => $groupCode
+            ]
+        )->addViolation();
+    }
+
+    /**
+     * @param VariantGroupAxis $constraint
+     * @param string           $groupCode
+     * @param string           $attributeCode
+     */
+    protected function addInvalidAxisViolation(VariantGroupAxis $constraint, $groupCode, $attributeCode)
+    {
+        $this->context->buildViolation(
+            $constraint->invalidAxisMessage,
+            [
+                '%group%'     => $groupCode,
+                '%attribute%' => $attributeCode,
+            ]
+        )->addViolation();
     }
 }

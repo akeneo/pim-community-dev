@@ -34,4 +34,8 @@ final class AttributeTypes
     const TEXTAREA = 'pim_catalog_textarea';
 
     const TEXT = 'pim_catalog_text';
+
+    const REFERENCE_DATA_MULTI_SELECT = 'pim_reference_data_multiselect';
+
+    const REFERENCE_DATA_SIMPLE_SELECT = 'pim_reference_data_simpleselect';
 }

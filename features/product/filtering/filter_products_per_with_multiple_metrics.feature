@@ -14,8 +14,6 @@ Feature: Filter products with multiples metrics filters
       | code      | label     | type   | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed |
       | weight    | Weight    | metric | yes                    | Weight        | GRAM                | yes              |
       | packaging | Packaging | metric | yes                    | Weight        | GRAM                | yes              |
-    And the following "weight" attribute options: Black and Green
-    And the following "packaging" attribute options: Black and White and Red
     And the following products:
       | sku    | family    | packaging | weight   |
       | BOOK   | library   |           |          |
@@ -27,11 +25,6 @@ Feature: Filter products with multiples metrics filters
       | POST-1 | furniture | 50 GRAM   |          |
       | POST-2 | furniture | 50 GRAM   |          |
       | POST-3 | furniture | 20 GRAM   |          |
-    And the following product groups:
-      | code   | label  | axis              | type    | products                          |
-      | MUG    | Mug    | weight, packaging | VARIANT | MUG-1, MUG-2, MUG-3, MUG-4, MUG-5 |
-      | POSTIT | Postit | packaging         | X_SELL  | POST-1, POST-2, POST-3            |
-      | EMPTY  | Empty  |                   | X_SELL  |                                   |
     And I am logged in as "Mary"
     And I am on the products page
     And I show the filter "Packaging"
