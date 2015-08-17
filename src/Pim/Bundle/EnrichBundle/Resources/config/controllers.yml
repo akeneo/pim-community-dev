@@ -80,7 +80,7 @@ services:
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
-            - 'product'
+            - ['product', 'pim_category']
         calls:
             - [ setContainer, [ @service_container ] ]
 

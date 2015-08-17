@@ -52,8 +52,8 @@ class CategoryTreeController extends Controller
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
-    /** @var string */
-    protected $relatedEntity;
+    /** @var array */
+    protected $rawConfiguration;
 
     /**
      * Constructor
@@ -65,7 +65,7 @@ class CategoryTreeController extends Controller
      * @param RemoverInterface            $categoryRemover
      * @param CategoryFactory             $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param string                      $relatedEntity
+     * @param array                       $rawConfiguration
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -75,7 +75,7 @@ class CategoryTreeController extends Controller
         RemoverInterface $categoryRemover,
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
-        $relatedEntity
+        array $rawConfiguration
     ) {
         $this->eventDispatcher    = $eventDispatcher;
         $this->categoryManager    = $categoryManager;
@@ -84,7 +84,7 @@ class CategoryTreeController extends Controller
         $this->categoryRemover    = $categoryRemover;
         $this->categoryFactory    = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
-        $this->relatedEntity      = $relatedEntity;
+        $this->rawConfiguration   = $rawConfiguration;
     }
 
     /**
@@ -105,7 +105,7 @@ class CategoryTreeController extends Controller
         try {
             $selectNode = $this->findCategory($selectNodeId);
         } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getUserCategoryTree($this->relatedEntity);
+            $selectNode = $this->userContext->getUserCategoryTree($this->rawConfiguration[0]);
         }
 
         return [
@@ -113,7 +113,7 @@ class CategoryTreeController extends Controller
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $request->get('include_sub', false),
             'item_count'     => (bool) $request->get('with_items_count', true),
-            'related_entity' => $this->relatedEntity
+            'related_entity' => $this->rawConfiguration[0]
         ];
     }
 
@@ -193,7 +193,7 @@ class CategoryTreeController extends Controller
                 'include_sub'    => $includeSub,
                 'item_count'     => $withItemsCount,
                 'select_node'    => $selectNode,
-                'related_entity' => $this->relatedEntity
+                'related_entity' => $this->rawConfiguration[0]
             ],
             new JsonResponse()
         );
@@ -208,7 +208,7 @@ class CategoryTreeController extends Controller
     public function indexAction()
     {
         return [
-            'related_entity' => $this->relatedEntity,
+            'related_entity' => $this->rawConfiguration[0],
         ];
     }
 
@@ -232,7 +232,7 @@ class CategoryTreeController extends Controller
 
         $category->setCode($request->get('label'));
         $this->eventDispatcher->dispatch(CategoryEvents::PRE_CREATE, new GenericEvent($category));
-        $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
+        $form = $this->createForm($this->rawConfiguration[1], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -250,7 +250,7 @@ class CategoryTreeController extends Controller
             sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             [
                 'form'           => $form->createView(),
-                'related_entity' => $this->relatedEntity,
+                'related_entity' => $this->rawConfiguration[0],
             ]
         );
     }
@@ -269,7 +269,7 @@ class CategoryTreeController extends Controller
     {
         $category = $this->findCategory($id);
         $this->eventDispatcher->dispatch(CategoryEvents::PRE_EDIT, new GenericEvent($category));
-        $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
+        $form = $this->createForm($this->rawConfiguration[1], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -285,7 +285,7 @@ class CategoryTreeController extends Controller
             sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             [
                 'form'           => $form->createView(),
-                'related_entity' => $this->relatedEntity,
+                'related_entity' => $this->rawConfiguration[0],
             ]
         );
     }
