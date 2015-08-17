@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
+use Pim\Bundle\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -212,7 +213,7 @@ class UserManager implements UserProviderInterface
 
         if (!$user instanceof User) {
             throw new UnsupportedUserException(
-                sprintf('Expected an instance of Oro\Bundle\UserBundle\Entity\User, but got "%s"', get_class($user))
+                sprintf('Expected an instance of Pim\Bundle\UserBundle\Entity\User, but got "%s"', get_class($user))
             );
         }
 
@@ -278,7 +279,7 @@ class UserManager implements UserProviderInterface
         return $this->getStorageManager()
             ->createQueryBuilder()
             ->select('u')
-            ->from('OroUserBundle:User', 'u')
+            ->from('PimUserBundle:User', 'u')
             ->orderBy('u.id', 'ASC');
     }
 

@@ -60,7 +60,7 @@ class AclRoleType extends AbstractType
             'appendUsers',
             'oro_entity_identifier',
             array(
-                'class'    => 'OroUserBundle:User',
+                'class'    => 'PimUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,
@@ -71,7 +71,7 @@ class AclRoleType extends AbstractType
             'removeUsers',
             'oro_entity_identifier',
             array(
-                'class'    => 'OroUserBundle:User',
+                'class'    => 'PimUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,

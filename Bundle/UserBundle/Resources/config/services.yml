@@ -1,6 +1,6 @@
 parameters:
     oro_user.manager.class:             Oro\Bundle\UserBundle\Entity\UserManager
-    oro_user.entity.class:              Oro\Bundle\UserBundle\Entity\User
+    oro_user.entity.class:              Pim\Bundle\UserBundle\Entity\User
     oro_user.group.entity.class:        Oro\Bundle\UserBundle\Entity\Group
     oro_user.role.entity.class:         Oro\Bundle\UserBundle\Entity\Role
     oro_user.security.provider.class:   Oro\Bundle\UserBundle\Security\UserProvider

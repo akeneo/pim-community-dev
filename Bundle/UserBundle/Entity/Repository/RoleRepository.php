@@ -18,7 +18,7 @@ class RoleRepository extends EntityRepository
     {
         return $this->_em->createQueryBuilder()
             ->select('u')
-            ->from('OroUserBundle:User', 'u')
+            ->from('PimUserBundle:User', 'u')
             ->join('u.roles', 'role')
             ->where('role = :role')
             ->setParameter('role', $role);

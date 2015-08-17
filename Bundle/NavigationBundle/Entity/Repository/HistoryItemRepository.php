@@ -22,7 +22,7 @@ class HistoryItemRepository extends EntityRepository implements NavigationReposi
      *      'dir'  => 'ASC'|'DESC'
      *  )
      * )
-     * @param \Oro\Bundle\UserBundle\Entity\User $user
+     * @param \Pim\Bundle\UserBundle\Entity\User $user
      * @param string                             $type
      * @param array                              $options
      *

@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 
 class GroupType extends AbstractType
 {
@@ -46,7 +46,7 @@ class GroupType extends AbstractType
                 'appendUsers',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'OroUserBundle:User',
+                    'class'    => 'PimUserBundle:User',
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,
@@ -56,7 +56,7 @@ class GroupType extends AbstractType
                 'removeUsers',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'OroUserBundle:User',
+                    'class'    => 'PimUserBundle:User',
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,

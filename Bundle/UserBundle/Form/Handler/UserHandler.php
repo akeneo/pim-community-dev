@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Form\Handler;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 
 class UserHandler extends AbstractUserHandler
 {

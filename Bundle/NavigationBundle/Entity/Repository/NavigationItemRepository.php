@@ -13,7 +13,7 @@ class NavigationItemRepository extends EntityRepository implements NavigationRep
     /**
      * Find all navigation items for specified user
      *
-     * @param \Oro\Bundle\UserBundle\Entity\User $user
+     * @param \Pim\Bundle\UserBundle\Entity\User $user
      * @param string                             $type
      * @param array                              $options
      *

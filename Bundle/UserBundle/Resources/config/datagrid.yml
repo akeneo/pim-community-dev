@@ -260,7 +260,7 @@ datagrid:
                     - u.firstName
                     - u.lastName
                 from:
-                    - { table: OroUserBundle:User, alias: u }
+                    - { table: PimUserBundle:User, alias: u }
 
         columns: []
 

@@ -1,4 +1,4 @@
-Oro\Bundle\UserBundle\Entity\User:
+Pim\Bundle\UserBundle\Entity\User:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: username
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: email

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * @ORM\Table(name="oro_user_api")
@@ -20,7 +21,7 @@ class UserApi
     /**
      * @var User
      *
-     * @ORM\OneToOne(targetEntity="User", inversedBy="api", fetch="LAZY")
+     * @ORM\OneToOne(targetEntity="\Pim\Bundle\UserBundle\Entity\User", inversedBy="api", fetch="LAZY")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     protected $user;

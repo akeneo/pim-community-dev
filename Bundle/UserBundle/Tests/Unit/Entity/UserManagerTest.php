@@ -6,12 +6,12 @@ use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
-    const USER_CLASS = 'Oro\Bundle\UserBundle\Entity\User';
+    const USER_CLASS = 'Pim\Bundle\UserBundle\Entity\User';
     const TEST_NAME  = 'Jack';
     const TEST_EMAIL = 'jack@jackmail.net';
 

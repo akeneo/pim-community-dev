@@ -31,7 +31,7 @@ class RoleApiType extends AclRoleType
             'appendUsers',
             'oro_entity_identifier',
             array(
-                'class'    => 'OroUserBundle:User',
+                'class'    => 'PimUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,
@@ -42,7 +42,7 @@ class RoleApiType extends AclRoleType
             'removeUsers',
             'oro_entity_identifier',
             array(
-                'class'    => 'OroUserBundle:User',
+                'class'    => 'PimUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,

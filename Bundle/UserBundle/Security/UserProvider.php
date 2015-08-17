@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 
 class UserProvider implements UserProviderInterface
@@ -48,7 +48,7 @@ class UserProvider implements UserProviderInterface
     {
         if (!$user instanceof User) {
             throw new UnsupportedUserException(
-                sprintf('Expected an instance of Oro\Bundle\UserBundle\Entity\User, but got "%s".', get_class($user))
+                sprintf('Expected an instance of Pim\Bundle\UserBundle\Entity\User, but got "%s".', get_class($user))
             );
         }
 

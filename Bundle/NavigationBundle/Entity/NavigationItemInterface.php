@@ -17,7 +17,7 @@ interface NavigationItemInterface
     /**
      * Get user
      *
-     * @return \Oro\Bundle\UserBundle\Entity\User
+     * @return \Pim\Bundle\UserBundle\Entity\User
      */
     public function getUser();
 

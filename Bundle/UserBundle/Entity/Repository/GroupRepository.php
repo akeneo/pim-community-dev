@@ -18,7 +18,7 @@ class GroupRepository extends EntityRepository
     {
         return $this->_em->createQueryBuilder()
             ->select('u')
-            ->from('OroUserBundle:User', 'u')
+            ->from('PimUserBundle:User', 'u')
             ->join('u.groups', 'groups')
             ->where('groups = :group')
             ->setParameter('group', $group);

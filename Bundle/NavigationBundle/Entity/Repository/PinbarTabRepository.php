@@ -13,7 +13,7 @@ class PinbarTabRepository extends EntityRepository implements NavigationReposito
     /**
      * Find all Pinbar tabs for specified user
      *
-     * @param \Oro\Bundle\UserBundle\Entity\User $user
+     * @param \Pim\Bundle\UserBundle\Entity\User $user
      * @param string                             $type
      * @param array                              $options
      *
@@ -54,7 +54,7 @@ class PinbarTabRepository extends EntityRepository implements NavigationReposito
     /**
      * Increment positions of Pinbar tabs for specified user
      *
-     * @param  \Oro\Bundle\UserBundle\Entity\User $user
+     * @param  \Pim\Bundle\UserBundle\Entity\User $user
      * @param  int                                $navigationItemId
      * @return mixed
      */

@@ -1,4 +1,4 @@
-Oro\Bundle\UserBundle\Entity\User:
+Pim\Bundle\UserBundle\Entity\User:
     exclusion_policy: ALL
     properties:
         firstName:

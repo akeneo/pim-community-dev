@@ -24,9 +24,9 @@ class NavigationItem implements NavigationItemInterface
     protected $id;
 
     /**
-     * @var \Oro\Bundle\UserBundle\Entity\User $user
+     * @var \Pim\Bundle\UserBundle\Entity\User $user
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $user;
@@ -234,10 +234,10 @@ class NavigationItem implements NavigationItemInterface
     /**
      * Set user
      *
-     * @param  \Oro\Bundle\UserBundle\Entity\User $user
+     * @param  \Pim\Bundle\UserBundle\Entity\User $user
      * @return PinbarTab
      */
-    public function setUser(\Oro\Bundle\UserBundle\Entity\User $user = null)
+    public function setUser(\Pim\Bundle\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -247,7 +247,7 @@ class NavigationItem implements NavigationItemInterface
     /**
      * Get user
      *
-     * @return \Oro\Bundle\UserBundle\Entity\User
+     * @return \Pim\Bundle\UserBundle\Entity\User
      */
     public function getUser()
     {
