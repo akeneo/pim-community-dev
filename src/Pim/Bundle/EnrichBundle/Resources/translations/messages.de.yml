@@ -112,19 +112,23 @@ pim_enrich:
       label: Produktfamilie der Produkte ändern
       description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
       success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
+      launched_flash: Der Produktfamilien-Aktualisieren Job läuft momentan
     add-to-groups:
       label: Zu Gruppen hinzufügen
       description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
       success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
+      launched_flash: Der Produktgruppen-Aktualisieren Job läuft momentan
       no_group: Bis jetzt keine Gruppen vorhanden. Beginnen Sie mit dem Anlegen einer Gruppe.
     add-to-variant-group:
       label: Zu einer Variantengruppe hinzufügen
       description: Bitte wählen Sie die Variantengruppe aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
       success_flash: Die Produkte wurden erfolgreich zur ausgewählten Variantengruppe hinzugefügt
+      already_in_variant_group_or_not_valid: Sie können die folgenden Produkte nicht gruppieren, da sie bereits in einer Variantengruppe verwendet werden oder die Gruppenachse nicht besitzen.
       no_variant_group: Bis jetzt keine Variantengruppen vorhanden. Beginnen Sie mit dem Anlegen einer Variantengruppe.
       no_valid_variant_group: Keine Variantengruppe teilt Attribute mit den ausgewählten Produkten.
       some_variant_groups_are_skipped:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
+      launched_flash: Der Produkt/e-Aktualisieren Job läuft momentan
     set-attribute-requirements:
       label: Attribut-Anforderungen festlegen
       description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
@@ -629,6 +633,9 @@ pim_title.group_type:
 pim_title.mass_edit_action:
   choose: Massenbearbeitung | Auswählen
   configure: Massenbearbeitung | Konfigurieren
+pim_title.job_tracker:
+  index: Prozess-Tracker
+  show: Prozess-Tracker | Job anzeigen
 pim_title.dashboard: Dashboard
 pim_catalog_identifier: Kennung
 pim_catalog_text: Text
@@ -804,3 +811,28 @@ oro.locale:
       timezone: Wählen Sie die Zeitzone für die Anzeige von Datum und Uhrzeit
       currency: Wählen Sie die Standardwährung
 Selected products successfully deleted: Ausgewählte Produkte erfolgreich gelöscht
+pim_mass_edit:
+  notification:
+    mass_edit:
+      success: Massenbearbeitung abgeschlossen
+      error: Massenbearbeitung fehlgeschlagen
+      warning: Massenbearbeitung mit Warnungen abgeschlossen
+    quick_export:
+      success: Schnellexport abgeschlossen
+      error: Schnellexport fehlgeschlagen
+      warning: Schnellexport mit Warnungen abgeschlossen
+job_execution.summary:
+  mass_edited: Massenbearbeitet
+  skip: Übersprungen
+  skipped_products: Übersprungene Produkte
+  skipped_attributes: Übersprungene Attribute
+pim_mass_edit_execution_show: Ausgeführte Massenbearbeitung | Details
+edit_common_attributes.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
+update_product_value.steps.update_product_value_processor.title: Wert des Produkts aktualisieren
+add_to_variant_group_clean.steps.excluded.title: Ausgeschlossene Produkte
+add_to_variant_group_clean.steps.duplicated.title: Doppelte Achse
+mass_edit report:
+  overview: Massenbearbeitung Reports
+job_tracker:
+  tab:
+    title: Prozess-Tracker
