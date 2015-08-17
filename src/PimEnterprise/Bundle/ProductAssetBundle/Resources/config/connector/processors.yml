@@ -1,6 +1,7 @@
 parameters:
     pimee_product_asset.processor.denormalization.tag.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor
     pimee_product_asset.processor.denormalization.asset.class: PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\AssetProcessor
+    pimee_product_asset.processor.normalization.asset.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\AssetProcessor
 
 services:
     pimee_product_asset.processor.denormalization.tag.flat:
@@ -20,3 +21,10 @@ services:
             - '@pimee_product_asset.updater.asset'
             - '@pimee_product_asset.factory.asset'
             - '@pim_catalog.validator.product'
+
+    pimee_product_asset.processor.normalization.asset.flat:
+        class: %pimee_product_asset.processor.normalization.asset.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.manager.locale'
+            - '@pim_product_asset.normalizer.flat.asset'

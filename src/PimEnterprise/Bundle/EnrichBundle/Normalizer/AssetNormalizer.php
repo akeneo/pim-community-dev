@@ -9,42 +9,47 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Normalizer;
+namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * @author Julien Sanchez <julien@akeneo.com>
+ * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class AssetNormalizer implements NormalizerInterface
 {
     /** @var array */
     protected $supportedFormats = ['structured'];
 
+    /** @var NormalizerInterface */
+    protected $assetNormalizer;
+
+    /**
+     * @param NormalizerInterface $assetNormalizer
+     */
+    public function __construct(NormalizerInterface $assetNormalizer)
+    {
+        $this->assetNormalizer = $assetNormalizer;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function normalize($asset, $format = null, array $context = [])
     {
-        return [
-            'code'          => $asset->getCode(),
-            'categories'    => array_map(
-                function (CategoryInterface $category) {
-                    return $category->getCode();
-                },
-                $asset->getCategories()->toArray()
-            ),
-            'description'   => $asset->getDescription(),
-            'references'    => $this->normalizeReferences($asset->getReferences()),
-            'enabled'       => $asset->isEnabled(),
-            'end_of_use_at' => (null !== $asset->getEndOfUseAt()) ? $asset->getEndOfUseAt()->format('Y-m-d H:i:s') : null,
-            'created_at'    => (null !== $asset->getCreatedAt()) ? $asset->getCreatedAt()->format('Y-m-d H:i:s') : null,
-            'updated_at'    => (null !== $asset->getUpdatedAt()) ? $asset->getUpdatedAt()->format('Y-m-d H:i:s') : null,
+        $normalizedData = $this->assetNormalizer->normalize($asset, $format, $context);
+        $normalizedData['references'] = $this->normalizeReferences($asset->getReferences());
+        $normalizedData['categories'] = array_map(
+            function (CategoryInterface $category) {
+                return $category->getCode();
+            },
+            $asset->getCategories()->toArray()
+        );
 
-        ];
+        return $normalizedData;
     }
 
     /**

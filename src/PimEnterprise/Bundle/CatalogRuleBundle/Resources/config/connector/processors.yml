@@ -20,4 +20,6 @@ services:
     pimee_catalog_rule.processor.normalization.rule_definition:
         class: %pimee_catalog_rule.processor.normalization.rule_definition.class%
         arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.manager.locale'
             - '@akeneo_rule_engine.normalizer.rule'

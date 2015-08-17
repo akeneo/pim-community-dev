@@ -34,3 +34,6 @@ job_profile_accesses:
     csv_asset_category_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
+    csv_asset_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]

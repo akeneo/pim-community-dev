@@ -300,3 +300,13 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    csv_asset_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_asset_export
+        label:     Demo asset export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/asset.csv
