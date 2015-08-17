@@ -121,14 +121,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
      */
     public function createAssetDatagridQueryBuilder(array $parameters = [])
     {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-
-        $qb
-            ->select($this->getAlias())
-            ->from($this->_entityName, $this->getAlias(), sprintf('%s.id', $this->getAlias()))
-            ->groupBy(sprintf('%s.id', $this->getAlias()));
-
-        // TODO: Filter by owned categories by the user
+        $qb = $this->createQueryBuilder($this->getAlias());
 
         return $qb;
     }
