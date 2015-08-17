@@ -107,7 +107,7 @@ define([
                     navigation.afterRequest();
                 })
                 .always(function () {
-                    this.$('> .media-field .progress').css({opacity: 0});
+                    this.$('> .akeneo-media-uploader-field .progress').css({opacity: 0});
                     this.setReady(true);
                     this.uploadContext = {};
                 }.bind(this));
@@ -121,8 +121,8 @@ define([
                 if (this.uploadContext.locale === this.context.locale &&
                     this.uploadContext.scope === this.context.scope
                 ) {
-                    this.$('> .media-field .progress').css({opacity: 1});
-                    this.$('> .media-field .progress .bar').css({
+                    this.$('> .akeneo-media-uploader-field .progress').css({opacity: 1});
+                    this.$('> .akeneo-media-uploader-field .progress .bar').css({
                         width: ((e.loaded / e.total) * 100) + '%'
                     });
                 }
