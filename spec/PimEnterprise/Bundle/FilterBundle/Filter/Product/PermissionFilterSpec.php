@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;

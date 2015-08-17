@@ -15,7 +15,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 

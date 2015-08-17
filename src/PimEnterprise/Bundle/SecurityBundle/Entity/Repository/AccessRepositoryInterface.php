@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * Interface for access repository

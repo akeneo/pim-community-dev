@@ -15,7 +15,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**

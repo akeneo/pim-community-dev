@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
