@@ -906,21 +906,21 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $attribute
-     * @param string $options
+     * @param string $rawOptions
      *
      * @Given /^the following "([^"]*)" attribute options?: (.*)$/
      */
-    public function theFollowingAttributeOptions($attribute, $options)
+    public function theFollowingAttributeOptions($attribute, $rawOptions)
     {
         $attribute = $this->getAttribute(strtolower($attribute));
-        foreach ($this->listToArray($options) as $option) {
+        $options = [];
+        foreach ($this->listToArray($rawOptions) as $option) {
             $option = $this->createOption($option);
             $attribute->addOption($option);
             $this->validate($option);
-            $this->persist($option);
+            $options[] = $option;
         }
-        // TODO use a Saver
-        $this->flush();
+        $this->getAttributeOptionSaver()->saveAll($options);
     }
 
     /**
@@ -2211,24 +2211,26 @@ class FixturesContext extends RawMinkContext
      */
     protected function validate($object)
     {
+        // TODO: split UniqueVariantAxis + spec
+        // TODO: rework validation constraint to forbid to add products with same options in variant group in same time
         if ($object instanceof ProductInterface) {
             $validator = $this->getContainer()->get('pim_catalog.validator.product');
-            // TODO: check validation constraint on localizable/scopable value
-            // TODO: fix validation constraint to forbid to add product with empty option in variant group
-            // TODO: fix validation constraint to forbid to add products with same options in variant group (add in same time, then save)
         } else {
             $validator = $this->getContainer()->get('validator');
         }
         $violations = $validator->validate($object);
-        if (0 < $violations->count()) {
 
+        if (0 < $violations->count()) {
             $messages = [];
             foreach ($violations as $violation) {
                 $messages[] = $violation->getMessage();
             }
 
             throw new \InvalidArgumentException(
-                sprintf('Object "%s" is not valid "%s"', ClassUtils::getClass($object), implode(', ', $messages))
+                sprintf(
+                    'Object "%s" is not valid, cf following constraint violations "%s"',
+                    ClassUtils::getClass($object), implode(', ', $messages)
+                )
             );
         }
     }
@@ -2315,6 +2317,14 @@ class FixturesContext extends RawMinkContext
     protected function getFamilySaver()
     {
         return $this->getContainer()->get('pim_catalog.saver.family');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getAttributeOptionSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.attribute_option');
     }
 
     /**

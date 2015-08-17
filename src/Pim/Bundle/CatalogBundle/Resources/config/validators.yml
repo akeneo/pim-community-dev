@@ -15,6 +15,7 @@ parameters:
     pim_catalog.validator.constraint.family_requirements.class:            Pim\Bundle\CatalogBundle\Validator\Constraints\FamilyRequirementsValidator
     pim_catalog.validator.constraint.scopable_value.class:                 Pim\Bundle\CatalogBundle\Validator\Constraints\ScopableValueValidator
     pim_catalog.validator.constraint.localizable_value.class:              Pim\Bundle\CatalogBundle\Validator\Constraints\LocalizableValueValidator
+    pim_catalog.validator.constraint.attribute_type_for_option.class:      Pim\Bundle\CatalogBundle\Validator\Constraints\AttributeTypeForOptionValidator
     pim_catalog.validator.constraint_guesser.chained.class:                Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:                  Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser
     pim_catalog.validator.constraint_guesser.file.class:                   Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\FileGuesser
@@ -138,6 +139,11 @@ services:
             - '@pim_catalog.repository.cached_locale'
         tags:
             - { name: validator.constraint_validator, alias: pim_localizable_value_validator }
+
+    pim_catalog.validator.constraint.attribute_type_for_option:
+        class: %pim_catalog.validator.constraint.attribute_type_for_option.class%
+        tags:
+            - { name: validator.constraint_validator, alias: pim_attribute_type_for_option_validator }
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:

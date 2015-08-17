@@ -159,6 +159,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             - code
             - attribute
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\AttributeTypeForOption : ~
     properties:
         code:
             - NotBlank: ~
