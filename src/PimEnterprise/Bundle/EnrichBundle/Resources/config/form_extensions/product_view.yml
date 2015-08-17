@@ -57,6 +57,12 @@ extensions:
         targetZone: meta
         position: 100
 
+    pimee-product-view-form-meta-owner-group:
+        module: pimee/product-edit-form/meta/owner-groups
+        parent: pimee-product-view-form
+        targetZone: meta
+        position: 120
+
     pimee-product-view-attributes:
         module: pimee/product-view-form/attributes
         parent: pimee-product-view-form-tabs
