@@ -642,6 +642,28 @@ class Grid extends Index
     }
 
     /**
+     * Change the grid locale using the locale switcher
+     *
+     * @param string $locale
+     *
+     * @throws \Exception
+     */
+    public function switchLocale($locale)
+    {
+        $toggle = $this->getElement('Locales dropdown')->find('css', '.dropdown-toggle');
+        if (!$toggle) {
+            throw new \Exception('Could not find locale switcher.');
+        }
+        $toggle->click();
+
+        $link = $this->getElement('Locales dropdown')->find('css', sprintf('a[title="%s"]', $locale));
+        if (!$link) {
+            throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
+        }
+        $link->click();
+    }
+
+    /**
      * Activate a filter
      *
      * @param string $filterName

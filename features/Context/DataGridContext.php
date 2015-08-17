@@ -22,14 +22,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 {
     use SpinCapableTrait;
 
-    /**
-     * @var \SensioLabs\Behat\PageObjectExtension\Context\PageFactory
-     */
+    /** @var PageFactory */
     protected $pageFactory;
 
-    /**
-     * @var \Context\Page\Base\Grid
-     */
+    /** @var Grid */
     public $datagrid;
 
     /**
@@ -665,9 +661,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($rows as $row) {
             $gridRow  = $this->datagrid->getRow($row);
-            $checkbox = $this->spin(function () use ($gridRow) {
-                return $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
-            }, 20, sprintf('Unable to find a checkbox for row %s', $row));
+            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+
+            if (!$checkbox) {
+                throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
+            }
 
             $checkbox->check();
         }
@@ -686,9 +684,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($rows as $row) {
             $gridRow  = $this->datagrid->getRow($row);
-            $checkbox = $this->spin(function () use ($gridRow) {
-                return $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
-            }, 20, sprintf('Unable to find a checkbox for row %s', $row));
+            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+
+            if (!$checkbox) {
+                throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
+            }
 
             $checkbox->uncheck();
         }
@@ -707,35 +707,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         foreach ($rows as $row) {
             $gridRow  = $this->datagrid->getRow($row);
-            $checkbox = $this->spin(function () use ($gridRow) {
-                return $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
-            }, 20, sprintf('Unable to find a checkbox for row %s', $row));
+            $checkbox = $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
+
+            if (!$checkbox) {
+                throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
+            }
 
             if (!$checkbox->isChecked()) {
                 throw $this->createExpectationException(sprintf('Expecting row %s to be checked', $row));
-            }
-        }
-    }
-
-    /**
-     * @param string $rows
-     *
-     * @throws ExpectationException
-     *
-     * @Then /^the rows? "([^"]*)" should not be checked$/
-     */
-    public function theRowShouldNotBeChecked($rows)
-    {
-        $rows = $this->getMainContext()->listToArray($rows);
-
-        foreach ($rows as $row) {
-            $gridRow  = $this->datagrid->getRow($row);
-            $checkbox = $this->spin(function () use ($gridRow) {
-                return $gridRow->find('css', 'td.boolean-cell input[type="checkbox"]:not(:disabled)');
-            }, 20, sprintf('Unable to find a checkbox for row %s', $row));
-
-            if ($checkbox->isChecked()) {
-                throw $this->createExpectationException(sprintf('Expecting row %s to not be checked', $row));
             }
         }
     }
