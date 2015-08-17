@@ -59,6 +59,10 @@ class TimestampableSubscriber implements EventSubscriber
 
         $related = $relatedManager->find($version->getResourceName(), $version->getResourceId());
 
+        if (null === $related) {
+            return;
+        }
+
         $related->setUpdated($version->getLoggedAt());
         $relatedManager->getUnitOfWork()->computeChangeSet($metadata, $related);
     }
