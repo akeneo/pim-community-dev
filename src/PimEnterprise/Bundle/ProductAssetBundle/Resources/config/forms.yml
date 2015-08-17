@@ -52,7 +52,7 @@ services:
             - %pimee_product_asset.model.category.class%
             - %pimee_product_asset.model.category_translation.class%
         tags:
-            - { name: form.type, alias: pim_category }
+            - { name: form.type, alias: pimee_asset_category }
         calls:
             - [addEventSubscriber, ['@pimee_product_asset.form.subscriber.category_permissions']]
 

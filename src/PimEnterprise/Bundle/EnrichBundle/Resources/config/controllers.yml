@@ -58,7 +58,7 @@ services:
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
-            - 'product'
+            - ['product', 'pim_category']
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
             - '@oro_security.security_facade'
@@ -76,7 +76,7 @@ services:
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
-            - 'published_product'
+            - ['published_product', 'pim_category']
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
             - '@oro_security.security_facade'

@@ -74,7 +74,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         RemoverInterface $categoryRemover,
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
-        $relatedEntity,
+        array $rawConfiguration,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,
         SecurityFacade $securityFacade
@@ -87,7 +87,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             $categoryRemover,
             $categoryFactory,
             $categoryRepository,
-            $relatedEntity
+            $rawConfiguration
         );
 
         $this->categoryAccessRepo = $categoryAccessRepo;
@@ -122,7 +122,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $request->get('include_sub', false),
             'item_count'     => (bool) $request->get('with_items_count', true),
-            'related_entity' => $this->relatedEntity,
+            'related_entity' => $this->rawConfiguration[0],
         ];
     }
 
