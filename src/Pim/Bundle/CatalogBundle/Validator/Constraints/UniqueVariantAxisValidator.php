@@ -206,9 +206,9 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
     /**
      * @param Constraint $constraint
-     * @param string $variantLabel
-     * @param string $productIdentifier
-     * @param string $axisCode
+     * @param string     $variantLabel
+     * @param string     $productIdentifier
+     * @param string     $axisCode
      */
     protected function addEmptyAxisViolation(Constraint $constraint, $variantLabel, $productIdentifier, $axisCode)
     {

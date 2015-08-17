@@ -40,7 +40,7 @@ class ScopableValueValidator extends ConstraintValidator
 
             if ($isScopable && null === $channelCode) {
                 $this->addExpectedScopeViolation($constraint, $productValue);
-            } elseif ($isScopable && !$this->channelExists($channelCode)) {
+            } elseif ($isScopable && !$this->doesChannelExist($channelCode)) {
                 $this->addUnexistingScopeViolation($constraint, $productValue, $channelCode);
             } elseif (!$isScopable && null !== $channelCode) {
                 $this->addUnexpectedScopeViolation($constraint, $productValue);
@@ -53,7 +53,7 @@ class ScopableValueValidator extends ConstraintValidator
      *
      * @return bool
      */
-    protected function channelExists($channelCode)
+    protected function doesChannelExist($channelCode)
     {
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
 
