@@ -1,0 +1,6 @@
+parameters:
+    pim_enrich.guesser.file_type.class: Pim\Bundle\EnrichBundle\File\FileTypeGuesser
+
+services:
+    pim_enrich.guesser.file_type:
+        class: %pim_enrich.guesser.file_type.class%
