@@ -4,8 +4,16 @@ pimee_product_asset:
             index: Enrich asset
             create: Create an asset
             remove: Remove asset
+        category:
+            create:   Create a category
+            edit:     Edit a category
+            list:     List categories
+            remove:   Remove a category
+            manage:   Manage category permissions
+            history:  View category history
     acl_group:
-        asset: Product assets
+        asset:    Product assets
+        category: Asset categories
     enrich_asset:
         button:
             upload: Upload

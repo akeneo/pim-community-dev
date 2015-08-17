@@ -1,2 +1,5 @@
 pimee_product_asset.acl_group.asset:
     order: 120
+
+pimee_product_asset.acl_group.category:
+    order: 125

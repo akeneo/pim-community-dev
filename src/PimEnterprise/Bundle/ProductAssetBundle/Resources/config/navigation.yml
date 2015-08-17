@@ -10,7 +10,7 @@ oro_menu_config:
         pim_asset_categorytree:
             label: pimee_product_asset.category.menu
             route: pimee_asset_categorytree_index
-            aclResourceId: pimee_product_asset_index
+            aclResourceId: pimee_product_asset_category_list
             extras:
                 routes: ['/^pimee_product_asset_categorytree_\w+$/']
                 position: 90
