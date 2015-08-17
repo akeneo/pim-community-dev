@@ -5,6 +5,7 @@ parameters:
     pimee_product_asset.form.type.asset_variation.class:       PimEnterprise\Bundle\ProductAssetBundle\Form\Type\VariationType
     pimee_product_asset.form.type.ajax_asset_tag.class:        PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AjaxAssetTagType
     pimee_product_asset.form.transformer.ajax_asset_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Form\Transformer\AjaxAssetTagTransformer
+    pimee_product_asset.form.type.category.class:              PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CategoryType
     pimee_product_asset.form.type.category_permissions.class:  PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CategoryPermissionsType
 
 services:
@@ -47,7 +48,7 @@ services:
             - { name: form.type, alias: pim_ajax_asset_tag }
 
     pimee_product_asset.form.type.category:
-        class: %pim_enrich.form.type.category.class%
+        class: %pimee_product_asset.form.type.category.class%
         arguments:
             - %pimee_product_asset.model.category.class%
             - %pimee_product_asset.model.category_translation.class%

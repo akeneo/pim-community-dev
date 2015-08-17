@@ -64,6 +64,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('twig_extension.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
+        $loader->load('view_elements.yml');
         $loader->load('writers.yml');
 
         $this->loadStorageDriver($container);
