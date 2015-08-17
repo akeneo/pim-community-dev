@@ -45,8 +45,9 @@ class VariantGroupAxisValidator extends ConstraintValidator
      */
     protected function validateAttributeAxis(VariantGroupAxis $constraint, GroupInterface $variantGroup)
     {
+        $allowedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT];
         foreach ($variantGroup->getAxisAttributes() as $attribute) {
-            if (AttributeTypes::OPTION_SIMPLE_SELECT !== $attribute->getAttributeType()) {
+            if (!in_array($attribute->getAttributeType(), $allowedTypes)) {
                 $this->addInvalidAxisViolation($constraint, $variantGroup->getCode(), $attribute->getCode());
             }
         }
