@@ -1,4 +1,4 @@
-# 1.3.21
+# 1.3.21 (2015-08-17)
 
 ## Bug fixes
 - PIM-4753: Fix updated date issues for Versionable objects
