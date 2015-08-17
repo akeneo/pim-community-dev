@@ -6,8 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Component\Classification\Factory\CategoryFactory;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 
 /**
  * Category manager
@@ -15,8 +14,6 @@ use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @deprecated Will be removed in 1.5
  */
 class CategoryManager
 {
@@ -27,27 +24,26 @@ class CategoryManager
     protected $categoryClass;
 
     /** @var CategoryRepositoryInterface */
-    protected $productCategoryRepo;
-
-    /** @var CategoryFactory */
-    protected $categoryFactory;
+    protected $categoryRepository;
 
     /**
+     * @param CategoryRepositoryInterface $categoryRepository
      * @param ObjectManager               $om
-     * @param CategoryRepositoryInterface $productCategoryRepo
-     * @param CategoryFactory             $categoryFactory
      * @param string                      $categoryClass
      */
-    public function __construct(
-        ObjectManager $om,
-        CategoryRepositoryInterface $productCategoryRepo,
-        CategoryFactory $categoryFactory,
-        $categoryClass
-    ) {
-        $this->om                  = $om;
-        $this->productCategoryRepo = $productCategoryRepo;
-        $this->categoryFactory     = $categoryFactory;
-        $this->categoryClass       = $categoryClass;
+    public function __construct(CategoryRepositoryInterface $categoryRepository, ObjectManager $om, $categoryClass)
+    {
+        $this->categoryRepository = $categoryRepository;
+        $this->om                 = $om;
+        $this->categoryClass      = $categoryClass;
+    }
+
+    /**
+     * @return CategoryRepositoryInterface
+     */
+    public function getCategoryRepository()
+    {
+        return $this->categoryRepository;
     }
 
     /**
@@ -55,9 +51,7 @@ class CategoryManager
      *
      * @return ObjectManager
      *
-     * @deprecated Will be removed in 1.5
-     *
-     * TODO: To REMOVE.
+     * @deprecated will be removed in future versions
      */
     public function getObjectManager()
     {
@@ -68,20 +62,16 @@ class CategoryManager
      * Get a new category instance
      *
      * @return CategoryInterface
-     *
-     * @deprecated Please use CategoryFactory::create() instead
      */
     public function getCategoryInstance()
     {
-        return $this->categoryFactory->create();
+        return new $this->categoryClass();
     }
 
     /**
      * Return category class name (mainly used in Doctrine context)
      *
      * @return string category class name
-     *
-     * @deprecated
      */
     public function getCategoryClass()
     {
@@ -93,33 +83,32 @@ class CategoryManager
      *
      * @return CategoryRepositoryInterface
      *
-     * @deprecated Please inject "pim_catalog.repository.category" to retrieve the repository.
+     * @deprecated will be removed in future versions
      */
     public function getEntityRepository()
     {
-        return $this->productCategoryRepo;
+        return $this->om->getRepository($this->getCategoryClass());
     }
 
     /**
      * Get a new tree instance
      *
      * @return CategoryInterface
-     *
-     * @deprecated Please use CategoryFactory::create() instead
      */
     public function getTreeInstance()
     {
-        return $this->categoryFactory->create();
+        $tree = $this->getCategoryInstance();
+        $tree->setParent(null);
+
+        return $tree;
     }
 
     /**
-     * @return array
-     *
-     * @deprecated Please use CategoryRepositoryInterface::getTrees() instead
+     * {@inheritdoc}
      */
     public function getTrees()
     {
-        return $this->productCategoryRepo->getTrees();
+        return $this->categoryRepository->getChildren(null, true, 'created', 'DESC');
     }
 
     /**
@@ -131,14 +120,10 @@ class CategoryManager
      * @param int|bool $selectNodeId
      *
      * @return ArrayCollection
-     *
-     * @deprecated Please use CategoryRepositoryInterface instead
      */
     public function getChildren($parentId, $selectNodeId = false)
     {
-        $children = [];
-
-        $entityRepository = $this->getEntityRepository();
+        $entityRepository = $this->categoryRepository;
 
         if ($selectNodeId === false) {
             $children = $entityRepository->getChildrenByParentId($parentId);
@@ -150,9 +135,7 @@ class CategoryManager
     }
 
     /**
-     * @return array
-     *
-     * TODO: See what to do about it.
+     * {@inheritdoc}
      */
     public function getTreeChoices()
     {
@@ -171,12 +154,10 @@ class CategoryManager
      * @param array $categoriesIds
      *
      * @return Collection of categories
-     *
-     * @deprecated Please use CategoryRepositoryInterface::getCategoriesByIds($categoriesIds) instead
      */
     public function getCategoriesByIds($categoriesIds)
     {
-        return $this->getEntityRepository()->getCategoriesByIds($categoriesIds);
+        return $this->categoryRepository->getCategoriesByIds($categoriesIds);
     }
 
     /**
@@ -188,8 +169,6 @@ class CategoryManager
      * @param Collection        $categories categories
      *
      * @return array Multi-dimensional array representing the tree
-     *
-     * TODO: To MOVE in the Repository. Try it in SQL.
      */
     public function getFilledTree(CategoryInterface $root, Collection $categories)
     {
@@ -197,7 +176,7 @@ class CategoryManager
 
         foreach ($categories as $category) {
             $categoryParentsIds = [];
-            $path               = $this->getEntityRepository()->getPath($category);
+            $path               = $this->categoryRepository->getPath($category);
 
             if ($path[0]->getId() === $root->getId()) {
                 foreach ($path as $pathItem) {
@@ -208,7 +187,7 @@ class CategoryManager
         }
         $parentsIds = array_unique($parentsIds);
 
-        return $this->getEntityRepository()->getTreeFromParents($parentsIds);
+        return $this->categoryRepository->getTreeFromParents($parentsIds);
     }
 
     /**
@@ -217,14 +196,10 @@ class CategoryManager
      * @param string $code
      *
      * @return CategoryInterface
-     *
-     * @deprecated Please use CategoryRepositoryInterface::findOneBy() instead
      */
     public function getTreeByCode($code)
     {
-        return $this
-            ->getEntityRepository()
-            ->findOneBy(['code' => $code, 'parent' => null]);
+        return $this->categoryRepository->findOneBy(['code' => $code, 'parent' => null]);
     }
 
     /**
@@ -233,14 +208,10 @@ class CategoryManager
      * @param string $code
      *
      * @return CategoryInterface
-     *
-     * @deprecated Please use CategoryRepositoryInterface::findOneBy() instead
      */
     public function getCategoryByCode($code)
     {
-        return $this
-            ->getEntityRepository()
-            ->findOneBy(array('code' => $code));
+        return $this->categoryRepository->findOneBy(['code' => $code]);
     }
 
     /**
@@ -251,12 +222,10 @@ class CategoryManager
      * @param int $categoryId
      * @param int $parentId
      * @param int $prevSiblingId
-     *
-     * TODO: To MOVE in a CategoryMover, NO ID.
      */
     public function move($categoryId, $parentId, $prevSiblingId)
     {
-        $repo        = $this->getEntityRepository();
+        $repo        = $this->categoryRepository;
         $category    = $repo->find($categoryId);
         $parent      = $repo->find($parentId);
         $prevSibling = null;
@@ -285,11 +254,21 @@ class CategoryManager
      * @param CategoryInterface $childNode
      *
      * @return bool
-     *
-     * @deprecated Please use CategoryRepositoryInterface::isAncestor() instead
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {
-        return $this->getEntityRepository()->isAncestor($parentNode, $childNode);
+        $childPath = $this->categoryRepository->getPath($childNode);
+        //Removing last part of the path as it's the node itself
+        //which cannot be is own ancestor
+        array_pop($childPath);
+        $childCount  = 0;
+        $parentFound = false;
+
+        while ($childCount < count($childPath) && (!$parentFound)) {
+            $parentFound = ($childPath[$childCount]->getId() === $parentNode->getId());
+            $childCount++;
+        }
+
+        return $parentFound;
     }
 }

@@ -1,7 +1,6 @@
 parameters:
     pim_catalog.builder.product.class:          Pim\Bundle\CatalogBundle\Builder\ProductBuilder
     pim_catalog.builder.product_template.class: Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder
-    pim_catalog.builder.choices.class:          Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder
 
 services:
     pim_catalog.builder.product:
@@ -23,6 +22,3 @@ services:
             - '@pim_catalog.builder.product'
             - %pim_catalog.entity.product_template.class%
             - %pim_catalog.entity.product.class%
-
-    pim_catalog.builder.choices:
-        class: %pim_catalog.builder.choices.class%

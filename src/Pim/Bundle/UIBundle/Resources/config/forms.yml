@@ -5,9 +5,8 @@ parameters:
     pim_ui.form.type.switch.class:                     Pim\Bundle\UIBundle\Form\Type\SwitchType
     pim_ui.form.transformer.ajax_entity.factory.class: Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory
     pim_ui.form.transformer.ajax_entity.class:         Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer
-    pim_ui.form.transformer.ajax_reference_data.factory.class:   Pim\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformerFactory
-    pim_ui.form.transformer.ajax_reference_data.class:           Pim\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformer
-    pim_ui.form.transformer.ajax_creatable_entity.factory.class: Pim\Bundle\UIBundle\Form\Transformer\AjaxCreatableEntityTransformerFactory
+    pim_ui.form.transformer.ajax_reference_data.factory.class: Pim\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformerFactory
+    pim_ui.form.transformer.ajax_reference_data.class: Pim\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformer
 
 services:
     pim_ui.form.extension.help:
@@ -53,11 +52,6 @@ services:
         arguments:
             - '@doctrine'
             - %pim_ui.form.transformer.ajax_entity.class%
-
-    pim_ui.form.transformer.ajax_creatable_entity.factory:
-        class: %pim_ui.form.transformer.ajax_creatable_entity.factory.class%
-        arguments:
-            - '@doctrine'
 
     pim_ui.form.transformer.ajax_reference_data.factory:
         class: %pim_ui.form.transformer.ajax_reference_data.factory.class%

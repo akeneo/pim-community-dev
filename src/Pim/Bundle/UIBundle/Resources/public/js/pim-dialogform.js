@@ -1,7 +1,7 @@
 /* global console */
 define(
-    ['jquery', 'oro/mediator', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
-    function ($, mediator, Navigation, LoadingMask, initSelect2) {
+    ['jquery', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
+    function ($, Navigation, LoadingMask, initSelect2) {
         'use strict';
 
         // Allow using select2 search box in jquery ui dialog
@@ -59,7 +59,6 @@ define(
                                 data: $(formId).serialize(),
                                 success: function (data) {
                                     processResponse(data);
-                                    mediator.trigger('dialog:open:after', this);
                                 }
                             });
                         }
@@ -96,8 +95,6 @@ define(
                 });
 
                 initSelect2.init($(formId));
-                $(formId + ' .switch').bootstrapSwitch();
-
                 $(formId).find('[data-toggle="tooltip"]').tooltip();
             }
 
@@ -134,7 +131,6 @@ define(
                     success: function (data) {
                         loadingMask.hide();
                         createDialog(data);
-                        mediator.trigger('dialog:open:after', this);
                     }
                 });
             });

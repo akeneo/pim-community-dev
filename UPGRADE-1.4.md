@@ -62,7 +62,7 @@ You can execute the following commands in your project folder:
 ```
     find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\OptionsResolver\\OptionsResolverInterface;/use Symfony\\Component\\OptionsResolver\\OptionsResolver;/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/public function setDefaultOptions(OptionsResolverInterface $resolver)/public function configureOptions(OptionsResolver $resolver)/g'
-    find ./src -type f -print0 | xargs -0 sed -i 's/var OptionsResolverInterface/var OptionsResolver/g'
+    find ./src -type f -print0 | xargs -0 sed -i 's/OptionsResolverInterface/OptionsResolver/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/* @return OptionsResolverInterface/* @return OptionsResolver/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Validator\\ValidatorInterface;/use Symfony\\Component\\Validator\\Validator\\ValidatorInterface;/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\Form\\Extension\\Core\\View\\ChoiceView;/use Symfony\\Component\\Form\\ChoiceList\\View\\ChoiceView;/g'
@@ -149,6 +149,4 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Updater\\Copier\\PriceCollectionValueCopier/Pim\\Component\\Catalog\\Updater\\Copier\\PriceCollectionAttributeCopier/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Updater\\Copier\\SimpleSelectValueCopier/Pim\\Component\\Catalog\\Updater\\Copier\\SimpleSelectAttributeCopier/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Updater\\ProductTemplateUpdaterInterface/Pim\\Component\\Catalog\\Updater\\ProductTemplateUpdaterInterface/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\CategoryRepository/Pim\\Bundle\\ClassificationBundle\\Doctrine\\ORM\\Repository\\CategoryRepository/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\CategoryRepositoryInterface/Pim\\Component\\Classification\\Repository\\CategoryRepositoryInterface/g'
 ```

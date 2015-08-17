@@ -73,8 +73,7 @@ class FixturesContext extends RawMinkContext
         'Channel'         => 'PimCatalogBundle:Channel',
         'Currency'        => 'PimCatalogBundle:Currency',
         'Family'          => 'PimCatalogBundle:Family',
-        'Category'        => 'PimCatalogBundle:Category', // TODO: To remove
-        'ProductCategory' => 'PimCatalogBundle:Category',
+        'Category'        => 'PimCatalogBundle:Category',
         'AssociationType' => 'PimCatalogBundle:AssociationType',
         'JobInstance'     => 'AkeneoBatchBundle:JobInstance',
         'User'            => 'OroUserBundle:User',

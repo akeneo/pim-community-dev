@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

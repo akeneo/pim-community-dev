@@ -260,20 +260,4 @@ class Channel implements ChannelInterface
     {
         return $this->code;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChoiceValue()
-    {
-        return $this->getCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChoiceLabel()
-    {
-        return $this->getLabel();
-    }
 }

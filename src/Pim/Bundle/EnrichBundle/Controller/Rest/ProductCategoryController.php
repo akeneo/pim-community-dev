@@ -59,7 +59,7 @@ class ProductCategoryController
                 'id'         => $tree['tree']->getId(),
                 'code'       => $tree['tree']->getCode(),
                 'label'      => $tree['tree']->getLabel(),
-                'associated' => $tree['itemCount'] > 0
+                'associated' => $tree['productCount'] > 0
             ];
         }
 

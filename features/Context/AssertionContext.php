@@ -224,7 +224,6 @@ class AssertionContext extends RawMinkContext
     /**
      * @param TableNode $tableNode
      *
-     * @Then /^I should see a dialog with the following content:$/
      * @Then /^I should see a confirm dialog with the following content:$/
      *
      * @throws ExpectationException

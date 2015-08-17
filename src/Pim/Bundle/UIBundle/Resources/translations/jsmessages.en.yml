@@ -43,8 +43,7 @@ Unit:     Unit
 Currency: Currency
 
 jstree:
-    product:
-        all:          All products
-        unclassified: Unclassified products
+    all:          All products
+    unclassified: Unclassified products
     no_tree:      No tree available
     include_sub:  Include sub-categories

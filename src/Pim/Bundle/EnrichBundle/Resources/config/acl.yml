@@ -79,24 +79,24 @@ pim_enrich_mass_edit:
     label: pim_enrich.acl.product.mass_edit
     group_name: pim_enrich.acl_group.product
 
-# ProductCategory
-pim_enrich_product_category_list:
+# Category
+pim_enrich_category_list:
     type: action
     label: pim_enrich.acl.category.list
     group_name: pim_enrich.acl_group.category
-pim_enrich_product_category_create:
+pim_enrich_category_create:
     type: action
     label: pim_enrich.acl.category.create
     group_name: pim_enrich.acl_group.category
-pim_enrich_product_category_edit:
+pim_enrich_category_edit:
     type: action
     label: pim_enrich.acl.category.edit
     group_name: pim_enrich.acl_group.category
-pim_enrich_product_category_remove:
+pim_enrich_category_remove:
     type: action
     label: pim_enrich.acl.category.remove
     group_name: pim_enrich.acl_group.category
-pim_enrich_product_category_history:
+pim_enrich_category_history:
     type: action
     label: pim_enrich.acl.category.history
     group_name: pim_enrich.acl_group.category

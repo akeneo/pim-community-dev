@@ -3,7 +3,7 @@ parameters:
     pim_catalog.repository.attribute_group.class:  Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeGroupRepository
     pim_catalog.repository.attribute_option.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeOptionRepository
     pim_catalog.repository.attribute.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository
-    pim_catalog.repository.category.class:         Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
+    pim_catalog.repository.category.class:         Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CategoryRepository
     pim_catalog.repository.channel.class:          Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository
     pim_catalog.repository.currency.class:         Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CurrencyRepository
     pim_catalog.repository.family.class:           Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository

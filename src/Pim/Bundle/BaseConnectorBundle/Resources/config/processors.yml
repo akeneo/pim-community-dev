@@ -6,7 +6,6 @@ parameters:
     pim_base_connector.processor.transformer.class:                       Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
     pim_base_connector.processor.product.class:                           Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
     pim_base_connector.processor.category.class:                          Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
-    pim_base_connector.processor.tag.class:                               Pim\Bundle\BaseConnectorBundle\Processor\TagProcessor
     pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
     pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
 

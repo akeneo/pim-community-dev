@@ -175,9 +175,9 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function getTree($categoryCode)
     {
-        $categoryRepository = $this->container->get('pim_catalog.repository.category');
-        $category           = $categoryRepository->findOneBy(['code' => $categoryCode, 'parent' => null]);
+        $categoryManager = $this->container->get('pim_catalog.manager.category');
+        $category        = $categoryManager->getTreeByCode($categoryCode);
 
-        return $category ? $category : current($categoryRepository->getTrees());
+        return $category ? $category : current($categoryManager->getTrees());
     }
 }

@@ -599,7 +599,7 @@ class Form extends Base
                 return 'simpleSelect2';
             }
 
-            if (null !== $this->find('css', sprintf('#date_selector_%s', $for))) {
+            if (1 === preg_match('/_date$/', $for)) {
                 return 'datepicker';
             }
 

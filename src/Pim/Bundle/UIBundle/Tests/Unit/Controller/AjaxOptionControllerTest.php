@@ -42,8 +42,7 @@ class AjaxOptionControllerTest extends \PHPUnit_Framework_TestCase
             'dataLocale'    => 'data_locale',
             'collectionId'  => 'collection_id',
             'search'        => 'search',
-            'options'       => array('options'),
-            'isCreatable'   => false
+            'options'       => array('options')
         );
         $request->query->expects($this->any())
             ->method('get')

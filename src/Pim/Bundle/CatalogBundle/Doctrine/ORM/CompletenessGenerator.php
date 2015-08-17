@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
@@ -64,7 +63,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateMissingForProduct(ProductInterface $product)
     {
-        $this->generate(['productId' => $product->getId()]);
+        $this->generate(array('productId' => $product->getId()));
     }
 
     /**
@@ -72,7 +71,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateMissingForChannel(ChannelInterface $channel)
     {
-        $this->generate(['channelId' => $channel->getId()]);
+        $this->generate(array('channelId' => $channel->getId()));
     }
 
     /**
@@ -89,7 +88,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param array $criteria
      */
-    protected function generate(array $criteria = [])
+    protected function generate(array $criteria = array())
     {
         $this->prepareCompletePrices($criteria);
         $this->prepareMissingCompletenesses($criteria);
@@ -113,18 +112,18 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param array $criteria
      */
-    protected function prepareCompletePrices($criteria = [])
+    protected function prepareCompletePrices($criteria = array())
     {
-        $cleanupSql  = 'DROP TABLE IF EXISTS ' . self::COMPLETE_PRICES_TABLE . PHP_EOL;
+        $cleanupSql = "DROP TABLE IF EXISTS ".self::COMPLETE_PRICES_TABLE."\n";
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
         $sql = $this->getCompletePricesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
 
-        $sql = 'CREATE TEMPORARY TABLE ' .
-            self::COMPLETE_PRICES_TABLE .
-            ' (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id)) ' .
+        $sql = "CREATE TEMPORARY TABLE ".
+            self::COMPLETE_PRICES_TABLE.
+            " (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id)) ".
             $sql;
 
         $sql = $this->applyTableNames($sql);
@@ -143,19 +142,19 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param array $criteria
      */
-    protected function prepareMissingCompletenesses(array $criteria = [])
+    protected function prepareMissingCompletenesses(array $criteria = array())
     {
-        $cleanupSql  = 'DROP TABLE IF EXISTS ' . self::MISSING_TABLE . PHP_EOL;
+        $cleanupSql = "DROP TABLE IF EXISTS ".self::MISSING_TABLE."\n";
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
         $sql = $this->getMissingCompletenessesSQL();
         $sql = $this->applyCriteria($sql, $criteria);
 
-        $sql = 'CREATE TEMPORARY TABLE ' .
-            self::MISSING_TABLE .
-            ' (locale_id int, channel_id int, product_id int)'
-            . $sql;
+        $sql = "CREATE TEMPORARY TABLE ".
+            self::MISSING_TABLE.
+            " (locale_id int, channel_id int, product_id int)"
+            .$sql;
 
         $sql = $this->applyTableNames($sql);
 
@@ -176,9 +175,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * This allow to link with only complete prices
      *
+     * @param array $criteria
+     *
      * @return string
      */
-    protected function getCompletePricesSQL()
+    protected function getCompletePricesSQL($criteria = array())
     {
         return <<<COMPLETE_PRICES_SQL
             SELECT l.id AS locale_id, c.id AS channel_id, v.id AS value_id
@@ -211,9 +212,11 @@ COMPLETE_PRICES_SQL;
      * the process comparing to joining with all attributes from the requirements
      * table
      *
+     * @param array $criteria
+     *
      * @return string
      */
-    protected function getMissingCompletenessesSQL()
+    protected function getMissingCompletenessesSQL($criteria = array())
     {
         return <<<MISSING_SQL
             SELECT l.id AS locale_id, c.id AS channel_id, p.id AS product_id
@@ -243,15 +246,15 @@ MISSING_SQL;
      */
     protected function applyCriteria($sql, $criteria)
     {
-        $productConditions = '';
-        $channelConditions = '';
+        $productConditions = "";
+        $channelConditions = "";
 
         if (array_key_exists('productId', $criteria)) {
-            $productConditions = 'AND p.id = :productId';
+            $productConditions = "AND p.id = :productId";
         }
 
         if (array_key_exists('channelId', $criteria)) {
-            $channelConditions = 'AND c.id = :channelId';
+            $channelConditions = "AND c.id = :channelId";
         }
 
         $sql = str_replace('%product_conditions%', $productConditions, $sql);
@@ -263,9 +266,11 @@ MISSING_SQL;
     /**
      * Get the sql query to insert completeness
      *
+     * @param array $criteria
+     *
      * @return string
      */
-    protected function getInsertCompletenessSQL()
+    protected function getInsertCompletenessSQL(array $criteria)
     {
         $sql = $this->getMainSqlPart();
 
@@ -314,25 +319,21 @@ MISSING_SQL;
                             AND channel_id = c.id
                             AND required = true
                 ) AS required_count
-
             FROM missing_completeness m
-            JOIN pim_catalog_channel c ON c.id = m.channel_id
-            JOIN pim_catalog_locale l ON l.id = m.locale_id
-            JOIN %product_table% p ON p.id = m.product_id
-            JOIN pim_catalog_attribute_requirement r ON r.family_id = p.family_id AND r.channel_id = c.id
-            JOIN %product_value_table% v ON v.attribute_id = r.attribute_id
-                AND (v.scope_code = c.code OR v.scope_code IS NULL)
-                AND (v.locale_code = l.code OR v.locale_code IS NULL)
-                AND v.entity_id = p.id
-            %product_value_joins%
-            %extra_joins%
-
-            WHERE (
-                %product_value_conditions%
-                %extra_conditions%
-            )
-            AND r.required = true
-
+                JOIN pim_catalog_channel c ON c.id = m.channel_id
+                JOIN pim_catalog_locale l ON l.id = m.locale_id
+                JOIN %product_table% p ON p.id = m.product_id
+                JOIN pim_catalog_attribute_requirement r ON r.family_id = p.family_id AND r.channel_id = c.id
+                JOIN %product_value_table% v ON v.attribute_id = r.attribute_id
+                    AND (v.scope_code = c.code OR v.scope_code IS NULL)
+                    AND (v.locale_code = l.code OR v.locale_code IS NULL)
+                    AND v.entity_id = p.id
+                LEFT JOIN complete_price
+                    ON complete_price.value_id = v.id
+                    AND complete_price.channel_id = c.id
+                    AND complete_price.locale_id = l.id
+                %product_value_joins%
+            WHERE (%product_value_conditions% OR complete_price.value_id IS NOT NULL) AND r.required = true
             GROUP BY p.id, c.id, l.id
 MAIN_SQL;
     }
@@ -345,12 +346,10 @@ MAIN_SQL;
      */
     protected function getQueryPartReplacements()
     {
-        return [
+        return array(
             '%product_value_conditions%' => implode(' OR ', $this->getProductValueConditions()),
-            '%product_value_joins%'      => implode(' ', $this->getProductValueJoins()),
-            '%extra_joins%'              => implode(' ', $this->getExtraJoins()),
-            '%extra_conditions%'         => implode(' ', $this->getExtraConditions()),
-        ];
+            '%product_value_joins%'      => implode(' ', $this->getProductValueJoins())
+        );
     }
 
     /**
@@ -362,7 +361,7 @@ MAIN_SQL;
      */
     protected function applyTableNames($sql)
     {
-        $categoryMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
+        $categoryMapping = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
         $categoryMetadata = $this->getClassMetadata($categoryMapping['targetEntity']);
 
         $valueMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('values');
@@ -390,43 +389,28 @@ MAIN_SQL;
      */
     protected function getProductValueConditions()
     {
-        $associationMappings = $this->getClassMetadata($this->productValueClass)->getAssociationMappings();
-
-        // extract aliased foreign keys from associated fields
-        $productForeignKeys = $this->getForeignKeysFromMappings($associationMappings);
-
-        $notNullFields = array_merge($this->getClassContentFields($this->productValueClass, 'v'), $productForeignKeys);
+        $index = 0;
 
         return array_map(
             function ($field) {
                 return sprintf('%s IS NOT NULL', $field);
-            }, $notNullFields
-        );
-    }
-
-    /**
-     * @param array $mappings
-     *
-     * @return string[]
-     */
-    protected function getForeignKeysFromMappings($mappings)
-    {
-        $index = 0;
-
-        $productForeignKeys = array_reduce(
-            $mappings,
-            function ($fields, $mapping) use (&$index) {
-                $index++;
-
-                return array_merge(
-                    $fields,
-                    $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
-                );
             },
-            []
-        );
+            array_merge(
+                $this->getClassContentFields($this->productValueClass, 'v'),
+                array_reduce(
+                    $this->getClassMetadata($this->productValueClass)->getAssociationMappings(),
+                    function ($fields, $mapping) use (&$index) {
+                        $index++;
 
-        return $productForeignKeys;
+                        return array_merge(
+                            $fields,
+                            $this->getAssociationFields($mapping, $this->getAssociationAlias($index))
+                        );
+                    },
+                    array()
+                )
+            )
+        );
     }
 
     /**
@@ -440,28 +424,28 @@ MAIN_SQL;
     protected function getAssociationFields($mapping, $prefix)
     {
         if (in_array($mapping['fieldName'], $this->getSkippedMappings())) {
-            return [];
+            return array();
         }
 
         switch ($mapping['type']) {
             case ClassMetadataInfo::MANY_TO_MANY:
-                return [
+                return array(
                     sprintf(
                         '%s.%s',
                         $prefix,
                         $mapping['joinTable']['inverseJoinColumns'][0]['name']
                     )
-                ];
+                );
 
             case ClassMetadataInfo::MANY_TO_ONE:
-                return [sprintf('v.%s', $mapping['joinColumns'][0]['name'])];
+                return array(sprintf('v.%s', $mapping['joinColumns'][0]['name']));
 
             case ClassMetadataInfo::ONE_TO_MANY:
             case ClassMetadataInfo::ONE_TO_ONE:
                 return $this->getClassContentFields($mapping['targetEntity'], $prefix);
 
             default:
-                return [];
+                return array();
         }
     }
 
@@ -479,11 +463,11 @@ MAIN_SQL;
     {
         switch ($className) {
             case 'Pim\Bundle\CatalogBundle\Model\Metric':
-                return [sprintf('%s.%s', $prefix, 'data')];
+                return array(sprintf('%s.%s', $prefix, 'data'));
             case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
-                return [];
+                return array();
             case 'Pim\Bundle\CatalogBundle\Model\ProductMedia':
-                return [sprintf('%s.%s', $prefix, 'filename')];
+                return array(sprintf('%s.%s', $prefix, 'filename'));
             default:
                 return array_map(
                     function ($name) use ($prefix) {
@@ -515,7 +499,7 @@ MAIN_SQL;
 
                 return array_merge($joins, $this->getAssociationJoins($mapping, $this->getAssociationAlias($index)));
             },
-            []
+            array()
         );
     }
 
@@ -530,16 +514,16 @@ MAIN_SQL;
     protected function getAssociationJoins($mapping, $prefix)
     {
         if (in_array($mapping['fieldName'], $this->getSkippedMappings())) {
-            return [];
+            return array();
         }
 
         if ($mapping['targetEntity'] === 'Pim\Bundle\CatalogBundle\Model\ProductPrice') {
-            return [];
+            return array();
         }
 
         switch ($mapping['type']) {
             case ClassMetadataInfo::MANY_TO_MANY:
-                return [
+                return array(
                     sprintf(
                         'LEFT JOIN %s %s ON %s.%s = v.id ',
                         $mapping['joinTable']['name'],
@@ -547,13 +531,13 @@ MAIN_SQL;
                         $prefix,
                         $mapping['joinTable']['joinColumns'][0]['name']
                     )
-                ];
+                );
 
             case ClassMetadataInfo::ONE_TO_MANY:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
-                $relatedMapping  = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
+                $relatedMapping = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
 
-                return [
+                return array(
                     sprintf(
                         'LEFT JOIN %s %s ON %s.%s = v.id',
                         $relatedMetadata->getTableName(),
@@ -561,14 +545,14 @@ MAIN_SQL;
                         $prefix,
                         $relatedMapping['joinColumns'][0]['name']
                     )
-                ];
+                );
             case ClassMetadataInfo::ONE_TO_ONE:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
 
                 $joinPattern = 'LEFT JOIN %s %s ON %s.id = v.%s';
-                $joinColumn  = $mapping['joinColumns'][0]['name'];
+                $joinColumn = $mapping['joinColumns'][0]['name'];
 
-                return [
+                return array(
                     sprintf(
                         $joinPattern,
                         $relatedMetadata->getTableName(),
@@ -576,10 +560,10 @@ MAIN_SQL;
                         $prefix,
                         $joinColumn
                     )
-                ];
+                );
 
             default:
-                return [];
+                return array();
         }
     }
 
@@ -590,7 +574,7 @@ MAIN_SQL;
      */
     protected function getSkippedMappings()
     {
-        return ['attribute', 'entity'];
+        return array('attribute', 'entity');
     }
 
     /**
@@ -665,30 +649,5 @@ SQL;
         $stmt->bindValue('locale_id', $locale->getId());
 
         $stmt->execute();
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function getExtraJoins()
-    {
-        $pricesJoin = 'LEFT JOIN %s AS complete_price
-            ON complete_price.value_id = v.id
-            AND complete_price.channel_id = c.id
-            AND complete_price.locale_id = l.id';
-
-        $pricesJoin = sprintf($pricesJoin, static::COMPLETE_PRICES_TABLE);
-
-        return [$pricesJoin];
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function getExtraConditions()
-    {
-        $pricesConditions = sprintf('OR %s.value_id IS NOT NULL', static::COMPLETE_PRICES_TABLE);
-
-        return [$pricesConditions];
     }
 }

@@ -5,7 +5,7 @@ namespace Context\Page\Category\Tree;
 use Context\Page\Category\CategoryView;
 
 /**
- * Product category tree creation page
+ * Category tree creation page
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -16,5 +16,5 @@ class Creation extends CategoryView
     /**
      * @var string
      */
-    protected $path = '/enrich/product-category-tree/create';
+    protected $path = '/enrich/category-tree/create';
 }

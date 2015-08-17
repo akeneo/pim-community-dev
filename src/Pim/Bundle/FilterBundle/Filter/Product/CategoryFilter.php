@@ -1,13 +1,13 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter;
+namespace Pim\Bundle\FilterBundle\Filter\Product;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter;
+use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
-use Pim\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -31,22 +31,21 @@ class CategoryFilter extends NumberFilter
     /** @staticvar integer */
     const ALL_CATEGORY = -2;
 
-    /** @var CategoryRepositoryInterface */
-    protected $categoryRepo;
+    /** @var ProductCategoryManager $manager */
+    protected $manager;
 
     /**
-     * @param FormFactoryInterface        $factory
-     * @param FilterUtility               $util
-     * @param CategoryRepositoryInterface $categoryRepo
+     * Constructor
+     *
+     * @param FormFactoryInterface   $factory
+     * @param FilterUtility          $util
+     * @param ProductCategoryManager $manager
      */
-    public function __construct(
-        FormFactoryInterface $factory,
-        FilterUtility $util,
-        CategoryRepositoryInterface $categoryRepo
-    ) {
+    public function __construct(FormFactoryInterface $factory, FilterUtility $util, ProductCategoryManager $manager)
+    {
         parent::__construct($factory, $util);
 
-        $this->categoryRepo = $categoryRepo;
+        $this->manager = $manager;
     }
 
     /**
@@ -111,7 +110,8 @@ class CategoryFilter extends NumberFilter
      */
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $tree = $this->categoryRepo->find($data['treeId']);
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {
             $categoryIds = $this->getAllChildrenIds($tree);
             $this->util->applyFilter($ds, 'categories.id', 'NOT IN', $categoryIds);
@@ -132,10 +132,11 @@ class CategoryFilter extends NumberFilter
      */
     protected function applyFilterByCategory(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $category = $this->categoryRepo->find($data['categoryId']);
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $category = $categoryRepository->find($data['categoryId']);
 
         if (!$category) {
-            $category = $this->categoryRepo->find($data['treeId']);
+            $category = $categoryRepository->find($data['treeId']);
         }
 
         if ($category) {
@@ -162,7 +163,8 @@ class CategoryFilter extends NumberFilter
      */
     protected function getAllChildrenIds(CategoryInterface $category)
     {
-        $categoryIds = $this->categoryRepo->getAllChildrenIds($category);
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $categoryIds = $categoryRepository->getAllChildrenIds($category);
 
         return $categoryIds;
     }

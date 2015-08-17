@@ -3,7 +3,7 @@
 namespace Context\Page\Category;
 
 /**
- * Product category tree edit page
+ * Category tree edit page
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -14,5 +14,5 @@ class Edit extends CategoryView
     /**
      * @var string
      */
-    protected $path = '/enrich/product-category-tree/{id}/edit';
+    protected $path = '/enrich/category-tree/{id}/edit';
 }

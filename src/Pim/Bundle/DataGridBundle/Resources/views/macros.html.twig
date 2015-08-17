@@ -21,7 +21,7 @@
 {#
     Datagrid macro to load the grid asynchronously
 #}
-{% macro renderStatefulGrid(name, params = {}, renderParams = {}, categoryBaseRoute = null) %}
+{% macro renderStatefulGrid(name, params = {}, renderParams = {}) %}
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
         require(
@@ -61,8 +61,8 @@
                         urlParams['{{ name }}[_parameters][view][columns]'] = state.columns;
                     }
 
-                    {% if categoryBaseRoute is not null %}
-                    var categoryFilter = new CategoryFilter(urlParams, '{{ name }}', '{{ categoryBaseRoute }}');
+                    {% if name ends with 'product-grid' %}
+                    var categoryFilter = new CategoryFilter(urlParams, '{{ name }}');
                     {% endif %}
 
                     $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {

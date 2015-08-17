@@ -6,9 +6,8 @@ services:
         class: %pim_user.context.user.class%
         arguments:
             - '@security.token_storage'
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.category'
             - '@request_stack'
-            - '@pim_catalog.builder.choices'
             - %locale%

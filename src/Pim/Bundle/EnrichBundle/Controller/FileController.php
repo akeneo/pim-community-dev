@@ -7,7 +7,6 @@ use League\Flysystem\MountManager;
 use Liip\ImagineBundle\Controller\ImagineController;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Liip\ImagineBundle\Model\Binary;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +19,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class FileController extends Controller
 {
-    const DEFAULT_IMAGE_KEY = '__default__';
-
     /** @var ImagineController */
     protected $imagineController;
 
@@ -37,31 +34,25 @@ class FileController extends Controller
     /** @var string */
     protected $filesystemAliases;
 
-    /** @var string */
-    protected $defaultImagePath;
-
     /**
      * @param ImagineController $imagineController
      * @param CacheManager      $cacheManager
      * @param FilterManager     $filterManager
      * @param MountManager      $mountManager
      * @param array             $filesystemAliases
-     * @param string            $defaultImagePath
      */
     public function __construct(
         ImagineController $imagineController,
         CacheManager $cacheManager,
         FilterManager $filterManager,
         MountManager $mountManager,
-        array $filesystemAliases,
-        $defaultImagePath
+        array $filesystemAliases
     ) {
         $this->imagineController = $imagineController;
         $this->cacheManager      = $cacheManager;
         $this->filterManager     = $filterManager;
         $this->mountManager      = $mountManager;
         $this->filesystemAliases = $filesystemAliases;
-        $this->defaultImagePath  = $defaultImagePath;
     }
 
     /**
@@ -75,14 +66,10 @@ class FileController extends Controller
     {
         $filename = urldecode($filename);
 
-        if (self::DEFAULT_IMAGE_KEY === $filename) {
-            return $this->renderDefaultImage($filter);
-        }
-
         try {
             return $this->imagineController->filterAction($request, $filename, $filter);
         } catch (NotFoundHttpException $e) {
-            return $this->renderDefaultImage($filter);
+            return new RedirectResponse($request->getUriForPath('/bundles/pimenrich/img/img_generic.png'));
         }
     }
 
@@ -109,25 +96,5 @@ class FileController extends Controller
         throw $this->createNotFoundException(
             sprintf('File with key "%s" could not be found.', $filename)
         );
-    }
-
-    /**
-     * @param string $filter
-     *
-     * @return RedirectResponse
-     */
-    protected function renderDefaultImage($filter)
-    {
-        if (!$this->cacheManager->isStored(self::DEFAULT_IMAGE_KEY, $filter)) {
-            $binary = new Binary(file_get_contents($this->defaultImagePath), 'image/png', 'png');
-
-            $this->cacheManager->store(
-                $this->filterManager->applyFilter($binary, $filter),
-                self::DEFAULT_IMAGE_KEY,
-                $filter
-            );
-        }
-
-        return new RedirectResponse($this->cacheManager->resolve(self::DEFAULT_IMAGE_KEY, $filter), 301);
     }
 }

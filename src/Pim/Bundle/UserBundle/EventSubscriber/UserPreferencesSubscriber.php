@@ -196,7 +196,7 @@ class UserPreferencesSubscriber implements EventSubscriber
     protected function onTreeRemoved(CategoryInterface $category)
     {
         $users = $this->findUsersBy(array('defaultTree' => $category));
-        $trees = $this->container->get('pim_catalog.repository.category')->getTrees();
+        $trees = $this->container->get('pim_catalog.manager.category')->getTrees();
 
         $defaultTree = current(
             array_filter(

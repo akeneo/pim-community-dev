@@ -4,10 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Component\Classification\Factory\CategoryFactory;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
@@ -15,12 +13,9 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function let(
         ObjectManager $objectManager,
-        CategoryRepositoryInterface $categoryRepository,
-        CategoryFactory $categoryFactory,
-        Category $category
+        CategoryRepositoryInterface $categoryRepository
     ) {
-        $this->beConstructedWith($objectManager, $categoryRepository, $categoryFactory, self::CATEGORY_CLASS);
-        $categoryFactory->create()->willReturn($category);
+        $this->beConstructedWith($categoryRepository, $objectManager, self::CATEGORY_CLASS);
 
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
     }
@@ -49,6 +44,7 @@ class CategoryManagerSpec extends ObjectBehavior
     {
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
         $this->getEntityRepository()->shouldReturn($categoryRepository);
+        $this->getCategoryRepository()->shouldReturn($categoryRepository);
     }
 
     function it_provides_a_category_from_his_code($categoryRepository, CategoryInterface $category)

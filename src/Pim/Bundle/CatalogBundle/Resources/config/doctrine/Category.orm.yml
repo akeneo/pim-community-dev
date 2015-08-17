@@ -2,7 +2,12 @@ Pim\Bundle\CatalogBundle\Entity\Category:
     type: entity
     table: pim_catalog_category
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    repositoryClass: Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CategoryRepository
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: discr
+        type: string
+        length: 20
     uniqueConstraints:
         pim_category_code_uc:
             columns:

@@ -22,7 +22,6 @@ use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Component\Classification\Factory\CategoryFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\Event;
@@ -80,9 +79,6 @@ class ProductController extends AbstractDoctrineController
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var CategoryFactory */
-    protected $categoryFactory;
-
     /**
      * Constant used to redirect to the datagrid when save edit form
      *
@@ -133,7 +129,6 @@ class ProductController extends AbstractDoctrineController
      * @param SequentialEditManager    $seqEditManager
      * @param RemoverInterface         $productRemover
      * @param ProductBuilderInterface  $productBuilder
-     * @param CategoryFactory          $categoryFactory
      */
     public function __construct(
         Request $request,
@@ -154,8 +149,7 @@ class ProductController extends AbstractDoctrineController
         SaverInterface $productSaver,
         SequentialEditManager $seqEditManager,
         RemoverInterface $productRemover,
-        ProductBuilderInterface $productBuilder,
-        CategoryFactory $categoryFactory
+        ProductBuilderInterface $productBuilder
     ) {
         parent::__construct(
             $request,
@@ -179,7 +173,6 @@ class ProductController extends AbstractDoctrineController
         $this->seqEditManager    = $seqEditManager;
         $this->productRemover    = $productRemover;
         $this->productBuilder    = $productBuilder;
-        $this->categoryFactory   = $categoryFactory;
     }
 
     /**
@@ -370,8 +363,7 @@ class ProductController extends AbstractDoctrineController
     public function listCategoriesAction(Request $request, $id, $categoryId)
     {
         $product = $this->findProductOr404($id);
-        $parent = $this->findOr404($this->categoryFactory->getCategoryClass(), $categoryId);
-        $categories = null;
+        $parent  = $this->findOr404($this->categoryManager->getCategoryClass(), $categoryId);
 
         $includeParent = $request->get('include_parent', false);
         $includeParent = ($includeParent === 'true');

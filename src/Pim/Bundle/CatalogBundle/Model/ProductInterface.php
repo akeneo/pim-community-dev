@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
-use Pim\Component\Classification\CategoryAwareInterface;
 
 /**
  * Product interface
@@ -22,8 +21,7 @@ interface ProductInterface extends
     TimestampableInterface,
     VersionableInterface,
     CommentSubjectInterface,
-    ReferableInterface,
-    CategoryAwareInterface
+    ReferableInterface
 {
     /**
      * Get the ID of the product
@@ -49,6 +47,38 @@ interface ProductInterface extends
      * @return ProductValueInterface the identifier of the product
      */
     public function getIdentifier();
+
+    /**
+     * Get the product categories
+     *
+     * @return ArrayCollection
+     */
+    public function getCategories();
+
+    /**
+     * Remove a category
+     *
+     * @param CategoryInterface $category
+     *
+     * @return ProductInterface
+     */
+    public function removeCategory(CategoryInterface $category);
+
+    /**
+     * Add a category
+     *
+     * @param CategoryInterface $category
+     *
+     * @return ProductInterface
+     */
+    public function addCategory(CategoryInterface $category);
+
+    /**
+     * Get a string with categories linked to product
+     *
+     * @return string
+     */
+    public function getCategoryCodes();
 
     /**
      * Get values

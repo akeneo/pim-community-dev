@@ -2,16 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use Pim\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
  * Product category repository
@@ -20,10 +16,7 @@ use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCategoryRepository implements
-    ProductCategoryRepositoryInterface,
-    ItemCategoryRepositoryInterface,
-    CategoryFilterableRepositoryInterface
+class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 {
     /**
      * ORM EntityManager to access ORM entities
@@ -70,23 +63,74 @@ class ProductCategoryRepository implements
      */
     public function getProductCountByTree(ProductInterface $product)
     {
-        return $this->getItemCountByTree($product);
+        $categories = $product->getCategories();
+        $categoryIds = array();
+        foreach ($categories as $category) {
+            $categoryIds[] = $category->getId();
+        }
+
+        $categoryRepository = $this->entityManager->getRepository($this->categoryClass);
+
+        $categoryTable = $this->entityManager->getClassMetadata($this->categoryClass)->getTableName();
+
+        $categoryIds = implode(',', $categoryIds);
+
+        if (!empty($categoryIds)) {
+            $sql = "SELECT".
+                   "    tree.id AS tree_id,".
+                   "    COUNT(category.id) AS product_count".
+                   "  FROM $categoryTable tree".
+                   "  LEFT JOIN $categoryTable category".
+                   "    ON category.root = tree.id".
+                   " AND category.id IN ($categoryIds)".
+                   " WHERE tree.parent_id IS NULL".
+                   " GROUP BY tree.id";
+        } else {
+            $sql = "SELECT".
+                   "    tree.id AS tree_id,".
+                   "    '0' AS product_count".
+                   "  FROM $categoryTable tree".
+                   "  LEFT JOIN $categoryTable category".
+                   "    ON category.root = tree.id".
+                   " WHERE tree.parent_id IS NULL".
+                   " GROUP BY tree.id";
+        }
+
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $productCounts = $stmt->fetchAll();
+        $trees = array();
+        foreach ($productCounts as $productCount) {
+            $tree = array();
+            $tree['productCount'] = $productCount['product_count'];
+            $tree['tree'] = $categoryRepository->find($productCount['tree_id']);
+            $trees[] = $tree;
+        }
+
+        return $trees;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getProductIdsInCategory(CatalogCategoryInterface $category, OrmQueryBuilder $categoryQb = null)
+    public function getProductIdsInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
-        return $this->getItemIdsInCategory($category, $categoryQb);
+        $categoryIds = $this->getCategoryIds($category, $categoryQb);
+
+        $products = $this->getProductIdsInCategories($categoryIds);
+
+        return array_keys(iterator_to_array($products));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getProductsCountInCategory(CatalogCategoryInterface $category, OrmQueryBuilder $categoryQb = null)
+    public function getProductsCountInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
-        return $this->getItemsCountInCategory($category, $categoryQb);
+        $categoryIds = $this->getCategoryIds($category, $categoryQb);
+
+        return $this->getProductsCountInCategories($categoryIds);
     }
 
     /**
@@ -99,13 +143,13 @@ class ProductCategoryRepository implements
      */
     protected function getCategoryIds(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
-        $categoryIds = [];
+        $categoryIds = array();
 
         if (null !== $categoryQb) {
             $categoryAlias = $categoryQb->getRootAlias();
             $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
         } else {
-            $categories = [['id' => $category->getId()]];
+            $categories = array(array('id' => $category->getId()));
         }
 
         foreach ($categories as $category) {
@@ -191,89 +235,5 @@ class ProductCategoryRepository implements
                 ->addOr($qb->expr()->field('categoryIds')->in($categoryIds))
                 ->addOr($qb->expr()->field('categoryIds')->size(0))
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemCountByTree($product)
-    {
-        if (!$product instanceof ProductInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expected a "Pim\Bundle\CatalogBundle\Model\ProductInterface", got a "%s"',
-                    ClassUtils::getClass($product)
-                )
-            );
-        }
-
-        $categories = $product->getCategories();
-        $categoryIds = [];
-        foreach ($categories as $category) {
-            $categoryIds[] = $category->getId();
-        }
-
-        $categoryRepository = $this->entityManager->getRepository($this->categoryClass);
-
-        $categoryTable = $this->entityManager->getClassMetadata($this->categoryClass)->getTableName();
-
-        $categoryIds = implode(',', $categoryIds);
-
-        if (!empty($categoryIds)) {
-            $sql = "SELECT".
-                   "    tree.id AS tree_id,".
-                   "    COUNT(category.id) AS item_count".
-                   "  FROM $categoryTable tree".
-                   "  LEFT JOIN $categoryTable category".
-                   "    ON category.root = tree.id".
-                   " AND category.id IN ($categoryIds)".
-                   " WHERE tree.parent_id IS NULL".
-                   " GROUP BY tree.id";
-        } else {
-            $sql = "SELECT".
-                   "    tree.id AS tree_id,".
-                   "    '0' AS item_count".
-                   "  FROM $categoryTable tree".
-                   "  LEFT JOIN $categoryTable category".
-                   "    ON category.root = tree.id".
-                   " WHERE tree.parent_id IS NULL".
-                   " GROUP BY tree.id";
-        }
-
-        $stmt = $this->entityManager->getConnection()->prepare($sql);
-        $stmt->execute();
-
-        $productCounts = $stmt->fetchAll();
-        $trees = [];
-        foreach ($productCounts as $productCount) {
-            $tree = [];
-            $tree['itemCount'] = $productCount['item_count'];
-            $tree['tree'] = $categoryRepository->find($productCount['tree_id']);
-            $trees[] = $tree;
-        }
-
-        return $trees;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemIdsInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
-    {
-        $categoryIds = $this->getCategoryIds($category, $categoryQb);
-
-        $products = $this->getProductIdsInCategories($categoryIds);
-
-        return array_keys(iterator_to_array($products));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemsCountInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
-    {
-        $categoryIds = $this->getCategoryIds($category, $categoryQb);
-
-        return $this->getProductsCountInCategories($categoryIds);
     }
 }

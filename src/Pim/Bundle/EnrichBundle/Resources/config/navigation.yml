@@ -41,7 +41,7 @@ oro_menu_config:
         pim_enrich_categorytree:
             label: pim_menu.item.category
             route: pim_enrich_categorytree_index
-            aclResourceId: pim_enrich_product_category_list
+            aclResourceId: pim_enrich_category_list
             extras:
                 routes: ['/^pim_enrich_categorytree_\w+$/']
                 position: 20

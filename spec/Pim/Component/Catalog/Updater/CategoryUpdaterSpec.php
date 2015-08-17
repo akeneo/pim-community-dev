@@ -2,22 +2,22 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
-use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Prophecy\Argument;
 
 class CategoryUpdaterSpec extends ObjectBehavior
 {
-    function let(IdentifiableObjectRepositoryInterface $categoryRepository)
+    function let(CategoryRepositoryInterface $categoryRepository)
     {
         $this->beConstructedWith($categoryRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Classification\Updater\CategoryUpdater');
+        $this->shouldHaveType('Pim\Component\Catalog\Updater\CategoryUpdater');
     }
 
     function it_is_a_updater()

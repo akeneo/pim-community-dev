@@ -13,9 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * TODO: To extract in a component
- *
- * Product category remover
+ * Category remover
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
