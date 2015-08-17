@@ -65,6 +65,7 @@ pim_base_connector:
     variant_group_processor.title: Création / Mise à jour des groupes de variantes
     category_processor.title: Création de catégorie
     association_processor.title: "Création d'association"
+    product_association_processor.title: "Création d'association"
     group_processor.title: Création de groupe
     attribute_processor.title: "Création d'attribut"
     attribute_option_processor.title: "Création des options d'attributs"
