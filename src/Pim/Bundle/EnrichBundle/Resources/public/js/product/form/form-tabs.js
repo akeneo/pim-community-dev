@@ -29,7 +29,7 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.onExtensions('tab:register',  _.bind(this.registerTab, this));
+                this.onExtensions('tab:register',  this.registerTab.bind(this));
                 this.listenTo(mediator, 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -68,17 +68,17 @@ define(
                 this.delegateEvents();
                 this.initializeDropZones();
 
-                var currentTab = this.extensions[this.state.get('currentTab')];
+                var currentTab = this.getExtension(this.state.get('currentTab'));
                 if (currentTab) {
                     this.renderExtension(currentTab);
                     var zone = this.getZone('container');
                     zone.appendChild(currentTab.el);
                 }
 
-                var panels = this.extensions.panels;
-                if (panels) {
-                    this.renderExtension(panels);
-                    this.getZone('panels').appendChild(panels.el);
+                var panelsExtension = this.getExtension('panels');
+                if (panelsExtension) {
+                    this.renderExtension(panelsExtension);
+                    this.getZone('panels').appendChild(panelsExtension.el);
                 }
 
                 return this;

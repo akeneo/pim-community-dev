@@ -12,6 +12,7 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And I am logged in as "Julia"
     And I am on the "boots" product page
 
+  @unstable
   Scenario: Sucessfully add a new option to a simple select attribute
     Given I visit the "Sizes" group
     And I add a new option to the "Size" attribute:
@@ -20,6 +21,7 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And I save the product
     Then the product Size should be "47xxl"
 
+  @unstable
   Scenario: Sucessfully add a new option to a multi select attribute
     Given I add a new option to the "Weather conditions" attribute:
       | Code | very_wet      |

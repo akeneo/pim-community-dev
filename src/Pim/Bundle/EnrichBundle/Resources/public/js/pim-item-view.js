@@ -35,9 +35,9 @@ define(
                 Dialog.confirm(
                     __('pim_enrich.item.delete.confirm.content', {'itemName': this.itemName}),
                     __('pim_enrich.item.delete.confirm.title', {'itemName': this.itemName}),
-                    _.bind(function () {
+                    function () {
                         this.parent.deleteItem(this);
-                    }, this)
+                    }.bind(this)
                 );
             },
             inLoading: function (loading) {

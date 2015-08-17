@@ -56,9 +56,9 @@ define([
 
                 this.$el.html(this.template(templateContext));
                 this.field.renderCopyInput(this.value)
-                    .then(_.bind(function (render) {
+                    .then(function (render) {
                         this.$('.field-input').html(render);
-                    }, this));
+                    }.bind(this));
 
                 this.delegateEvents();
 

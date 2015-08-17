@@ -93,7 +93,7 @@ define(
 
                     _.each($field.siblings('.validation-tooltip'), function (icon) {
                         $(icon).appendTo(this.$el.find('.icons-container'));
-                    }, this);
+                    }.bind(this));
                 }
 
                 field.scope       = this.$el.data('scope');
@@ -151,7 +151,7 @@ define(
 
                 _.each(this.fields, function ($field) {
                     this._addField($field);
-                }, this);
+                }.bind(this));
 
                 this.label = this.$el.find('.control-label').first().get(0).outerHTML;
 
@@ -163,19 +163,19 @@ define(
 
                 mediator.on('scopablefield:changescope', function (scope) {
                     this._changeDefault(scope);
-                }, this);
+                }.bind(this));
 
                 mediator.on('scopablefield:collapse', function (id) {
                     if (!id || this.$el.find('#' + id).length) {
                         this._collapse();
                     }
-                }, this);
+                }.bind(this));
 
                 mediator.on('scopablefield:expand', function (id) {
                     if (!id || this.$el.find('#' + id).length) {
                         this._expand();
                     }
-                }, this);
+                }.bind(this));
 
                 var self = this;
                 this.$el.closest('form').on('validate', function () {
@@ -202,7 +202,7 @@ define(
 
                     _.each(this.fieldViews, function (fieldView) {
                         fieldView.render().$el.appendTo(this.$el);
-                    }, this);
+                    }.bind(this));
 
                     this._collapse();
 
@@ -234,7 +234,7 @@ define(
                     _.each(this.fields, function (field) {
                         this._showField(field, first);
                         first = false;
-                    }, this);
+                    }.bind(this));
 
                     this._initUI();
                     this.$el.find('i.field-toggle').removeClass(this.expandIcon).addClass(this.collapseIcon);
@@ -259,7 +259,7 @@ define(
                         } else {
                             this._hideField(field);
                         }
-                    }, this);
+                    }.bind(this));
 
                     this._initUI();
                     this.$el.find('i.field-toggle').removeClass(this.collapseIcon).addClass(this.expandIcon);
@@ -276,7 +276,7 @@ define(
                     } else {
                         this._hideField($field);
                     }
-                }, this);
+                }.bind(this));
             },
 
             _toggle: function (e) {

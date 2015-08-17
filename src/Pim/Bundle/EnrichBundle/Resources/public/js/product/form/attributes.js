@@ -64,16 +64,16 @@ define(
                 this.listenTo(mediator, 'pim_enrich:form:add-attribute:after', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:show_attribute', this.showAttribute);
 
-                window.addEventListener('resize', _.bind(this.resize, this));
+                window.addEventListener('resize', this.resize.bind(this));
                 this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
                 FieldManager.clearFields();
 
-                this.onExtensions('comparison:change', _.bind(this.comparisonChange, this));
-                this.onExtensions('attribute-group:change', _.bind(this.render, this));
-                this.onExtensions('add-attribute:add', _.bind(this.addAttributes, this));
-                this.onExtensions('copy:copy-fields:after', _.bind(this.render, this));
-                this.onExtensions('copy:select:after', _.bind(this.render, this));
-                this.onExtensions('copy:context:change', _.bind(this.render, this));
+                this.onExtensions('comparison:change', this.comparisonChange.bind(this));
+                this.onExtensions('attribute-group:change', this.render.bind(this));
+                this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
+                this.onExtensions('copy:copy-fields:after', this.render.bind(this));
+                this.onExtensions('copy:select:after', this.render.bind(this));
+                this.onExtensions('copy:context:change', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -83,44 +83,44 @@ define(
                 }
 
                 this.rendering = true;
-                this.getConfig().done(_.bind(function () {
+                this.getConfig().then(function () {
                     this.$el.html(this.template({}));
                     this.resize();
                     var product = this.getFormData();
                     $.when(
                         FetcherRegistry.getFetcher('family').fetchAll(),
                         ProductManager.getValues(product)
-                    ).then(_.bind(function (families, values) {
+                    ).then(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
-                            this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
+                            this.getExtension('attribute-group-selector').getCurrentAttributeGroup()
                         );
 
                         var fieldPromises = [];
-                        _.each(productValues, _.bind(function (productValue, attributeCode) {
+                        _.each(productValues, function (productValue, attributeCode) {
                             fieldPromises.push(this.renderField(product, attributeCode, productValue, families));
-                        }, this));
+                        }.bind(this));
 
                         this.rendering = false;
 
                         return $.when.apply($, fieldPromises);
-                    }, this)).then(_.bind(function () {
+                    }.bind(this)).then(function () {
                         var $productValuesPanel = this.$('.product-values');
                         $productValuesPanel.empty();
 
                         FieldManager.clearVisibleFields();
-                        _.each(arguments, _.bind(function (field) {
+                        _.each(arguments, function (field) {
                             if (field.canBeSeen()) {
                                 field.render();
                                 FieldManager.addVisibleField(field.attribute.code);
                                 $productValuesPanel.append(field.$el);
                             }
-                        }, this));
-                    }, this));
+                        }.bind(this));
+                    }.bind(this));
                     this.delegateEvents();
 
                     this.renderExtensions();
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -150,7 +150,7 @@ define(
                 var promises = [];
                 var product = this.getFormData();
 
-                promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
+                promises.push(this.getExtension('attribute-group-selector').updateAttributeGroups(product));
 
                 return $.when.apply($, promises).promise();
             },
@@ -162,7 +162,7 @@ define(
                     FetcherRegistry.getFetcher('locale').fetchAll(),
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('currency').fetchAll()
-                ).then(_.bind(function (attributes, locales, channels, currencies) {
+                ).then(function (attributes, locales, channels, currencies) {
                     var product = this.getFormData();
 
                     _.each(attributeCodes, function (attributeCode) {
@@ -178,14 +178,14 @@ define(
                         }
                     });
 
-                    this.extensions['attribute-group-selector'].setCurrent(
+                    this.getExtension('attribute-group-selector').setCurrent(
                         _.findWhere(attributes, {code: _.first(attributeCodes)}).group
                     );
 
                     this.setData(product);
 
                     mediator.trigger('pim_enrich:form:add-attribute:after');
-                }, this));
+                }.bind(this));
             },
             removeAttribute: function (event) {
                 if (!SecurityContext.isGranted('pim_enrich_product_remove_attribute')) {
@@ -198,8 +198,8 @@ define(
                 Dialog.confirm(
                     _.__('pim_enrich.confirmation.delete.product_attribute'),
                     _.__('pim_enrich.confirmation.delete_item'),
-                    _.bind(function () {
-                        FetcherRegistry.getFetcher('attribute').fetch(attributeCode).done(_.bind(function (attribute) {
+                    function () {
+                        FetcherRegistry.getFetcher('attribute').fetch(attributeCode).then(function (attribute) {
                             $.ajax({
                                 type: 'DELETE',
                                 url: Routing.generate(
@@ -210,7 +210,7 @@ define(
                                     }
                                 ),
                                 contentType: 'application/json'
-                            }).then(_.bind(function () {
+                            }).then(function () {
                                 this.triggerExtensions('add-attribute:update:available-attributes');
 
                                 delete product.values[attributeCode];
@@ -219,14 +219,16 @@ define(
                                 this.setData(product);
 
                                 mediator.trigger('pim_enrich:form:remove-attribute:after');
-                            }, this)).fail(function () {
+
+                                this.render();
+                            }.bind(this)).fail(function () {
                                 messenger.notificationFlashMessage(
                                     'error',
                                     _.__('pim_enrich.form.product.flash.attribute_deletion_error')
                                 );
                             });
-                        }, this));
-                    }, this)
+                        }.bind(this));
+                    }.bind(this)
                 );
             },
             setScope: function (scope, options) {
@@ -247,7 +249,7 @@ define(
             },
             showAttribute: function (event) {
                 AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
-                    .done(_.bind(function (attributeGroups) {
+                    .then(function (attributeGroups) {
                         mediator.trigger('pim_enrich:form:form-tabs:change', this.code);
 
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
@@ -269,8 +271,9 @@ define(
                             needRendering = true;
                         }
 
-                        if (attributeGroup !== this.extensions['attribute-group-selector'].getCurrent()) {
-                            this.extensions['attribute-group-selector'].setCurrent(attributeGroup);
+                        var attributeGroupSelector = this.getExtension('attribute-group-selector');
+                        if (attributeGroup !== attributeGroupSelector.getCurrent()) {
+                            attributeGroupSelector.setCurrent(attributeGroup);
                             needRendering = true;
                         }
 
@@ -279,7 +282,7 @@ define(
                         }
 
                         FieldManager.getFields()[event.attribute].setFocus();
-                    }, this));
+                    }.bind(this));
             },
             comparisonChange: function (open) {
                 this.$el[open ? 'addClass' : 'removeClass']('comparison-mode');

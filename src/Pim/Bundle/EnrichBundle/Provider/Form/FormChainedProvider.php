@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Provider\Field;
+namespace Pim\Bundle\EnrichBundle\Provider\Form;
 
 /**
- * Field provider registry
+ * Form chained provider
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FieldProviderRegistry implements FieldProviderInterface
+class FormChainedProvider implements FormProviderInterface
 {
     /** @var array */
     protected $providers = [];
@@ -17,15 +17,15 @@ class FieldProviderRegistry implements FieldProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getField($element)
+    public function getForm($element)
     {
         foreach ($this->providers as $provider) {
             if ($provider->supports($element)) {
-                return $provider->getField($element);
+                return $provider->getForm($element);
             }
         }
 
-        throw new \RuntimeException('No compatible Field provider found.');
+        throw new \RuntimeException('No compatible Form provider found.');
     }
 
     /**
@@ -43,11 +43,11 @@ class FieldProviderRegistry implements FieldProviderInterface
     }
 
     /**
-     * Add a provider to the registry
+     * Add a provider
      *
-     * @param FieldProviderInterface $provider
+     * @param FormProviderInterface $provider
      */
-    public function addProvider(FieldProviderInterface $provider)
+    public function addProvider(FormProviderInterface $provider)
     {
         $this->providers[] = $provider;
     }

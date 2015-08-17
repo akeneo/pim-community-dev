@@ -28,14 +28,14 @@ define([
         updateModel: function () {
             var prices = [];
             var inputs = this.$('.field-input:first .price-input input');
-            _.each(inputs, _.bind(function (input) {
+            _.each(inputs, function (input) {
                 var $input = $(input);
                 var inputData = $input.val();
                 prices.push({
                     data: '' === inputData ? null : inputData,
                     currency: $input.data('currency')
                 });
-            }, this));
+            }.bind(this));
 
             this.setCurrentValue(_.sortBy(prices, 'currency'));
         },

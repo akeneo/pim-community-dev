@@ -34,17 +34,17 @@ define([
             },
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments)
-                    .then(_.bind(function (templateContext) {
+                    .then(function (templateContext) {
                         templateContext.inUpload          = !this.isReady();
                         templateContext.mediaUrlGenerator = MediaUrlGenerator;
 
                         return templateContext;
-                    }, this));
+                    }.bind(this));
             },
 
             renderCopyInput: function (value) {
                 return this.getTemplateContext()
-                    .then(_.bind(function (context) {
+                    .then(function (context) {
                         var copyContext = $.extend(true, {}, context);
                         copyContext.value = value;
                         copyContext.context.locale    = value.locale;
@@ -53,7 +53,7 @@ define([
                         copyContext.mediaUrlGenerator = MediaUrlGenerator;
 
                         return this.renderInput(copyContext);
-                    }, this));
+                    }.bind(this));
             },
             updateModel: function () {
                 if (!this.isReady()) {
@@ -86,19 +86,19 @@ define([
                     contentType: false,
                     cache: false,
                     processData: false,
-                    xhr: _.bind(function () {
+                    xhr: function () {
                         var myXhr = $.ajaxSettings.xhr();
                         if (myXhr.upload) {
-                            myXhr.upload.addEventListener('progress', _.bind(this.handleProcess, this), false);
+                            myXhr.upload.addEventListener('progress', this.handleProcess.bind(this), false);
                         }
 
                         return myXhr;
-                    }, this)
+                    }.bind(this)
                 })
-                .done(_.bind(function (data) {
+                .done(function (data) {
                     this.setUploadContextValue(data);
                     this.render();
-                }, this))
+                }.bind(this))
                 .fail(function (xhr) {
                     var message = xhr.responseJSON && xhr.responseJSON.message ?
                         xhr.responseJSON.message :
@@ -106,11 +106,11 @@ define([
                     navigation.addFlashMessage('error', message);
                     navigation.afterRequest();
                 })
-                .always(_.bind(function () {
+                .always(function () {
                     this.$('> .media-field .progress').css({opacity: 0});
                     this.setReady(true);
                     this.uploadContext = {};
-                }, this));
+                }.bind(this));
             },
             clearField: function () {
                 this.setCurrentValue(this.attribute.empty_value);
@@ -128,7 +128,7 @@ define([
                 }
             },
             previewImage: function () {
-                var mediaUrl = MediaUrlGenerator.getMediaShowUrl(this.getCurrentValue().data, 'preview');
+                var mediaUrl = MediaUrlGenerator.getMediaShowUrl(this.getCurrentValue().data.filePath, 'preview');
                 if (mediaUrl) {
                     $.slimbox(mediaUrl, '', {overlayOpacity: 0.3});
                 }

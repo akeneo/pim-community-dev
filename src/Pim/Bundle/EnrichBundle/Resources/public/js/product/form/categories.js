@@ -48,7 +48,7 @@ define(
             },
 
             render: function () {
-                this.loadTrees().done(_.bind(function (trees) {
+                this.loadTrees().done(function (trees) {
                     var categoriesCount = {};
                     _.each(_.pluck(trees, 'id'), function (id) {
                         categoriesCount[id] = 0;
@@ -68,7 +68,7 @@ define(
                     this.delegateEvents();
                     this.state.set('currentTree', _.first(trees).code);
                     this.initCategoryCount(trees);
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -81,17 +81,17 @@ define(
             loadTrees: function () {
                 return $.getJSON(
                     Routing.generate('pim_enrich_product_category_rest_list', {id: this.getFormData().meta.id })
-                ).then(_.bind(function (data) {
-                    _.each(data.categories, _.bind(function (category) {
+                ).then(function (data) {
+                    _.each(data.categories, function (category) {
                         this.cache[category.id] = category;
-                    }, this));
+                    }.bind(this));
 
                     if (_.isEmpty(this.state.get('selectedCategories'))) {
                         this.state.set('selectedCategories', _.pluck(data.categories, 'id'));
                     }
 
                     return data.trees;
-                }, this));
+                }.bind(this));
             },
 
             changeTree: function (event) {
@@ -105,7 +105,7 @@ define(
 
                 this.updateCategoryCount(this.state.get('currentTree'));
 
-                var categoryCodes = _.map(selectedIds, _.bind(this.getCategoryCode, this));
+                var categoryCodes = _.map(selectedIds, this.getCategoryCode.bind(this));
                 this.getFormModel().set('categories', categoryCodes);
             },
 
@@ -115,16 +115,16 @@ define(
              * @param {Array} trees
              */
             initCategoryCount: function (trees) {
-                _.each(trees, _.bind(function (tree) {
+                _.each(trees, function (tree) {
                     var selectedCategories = [];
                     var hiddenSelection = this.$('#hidden-tree-input').val();
                     hiddenSelection = hiddenSelection.length > 0 ? hiddenSelection.split(',') : [];
-                    _.each(hiddenSelection, _.bind(function (categoryId) {
+                    _.each(hiddenSelection, function (categoryId) {
                         selectedCategories.push(this.cache[categoryId]);
-                    }, this));
+                    }.bind(this));
                     var categoryCount = _.where(selectedCategories, {rootId: tree.id}).length;
                     this.updateCategoryBadge(tree.code, categoryCount);
-                }, this));
+                }.bind(this));
             },
 
             /**

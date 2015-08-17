@@ -21,11 +21,11 @@ define(
         return BaseForm.extend({
             template: _.template(variantGroupTemplate),
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            addExtension: function (event) {
+            addFieldExtension: function (event) {
                 var product = this.getFormData();
                 if (!product.variant_group) {
                     return;
@@ -33,7 +33,7 @@ define(
 
                 event.promises.push(
                     FetcherRegistry.getFetcher('variant-group').fetch(product.variant_group)
-                        .then(_.bind(function (variantGroup) {
+                        .then(function (variantGroup) {
                             var field = event.field;
                             if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
                                 var $element = this.template({
@@ -43,7 +43,7 @@ define(
                                 field.setEditable(false);
                                 field.addElement('footer', 'updated_by', $element);
                             }
-                        }, this))
+                        }.bind(this))
                 );
 
                 return this;

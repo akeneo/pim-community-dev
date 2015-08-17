@@ -44,11 +44,14 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             cascade:
                 - persist
                 - detach
+                - remove
         requirements:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
             mappedBy: family
             cascade:
                 - persist
+                - detach
+                - remove
     manyToOne:
         attributeAsLabel:
             targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
