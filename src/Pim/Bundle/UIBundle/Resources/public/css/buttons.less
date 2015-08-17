@@ -266,6 +266,7 @@
     border-radius: 2px;
     background-color: #fff;
     border: solid 1px #cbcbd2;
+    font-size: 12px;
 
     &.filter-update {
       background-color: @color-new-green;
@@ -382,8 +383,9 @@
   padding: 0;
 
   .pull-left {
-    background-color: darken(@color-new-grey, 10%);
+    background-color: transparent;
     padding-left: 10px;
+    font-weight: bold;
   }
 
   .icon-caret-down {
@@ -397,3 +399,19 @@
     background-color: darken(@color-new-grey, 10%);
   }
 }
+
+.badge-enabled {
+  background-color: lighten(@color-new-green, 30%);
+
+  .status-enabled {
+    margin-top: -4px;
+    color: darken(@color-new-green, 20%);
+    text-shadow: none;
+    padding: 3px 10px 3px 5px;
+  }
+}
+
+.label-warning, .badge-warning {
+  background-color: @color-new-yellow;
+}
+

@@ -46,7 +46,7 @@ define(
                 Dialog.confirm(
                     _.__('confirmation.remove.product'),
                     _.__('pim_enrich.confirmation.delete_item'),
-                    _.bind(this.doDelete, this)
+                    this.doDelete.bind(this)
                 );
             },
             doDelete: function () {

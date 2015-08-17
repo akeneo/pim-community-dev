@@ -114,12 +114,15 @@ class MediaAttributeCopier extends AbstractAttributeCopier
                 $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
-            $filesystem = $this->mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+            $file = null;
+            if (null !== $fromValue->getMedia()) {
+                $filesystem = $this->mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
+                $rawFile    = $this->rawFileFetcher->fetch($filesystem, $fromValue->getMedia()->getKey());
+                $file       = $this->rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
 
-            $rawFile = $this->rawFileFetcher->fetch($filesystem, $fromValue->getMedia()->getKey());
-            $file = $this->rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false);
+                $file->setOriginalFilename($fromValue->getMedia()->getOriginalFilename());
+            }
 
-            $file->setOriginalFilename($fromValue->getMedia()->getOriginalFilename());
             $toValue->setMedia($file);
         }
     }

@@ -36,7 +36,7 @@ define(
                 if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
                     return;
                 }
-                createOption(this.attribute).done(_.bind(function (option) {
+                createOption(this.attribute).then(function (option) {
                     if (this.isEditable()) {
                         var value = this.getCurrentValue().data;
                         value.push(option.code);
@@ -44,13 +44,13 @@ define(
                     }
 
                     this.render();
-                }, this));
+                }.bind(this));
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
             postRender: function () {
-                this.getChoiceUrl().done(_.bind(function (choiceUrl) {
+                this.getChoiceUrl().then(function (choiceUrl) {
                     this.$('input.select-field').select2('destroy').select2({
                         ajax: {
                             url: choiceUrl,
@@ -63,7 +63,7 @@ define(
                             }
                         },
                         initSelection: function (element, callback) {
-                            $.ajax(choiceUrl).done(function (response) {
+                            $.ajax(choiceUrl).then(function (response) {
                                 var results = response.results;
                                 var choices = _.map($(element).val().split(','), function (choice) {
                                     return _.findWhere(results, {id: choice});
@@ -73,7 +73,7 @@ define(
                         },
                         multiple: true
                     });
-                }, this));
+                }.bind(this));
             },
             getChoiceUrl: function () {
                 return $.Deferred().resolve(

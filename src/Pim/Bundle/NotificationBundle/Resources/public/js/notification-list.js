@@ -1,6 +1,13 @@
 define(
-    ['backbone', 'jquery', 'underscore', 'routing', 'oro/navigation'],
-    function (Backbone, $, _, Routing, Navigation) {
+    [
+        'backbone',
+        'jquery',
+        'underscore',
+        'routing',
+        'oro/navigation',
+        'text!pim/template/notification/notification-list'
+    ],
+    function (Backbone, $, _, Routing, Navigation, template) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
@@ -25,19 +32,7 @@ define(
         var NotificationView = Backbone.View.extend({
             tagName: 'li',
             model: Notification,
-
-            template: _.template(
-                [
-                    '<a href="<%= url ? url : \'javascript: void(0);\' %>"<%= viewed ? \'\' : \'class="new"\' %>>',
-                        '<i><%= actionTypeMessage %></i>',
-                        '<i class="icon-<%= icon %>"></i>',
-                        '<%= message %>',
-                        '<i><%= createdAt %></i>',
-                        '<i class="icon-<%= viewed ? \'trash\' : \'eye-close\' %> action"></i>',
-                    '</a>'
-                ].join('')
-            ),
-
+            template: _.template(template),
             events: {
                 'click .icon-trash':     'remove',
                 'click .icon-eye-close': 'markAsRead',

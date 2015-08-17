@@ -41,7 +41,7 @@ define(
                 },
                 json_data: {
                     ajax: {
-                        url: _.bind(function (node) {
+                        url: function (node) {
                             var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
 
                             if ((!node || (node === -1)) && treeHasProduct) {
@@ -68,7 +68,7 @@ define(
                                     context: 'associate'
                                 }
                             );
-                        }, this),
+                        }.bind(this),
                         data: function (node) {
                             var data           = {};
                             var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
@@ -132,7 +132,7 @@ define(
                 var $tree = $('#tree-' + treeId);
                 $tree.jstree(self.config);
 
-                $tree.bind('check_node.jstree', _.bind(function (e, d) {
+                $tree.bind('check_node.jstree', function (e, d) {
                     if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
                         var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');
@@ -146,9 +146,9 @@ define(
                             $('#' + treeLinkId + ' i').removeClass('gray').addClass('green');
                         }
                     }
-                }, this));
+                }.bind(this));
 
-                $tree.bind('uncheck_node.jstree', _.bind(function (e, d) {
+                $tree.bind('uncheck_node.jstree', function (e, d) {
                     if (d.inst.get_checked()) {
                         var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');
@@ -161,7 +161,7 @@ define(
                             $('#' + treeLinkId + ' i').removeClass('green').addClass('gray');
                         }
                     }
-                }, this));
+                }.bind(this));
             };
 
             var setLocked = function () {

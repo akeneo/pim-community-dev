@@ -4,8 +4,6 @@
 
 ## BC breaks
 - Move `Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory` to `Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory`
-
-## BC breaks
 - Media classes `Pim\Bundle\CatalogBundle\Model\ProductMedia`, `Pim\Bundle\CatalogBundle\Model\AbstractProductMedia` and `Pim\Bundle\CatalogBundle\Model\ProductMediaInterface` have been removed
 - Media denormalizers `Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\MediaDenormalizer`, `Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MediaDenormalizer` have been removed
 - Media normalizers `Pim\Bundle\TransformBundle\Normalizer\Structured\MediaNormalizer`, `Pim\Bundle\TransformBundle\Normalizer\Flat\MediaNormalizer` have been removed
@@ -30,7 +28,7 @@
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ChannelSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
-
+- `updateAction` has been removed from the `Pim\Bundle\EnrichBundle\Controller\ProductController`
 
 # 1.4.0-BETA1 (2015-07-31)
 
