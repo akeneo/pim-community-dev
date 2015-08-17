@@ -76,7 +76,7 @@ class FixturesContext extends RawMinkContext
         'Category'        => 'PimCatalogBundle:Category',
         'AssociationType' => 'PimCatalogBundle:AssociationType',
         'JobInstance'     => 'AkeneoBatchBundle:JobInstance',
-        'User'            => 'OroUserBundle:User',
+        'User'            => 'PimUserBundle:User',
         'Role'            => 'OroUserBundle:Role',
         'UserGroup'       => 'OroUserBundle:Group',
         'Locale'          => 'PimCatalogBundle:Locale',
@@ -1446,7 +1446,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $username
      *
-     * @return \Oro\Bundle\UserBundle\Entity\User
+     * @return \Pim\Bundle\UserBundle\Entity\User
      *
      * @Then /^there should be a "([^"]*)" user$/
      */

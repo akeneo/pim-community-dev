@@ -4,7 +4,7 @@ namespace Pim\Bundle\UserBundle\Entity\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\Repository\RoleRepository as BaseRoleRepository;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * Role repository

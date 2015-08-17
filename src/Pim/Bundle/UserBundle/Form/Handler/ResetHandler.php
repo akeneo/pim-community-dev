@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Form\Handler\ResetHandler as OroResetHandler;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
  * Overridden ResetHandler in order to manage the reset password

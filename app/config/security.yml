@@ -13,7 +13,7 @@ security:
             id:                             oro_user.security.provider
 
     encoders:
-        Oro\Bundle\UserBundle\Entity\User: sha512
+        Pim\Bundle\UserBundle\Entity\User: sha512
         Symfony\Component\Security\Core\User\User: plaintext
 
     firewalls:
