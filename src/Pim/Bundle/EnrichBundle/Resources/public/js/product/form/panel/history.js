@@ -33,75 +33,89 @@ define(
                 'click .collapse-history': 'collapseHistory',
                 'click .expanded>tbody>tr:not(.changeset)': 'toggleVersion'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('panel:register', {
                     code: this.code,
                     label: _.__('pim_enrich.form.product.panel.history.title')
                 });
 
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.refreshHistory);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.update);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (this.code !== this.getParent().state.get('currentPanel')) {
                     return this;
                 }
 
-                if (0 === this.versions.length) {
-                    this.refreshHistory();
-
-                    return this;
-                }
-
                 if (this.getFormData().meta) {
-                    this.$el.html(
-                        this.template({
-                            versions: this.versions,
-                            expanded: this.getParent().getParent().state.get('fullPanel'),
-                            hasAction: this.actions
-                        })
-                    );
+                    this.getVersions()
+                        .then(function (versions) {
+                            this.$el.html(
+                                this.template({
+                                    versions: versions,
+                                    expanded: this.getParent().getParent().isFullPanel(),
+                                    hasAction: this.actions
+                                })
+                            );
 
-                    if (this.getParent().getParent().state.get('fullPanel') && this.actions) {
-                        _.each(this.$el.find('td.actions'), function (element) {
-                            _.each(this.actions, function (action) {
-                                $(element).append(action.clone(true));
-                            }.bind(this));
+                            if (this.getParent().getParent().isFullPanel() && this.actions) {
+                                _.each(this.$el.find('td.actions'), function (element) {
+                                    _.each(this.actions, function (action) {
+                                        $(element).append(action.clone(true));
+                                    }.bind(this));
+                                }.bind(this));
+                            }
+
+                            this.delegateEvents();
+                            this.renderExtensions();
+                            this.getParent().resize();
+
+                            this.delegateEvents();
                         }.bind(this));
-                    }
 
-                    this.delegateEvents();
-                    this.renderExtensions();
-                    this.getParent().resize();
                 }
 
                 return this;
             },
-            refreshHistory: function () {
-                if (this.loading) {
-                    return;
+
+            /**
+             * Update the history by fetching it from the backend
+             */
+            update: function () {
+                if (this.getFormData().meta) {
+                    FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id);
                 }
 
-                this.loading = true;
-                if (this.getFormData().meta) {
-                    $.getJSON(
-                        Routing.generate(
-                            'pim_enrich_product_history_rest_get',
-                            {
-                                entityId: this.getFormData().meta.id
-                            }
-                        )
-                    ).done(function (versions) {
-                        this.prepareVersions(versions).done(function (versions) {
-                            this.versions = versions;
-                            this.render();
-                            this.loading = false;
-                        }.bind(this));
-                    }.bind(this));
-                }
+                this.render();
             },
-            prepareVersions: function (versions) {
+
+            /**
+             * Get history versions from the backend
+             *
+             * @return {Promise}
+             */
+            getVersions: function () {
+                return FetcherRegistry.getFetcher('product-history').fetch(
+                    this.getFormData().meta.id,
+                    {entityId: this.getFormData().meta.id}
+                ).then(this.addAttributesLabelToVersions.bind(this));
+            },
+
+            /**
+             * Add attributes label to all versions
+             *
+             * @param {Array} versions
+             */
+            addAttributesLabelToVersions: function (versions) {
                 return FetcherRegistry.getFetcher('attribute').fetchAll().then(function (attributes) {
                     _.each(versions, function (version) {
                         _.each(version.changeset, function (data, index) {
@@ -114,6 +128,15 @@ define(
                     return versions;
                 }.bind(this));
             },
+
+            /**
+             * Get attribute label
+             *
+             * @param {object} attribute
+             * @param {string} key
+             *
+             * @return {string}
+             */
             getAttributeLabel: function (attribute, key) {
                 var uiLocale = UserContext.get('catalogLocale');
                 var label    = i18n.getLabel(attribute.label, uiLocale, attribute.code);
@@ -137,17 +160,38 @@ define(
 
                 return label + info;
             },
+
+            /**
+             * Add action to the history
+             *
+             * @param {action code} code
+             * @param {DOMElement}  element
+             */
             addAction: function (code, element) {
                 this.actions[code] = element;
             },
+
+            /**
+             * Expand the history
+             */
             expandHistory: function () {
                 this.getParent().openFullPanel();
                 this.render();
             },
+
+            /**
+             * Collapse history
+             */
             collapseHistory: function () {
                 this.getParent().closeFullPanel();
                 this.render();
             },
+
+            /**
+             * Toggle history version line
+             *
+             * @param {Event} event
+             */
             toggleVersion: function (event) {
                 var $row = $(event.currentTarget);
                 var $body = $row.parent();

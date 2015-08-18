@@ -79,6 +79,11 @@ config:
                     options:
                         urls:
                             list: pim_enrich_mass_edit_action_sequential_edit_get
+                product-history:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_product_history_rest_get
 
     paths:
         jquery.wizard:                      pimenrich/js/jquery.wizard
