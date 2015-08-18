@@ -23,5 +23,5 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.remover.base_options_resolver'
-            - %pimee_product_asset.model.asset.class%
             - '@event_dispatcher'
+            - %pimee_product_asset.model.asset.class%

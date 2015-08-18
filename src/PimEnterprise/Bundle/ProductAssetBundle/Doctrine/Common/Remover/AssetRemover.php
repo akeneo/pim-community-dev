@@ -21,8 +21,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * Asset remover extends BaseRemover in the goal to dispatch event before and after removal
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
- *
- * TODO: missing spec
  */
 class AssetRemover extends BaseRemover
 {
@@ -32,14 +30,14 @@ class AssetRemover extends BaseRemover
     /**
      * @param ObjectManager                    $objectManager
      * @param RemovingOptionsResolverInterface $optionsResolver
-     * @param string                           $removedClass
      * @param EventDispatcherInterface         $eventDispatcher
+     * @param string                           $removedClass
      */
     public function __construct(
         ObjectManager $objectManager,
         RemovingOptionsResolverInterface $optionsResolver,
-        $removedClass,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        $removedClass
     ) {
         parent::__construct($objectManager, $optionsResolver, $eventDispatcher, $removedClass);
 
