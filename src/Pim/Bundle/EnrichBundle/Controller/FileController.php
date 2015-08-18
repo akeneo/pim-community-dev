@@ -2,12 +2,16 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\MountManager;
 use Liip\ImagineBundle\Controller\ImagineController;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Liip\ImagineBundle\Model\Binary;
+use Pim\Bundle\EnrichBundle\File\DefaultImageProviderInterface;
+use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
+use Pim\Bundle\EnrichBundle\File\FileTypes;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,48 +24,48 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class FileController extends Controller
 {
-    const DEFAULT_IMAGE_KEY = '__default__';
+    const DEFAULT_IMAGE_KEY = '__default__image__';
 
     /** @var ImagineController */
     protected $imagineController;
 
-    /** @var CacheManager */
-    protected $cacheManager;
-
-    /** @var FilterManager */
-    protected $filterManager;
-
     /** @var MountManager */
     protected $mountManager;
 
-    /** @var string */
+    /** @var FileRepositoryInterface */
+    protected $fileRepository;
+
+    /** @var FileTypeGuesserInterface */
+    protected $fileTypeGuesser;
+
+    /** @var DefaultImageProviderInterface */
+    protected $defaultImageProvider;
+
+    /** @var array */
     protected $filesystemAliases;
 
-    /** @var string */
-    protected $defaultImagePath;
-
     /**
-     * @param ImagineController $imagineController
-     * @param CacheManager      $cacheManager
-     * @param FilterManager     $filterManager
-     * @param MountManager      $mountManager
-     * @param array             $filesystemAliases
-     * @param string            $defaultImagePath
+     * @param ImagineController             $imagineController
+     * @param MountManager                  $mountManager
+     * @param FileRepositoryInterface       $fileRepository
+     * @param FileTypeGuesserInterface      $fileTypeGuesser
+     * @param DefaultImageProviderInterface $defaultImageProvider
+     * @param array                         $filesystemAliases
      */
     public function __construct(
         ImagineController $imagineController,
-        CacheManager $cacheManager,
-        FilterManager $filterManager,
         MountManager $mountManager,
-        array $filesystemAliases,
-        $defaultImagePath
+        FileRepositoryInterface $fileRepository,
+        FileTypeGuesserInterface $fileTypeGuesser,
+        DefaultImageProviderInterface $defaultImageProvider,
+        array $filesystemAliases
     ) {
-        $this->imagineController = $imagineController;
-        $this->cacheManager      = $cacheManager;
-        $this->filterManager     = $filterManager;
-        $this->mountManager      = $mountManager;
-        $this->filesystemAliases = $filesystemAliases;
-        $this->defaultImagePath  = $defaultImagePath;
+        $this->imagineController    = $imagineController;
+        $this->mountManager         = $mountManager;
+        $this->fileRepository       = $fileRepository;
+        $this->fileTypeGuesser      = $fileTypeGuesser;
+        $this->defaultImageProvider = $defaultImageProvider;
+        $this->filesystemAliases    = $filesystemAliases;
     }
 
     /**
@@ -76,13 +80,20 @@ class FileController extends Controller
         $filename = urldecode($filename);
 
         if (self::DEFAULT_IMAGE_KEY === $filename) {
-            return $this->renderDefaultImage($filter);
+            return $this->renderDefaultImage(FileTypes::UNKNOWN, $filter);
+        }
+
+        $file = $this->fileRepository->findOneByIdentifier($filename);
+        if (null !== $file &&
+            FileTypes::IMAGE !== $fileType = $this->fileTypeGuesser->guess($file->getMimeType())
+        ) {
+            return $this->renderDefaultImage($fileType, $filter);
         }
 
         try {
             return $this->imagineController->filterAction($request, $filename, $filter);
         } catch (NotFoundHttpException $e) {
-            return $this->renderDefaultImage($filter);
+            return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
         }
     }
 
@@ -112,22 +123,15 @@ class FileController extends Controller
     }
 
     /**
+     * @param string $fileType
      * @param string $filter
      *
      * @return RedirectResponse
      */
-    protected function renderDefaultImage($filter)
+    protected function renderDefaultImage($fileType, $filter)
     {
-        if (!$this->cacheManager->isStored(self::DEFAULT_IMAGE_KEY, $filter)) {
-            $binary = new Binary(file_get_contents($this->defaultImagePath), 'image/png', 'png');
+        $imageUrl = $this->defaultImageProvider->getImageUrl($fileType, $filter);
 
-            $this->cacheManager->store(
-                $this->filterManager->applyFilter($binary, $filter),
-                self::DEFAULT_IMAGE_KEY,
-                $filter
-            );
-        }
-
-        return new RedirectResponse($this->cacheManager->resolve(self::DEFAULT_IMAGE_KEY, $filter), 301);
+        return new RedirectResponse($imageUrl, 301);
     }
 }
