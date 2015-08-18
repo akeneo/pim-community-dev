@@ -4,7 +4,7 @@ namespace Oro\Bundle\NavigationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * Page state entity
@@ -25,9 +25,9 @@ class PageState
     protected $id;
 
     /**
-     * @var User $user
+     * @var UserInterface $user
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\UserBundle\Entity\UserInterface")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $user;
@@ -89,10 +89,10 @@ class PageState
     /**
      * Set user
      *
-     * @param  User      $user
+     * @param  UserInterface $user
      * @return PageState
      */
-    public function setUser(User $user = null)
+    public function setUser(UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -102,7 +102,7 @@ class PageState
     /**
      * Get user
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {

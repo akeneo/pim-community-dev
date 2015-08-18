@@ -42,7 +42,7 @@ class HistoryItemBuilderTest extends \PHPUnit_Framework_TestCase
         $itemBuilder = $this->builder;
 
         //$user = $this->tokenStorage->getToken()->getUser();
-        $user = $this->getMock('\Pim\Bundle\UserBundle\Entity\User');
+        $user = $this->getMock('\Pim\Bundle\UserBundle\Entity\UserInterface');
         $params = array(
             'title' => 'kldfjs;jasf',
             'url' => 'some url',
@@ -55,7 +55,7 @@ class HistoryItemBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($params['title'], $item->getTitle());
         $this->assertEquals($params['url'], $item->getUrl());
         $this->assertEquals($user, $item->getUser());
-        $this->assertInstanceOf('\Pim\Bundle\UserBundle\Entity\User', $item->getUser());
+        $this->assertInstanceOf('\Pim\Bundle\UserBundle\Entity\UserInterface', $item->getUser());
     }
 
     public function testFindItem()

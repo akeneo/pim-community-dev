@@ -17,7 +17,7 @@ interface NavigationItemInterface
     /**
      * Get user
      *
-     * @return \Pim\Bundle\UserBundle\Entity\User
+     * @return \Pim\Bundle\UserBundle\Entity\UserInterface
      */
     public function getUser();
 

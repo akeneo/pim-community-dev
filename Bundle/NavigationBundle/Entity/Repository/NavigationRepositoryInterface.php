@@ -10,9 +10,9 @@ interface NavigationRepositoryInterface
     /**
      * Find all navigation items for specified user
      *
-     * @param \Pim\Bundle\UserBundle\Entity\User $user
-     * @param string                             $type
-     * @param array                              $options
+     * @param \Pim\Bundle\UserBundle\Entity\UserInterface $user
+     * @param string                                      $type
+     * @param array                                       $options
      *
      * @return array
      */

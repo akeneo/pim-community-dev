@@ -9,7 +9,7 @@ use Oro\Bundle\UserBundle\Security\UserProvider;
 
 class UserProviderTest extends \PHPUnit_Framework_TestCase
 {
-    const USER_CLASS = 'Pim\Bundle\UserBundle\Entity\User';
+    const USER_CLASS = 'Pim\Bundle\UserBundle\Entity\UserInterface';
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -72,7 +72,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testRefreshUserBy()
     {
-        $user = $this->getMockBuilder('Pim\Bundle\UserBundle\Entity\User')
+        $user = $this->getMockBuilder('Pim\Bundle\UserBundle\Entity\UserInterface')
             ->setMethods(array('getId'))
             ->getMock();
 
@@ -80,7 +80,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             ->method('getId')
             ->will($this->returnValue(123));
 
-        $refreshedUser = $this->getMock('Pim\Bundle\UserBundle\Entity\User');
+        $refreshedUser = $this->getMock('Pim\Bundle\UserBundle\Entity\UserInterface');
 
         $this->userManager
             ->expects($this->once())
@@ -96,7 +96,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRefreshDeleted()
     {
-        $user = $this->getMock('Pim\Bundle\UserBundle\Entity\User');
+        $user = $this->getMock('Pim\Bundle\UserBundle\Entity\UserInterface');
 
         $this->userManager
             ->expects($this->once())

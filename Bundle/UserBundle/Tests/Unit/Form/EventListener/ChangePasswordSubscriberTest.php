@@ -82,7 +82,7 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
             ->will($this->returnValue($formPlainPassword));
 
         $currentUser = $userMock = $this
-            ->getMockBuilder('Pim\Bundle\UserBundle\Entity\User')
+            ->getMockBuilder('Pim\Bundle\UserBundle\Entity\UserInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -180,7 +180,7 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
         $reflection->setAccessible(true);
 
         $userMock = $this
-            ->getMockBuilder('Pim\Bundle\UserBundle\Entity\User')
+            ->getMockBuilder('Pim\Bundle\UserBundle\Entity\UserInterface')
             ->disableOriginalConstructor()
             ->getMock();
 

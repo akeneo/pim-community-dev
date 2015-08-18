@@ -14,6 +14,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\UserBundle\Form\Type\EmailType;
 
 class UserType extends AbstractType
@@ -117,7 +118,7 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class'           => 'Pim\Bundle\UserBundle\Entity\User',
+                'data_class'           => 'Pim\Bundle\UserBundle\Entity\UserInterface',
                 'intention'            => 'user',
                 'validation_groups'    => function ($form) {
                     if ($form instanceof FormInterface) {

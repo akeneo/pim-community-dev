@@ -4,6 +4,7 @@ namespace Oro\Bundle\UserBundle\Tests\Entity;
 
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class UserApiTest extends \PHPUnit_Framework_TestCase
 {

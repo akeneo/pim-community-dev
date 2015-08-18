@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class UserSubscriber implements EventSubscriberInterface
 {
@@ -47,7 +47,7 @@ class UserSubscriber implements EventSubscriberInterface
 
     public function preSetData(FormEvent $event)
     {
-        /* @var $entity User */
+        /* @var $entity UserInterface */
         $entity = $event->getData();
         $form   = $event->getForm();
 
@@ -85,10 +85,10 @@ class UserSubscriber implements EventSubscriberInterface
     /**
      * Returns true if passed user is currently authenticated
      *
-     * @param  User $user
+     * @param  UserInterface $user
      * @return bool
      */
-    protected function isCurrentUser(User $user)
+    protected function isCurrentUser(UserInterface $user)
     {
         $token = $this->tokenStorage->getToken();
         $currentUser = $token ? $token->getUser() : null;

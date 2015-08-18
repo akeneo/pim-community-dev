@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -47,7 +47,7 @@ class UserManager implements UserProviderInterface
     /**
      * Returns an empty user instance
      *
-     * @return User
+     * @return SecurityUserInterface
      */
     public function createUser()
     {
@@ -59,11 +59,11 @@ class UserManager implements UserProviderInterface
     /**
      * Updates a user
      *
-     * @param  User              $user
-     * @param  bool              $flush Whether to flush the changes (default true)
+     * @param  SecurityUserInterface $user
+     * @param  bool                  $flush Whether to flush the changes (default true)
      * @throws \RuntimeException
      */
-    public function updateUser(User $user, $flush = true)
+    public function updateUser(SecurityUserInterface $user, $flush = true)
     {
         $this->updatePassword($user);
 
@@ -89,9 +89,9 @@ class UserManager implements UserProviderInterface
     /**
      * Updates a user password if a plain password is set
      *
-     * @param User $user
+     * @param UserInterface $user
      */
-    public function updatePassword(User $user)
+    public function updatePassword(UserInterface $user)
     {
         if (0 !== strlen($password = $user->getPlainPassword())) {
             $encoder = $this->getEncoder($user);
@@ -104,9 +104,9 @@ class UserManager implements UserProviderInterface
     /**
      * Deletes a user
      *
-     * @param User $user
+     * @param SecurityUserInterface $user
      */
-    public function deleteUser(User $user)
+    public function deleteUser(SecurityUserInterface $user)
     {
         $this->getStorageManager()->remove($user);
         $this->getStorageManager()->flush();
@@ -116,7 +116,7 @@ class UserManager implements UserProviderInterface
      * Finds one user by the given criteria
      *
      * @param  array $criteria
-     * @return User
+     * @return SecurityUserInterface
      */
     public function findUserBy(array $criteria)
     {
@@ -137,7 +137,7 @@ class UserManager implements UserProviderInterface
      * Finds a user by email
      *
      * @param  string $email
-     * @return User
+     * @return SecurityUserInterface
      */
     public function findUserByEmail($email)
     {
@@ -148,7 +148,7 @@ class UserManager implements UserProviderInterface
      * Finds a user by username
      *
      * @param  string $username
-     * @return User
+     * @return SecurityUserInterface
      */
     public function findUserByUsername($username)
     {
@@ -159,7 +159,7 @@ class UserManager implements UserProviderInterface
      * Finds a user either by email, or username
      *
      * @param  string $usernameOrEmail
-     * @return User
+     * @return SecurityUserInterface
      */
     public function findUserByUsernameOrEmail($usernameOrEmail)
     {
@@ -174,7 +174,7 @@ class UserManager implements UserProviderInterface
      * Finds a user either by confirmation token
      *
      * @param  string $token
-     * @return User
+     * @return SecurityUserInterface
      */
     public function findUserByConfirmationToken($token)
     {
@@ -184,9 +184,9 @@ class UserManager implements UserProviderInterface
     /**
      * Reloads a user
      *
-     * @param User $user
+     * @param SecurityUserInterface $user
      */
-    public function reloadUser(User $user)
+    public function reloadUser(SecurityUserInterface $user)
     {
         $this->getStorageManager()->refresh($user);
     }
@@ -198,7 +198,7 @@ class UserManager implements UserProviderInterface
      * all ACL checks.
      *
      * @param  SecurityUserInterface    $user
-     * @return User
+     * @return SecurityUserInterface
      * @throws UnsupportedUserException if a User Instance is given which is not managed by this UserManager
      *                                  (so another Manager could try managing it)
      * @throws UsernameNotFoundException if user could not be reloaded
@@ -211,9 +211,9 @@ class UserManager implements UserProviderInterface
             throw new UnsupportedUserException('Account is not supported');
         }
 
-        if (!$user instanceof User) {
+        if (!$user instanceof SecurityUserInterface) {
             throw new UnsupportedUserException(
-                sprintf('Expected an instance of Pim\Bundle\UserBundle\Entity\User, but got "%s"', get_class($user))
+                sprintf('Expected an instance of Pim\Bundle\UserBundle\Entity\UserInterface, but got "%s"', get_class($user))
             );
         }
 
@@ -232,7 +232,7 @@ class UserManager implements UserProviderInterface
      * all ACL checks.
      *
      * @param  string                    $username
-     * @return User
+     * @return SecurityUserInterface
      * @throws UsernameNotFoundException if user not found
      */
     public function loadUserByUsername($username)
@@ -264,7 +264,7 @@ class UserManager implements UserProviderInterface
         return $class === $this->getClass();
     }
 
-    protected function getEncoder(User $user)
+    protected function getEncoder(UserInterface $user)
     {
         return $this->encoderFactory->getEncoder($user);
     }

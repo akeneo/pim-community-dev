@@ -2,14 +2,14 @@
 
 namespace Oro\Bundle\UserBundle\Form\Handler;
 
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class UserHandler extends AbstractUserHandler
 {
     /**
      * {@inheritdoc}
      */
-    public function process(User $user)
+    public function process(UserInterface $user)
     {
         $this->form->setData($user);
 
@@ -26,7 +26,7 @@ class UserHandler extends AbstractUserHandler
         return false;
     }
 
-    protected function onSuccess(User $user)
+    protected function onSuccess(UserInterface $user)
     {
         $this->manager->updateUser($user);
 

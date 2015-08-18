@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class ChangePasswordSubscriber extends UserSubscriber
 {
@@ -58,7 +58,7 @@ class ChangePasswordSubscriber extends UserSubscriber
     public function onSubmit(FormEvent $event)
     {
         $form = $event->getForm();
-        /** @var User $user */
+        /** @var UserInterface $user */
         $user = $form->getParent()->getData();
         $plainPassword = $form->get('plainPassword');
 

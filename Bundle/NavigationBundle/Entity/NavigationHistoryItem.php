@@ -28,9 +28,9 @@ class NavigationHistoryItem implements NavigationItemInterface
     protected $id;
 
     /**
-     * @var \Pim\Bundle\UserBundle\Entity\User $user
+     * @var \Pim\Bundle\UserBundle\Entity\UserInterface $user
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\UserBundle\Entity\UserInterface")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     protected $user;
@@ -178,10 +178,10 @@ class NavigationHistoryItem implements NavigationItemInterface
     /**
      * Set user
      *
-     * @param  \Pim\Bundle\UserBundle\Entity\User $user
+     * @param  \Pim\Bundle\UserBundle\Entity\UserInterface $user
      * @return NavigationHistoryItem
      */
-    public function setUser(\Pim\Bundle\UserBundle\Entity\User $user = null)
+    public function setUser(\Pim\Bundle\UserBundle\Entity\UserInterface $user = null)
     {
         $this->user = $user;
 
@@ -191,7 +191,7 @@ class NavigationHistoryItem implements NavigationItemInterface
     /**
      * Get user
      *
-     * @return \Pim\Bundle\UserBundle\Entity\User
+     * @return \Pim\Bundle\UserBundle\Entity\UserInterface
      */
     public function getUser()
     {

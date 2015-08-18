@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\UserBundle\Entity\Role;
 
 /**
@@ -71,9 +71,9 @@ class RoleHandler
     /**
      * "Success" form handler
      *
-     * @param Role   $entity
-     * @param User[] $appendUsers
-     * @param User[] $removeUsers
+     * @param Role            $entity
+     * @param UserInterface[] $appendUsers
+     * @param UserInterface[] $removeUsers
      */
     protected function onSuccess(Role $entity, array $appendUsers, array $removeUsers)
     {
@@ -86,12 +86,12 @@ class RoleHandler
     /**
      * Append users to role
      *
-     * @param Role   $role
-     * @param User[] $users
+     * @param Role            $role
+     * @param UserInterface[] $users
      */
     protected function appendUsers(Role $role, array $users)
     {
-        /** @var $user User */
+        /** @var $user UserInterface */
         foreach ($users as $user) {
             $user->addRole($role);
             $this->manager->persist($user);
@@ -101,12 +101,12 @@ class RoleHandler
     /**
      * Remove users from role
      *
-     * @param Role   $role
-     * @param User[] $users
+     * @param Role           $role
+     * @param UserInterface[] $users
      */
     protected function removeUsers(Role $role, array $users)
     {
-        /** @var $user User */
+        /** @var $user UserInterface */
         foreach ($users as $user) {
             $user->removeRole($role);
             $this->manager->persist($user);

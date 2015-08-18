@@ -3,7 +3,7 @@ namespace Oro\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 class ResetController extends Controller
@@ -132,11 +132,11 @@ class ResetController extends Controller
      * Get the truncated email displayed when requesting the resetting.
      * The default implementation only keeps the part following @ in the address.
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return string
      */
-    protected function getObfuscatedEmail(User $user)
+    protected function getObfuscatedEmail(UserInterface $user)
     {
         $email = $user->getEmail();
 

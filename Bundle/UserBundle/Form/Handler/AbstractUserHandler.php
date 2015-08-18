@@ -5,7 +5,7 @@ namespace Oro\Bundle\UserBundle\Form\Handler;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 
 abstract class AbstractUserHandler
@@ -41,10 +41,10 @@ abstract class AbstractUserHandler
     /**
      * Process form
      *
-     * @param  User $user
+     * @param  UserInterface $user
      * @return bool True on successfull processing, false otherwise
      */
-    public function process(User $user)
+    public function process(UserInterface $user)
     {
         $this->form->setData($user);
 
@@ -64,7 +64,7 @@ abstract class AbstractUserHandler
     /**
      * "Success" form handler
      *
-     * @param User $user
+     * @param UserInterface $user
      */
-    abstract protected function onSuccess(User $user);
+    abstract protected function onSuccess(UserInterface $user);
 }

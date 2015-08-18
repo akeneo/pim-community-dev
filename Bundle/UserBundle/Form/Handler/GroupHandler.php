@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 
 class GroupHandler
@@ -67,9 +67,9 @@ class GroupHandler
     /**
      * "Success" form handler
      *
-     * @param Group  $entity
-     * @param User[] $appendUsers
-     * @param User[] $removeUsers
+     * @param Group           $entity
+     * @param UserInterface[] $appendUsers
+     * @param UserInterface[] $removeUsers
      */
     protected function onSuccess(Group $entity, array $appendUsers, array $removeUsers)
     {
@@ -82,12 +82,12 @@ class GroupHandler
     /**
      * Append users to group
      *
-     * @param Group  $group
-     * @param User[] $users
+     * @param Group           $group
+     * @param UserInterface[] $users
      */
     protected function appendUsers(Group $group, array $users)
     {
-        /** @var $user User */
+        /** @var $user UserInterface */
         foreach ($users as $user) {
             $user->addGroup($group);
             $this->manager->persist($user);
@@ -97,12 +97,12 @@ class GroupHandler
     /**
      * Remove users from group
      *
-     * @param Group  $group
-     * @param User[] $users
+     * @param Group          $group
+     * @param UserInterface[] $users
      */
     protected function removeUsers(Group $group, array $users)
     {
-        /** @var $user User */
+        /** @var $user UserInterface */
         foreach ($users as $user) {
             $user->removeGroup($group);
             $this->manager->persist($user);
