@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\UIBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
-use Pim\Bundle\UIBundle\Entity\Repository\SearchableRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

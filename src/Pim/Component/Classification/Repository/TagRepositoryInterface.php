@@ -3,9 +3,8 @@
 namespace Pim\Component\Classification\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-// TODO: depends on UIBundle sounds weird!!
-use Pim\Bundle\UIBundle\Entity\Repository\SearchableRepositoryInterface;
 
 /**
  * Tag repository interface
