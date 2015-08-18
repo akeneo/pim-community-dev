@@ -3,6 +3,7 @@
 namespace PimEnterprise\Component\ProductAsset;
 
 /**
+ * TODO
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  */
 class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess

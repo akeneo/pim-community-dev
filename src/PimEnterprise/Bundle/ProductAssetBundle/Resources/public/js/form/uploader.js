@@ -3,12 +3,10 @@ define(
     function ($, _, Backbone, __) {
         'use strict';
 
-        var filePrompt = '<img src="/bundles/pimui/images/upload.png" alt="upload icon"><span><%= message %></span>';
-        var fileInfo   = '<span><%= message %>&nbsp;<i class="icon icon-trash"></i></span>';
-
         return Backbone.View.extend({
             el: '.asset-uploader',
-
+            filePrompt: _.template('<img src="/bundles/pimui/images/upload.png" alt="upload icon"><span><%= message %></span>'),
+            fileInfo: _.template('<span><%= message %>&nbsp;<i class="icon icon-trash"></i></span>'),
             events: {
                 'change input[type=file]': 'onFileChanged',
                 'click .icon-trash': 'resetFile'
@@ -26,7 +24,8 @@ define(
 
             /**
              * Change uploader view when changed
-             * @param event
+             *
+             * @param {JQuery} file
              */
             setFileInformations: function (file) {
                 var $inputContainer = this.getUploaderContainer(file);
@@ -34,10 +33,10 @@ define(
                 if (file.value) {
                     var basename = this.basename(file.value);
                     $label.empty();
-                    $label.append(_.template(fileInfo, {message: basename}));
+                    $label.append(this.fileInfo({message: basename}));
                 } else {
                     $label.empty();
-                    $label.append(_.template(filePrompt, {message: __('pim_enrich.entity.product.media.upload')}));
+                    $label.append(this.filePrompt({message: __('pim_enrich.entity.product.media.upload')}));
                 }
             },
 

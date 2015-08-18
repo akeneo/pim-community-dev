@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Asset type
@@ -24,11 +25,16 @@ class AssetType extends AbstractType
     /** @var string */
     protected $tagClass;
 
+    /** @var string */
+    protected $entityClass;
+
     /**
-     * @params string $tagClass
+     * @param string $entityClass
+     * @param string $tagClass
      */
-    public function __construct($tagClass)
+    public function __construct($entityClass, $tagClass)
     {
+        $this->entityClass = $entityClass;
         $this->tagClass = $tagClass;
     }
 
@@ -50,6 +56,16 @@ class AssetType extends AbstractType
         );
         $builder->add('endOfUseAt', 'oro_date', ['required' => false]);
         $builder->add('references', 'collection', ['type' => 'pimee_product_asset_reference']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => $this->entityClass,
+        ]);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\Asset;
 
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
+use Pim\Bundle\EnrichBundle\Controller\FileController;
 
 /**
  * Thumbnail property for an asset
@@ -16,7 +17,7 @@ class ThumbnailProperty extends TwigProperty
      *
      * Here we'll receive all references for the asset. We need to take the first reference who have a valid file.
      * In case no reference or no valid file is found, we give a path that will be interpreted as the default image
-     * by the MediaController.
+     * by the FileController.
      */
     protected function convertValue($value)
     {
@@ -26,6 +27,6 @@ class ThumbnailProperty extends TwigProperty
             }
         }
 
-        return $this->getTemplate()->render(['path' => 'default']);
+        return $this->getTemplate()->render(['path' => FileController::DEFAULT_IMAGE_KEY]);
     }
 }

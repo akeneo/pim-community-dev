@@ -13,10 +13,13 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Form type for asset creation
- *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class CreateAssetType extends AbstractType
@@ -30,12 +33,28 @@ class CreateAssetType extends AbstractType
             'isLocalized',
             'switch',
             [
-                'mapped' => false,
-                'label'  => 'pimee_product_asset.popin.create.is_localized'
+                'mapped'      => false,
+                'label'       => 'pimee_product_asset.popin.create.is_localized',
+                'constraints' => [ new Type(['type' => 'bool']) ],
             ]
         );
         $builder->add('reference_file', 'akeneo_file_storage_file');
-        $builder->add('code', 'text', ['required' => true]);
+        $builder->add(
+            'code',
+            'text',
+            [
+                'required'    => true,
+                'constraints' => [
+                    new NotBlank(),
+                    new Regex(
+                        [
+                            'pattern' => '/^[a-zA-Z0-9_]+$/',
+                            'message' => 'Asset code may contain only letters, numbers and underscores.'
+                        ]
+                    )
+                ],
+            ]
+        );
     }
 
     /**
@@ -44,5 +63,17 @@ class CreateAssetType extends AbstractType
     public function getName()
     {
         return 'pimee_product_asset_create';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'validation_groups' => ['upload'],
+            ]
+        );
     }
 }

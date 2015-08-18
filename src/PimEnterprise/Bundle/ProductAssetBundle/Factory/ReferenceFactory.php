@@ -17,6 +17,7 @@ use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**
  * Reference factory
+ * *TODO: component
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */

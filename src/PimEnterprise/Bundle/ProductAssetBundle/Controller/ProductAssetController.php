@@ -232,7 +232,7 @@ class ProductAssetController extends Controller
             try {
                 if (!$isLocalized && null !== $uploadedFile) {
                     $reference = $asset->getReference();
-                    $file = $this->fileFactory->create(
+                    $file = $this->fileFactory->createFromRawFile(
                         $uploadedFile,
                         ['path' => '', 'file_name' => '', 'guid' => ''],
                         FileStorage::ASSET_STORAGE_ALIAS
@@ -346,6 +346,7 @@ class ProductAssetController extends Controller
 
             return $this->redirectAfterEdit($request, ['id' => $id]);
         } elseif ($assetForm->isSubmitted()) {
+            $this->setFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
             // TODO find a better way
             $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
         }

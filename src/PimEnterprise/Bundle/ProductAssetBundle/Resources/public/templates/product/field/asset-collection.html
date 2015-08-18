@@ -5,7 +5,7 @@
     <ul>
     <% _.each(assets, function (asset) { %>
         <li data-asset="<%= asset.code %>">
-            <div class="asset-thumbnail" style="background-image: url('<%= Routing.generate('pim_enrich_media_show', { filename: _.first(asset.references).file, filter: 'thumbnail'}) %>')"></div>
+            <div class="asset-thumbnail" style="background-image: url('<%= Routing.generate('pim_enrich_media_show', { filename: encodeURIComponent(_.first(asset.references).file), filter: 'thumbnail'}) %>')"></div>
             <footer>
                 <% if (asset.description) { %>
                     <%= asset.description.substring(0, 30) %><%= asset.description.length > 30 ? '...' : '' %>

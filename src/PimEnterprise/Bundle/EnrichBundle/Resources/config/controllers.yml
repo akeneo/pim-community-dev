@@ -60,3 +60,14 @@ services:
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@pim_catalog.filter.chained'
+
+    pim_enrich.controller.file:
+        scope: request
+        class: %pim_enrich.controller.file.class%
+        arguments:
+            - '@liip_imagine.controller'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@oneup_flysystem.mount_manager'
+            - ['catalogStorage', 'assetStorage']
+            - %kernel.root_dir%/../web/bundles/pimenrich/img/img_generic.png
