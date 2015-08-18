@@ -3,7 +3,7 @@
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
 use Oro\Bundle\UserBundle\Form\Handler\ResetHandler as OroResetHandler;
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * Overridden ResetHandler in order to manage the reset password
@@ -17,7 +17,7 @@ class ResetHandler extends OroResetHandler
     /**
      * {@inheritdoc}
      */
-    protected function onSuccess(User $user)
+    protected function onSuccess(UserInterface $user)
     {
         $user
             ->setPlainPassword($this->form->getData()->getPlainPassword())

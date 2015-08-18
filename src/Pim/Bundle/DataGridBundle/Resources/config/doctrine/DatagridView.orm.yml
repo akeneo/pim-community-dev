@@ -28,7 +28,7 @@ Pim\Bundle\DataGridBundle\Entity\DatagridView:
 
     manyToOne:
         owner:
-            targetEntity: Pim\Bundle\UserBundle\Entity\User
+            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
             joinColumns:
                 owner_id:
                     referencedColumnName: id
