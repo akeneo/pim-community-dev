@@ -18,13 +18,28 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
+                var product = this.getFormData();
+
                 this.$el.html(
                     this.template({
-                        product: this.getFormData()
+                        isPublished: product.meta.published,
+                        label: _.__('pimee_enrich.entity.product.meta.published'),
+                        publishedVersion: this.getPublishedVersion(product)
                     })
                 );
 
                 return this;
+            },
+
+            /**
+             * Get the published version number for the given product
+             *
+             * @param {Object} product
+             *
+             * @returns {int}
+             */
+            getPublishedVersion: function(product) {
+                return _.result(product.meta.published, 'version', null);
             }
         });
 
