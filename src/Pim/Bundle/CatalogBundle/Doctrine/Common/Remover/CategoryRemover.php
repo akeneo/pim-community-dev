@@ -13,7 +13,8 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * TODO: To extract in a component
+ * TODO-PIM-4251: Extract a basic implementation in classification bundle and add specific stuff related to product
+ *                in a second implementation
  *
  * Product category remover
  *
