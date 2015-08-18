@@ -20,7 +20,7 @@ services:
             - '@event_dispatcher'
             - '@pimee_product_asset.factory.asset'
             - '@akeneo_file_storage.file_storage.file_factory'
-            - '@pimee_user.context.user'
+            - '@pimee_user.context.user.asset'
         calls:
             - [ setContainer, [ @service_container ] ]
 

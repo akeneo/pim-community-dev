@@ -558,6 +558,37 @@ class ProductAssetController extends Controller
     }
 
     /**
+     * Dispatch to asset view or asset edit when a user click on an asset grid row
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @throws AccessDeniedException
+     *
+     * @return RedirectResponse
+     *
+     * @AclAncestor("pimee_product_asset_index")
+     */
+    public function dispatchAction(Request $request, $id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+        $editGranted = $this->isGranted(Attributes::EDIT, $productAsset);
+        if ($editGranted) {
+            $edit = $this->editAction($request, $id);
+
+            return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', $edit);
+        }
+
+        if ($this->isGranted(Attributes::VIEW, $productAsset)) {
+            $view = $this->viewAction($id);
+
+            return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', $view);
+        }
+
+        throw new AccessDeniedException();
+    }
+
+    /**
      * @param AssetInterface $productAsset
      *
      * @return array
