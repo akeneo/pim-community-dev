@@ -1,1 +1,5 @@
-<% if (product.meta.updated) { %><span title="<%= _.__('pim_enrich.entity.product.meta.updated') %>: <%= product.meta.updated.logged_at %> <%= _.__('pim_enrich.entity.product.meta.updated_by') %> <%= product.meta.updated.author %>"><%= _.__('pim_enrich.entity.product.meta.updated') %>: <%= product.meta.updated.logged_at %> <%= _.__('pim_enrich.entity.product.meta.updated_by') %> <%= product.meta.updated.author %></span><% } %>
+<% if (isUpdated) { %>
+    <span title="<%= label %>: <%= loggedAt %> <%= labelBy %> <%= author %>">
+        <%= label %>: <%= loggedAt %> <%= labelBy %> <%= author %>
+    </span>
+<% } %>
