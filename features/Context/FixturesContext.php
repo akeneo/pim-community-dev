@@ -25,6 +25,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
@@ -1446,7 +1447,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $username
      *
-     * @return \Pim\Bundle\UserBundle\Entity\User
+     * @return User
      *
      * @Then /^there should be a "([^"]*)" user$/
      */

@@ -11,6 +11,9 @@ use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
@@ -99,56 +102,43 @@ class User implements
      */
     protected $confirmationToken;
 
-    /**
-     * @var DateTime
-     */
+    /** @var DateTime */
     protected $passwordRequestedAt;
 
-    /**
-     * @var DateTime
-     */
+    /** @var DateTime */
     protected $lastLogin;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $loginCount = 0;
 
-    /**
-     * @var Role[]
-     */
+    /** @var Role[] */
     protected $roles;
 
-    /**
-     * @var Group[]
-     */
+    /** @var Group[] */
     protected $groups;
 
     /** @var string */
     protected $api;
 
-    /**  @var \DateTime $createdAt */
+    /** @var DateTime $createdAt */
     protected $createdAt;
 
-    /** @var \DateTime $updatedAt */
+    /** @var DateTime $updatedAt */
     protected $updatedAt;
 
-    /** @var Pim\Bundle\CatalogBundle\Entity\Locale */
+    /** @var Locale */
     protected $catalogLocale;
 
-    /** @var Pim\Bundle\CatalogBundle\Entity\Channel */
+    /** @var Channel */
     protected $catalogScope;
 
-    /** @var Pim\Bundle\CatalogBundle\Model\CategoryInterface */
+    /** @var CategoryInterface */
     protected $defaultTree;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->roles = new ArrayCollection();
+        $this->salt   = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->roles  = new ArrayCollection();
         $this->groups = new ArrayCollection();
     }
 
@@ -186,7 +176,7 @@ class User implements
             $this->enabled,
             $this->confirmationToken,
             $this->id
-            ) = unserialize($serialized);
+        ) = unserialize($serialized);
     }
 
     /**
@@ -286,7 +276,7 @@ class User implements
     /**
      * Return birthday
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getBirthday()
     {
@@ -360,7 +350,7 @@ class User implements
     /**
      * Gets the last login time.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getLastLogin()
     {
@@ -380,7 +370,7 @@ class User implements
     /**
      * Get user created date/time
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreatedAt()
     {
@@ -390,7 +380,7 @@ class User implements
     /**
      * Get user last update date/time
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getUpdatedAt()
     {
@@ -413,16 +403,27 @@ class User implements
         return $this->enabled;
     }
 
+    /**
+     * @return bool
+     */
     public function isAccountNonExpired()
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function isAccountNonLocked()
     {
         return $this->isEnabled();
     }
 
+    /**
+     * @param $ttl
+     *
+     * @return bool
+     */
     public function isPasswordRequestNonExpired($ttl)
     {
         return $this->getPasswordRequestedAt() instanceof DateTime &&
@@ -431,6 +432,7 @@ class User implements
 
     /**
      * @param int $id
+     *
      * @return mixed
      */
     public function setId($id)
@@ -442,6 +444,7 @@ class User implements
 
     /**
      * @param  string $username New username
+     *
      * @return User
      */
     public function setUsername($username)
@@ -453,6 +456,7 @@ class User implements
 
     /**
      * @param  string $email New email value
+     *
      * @return User
      */
     public function setEmail($email)
@@ -464,6 +468,7 @@ class User implements
 
     /**
      * @param  string $firstName [optional] New first name value. Null by default.
+     *
      * @return User
      */
     public function setFirstName($firstName = null)
@@ -475,6 +480,7 @@ class User implements
 
     /**
      * @param  string $lastName [optional] New last name value. Null by default.
+     *
      * @return User
      */
     public function setLastName($lastName = null)
@@ -515,8 +521,8 @@ class User implements
     }
 
     /**
-     *
      * @param  DateTime $birthday [optional] New birthday value. Null by default.
+     *
      * @return User
      */
     public function setBirthday(DateTime $birthday = null)
@@ -528,6 +534,7 @@ class User implements
 
     /**
      * @param  string $image [optional] New image file name. Null by default.
+     *
      * @return User
      */
     public function setImage($image = null)
@@ -539,6 +546,7 @@ class User implements
 
     /**
      * @param  UploadedFile $imageFile
+     *
      * @return User
      */
     public function setImageFile(UploadedFile $imageFile)
@@ -564,6 +572,7 @@ class User implements
 
     /**
      * @param  bool $enabled User state
+     *
      * @return User
      */
     public function setEnabled($enabled)
@@ -575,6 +584,7 @@ class User implements
 
     /**
      * @param string $salt
+     *
      * @return User
      */
     public function setSalt($salt)
@@ -586,6 +596,7 @@ class User implements
 
     /**
      * @param  string $password New encoded password
+     *
      * @return User
      */
     public function setPassword($password)
@@ -597,6 +608,7 @@ class User implements
 
     /**
      * @param  string $password New password as plain string
+     *
      * @return User
      */
     public function setPlainPassword($password)
@@ -610,6 +622,7 @@ class User implements
      * Set confirmation token.
      *
      * @param  string $token
+     *
      * @return User
      */
     public function setConfirmationToken($token)
@@ -621,6 +634,7 @@ class User implements
 
     /**
      * @param  DateTime $time [optional] New password request time. Null by default.
+     *
      * @return User
      */
     public function setPasswordRequestedAt(DateTime $time = null)
@@ -632,6 +646,7 @@ class User implements
 
     /**
      * @param  DateTime $time New login time
+     *
      * @return User
      */
     public function setLastLogin(DateTime $time)
@@ -643,6 +658,7 @@ class User implements
 
     /**
      * @param  int $count New login count value
+     *
      * @return User
      */
     public function setLoginCount($count)
@@ -654,6 +670,7 @@ class User implements
 
     /**
      * @param  UserApi $api
+     *
      * @return User
      */
     public function setApi(UserApi $api)
@@ -664,7 +681,8 @@ class User implements
     }
 
     /**
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt($createdAt)
@@ -675,7 +693,8 @@ class User implements
     }
 
     /**
-     * @param \DateTime $updatedAt
+     * @param DateTime $updatedAt
+     *
      * @return $this
      */
     public function setUpdatedAt($updatedAt)
@@ -716,6 +735,7 @@ class User implements
      * Pass a string, get the desired Role object or null
      *
      * @param  string $roleName Role name
+     *
      * @return Role|null
      */
     public function getRole($roleName)
@@ -762,6 +782,7 @@ class User implements
      * Adds a Role to the Collection.
      *
      * @param  Role $role
+     *
      * @return User
      */
     public function addRole(Role $role)
@@ -869,6 +890,7 @@ class User implements
 
     /**
      * @param  string $name
+     *
      * @return bool
      */
     public function hasGroup($name)
@@ -878,6 +900,7 @@ class User implements
 
     /**
      * @param  Group $group
+     *
      * @return User
      */
     public function addGroup(Group $group)
@@ -891,6 +914,7 @@ class User implements
 
     /**
      * @param  Group $group
+     *
      * @return User
      */
     public function removeGroup(Group $group)
@@ -924,6 +948,9 @@ class User implements
         return base_convert(bin2hex(hash('sha256', uniqid(mt_rand(), true), true)), 16, 36);
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string) $this->getUsername();
@@ -936,8 +963,8 @@ class User implements
      */
     public function beforeSave()
     {
-        $this->createdAt = new DateTime('now', new \DateTimeZone('UTC'));
-        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt  = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt  = new DateTime('now', new \DateTimeZone('UTC'));
         $this->loginCount = 0;
     }
 
