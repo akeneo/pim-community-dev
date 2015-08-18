@@ -87,6 +87,13 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
             $qb->andWhere($searchDql)->setParameter('search', "%$search%");
         }
 
+        if (isset($options['categories'])) {
+            $qb
+                ->leftJoin(sprintf('%s.categories', $this->getAlias()), 'c')
+                ->andWhere('c.id IN (:categories) OR c.id IS NULL')
+                ->setParameter('categories', $options['categories']);
+        }
+
         if (isset($options['limit'])) {
             $qb->setMaxResults((int) $options['limit']);
             if (isset($options['page'])) {
