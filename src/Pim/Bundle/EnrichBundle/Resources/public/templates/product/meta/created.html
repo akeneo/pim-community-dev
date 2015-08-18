@@ -1,1 +1,5 @@
-<% if (product.meta.created) { %><span title="<%= _.__('pim_enrich.entity.product.meta.created') %>: <%= product.meta.created.logged_at %> <%= _.__('pim_enrich.entity.product.meta.created_by') %> <%= product.meta.created.author %>"><%= _.__('pim_enrich.entity.product.meta.created') %>: <%= product.meta.created.logged_at %> <%= _.__('pim_enrich.entity.product.meta.created_by') %> <%= product.meta.created.author %></span><% } %>
+<% if (isCreated) { %>
+    <span title="<%= label %>: <%= loggedAt %> <%= labelBy %> <%= author %>">
+        <%= label %>: <%= loggedAt %> <%= labelBy %> <%= author %>
+    </span>
+<% } %>

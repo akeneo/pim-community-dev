@@ -18,9 +18,15 @@ define(
             tagName: 'span',
             template: _.template(formTemplate),
             render: function () {
+                var product = this.getFormData();
+
                 this.$el.html(
                     this.template({
-                        product: this.getFormData()
+                        label: _.__('pim_enrich.entity.product.meta.created'),
+                        labelBy: _.__('pim_enrich.entity.product.meta.created_by'),
+                        isCreated: product.meta.created,
+                        loggedAt: _.result(product.meta.created, 'logged_at', null),
+                        author: _.result(product.meta.created, 'author', null)
                     })
                 );
 
