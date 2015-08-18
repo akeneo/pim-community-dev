@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Product category manager
