@@ -322,7 +322,7 @@ class ProductRepository extends EntityRepository implements
      */
     protected function getAttributeByCode($code)
     {
-        return $this->attributeRepository->findOneByCode($code);
+        return $this->attributeRepository->findOneBy(['code' => $code]);
     }
 
     /**
@@ -522,16 +522,13 @@ class ProductRepository extends EntityRepository implements
     public function findOneByWithValues($id)
     {
         $qb = $this->findAllByAttributesQB(array(), array('id' => $id));
-        $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
+
         $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
         $qb->addSelect('Value');
         $qb->addSelect('Attribute');
-        $qb->addSelect('AttributeTranslations');
         $qb->addSelect('AttributeLocales');
         $qb->leftJoin('Attribute.group', 'AttributeGroup');
         $qb->addSelect('AttributeGroup');
-        $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
-        $qb->addSelect('AGroupTranslations');
 
         return $qb
             ->getQuery()
