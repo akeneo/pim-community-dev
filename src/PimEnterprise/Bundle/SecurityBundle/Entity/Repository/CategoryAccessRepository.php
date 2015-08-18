@@ -18,7 +18,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -102,12 +102,12 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Get granted category query builder
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGrantedCategoryQB(User $user, $accessLevel)
+    public function getGrantedCategoryQB(UserInterface $user, $accessLevel)
     {
         $qb = $this->createQueryBuilder('ca');
         $qb
@@ -126,13 +126,13 @@ class CategoryAccessRepository extends EntityRepository
      * The provided QB will be used to generate a subquery from which
      * only granted categories will be extracted.
      *
-     * @param QueryBuilder $categoryQB
-     * @param User         $user
-     * @param string       $accessLevel
+     * @param QueryBuilder  $categoryQB
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, User $user, $accessLevel)
+    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, UserInterface $user, $accessLevel)
     {
         $categoryRootAlias = current($categoryQB->getRootAliases());
 
@@ -159,12 +159,12 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Get revoked category query builder
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return \Doctrine\DBAL\Query\QueryBuilder
      */
-    public function getRevokedCategoryQB(User $user, $accessLevel)
+    public function getRevokedCategoryQB(UserInterface $user, $accessLevel)
     {
         // get group ids
         $groupIds = array_map(
@@ -223,12 +223,12 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Returns granted categories ids
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return integer[]
      */
-    public function getGrantedCategoryIds(User $user, $accessLevel)
+    public function getGrantedCategoryIds(UserInterface $user, $accessLevel)
     {
         $qb = $this->getGrantedCategoryQB($user, $accessLevel);
 
@@ -238,12 +238,12 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Returns granted category codes
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return string[]
      */
-    public function getGrantedCategoryCodes(User $user, $accessLevel)
+    public function getGrantedCategoryCodes(UserInterface $user, $accessLevel)
     {
         $qb = $this->getGrantedCategoryQB($user, $accessLevel)
             ->resetDQLParts(['select'])
@@ -260,12 +260,12 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Returns revoked category ids
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return integer[]
      */
-    public function getRevokedCategoryIds(User $user, $accessLevel)
+    public function getRevokedCategoryIds(UserInterface $user, $accessLevel)
     {
         $qb = $this->getRevokedCategoryQB($user, $accessLevel);
         $qb->select('c.id');
@@ -281,12 +281,12 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Returns revoked category ids
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return integer[]
      */
-    public function getRevokedAttributeIds(User $user, $accessLevel)
+    public function getRevokedAttributeIds(UserInterface $user, $accessLevel)
     {
         $attTable = $this->getTableName('pim_catalog.entity.category.class');
 
@@ -335,11 +335,11 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Indicates whether a user is the owner of any categories
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return bool
      */
-    public function isOwner(User $user)
+    public function isOwner(UserInterface $user)
     {
         $qb = $this->createQueryBuilder('o');
 
@@ -360,15 +360,15 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Check if categories are granted to user
      *
-     * @param User   $user
-     * @param string $accessLevel
-     * @param array  $categoryIds
+     * @param UserInterface $user
+     * @param string        $accessLevel
+     * @param array         $categoryIds
      *
      * @throws \LogicException
      *
      * @return true
      */
-    public function isCategoriesGranted(User $user, $accessLevel, array $categoryIds)
+    public function isCategoriesGranted(UserInterface $user, $accessLevel, array $categoryIds)
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('COUNT(c.id)')

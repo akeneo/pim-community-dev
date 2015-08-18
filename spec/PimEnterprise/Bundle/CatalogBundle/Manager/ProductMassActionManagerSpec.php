@@ -3,10 +3,10 @@
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -21,7 +21,7 @@ class ProductMassActionManagerSpec extends ObjectBehavior
         AttributeGroupAccessRepository $attGroupAccessRepo,
         SecurityContext $authorizationChecker,
         TokenInterface $token,
-        User $user
+        UserInterface $user
     ) {
         $authorizationChecker->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);

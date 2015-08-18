@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\UserBundle\Context;
 
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -27,7 +27,7 @@ class UserContextSpec extends ObjectBehavior
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
         TokenInterface $token,
-        User $user,
+        UserInterface $user,
         TokenStorageInterface $tokenStorage,
         RequestStack $requestStack
     ) {
