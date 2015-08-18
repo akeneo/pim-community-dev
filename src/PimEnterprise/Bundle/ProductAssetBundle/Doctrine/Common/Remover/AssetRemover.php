@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Remover;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Remover;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
@@ -23,6 +23,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * TODO; should go in the component
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ *
+ * TODO: missing spec
  */
 class AssetRemover extends BaseRemover
 {

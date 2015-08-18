@@ -16,12 +16,12 @@ namespace Akeneo\Component\FileMetadata\Adapter;
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * @see the list of mimetypes is defined here
+ *      vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/File/MimeType/MimeTypeExtensionGuesser.php
  */
 abstract class AbstractAdapter implements AdapterInterface
 {
-    //TODO: the list of mimetypes is defined here
-    // vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/File/MimeType/MimeTypeExtensionGuesser.php
-
     /** @var array */
     protected $mimeTypes;
 

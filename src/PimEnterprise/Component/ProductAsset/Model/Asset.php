@@ -413,7 +413,8 @@ class Asset implements AssetInterface
     }
 
     /**
-     * TODO: check this in the validation instead
+     * TODO: check this in the validation instead, add constraints
+     *
      * Assert that:
      *   - The unique reference of an asset is not localized
      *   - All the references of an asset that contains several references are localized

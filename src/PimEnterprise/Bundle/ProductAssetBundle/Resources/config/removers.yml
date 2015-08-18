@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.remover.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Remover\AssetRemover
+    pimee_product_asset.remover.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Remover\AssetRemover
 
 services:
     pimee_product_asset.remover.variation:

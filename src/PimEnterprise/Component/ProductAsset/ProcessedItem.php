@@ -5,8 +5,13 @@ namespace PimEnterprise\Component\ProductAsset;
 //TODO
 class ProcessedItem
 {
+    /** @staticvar string */
     const STATE_SUCCESS = 'success';
+
+    /** @staticvar string */
     const STATE_ERROR   = 'error';
+
+    /** @staticvar string */
     const STATE_SKIPPED = 'skipped';
 
     /** @var mixed */

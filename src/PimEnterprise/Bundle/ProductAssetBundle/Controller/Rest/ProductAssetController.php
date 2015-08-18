@@ -42,7 +42,7 @@ class ProductAssetController
     /**
      * Assets index action
      *
-     * @param string $identifiers
+     * @param Request $request
      *
      * @return JsonResponse
      */
