@@ -25,7 +25,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('datagrid', new EnterpriseDataGridContext());
         $this->useContext('navigation', new EnterpriseNavigationContext());
         $this->useContext('transformations', new TransformationContext());
-        $this->useContext('assertions', new AssertionContext());
+        $this->useContext('assertions', new EnterpriseAssertionContext());
         $this->useContext('technical', new TechnicalContext());
         $this->useContext('command', new EnterpriseCommandContext());
     }
