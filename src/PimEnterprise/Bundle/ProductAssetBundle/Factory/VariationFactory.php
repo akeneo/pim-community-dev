@@ -16,6 +16,7 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**
  * Variation factory
+ * *TODO: component
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */

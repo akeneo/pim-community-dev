@@ -16,6 +16,7 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
  * Asset factory
+ *TODO: component
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */

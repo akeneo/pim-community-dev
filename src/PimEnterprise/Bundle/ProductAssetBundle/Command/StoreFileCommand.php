@@ -21,6 +21,8 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 /**
  * Store a raw file in a storage filesystem
  *
+ * TODO: should be moved from there
+ *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class StoreFileCommand extends ContainerAwareCommand

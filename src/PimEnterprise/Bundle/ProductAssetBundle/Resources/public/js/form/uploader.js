@@ -24,7 +24,8 @@ define(
 
             /**
              * Change uploader view when changed
-             * @param file
+             *
+             * @param {JQuery} file
              */
             setFileInformations: function (file) {
                 var $inputContainer = this.getUploaderContainer(file);

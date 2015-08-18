@@ -33,8 +33,8 @@ class CreateAssetType extends AbstractType
             'isLocalized',
             'switch',
             [
-                'mapped' => false,
-                'label'  => 'pimee_product_asset.popin.create.is_localized',
+                'mapped'      => false,
+                'label'       => 'pimee_product_asset.popin.create.is_localized',
                 'constraints' => [ new Type(['type' => 'bool']) ],
             ]
         );
@@ -43,7 +43,7 @@ class CreateAssetType extends AbstractType
             'code',
             'text',
             [
-                'required' => true,
+                'required'    => true,
                 'constraints' => [
                     new NotBlank(),
                     new Regex(

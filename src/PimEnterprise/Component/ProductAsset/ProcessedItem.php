@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
+//TODO
 class ProcessedItem
 {
     const STATE_SUCCESS = 'success';
