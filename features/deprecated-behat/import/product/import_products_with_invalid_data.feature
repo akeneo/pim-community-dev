@@ -7,8 +7,8 @@ Feature: Execute a job
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code  | label     | axis | type    |
-      | CROSS | Bag Cross |      | VARIANT |
+      | code  | label     | type    |
+      | CROSS | Bag Cross | RELATED |
     And I am logged in as "Julia"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
