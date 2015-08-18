@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\UserBundle\Form\Handler;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Form\Handler\AbstractUserHandler;
+use Pim\Bundle\UserBundle\Entity\User;
 
 /**
- * Overriden UserHandler to remove tag management
+ * Overridden UserHandler to remove tag management
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
