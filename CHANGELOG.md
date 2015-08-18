@@ -1,4 +1,4 @@
-# 1.0.29 (2015-07-06)
+# 1.0.30 (2015-08-18)
 - Update community-edition dependency to 1.2.36 version.
 
 # 1.0.28 (2015-05-29)
