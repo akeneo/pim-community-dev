@@ -20,8 +20,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Asset remover extends BaseRemover in the goal to dispatch event before and after removal
  *
- * TODO; should go in the component
- *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  *
  * TODO: missing spec

@@ -1,6 +1,7 @@
 PimEnterprise\Component\ProductAsset\Model\Asset:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\LocalizableAsset: ~
     properties:
         code:
             - NotBlank: ~

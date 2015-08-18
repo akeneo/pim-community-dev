@@ -411,35 +411,4 @@ class Asset implements AssetInterface
 
         return $locales;
     }
-
-    /**
-     * TODO: check this in the validation instead, add constraints
-     *
-     * Assert that:
-     *   - The unique reference of an asset is not localized
-     *   - All the references of an asset that contains several references are localized
-     *
-     * @throws \LogicException
-     */
-    protected function assertValidReferences()
-    {
-        $nbReferences  = $this->getReferences()->count();
-        $nbLocalizable = 0;
-
-        foreach ($this->getReferences() as $reference) {
-            if (null !== $reference->getLocale()) {
-                $nbLocalizable++;
-            }
-        }
-
-        if (1 === $nbReferences && 0 !== $nbLocalizable) {
-            throw new \LogicException('The unique reference of an asset can not be localized.');
-        }
-
-        if ($nbReferences > 1 && $nbReferences !== $nbLocalizable) {
-            throw new \LogicException(
-                'All references of an asset that contains several references must be localized.'
-            );
-        }
-    }
 }
