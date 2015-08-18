@@ -422,9 +422,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param string|array $data
      *
+     * @throws \Exception
      * @return TagInterface
      *
-     * @throws \Exception
      *
      * @Given /^a "([^"]+)" tag$/
      */
@@ -475,7 +475,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                         assertEquals([], $assetValue->toArray());
                     } else {
                         $expectedValue = explode(',', $expectedValue);
-                        $tags = array_map(function($tag) {
+                        $tags = array_map(function ($tag) {
                             return $tag->getCode();
                         }, $assetValue->toArray());
                         assertTrue(0 === count(array_diff($expectedValue, $tags)));

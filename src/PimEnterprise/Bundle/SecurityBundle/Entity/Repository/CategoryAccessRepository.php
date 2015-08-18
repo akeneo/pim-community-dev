@@ -17,8 +17,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**

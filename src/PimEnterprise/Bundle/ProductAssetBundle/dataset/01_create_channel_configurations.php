@@ -26,7 +26,7 @@ function getRawConfs()
         'ecommerce' => ['scale' => ['ratio' => 0.5]],
         'tablet'    => ['scale' => ['ratio' => 0.25]],
         'mobile'    => [
-            'scale'      => ['width' => 200],
+            'scale'      => ['width'      => 200],
             'colorspace' => ['colorspace' => 'gray'],
         ],
         'print'     => ['resize' => ['width' => 400, 'height' => 200]],

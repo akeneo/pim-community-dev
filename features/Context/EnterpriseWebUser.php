@@ -254,7 +254,7 @@ class EnterpriseWebUser extends BaseWebUser
     {
         $exploded = explode(',', $vars);
 
-        return array_map(function($var) {
+        return array_map(function ($var) {
             return trim($var);
         }, $exploded);
     }
