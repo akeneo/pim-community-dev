@@ -30,7 +30,7 @@ define(
              *
              * @returns {string}
              */
-            getOwnerGroups: function(product) {
+            getOwnerGroups: function (product) {
                 return _.pluck(product.meta.owner_groups, 'name').join(', ');
             }
         });

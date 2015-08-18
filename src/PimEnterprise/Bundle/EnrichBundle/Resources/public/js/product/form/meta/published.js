@@ -38,7 +38,7 @@ define(
              *
              * @returns {int}
              */
-            getPublishedVersion: function(product) {
+            getPublishedVersion: function (product) {
                 return _.result(product.meta.published, 'version', null);
             }
         });

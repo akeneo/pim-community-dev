@@ -38,18 +38,18 @@ define(
              *
              * @returns {string}
              */
-            getDraftStatus: function(product) {
+            getDraftStatus: function (product) {
                 var status;
 
                 switch (product.meta.draft_status) {
                     case 0:
-                        status = _.__('pimee_enrich.entity.product.meta.draft.in_progress')
+                        status = _.__('pimee_enrich.entity.product.meta.draft.in_progress');
                         break;
                     case 1:
-                        status = _.__('pimee_enrich.entity.product.meta.draft.sent_for_approval')
+                        status = _.__('pimee_enrich.entity.product.meta.draft.sent_for_approval');
                         break;
                     default:
-                        status = _.__('pimee_enrich.entity.product.meta.draft.working_copy')
+                        status = _.__('pimee_enrich.entity.product.meta.draft.working_copy');
                         break;
                 }
 
