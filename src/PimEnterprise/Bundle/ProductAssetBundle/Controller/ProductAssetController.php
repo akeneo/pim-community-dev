@@ -24,6 +24,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
@@ -46,6 +47,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Asset controller
@@ -100,6 +102,9 @@ class ProductAssetController extends Controller
     /** @var FileFactoryInterface */
     protected $fileFactory;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param AssetRepositoryInterface        $assetRepository
      * @param ReferenceRepositoryInterface    $referenceRepository
@@ -115,6 +120,7 @@ class ProductAssetController extends Controller
      * @param EventDispatcherInterface        $eventDispatcher
      * @param AssetFactory                    $assetFactory
      * @param FileFactoryInterface            $fileFactory
+     * @param UserContext                     $userContext
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -160,6 +166,14 @@ class ProductAssetController extends Controller
      */
     public function indexAction()
     {
+        try {
+            $this->userContext->getAccessibleUserTree();
+        } catch (\LogicException $e) {
+            $this->addFlash('error', 'category.permissions.no_access_to_assets');
+
+            return $this->redirectToRoute('oro_default');
+        }
+
         return [
             'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
@@ -174,11 +188,19 @@ class ProductAssetController extends Controller
      * @Template
      * @AclAncestor("pimee_product_asset_index")
      *
+     * @throws AccessDeniedException()
+     *
      * @return array
      */
     public function viewAction($id)
     {
         $productAsset = $this->findProductAssetOr404($id);
+
+        $viewAssetGranted = $this->isGranted(Attributes::VIEW, $productAsset);
+        if (!$viewAssetGranted) {
+            throw new AccessDeniedException();
+        }
+
         $references   = $productAsset->getReferences();
 
         $attachments = [];
@@ -314,16 +336,31 @@ class ProductAssetController extends Controller
     /**
      * Edit an asset
      *
+     * @AclAncestor("pimee_product_asset_index")
+     * @Template()
+     *
      * @param Request    $request
      * @param int|string $id
      *
-     * @AclAncestor("pimee_product_asset_index")
+     * @throws AccessDeniedException
      *
      * @return Response
      */
     public function editAction(Request $request, $id)
     {
-        $productAsset = $this->findProductAssetOr404($id);
+        $productAsset     = $this->findProductAssetOr404($id);
+        $editAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
+
+        if (!$editAssetGranted) {
+            if ($this->isGranted(Attributes::VIEW, $productAsset)) {
+                $parameters = $this->viewAction($id);
+
+                return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', $parameters);
+            }
+
+            throw new AccessDeniedException();
+        }
+
         $assetLocales = $productAsset->getLocales();
 
         if (null !== $request->get('locale')) {
@@ -363,12 +400,12 @@ class ProductAssetController extends Controller
             $metadata = $this->getAssetMetadata($productAsset);
         }
 
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', [
+        return [
             'asset'         => $productAsset,
             'form'          => $assetForm->createView(),
             'metadata'      => $metadata,
             'currentLocale' => $locale,
-        ]);
+        ];
     }
 
     /**
@@ -382,6 +419,10 @@ class ProductAssetController extends Controller
     public function removeAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
+        $editAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
+        if (!$editAssetGranted) {
+            throw new AccessDeniedException();
+        }
 
         $this->assetRemover->remove($productAsset);
 
@@ -403,6 +444,11 @@ class ProductAssetController extends Controller
     public function deleteReferenceFileAction(Request $request, $id)
     {
         $reference = $this->findReferenceOr404($id);
+        $editAssetGranted = $this->isGranted(Attributes::EDIT, $reference);
+        if (!$editAssetGranted) {
+            throw new AccessDeniedException();
+        }
+
         $asset = $reference->getAsset();
 
         try {
@@ -433,6 +479,11 @@ class ProductAssetController extends Controller
     public function deleteVariationFileAction(Request $request, $id)
     {
         $variation = $this->findVariationOr404($id);
+        $editAssetGranted = $this->isGranted(Attributes::EDIT, $variation);
+        if (!$editAssetGranted) {
+            throw new AccessDeniedException();
+        }
+
         $asset     = $variation->getAsset();
         $reference = $variation->getReference();
 
@@ -464,6 +515,11 @@ class ProductAssetController extends Controller
     public function resetVariationFileAction(Request $request, $id)
     {
         $variation = $this->findVariationOr404($id);
+        $editAssetGranted = $this->isGranted(Attributes::EDIT, $variation);
+        if (!$editAssetGranted) {
+            throw new AccessDeniedException();
+        }
+
         $asset = $variation->getAsset();
         $reference = $variation->getReference();
 
@@ -500,6 +556,11 @@ class ProductAssetController extends Controller
     public function resetVariationsFilesAction(Request $request, $id)
     {
         $reference = $this->findReferenceOr404($id);
+        $editAssetGranted = $this->isGranted(Attributes::EDIT, $reference);
+        if (!$editAssetGranted) {
+            throw new AccessDeniedException();
+        }
+
         $asset = $reference->getAsset();
 
         try {

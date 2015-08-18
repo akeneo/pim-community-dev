@@ -3,8 +3,9 @@ datagrid:
         options:
             entityHint: asset
         source:
-            type: pimee_datasource_asset
-            entity: 'PimEnterprise\Component\ProductAsset\Model\Asset'
+            acl_resource:      pimee_product_asset_index
+            type:              pimee_datasource_asset
+            entity:            'PimEnterprise\Component\ProductAsset\Model\Asset'
             repository_method: createAssetDatagridQueryBuilder
             repository_parameters:
                 - currentUser
