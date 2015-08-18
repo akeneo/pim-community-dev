@@ -66,8 +66,8 @@ services:
         class: %pim_enrich.controller.file.class%
         arguments:
             - '@liip_imagine.controller'
-            - '@liip_imagine.cache.manager'
-            - '@liip_imagine.filter.manager'
             - '@oneup_flysystem.mount_manager'
+            - '@akeneo_file_storage.repository.file'
+            - '@pim_enrich.guesser.file_type'
+            - '@pim_enrich.provider.default_image'
             - ['catalogStorage', 'assetStorage']
-            - %kernel.root_dir%/../web/bundles/pimenrich/img/img_generic.png
