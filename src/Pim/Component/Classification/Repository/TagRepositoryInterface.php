@@ -4,6 +4,7 @@ namespace Pim\Component\Classification\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+// TODO: depends on UIBundle sounds weird!!
 use Pim\Bundle\UIBundle\Entity\Repository\SearchableRepositoryInterface;
 
 /**
