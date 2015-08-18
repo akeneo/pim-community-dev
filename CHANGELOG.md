@@ -1,4 +1,4 @@
-# 1.2.37
+# 1.2.37 (2015-08-18)
 
 ## Bug fixes
 - PIM-4748: remove left joins to fix perf issue with many locales
