@@ -1,0 +1,10 @@
+parameters:
+    pimee_security.voter.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter
+
+services:
+    pimee_security.voter.asset:
+        class: %pimee_security.voter.asset.class%
+        arguments:
+            - '@pimee_product_asset.repository.asset_category_access'
+        tags:
+            - { name: security.voter }
