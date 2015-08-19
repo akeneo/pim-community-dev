@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\UIBundle\Entity\Repository;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository;
 
+use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
 /**

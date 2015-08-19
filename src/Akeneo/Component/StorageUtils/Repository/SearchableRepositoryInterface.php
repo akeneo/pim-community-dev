@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UIBundle\Entity\Repository;
+namespace Akeneo\Component\StorageUtils\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -11,7 +11,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface SearchableRepositoryInterface extends ObjectRepository
+interface SearchableRepositoryInterface
 {
     /**
      * Returns an array of option ids and values
