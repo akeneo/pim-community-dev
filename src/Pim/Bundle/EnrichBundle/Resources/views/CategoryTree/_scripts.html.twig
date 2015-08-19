@@ -5,7 +5,7 @@
             'use strict';
             $(function() {
                 var buttons = [];
-                {% if can_create %}
+                {% if resource_granted(acl ~ '_category_create') %}
                     buttons.push($('<a>', {
                         'class': 'no-hash',
                         'data-toggle': 'tooltip',
@@ -14,12 +14,12 @@
                     }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
                     ).on('click', function () {
-                        Backbone.history.navigate('url={{ path(category_route('categorytree_create', related_entity)) }}', { trigger: true });
+                        Backbone.history.navigate('url={{ path(route ~ '_categorytree_create') }}', { trigger: true });
                     }).tooltip());
                 {% endif %}
                 // Instantiate sidebar
                 $('#category-tree-container').sidebarize({ buttons: buttons });
-                new TreeManage('#tree', '{{ category_pattern(related_entity) }}');
+                new TreeManage('#tree', '{{ route }}');
             });
         }
     );
