@@ -42,7 +42,7 @@ Pim\Bundle\CommentBundle\Entity\Comment:
             joinColumn:
                 onDelete: CASCADE
         author:
-            targetEntity: Oro\Bundle\UserBundle\Entity\User
+            targetEntity: Pim\Bundle\UserBundle\Entity\UserInterface
             joinColumn:
                 name: author_id
                 referencedColumnName: id

@@ -252,6 +252,15 @@ define(
                 _.each(this.extensions, function (extension) {
                     this.listenTo(extension, code, callback);
                 }.bind(this));
+            },
+
+            /**
+             * Get the root form code
+             *
+             * @return {string}
+             */
+            getFormCode: function () {
+                return this.getRoot().code;
             }
         });
     }

@@ -148,6 +148,8 @@ pim_enrich:
                 update_failed: The product could not be updated.
                 field_not_ready: The product cannot be saved right now. The following fields are not ready: {{ fields }}
                 already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
+            error:
+                upload: An error occured during the file upload
             meta:
                 created: Created
                 created_by: By

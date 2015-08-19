@@ -33,7 +33,6 @@ define(
             },
             configure: function () {
                 this.onExtensions('panel:register', this.registerPanel.bind(this));
-                this.listenTo(this.getParent().state, 'change:fullPanel', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -79,12 +78,10 @@ define(
                 this.closeFullPanel();
             },
             openFullPanel: function () {
-                this.getParent().state.set('fullPanel', true);
+                this.getParent().setFullPanel(true);
             },
             closeFullPanel: function () {
-                if (this.getParent().state.get('fullPanel')) {
-                    this.getParent().state.set('fullPanel', false);
-                }
+                this.getParent().setFullPanel(false);
             },
             resize: function () {
                 var panelContent = this.$('.panel-content');

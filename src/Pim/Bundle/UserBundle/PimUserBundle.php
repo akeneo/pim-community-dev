@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\UserBundle;
 
+use Pim\Bundle\UserBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -13,6 +15,14 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimUserBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new ResolveDoctrineTargetModelPass());
+    }
+
     /**
      * {@inheritdoc}
      */

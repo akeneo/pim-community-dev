@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Validator\Constraints;
 
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -17,8 +18,8 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate the user preferences
      *
-     * @param User       $user
-     * @param Constraint $constraint
+     * @param UserInterface $user
+     * @param Constraint    $constraint
      */
     public function validate($user, Constraint $constraint)
     {
@@ -30,8 +31,8 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate catalog locale
      *
-     * @param User       $user
-     * @param Constraint $constraint
+     * @param UserInterface $user
+     * @param Constraint    $constraint
      */
     protected function validateCatalogLocale($user, Constraint $constraint)
     {
@@ -50,8 +51,8 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate catalog Scope
      *
-     * @param User       $user
-     * @param Constraint $constraint
+     * @param UserInterface $user
+     * @param Constraint    $constraint
      */
     protected function validateCatalogScope($user, Constraint $constraint)
     {
@@ -66,8 +67,8 @@ class UserPreferencesValidator extends ConstraintValidator
     /**
      * Validate default tree
      *
-     * @param User       $user
-     * @param Constraint $constraint
+     * @param UserInterface $user
+     * @param Constraint    $constraint
      */
     protected function validateDefaultTree($user, Constraint $constraint)
     {

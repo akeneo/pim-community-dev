@@ -11,18 +11,20 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
     return Backbone.Model.extend({
         entityListPromise: null,
         entityPromises: {},
+
         /**
-         * @param Array options
+         * @param {Array} options
          */
         initialize: function (options) {
             this.entityListPromise = null;
             this.entityPromises = {};
             this.options = options || {};
         },
+
         /**
          * Fetch all elements of the collection
          *
-         * @return Promise
+         * @return {Promise}
          */
         fetchAll: function () {
             if (!this.entityListPromise) {
@@ -33,20 +35,23 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
 
             return this.entityListPromise;
         },
+
         /**
          * Fetch an element based on its identifier
          *
-         * @param String identifier
+         * @param {string} identifier
          *
-         * @return Promise
+         * @return {Promise}
          */
-        fetch: function (identifier) {
+        fetch: function (identifier, options) {
+            options = options || {};
+
             if (!(identifier in this.entityPromises)) {
                 var deferred = $.Deferred();
 
                 if (this.options.urls.get) {
                     $.getJSON(
-                        Routing.generate(this.options.urls.get, { identifier: identifier })
+                        Routing.generate(this.options.urls.get, _.extend({identifier: identifier}, options))
                     ).then(_.identity).done(function (entity) {
                         deferred.resolve(entity);
                     }).fail(function () {
@@ -70,12 +75,13 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
 
             return this.entityPromises[identifier];
         },
+
         /**
          * Fetch all entities for the given identifiers
          *
-         * @param Array identifiers
+         * @param {Array} identifiers
          *
-         * @return Promise
+         * @return {Promise}
          */
         fetchByIdentifiers: function (identifiers) {
             _.each(identifiers, function (identifier) {
@@ -101,18 +107,20 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                     return getObjects(this.entityPromises);
                 }.bind(this));
         },
+
         /**
          * Get the identifier attribute of the collection
          *
-         * @return Promise
+         * @return {Promise}
          */
         getIdentifierField: function () {
             return $.Deferred().resolve('code');
         },
+
         /**
          * Clear cache of the fetcher
          *
-         * @param String|null identifier
+         * @param {string}|{null} identifier
          */
         clear: function (identifier) {
             if (identifier) {
