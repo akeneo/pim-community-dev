@@ -8,24 +8,6 @@ services:
         tags:
             - { name: twig.extension }
 
-    pim_enrich.twig.category_extension.asset:
-        class: %pim_enrich.twig.category_extension.category.class%
-        arguments:
-            - '@pimee_product_asset.repository.category'
-            - '@pimee_product_asset.repository.asset_category'
-            - %pim_enrich_max_products_category_removal%
-        tags:
-            - { name: pim_enrich.twig.category_extension, type: asset }
-
-    pim_enrich.twig.category_extension.published_product:
-        class: %pim_enrich.twig.category_extension.category.class%
-        arguments:
-            - '@pim_catalog.repository.category'
-            - '@pimee_workflow.repository.published_product_category'
-            - %pim_enrich_max_products_category_removal%
-        tags:
-            - { name: pim_enrich.twig.category_extension, type: published_product }
-
     pimee_enrich.twig.attribute_extension:
         class: %pimee_enrich.twig.attribute_extension.class%
         arguments:
