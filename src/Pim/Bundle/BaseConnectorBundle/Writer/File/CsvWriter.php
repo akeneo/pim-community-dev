@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,12 +39,20 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * @var array
      */
-    protected $writtenFiles = array();
+    protected $writtenFiles = [];
 
     /**
      * @var array
      */
     protected $items = [];
+
+    /** @var Filesystem */
+    protected $localFs;
+
+    public function __construct()
+    {
+        $this->localFs = new Filesystem();
+    }
 
     /**
      * Set the csv delimiter character
@@ -118,6 +127,11 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
      */
     public function flush()
     {
+        $exportDirectory = dirname($this->getPath());
+        if (!is_dir($exportDirectory)) {
+            $this->localFs->mkdir($exportDirectory);
+        }
+
         $this->writtenFiles[$this->getPath()] = basename($this->getPath());
 
         $uniqueKeys = $this->getAllKeys($this->items);
@@ -148,27 +162,27 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         return
             array_merge(
                 parent::getConfigurationFields(),
-                array(
-                    'delimiter' => array(
-                        'options' => array(
+                [
+                    'delimiter' => [
+                        'options' => [
                             'label' => 'pim_base_connector.export.delimiter.label',
                             'help'  => 'pim_base_connector.export.delimiter.help'
-                        )
-                    ),
-                    'enclosure' => array(
-                        'options' => array(
+                        ]
+                    ],
+                    'enclosure' => [
+                        'options' => [
                             'label' => 'pim_base_connector.export.enclosure.label',
                             'help'  => 'pim_base_connector.export.enclosure.help'
-                        )
-                    ),
-                    'withHeader' => array(
+                        ]
+                    ],
+                    'withHeader' => [
                         'type'    => 'switch',
-                        'options' => array(
+                        'options' => [
                             'label' => 'pim_base_connector.export.withHeader.label',
                             'help'  => 'pim_base_connector.export.withHeader.help'
-                        )
-                    ),
-                )
+                        ]
+                    ],
+                ]
             );
     }
 
