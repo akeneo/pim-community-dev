@@ -80,7 +80,7 @@ class FileController extends Controller
         $filename = urldecode($filename);
 
         if (self::DEFAULT_IMAGE_KEY === $filename) {
-            return $this->renderDefaultImage(FileTypes::UNKNOWN, $filter);
+            return $this->renderDefaultImage(FileTypes::MISC, $filter);
         }
 
         $file = $this->fileRepository->findOneByIdentifier($filename);

@@ -11,11 +11,15 @@ namespace Pim\Bundle\EnrichBundle\File;
  */
 final class FileTypes
 {
+    /** @staticvar string */
+    const DOCUMENT = 'pim_enrich_file_document';
+
+    /** @staticvar string */
     const IMAGE = 'pim_enrich_file_image';
 
-    const TEXT = 'pim_enrich_file_text';
-
+    /** @staticvar string */
     const VIDEO = 'pim_enrich_file_video';
 
-    const UNKNOWN = 'pim_enrich_file_unknown';
+    /** @staticvar string */
+    const MISC = 'pim_enrich_file_misc';
 }

@@ -16,7 +16,7 @@ class DefaultImageProviderSpec extends ObjectBehavior
         CacheManager $cacheManager
     ) {
         $defaultImages = [];
-        foreach ([FileTypes::IMAGE, FileTypes::TEXT, FileTypes::VIDEO, FileTypes::UNKNOWN] as $fileType) {
+        foreach ([FileTypes::DOCUMENT, FileTypes::IMAGE, FileTypes::VIDEO, FileTypes::MISC] as $fileType) {
             $imagePath = $this->getImagePath($fileType);
             touch($imagePath);
 
@@ -43,10 +43,10 @@ class DefaultImageProviderSpec extends ObjectBehavior
         $cacheManager->resolve($fileKey, 'some_filter')->shouldBeCalled();
         $this->getImageUrl(FileTypes::IMAGE, 'some_filter');
 
-        $fileKey = $this->getFileKey(FileTypes::TEXT);
+        $fileKey = $this->getFileKey(FileTypes::DOCUMENT);
         $cacheManager->store($binary, $fileKey, 'some_filter')->shouldBeCalled();
         $cacheManager->resolve($fileKey, 'some_filter')->shouldBeCalled();
-        $this->getImageUrl(FileTypes::TEXT, 'some_filter');
+        $this->getImageUrl(FileTypes::DOCUMENT, 'some_filter');
     }
 
     function it_throws_exception_when_providing_an_image_for_undefined_file_type(
@@ -60,7 +60,7 @@ class DefaultImageProviderSpec extends ObjectBehavior
 
     function letGo()
     {
-        foreach ([FileTypes::IMAGE, FileTypes::TEXT, FileTypes::VIDEO, FileTypes::UNKNOWN] as $fileType) {
+        foreach ([FileTypes::IMAGE, FileTypes::DOCUMENT, FileTypes::VIDEO, FileTypes::MISC] as $fileType) {
             $imagePath = $this->getImagePath($fileType);
             if (\file_exists($imagePath)) {
                 unlink($imagePath);
