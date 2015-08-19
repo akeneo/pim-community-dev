@@ -86,7 +86,7 @@ define(
                         label: group.label[locale] || '[' + group.code + ']',
                         code: group.code,
                         isVariant: 'VARIANT' === group.type
-                    }
+                    };
                 });
             },
 
