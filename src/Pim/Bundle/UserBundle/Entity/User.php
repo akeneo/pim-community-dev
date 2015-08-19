@@ -6,25 +6,20 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
-use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ORM\HasLifecycleCallbacks()
  */
-class User implements
-    AdvancedUserInterface,
-    \Serializable,
-    EntityUploadedImageInterface,
-    FullNameInterface
+class User implements UserInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const GROUP_DEFAULT  = 'All';
@@ -135,6 +130,9 @@ class User implements
     /** @var CategoryInterface */
     protected $defaultTree;
 
+    /** @var bool */
+    protected $emailNotifications = false;
+
     public function __construct()
     {
         $this->salt   = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
@@ -143,10 +141,7 @@ class User implements
     }
 
     /**
-     * Serializes the user.
-     * The serialized data have to contain the fields used by the equals method and the username.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function serialize()
     {
@@ -163,9 +158,7 @@ class User implements
     }
 
     /**
-     * Unserializes the user
-     *
-     * @param string $serialized
+     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {
@@ -180,27 +173,20 @@ class User implements
     }
 
     /**
-     * Removes sensitive data from the user.
+     * {@inheritdoc}
      */
     public function eraseCredentials()
     {
         $this->plainPassword = null;
     }
 
-    /**
-     * Get entity class name.
-     * TODO: Remove this temporary solution for get 'view' route in twig after EntityConfigBundle is finished
-     * @return string
-     */
     public function getClass()
     {
-        return 'Pim\Bundle\UserBundle\Entity\User';
+        return 'Pim\Bundle\UserBundle\Entity\UserInterface';
     }
 
     /**
-     * Returns the user unique id.
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -208,25 +194,20 @@ class User implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getUsername()
     {
         return $this->username;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getEmail()
     {
         return $this->email;
     }
 
     /**
-     * Return first name
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getFirstName()
     {
@@ -234,9 +215,7 @@ class User implements
     }
 
     /**
-     * Return last name
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLastName()
     {
@@ -244,9 +223,7 @@ class User implements
     }
 
     /**
-     * Return middle name
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getMiddleName()
     {
@@ -254,9 +231,7 @@ class User implements
     }
 
     /**
-     * Return name prefix
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getNamePrefix()
     {
@@ -264,9 +239,7 @@ class User implements
     }
 
     /**
-     * Return name suffix
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getNameSuffix()
     {
@@ -274,9 +247,7 @@ class User implements
     }
 
     /**
-     * Return birthday
-     *
-     * @return DateTime
+     * {@inheritdoc}
      */
     public function getBirthday()
     {
@@ -284,9 +255,7 @@ class User implements
     }
 
     /**
-     * Return image filename
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getImage()
     {
@@ -294,9 +263,7 @@ class User implements
     }
 
     /**
-     * Return image file
-     *
-     * @return UploadedFile
+     * {@inheritdoc}
      */
     public function getImageFile()
     {
@@ -304,7 +271,7 @@ class User implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSalt()
     {
@@ -312,9 +279,7 @@ class User implements
     }
 
     /**
-     * Gets the encrypted password.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getPassword()
     {
@@ -322,7 +287,7 @@ class User implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPlainPassword()
     {
@@ -330,7 +295,7 @@ class User implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfirmationToken()
     {
@@ -338,9 +303,7 @@ class User implements
     }
 
     /**
-     * Gets the timestamp that the user requested a password reset.
-     *
-     * @return null|DateTime
+     * {@inheritdoc}
      */
     public function getPasswordRequestedAt()
     {
@@ -348,9 +311,7 @@ class User implements
     }
 
     /**
-     * Gets the last login time.
-     *
-     * @return DateTime
+     * {@inheritdoc}
      */
     public function getLastLogin()
     {
@@ -358,9 +319,7 @@ class User implements
     }
 
     /**
-     * Gets login count number.
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getLoginCount()
     {
@@ -368,9 +327,7 @@ class User implements
     }
 
     /**
-     * Get user created date/time
-     *
-     * @return DateTime
+     * {@inheritdoc}
      */
     public function getCreatedAt()
     {
@@ -378,9 +335,7 @@ class User implements
     }
 
     /**
-     * Get user last update date/time
-     *
-     * @return DateTime
+     * {@inheritdoc}
      */
     public function getUpdatedAt()
     {
@@ -388,7 +343,7 @@ class User implements
     }
 
     /**
-     * @return UserApi
+     * {@inheritdoc}
      */
     public function getApi()
     {
@@ -396,7 +351,7 @@ class User implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isEnabled()
     {
@@ -404,7 +359,7 @@ class User implements
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function isAccountNonExpired()
     {
@@ -412,7 +367,7 @@ class User implements
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
     public function isAccountNonLocked()
     {
@@ -420,9 +375,7 @@ class User implements
     }
 
     /**
-     * @param $ttl
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isPasswordRequestNonExpired($ttl)
     {
@@ -431,9 +384,7 @@ class User implements
     }
 
     /**
-     * @param int $id
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -443,9 +394,7 @@ class User implements
     }
 
     /**
-     * @param  string $username New username
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setUsername($username)
     {
@@ -455,9 +404,7 @@ class User implements
     }
 
     /**
-     * @param  string $email New email value
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setEmail($email)
     {
@@ -467,9 +414,7 @@ class User implements
     }
 
     /**
-     * @param  string $firstName [optional] New first name value. Null by default.
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setFirstName($firstName = null)
     {
@@ -479,9 +424,7 @@ class User implements
     }
 
     /**
-     * @param  string $lastName [optional] New last name value. Null by default.
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setLastName($lastName = null)
     {
@@ -491,9 +434,7 @@ class User implements
     }
 
     /**
-     * Set middle name
-     *
-     * @param string $middleName
+     * {@inheritdoc}
      */
     public function setMiddleName($middleName)
     {
@@ -501,9 +442,7 @@ class User implements
     }
 
     /**
-     * Set name prefix
-     *
-     * @param string $namePrefix
+     * {@inheritdoc}
      */
     public function setNamePrefix($namePrefix)
     {
@@ -511,9 +450,7 @@ class User implements
     }
 
     /**
-     * Set name suffix
-     *
-     * @param string $nameSuffix
+     * {@inheritdoc}
      */
     public function setNameSuffix($nameSuffix)
     {
@@ -521,9 +458,7 @@ class User implements
     }
 
     /**
-     * @param  DateTime $birthday [optional] New birthday value. Null by default.
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setBirthday(DateTime $birthday = null)
     {
@@ -533,9 +468,7 @@ class User implements
     }
 
     /**
-     * @param  string $image [optional] New image file name. Null by default.
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setImage($image = null)
     {
@@ -545,23 +478,19 @@ class User implements
     }
 
     /**
-     * @param  UploadedFile $imageFile
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setImageFile(UploadedFile $imageFile)
     {
         $this->imageFile = $imageFile;
-        // this will trigger PreUpdate callback even if only image has been changed
+        // this will trienvogger PreUpdate callback even if only image has been changed
         $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
 
         return $this;
     }
 
     /**
-     * Unset image file.
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function unsetImageFile()
     {
@@ -571,9 +500,7 @@ class User implements
     }
 
     /**
-     * @param  bool $enabled User state
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setEnabled($enabled)
     {
@@ -583,9 +510,7 @@ class User implements
     }
 
     /**
-     * @param string $salt
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setSalt($salt)
     {
@@ -595,9 +520,7 @@ class User implements
     }
 
     /**
-     * @param  string $password New encoded password
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setPassword($password)
     {
@@ -607,9 +530,7 @@ class User implements
     }
 
     /**
-     * @param  string $password New password as plain string
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setPlainPassword($password)
     {
@@ -619,11 +540,7 @@ class User implements
     }
 
     /**
-     * Set confirmation token.
-     *
-     * @param  string $token
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setConfirmationToken($token)
     {
@@ -633,9 +550,7 @@ class User implements
     }
 
     /**
-     * @param  DateTime $time [optional] New password request time. Null by default.
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setPasswordRequestedAt(DateTime $time = null)
     {
@@ -645,9 +560,7 @@ class User implements
     }
 
     /**
-     * @param  DateTime $time New login time
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setLastLogin(DateTime $time)
     {
@@ -657,9 +570,7 @@ class User implements
     }
 
     /**
-     * @param  int $count New login count value
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setLoginCount($count)
     {
@@ -669,9 +580,7 @@ class User implements
     }
 
     /**
-     * @param  UserApi $api
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setApi(UserApi $api)
     {
@@ -681,11 +590,9 @@ class User implements
     }
 
     /**
-     * @param DateTime $createdAt
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -693,9 +600,7 @@ class User implements
     }
 
     /**
-     * @param DateTime $updatedAt
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -705,9 +610,7 @@ class User implements
     }
 
     /**
-     * Returns the user roles merged with associated groups roles
-     *
-     * @return Role[] The array of roles
+     * {@inheritdoc}
      */
     public function getRoles()
     {
@@ -722,9 +625,7 @@ class User implements
     }
 
     /**
-     * Returns the true Collection of Roles.
-     *
-     * @return Collection
+     * {@inheritdoc}
      */
     public function getRolesCollection()
     {
@@ -732,11 +633,7 @@ class User implements
     }
 
     /**
-     * Pass a string, get the desired Role object or null
-     *
-     * @param  string $roleName Role name
-     *
-     * @return Role|null
+     * {@inheritdoc}
      */
     public function getRole($roleName)
     {
@@ -751,17 +648,7 @@ class User implements
     }
 
     /**
-     * Never use this to check if this user has access to anything!
-     * Use the AuthorizationChecker, or an implementation of AccessDecisionManager
-     * instead, e.g.
-     *
-     *         $authorizationChecker->isGranted('ROLE_USER');
-     *
-     * @param  Role|string $role
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function hasRole($role)
     {
@@ -779,11 +666,7 @@ class User implements
     }
 
     /**
-     * Adds a Role to the Collection.
-     *
-     * @param  Role $role
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function addRole(Role $role)
     {
@@ -795,11 +678,7 @@ class User implements
     }
 
     /**
-     * Remove the Role object from collection
-     *
-     * @param  Role|string $role
-     *
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
     public function removeRole($role)
     {
@@ -818,13 +697,7 @@ class User implements
     }
 
     /**
-     * Pass an array or Collection of Role objects and re-set roles collection with new Roles.
-     * Type hinted array due to interface.
-     *
-     * @param  array|Collection $roles Array of Role objects
-     * @throws \InvalidArgumentException
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function setRoles($roles)
     {
@@ -844,14 +717,9 @@ class User implements
     }
 
     /**
-     * Directly set the Collection of Roles.
-     *
-     * @param  Collection $collection
-     * @throws \InvalidArgumentException
-     *
-     * @return User
+     * {@inheritdoc}
      */
-    public function setRolesCollection($collection)
+    public function setRolesCollection(Collection $collection)
     {
         if (!$collection instanceof Collection) {
             throw new \InvalidArgumentException(
@@ -864,9 +732,7 @@ class User implements
     }
 
     /**
-     * Gets the groups granted to the user
-     *
-     * @return Collection
+     * {@inheritdoc}
      */
     public function getGroups()
     {
@@ -874,7 +740,7 @@ class User implements
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function getGroupNames()
     {
@@ -889,9 +755,7 @@ class User implements
     }
 
     /**
-     * @param  string $name
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function hasGroup($name)
     {
@@ -899,9 +763,7 @@ class User implements
     }
 
     /**
-     * @param  Group $group
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function addGroup(Group $group)
     {
@@ -913,9 +775,7 @@ class User implements
     }
 
     /**
-     * @param  Group $group
-     *
-     * @return User
+     * {@inheritdoc}
      */
     public function removeGroup(Group $group)
     {
@@ -927,7 +787,7 @@ class User implements
     }
 
     /**
-     * @return string|null
+     * {@inheritdoc}
      */
     public function getImagePath()
     {
@@ -939,9 +799,7 @@ class User implements
     }
 
     /**
-     * Generate unique confirmation token
-     *
-     * @return string Token value
+     * {@inheritdoc}
      */
     public function generateToken()
     {
@@ -957,9 +815,7 @@ class User implements
     }
 
     /**
-     * Pre persist event listener
-     *
-     * @ORM\PrePersist
+     * {@inheritdoc}
      */
     public function beforeSave()
     {
@@ -969,9 +825,7 @@ class User implements
     }
 
     /**
-     * Invoked before the entity is updated.
-     *
-     * @ORM\PreUpdate
+     * {@inheritdoc}
      */
     public function preUpdate()
     {
@@ -979,7 +833,7 @@ class User implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isCredentialsNonExpired()
     {
@@ -987,11 +841,7 @@ class User implements
     }
 
     /**
-     * Get the relative directory path to user avatar
-     *
-     * @param  bool $forWeb
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getUploadDir($forWeb = false)
     {
@@ -1007,7 +857,7 @@ class User implements
     }
 
     /**
-     * @return Locale
+     * {@inheritdoc}
      */
     public function getCatalogLocale()
     {
@@ -1015,11 +865,9 @@ class User implements
     }
 
     /**
-     * @param Locale $catalogLocale
-     *
-     * @return User
+     * {@inheritdoc}
      */
-    public function setCatalogLocale($catalogLocale)
+    public function setCatalogLocale(LocaleInterface $catalogLocale)
     {
         $this->catalogLocale = $catalogLocale;
 
@@ -1027,7 +875,7 @@ class User implements
     }
 
     /**
-     * @return Channel
+     * {@inheritdoc}
      */
     public function getCatalogScope()
     {
@@ -1035,11 +883,9 @@ class User implements
     }
 
     /**
-     * @param Channel $catalogScope
-     *
-     * @return User
+     * {@inheritdoc}
      */
-    public function setCatalogScope($catalogScope)
+    public function setCatalogScope(ChannelInterface $catalogScope)
     {
         $this->catalogScope = $catalogScope;
 
@@ -1047,7 +893,7 @@ class User implements
     }
 
     /**
-     * @return CategoryInterface
+     * {@inheritdoc}
      */
     public function getDefaultTree()
     {
@@ -1055,13 +901,29 @@ class User implements
     }
 
     /**
-     * @param CategoryInterface $defaultTree
-     *
-     * @return User
+     * {@inheritdoc}
      */
-    public function setDefaultTree($defaultTree)
+    public function setDefaultTree(CategoryInterface $defaultTree)
     {
         $this->defaultTree = $defaultTree;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEmailNotifications()
+    {
+        return $this->emailNotifications;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setEmailNotifications($emailNotifications)
+    {
+        $this->emailNotifications = $emailNotifications;
 
         return $this;
     }
