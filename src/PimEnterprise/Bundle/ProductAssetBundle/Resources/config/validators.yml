@@ -1,0 +1,11 @@
+parameters:
+    pimee_product_asset.validator.constraint.localizable_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Validator\Constraints\LocalizableAssetValidator
+
+services:
+    pimee_product_asset.validator.constraint.localizable_asset:
+        class: %pimee_product_asset.validator.constraint.localizable_asset.class%
+        arguments:
+            # TODO: use '@pim_catalog.repository.cached_locale' once master merged
+            - '@pim_catalog.repository.locale'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_product_localizable_asset_validator }

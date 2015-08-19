@@ -120,6 +120,8 @@ class Reference implements ReferenceInterface
     public function setVariations(ArrayCollection $variations)
     {
         $this->variations = $variations;
+
+        return $this;
     }
 
     /**

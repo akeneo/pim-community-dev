@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Remover;
+namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Remover;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
@@ -19,8 +19,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Asset remover extends BaseRemover in the goal to dispatch event before and after removal
- *
- * TODO; should go in the component
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
@@ -32,14 +30,14 @@ class AssetRemover extends BaseRemover
     /**
      * @param ObjectManager                    $objectManager
      * @param RemovingOptionsResolverInterface $optionsResolver
-     * @param string                           $removedClass
      * @param EventDispatcherInterface         $eventDispatcher
+     * @param string                           $removedClass
      */
     public function __construct(
         ObjectManager $objectManager,
         RemovingOptionsResolverInterface $optionsResolver,
-        $removedClass,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        $removedClass
     ) {
         parent::__construct($objectManager, $optionsResolver, $eventDispatcher, $removedClass);
 

@@ -16,7 +16,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 
 /**
- * Tag Step for assets
+ * Tag Step for assets, the processor returns an array of tags and not a single item
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */

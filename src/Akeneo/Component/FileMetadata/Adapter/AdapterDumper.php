@@ -44,7 +44,7 @@ class AdapterDumper
         foreach ($this->registry->all() as $adapter) {
             if (null === $mimeType || (null !== $mimeType && $adapter->isMimeTypeSupported($mimeType))) {
                 $output[$adapter->getName()] = [
-                    'class' => get_class($adapter),
+                    'class'     => get_class($adapter),
                     'mimeTypes' => implode(', ', $adapter->getSupportedMimeTypes())
                 ];
             }

@@ -31,7 +31,6 @@ class AssetFactory
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-
     /**
      * @param ReferenceFactory          $referenceFactory
      * @param LocaleRepositoryInterface $localeRepository

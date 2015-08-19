@@ -31,7 +31,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
     protected $attributeRepository;
 
     /**
-     * @param ProductCascadeRemovalRepositoryInterface $repository
+     * @param ProductCascadeRemovalRepositoryInterface $cascadeRemovalRepository
      * @param AttributeRepositoryInterface             $attributeRepository
      */
     public function __construct(
