@@ -8,6 +8,14 @@
 - Change constructor of `PimEnterprise/Bundle/MassEditAction/Operation/EditCommonAttributes` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\RawFileRawFileStorerInterface`
 - Change constructor of `Akeneo\Bundle\RuleEngineBundle\Doctrine\Common\Saver\RuleDefinitionSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - `dispatchAction`, `showAction`, `showAttributeAction` and `draftsAction` have been removed from the `PimEnterprise\Bundle\EnrichBundle\Controller\ProductController`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator` to `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator` to `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator` to `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft\GridHelper` to `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductDraft\GridHelper`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductHistory\GridHelper` to `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory\GridHelper`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\ContextConfigurator` to `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\ContextConfigurator`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper` to `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper`
+- Move `PimEnterprise\Bundle\DataGridBundle\Datagrid\PublishedProduct\GridHelper` to `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\PublishedProduct\GridHelper`
 
 ## Bug fixes
 PIM-4443: Exporting a product with an attribute with a numeric code gives an error, full numeric codes for entities are now forbidden except for products
