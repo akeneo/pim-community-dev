@@ -38,10 +38,9 @@ asset_categories:
 
 asset_tags:
     order: 30
-    multiple: true
-    yml:
-        reader:    pim_base_connector.reader.file.yaml_multiple
-        processor: pimee_base_connector.processor.asset_tag
+    csv:
+        reader:    pimee_product_asset.reader.file.csv_tag
+        processor: pimee_product_asset.processor.denormalization.tag.flat
 
 assets:
     order: 40

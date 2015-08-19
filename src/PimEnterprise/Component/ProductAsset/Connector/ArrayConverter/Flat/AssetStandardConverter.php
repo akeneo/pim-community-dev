@@ -76,6 +76,8 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      * @param mixed  $data
      *
      * @return array
+     *
+     * TODO: qualification when import, tags when export ... + localized field, we should be able to import what we export
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
@@ -89,10 +91,10 @@ class AssetStandardConverter implements StandardArrayConverterInterface
                 $convertedItem[$field] = (bool) $data;
                 break;
             case 'qualification':
-                $convertedItem['tags'] = explode(',', $data);
+                $convertedItem['tags'] = array_unique(explode(',', $data));
                 break;
             case 'categories':
-                $convertedItem['categories'] = explode(',', $data);
+                $convertedItem['categories'] = array_unique(explode(',', $data));
                 break;
         }
 
