@@ -1,6 +1,11 @@
 liip_imagine:
     data_loader: flysystem_data_loader
     filter_sets:
+        avatar_med:
+            quality:          95
+            filters:
+                thumbnail:    { size: [58, 58], mode: outbound }
+                strip:        ~
         preview:
             quality:          95
             format:           jpg

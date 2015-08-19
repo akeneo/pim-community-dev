@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
+use Pim\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 
 /**
  * Abstract product
@@ -485,7 +486,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function addCategory(CategoryInterface $category)
+    public function addCategory(BaseCategoryInterface $category)
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
@@ -497,7 +498,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function removeCategory(CategoryInterface $category)
+    public function removeCategory(BaseCategoryInterface $category)
     {
         $this->categories->removeElement($category);
 

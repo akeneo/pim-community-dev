@@ -79,6 +79,8 @@ services:
             - '@oro_security.security_facade'
             - '@pim_catalog.saver.category'
             - '@pim_catalog.remover.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.repository.category'
 
     pim_enrich.controller.channel:
         scope: request
@@ -160,6 +162,7 @@ services:
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.factory.category'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%
@@ -213,6 +216,7 @@ services:
             - '@liip_imagine.filter.manager'
             - '@oneup_flysystem.mount_manager'
             - ['catalogStorage']
+            - %kernel.root_dir%/../web/bundles/pimenrich/img/img_generic.png
 
     pim_enrich.controller.variant_group:
         scope: request

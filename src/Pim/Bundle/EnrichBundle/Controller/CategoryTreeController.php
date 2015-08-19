@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -12,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Classification\Factory\CategoryFactory;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,7 +31,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Category Tree Controller
+ * Product category Tree Controller
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -51,23 +54,31 @@ class CategoryTreeController extends AbstractDoctrineController
     /** @var RemoverInterface */
     protected $categoryRemover;
 
+    /** @var CategoryFactory */
+    protected $categoryFactory;
+
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param CategoryManager          $categoryManager
-     * @param UserContext              $userContext
-     * @param SecurityFacade           $securityFacade
-     * @param SaverInterface           $categorySaver
-     * @param RemoverInterface         $categoryRemover
+     * @param Request                     $request
+     * @param EngineInterface             $templating
+     * @param RouterInterface             $router
+     * @param TokenStorageInterface       $tokenStorage
+     * @param FormFactoryInterface        $formFactory
+     * @param ValidatorInterface          $validator
+     * @param TranslatorInterface         $translator
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param ManagerRegistry             $doctrine
+     * @param CategoryManager             $categoryManager
+     * @param UserContext                 $userContext
+     * @param SecurityFacade              $securityFacade
+     * @param SaverInterface              $categorySaver
+     * @param RemoverInterface            $categoryRemover
+     * @param CategoryFactory             $categoryFactory
+     * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(
         Request $request,
@@ -83,7 +94,9 @@ class CategoryTreeController extends AbstractDoctrineController
         UserContext $userContext,
         SecurityFacade $securityFacade,
         SaverInterface $categorySaver,
-        RemoverInterface $categoryRemover
+        RemoverInterface $categoryRemover,
+        CategoryFactory $categoryFactory,
+        CategoryRepositoryInterface $categoryRepository
     ) {
         parent::__construct(
             $request,
@@ -97,11 +110,13 @@ class CategoryTreeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->categoryManager = $categoryManager;
-        $this->userContext     = $userContext;
-        $this->securityFacade  = $securityFacade;
-        $this->categorySaver   = $categorySaver;
-        $this->categoryRemover = $categoryRemover;
+        $this->categoryManager    = $categoryManager;
+        $this->userContext        = $userContext;
+        $this->securityFacade     = $securityFacade;
+        $this->categorySaver      = $categorySaver;
+        $this->categoryRemover    = $categoryRemover;
+        $this->categoryFactory    = $categoryFactory;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -114,23 +129,25 @@ class CategoryTreeController extends AbstractDoctrineController
      * @return array
      *
      * @Template
-     * @AclAncestor("pim_enrich_category_list")
+     * @AclAncestor("pim_enrich_product_category_list")
      */
     public function listTreeAction(Request $request)
     {
         $selectNodeId = $request->get('select_node_id', -1);
+        $relatedEntity = $this->getRequest()->get('related_entity', 'product');
+
         try {
             $selectNode = $this->findCategory($selectNodeId);
         } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getUserTree();
+            $selectNode = $this->userContext->getUserCategoryTree($relatedEntity);
         }
 
         return [
-            'trees'          => $this->categoryManager->getTrees(),
+            'trees'          => $this->categoryRepository->getTrees(),
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
-            'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
-            'related_entity' => $this->getRequest()->get('related_entity', 'product')
+            'item_count'     => (bool) $this->getRequest()->get('with_items_count', true),
+            'related_entity' => $relatedEntity
         ];
     }
 
@@ -139,7 +156,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @AclAncestor("pim_enrich_category_edit")
+     * @AclAncestor("pim_enrich_product_category_edit")
      *
      * @return Response
      */
@@ -149,6 +166,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $parentId      = $request->get('parent');
         $prevSiblingId = $request->get('prev_sibling');
 
+        // TODO: Change this in PIM-4409
         $this->categoryManager->move($categoryId, $parentId, $prevSiblingId);
 
         return new JsonResponse(['status' => 1]);
@@ -165,7 +183,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_enrich_category_list")
+     * @AclAncestor("pim_enrich_product_category_list")
      *
      * @return array
      */
@@ -177,28 +195,28 @@ class CategoryTreeController extends AbstractDoctrineController
             return ['categories' => []];
         }
 
-        $selectNodeId      = $this->getRequest()->get('select_node_id', -1);
-        $withProductsCount = (bool) $this->getRequest()->get('with_products_count', false);
-        $includeParent     = (bool) $this->getRequest()->get('include_parent', false);
-        $includeSub        = (bool) $this->getRequest()->get('include_sub', false);
-        $relatedEntity     = $this->getRequest()->get('related_entity', 'product');
+        $selectNodeId   = $this->getRequest()->get('select_node_id', -1);
+        $withItemsCount = (bool)$this->getRequest()->get('with_items_count', false);
+        $includeParent  = (bool)$this->getRequest()->get('include_parent', false);
+        $includeSub     = (bool)$this->getRequest()->get('include_sub', false);
+        $relatedEntity  = $this->getRequest()->get('related_entity', 'product');
 
         try {
             $selectNode = $this->findCategory($selectNodeId);
 
-            if (!$this->categoryManager->isAncestor($parent, $selectNode)) {
+            if (!$this->categoryRepository->isAncestor($parent, $selectNode)) {
                 $selectNode = null;
             }
         } catch (NotFoundHttpException $e) {
             $selectNode = null;
         }
 
-        if ($selectNode !== null) {
-            $categories = $this->getChildren($parent->getId(), $selectNode->getId());
-            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
-        } else {
-            $categories = $this->getChildren($parent->getId());
+        $categories = $this->getChildrenCategories($request, $selectNode);
+
+        if (null === $selectNode) {
             $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
+        } else {
+            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
         }
 
         return $this->render(
@@ -207,7 +225,7 @@ class CategoryTreeController extends AbstractDoctrineController
                 'categories'     => $categories,
                 'parent'         => ($includeParent) ? $parent : null,
                 'include_sub'    => $includeSub,
-                'product_count'  => $withProductsCount,
+                'item_count'     => $withItemsCount,
                 'select_node'    => $selectNode,
                 'related_entity' => $relatedEntity
             ],
@@ -217,7 +235,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
     /**
      * @Template()
-     * @AclAncestor("pim_enrich_category_list")
+     * @AclAncestor("pim_enrich_product_category_list")
      *
      * @return array
      */
@@ -232,7 +250,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      * @param int     $parent
      *
-     * @AclAncestor("pim_enrich_category_create")
+     * @AclAncestor("pim_enrich_product_category_create")
      *
      * @return Response|RedirectResponse
      */
@@ -240,10 +258,10 @@ class CategoryTreeController extends AbstractDoctrineController
     {
         if ($parent) {
             $parent = $this->findCategory($parent);
-            $category = $this->categoryManager->getCategoryInstance();
+            $category = $this->categoryFactory->create();
             $category->setParent($parent);
         } else {
-            $category = $this->categoryManager->getTreeInstance();
+            $category = $this->categoryFactory->create();
         }
 
         $category->setCode($request->get('label'));
@@ -276,7 +294,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      * @param int     $id
      *
-     * @AclAncestor("pim_enrich_category_edit")
+     * @AclAncestor("pim_enrich_product_category_edit")
      *
      * @return Response
      */
@@ -309,7 +327,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @param int $id
      *
-     * @AclAncestor("pim_enrich_category_remove")
+     * @AclAncestor("pim_enrich_product_category_remove")
      *
      * @return Response|RedirectResponse
      */
@@ -337,7 +355,7 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     protected function findCategory($categoryId)
     {
-        $category = $this->categoryManager->getCategoryRepository()->find($categoryId);
+        $category = $this->categoryRepository->find($categoryId);
 
         if (!$category) {
             throw $this->createNotFoundException('Category not found');
@@ -349,21 +367,31 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * Gets the options for the form
      *
+     * @param CategoryInterface $category
+     *
      * @return array
      */
-    protected function getFormOptions()
+    protected function getFormOptions(CategoryInterface $category)
     {
         return [];
     }
 
     /**
-     * @param int   $parentId
-     * @param mixed $selectNodeId
+     * @param Request                $request
+     * @param CategoryInterface|null $selectNode
      *
-     * @return CategoryInterface[]
+     * @return array|ArrayCollection
      */
-    protected function getChildren($parentId, $selectNodeId = false)
+    protected function getChildrenCategories(Request $request, $selectNode)
     {
-        return $this->categoryManager->getChildren($parentId, $selectNodeId);
+        $parent = $this->findCategory($request->get('id'));
+
+        if (null !== $selectNode) {
+            $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId());
+        } else {
+            $categories = $this->categoryRepository->getChildrenByParentId($parent->getId());
+        }
+
+        return $categories;
     }
 }

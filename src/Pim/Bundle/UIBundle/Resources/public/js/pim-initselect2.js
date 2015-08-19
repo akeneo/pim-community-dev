@@ -33,11 +33,13 @@ define(
                 });
             },
             initSelect: function ($select) {
+                var selectId = $select.context.id;
                 var options = {
                     multiple: false,
                     allowClear: false
                 };
                 var self = this;
+                var queryTimer;
 
                 if ($select.attr('data-multiple')) {
                     options.multiple = true;
@@ -57,27 +59,30 @@ define(
                         page = options.context.page;
                     }
 
-                    $.ajax({
-                        url: $select.attr('data-url'),
-                        data: {
-                            search: options.term,
-                            options: {
-                                limit: self.resultsPerPage,
-                                page: page
-                            }
-                        },
-                        dataType: 'json',
-                        type: 'GET',
-                        success: function (data) {
-                            options.callback({
-                                results: data.results,
-                                more: data.results.length === self.resultsPerPage,
-                                context: {
-                                    page: page + 1
+                    window.clearTimeout(queryTimer);
+                    queryTimer = window.setTimeout(function () {
+                        $.ajax({
+                            url: $select.attr('data-url'),
+                            data: {
+                                search: options.term,
+                                options: {
+                                    limit: self.resultsPerPage,
+                                    page: page
                                 }
-                            });
-                        }
-                    });
+                            },
+                            dataType: 'json',
+                            type: 'GET',
+                            success: function (data) {
+                                options.callback({
+                                    results: data.results,
+                                    more: data.results.length === self.resultsPerPage,
+                                    context: {
+                                        page: page + 1
+                                    }
+                                });
+                            }
+                        });
+                    }, 400);
                 };
                 options.initSelection = function(element, callback) {
                     var choices = $.parseJSON($select.attr('data-choices'));

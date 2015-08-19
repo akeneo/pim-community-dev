@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
 /**
@@ -45,7 +46,7 @@ class ChannelManager
      *
      * @param array $criterias
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel[]
+     * @return ChannelInterface[]
      */
     public function getChannels($criterias = [])
     {
@@ -55,7 +56,7 @@ class ChannelManager
     /**
      * Get full channels with locales and currencies
      *
-     * @return array
+     * @return ChannelInterface[]
      */
     public function getFullChannels()
     {
@@ -67,7 +68,7 @@ class ChannelManager
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     * @return ChannelInterface
      */
     public function getChannelByCode($code)
     {

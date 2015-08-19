@@ -2,13 +2,15 @@
 
 namespace Pim\Bundle\UserBundle\Context;
 
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -25,20 +27,26 @@ class UserContext
     /** @staticvar string */
     const REQUEST_LOCALE_PARAM = 'dataLocale';
 
+    /** @staticvar string */
+    const USER_PRODUCT_CATEGORY_TYPE = 'product';
+
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
-    /** @var ChannelManager */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /** @var CategoryManager */
-    protected $categoryManager;
+    /** @var CategoryRepositoryInterface */
+    protected $productCategoryRepo;
 
     /** @var RequestStack */
     protected $requestStack;
+
+    /** @var ChoicesBuilderInterface */
+    protected $choicesBuilder;
 
     /** @var array */
     protected $userLocales;
@@ -47,27 +55,29 @@ class UserContext
     protected $defaultLocale;
 
     /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param LocaleManager         $localeManager
-     * @param ChannelManager        $channelManager
-     * @param CategoryManager       $categoryManager
-     * @param RequestStack          $requestStack
-     * @param string                $defaultLocale
+     * @param TokenStorageInterface       $tokenStorage
+     * @param LocaleRepositoryInterface   $localeRepository
+     * @param ChannelRepositoryInterface  $channelRepository
+     * @param CategoryRepositoryInterface $productCategoryRepo
+     * @param RequestStack                $requestStack
+     * @param string                      $defaultLocale
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
-        CategoryManager $categoryManager,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        CategoryRepositoryInterface $productCategoryRepo,
         RequestStack $requestStack,
+        ChoicesBuilderInterface $choicesBuilder,
         $defaultLocale
     ) {
-        $this->tokenStorage    = $tokenStorage;
-        $this->localeManager   = $localeManager;
-        $this->channelManager  = $channelManager;
-        $this->categoryManager = $categoryManager;
-        $this->requestStack    = $requestStack;
-        $this->defaultLocale   = $defaultLocale;
+        $this->tokenStorage        = $tokenStorage;
+        $this->localeRepository    = $localeRepository;
+        $this->channelRepository   = $channelRepository;
+        $this->productCategoryRepo = $productCategoryRepo;
+        $this->requestStack        = $requestStack;
+        $this->choicesBuilder      = $choicesBuilder;
+        $this->defaultLocale       = $defaultLocale;
     }
 
     /**
@@ -76,7 +86,7 @@ class UserContext
      *
      * @throws \LogicException When there are no activated locales
      *
-     * @return Locale
+     * @return LocaleInterface
      */
     public function getCurrentLocale()
     {
@@ -112,12 +122,12 @@ class UserContext
     /**
      * Returns active locales
      *
-     * @return Locale[]
+     * @return LocaleInterface[]
      */
     public function getUserLocales()
     {
         if ($this->userLocales === null) {
-            $this->userLocales = $this->localeManager->getActiveLocales();
+            $this->userLocales = $this->localeRepository->getActivatedLocales();
         }
 
         return $this->userLocales;
@@ -141,13 +151,13 @@ class UserContext
     /**
      * Get user channel
      *
-     * @return Channel
+     * @return ChannelInterface
      */
     public function getUserChannel()
     {
         $catalogScope = $this->getUserOption('catalogScope');
 
-        return $catalogScope ?: current($this->channelManager->getChannels());
+        return $catalogScope ?: $this->channelRepository->findOneBy([]);
     }
 
     /**
@@ -167,7 +177,8 @@ class UserContext
      */
     public function getChannelChoicesWithUserChannel()
     {
-        $channelChoices  = $this->channelManager->getChannelChoices();
+        $channels        = $this->channelRepository->findAll();
+        $channelChoices  = $this->choicesBuilder->buildChoices($channels);
         $userChannelCode = $this->getUserChannelCode();
 
         if (array_key_exists($userChannelCode, $channelChoices)) {
@@ -180,19 +191,47 @@ class UserContext
     /**
      * Get user category tree
      *
-     * @return CategoryInterface
+     * @return CatalogCategoryInterface
+     *
+     * @deprecated Will be removed in 1.5. Please use getUserProductCategoryTree() instead.
      */
     public function getUserTree()
     {
+        return $this->getUserProductCategoryTree();
+    }
+
+    /**
+     * For the given $relatedEntity of category asked, return the default user category.
+     *
+     * @param string $relatedEntity
+     *
+     * @return CategoryInterface|null
+     */
+    public function getUserCategoryTree($relatedEntity)
+    {
+        if (static::USER_PRODUCT_CATEGORY_TYPE === $relatedEntity) {
+            return $this->getUserProductCategoryTree();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get user product category tree
+     *
+     * @return CategoryInterface
+     */
+    public function getUserProductCategoryTree()
+    {
         $defaultTree = $this->getUserOption('defaultTree');
 
-        return $defaultTree ?: current($this->categoryManager->getTrees());
+        return $defaultTree ?: current($this->productCategoryRepo->getTrees());
     }
 
     /**
      * Returns the request locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getRequestLocale()
     {
@@ -200,7 +239,7 @@ class UserContext
         if (null !== $request) {
             $localeCode = $request->get(self::REQUEST_LOCALE_PARAM);
             if ($localeCode) {
-                $locale = $this->localeManager->getLocaleByCode($localeCode);
+                $locale = $this->localeRepository->findOneByIdentifier($localeCode);
                 if ($locale && $this->isLocaleAvailable($locale)) {
                     return $locale;
                 }
@@ -213,7 +252,7 @@ class UserContext
     /**
      * Returns the user locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getUserLocale()
     {
@@ -225,11 +264,11 @@ class UserContext
     /**
      * Returns the default application locale
      *
-     * @return Locale|null
+     * @return LocaleInterface|null
      */
     protected function getDefaultLocale()
     {
-        return $this->localeManager->getLocaleByCode($this->defaultLocale);
+        return $this->localeRepository->findOneByIdentifier($this->defaultLocale);
     }
 
     /**

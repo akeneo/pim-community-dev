@@ -102,7 +102,9 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
             'defaults'      => array(array()),
             'with_locale'   => array(
                 array('locale' => 'other_locale'),
-                array('url'    => 'pim_ui_ajaxentity_list?&class=class&dataLocale=other_locale&collectionId=')
+                array(
+                    'url' => 'pim_ui_ajaxentity_list?&class=class&dataLocale=other_locale&collectionId=&isCreatable='
+                )
             ),
             'with_url'      => array(array('url' => 'url')),
             'with_params'   => array(
@@ -114,7 +116,9 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
                     'route_parameters'      => array('param1' => 'val1'),
                     'minimum_input_length'  => 5,
                 ),
-                array('url' => 'route?&param1=val1&class=class&dataLocale=locale&collectionId=collection_id')
+                array(
+                    'url' => 'route?&param1=val1&class=class&dataLocale=locale&collectionId=collection_id&isCreatable='
+                )
             )
         );
     }
@@ -131,11 +135,12 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
             'collection_id'         => null,
             'route'                 => 'pim_ui_ajaxentity_list',
             'route_parameters'      => array(),
+            'is_creatable'          => false,
             'data_class'            => null,
             'minimum_input_length'  => 0,
             'error_bubbling'        => false,
             'locale'                => 'locale',
-            'url'                   => 'pim_ui_ajaxentity_list?&class=class&dataLocale=locale&collectionId='
+            'url'                   => 'pim_ui_ajaxentity_list?&class=class&dataLocale=locale&collectionId=&isCreatable='
         );
         $resolver = new OptionsResolver();
         $this->type->configureOptions($resolver);

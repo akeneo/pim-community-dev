@@ -7,34 +7,28 @@ Akeneo\Component\FileStorage\Model\File:
                 type: string
             - Length:
                 max: 255
-            - NotBlank: ~
         originalFilename:
             - Type:
                 type: string
             - Length:
                 max: 255
-            - NotBlank: ~
         mimeType:
             - Type:
                 type: string
             - Length:
                 max: 255
-            - NotBlank: ~
         size:
             - Type:
                 type: int
-            - NotBlank: ~
         extension:
             - Type:
                 type: string
             - Length:
                 max: 10
-            - NotBlank: ~
         storage:
             - Type:
                 type: string
             - Length:
                 max: 255
-            - NotBlank: ~
         uploadedFile:
             - File: { groups: [upload, Default] }

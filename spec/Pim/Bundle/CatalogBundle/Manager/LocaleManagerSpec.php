@@ -36,7 +36,7 @@ class LocaleManagerSpec extends ObjectBehavior
 
     function it_provides_a_locale_by_its_code(LocaleInterface $pl, $repository)
     {
-        $repository->findOneBy(['code' => 'pl'])->willReturn($pl);
+        $repository->findOneByIdentifier('pl')->willReturn($pl);
 
         $this->getLocaleByCode('pl')->shouldReturn($pl);
     }

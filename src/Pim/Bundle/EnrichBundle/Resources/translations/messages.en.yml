@@ -380,6 +380,7 @@ btn:
         variant group:    create variant group
         association type: create association type
         group type:       create group type
+        drag_or_upload:   Drag and drop to upload or click here
     edit:            edit
     save:            save
     save and back:   save and back to grid
