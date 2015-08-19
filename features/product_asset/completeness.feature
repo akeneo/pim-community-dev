@@ -23,7 +23,6 @@ Feature: Display the completeness of a product with assets
     And I am logged in as "Julia"
     And I launched the completeness calculator
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-4784
   Scenario: Successfully update the completeness at for a product with non localized asset
     Given I am on the "jacket-white" product page
     And I visit the "Media" group
@@ -70,7 +69,6 @@ Feature: Display the completeness of a product with assets
       | tablet  | de_DE  | warning | weather_conditions rating | 80%   |
       | tablet  | en_US  | warning | weather_conditions rating | 80%   |
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-4784
   Scenario: Successfully update the completeness at for a product with localized asset
     Given I am on the "jacket-white" product page
     And I visit the "Media" group

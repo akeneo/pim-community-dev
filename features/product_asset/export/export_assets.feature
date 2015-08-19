@@ -4,7 +4,6 @@ Feature: Export assets
   As a product manager
   I need to be able to import and export assets
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-4784
   Scenario: Successfully export assets
     Given a "clothing" catalog configuration
     And the following job "clothing_asset_export" configuration:
