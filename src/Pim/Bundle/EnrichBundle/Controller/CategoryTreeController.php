@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -92,7 +93,11 @@ class CategoryTreeController extends Controller
         $this->categoryFactory    = $categoryFactory;
         $this->categoryRepository = $categoryRepository;
         $this->securityFacade     = $securityFacade;
-        $this->rawConfiguration   = $rawConfiguration;
+
+        $resolver = new OptionsResolver();
+        $this->configure($resolver);
+
+        $this->rawConfiguration = $resolver->resolve($rawConfiguration);
     }
 
     /**
@@ -118,7 +123,7 @@ class CategoryTreeController extends Controller
         try {
             $selectNode = $this->findCategory($selectNodeId);
         } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getUserCategoryTree($this->rawConfiguration[0]);
+            $selectNode = $this->userContext->getUserCategoryTree($this->rawConfiguration['related_entity']);
         }
 
         return [
@@ -126,7 +131,7 @@ class CategoryTreeController extends Controller
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $request->get('include_sub', false),
             'item_count'     => (bool) $request->get('with_items_count', true),
-            'related_entity' => $this->rawConfiguration[0]
+            'related_entity' => $this->rawConfiguration['related_entity']
         ];
     }
 
@@ -215,7 +220,7 @@ class CategoryTreeController extends Controller
                 'include_sub'    => $includeSub,
                 'item_count'     => $withItemsCount,
                 'select_node'    => $selectNode,
-                'related_entity' => $this->rawConfiguration[0]
+                'related_entity' => $this->rawConfiguration['related_entity']
             ],
             new JsonResponse()
         );
@@ -265,7 +270,7 @@ class CategoryTreeController extends Controller
 
         $category->setCode($request->get('label'));
         $this->eventDispatcher->dispatch(CategoryEvents::PRE_CREATE, new GenericEvent($category));
-        $form = $this->createForm($this->rawConfiguration[1], $category, $this->getFormOptions($category));
+        $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -306,7 +311,7 @@ class CategoryTreeController extends Controller
 
         $category = $this->findCategory($id);
         $this->eventDispatcher->dispatch(CategoryEvents::PRE_EDIT, new GenericEvent($category));
-        $form = $this->createForm($this->rawConfiguration[1], $category, $this->getFormOptions($category));
+        $form = $this->createForm($this->rawConfiguration['form_type'], $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -415,6 +420,24 @@ class CategoryTreeController extends Controller
      */
     protected function buildAclName($name)
     {
-        return $this->rawConfiguration[2] . '_' . $name;
+        return $this->rawConfiguration['acl'] . '_' . $name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function buildRouteName($name)
+    {
+        return $this->rawConfiguration['route'] . '_' . $name;
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    protected function configure(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(['related_entity', 'form_type', 'acl', 'route']);
     }
 }
