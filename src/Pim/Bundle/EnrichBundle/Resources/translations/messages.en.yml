@@ -972,3 +972,8 @@ mass_edit report:
 job_tracker:
     tab:
         title: Process tracker
+
+# Errors
+
+pim_enrich.error:
+    exception.title: Oh snap! A %status_code% error occured...
