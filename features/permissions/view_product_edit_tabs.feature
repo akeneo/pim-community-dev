@@ -9,9 +9,9 @@ Feature: Check product edit tabs visibility
     And the following products:
       | sku     | categories |
       | rangers | pants      |
-    And the following category accesses:
-      | category | user group | access |
-      | pants    | Redactor   | edit   |
+    And the following product category accesses:
+      | product category | user group | access |
+      | pants            | Redactor   | edit   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-4483
   Scenario: Not being able to classify a product if I am not owner
