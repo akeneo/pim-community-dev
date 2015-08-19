@@ -42,7 +42,7 @@ services:
             - '@pimee_product_asset.factory.category'
             - '@pimee_product_asset.repository.category'
             - '@oro_security.security_facade'
-            - ['asset', 'pimee_asset_category', 'pimee_product_asset', 'pimee_asset']
+            - { related_entity: asset, form_type: pimee_asset_category, acl: pimee_product_asset, route: pimee_asset }
             - '@pimee_product_asset.repository.asset_category_access'
             - '@security.token_storage'
         calls:
