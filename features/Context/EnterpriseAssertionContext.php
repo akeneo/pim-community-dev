@@ -37,4 +37,3 @@ class EnterpriseAssertionContext extends BaseAssertionContext
         }
     }
 }
-
