@@ -213,7 +213,18 @@
 - Change constructor of `Pim\Bundle\UserBundle\Context\UserContext`, replace `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface`, add `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
 - Constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
-# 1.3.x
+# 1.3.21 (2015-08-17)
+
+## Bug fixes
+- PIM-4753: Fix updated date issues for Versionable objects
+
+# 1.3.20 (2015-08-14)
+
+## Bug fixes
+- PIM-4737: Fix a bug with the select2 cache.
+
+# 1.3.19 (2015-08-13)
+
 ## Bug fixes
 - PIM-4706: Product association import error with identifier containing comma or semicolon
 - PIM-4748: performances issues with product display with 8 locales (attribute and attribute group translations)
