@@ -72,7 +72,7 @@ class AssetCategoryAccessRepository extends CategoryAccessRepository
     /**
      * {@inherit}
      */
-    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, User $user, $accessLevel)
+    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, UserInterface $user, $accessLevel)
     {
         $categories = $this->assetCategoryRepo->findAll();
 

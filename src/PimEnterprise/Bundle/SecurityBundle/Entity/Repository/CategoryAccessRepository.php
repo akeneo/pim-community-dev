@@ -134,7 +134,7 @@ class CategoryAccessRepository extends EntityRepository
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, User $user, $accessLevel)
+    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, UserInterface $user, $accessLevel)
     {
         $categoryRootAlias = current($categoryQB->getRootAliases());
 
