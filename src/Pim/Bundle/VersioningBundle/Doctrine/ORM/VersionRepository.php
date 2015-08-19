@@ -93,7 +93,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
         $qb
             ->addSelect(sprintf('%s as author', $authorExpr))
             ->leftJoin(
-                'OroUserBundle:User',
+                'PimUserBundle:User',
                 'u',
                 'WITH',
                 'u.username = v.author'

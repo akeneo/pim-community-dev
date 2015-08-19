@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -23,7 +24,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $context,
         GroupInterface $group,
         GroupType $type,
-        Constraint $constraint
+        VariantGroupAxis $constraint
     ) {
         $group->getId()->willReturn(null);
         $group->getType()->willReturn($type);
@@ -38,7 +39,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $context,
         GroupInterface $variantGroup,
         GroupType $type,
-        Constraint $constraint
+        VariantGroupAxis $constraint
     ) {
         $variantGroup->getId()->willReturn(42);
         $variantGroup->getType()->willReturn($type);
@@ -53,13 +54,14 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $context,
         GroupInterface $variantGroup,
         GroupType $type,
-        Constraint $constraint,
+        VariantGroupAxis $constraint,
         AttributeInterface $axisAttribute
     ) {
         $variantGroup->getId()->willReturn(null);
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
         $variantGroup->getAxisAttributes()->willReturn([$axisAttribute]);
+        $axisAttribute->getAttributeType()->willReturn(AttributeTypes::OPTION_SIMPLE_SELECT);
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($variantGroup, $constraint);
@@ -110,5 +112,32 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
             ->willReturn($violation);
 
         $this->validate($group, $constraint);
+    }
+
+    function it_adds_a_violation_if_axis_attributes_are_invalid(
+        $context,
+        GroupInterface $variantGroup,
+        GroupType $type,
+        VariantGroupAxis $constraint,
+        ConstraintViolationBuilderInterface $violation,
+        AttributeInterface $invalidAxis
+    ) {
+        $variantGroup->getId()->willReturn(12);
+        $variantGroup->getType()->willReturn($type);
+        $variantGroup->getCode()->willReturn('tshirt');
+        $type->isVariant()->willReturn(true);
+        $variantGroup->getAxisAttributes()->willReturn([$invalidAxis]);
+        $invalidAxis->getAttributeType()->willReturn(AttributeTypes::TEXT);
+        $invalidAxis->getCode()->willReturn('name');
+
+        $violationData = [
+            '%group%'     => 'tshirt',
+            '%attribute%' => 'name'
+        ];
+        $context->buildViolation($constraint->invalidAxisMessage, $violationData)
+            ->shouldBeCalled()
+            ->willReturn($violation);
+
+        $this->validate($variantGroup, $constraint);
     }
 }
