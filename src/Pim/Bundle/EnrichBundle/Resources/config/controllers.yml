@@ -160,7 +160,6 @@ services:
             - '@pim_catalog.manager.product_category'
             - '@pim_catalog.saver.product'
             - '@pim_enrich.manager.sequential_edit'
-            - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.factory.category'
 
@@ -375,6 +374,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.filter.product_edit_data'
+            - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
 
     pim_enrich.controller.rest.product_category:

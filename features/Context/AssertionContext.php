@@ -405,7 +405,10 @@ class AssertionContext extends RawMinkContext
             $parsedText = '';
             foreach ($changesetRows as $row) {
                 $innerHtml = $row->find('css', 'td:first-of-type')->getHtml();
+
                 $parsedText = trim(preg_replace('/(<[^>]+>)+/', ' ', $innerHtml));
+                $parsedText = preg_replace('/\s+/', ' ', $parsedText);
+
                 if ($parsedText === $data['property']) {
                     $matchingRow = $row;
                     break;
