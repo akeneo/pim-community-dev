@@ -26,7 +26,7 @@ Feature: Create product assets
     And I should see the Tablet variation upload zone
     And I switch the locale to "French (France)"
 
-  Scenario: Create a not localized asset
+  Scenario: Create a non localized asset
     Given I am logged in as "Julia"
     And I am on the assets page
     And I press the "Create an asset" button
@@ -40,7 +40,7 @@ Feature: Create product assets
     And I should see the Mobile variation upload zone
     And I should see the Tablet variation upload zone
 
-  Scenario: Create a not localized asset with a picture
+  Scenario: Create a non localized asset with a picture
     Given I am logged in as "Julia"
     And I am on the assets page
     And I press the "Create an asset" button

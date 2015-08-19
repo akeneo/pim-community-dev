@@ -1,5 +1,5 @@
 @javascript
-Feature: Revert an assets collection
+Feature: Revert an assets collection in a product
   In order to revert a collection of assets
   As a product manager
 
@@ -7,7 +7,7 @@ Feature: Revert an assets collection
     Given the "clothing" catalog configuration
     And I am logged in as "Julia"
 
-  Scenario: Successfully revert an assets collection
+  Scenario: Successfully revert an assets collection in a product
     Given the following product:
       | sku   | family  |
       | jeans | jackets |
