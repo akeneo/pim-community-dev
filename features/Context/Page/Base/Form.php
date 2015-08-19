@@ -663,7 +663,8 @@ class Form extends Base
         $this->getSession()->wait(2000);
 
         $allValues = array_filter($allValues);
-        if (1 === count($allValues)) {
+
+        if (1 === count($allValues) && null !== $label->getParent()->find('css', 'select')) {
             $value = array_shift($allValues);
             $this->fillSelectField($label, $value);
         }

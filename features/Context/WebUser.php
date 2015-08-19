@@ -1215,6 +1215,27 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
+     * @Given /^I should not see the following option:$/
+     */
+    public function iShouldNotSeeTheFollowingOptions(TableNode $table)
+    {
+        foreach ($table->getRowsHash() as $field => $value) {
+            try {
+                $this->getCurrentPage()->fillField($field, $value);
+            } catch (\InvalidArgumentException $e) {
+                $needle = sprintf('Could not find option "%s"', $value);
+                if (false === strpos($e->getMessage(), $needle)) {
+                    throw $e;
+                }
+                continue;
+            }
+            throw new \InvalidArgumentException(sprintf('Option "%s" has been found and should not.', $value));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @When /^I fill in the following information in the quick search popin:$/
      */
     public function iFillInTheFollowingInformationInTheQuickSearchPopin(TableNode $table)
