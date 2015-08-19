@@ -1222,7 +1222,7 @@ class WebUser extends RawMinkContext
         foreach ($table->getRowsHash() as $field => $value) {
             try {
                 $this->getCurrentPage()->fillField($field, $value);
-            } catch(\InvalidArgumentException $e) {
+            } catch (\InvalidArgumentException $e) {
                 $needle = sprintf('Could not find option "%s"', $value);
                 if (false === strpos($e->getMessage(), $needle)) {
                     throw $e;
