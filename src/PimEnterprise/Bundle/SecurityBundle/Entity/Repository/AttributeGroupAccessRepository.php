@@ -15,8 +15,8 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -83,12 +83,12 @@ class AttributeGroupAccessRepository extends EntityRepository
     /**
      * Get granted attribute group query builder
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGrantedAttributeGroupQB(User $user, $accessLevel)
+    public function getGrantedAttributeGroupQB(UserInterface $user, $accessLevel)
     {
         $qb = $this->createQueryBuilder('aga');
         $qb
@@ -105,12 +105,12 @@ class AttributeGroupAccessRepository extends EntityRepository
     /**
      * Get revoked attribute group query builder
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return \Doctrine\DBAL\Query\QueryBuilder
      */
-    public function getRevokedAttributeGroupQB(User $user, $accessLevel)
+    public function getRevokedAttributeGroupQB(UserInterface $user, $accessLevel)
     {
         // prepare access field depending on access level
         $accessField = ($accessLevel === Attributes::EDIT_ATTRIBUTES)
@@ -151,12 +151,12 @@ class AttributeGroupAccessRepository extends EntityRepository
     /**
      * Returns granted attribute groups ids
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return integer[]
      */
-    public function getGrantedAttributeGroupIds(User $user, $accessLevel)
+    public function getGrantedAttributeGroupIds(UserInterface $user, $accessLevel)
     {
         $qb = $this->getGrantedAttributeGroupQB($user, $accessLevel);
 
@@ -166,12 +166,12 @@ class AttributeGroupAccessRepository extends EntityRepository
     /**
      * Returns revoked attribute group ids
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return integer[]
      */
-    public function getRevokedAttributeGroupIds(User $user, $accessLevel)
+    public function getRevokedAttributeGroupIds(UserInterface $user, $accessLevel)
     {
         $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
         $qb->select('g.id');
@@ -187,12 +187,12 @@ class AttributeGroupAccessRepository extends EntityRepository
     /**
      * Returns revoked attribute ids
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return integer[]
      */
-    public function getRevokedAttributeIds(User $user, $accessLevel)
+    public function getRevokedAttributeIds(UserInterface $user, $accessLevel)
     {
         $attTable = $this->getTableName('pim_catalog.entity.attribute.class');
 
@@ -215,13 +215,13 @@ class AttributeGroupAccessRepository extends EntityRepository
      * If $filterableIds is provided, the returned ids will consist of these ids
      * filtered by the given access level
      *
-     * @param User      $user
-     * @param string    $accessLevel
-     * @param integer[] $filterableIds
+     * @param UserInterface $user
+     * @param string        $accessLevel
+     * @param integer[]     $filterableIds
      *
      * @return integer[]
      */
-    public function getGrantedAttributeIds(User $user, $accessLevel, array $filterableIds = null)
+    public function getGrantedAttributeIds(UserInterface $user, $accessLevel, array $filterableIds = null)
     {
         $qb = $this->getGrantedAttributeGroupQB($user, $accessLevel);
         $qb

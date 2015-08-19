@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
@@ -18,7 +18,7 @@ class ProposalWidgetSpec extends ObjectBehavior
     function let(
         ProductDraftRepositoryInterface $repository,
         AuthorizationCheckerInterface $authorizationChecker,
-        User $user,
+        UserInterface $user,
         TokenInterface $token,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage
@@ -61,7 +61,7 @@ class ProposalWidgetSpec extends ObjectBehavior
         ProductDraftInterface $second,
         ProductInterface $firstProduct,
         ProductInterface $secondProduct,
-        User $userJulia
+        UserInterface $userJulia
     ) {
         $authorizationChecker->isGranted(Attributes::OWN_AT_LEAST_ONE_CATEGORY)->willReturn(true);
         $repository->findApprovableByUser($user, 10)->willReturn([$first, $second]);

@@ -4,13 +4,13 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -28,7 +28,7 @@ class CategoryFilterSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         CategoryAccessRepository $accessRepository,
         TokenInterface $token,
-        User $user,
+        UserInterface $user,
         QueryBuilder $qb,
         FilterDatasourceAdapterInterface $datasource
     ) {
@@ -50,7 +50,6 @@ class CategoryFilterSpec extends ObjectBehavior
         $datasource,
         $accessRepository,
         $user,
-        $qb,
         $utility
     ) {
         $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([42, 19]);
@@ -69,7 +68,6 @@ class CategoryFilterSpec extends ObjectBehavior
         $datasource,
         $accessRepository,
         $user,
-        $qb,
         $utility
     ) {
         $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([]);
@@ -91,8 +89,7 @@ class CategoryFilterSpec extends ObjectBehavior
         CategoryRepositoryInterface $repo,
         CategoryInterface $tree,
         $accessRepository,
-        $user,
-        $tokenStorage
+        $user
     ) {
         $manager->getCategoryRepository()->willReturn($repo);
         $tree->getId()->willReturn(1);

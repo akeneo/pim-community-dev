@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**
  * Interface for access repository
@@ -23,10 +23,10 @@ interface AccessRepositoryInterface
     /**
      * Get granted entities query builder
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGrantedEntitiesQB(User $user, $accessLevel);
+    public function getGrantedEntitiesQB(UserInterface $user, $accessLevel);
 }
