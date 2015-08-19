@@ -1,0 +1,110 @@
+extensions:
+    pimee-published-product-view-form:
+        module: pimee/product-view-form
+
+    pimee-published-product-view-cache-invalidator:
+        module: pim/product-edit-form/cache-invalidator
+        parent: pimee-published-product-view-form
+        position: 1000
+
+    pimee-published-product-view-form-tabs:
+        module: pim/product-edit-form/form-tabs
+        parent: pimee-published-product-view-form
+        targetZone: content
+        position: 100
+
+    pimee-published-product-view-product-label:
+        module: pim/product-edit-form/product-label
+        parent: pimee-published-product-view-form
+        targetZone: title
+        position: 100
+
+    pimee-published-product-view-back-to-grid:
+        module: pim/product-edit-form/back-to-grid
+        parent: pimee-published-product-view-form
+        targetZone: buttons
+        aclResourceId: pimee_workflow_published_product_index
+        position: 80
+
+    pimee-published-product-view-original-product:
+        module: pimee/product-edit-form/original-product
+        parent: pimee-published-product-view-form
+        targetZone: buttons
+        position: 90
+
+    pimee-published-product-view-unpublish:
+        module: pimee/product-edit-form/unpublish
+        parent: pimee-published-product-view-form
+        targetZone: buttons
+        position: 100
+
+    pimee-published-product-view-family:
+        module: pim/product-edit-form/meta/family
+        parent: pimee-published-product-view-form
+        targetZone: meta
+        position: 80
+
+    pimee-published-product-view-created:
+        module: pim/product-edit-form/meta/created
+        parent: pimee-published-product-view-form
+        targetZone: meta
+        position: 90
+
+    pimee-published-product-view-updated:
+        module: pim/product-edit-form/meta/updated
+        parent: pimee-published-product-view-form
+        targetZone: meta
+        position: 100
+
+    pimee-published-product-view-form-meta-owner-group:
+        module: pimee/product-edit-form/meta/owner-groups
+        parent: pimee-published-product-view-form
+        targetZone: meta
+        position: 120
+
+    pimee-published-product-view-attributes:
+        module: pimee/product-view-form/attributes
+        parent: pimee-published-product-view-form-tabs
+        targetZone: container
+        position: 90
+
+    pimee-published-product-view-attribute-group-selector:
+        module: pim/product-edit-form/attributes/attribute-group-selector
+        parent: pimee-published-product-view-attributes
+        targetZone: sidebar
+        position: 100
+
+    pimee-published-product-view-panels:
+        module: pim/product-edit-form/panel/panels
+        parent: pimee-published-product-view-form-tabs
+        targetZone: panels
+        position: 100
+
+    pimee-published-product-view-scope-switcher:
+        module: pim/product-edit-form/scope-switcher
+        parent: pimee-published-product-view-attributes
+        targetZone: context-selectors
+        position: 100
+
+    pimee-published-product-view-locale-switcher:
+        module: pim/product-edit-form/locale-switcher
+        parent: pimee-published-product-view-attributes
+        targetZone: context-selectors
+        position: 110
+
+    pimee-published-product-view-completeness:
+        module: pim/product-edit-form/panel/completeness
+        parent: pimee-published-product-view-panels
+        targetZone: panel-content
+        position: 100
+
+    pimee-published-product-view-panel-selector:
+        module: pim/product-edit-form/panel/selector
+        parent: pimee-published-product-view-panels
+        position: 100
+
+    pimee-published-product-view-state:
+        module: pim/product-edit-form/state
+        parent: pimee-published-product-view-form
+        targetZone: state
+        position: 900

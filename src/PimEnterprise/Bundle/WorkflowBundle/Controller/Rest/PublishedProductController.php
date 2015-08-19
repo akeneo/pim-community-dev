@@ -14,11 +14,14 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Published product controller
@@ -33,16 +36,54 @@ class PublishedProductController
     /** @var PublishedProductManager */
     protected $manager;
 
+    /** @var UserContext */
+    protected $userContext;
+
+    /** @var NormalizerInterface */
+    protected $productNormalizer;
+
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param PublishedProductManager       $manager
+     * @param UserContext                   $userContext
+     * @param NormalizerInterface           $productNormalizer
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        PublishedProductManager $manager
+        PublishedProductManager $manager,
+        UserContext $userContext,
+        NormalizerInterface $productNormalizer
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->manager              = $manager;
+        $this->userContext          = $userContext;
+        $this->productNormalizer    = $productNormalizer;
+    }
+
+    /**
+     * @param string $id Published product id
+     *
+     * @throws NotFoundHttpException If published product is not found or the user cannot see it
+     *
+     * @return JsonResponse
+     */
+    public function getAction($id)
+    {
+        $publishedProduct = $this->findPublishedOr404($id);
+        $channels         = array_keys($this->userContext->getChannelChoicesWithUserChannel());
+        $locales          = $this->userContext->getUserLocaleCodes();
+
+        return new JsonResponse(
+            $this->productNormalizer->normalize(
+                $publishedProduct,
+                'internal_api',
+                [
+                    'locales'     => $locales,
+                    'channels'    => $channels,
+                    'filter_type' => 'pim.internal_api.product_value.view'
+                ]
+            )
+        );
     }
 
     /**
@@ -52,7 +93,7 @@ class PublishedProductController
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      * @return JsonResponse
      */
     public function publishAction(Request $request)
@@ -76,12 +117,12 @@ class PublishedProductController
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      * @return JsonResponse
      */
     public function unpublishAction(Request $request)
     {
-        $published = $this->findPublishedOr404($request->query->get('originalId'));
+        $published = $this->findPublishedByOriginalIdOr404($request->query->get('originalId'));
 
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $published->getOriginalProduct());
         if (!$isOwner) {
@@ -96,13 +137,36 @@ class PublishedProductController
     /**
      * Find a published product by its original product id or return a 404 response
      *
-     * @param integer|string $originalProductId
+     * @param integer|string $publishedProductId
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @throws NotFoundHttpException
+     * @return PublishedProductInterface
      *
      */
-    protected function findPublishedOr404($originalProductId)
+    protected function findPublishedOr404($publishedProductId)
+    {
+        $published = $this->manager->findPublishedProductById($publishedProductId);
+
+        if (!$published) {
+            throw new NotFoundHttpException(sprintf(
+                'Published product with id %s could not be found.',
+                (string) $publishedProductId
+            ));
+        }
+
+        return $published;
+    }
+
+    /**
+     * Find a published product by its original product id or return a 404 response
+     *
+     * @param integer|string $originalProductId
+     *
+     * @throws NotFoundHttpException
+     * @return PublishedProductInterface
+     *
+     */
+    protected function findPublishedByOriginalIdOr404($originalProductId)
     {
         $published = $this->manager->findPublishedProductByOriginalId($originalProductId);
 
@@ -121,8 +185,8 @@ class PublishedProductController
      *
      * @param integer|string $originalProductId
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @throws NotFoundHttpException
+     * @return PublishedProductInterface
      *
      */
     protected function findOr404($originalProductId)

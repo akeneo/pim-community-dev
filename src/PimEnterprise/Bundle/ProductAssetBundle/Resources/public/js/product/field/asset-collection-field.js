@@ -7,6 +7,7 @@
  */
 define(
     [
+        'jquery',
         'pim/field',
         'underscore',
         'backbone',
@@ -16,6 +17,7 @@ define(
         'pim/form-builder'
     ],
     function (
+        $,
         Field,
         _,
         Backbone,
@@ -29,6 +31,7 @@ define(
             events: {
                 'click .add-asset': 'updateAssets'
             },
+
             /**
              * {@inheritdoc}
              */
@@ -45,12 +48,14 @@ define(
                     return templateContext;
                 }, this));
             },
+
             /**
              * {@inheritdoc}
              */
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
+
             /**
              * Launch the asset picker and set the assets after update
              */
@@ -60,6 +65,7 @@ define(
                     this.render();
                 }, this));
             },
+
             /**
              * Launch the asset picker
              *
@@ -96,7 +102,6 @@ define(
                         deferred.resolve(assets);
                     }, this));
                 }, this));
-
 
                 return deferred.promise();
             }

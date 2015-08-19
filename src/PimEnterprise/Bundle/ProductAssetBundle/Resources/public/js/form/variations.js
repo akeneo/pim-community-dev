@@ -18,7 +18,7 @@ define(
                 'click .delete': 'confirmDelete',
                 'click .reset-variations': 'confirmResetVariations'
             },
-            initialize: function() {
+            initialize: function () {
                 this.uploader = new Uploader();
             },
             confirmDelete: function (event) {

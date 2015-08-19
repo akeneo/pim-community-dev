@@ -1,0 +1,8 @@
+parameters:
+    pimee_workflow.provider.form.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Provider\Form\PublishedProductFormProvider
+
+services:
+    pimee_workflow.provider.form.published_product:
+        class: %pimee_workflow.provider.form.published_product.class%
+        tags:
+            - { name: pim_enrich.provider.form, priority: 80 }

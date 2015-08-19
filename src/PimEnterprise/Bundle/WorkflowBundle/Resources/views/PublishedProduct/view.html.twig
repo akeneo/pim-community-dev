@@ -1,121 +1,41 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
 
-{% oro_title_set({ params: { "%product.sku%": published.label } }) %}
+{% oro_title_set({ params: { "%product.sku%": productId } }) %}
 
 {% block content %}
-    {% set title = 'pimee_workflow.published_product.title'|trans %}
+    {% placeholder content_before %}
+    <div id="published-product-view-form">
 
-    {% set buttons %}
-        {{ elements.backLink(path('pimee_workflow_published_product_index', { dataLocale: dataLocale })) }}
-        {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT'), published.originalProduct) %}
-            {{ elements.link('btn.editworkingcopy', path('pim_enrich_product_edit', {id: published.originalProduct.id, locale: dataLocale}), {icon: 'pencil'}) }}
-        {% endif %}
-        {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), published.originalProduct) %}
-            {{ elements.confirmLink(
-                path('pimee_workflow_published_product_unpublish', {id: published.id, dataLocale: dataLocale}),
-                path('pimee_workflow_published_product_index', {dataLocale: dataLocale}),
-                'flash.product.unpublished'|trans,
-                'unpublish',
-                'cloud-download',
-                'confirmation.product.unpublish'|trans,
-                'btn-info'
-            ) }}
-        {% endif %}
-    {% endset %}
+    </div>
+    <script>
+        require(
+            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pimee/published-product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator'],
+            function($, FetcherRegistry, FormBuilder, PublishedProductManager, UserContext, Dialog, mediator) {
+                $(function() {
+                    FetcherRegistry.initialize().done(function () {
+                        PublishedProductManager.get('{{ productId }}')
+                            .then(function (product) {
+                                document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
 
-    {% set subtitle %}
-        <div id="locale-switcher" class="btn-group sub-title">
-            <span class="product-name dropdown-toggle" data-toggle="dropdown">
-                {{ dataLocale|flag }}
-                <span class="title">
-                    {{ published.label }}
-                </span>
-                <i class="icon-caret-down"></i>
-            </span>
-            <ul class="dropdown-menu">
-                {% for locale in locales %}
-                    <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
-                        <a href="{{ path('pimee_workflow_published_product_view', {id: published.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
-                            <span class="indicator">
-                                {% if locale.code == dataLocale %}
-                                    <i class="icon-circle"></i>
-                                {% endif %}
-                            </span>
-                            {{ locale.code|flag }}
-                            <span class="title">{{ published.label(locale.code) }}</span>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endset %}
+                                FormBuilder.build(product.meta.form)
+                                    .then(function (form) {
+                                        form.setData(product);
 
-    {% set left %}
-        <ul class="inline">
-            <li>
-                {{ 'Family'|trans|capitalize }}: {{ published.family|capitalize|default('N/A'|trans) }}
-            </li>
+                                        mediator.trigger('pim_enrich:form:entity:post_fetch', product);
 
-            {% if published.groups|length != 0 %}
-            <li>
-                {{ 'Groups'|trans|capitalize }}:
-                {% for group in published.groups %}
-                    <a id="group-products-{{ group.id }}" href="#"
-                    {% if group.type.isVariant %}
-                        data-toggle="tooltip" data-placement="bottom" data-html="true"
-                        data-original-title="{{ 'info.group.axis'|trans({'%attributes%': group.attributes|join(', ')}) }}"
-                    {% endif %}
-                    >
-                        {{ group.label }}</a>{% if not loop.last %}, {% endif %}
-                    </a>
-                {% endfor %}
-            </li>
-            {% endif %}
-            <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d H:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
-            <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d H:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
-            <li>
-                {{ 'Version'|trans|capitalize }}: {{ published.version.version }}
-            </li>
-       </ul>
-    {% endset %}
-
-    {{ elements.page_header(title, buttons, subtitle, left) }}
-
-    <form class="form-horizontal product-edit product-view">
-        <div class="layout-content">
-            {% set form_tabs = ['Attributes', 'Completeness'] %}
-            {{ elements.form_navbar(form_tabs) }}
-
-            <div class="row-fluid tab-content">
-                <div class="tab-pane active" id="attributes">
-                    {% for group in group_product_values(published.values, dataLocale) %}
-                        <div class="row-fluid">
-                            <h3>
-                                {{ group.groupLabel }}
-                            </h3>
-                            {% for value in group.values %}
-                                <div class="control-group attribute-field{{ value.attribute.localizable ? ' localizable' : '' }}">
-                                    <label class="control-label">
-                                        {{ value.attribute }}{{ value.attribute.scopable ? ' - ' ~ value.scope : '' }}
-                                    </label>
-                                    <div class="controls">
-                                        <div class="value-field">
-                                            {{ present_product_value(value) }}
-                                        </div>
-                                        <div class="icons-container"></div>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="alert alert-info">
-                            {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
-                        </div>
-                    {% endfor %}
-                </div>
-                <div class="tab-pane" id="completeness" data-url="{{ path('pimee_workflow_published_product_completeness', { id: published.id, dataLocale: dataLocale }) }}">
-                </div>
-            </div>
-        </div>
-    </form>
+                                        form.setElement('#published-product-view-form').render();
+                                    });
+                            }).fail(function(response, textStatus, errorThrown) {
+                                switch (response.status) {
+                                    case 400:
+                                    case 403:
+                                        Dialog.alert(_.__('pim_enrich.alert.not_allowed'));
+                                        break;
+                                }
+                            });
+                    })
+                });
+            });
+    </script>
+    {% placeholder content_after %}
 {% endblock %}

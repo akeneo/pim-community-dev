@@ -4,3 +4,9 @@ Approve: Approve
 Refuse: Reject
 Approve selected: Approve selected
 Refuse selected: Reject selected
+
+pimee_workflow:
+    entity:
+        published_product:
+            btn:
+                original_product: Edit working copy

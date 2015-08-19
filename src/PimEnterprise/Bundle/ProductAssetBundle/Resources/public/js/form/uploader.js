@@ -5,7 +5,9 @@ define(
 
         return Backbone.View.extend({
             el: '.asset-uploader',
-            filePrompt: _.template('<img src="/bundles/pimui/images/upload.png" alt="upload icon"><span><%= message %></span>'),
+            filePrompt: _.template(
+                '<img src="/bundles/pimui/images/upload.png" alt="upload icon"><span><%= message %></span>'
+            ),
             fileInfo: _.template('<span><%= message %>&nbsp;<i class="icon icon-trash"></i></span>'),
             events: {
                 'change input[type=file]': 'onFileChanged',
