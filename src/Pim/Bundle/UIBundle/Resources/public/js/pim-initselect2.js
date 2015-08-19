@@ -73,8 +73,6 @@ define(
                             dataType: 'json',
                             type: 'GET',
                             success: function (data) {
-                                self.cacheDataSource[key] = data;
-
                                 options.callback({
                                     results: data.results,
                                     more: data.results.length === self.resultsPerPage,
