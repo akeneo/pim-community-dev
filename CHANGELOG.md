@@ -1,5 +1,15 @@
 # 1.4.x
 
+## BC breaks
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\GroupColumnsConfigurator` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\GroupColumnsConfigurator`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractor` to `Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractor`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface` to `Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface`
+
 # 1.4.0-BETA2 (2015-08-17)
 
 ## Bug fixes
