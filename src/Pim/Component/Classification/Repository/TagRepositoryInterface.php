@@ -3,7 +3,6 @@
 namespace Pim\Component\Classification\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
@@ -15,7 +14,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface TagRepositoryInterface extends
     ObjectRepository,
-    IdentifiableObjectRepositoryInterface,
-    SearchableRepositoryInterface
+    IdentifiableObjectRepositoryInterface
 {
 }
