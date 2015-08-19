@@ -57,6 +57,6 @@ class ProductAssetController
             $assets = $this->assetRepository->findByIdentifiers($identifiers);
         }
 
-        return new JsonResponse($this->assetNormalizer->normalize($assets, 'structured'));
+        return new JsonResponse($this->assetNormalizer->normalize($assets, 'internal_api'));
     }
 }

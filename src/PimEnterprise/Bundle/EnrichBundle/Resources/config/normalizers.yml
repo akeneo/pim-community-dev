@@ -41,6 +41,6 @@ services:
     pimee_enrich.normalizer.structured.asset:
         class: %pimee_enrich.normalizer.structured.asset.class%
         arguments:
-            - '@pim_product_asset.normalizer.structured.asset'
+            - '@pim_serializer'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }

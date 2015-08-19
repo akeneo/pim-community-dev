@@ -2,5 +2,5 @@ attribute_fields:
     akeneo-asset-collection-field: pimee/asset-collection-field
 
 extensions:
-    picker-asset-grid:
+    pimee-product-asset-picker-form:
         module: pimee/picker/asset-grid
