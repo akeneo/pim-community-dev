@@ -83,9 +83,9 @@ extensions:
         targetZone: container
         position: 120
 
-    categories:
+    pim-product-edit-form-categories:
         module: pimee/product-edit-form/categories
-        parent: form-tabs
+        parent: pim-product-edit-form-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
         position: 100

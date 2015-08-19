@@ -66,7 +66,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     public function configure(DatagridConfiguration $configuration)
     {
         $this->configuration = $configuration;
-        $this->addDispatchAction();
+        $this->addCustomEditAction();
         $this->addRowActions();
     }
 
@@ -96,14 +96,14 @@ class RowActionsConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * Add a dispatch action to redirect on granted action (view or edit)
+     * Add a custom edit action to redirect on granted action (view or edit)
      */
-    protected function addDispatchAction()
+    protected function addCustomEditAction()
     {
         $properties = $this->configuration->offsetGetByPath('[properties]');
         $properties['row_action_link'] = [
             'type'   => 'url',
-            'route'  => 'pimee_enrich_product_dispatch',
+            'route'  => 'pim_enrich_product_edit',
             'params' => ['id', 'dataLocale']
         ];
         $this->configuration->offsetSetByPath('[properties]', $properties);
@@ -151,14 +151,14 @@ class RowActionsConfigurator implements ConfiguratorInterface
      */
     protected function addShowRowAction()
     {
-        $viewAction = [];
-        $viewAction['type'] = 'tab-redirect';
-        $viewAction['label'] = 'View the product';
-        $viewAction['tab'] = 'attributes';
-        $viewAction['icon'] = 'eye-open';
-        $viewAction['link'] = 'show_link';
-        $viewAction['rowAction'] = true;
-
+        $viewAction = [
+            'type'      => 'tab-redirect',
+            'label'     => 'View the product',
+            'tab'       => 'attributes',
+            'icon'      => 'eye-open',
+            'link'      => 'show_link',
+            'rowAction' => true,
+        ];
         $this->configuration->offsetSetByPath('[actions][show]', $viewAction);
 
         return $this;
@@ -171,11 +171,11 @@ class RowActionsConfigurator implements ConfiguratorInterface
      */
     protected function addShowLinkProperty()
     {
-        $showLink = [];
-        $showLink['type'] = 'url';
-        $showLink['route'] = 'pimee_enrich_product_show';
-        $showLink['params'] = ['id', 'dataLocale'];
-
+        $showLink = [
+            'type'   => 'url',
+            'route'  => 'pim_enrich_product_edit',
+            'params' => ['id', 'dataLocale'],
+        ];
         $this->configuration->offsetSetByPath('[properties][show_link]', $showLink);
 
         return $this;

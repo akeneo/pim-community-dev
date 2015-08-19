@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
@@ -51,7 +51,7 @@ class JobProfileVoterSpec extends ObjectBehavior
         $accessManager,
         $token,
         JobInstance $jobProfile,
-        User $user
+        UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
         $user->hasGroup('foo')->willReturn(false);
@@ -66,7 +66,7 @@ class JobProfileVoterSpec extends ObjectBehavior
         $accessManager,
         $token,
         JobInstance $jobProfile,
-        User $user
+        UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
         $user->hasGroup('foo')->willReturn(true);

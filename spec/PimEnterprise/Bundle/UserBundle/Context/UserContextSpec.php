@@ -2,13 +2,13 @@
 
 namespace spec\PimEnterprise\Bundle\UserBundle\Context;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -34,7 +34,7 @@ class UserContextSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         ChoicesBuilderInterface $choicesBuilder,
         TokenInterface $token,
-        User $user,
+        UserInterface $user,
         TokenStorageInterface $tokenStorage
     ) {
         $tokenStorage->getToken()->willReturn($token);

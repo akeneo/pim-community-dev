@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
@@ -32,7 +32,7 @@ class AssetCategoryAccessRepository extends CategoryAccessRepository
     /**
      * {@inherit}
      */
-    public function isOwner(User $user)
+    public function isOwner(UserInterface $user)
     {
         return true;
     }
@@ -40,7 +40,7 @@ class AssetCategoryAccessRepository extends CategoryAccessRepository
     /**
      * {@inherit}
      */
-    public function isCategoriesGranted(User $user, $accessLevel, array $categoryIds)
+    public function isCategoriesGranted(UserInterface $user, $accessLevel, array $categoryIds)
     {
         return true;
     }
@@ -48,7 +48,7 @@ class AssetCategoryAccessRepository extends CategoryAccessRepository
     /**
      * {@inherit}
      */
-    public function getGrantedCategoryIds(User $user, $accessLevel)
+    public function getGrantedCategoryIds(UserInterface $user, $accessLevel)
     {
         $categories = $this->assetCategoryRepo->findAll();
 
@@ -72,7 +72,7 @@ class AssetCategoryAccessRepository extends CategoryAccessRepository
     /**
      * {@inherit}
      */
-    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, User $user, $accessLevel)
+    public function getGrantedCategoryIdsFromQB(QueryBuilder $categoryQB, UserInterface $user, $accessLevel)
     {
         $categories = $this->assetCategoryRepo->findAll();
 
@@ -84,7 +84,7 @@ class AssetCategoryAccessRepository extends CategoryAccessRepository
     /**
      * {@inherit}
      */
-    public function getRevokedCategoryIds(User $user, $accessLevel)
+    public function getRevokedCategoryIds(UserInterface $user, $accessLevel)
     {
         return [];
     }

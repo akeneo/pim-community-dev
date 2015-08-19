@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Component\Classification\Factory\CategoryFactory;
@@ -50,7 +50,7 @@ class CategoryManagerSpec extends ObjectBehavior
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
         CategoryInterface $thirdTree,
-        User $user
+        UserInterface $user
     ) {
         $firstTree->getId()->willReturn(1);
         $secondTree->getId()->willReturn(2);
@@ -73,7 +73,7 @@ class CategoryManagerSpec extends ObjectBehavior
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
         CategoryInterface $thirdTree,
-        User $user
+        UserInterface $user
     ) {
         $firstTree->getId()->willReturn(1);
         $secondTree->getId()->willReturn(2);

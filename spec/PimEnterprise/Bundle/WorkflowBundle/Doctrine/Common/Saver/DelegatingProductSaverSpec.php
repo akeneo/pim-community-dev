@@ -5,11 +5,10 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
@@ -103,7 +102,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         ProductInterface $product,
         ProductDraftInterface $productDraft,
         UsernamePasswordToken $token,
-        User $user
+        UserInterface $user
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
@@ -138,7 +137,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $productDraftRemover,
         ProductInterface $product,
         UsernamePasswordToken $token,
-        User $user
+        UserInterface $user
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
@@ -172,7 +171,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         ProductInterface $product,
         ProductDraftInterface $productDraft,
         UsernamePasswordToken $token,
-        User $user
+        UserInterface $user
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled()

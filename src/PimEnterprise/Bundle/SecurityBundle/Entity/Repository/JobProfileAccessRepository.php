@@ -15,7 +15,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -80,12 +80,12 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
     /**
      * Get granted job profiles query builder
      *
-     * @param User   $user
-     * @param string $accessLevel
+     * @param UserInterface $user
+     * @param string        $accessLevel
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGrantedJobsQB(User $user, $accessLevel)
+    public function getGrantedJobsQB(UserInterface $user, $accessLevel)
     {
         $qb = $this->createQueryBuilder('ja');
         $qb
@@ -101,7 +101,7 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
     /**
      * {@inheritdoc}
      */
-    public function getGrantedEntitiesQB(User $user, $accessLevel)
+    public function getGrantedEntitiesQB(UserInterface $user, $accessLevel)
     {
         return $this->getGrantedJobsQB($user, $accessLevel);
     }

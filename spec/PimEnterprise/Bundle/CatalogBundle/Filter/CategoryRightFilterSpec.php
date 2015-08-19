@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Filter;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
@@ -28,7 +28,7 @@ class CategoryRightFilterSpec extends ObjectBehavior
         CategoryInterface $bootCategory,
         CategoryInterface $shirtCategory,
         TokenInterface $token,
-        User $user
+        UserInterface $user
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
