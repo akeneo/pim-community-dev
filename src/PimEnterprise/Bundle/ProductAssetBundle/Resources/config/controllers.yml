@@ -28,7 +28,7 @@ services:
         class: %pimee_product_asset.controller.rest.product_asset.class%
         arguments:
             - '@pimee_product_asset.repository.asset'
-            - '@pim_serializer'
+            - '@pim_internal_api_serializer'
 
     pimee_product_asset.controller.category_tree:
         scope: request

@@ -38,6 +38,12 @@ class AssetNormalizer implements NormalizerInterface
      */
     public function normalize($asset, $format = null, array $context = [])
     {
+        if (array_key_exists('field_name', $context)) {
+            return [
+                $context['field_name'] => $asset->getCode(),
+            ];
+        }
+
         $normalizedData               = $this->assetNormalizer->normalize($asset, $format, $context);
         $normalizedData['tags']       = $asset->getTagCodes();
         $normalizedData['categories'] = $asset->getCategoryCodes();

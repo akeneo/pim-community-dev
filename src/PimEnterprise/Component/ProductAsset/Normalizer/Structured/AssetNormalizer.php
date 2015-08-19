@@ -32,8 +32,6 @@ class AssetNormalizer implements NormalizerInterface
             'description' => $asset->getDescription(),
             'enabled'     => $asset->isEnabled(),
             'end_of_use'  => (null !== $asset->getEndOfUseAt()) ? $asset->getEndOfUseAt()->format('Y-m-d') : null,
-            'created_at'  => (null !== $asset->getCreatedAt()) ? $asset->getCreatedAt()->format('Y-m-d') : null,
-            'updated_at'  => (null !== $asset->getUpdatedAt()) ? $asset->getUpdatedAt()->format('Y-m-d') : null,
         ];
     }
 

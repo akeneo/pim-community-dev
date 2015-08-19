@@ -68,7 +68,7 @@ define(
             manageAssets: function () {
                 var deferred = $.Deferred();
 
-                FormBuilder.build('pimee/picker/asset-grid').done(_.bind(function (form) {
+                FormBuilder.build('pimee-product-asset-picker-form').done(_.bind(function (form) {
                     var modal = new Backbone.BootstrapModal({
                         modalOptions: {
                             backdrop: 'static',

@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AssetNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormats = ['structured'];
+    protected $supportedFormats = ['internal_api'];
 
     /** @var NormalizerInterface */
     protected $assetNormalizer;
@@ -40,7 +40,7 @@ class AssetNormalizer implements NormalizerInterface
      */
     public function normalize($asset, $format = null, array $context = [])
     {
-        $normalizedData = $this->assetNormalizer->normalize($asset, $format, $context);
+        $normalizedData = $this->assetNormalizer->normalize($asset, 'structured', $context);
         $normalizedData['references'] = $this->normalizeReferences($asset->getReferences());
         $normalizedData['categories'] = array_map(
             function (CategoryInterface $category) {
