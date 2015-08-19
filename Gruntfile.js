@@ -54,6 +54,7 @@ module.exports = function (grunt) {
                 src: '/bundles/ororequirejs/lib/require.js',
                 options: {
                     specs: 'src/**/spec/**/*Spec.js',
+                    vendor: ['.grunt/grunt-contrib-jasmine/es5-shim.js'],
                     template: require('grunt-template-jasmine-requirejs'),
                     templateOptions: {
                         requireConfigFile: 'web/js/require-config.js',
