@@ -240,9 +240,9 @@ class CategoryTreeController extends Controller
         }
 
         return [
-            'related_entity' => $this->rawConfiguration[0],
-            'can_edit'       => $this->securityFacade->isGranted($this->buildAclName('category_edit')),
-            'can_create'     => $this->securityFacade->isGranted($this->buildAclName('category_create')),
+            'related_entity' => $this->rawConfiguration['related_entity'],
+            'route'          => $this->rawConfiguration['route'],
+            'acl'            => $this->rawConfiguration['acl'],
         ];
     }
 
@@ -280,7 +280,9 @@ class CategoryTreeController extends Controller
                 $this->addFlash('success', sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
                 $this->eventDispatcher->dispatch(CategoryEvents::POST_CREATE, new GenericEvent($category));
 
-                return $this->redirectToRoute('pim_enrich_categorytree_edit', ['id' => $category->getId()]);
+                return $this->redirectToRoute($this->buildRouteName('categorytree_edit'), [
+                    'id' => $category->getId()
+                ]);
             }
         }
 
@@ -288,7 +290,9 @@ class CategoryTreeController extends Controller
             sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             [
                 'form'           => $form->createView(),
-                'related_entity' => $this->rawConfiguration[0],
+                'related_entity' => $this->rawConfiguration['related_entity'],
+                'acl'            => $this->rawConfiguration['acl'],
+                'route'          => $this->rawConfiguration['route'],
             ]
         );
     }
@@ -327,9 +331,9 @@ class CategoryTreeController extends Controller
             sprintf('PimEnrichBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             [
                 'form'           => $form->createView(),
-                'related_entity' => $this->rawConfiguration[0],
-                'can_edit'       => $this->securityFacade->isGranted($this->buildAclName('category_edit')),
-                'can_create'     => $this->securityFacade->isGranted($this->buildAclName('category_create')),
+                'related_entity' => $this->rawConfiguration['related_entity'],
+                'acl'            => $this->rawConfiguration['acl'],
+                'route'          => $this->rawConfiguration['route'],
             ]
         );
     }
@@ -358,7 +362,7 @@ class CategoryTreeController extends Controller
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_categorytree_index', $params);
+            return $this->redirectToRoute($this->buildRouteName('categorytree_index'), $params);
         }
     }
 
