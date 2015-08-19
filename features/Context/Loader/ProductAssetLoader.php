@@ -33,17 +33,20 @@ class ProductAssetLoader
             )
         );
 
-        exec(
-            sprintf(
-                '%s %s/02_create_assets.php %s',
-                $pathFinder->find(),
-                realpath(__DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'),
-                $environment
-            )
-        );
+        if (false) {
+            exec(
+                sprintf(
+                    '%s %s/02_create_assets.php %s',
+                    $pathFinder->find(),
+                    realpath(__DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'),
+                    $environment
+                )
+            );
 
-        $stmt = $manager->getConnection()->prepare($this->getProductAssetSql());
-        $stmt->execute();
+            $stmt = $manager->getConnection()->prepare($this->getProductAssetSql());
+
+            $stmt->execute();
+        }
     }
 
     private function getProductAssetSql()

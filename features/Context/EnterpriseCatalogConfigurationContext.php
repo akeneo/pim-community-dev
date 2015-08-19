@@ -42,12 +42,16 @@ class EnterpriseCatalogConfigurationContext extends CatalogConfigurationContext
      *{@inheritdoc}
      *
      * TODO: Drop this once we'll have a proper import process for ProductAssets
-     */
+     *
     protected function loadCatalog($files)
     {
         parent::loadCatalog($files);
 
+        var_dump($files);
+        die();
+
         $productAssetLoader = new ProductAssetLoader();
         $productAssetLoader->load($this->getEntityManager(), $this->getContainer()->getParameter('kernel.environment'));
-    }
+
+    }*/
 }
