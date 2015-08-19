@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Pim\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -40,7 +40,7 @@ class CategoryOwnerVoterSpec extends ObjectBehavior
 
     function it_grants_access_if_the_current_user_is_the_owner_of_at_least_one_category(
         TokenInterface $token,
-        User $user,
+        UserInterface $user,
         $accessRepository
     ) {
         $token->getUser()->willReturn($user);
@@ -64,7 +64,7 @@ class CategoryOwnerVoterSpec extends ObjectBehavior
 
     function it_denies_access_if_the_user_does_not_own_any_categories(
         TokenInterface $token,
-        User $user,
+        UserInterface $user,
         $accessRepository
     ) {
         $token->getUser()->willReturn($user);

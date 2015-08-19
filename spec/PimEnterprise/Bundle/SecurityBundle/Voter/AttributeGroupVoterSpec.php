@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Pim\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
@@ -38,7 +38,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         $accessManager,
         $token,
         AttributeGroupInterface $attGroup,
-        User $user
+        UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
 
@@ -54,7 +54,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         $accessManager,
         $token,
         AttributeGroupInterface $attGroup,
-        User $user
+        UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
 

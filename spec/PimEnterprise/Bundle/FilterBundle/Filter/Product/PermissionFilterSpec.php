@@ -2,12 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -21,7 +20,7 @@ class PermissionFilterSpec extends ObjectBehavior
         FilterUtility $utility,
         CategoryAccessRepository $accessRepository,
         TokenInterface $token,
-        User $user,
+        UserInterface $user,
         ProductCategoryRepositoryInterface $productRepository,
         TokenStorageInterface $tokenStorage
     ) {

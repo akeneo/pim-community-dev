@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -26,7 +26,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         ProductRepositoryInterface $productRepository,
         LocaleRepositoryInterface $localeRepository,
         TokenInterface $token,
-        User $user,
+        UserInterface $user,
         ResultRecordInterface $record,
         ProductInterface $product,
         LocaleInterface $locale,
