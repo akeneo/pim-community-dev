@@ -1692,6 +1692,36 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^I set the updated date of the (product "([^"]+)") to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateIs(ProductInterface $product, $identifier, $expected)
+    {
+        $product->setUpdated(new \DateTime($expected));
+
+        $this->getProductSaver()->save($product, ['recalculate' => false]);
+    }
+
+    /**
+     * Asserts that we have less than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertLessThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
+     * Asserts that we have more than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should not be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldNotBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertGreaterThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
      * @param string $identifier
      * @param string $attribute
      * @param string $locale

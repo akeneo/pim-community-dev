@@ -9,6 +9,7 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And the following product:
       | sku   | size | weather_conditions |
       | boots | 40   | wet                |
+      | shoes | 40   | wet                |
     And I am logged in as "Julia"
     And I am on the "boots" product page
 
@@ -27,4 +28,4 @@ Feature: Add a new option to a choice attribute directly from the product edit f
       | Code | very_wet      |
       | en   | Extremely wet |
     And I save the product
-    Then the product Weather conditions should be "wet, very_wet"
+    Then the product Weather conditions should be "Wet, Extremely wet"
