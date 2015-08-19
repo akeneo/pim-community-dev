@@ -16,7 +16,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-merge-master-pam-08-19",
+        "akeneo/pim-community-dev": "feature/pam",
         "oro/platform": "dev-user-override",
         "akeneo/batch-bundle": "0.4.x-dev",
         "akeneo/measure-bundle": "0.4.x-dev",
