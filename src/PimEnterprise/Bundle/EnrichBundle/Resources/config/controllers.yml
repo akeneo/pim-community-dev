@@ -59,7 +59,7 @@ services:
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
-            - ['product', 'pim_category', 'pim_enrich_product']
+            - ['product', 'pim_category', 'pim_enrich_product', 'pim_enrich']
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
         calls:
@@ -77,7 +77,7 @@ services:
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
             - '@oro_security.security_facade'
-            - ['published_product', 'pim_category', 'pim_enrich_product']
+            - ['published_product', 'pim_category', 'pim_enrich_product', 'pim_enrich']
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
         calls:
