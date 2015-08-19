@@ -1,5 +1,5 @@
 @javascript
-Feature: Export an assets collection
+Feature: Export products with an assets collection
   In order to export a collection of assets
   As a product manager
 
@@ -7,7 +7,7 @@ Feature: Export an assets collection
     Given the "clothing" catalog configuration
     And I am logged in as "Julia"
 
-  Scenario: Export products with reference data
+  Scenario: Successfully export a csv file of products with a collection of assets
     Given the following job "clothing_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And the following products:

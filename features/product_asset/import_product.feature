@@ -1,5 +1,5 @@
 @javascript
-Feature: Import an assets collection
+Feature: Import products with an assets collection
   In order to import products with a collection of assets
   As a product manager
 
