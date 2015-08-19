@@ -58,7 +58,7 @@ define(
                     }
 
                     $.ajax({
-                        url: $select.attr("data-url"),
+                        url: $select.attr('data-url'),
                         data: {
                             search: options.term,
                             options: {
