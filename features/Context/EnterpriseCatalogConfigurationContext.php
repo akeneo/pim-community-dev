@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Context\Loader\ProductAssetLoader;
+
 /**
  * A context for initializing catalog configuration
  *
@@ -34,5 +36,18 @@ class EnterpriseCatalogConfigurationContext extends CatalogConfigurationContext
         foreach ($categories as $category) {
             $catAccessManager->revokeAccess($category, $userGroups);
         }
+    }
+
+    /**
+     *{@inheritdoc}
+     *
+     * TODO: Drop this once we'll have a proper import process for ProductAssets
+     */
+    protected function loadCatalog($files)
+    {
+        parent::loadCatalog($files);
+
+        $productAssetLoader = new ProductAssetLoader();
+        $productAssetLoader->load($this->getEntityManager(), $this->getContainer()->getParameter('kernel.environment'));
     }
 }

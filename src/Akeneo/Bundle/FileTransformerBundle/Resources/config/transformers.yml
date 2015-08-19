@@ -1,0 +1,8 @@
+parameters:
+    akeneo_file_transformer.file_transformer.class: Akeneo\Component\FileTransformer\FileTransformer
+
+services:
+    akeneo_file_transformer.file_transformer:
+        class: %akeneo_file_transformer.file_transformer.class%
+        arguments:
+            - '@akeneo_file_transformer.transformation.registry'

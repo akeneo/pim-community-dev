@@ -1,0 +1,64 @@
+PimEnterprise\Component\ProductAsset\Model\ImageMetadata:
+    type: entity
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        exifResolution:
+            type: string
+            length: 255
+            nullable: true
+        exifDateTimeOriginal:
+            type: string
+            length: 255
+            nullable: true
+        exifCameraMake:
+            type: string
+            length: 255
+            nullable: true
+        exifCameraModel:
+            type: string
+            length: 255
+            nullable: true
+        exifSizeWidth:
+            type: string
+            length: 255
+            nullable: true
+        exifSizeHeight:
+            type: string
+            length: 255
+            nullable: true
+        exifOrientation:
+            type: string
+            length: 255
+            nullable: true
+        exifCopyright:
+            type: string
+            length: 255
+            nullable: true
+        exifKeywords:
+            type: string
+            length: 255
+            nullable: true
+        exifTitle:
+            type: string
+            length: 255
+            nullable: true
+        exifDescription:
+            type: string
+            length: 255
+            nullable: true
+        exifColorSpace:
+            type: string
+            length: 255
+            nullable: true
+        iptcKeywords:
+            type: string
+            length: 255
+            nullable: true
+        iptcLocationCountry:
+            type: string
+            length: 255
+            nullable: true
+        iptcLocationCity:
+            type: string
+            length: 255
+            nullable: true

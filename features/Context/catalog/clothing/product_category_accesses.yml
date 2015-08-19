@@ -1,0 +1,49 @@
+product_category_accesses:
+    2014_collection:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    summer_collection:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    winter_collection:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    winter_top:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    tees:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support]
+    jackets:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    pants:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    tops:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager, Redactor]
+    tshirts:
+        viewItems: [IT support, Manager]
+        editItems: [IT support]
+        ownItems: [IT support]
+    jeans:
+        viewItems: [IT support]
+        editItems: [IT support]
+        ownItems: [IT support]
+    sandals:
+        viewItems: [IT support]
+        editItems: [IT support]
+        ownItems: [IT support]
+    old_sandals:
+        viewItems: []
+        editItems: []
+        ownItems: []

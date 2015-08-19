@@ -119,5 +119,13 @@ pimee_enrich:
         label: owner groups
         empty: none
 
-add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Cannot add product information without permission
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
 edit_common_attributes_with_permission: Edit common attributes with permission
+
+job_execution.summary:
+    mass_published: Product published
+    mass_unpublished: Product unpublished
+    proposal: Proposal created
+    proposal_deleted: deleted
+
+pim_assets_collection: Assets collection

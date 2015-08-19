@@ -30,4 +30,35 @@ class EnterpriseDataGridContext extends BaseDataGridContext
             throw $e;
         }
     }
+
+    /**
+     * @param string $elements
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^I should see assets? (.+)$/
+     */
+    public function iShouldSeeAsset($elements)
+    {
+        $this->iChangePageSize(100);
+        parent::iShouldSeeEntities($elements);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Given /^I filter by "asset category" with value "([^"]*)"$/
+     */
+    public function iFilterByAssetCategory($code)
+    {
+        $this->wait();
+        if (strtolower($code) === 'unclassified') {
+            $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
+        } else {
+            $category = $this->getFixturesContext()->getAssetCategory($code);
+            $this->getCurrentPage()->clickCategoryFilterLink($category);
+        }
+
+        $this->wait();
+    }
 }

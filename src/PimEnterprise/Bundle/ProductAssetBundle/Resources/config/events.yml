@@ -1,0 +1,10 @@
+parameters:
+    pimee_product_asset.subscriber.missing_variations.class: PimEnterprise\Bundle\ProductAssetBundle\Event\MissingVariationsEventSubscriber
+
+services:
+    pimee_product_asset.subscriber.missing_variations:
+        class: %pimee_product_asset.subscriber.missing_variations.class%
+        arguments:
+            - '@pimee_product_asset.command_launcher'
+        tags:
+            - { name: kernel.event_subscriber }

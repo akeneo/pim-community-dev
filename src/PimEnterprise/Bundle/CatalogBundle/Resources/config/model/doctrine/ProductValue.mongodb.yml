@@ -1,0 +1,10 @@
+PimEnterprise\Bundle\CatalogBundle\Model\ProductValue:
+    type: embeddedDocument
+    fields:
+        assets:
+            notSaved: true
+            type: entities
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\Asset
+            idsField: assetIds
+        assetIds:
+            type: collection

@@ -1,0 +1,8 @@
+<div class="tab-pane active" id="pimee_product_asset-tabs-variations">
+    {% for reference in form.references %}
+        {% set referenceModel = reference.vars.data %}
+        {% if referenceModel.locale == currentLocale %}
+            {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference.html.twig' %}
+        {% endif %}
+    {% endfor %}
+</div>

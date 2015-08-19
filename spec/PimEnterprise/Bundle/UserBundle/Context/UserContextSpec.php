@@ -2,12 +2,14 @@
 
 namespace spec\PimEnterprise\Bundle\UserBundle\Context;
 
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
+use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -22,25 +24,32 @@ class UserContextSpec extends ObjectBehavior
     }
 
     function let(
+        TokenStorageInterface $tokenStorage,
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        CategoryRepositoryInterface $productCategoryRepo,
+        CategoryRepositoryInterface $assetCategoryRepo,
+        ChainedFilter $chainedFilter,
+        RequestStack $requestStack,
         AuthorizationCheckerInterface $authorizationChecker,
-        LocaleManager $localeManager,
-        ChannelManager $channelManager,
-        CategoryManager $categoryManager,
+        ChoicesBuilderInterface $choicesBuilder,
         TokenInterface $token,
         UserInterface $user,
-        TokenStorageInterface $tokenStorage,
-        RequestStack $requestStack
+        TokenStorageInterface $tokenStorage
     ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $this->beConstructedWith(
             $tokenStorage,
-            $localeManager,
-            $channelManager,
-            $categoryManager,
+            $localeRepository,
+            $channelRepository,
+            $productCategoryRepo,
+            $assetCategoryRepo,
+            $chainedFilter,
             $requestStack,
             $authorizationChecker,
+            $choicesBuilder,
             'en_US'
         );
     }
@@ -56,7 +65,8 @@ class UserContextSpec extends ObjectBehavior
     function it_gets_the_first_accessible_tree_if_the_default_user_tree_is_not_accessible(
         $user,
         $authorizationChecker,
-        $categoryManager,
+        $productCategoryRepo,
+        $chainedFilter,
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
         CategoryInterface $thirdTree
@@ -64,7 +74,10 @@ class UserContextSpec extends ObjectBehavior
         $user->getDefaultTree()->willReturn($secondTree);
         $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(false);
 
-        $categoryManager->getAccessibleTrees($user)->willReturn([$thirdTree, $firstTree]);
+        $grantedTrees = [$thirdTree, $firstTree];
+        $productCategoryRepo->getTrees()->willReturn($grantedTrees);
+        $chainedFilter->filterCollection($grantedTrees, 'pim.internal_api.product_category.view')
+            ->willReturn($grantedTrees);
 
         $this->getAccessibleUserTree()->shouldReturn($thirdTree);
     }
@@ -72,14 +85,17 @@ class UserContextSpec extends ObjectBehavior
     function it_throws_an_exception_if_default_tree_is_accessible(
         $user,
         $authorizationChecker,
-        $categoryManager,
+        $productCategoryRepo,
+        $chainedFilter,
         CategoryInterface $firstTree
     ) {
         $user->getDefaultTree()->willReturn($firstTree);
         $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(false);
 
-        $categoryManager->getAccessibleTrees($user)->willReturn([]);
+        $productCategoryRepo->getTrees()->willReturn([]);
+        $chainedFilter->filterCollection([], 'pim.internal_api.product_category.view')
+            ->willReturn([]);
 
-        $this->shouldThrow(new \LogicException('User should have a default tree'))->during('getAccessibleUserTree');
+        $this->shouldThrow(new \LogicException('User should have a default product tree'))->during('getAccessibleUserTree');
     }
 }

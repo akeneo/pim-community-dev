@@ -1,0 +1,39 @@
+parameters:
+    pimee_product_asset.registry.metadata_builder.class: PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry
+    pimee_product_asset.builder.file_metadata.class: PimEnterprise\Component\ProductAsset\Builder\FileMetadataBuilder
+    pimee_product_asset.builder.image_metadata.class: PimEnterprise\Component\ProductAsset\Builder\ImageMetadataBuilder
+    pimee_product_asset.builder.reference.class: PimEnterprise\Component\ProductAsset\Builder\ReferenceBuilder
+    pimee_product_asset.builder.variation.class: PimEnterprise\Component\ProductAsset\Builder\VariationBuilder
+
+services:
+    #TODO: rename this service to be compliant with our best practices
+    pimee_product_asset.registry.metadata_builder:
+        class: %pimee_product_asset.registry.metadata_builder.class%
+
+    pimee_product_asset.builder.file_metadata:
+        class: %pimee_product_asset.builder.file_metadata.class%
+        arguments:
+            - %pimee_product_asset.model.file_metadata.class%
+        tags:
+            - { name: metadata.builder, alias: pimee_product_asset_file_metadata_builder }
+
+    pimee_product_asset.builder.image_metadata:
+        class: %pimee_product_asset.builder.image_metadata.class%
+        arguments:
+            - '@akeneo_file_metadata.reader_factory'
+            - '@pimee_product_asset.builder.file_metadata'
+            - %pimee_product_asset.model.image_metadata.class%
+        tags:
+            - { name: metadata.builder, alias: pimee_product_asset_image_metadata_builder }
+
+    pimee_product_asset.builder.reference:
+        class: %pimee_product_asset.builder.reference.class%
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - %pimee_product_asset.model.reference.class%
+
+    pimee_product_asset.builder.variation:
+        class: %pimee_product_asset.builder.variation.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - %pimee_product_asset.model.variation.class%

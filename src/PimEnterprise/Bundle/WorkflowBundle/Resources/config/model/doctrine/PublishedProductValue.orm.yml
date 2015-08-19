@@ -111,6 +111,22 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
                         referencedColumnName: id
                         nullable: true
                         onDelete: CASCADE
+        assets:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\AssetInterface
+            cascade:
+                - refresh
+            joinTable:
+                name: pimee_workflow_published_product_value_asset
+                joinColumns:
+                    value_id:
+                        referencedColumnName: id
+                        nullable: true
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    asset_id:
+                        referencedColumnName: id
+                        nullable: false
+                        onDelete: CASCADE
     oneToOne:
         metric:
             targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetricInterface

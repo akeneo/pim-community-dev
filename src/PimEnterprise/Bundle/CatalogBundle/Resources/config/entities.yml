@@ -1,0 +1,3 @@
+parameters:
+    pim_catalog.entity.product_value.class:     PimEnterprise\Bundle\CatalogBundle\Model\ProductValue
+    pim_catalog.model.product_value.interface:  PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface

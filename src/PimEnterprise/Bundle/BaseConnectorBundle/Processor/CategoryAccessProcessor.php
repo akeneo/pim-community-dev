@@ -34,6 +34,6 @@ class CategoryAccessProcessor extends AbstractAccessProcessor
      */
     protected function getSupportedPermissions()
     {
-        return ['viewProducts', 'editProducts', 'ownProducts'];
+        return ['viewItems', 'editItems', 'ownItems'];
     }
 }

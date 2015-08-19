@@ -5,7 +5,7 @@ attribute_groups_accesses:
     yml:
         processor: pimee_base_connector.processor.attribute_group_access
 
-category_accesses:
+product_category_accesses:
     order: 150
     csv:
         processor: pimee_base_connector.processor.category_access
@@ -25,3 +25,20 @@ locale_accesses:
         processor: pimee_base_connector.processor.locale_access
     yml:
         processor: pimee_base_connector.processor.locale_access
+
+asset_categories:
+    order: 30
+    multiple: true
+    csv:
+        reader:    pim_base_connector.reader.file.csv_category
+        processor: pimee_base_connector.processor.asset_category
+    yml:
+        reader:    pim_base_connector.reader.file.yaml_multiple
+        processor: pimee_base_connector.processor.asset_category
+
+asset_tags:
+    order: 30
+    multiple: true
+    yml:
+        reader:    pim_base_connector.reader.file.yaml_multiple
+        processor: pimee_base_connector.processor.asset_tag

@@ -1,0 +1,6 @@
+services:
+    pimee_product_asset.writer.doctrine.category:
+        class: %pim_connector.writer.doctrine.base.class%
+        arguments:
+            - '@pimee_product_asset.saver.category'
+            - '@akeneo_storage_utils.doctrine.object_detacher'

@@ -8,6 +8,12 @@ job_profile_accesses:
     clothing_category_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
+    clothing_asset_category_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
+    clothing_asset_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     clothing_group_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
@@ -48,6 +54,12 @@ job_profile_accesses:
     clothing_product_proposal_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
+    clothing_asset_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    clothing_asset_category_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
 
     update_product_value:
         executeJobProfile: [IT support, Manager, Redactor]

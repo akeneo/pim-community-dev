@@ -11,11 +11,11 @@ Feature: Show a product
       | code  | label-en_US |
       | shoes | Shoes       |
       | boots | Boots       |
-    And the following category accesses:
-      | category        | user group | access |
-      | 2014_collection | Manager    |        |
-      | shoes           | Manager    | edit   |
-      | boots           | Manager    | view   |
+    And the following product category accesses:
+      | product category | user group | access |
+      | 2014_collection  | Manager    |        |
+      | shoes            | Manager    | edit   |
+      | boots            | Manager    | view   |
     And the following products:
       | sku     | categories | name-en_US      | price            | size | main_color |
       | rangers | shoes      | Classic rangers | 120 EUR, 125 USD | L    | black      |

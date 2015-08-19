@@ -1,0 +1,11 @@
+parameters:
+    pimee_product_asset.extension.formatter.property.product_value.product_asset_property.class: Pim\Bundle\ReferenceDataBundle\Datagrid\Extension\Formatter\Property\ReferenceDataProperty
+
+services:
+    pimee_product_asset.extension.formatter.property.product_value.product_asset_property:
+        class: %pimee_product_asset.extension.formatter.property.product_value.product_asset_property.class%
+        arguments:
+            - '@translator'
+            - '@pim_reference_data.registry'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: pim_assets_collection }

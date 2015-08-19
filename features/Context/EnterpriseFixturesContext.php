@@ -11,7 +11,11 @@ use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\TagRepositoryInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
@@ -19,6 +23,14 @@ use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Model\Asset;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
+use PimEnterprise\Component\ProductAsset\Model\Tag;
+use PimEnterprise\Component\ProductAsset\Model\TagInterface;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * A context for creating entities
@@ -29,7 +41,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 class EnterpriseFixturesContext extends BaseFixturesContext
 {
     protected $enterpriseEntities = [
-        'Published' => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+        'Published'     => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+        'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
     ];
 
     /**
@@ -152,7 +165,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param bool      $scopable
      * @param bool      $ready
      *
-     * @return Given[]
+     * @return Step\Given[]
      * @Given /^(\w+) proposed the following change to "([^"]*)":$/
      */
     public function someoneProposedTheFollowingChangeTo(
@@ -209,7 +222,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string    $product
      * @param TableNode $table
      *
-     * @return Given[]
+     * @return Step\Given[]
      * @Given /^(\w+) proposed the following scopable change to "([^"]*)":$/
      */
     public function someoneProposedTheFollowingScopableChangeTo($username, $product, TableNode $table)
@@ -222,7 +235,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string    $product
      * @param TableNode $table
      *
-     * @return Given[]
+     * @return Step\Given[]
      * @Given /^(\w+) started to propose the following change to "([^"]*)":$/
      */
     public function someoneStartedToProposeTheFollowingChangeTo($username, $product, TableNode $table)
@@ -243,11 +256,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following category accesses:$/
+     * @Given /^the following (.*) category accesses:$/
      */
-    public function theFollowingCategoryAccesses(TableNode $table)
+    public function theFollowingCategoryAccesses($categoryType, TableNode $table)
     {
-        $this->createAccesses($table, 'category');
+        $this->createAccesses($table, sprintf('%s category', $categoryType));
     }
 
     /**
@@ -320,7 +333,242 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
+     * @Given /^the following assets?:$/
+     */
+    public function theFollowingAssets(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createAsset($data);
+        }
+    }
+
+    /**
+     * @param array|string $data
+     *
+     * @throws \Exception
+     *
+     * @return AssetInterface
+     *
+     * @Given /^a "([^"]+)" asset$/
+     */
+    public function createAsset($data)
+    {
+        $asset = new Asset();
+
+        if (is_string($data)) {
+            $asset->setCode($data);
+        } else {
+            if (isset($data['code']) && is_string($data['code'])) {
+                $asset->setCode($data['code']);
+            }
+            if (isset($data['description'])) {
+                $asset->setDescription($data['description']);
+            }
+            if (isset($data['enabled']) && in_array($data['enabled'], ['yes', 'no'])) {
+                $isEnabled = ('yes' === $data['enabled']);
+                $asset->setEnabled($isEnabled);
+            }
+            if (isset($data['tags'])) {
+                $tags = explode(',', $data['tags']);
+                foreach ($tags as $code) {
+                    $tag = $this->createTag(trim($code));
+                    $asset->addTag($tag);
+                }
+            }
+            if (isset($data['categories'])) {
+                $categories = explode(',', $data['categories']);
+                foreach ($categories as $code) {
+                    $category = $this->getAssetCategoryRepository()->findOneByIdentifier(trim($code));
+                    if (null === $category) {
+                        throw new \Exception("\"$code\" category not found");
+                    }
+                    $asset->addCategory($category);
+                }
+            }
+            if (isset($data['end of use at'])) {
+                $endDate = new \DateTime($data['end of use at']);
+                $asset->setEndOfUseAt($endDate);
+            }
+            if (isset($data['created at'])) {
+                $created = new \DateTime($data['created at']);
+            } else {
+                $created = new \DateTime('now');
+            }
+            $asset->setCreatedAt($created);
+            if (isset($data['updated at'])) {
+                $updated = new \DateTime($data['updated at']);
+            } else {
+                $updated = new \DateTime('now');
+            }
+            $asset->setUpdatedAt($updated);
+
+            // TODO: References and variations
+        }
+
+        $this->getAssetSaver()->save($asset);
+
+        return $asset;
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following tags?:$/
+     */
+    public function theFollowingTags(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createTag($data);
+        }
+    }
+
+    /**
+     * @param string|array $data
+     *
+     * @throws \Exception
+     * @return TagInterface
+     *
+     *
+     * @Given /^a "([^"]+)" tag$/
+     */
+    public function createTag($data)
+    {
+        if (is_string($data)) {
+            $code = $data;
+        } elseif (isset($data['code'])) {
+            $code = $data['code'];
+        } else {
+            throw new \Exception('A tag must have a code.');
+        }
+
+        $repo = $this->getTagRepository();
+        $tag  = $repo->findOneByIdentifier($code);
+
+        if (null === $tag) {
+            $tag = new Tag();
+            $tag->setCode($code);
+            $this->getAssetTagSaver()->save($tag);
+        }
+
+        return $tag;
+    }
+
+    /**
+     * @Then /^the asset "([^"]*)" should have the following values:$/
+     */
+    public function theAssetShouldHaveTheFollowingValues($identifier, TableNode $table)
+    {
+        $this->clearUOW();
+        $asset = $this->getAssetRepository()->findOneByIdentifier($identifier);
+
+        foreach ($table->getRowsHash() as $rawCode => $expectedValue) {
+            $getter = 'get' . ucfirst($rawCode);
+            $assetValue = $asset->$getter();
+
+            switch ($rawCode) {
+                case 'description':
+                    if ('' === $expectedValue) {
+                        assertEmpty((string) $assetValue);
+                    } else {
+                        assertEquals($expectedValue, $assetValue);
+                    }
+                    break;
+                case 'tags':
+                    if ('' === $expectedValue) {
+                        assertEquals([], $assetValue->toArray());
+                    } else {
+                        $expectedValue = explode(',', $expectedValue);
+                        $tags = array_map(function ($tag) {
+                            return $tag->getCode();
+                        }, $assetValue->toArray());
+                        assertTrue(0 === count(array_diff($expectedValue, $tags)));
+                    }
+                    break;
+                case 'endOfUseAt':
+                    if ('' === $expectedValue) {
+                        assertEquals(null, $assetValue);
+                    } else {
+                        assertEquals($expectedValue, $assetValue->format('Y-m-d'));
+                    }
+                    break;
+                default:
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Could not find value "%s" for asset with code "%s"',
+                            $rawCode,
+                            $identifier
+                        )
+                    );
+            }
+        }
+    }
+
+    /**
+     * @param $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return AssetInterface
+     */
+    public function getAsset($code)
+    {
+        $asset = $this->getAssetRepository()->findOneByIdentifier($code);
+
+        if (null === $asset) {
+            throw new \InvalidArgumentException(sprintf('Could not find a product asset with code "%s"', $code));
+        }
+
+        $this->refresh($asset);
+
+        return $asset;
+    }
+
+    /**
+     * @param $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return TagInterface
+     */
+    public function getTag($code)
+    {
+        $tag = $this->getTagRepository()->findOneByIdentifier($code);
+
+        if (null === $tag) {
+            throw new \InvalidArgumentException(sprintf('Could not find a tag with code "%s"', $code));
+        }
+
+        $this->refresh($tag);
+
+        return $tag;
+    }
+
+    /**
+     * @param $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return CategoryInterface
+     */
+    public function getAssetCategory($code)
+    {
+        $assetCategory = $this->getAssetCategoryRepository()->findOneByIdentifier($code);
+
+        if (null === $assetCategory) {
+            throw new \InvalidArgumentException(sprintf('Could not find a category with code "%s"', $code));
+        }
+
+        $this->refresh($assetCategory);
+
+        return $assetCategory;
+    }
+
+    /**
      * @Given /^I should see the following proposals:$/
+     *
+     * @param TableNode $table
+     *
+     * @throws \Exception
      */
     public function iShouldSeeTheFollowingProposals(TableNode $table)
     {
@@ -382,7 +630,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param string    $products
      * @param TableNode $table
      *
-     * @return Given[]
+     * @return Step\Given[]
      * @Given /^(\w+) should have proposed the following values for products (.*):$/
      */
     public function someoneShouldHaveProposedTheFollowingValuesForProducts($username, $products, TableNode $table)
@@ -421,6 +669,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function getAccessManager($type)
     {
+        if ('product category' === $type) {
+            $type = 'category';
+        }
+
         return $this->getContainer()->get(sprintf('pimee_security.manager.%s_access', str_replace(' ', '_', $type)));
     }
 
@@ -435,9 +687,49 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @return CategoryRepositoryInterface
      */
-    protected function getCategoryRepository()
+    protected function getProductCategoryRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.category');
+    }
+
+    /**
+     * @return CategoryRepositoryInterface
+     */
+    protected function getAssetCategoryRepository()
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.category');
+    }
+
+    /**
+     * @return TagRepositoryInterface
+     */
+    protected function getTagRepository()
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.tag');
+    }
+
+    /**
+     * @return AssetRepositoryInterface
+     */
+    protected function getAssetRepository()
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.asset');
+    }
+
+    /**
+     * @return LocaleRepositoryInterface
+     */
+    public function getLocaleRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.locale');
+    }
+
+    /**
+     * @return ChannelRepositoryInterface
+     */
+    public function getChannelRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.channel');
     }
 
     /**
@@ -468,7 +760,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             return ($action === 'edit') ? Attributes::EDIT_ATTRIBUTES : Attributes::VIEW_ATTRIBUTES;
         }
 
-        if ('category' === $type || 'locale' === $type) {
+        if ('product category' === $type || 'locale' === $type) {
             return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
         }
 
@@ -696,6 +988,88 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following assets?:$/
+     */
+    public function thereShouldBeTheFollowingAssets(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $asset = $this->getAsset($data['code']);
+            $this->refresh($asset);
+
+            assertEquals($data['code'], $asset->getCode());
+            if (array_key_exists('description', $data)) {
+                assertEquals($data['description'], $asset->getDescription());
+            }
+
+            if (array_key_exists('categories', $data)) {
+                assertEquals($data['categories'], $asset->getCategoryCodes());
+            }
+
+            if (array_key_exists('tags', $data)) {
+                assertEquals($data['tags'], $asset->getTagCodes());
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following tags?:$/
+     */
+    public function thereShouldBeTheFollowingTags(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $tag = $this->getTag($data['code']);
+            $this->refresh($tag);
+
+            assertEquals($data['code'], $tag->getCode());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following assets categories:$/
+     */
+    public function thereShouldBeTheFollowingAssetsCategories(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $assetCategory = $this->getAssetCategory($data['code']);
+            $this->refresh($assetCategory);
+
+            assertEquals($data['label-en_US'], $assetCategory->getTranslation('en_US')->getLabel());
+            assertEquals($data['label-fr_FR'], $assetCategory->getTranslation('fr_FR')->getLabel());
+            assertEquals($data['label-de_DE'], $assetCategory->getTranslation('de_DE')->getLabel());
+            if (empty($data['parent'])) {
+                assertNull($assetCategory->getParent());
+            } else {
+                assertEquals($data['parent'], $assetCategory->getParent()->getCode());
+            }
+        }
+    }
+
+    /**
+     * @Given /^the missing product asset variations have been generated$/
+     */
+    public function theMissingVariationsHaveBeenGenerated()
+    {
+        $application = new Application();
+        $application->add(new GenerateMissingVariationFilesCommand());
+
+        $generateCommand = $application->find('pim:asset:generate-missing-variation-files');
+        $generateCommand->setContainer($this->getContainer());
+        $generateCommandTester = new CommandTester($generateCommand);
+
+        $generateCommandTester->execute(
+            [
+                'command' => $generateCommand->getName(),
+            ]
+        );
+    }
+
+    /**
      * @return RuleDefinitionRepositoryInterface
      */
     protected function getRuleDefinitionRepository()
@@ -709,6 +1083,22 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getRuleSaver()
     {
         return $this->getContainer()->get('akeneo_rule_engine.saver.rule_definition');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getAssetSaver()
+    {
+        return $this->getContainer()->get('pimee_product_asset.saver.asset');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getAssetTagSaver()
+    {
+        return $this->getContainer()->get('pimee_product_asset.saver.tag');
     }
 
     /**

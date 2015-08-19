@@ -1,3 +1,6 @@
+parameters:
+    pim_datagrid.extension.filter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Filter\FilterExtension
+
 services:
     pim_datagrid.extension.selector.orm_selector:
         class: %pim_datagrid.extension.selector.orm_selector.class%

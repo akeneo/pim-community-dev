@@ -1,0 +1,13 @@
+{{ elements.backLink(path('pimee_product_asset_index')) }}
+
+{% if resource_granted('pimee_product_asset_remove') %}
+    {{ elements.deleteLink(
+    path('pimee_product_asset_remove', { id: asset.id }),
+    'pimee_product_asset_remove',
+    path('pimee_product_asset_index'),
+    'pimee_product_asset.enrich_asset.confirmation.remove'|trans({'%asset%': asset.code}),
+    'pimee_product_asset.enrich_asset.flash.remove.success'|trans
+    ) }}
+{% endif %}
+
+{{ elements.submitBtn(null, 'ok') }}

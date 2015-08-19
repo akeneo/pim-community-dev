@@ -1,0 +1,44 @@
+parameters:
+    pimee_product_asset.updater.files.class:                                 PimEnterprise\Component\ProductAsset\Updater\FilesUpdater
+    pimee_product_asset.updater.tag.class:                                   PimEnterprise\Component\ProductAsset\Updater\TagUpdater
+    pimee_product_asset.updater.asset.class:                                 PimEnterprise\Component\ProductAsset\Updater\AssetUpdater
+    pimee_product_asset.updater.setter.product_asset_collection_value.class: Pim\Component\ReferenceData\Updater\Setter\ReferenceDataCollectionSetter
+    pimee_product_asset.updater.copier.product_asset_collection_value.class: Pim\Component\ReferenceData\Updater\Copier\ReferenceDataCollectionAttributeCopier
+
+services:
+    pimee_product_asset.updater.setter.product_asset_collection_value:
+        class: %pimee_product_asset.updater.setter.product_asset_collection_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - '@pim_reference_data.repository_resolver'
+            - ['pim_assets_collection']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pimee_product_asset.updater.copier.product_asset_collection_value:
+        class: %pimee_product_asset.updater.copier.product_asset_collection_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_assets_collection']
+            - ['pim_assets_collection']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pimee_product_asset.updater.files:
+        class: %pimee_product_asset.updater.files.class%
+        arguments:
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+
+    pimee_product_asset.updater.tag:
+        class: %pimee_product_asset.updater.tag.class%
+
+    pimee_product_asset.updater.asset:
+        class: %pimee_product_asset.updater.asset.class%
+        arguments:
+            - '@pimee_product_asset.repository.tag'
+            - '@pimee_product_asset.repository.category'
+
+    pimee_product_asset.updater.category:
+        class: %pim_classification.updater.category.class%
+        arguments:
+            - '@pimee_product_asset.repository.category'

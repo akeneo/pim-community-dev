@@ -31,26 +31,11 @@
 {% block content %}
 
     {% set subtitle %}
-        <div id="locale-switcher" class="btn-group sub-title">
-            <span class="product-name dropdown-toggle" data-toggle="dropdown">
-                {{ dataLocale|flag }}
-                <i class="icon-caret-down"></i>
-            </span>
-            <ul class="dropdown-menu">
-                {% for locale in locales %}
-                    <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
-                        <a href="{{ path('pimee_workflow_published_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale_label(locale.code) }}">
-                            <span class="indicator">
-                                {% if locale.code == dataLocale %}
-                                    <i class="icon-circle"></i>
-                                {% endif %}
-                            </span>
-                            {{ locale.code|flag }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
+            'locales':           locales,
+            'currentLocaleCode': dataLocale,
+            'routeName':         'pimee_workflow_published_product_index'
+        } only %}
         {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': 'published-product-grid' })) }}
     {% endset %}
 
@@ -59,7 +44,7 @@
     <div class="row-fluid has-sidebar">
         <div id="tree" data-datalocale="{{ dataLocale }}" data-relatedentity="published_product"></div>
         <div id="published-product-grid">
-            {{ dataGrid.renderStatefulGrid('published-product-grid', { dataLocale: dataLocale }) }}
+            {{ dataGrid.renderStatefulGrid('published-product-grid', { dataLocale: dataLocale }, {}, 'pim_enrich_categorytree') }}
         </div>
     </div>
 

@@ -1,0 +1,10 @@
+parameters:
+    pimee_produt_asset.twig_extension.file_exists.class: PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\RawFileExistsTwigExtension
+
+services:
+    pimee_produt_asset.twig_extension.file_exists:
+        class: %pimee_produt_asset.twig_extension.file_exists.class%
+        arguments:
+            - %assetic.read_from%
+        tags:
+            - { name: twig.extension }

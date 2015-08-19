@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;

@@ -1,0 +1,25 @@
+PimEnterprise\Component\ProductAsset\Model\FileMetadata:
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    table: pimee_product_asset_file_metadata
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        modificationDatetime:
+            type: datetime
+            length: 255
+            nullable: true
+    oneToOne:
+        file:
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInterface
+            joinColumn:
+                name: file_id
+                referencedColumnName: id
+            cascade:
+                - persist
+                - refresh
+                - detach

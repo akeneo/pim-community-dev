@@ -1,0 +1,10 @@
+parameters:
+    pimee_product_asset.datagrid.extension.formatter.property.asset.thumbnail_property.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\Asset\ThumbnailProperty
+
+services:
+    pimee_product_asset.datagrid.extension.formatter.property.asset.thumbnail_property:
+        class: %pimee_product_asset.datagrid.extension.formatter.property.asset.thumbnail_property.class%
+        arguments:
+            - '@twig'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: asset_thumbnail }

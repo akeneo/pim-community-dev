@@ -1,0 +1,8 @@
+services:
+    pimee_connector.array_converter.flat.product.value_converter.multiselect:
+        public:    false
+        class:     %pim_connector.array_converter.flat.product.value_converter.multiselect.class%
+        parent:    pim_connector.array_converter.flat.product.value_converter.abstract
+        decorates: pim_connector.array_converter.flat.product.value_converter.multiselect
+        arguments:
+            - ['pim_catalog_multiselect', 'pim_reference_data_multiselect', 'pim_assets_collection']

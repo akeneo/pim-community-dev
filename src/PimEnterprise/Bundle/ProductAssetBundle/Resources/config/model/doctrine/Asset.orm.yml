@@ -1,0 +1,71 @@
+PimEnterprise\Component\ProductAsset\Model\Asset:
+    type: entity
+    table: pimee_product_asset_asset
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+            unique: true
+        description:
+            type: text
+            nullable: true
+        enabled:
+            type: boolean
+            column: is_enabled
+        endOfUseAt:
+            type: datetime
+            column: end_of_use_at
+            nullable: true
+        createdAt:
+            type: datetime
+            column: created_at
+            gedmo:
+                timestampable:
+                    on: create
+        updatedAt:
+            type: datetime
+            column: updated_at
+            gedmo:
+                timestampable:
+                    on: update
+    oneToMany:
+        references:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\ReferenceInterface
+            mappedBy: asset
+            cascade:
+                - persist
+                - refresh
+                - detach
+                - remove
+    manyToMany:
+        tags:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\TagInterface
+            cascade:
+                - refresh
+            joinTable:
+                name: pimee_product_asset_asset_tag
+                joinColumns:
+                    asset_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    tag_id:
+                        referencedColumnName: id
+        categories:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
+            joinTable:
+                name: pimee_product_asset_asset_category
+                joinColumns:
+                    asset_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

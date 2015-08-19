@@ -7,9 +7,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess;
+use PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Prophecy\Argument;
 
@@ -23,7 +23,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     ) {
         $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
 
-        $accessClass = 'PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess';
+        $accessClass = 'PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess';
         $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\CategoryInterface';
         $userGroupClass = 'Pim\Bundle\SecurityBundle\Entity\Group';
         $registry->getRepository($accessClass)->willReturn($accessRepository);
@@ -55,7 +55,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $accessRepository->revokeAccess($category, [$admin, $user])->shouldBeCalled();
 
         $objectManager
-            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess'))
+            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess'))
             ->shouldBeCalledTimes(2);
         $objectManager->flush()->shouldBeCalled();
 
@@ -74,7 +74,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $accessRepository->revokeAccess($category, [$admin, $user])->shouldBeCalled();
 
         $objectManager
-            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess'))
+            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess'))
             ->shouldBeCalledTimes(2);
 
         $this->setAccess($category, [$user, $admin], [$admin], [$admin], false);
@@ -90,7 +90,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $accessRepository->findOneBy(Argument::any())->willReturn(array());
 
         $objectManager
-            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess'))
+            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess'))
             ->shouldBeCalledTimes(2);
         $objectManager->flush()->shouldBeCalled();
 
@@ -134,8 +134,8 @@ class CategoryAccessManagerSpec extends ObjectBehavior
 
     function it_updates_accesses_on_a_category_children_for_the_provided_user_groups(
         CategoryInterface $parent,
-        CategoryAccess $accessOne,
-        CategoryAccess $accessTwo,
+        ProductCategoryAccess $accessOne,
+        ProductCategoryAccess $accessTwo,
         $categoryRepository,
         $accessRepository,
         Group $user,
@@ -156,8 +156,8 @@ class CategoryAccessManagerSpec extends ObjectBehavior
             ->findBy(['category' => $childrenIds, 'userGroup' => $user])
             ->willReturn([$accessOne, $accessTwo]);
 
-        $accessOne->setViewProducts(true)->shouldBeCalled();
-        $accessTwo->setViewProducts(true)->shouldBeCalled();
+        $accessOne->setViewItems(true)->shouldBeCalled();
+        $accessTwo->setViewItems(true)->shouldBeCalled();
         $objectManager->persist($accessOne)->shouldBeCalled();
         $objectManager->persist($accessTwo)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
@@ -175,8 +175,8 @@ class CategoryAccessManagerSpec extends ObjectBehavior
 
     function it_removes_accesses_on_a_category_children_for_the_provided_user_groups(
         CategoryInterface $parent,
-        CategoryAccess $accessOne,
-        CategoryAccess $accessTwo,
+        ProductCategoryAccess $accessOne,
+        ProductCategoryAccess $accessTwo,
         $categoryRepository,
         $accessRepository,
         Group $manager,

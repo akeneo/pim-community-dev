@@ -29,7 +29,7 @@ class PimEnterpriseEnrichExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
+        $loader->load('attribute_icons.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
@@ -38,6 +38,7 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('filters.yml');
         $loader->load('form_types.yml');
+        $loader->load('imagine.yml');
         $loader->load('mass_actions.yml');
         $loader->load('normalizers.yml');
         $loader->load('parameters.yml');

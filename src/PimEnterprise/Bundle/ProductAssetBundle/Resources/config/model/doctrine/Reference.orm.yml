@@ -1,0 +1,37 @@
+PimEnterprise\Component\ProductAsset\Model\Reference:
+    type: entity
+    table: pimee_product_asset_reference
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    oneToOne:
+        file:
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInterface
+            joinColumn:
+                name: file_id
+                referencedColumnName: id
+    manyToOne:
+        locale:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            joinColumn:
+                name: locale_id
+                referencedColumnName: id
+        asset:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\AssetInterface
+            inversedBy: references
+            join_column:
+                name: asset_id
+                referencedColumnName: id
+    oneToMany:
+        variations:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\VariationInterface
+            mappedBy: reference
+            cascade:
+                - persist
+                - refresh
+                - detach
+                - remove

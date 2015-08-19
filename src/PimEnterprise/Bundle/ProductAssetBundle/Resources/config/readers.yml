@@ -1,0 +1,14 @@
+parameters:
+    pimee_product_asset.reader.orm.category.class: PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetCategoryReader
+    pimee_product_asset.reader.orm.asset.class: PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetReader
+
+services:
+    pimee_product_asset.reader.orm.category:
+        class: %pimee_product_asset.reader.orm.category.class%
+        arguments:
+            - '@pimee_product_asset.repository.category'
+
+    pimee_product_asset.reader.orm.asset:
+        class: %pimee_product_asset.reader.orm.asset.class%
+        arguments:
+            - '@pimee_product_asset.repository.asset'

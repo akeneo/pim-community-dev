@@ -1,0 +1,30 @@
+# TODO: should not be in a services.yml file
+parameters:
+    pimee_product_asset.variation_file_generator.class:              PimEnterprise\Component\ProductAsset\VariationFileGenerator
+    pimee_product_asset.variations_collection_files_generator.class: PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator
+    pimee_product_asset.command_launcher.class:                      Akeneo\Component\Console\CommandLauncher
+
+services:
+    pimee_product_asset.variation_file_generator:
+        class: %pimee_product_asset.variation_file_generator.class%
+        arguments:
+            - '@pimee_product_asset.repository.channel_configuration'
+            - '@oneup_flysystem.mount_manager'
+            - '@pimee_product_asset.saver.file_metadata'
+            - '@pimee_product_asset.saver.variation'
+            - '@akeneo_file_transformer.file_transformer'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.raw_file.fetcher'
+            - '@pimee_product_asset.registry.metadata_builder'
+            - 'assetStorage'
+
+    pimee_product_asset.variations_collection_files_generator:
+        class: %pimee_product_asset.variations_collection_files_generator.class%
+        arguments:
+            - '@pimee_product_asset.variation_file_generator'
+
+    pimee_product_asset.command_launcher:
+        class: %pimee_product_asset.command_launcher.class%
+        arguments:
+          - '%kernel.root_dir%'
+          - '%kernel.environment%'

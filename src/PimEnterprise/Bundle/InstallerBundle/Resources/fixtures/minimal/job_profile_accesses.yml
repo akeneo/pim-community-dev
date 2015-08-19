@@ -25,3 +25,15 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager]
     refuse_product_draft:
         executeJobProfile: [IT support, Manager]
+    csv_asset_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    csv_asset_category_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    csv_asset_category_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    csv_asset_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]

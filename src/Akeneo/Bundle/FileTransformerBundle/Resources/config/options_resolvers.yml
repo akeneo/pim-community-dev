@@ -1,0 +1,22 @@
+parameters:
+    akeneo_file_transformer.options.image.color_space.class: Akeneo\Component\FileTransformer\Options\Image\ColorSpaceOptionsResolver
+    akeneo_file_transformer.options.image.resize.class:      Akeneo\Component\FileTransformer\Options\Image\ResizeOptionsResolver
+    akeneo_file_transformer.options.image.resolution.class:  Akeneo\Component\FileTransformer\Options\Image\ResolutionOptionsResolver
+    akeneo_file_transformer.options.image.scale.class:       Akeneo\Component\FileTransformer\Options\Image\ScaleOptionsResolver
+    akeneo_file_transformer.options.image.thumbnail.class:   Akeneo\Component\FileTransformer\Options\Image\ThumbnailOptionsResolver
+
+services:
+    akeneo_file_transformer.options.image.color_space:
+        class: %akeneo_file_transformer.options.image.color_space.class%
+
+    akeneo_file_transformer.options.image.resize:
+        class: %akeneo_file_transformer.options.image.resize.class%
+
+    akeneo_file_transformer.options.image.resolution:
+        class: %akeneo_file_transformer.options.image.resolution.class%
+
+    akeneo_file_transformer.options.image.scale:
+        class: %akeneo_file_transformer.options.image.scale.class%
+
+    akeneo_file_transformer.options.image.thumbnail:
+        class: %akeneo_file_transformer.options.image.thumbnail.class%

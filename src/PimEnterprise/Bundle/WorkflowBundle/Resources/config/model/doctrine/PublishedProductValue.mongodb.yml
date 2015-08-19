@@ -51,3 +51,10 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
         media:
             type: entity
             targetEntity: Akeneo\Component\FileStorage\Model\File
+        assets:
+            notSaved: true
+            type: entities
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\Asset
+            idsField: assetIds
+        assetIds:
+            type: collection

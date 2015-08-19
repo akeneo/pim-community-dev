@@ -1,0 +1,18 @@
+PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfiguration:
+    type: entity
+    table: pimee_product_asset_channel_variation_configuration
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        configuration:
+            type: json_array
+    oneToOne:
+        channel:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
+            joinColumn:
+                name: channel_id
+                referencedColumnName: id

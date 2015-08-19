@@ -15,7 +15,7 @@ services:
         parent: pim_base_connector.processor.transformer
         class: %pimee_base_connector.processor.category_access.class%
         arguments:
-            - %pimee_security.entity.category_access.class%
+            - %pimee_security.entity.product_category_access.class%
 
     pimee_base_connector.processor.job_profile_access:
         parent: pim_base_connector.processor.transformer
@@ -28,3 +28,16 @@ services:
         class: %pimee_base_connector.processor.locale_access.class%
         arguments:
             - %pimee_security.entity.locale_access.class%
+
+    pimee_base_connector.processor.asset_category:
+        class: %pim_base_connector.processor.category.class%
+        parent: pim_base_connector.processor.transformer
+        arguments:
+            - %pimee_product_asset.model.category.class%
+            - '@pim_transform.cache.doctrine_cache'
+
+    pimee_base_connector.processor.asset_tag:
+        class: %pim_base_connector.processor.tag.class%
+        arguments:
+            - '@validator'
+            - %pimee_product_asset.model.tag.class%

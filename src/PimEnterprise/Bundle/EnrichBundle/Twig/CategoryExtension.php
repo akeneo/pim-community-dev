@@ -11,9 +11,10 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Twig\CategoryExtension as BaseCategoryExtension;
+use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
  * Overriden Twig extension to allow to count products or published products
@@ -22,37 +23,92 @@ use Pim\Bundle\EnrichBundle\Twig\CategoryExtension as BaseCategoryExtension;
  */
 class CategoryExtension extends BaseCategoryExtension
 {
-    /**
-     * @var ProductCategoryManager
-     */
-    protected $publishedManager;
+    /** @var CategoryRepositoryInterface */
+    protected $assetCategoryRepo;
+
+    /** @var ItemCategoryRepositoryInterface */
+    protected $itemAssetCatRepo;
+
+    /** @var ItemCategoryRepositoryInterface */
+    protected $itemPublishedCatRepo;
 
     /**
-     * Constructor
-     *
-     * @param ProductCategoryManager $manager
-     * @param ProductCategoryManager $publishedManager
-     * @param int|null               $productsLimitForRemoval
+     * @param CategoryRepositoryInterface     $productCategoryRepo
+     * @param ItemCategoryRepositoryInterface $itemProductCatRepo
+     * @param CategoryRepositoryInterface     $assetCategoryRepo
+     * @param ItemCategoryRepositoryInterface $itemAssetCatRepo
+     * @param ItemCategoryRepositoryInterface $itemPublishedCatRepo
+     * @param int|null                        $productsLimitForRemoval
      */
     public function __construct(
-        ProductCategoryManager $manager,
-        ProductCategoryManager $publishedManager,
+        CategoryRepositoryInterface $productCategoryRepo,
+        ItemCategoryRepositoryInterface $itemProductCatRepo,
+        CategoryRepositoryInterface $assetCategoryRepo,
+        ItemCategoryRepositoryInterface $itemAssetCatRepo,
+        ItemCategoryRepositoryInterface $itemPublishedCatRepo,
         $productsLimitForRemoval = null
     ) {
-        parent::__construct($manager, $productsLimitForRemoval);
-        $this->publishedManager        = $publishedManager;
-        $this->productsLimitForRemoval = $productsLimitForRemoval;
+        parent::__construct($productCategoryRepo, $itemProductCatRepo, $productsLimitForRemoval);
+
+        $this->assetCategoryRepo    = $assetCategoryRepo;
+        $this->itemAssetCatRepo     = $itemAssetCatRepo;
+        $this->itemPublishedCatRepo = $itemPublishedCatRepo;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO: Make the permissions work again with PIM-4292
+     */
+    protected function countItems(CategoryInterface $category, $includeSub, $relatedEntity)
+    {
+        return parent::countItems($category, $includeSub, $relatedEntity);
+//        if ($relatedEntity === 'published_product') {
+//            return $this->publishedManager->getProductsCountInGrantedCategory($category, $includeSub);
+//        } else {
+//            return $this->manager->getProductsCountInGrantedCategory($category, $includeSub);
+//        }
+
+//        if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+//            return 0;
+//        }
+//
+//        $grantedQb = null;
+//        if ($inChildren) {
+//            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, $inProvided);
+//            $grantedQb = $this->getAllGrantedChildrenQueryBuilder($categoryQb);
+//        }
+//
+//        return $this->productRepository->getProductsCountInCategory($category, $grantedQb);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function countProducts(CategoryInterface $category, $includeSub, $relatedEntity)
+    protected function getRelatedEntityRepo($relatedEntity)
     {
-        if ($relatedEntity === 'published_product') {
-            return $this->publishedManager->getProductsCountInGrantedCategory($category, $includeSub);
-        } else {
-            return $this->manager->getProductsCountInGrantedCategory($category, $includeSub);
+        switch ($relatedEntity) {
+            case 'asset':
+                return $this->assetCategoryRepo;
+            case 'published_product':
+                return $this->productCategoryRepo;
         }
+
+        return parent::getRelatedEntityRepo($relatedEntity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRelatedCategoryEntityRepo($relatedEntity)
+    {
+        switch ($relatedEntity) {
+            case 'asset':
+                return $this->itemAssetCatRepo;
+            case 'published_product':
+                return $this->itemPublishedCatRepo;
+        }
+
+        return parent::getRelatedCategoryEntityRepo($relatedEntity);
     }
 }

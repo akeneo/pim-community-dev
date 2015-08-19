@@ -1,0 +1,76 @@
+datagrid:
+    asset-picker-grid:
+        options:
+            entityHint: asset
+            requireJSModules:
+                - pim/datagrid/column-form-listener
+            columnListener:
+                dataField: code
+                columnName: is_checked
+            routerEnabled: false
+        source:
+            type: pimee_datasource_asset
+            entity: 'PimEnterprise\Component\ProductAsset\Model\Asset'
+            repository_method: createAssetDatagridQueryBuilder
+            repository_parameters:
+                - currentUser
+        columns:
+            is_checked:
+                frontend_type: boolean
+                data_name:     is_checked
+                editable:      true
+            references:
+                label:         pimee_product_asset.thumbnail.label
+                type:          asset_thumbnail
+                template:      PimEnterpriseProductAssetBundle:Property:thumbnail.html.twig
+                frontend_type: html
+                selector:      asset_thumbnail
+            code:
+                type: field
+                frontend_type: string
+                label: pimee_product_asset.code.label
+            description:
+                type: field
+                frontend_type: string
+                label: pimee_product_asset.description.label
+            endOfUseAt:
+                type: field
+                frontend_type: datetime
+                label: pimee_product_asset.endOfUse.label
+        properties:
+            id: ~
+            code: ~
+        sorters:
+            columns:
+                code:
+                    data_name: asset.code
+                description:
+                    data_name: asset.description
+                endOfUseAt:
+                    data_name: asset.endOfUseAt
+            default:
+                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     pimee_product_asset.code.label
+                    data_name: asset.code
+                description:
+                    type:      string
+                    label:     pimee_product_asset.description.label
+                    data_name: asset.description
+                tags:
+                    type:      product_asset_tag
+                    data_name: tags.id
+                    label:     pimee_product_asset.tags.label
+                    options:
+                        field_options:
+                            attr:
+                                empty_choice: true
+                            multiple: true
+                            choices:  '@pimee_product_asset.repository.tag->findAllCodes'
+                endOfUseAt:
+                    type:      date
+                    data_name: asset.endOfUseAt
+                    label:     pimee_product_asset.endOfUse.label

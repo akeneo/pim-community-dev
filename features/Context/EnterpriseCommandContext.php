@@ -2,10 +2,12 @@
 
 namespace Context;
 
+use Akeneo\Component\Console\CommandResult;
 use Behat\Gherkin\Node\TableNode;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\CreateDraftCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
@@ -52,6 +54,38 @@ class EnterpriseCommandContext extends CommandContext
                 sprintf(
                     'An error occured during the execution of the publish command : %s',
                     $publishCommandTester->getDisplay()
+                )
+            );
+        }
+    }
+
+    /**
+     * @throws \Exception
+     *
+     * @Given /^I generate missing variations(?: for asset (\S+))?$/
+     */
+    public function iGenerateMissingVariations($assetCode = null)
+    {
+        $application = new Application();
+        $application->add(new GenerateMissingVariationFilesCommand());
+
+        $command = $application->find('pim:asset:generate-missing-variation-files');
+        $command->setContainer($this->getContainer());
+        $commandTester = new CommandTester($command);
+
+        $commandOptions = ['command' => $command->getName()];
+
+        if (null !== $assetCode) {
+            $commandOptions['-a'] = $assetCode;
+        }
+
+        $commandResult = $commandTester->execute($commandOptions);
+
+        if (0 !== $commandResult) {
+            throw new \Exception(
+                sprintf(
+                    'An error occured during the execution of the generate variations command : %s',
+                    $commandTester->getDisplay()
                 )
             );
         }

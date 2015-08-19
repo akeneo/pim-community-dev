@@ -1,0 +1,60 @@
+pimee_product_asset_index:
+    path: /
+    defaults: { _controller: pimee_product_asset.controller.product_asset:indexAction }
+
+pimee_product_asset_view:
+    path: /{id}/view
+    defaults: { _controller: pimee_product_asset.controller.product_asset:viewAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_create:
+    path: /create
+    defaults: { _controller: pimee_product_asset.controller.product_asset:createAction }
+
+pimee_product_asset_next_code:
+    path: /nextCode/{code}
+    defaults: { _controller: pimee_product_asset.controller.product_asset:getNextAvailableCodeAction }
+    requirements:
+        code: '^[a-zA-Z0-9_]+$'
+
+pimee_product_asset_edit:
+    path: /{id}/edit
+    defaults: { _controller: pimee_product_asset.controller.product_asset:editAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_remove:
+    path: /{id}/remove
+    defaults: { _controller: pimee_product_asset.controller.product_asset:removeAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_reference_delete:
+    path: /reference/{id}/update
+    defaults: { _controller: pimee_product_asset.controller.product_asset:deleteReferenceFileAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_variation_delete:
+    path: /variation/{id}/update
+    defaults: { _controller: pimee_product_asset.controller.product_asset:deleteVariationFileAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_variation_reset:
+    path: /variation/{id}/reset
+    defaults: { _controller: pimee_product_asset.controller.product_asset:resetVariationFileAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_variations_reset:
+    path: /variations/{id}/reset
+    defaults: { _controller: pimee_product_asset.controller.product_asset:resetVariationsFilesAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_rest_index:
+    path: /rest/
+    defaults: { _controller: pimee_product_asset.controller.rest.product_asset:indexAction, _format: json }
+    methods: [GET]

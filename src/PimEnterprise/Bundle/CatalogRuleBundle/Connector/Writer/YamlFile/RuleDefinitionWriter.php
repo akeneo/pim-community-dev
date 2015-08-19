@@ -42,5 +42,9 @@ class RuleDefinitionWriter extends FileWriter
         if (false === file_put_contents($path, $yaml)) {
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
         }
+
+        foreach ($items as $item) {
+            $this->stepExecution->incrementSummaryInfo('write');
+        }
     }
 }

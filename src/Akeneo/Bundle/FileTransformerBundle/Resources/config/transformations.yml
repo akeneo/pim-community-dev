@@ -1,0 +1,46 @@
+parameters:
+    akeneo_file_transformer.transformation.registry.class:          Akeneo\Component\FileTransformer\Transformation\TransformationRegistry
+    akeneo_file_transformer.transformation.image.color_space.class: Akeneo\Component\FileTransformer\Transformation\Image\ColorSpace
+    akeneo_file_transformer.transformation.image.resize.class:      Akeneo\Component\FileTransformer\Transformation\Image\Resize
+    akeneo_file_transformer.transformation.image.resolution.class:  Akeneo\Component\FileTransformer\Transformation\Image\Resolution
+    akeneo_file_transformer.transformation.image.scale.class:       Akeneo\Component\FileTransformer\Transformation\Image\Scale
+    akeneo_file_transformer.transformation.image.thumbnail.class:   Akeneo\Component\FileTransformer\Transformation\Image\Thumbnail
+
+services:
+    akeneo_file_transformer.transformation.registry:
+        class: %akeneo_file_transformer.transformation.registry.class%
+
+    akeneo_file_transformer.transformation.image.color_space:
+        class: %akeneo_file_transformer.transformation.image.color_space.class%
+        arguments:
+            - '@akeneo_file_transformer.options.image.color_space'
+        tags:
+            - { name: akeneo_file_transformer.transformation, alias: transformation_image_color_space }
+
+    akeneo_file_transformer.transformation.image.resize:
+        class: %akeneo_file_transformer.transformation.image.resize.class%
+        arguments:
+            - '@akeneo_file_transformer.options.image.resize'
+        tags:
+            - { name: akeneo_file_transformer.transformation, alias: transformation_image_resize }
+
+    akeneo_file_transformer.transformation.image.resolution:
+        class: %akeneo_file_transformer.transformation.image.resolution.class%
+        arguments:
+            - '@akeneo_file_transformer.options.image.resolution'
+        tags:
+            - { name: akeneo_file_transformer.transformation, alias: transformation_image_resolution }
+
+    akeneo_file_transformer.transformation.image.scale:
+        class: %akeneo_file_transformer.transformation.image.scale.class%
+        arguments:
+            - '@akeneo_file_transformer.options.image.scale'
+        tags:
+            - { name: akeneo_file_transformer.transformation, alias: transformation_image_scale }
+
+    akeneo_file_transformer.transformation.image.thumbnail:
+        class: %akeneo_file_transformer.transformation.image.thumbnail.class%
+        arguments:
+            - '@akeneo_file_transformer.options.image.thumbnail'
+        tags:
+            - { name: akeneo_file_transformer.transformation, alias: transformation_image_thumbnail }

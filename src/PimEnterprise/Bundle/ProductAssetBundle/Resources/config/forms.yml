@@ -1,0 +1,46 @@
+parameters:
+    pimee_product_asset.form.type.asset.class:                 PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType
+    pimee_product_asset.form.type.create_asset.class:          PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType
+    pimee_product_asset.form.type.asset_reference.class:       PimEnterprise\Bundle\ProductAssetBundle\Form\Type\ReferenceType
+    pimee_product_asset.form.type.asset_variation.class:       PimEnterprise\Bundle\ProductAssetBundle\Form\Type\VariationType
+    pimee_product_asset.form.type.ajax_asset_tag.class:        PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AjaxAssetTagType
+    pimee_product_asset.form.transformer.ajax_asset_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Form\Transformer\AjaxAssetTagTransformer
+
+services:
+    pimee_product_asset.form.type.asset:
+        class: %pimee_product_asset.form.type.asset.class%
+        arguments:
+            - %pimee_product_asset.model.asset.class%
+            - %pimee_product_asset.model.tag.class%
+        tags:
+            - { name: form.type, alias: pimee_product_asset }
+
+    pimee_product_asset.form.type.create_asset:
+        class: %pimee_product_asset.form.type.create_asset.class%
+        tags:
+            - { name: form.type, alias: pimee_product_asset_create }
+
+    pimee_product_asset.form.type.asset_reference:
+        class: %pimee_product_asset.form.type.asset_reference.class%
+        arguments:
+            - %pimee_product_asset.model.reference.class%
+        tags:
+            - { name: form.type, alias: pimee_product_asset_reference }
+
+    pimee_product_asset.form.type.asset_variation:
+        class: %pimee_product_asset.form.type.asset_variation.class%
+        arguments:
+            - %pimee_product_asset.model.variation.class%
+        tags:
+            - { name: form.type, alias: pimee_product_asset_variation }
+
+    pimee_product_asset.form.type.ajax_tag:
+        class: %pimee_product_asset.form.type.ajax_asset_tag.class%
+        arguments:
+            - '@pim_ui.form.transformer.ajax_creatable_entity.factory'
+            - '@pimee_product_asset.saver.tag'
+            - '@router'
+            - '@pim_user.context.user'
+            - %pimee_product_asset.form.transformer.ajax_asset_tag.class%
+        tags:
+            - { name: form.type, alias: pim_ajax_asset_tag }

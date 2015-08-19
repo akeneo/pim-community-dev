@@ -1,5 +1,0 @@
-category_accesses:
-    default:
-        editProducts: [IT support, Manager, Redactor]
-        viewProducts: [IT support, Manager, Redactor]
-        ownProducts: [IT support, Manager]

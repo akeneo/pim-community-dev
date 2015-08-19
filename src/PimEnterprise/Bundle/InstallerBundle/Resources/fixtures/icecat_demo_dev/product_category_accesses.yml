@@ -1,0 +1,561 @@
+product_category_accesses:
+    master:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    sales:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    brands:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    home_appliances:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    tvs_projectors:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    pc_monitors:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    led_tvs:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    cameras:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    digital_cameras:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    camcorders:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    webcams:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    audio_video:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    headphones:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    mp3_players:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    loudspeakers:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    print_scan:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    multifunctionals:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    laser_led_printers:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    scanners:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    tvs_projectors_sales:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    cameras_sales:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    audio_video_sales:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    print_scan_sales:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    3go:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    3m:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    a4tech:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    aoc:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    asus:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    acer:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    adapt:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    approx:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    avision:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    belkin:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    brother:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    canon:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    cisco:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    conceptronic:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    d_link:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    dell:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    dymo:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    devolo:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    dicota:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    eminent:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    emtec:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    ewent:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    fujifilm:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    fujitsu:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    g_cube:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    gear4:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    gigabyte:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    hp:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    hamlet:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    hiper:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    ibm:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    icidu:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    ion:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    ion_audio:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    kensington:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    kodak:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    kyocera:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    lg:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    lacie:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    lenco:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    lenovo:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    levelone:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    lexmark:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    logitech:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    macally:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    magnavox:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    medion:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    microsoft:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    nec:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    ngs:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    noxon:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    oki:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    ovislink:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    philips:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    razer:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    ricatech:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    ricoh:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    spcinternet:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    salora:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    samsung:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    sandberg:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    sitecom:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    sony:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    speed_link:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    spire:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    sweex:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    tdk:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    tacens:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    targus:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    techly:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    teufel:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    thrustmaster:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    toshiba:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    trust:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    v7:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    value:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    verbatim:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    viewsonic:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    vogel_s:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    woxter:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    xerox:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    xtrememac:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    yarvik:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    iiyama:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    takems:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    clothes:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    pants:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    shoes:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    clothes_accessories:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    sweat:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    coats:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    underwear:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    tshirts:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    jeans:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    caps:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    ties:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    gloves:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    belts:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
+    office:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    office_furnitures:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    desk_chairs:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    office_tables:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    paper:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    desk_supplies:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    goodies:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    stickers:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    casino_chips:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    mugs:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    notebooks:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    cards:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    markers:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    erasers:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    pens:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    postit_notes:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    stamps:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    adhesives:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]
+    envelopes:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+        ownItems: [IT support, Manager]

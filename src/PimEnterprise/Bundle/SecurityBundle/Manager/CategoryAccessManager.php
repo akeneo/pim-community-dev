@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
@@ -368,9 +368,9 @@ class CategoryAccessManager
             $access = new $this->categoryAccessClass();
             $access
                 ->setCategory($category)
-                ->setViewProducts($view)
-                ->setEditProducts($edit)
-                ->setOwnProducts($own)
+                ->setViewItems($view)
+                ->setEditItems($edit)
+                ->setOwnItems($own)
                 ->setUserGroup($group);
 
             $this->getObjectManager()->persist($access);
@@ -394,13 +394,13 @@ class CategoryAccessManager
 
         foreach ($accesses as $access) {
             if ($view !== null) {
-                $access->setViewProducts($view);
+                $access->setViewItems($view);
             }
             if ($edit !== null) {
-                $access->setEditProducts($edit);
+                $access->setEditItems($edit);
             }
             if ($own !== null) {
-                $access->setOwnProducts($own);
+                $access->setOwnItems($own);
             }
             $this->getObjectManager()->persist($access);
         }
@@ -419,9 +419,9 @@ class CategoryAccessManager
     {
         $access = $this->getCategoryAccess($category, $group);
         $access
-            ->setViewProducts(true)
-            ->setEditProducts(in_array($accessLevel, [Attributes::EDIT_PRODUCTS, Attributes::OWN_PRODUCTS]))
-            ->setOwnProducts($accessLevel === Attributes::OWN_PRODUCTS);
+            ->setViewItems(true)
+            ->setEditItems(in_array($accessLevel, [Attributes::EDIT_PRODUCTS, Attributes::OWN_PRODUCTS]))
+            ->setOwnItems($accessLevel === Attributes::OWN_PRODUCTS);
 
         $this->getObjectManager()->persist($access);
         if (true === $flush) {
@@ -430,7 +430,7 @@ class CategoryAccessManager
     }
 
     /**
-     * Get CategoryAccess entity for a category and user group
+     * Get ProductCategoryAccess entity for a category and user group
      *
      * @param CategoryInterface $category
      * @param Group             $group

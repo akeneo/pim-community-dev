@@ -1,0 +1,20 @@
+PimEnterprise\Bundle\CatalogBundle\Model\ProductValue:
+    type: entity
+    table: pim_catalog_product_value
+    manyToMany:
+        assets:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\AssetInterface
+            cascade:
+                - refresh
+            joinTable:
+                name: pim_catalog_product_value_asset
+                joinColumns:
+                    value_id:
+                        referencedColumnName: id
+                        nullable: true
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    asset_id:
+                        referencedColumnName: id
+                        nullable: false
+                        onDelete: CASCADE

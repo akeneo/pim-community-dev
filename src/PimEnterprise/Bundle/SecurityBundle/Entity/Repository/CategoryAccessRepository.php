@@ -16,8 +16,8 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -25,6 +25,8 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * Category access repository
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
+ *
+ * TODO: It must be entity agnostic for PIM-4292.
  */
 class CategoryAccessRepository extends EntityRepository
 {
@@ -164,7 +166,7 @@ class CategoryAccessRepository extends EntityRepository
      *
      * @return \Doctrine\DBAL\Query\QueryBuilder
      */
-    public function getRevokedCategoryQB(UserInterface $user, $accessLevel)
+    public function getRevokedCategoryQB(User $user, $accessLevel)
     {
         // get group ids
         $groupIds = array_map(
@@ -175,7 +177,7 @@ class CategoryAccessRepository extends EntityRepository
         );
 
         $categoryTable = $this->getTableName('pim_catalog.entity.category.class');
-        $categoryAccessTable = $this->getTableName('pimee_security.entity.category_access.class');
+        $categoryAccessTable = $this->getTableName('pimee_security.entity.product_category_access.class');
 
         $conn = $this->_em->getConnection();
         $qb = $conn->createQueryBuilder();
@@ -397,9 +399,9 @@ class CategoryAccessRepository extends EntityRepository
     protected function getAccessField($accessLevel)
     {
         $mapping = [
-            Attributes::OWN_PRODUCTS  => 'ownProducts',
-            Attributes::EDIT_PRODUCTS => 'editProducts',
-            Attributes::VIEW_PRODUCTS => 'viewProducts',
+            Attributes::OWN_PRODUCTS  => 'ownItems',
+            Attributes::EDIT_PRODUCTS => 'editItems',
+            Attributes::VIEW_PRODUCTS => 'viewItems',
         ];
         if (!isset($mapping[$accessLevel])) {
             throw new \LogicException(sprintf('"%s" access level does not exist', $accessLevel));

@@ -28,6 +28,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('assertions', new EnterpriseAssertionContext());
         $this->useContext('technical', new TechnicalContext());
         $this->useContext('command', new EnterpriseCommandContext());
+        $this->useContext('asset', new EnterpriseAssetContext());
     }
 
     /**
@@ -447,14 +448,47 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iRevertTheProductVersionNumber($version)
     {
-        $this->getSession()
-            ->getPage()
-            ->find('css', sprintf('tr[data-version="%s"]', $version))
-            ->find('css', 'td.actions .btn.restore')->click();
-        $this->wait();
+        $button = $this->spin(function () use ($version) {
+            return $this->getSession()->getPage()
+                ->find('css', sprintf('tr[data-version="%s"]', $version))
+                ->find('css', 'td.actions .btn.restore');
+        });
+
+        $button->click();
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
 
         $this->wait();
+    }
+
+    /**
+     * @Given /^I start to manage assets for "(?P<field>(?:[^"]|\\")*)"$/
+     */
+    public function iStartToManageAssetsOnAttributeFrontView($field)
+    {
+        $manageAssets = $this->spin(function () use ($field) {
+            return $this->getSubcontext('navigation')->getCurrentPage()->findFieldContainer($field)->getParent()
+                ->find('css', '.add-asset');
+        });
+
+        $manageAssets->click();
+
+        $this->spin(function () {
+            return $this->getSession()->getPage()
+                ->find('css', '#grid-asset-picker-grid[data-rendered="true"]');
+        });
+    }
+
+    /**
+     * @Given /^I remove "([^"]*)" from the asset basket$/
+     */
+    public function iRemoveFromTheAssetBasket($entity)
+    {
+        $removeButton = $this->spin(function () use ($entity) {
+            return $this->getSession()->getPage()
+                ->find('css', sprintf('.asset-basket li[data-asset="%s"] .remove-asset', $entity));
+        });
+
+        $removeButton->click();
     }
 
     protected function getAttributeIcon($iconSelector, $attributeLabel)

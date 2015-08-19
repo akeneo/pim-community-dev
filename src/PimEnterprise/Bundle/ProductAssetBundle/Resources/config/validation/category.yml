@@ -1,0 +1,22 @@
+PimEnterprise\Component\ProductAsset\Model\Category:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Category code may contain only letters, numbers and underscores
+            - Length:
+                max: 100
+        translations:
+            - Valid: ~
+
+PimEnterprise\Component\ProductAsset\Model\CategoryTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100

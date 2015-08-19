@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Connector\Reader\Doctrine;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 
 /**
@@ -21,7 +22,9 @@ use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class RuleDefinitionReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class RuleDefinitionReader extends AbstractConfigurableStepElement implements
+    ItemReaderInterface,
+    StepExecutionAwareInterface
 {
     /** @var RuleDefinitionRepositoryInterface */
     protected $ruleRepository;
@@ -30,7 +33,7 @@ class RuleDefinitionReader extends AbstractConfigurableStepElement implements It
     protected $stepExecution;
 
     /** @var bool Checks if all rules are sent to the processor */
-    protected $allRulesRead = false;
+    protected $isExecuted = false;
 
     /**
      * @param RuleDefinitionRepositoryInterface $ruleRepository
@@ -45,13 +48,19 @@ class RuleDefinitionReader extends AbstractConfigurableStepElement implements It
      */
     public function read()
     {
-        if ($this->allRulesRead) {
+        if ($this->isExecuted) {
             return null;
         }
 
-        $this->allRulesRead = true;
+        $results = $this->getResults();
 
-        return $this->ruleRepository->findAll();
+        $this->isExecuted = true;
+
+        foreach ($results as $result) {
+            $this->stepExecution->incrementSummaryInfo('read');
+        }
+
+        return $results;
     }
 
     /**
@@ -63,10 +72,18 @@ class RuleDefinitionReader extends AbstractConfigurableStepElement implements It
     }
 
     /**
-     * @param StepExecution $stepExecution
+     * {@inheritdoc}
      */
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    protected function getResults()
+    {
+        return $this->ruleRepository->findAll();
     }
 }

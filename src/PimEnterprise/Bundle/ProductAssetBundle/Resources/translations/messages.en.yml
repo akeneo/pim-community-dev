@@ -1,0 +1,100 @@
+pimee_product_asset:
+    acl:
+        asset:
+            index: Enrich asset
+            create: Create an asset
+            remove: Remove asset
+    acl_group:
+        asset: Product assets
+    enrich_asset:
+        button:
+            upload: Upload
+            delete: Delete
+            generate_from_reference: Generate from reference
+            reset_variations: Reset variations
+        confirmation.remove: Are you sure you want to remove asset "%asset%" ?
+        grid:
+            edit: Edit properties of the asset
+        view:
+            title: Product asset
+            code: Code
+            description: Description
+            end_of_use: End of use at
+            reference: Reference
+            filename: File name
+            width: Width
+            height: Height
+            resolution: Resolution
+            colors: Color space
+            filesize: File size
+            filetype: File type
+            actions: Actions
+            download: Download
+        flash:
+            update:
+                success: Asset has been updated
+                error: Asset has not been updated. An error occured.
+            create:
+                success: Asset has been created.
+                error: Asset has not been created. An error occured.
+            remove:
+                success: Asset has been removed.
+    enrich_reference:
+        flash:
+            delete:
+                success: Reference file has been deleted
+                error: Reference file has not been deleted. An error occured.
+    enrich_variation:
+        flash:
+            update:
+                success: Variation file has been updated
+                error: Variation file has not been updated. An error occured.
+            delete:
+                success: Variation file has been deleted
+                error: Variation file has not been deleted. An error occured.
+    popin.create:
+        title: Create a new asset
+        is_localized: Localizable
+    menu: Assets
+    page_tab:
+        title:
+            view: Product asset %asset.code% | View
+            edit: Product asset %asset.code% | Edit
+            index: Product assets
+    code:
+        label: Code
+    thumbnail:
+        label: Thumbnail
+    status:
+        label: Status
+    description:
+        label: Description
+    endOfUse:
+        label: End of use
+    createdAt:
+        label: Created at
+    updatedAt:
+        label: Last updated at
+    tags:
+        label: Tags
+    tabs:
+        global-settings.title: Global settings
+        variations.title: Variations
+    validation:
+        code:
+            not_empty: Code is required. It can not be empty.
+            unique: Code must be unique.
+            new_generation: We generated a new one for you.
+    jobs:
+        csv_asset_import.title: Asset import in csv
+        csv_asset_export.title: Asset export in csv
+        csv_tag_import.title: Tag import in csv
+        csv_asset_category_import.title: Asset category import in csv
+        csv_asset_category_export.title: Asset category export in csv
+    notAvailable:
+        label: not available
+    asset:
+        title: Asset
+
+btn.create.asset: Create an asset
+btn.drag_or_upload: Drag and drop a file or click here

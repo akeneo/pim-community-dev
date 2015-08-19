@@ -1,0 +1,49 @@
+{% set variationModel = variation.vars.data %}
+<li>
+    <div class="row-fluid variation">
+
+        <h4>{{ variationModel.channel.label }}</h4>
+
+        <div class="row-fluid">
+            {% if variationModel.file %}
+                <figure class="thumbnail">{% include '@PimEnterpriseProductAsset/Property/thumbnail.html.twig'
+                    with {'path': variationModel.file.key, 'filter': 'thumbnail'} only %}</figure>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        {% if 'image' in variationModel.file.mimeType and metadata.variations[variationModel.id] %}
+                            <th>{{ 'pimee_product_asset.enrich_asset.view.width'|trans }}</th>
+                            <th>{{ 'pimee_product_asset.enrich_asset.view.height'|trans }}</th>
+                            <th>{{ 'pimee_product_asset.enrich_asset.view.resolution'|trans }}</th>
+                        {% endif %}
+                        <th>{{ 'pimee_product_asset.enrich_asset.view.filesize'|trans }}</th>
+                        <th>{{ 'pimee_product_asset.enrich_asset.view.filetype'|trans }}</th>
+                        <th>{{ 'pimee_product_asset.enrich_asset.view.actions'|trans }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        {% if 'image' in variationModel.file.mimeType and metadata.variations[variationModel.id] %}
+                            <td>{{ metadata.variations[variationModel.id].exifSizeWidth ? metadata.variations[variationModel.id].exifSizeWidth ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}</td>
+                            <td>{{ metadata.variations[variationModel.id].exifSizeHeight ? metadata.variations[variationModel.id].exifSizeHeight ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}</td>
+                            <td>{{ metadata.variations[variationModel.id].exifResolution ? metadata.variations[variationModel.id].exifResolution : 'pimee_product_asset.notAvailable.label'|trans }}</td>
+                        {% endif %}
+                        <td>{{ variationModel.file.size|number_format(0, '.', ' ') }} ko</td>
+                        <td>{{ variationModel.file.mimeType }}</td>
+                        <td><button class="btn delete"
+                               data-href="{{ path('pimee_product_asset_variation_delete', {'id': variationModel.id}) }}"
+                            >{{ 'btn.delete'|trans }}</button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            {% else %}
+                {% if not referenceModel.file is null %}
+                    {{ pamMacros.renderUploadZone(variation.file, 'span6') }}
+                    {{ pamMacros.renderGenerateFromReferenceZone(variationModel.id) }}
+                {% else %}
+                    {{ pamMacros.renderUploadZone(variation.file, 'span12') }}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</li>

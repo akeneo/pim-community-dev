@@ -27,11 +27,10 @@ class AppKernel extends Kernel
     {
         $bundles = [
             // your app bundles should be registered here
-            new Acme\Bundle\AppBundle\AcmeAppBundle(),
             new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle()
         ];
 
-        if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
+        if (in_array($this->getEnvironment(), ['dev', 'test', 'behat'])) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
@@ -90,6 +89,10 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
             new PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle(),
             new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
+
+            new Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
+            new Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
+            new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle(),
         ];
     }
 
@@ -129,6 +132,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
             new PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle(),
             new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
+            new Pim\Bundle\ClassificationBundle\PimClassificationBundle(),
         ];
     }
 

@@ -13,8 +13,10 @@ use Context\NavigationContext as BaseNavigationContext;
 class EnterpriseNavigationContext extends BaseNavigationContext
 {
     protected $enterprisePageMapping = [
-        'published' => 'Published index',
-        'proposals' => 'Proposal index',
+        'published'      => 'Published index',
+        'proposals'      => 'Proposal index',
+        'assets'         => 'Asset index',
+        'asset edit'     => 'Asset edit'
     ];
 
     /**
@@ -32,5 +34,29 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     {
         $expectedAddress = $this->getPage('Published index')->getUrl();
         $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param string $asset
+     *
+     * @Given /^I should be on the "([^"]+)" asset edit page$/
+     */
+    public function iShouldBeOnTheAssetEditPage($assetCode)
+    {
+        $asset = $this->getMainContext()->getSubcontext('fixtures')->getAsset($assetCode);
+        $expectedAddress = $this->getPage('Asset edit')->getUrl(['id' => $asset->getId()]);
+
+        $this->assertAddress($expectedAddress);
+        $this->currentPage = 'Asset edit';
+    }
+
+    /**
+     * @Given /^I should be on the assets page$/
+     */
+    public function iShouldBeOnTheAssetsPage()
+    {
+        $expectedAddress = $this->getPage('Asset index')->getUrl();
+        $this->assertAddress($expectedAddress);
+        $this->currentPage = 'Asset index';
     }
 }

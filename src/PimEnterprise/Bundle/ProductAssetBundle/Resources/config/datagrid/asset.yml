@@ -1,0 +1,116 @@
+datagrid:
+    asset-grid:
+        options:
+            entityHint: asset
+        source:
+            type: pimee_datasource_asset
+            entity: 'PimEnterprise\Component\ProductAsset\Model\Asset'
+            repository_method: createAssetDatagridQueryBuilder
+            repository_parameters:
+                - currentUser
+        columns:
+            references:
+                label:         pimee_product_asset.thumbnail.label
+                type:          asset_thumbnail
+                template:      PimEnterpriseProductAssetBundle:Property:thumbnail.html.twig
+                frontend_type: html
+                selector:      asset_thumbnail
+            code:
+                type: field
+                frontend_type: string
+                label: pimee_product_asset.code.label
+            description:
+                type: field
+                frontend_type: string
+                label: pimee_product_asset.description.label
+            tags:
+                label: Tags
+                type: twig
+                template: PimDataGridBundle:Property:options.html.twig
+                frontend_type: html
+#            enabled:
+#                label:         pimee_product_asset.status.label
+#                type:          twig
+#                template:      PimDataGridBundle:Property:enabled.html.twig
+#                frontend_type: html
+            endOfUseAt:
+                type: field
+                frontend_type: date
+                label: pimee_product_asset.endOfUse.label
+            createdAt:
+                type: field
+                frontend_type: date
+                label: pimee_product_asset.createdAt.label
+            updatedAt:
+                type: field
+                frontend_type: date
+                label: pimee_product_asset.updatedAt.label
+        sorters:
+            columns:
+                code:
+                    data_name: asset.code
+                description:
+                    data_name: asset.description
+#                enabled:
+#                    data_name: asset.enabled
+                endOfUseAt:
+                    data_name: asset.endOfUseAt
+                createdAt:
+                    data_name: asset.createdAt
+                updatedAt:
+                    data_name: asset.updatedAt
+            default:
+                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     pimee_product_asset.code.label
+                    data_name: asset.code
+                description:
+                    type:      string
+                    label:     pimee_product_asset.description.label
+                    data_name: asset.description
+                tags:
+                    type:      product_asset_tag
+                    data_name: tags.id
+                    label:     pimee_product_asset.tags.label
+                    options:
+                        field_options:
+                            attr:
+                                empty_choice: true
+                            multiple: true
+                            choices:  '@pimee_product_asset.repository.tag->findAllCodes'
+                endOfUseAt:
+                    type:      date
+                    data_name: asset.endOfUseAt
+                    label:     pimee_product_asset.endOfUse.label
+                createdAt:
+                    type:      date
+                    data_name: asset.createdAt
+                updatedAt:
+                    type:      date
+                    data_name: asset.updatedAt
+                scope:
+                    type:      product_scope
+                    label:     Scope
+                    data_name: ~
+                    options:
+                        field_options:
+                            choices: '@pim_catalog.manager.channel->getChannelChoices'
+        actions:
+            edit:
+                type:      tab-redirect
+                label:     pimee_product_asset.enrich_asset.grid.edit
+                tab:       pim_product_asset_global-settings
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pimee_product_asset_edit
+                params:
+                    - id
+#                    - dataLocale

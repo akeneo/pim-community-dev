@@ -19,10 +19,10 @@ Feature: Browse products I have access to
       | boots    | Boots       |        |
       | slippers | Slippers    |        |
     #TODO:
-    And the following category accesses:
-      | category | user group | access |
-      | shoes    | User       | view   |
-      | slippers | User       | view   |
+    And the following product category accesses:
+      | product category | user group | access |
+      | shoes            | User       | view   |
+      | slippers         | User       | view   |
     And I am logged in as "Mary"
 
   @skip

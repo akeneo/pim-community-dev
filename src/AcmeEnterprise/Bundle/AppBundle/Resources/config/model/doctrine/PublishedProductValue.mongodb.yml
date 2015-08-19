@@ -5,11 +5,11 @@ AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue:
             type: string
         color:
             type: entity
-            targetEntity: Acme\Bundle\AppBundle\Entity\Color
+            targetEntity: AcmeEnterprise\Bundle\AppBundle\Entity\Color
         fabrics:
             notSaved: true
             type: entities
-            targetEntity: Acme\Bundle\AppBundle\Entity\Fabric
+            targetEntity: AcmeEnterprise\Bundle\AppBundle\Entity\Fabric
             idsField: fabricIds
         fabricIds:
             type: collection

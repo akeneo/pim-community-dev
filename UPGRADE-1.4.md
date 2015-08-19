@@ -108,4 +108,7 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\ORM\\ProductDraftRepository/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\ORM\\Repository\\ProductDraftRepository/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\ORM\\PublishedAssociationRepository/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\ORM\\Repository\\PublishedAssociationRepository/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\ORM\\PublishedProductRepository/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\ORM\\Repository\\PublishedProductRepository/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\CategoryRepository/Pim\\Bundle\\ClassificationBundle\\Doctrine\\ORM\\Repository\\CategoryRepository/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\CategoryRepositoryInterface/Pim\\Component\\Classification\\Repository\\CategoryRepositoryInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pimee_security.entity.category_access.class/pimee_security.entity.product_category_access.class/g'
 ```
