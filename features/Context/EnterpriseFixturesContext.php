@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Component\Classification\Repository\TagRepositoryInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
@@ -28,6 +29,8 @@ use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\Tag;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * A context for creating entities
@@ -1045,6 +1048,25 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 assertEquals($data['parent'], $assetCategory->getParent()->getCode());
             }
         }
+    }
+
+    /**
+     * @Given /^the missing product asset variations have been generated$/
+     */
+    public function theMissingVariationsHaveBeenGenerated()
+    {
+        $application = new Application();
+        $application->add(new GenerateMissingVariationFilesCommand());
+
+        $generateCommand = $application->find('pim:asset:generate-missing-variation-files');
+        $generateCommand->setContainer($this->getContainer());
+        $generateCommandTester = new CommandTester($generateCommand);
+
+        $generateCommandTester->execute(
+            [
+                'command' => $generateCommand->getName(),
+            ]
+        );
     }
 
     /**
