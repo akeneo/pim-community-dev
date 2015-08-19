@@ -31,6 +31,7 @@ Feature: Edit product assets variations
     And I save the asset
     # TODO: Check the file
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4784
   Scenario: Successfully delete variation file
     Given I generate missing variations for asset bridge
     And I am on the "bridge" asset page
@@ -51,6 +52,7 @@ Feature: Edit product assets variations
     Given I reset variations files
     And I confirm the action
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4784
   Scenario: Successfully reset one variation file
     Given I generate missing variations for asset bridge
     And I am on the "bridge" asset page
