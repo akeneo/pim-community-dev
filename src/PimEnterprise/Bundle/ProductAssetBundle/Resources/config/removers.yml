@@ -1,5 +1,6 @@
 parameters:
-    pimee_product_asset.remover.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Remover\AssetRemover
+    pimee_product_asset.remover.asset.class:          PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Remover\AssetRemover
+    pimee_product_asset.remover.category_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Remover\CategoryAssetRemover
 
 services:
     pimee_product_asset.remover.variation:
@@ -25,3 +26,11 @@ services:
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - %pimee_product_asset.model.asset.class%
+
+    pimee_product_asset.remover.category_asset:
+        class:  %pimee_product_asset.remover.category_asset.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
+            - '@pimee_product_asset.saver.asset'

@@ -38,7 +38,7 @@ services:
             - '@pim_catalog.manager.category'
             - '@pimee_user.context.user.asset'
             - '@pimee_product_asset.saver.category'
-            - '@pim_catalog.remover.category'
+            - '@pimee_product_asset.remover.category_asset'
             - '@pimee_product_asset.factory.category'
             - '@pimee_product_asset.repository.category'
             - '@oro_security.security_facade'
