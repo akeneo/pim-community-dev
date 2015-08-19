@@ -31,11 +31,8 @@ class DefaultImageProvider implements DefaultImageProviderInterface
      * @param CacheManager  $cacheManager
      * @param array         $defaultImages
      */
-    public function __construct(
-        FilterManager $filterManager,
-        CacheManager $cacheManager,
-        array $defaultImages
-    ) {
+    public function __construct(FilterManager $filterManager, CacheManager $cacheManager, array $defaultImages)
+    {
         $this->filterManager = $filterManager;
         $this->cacheManager  = $cacheManager;
 

@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class FileController extends Controller
 {
-    const DEFAULT_IMAGE_KEY = '__default__image__';
+    const DEFAULT_IMAGE_KEY = '__default_image__';
 
     /** @var ImagineController */
     protected $imagineController;
@@ -80,21 +80,23 @@ class FileController extends Controller
         $filename = urldecode($filename);
 
         if (self::DEFAULT_IMAGE_KEY === $filename) {
-            return $this->renderDefaultImage(FileTypes::UNKNOWN, $filter);
+            return $this->renderDefaultImage(FileTypes::MISC, $filter);
         }
 
         $file = $this->fileRepository->findOneByIdentifier($filename);
-        if (null !== $file &&
-            FileTypes::IMAGE !== $fileType = $this->fileTypeGuesser->guess($file->getMimeType())
-        ) {
+        if (null !== $file) {
+            if (FileTypes::IMAGE === $fileType = $this->fileTypeGuesser->guess($file->getMimeType())) {
+                try {
+                    return $this->imagineController->filterAction($request, $filename, $filter);
+                } catch (NotFoundHttpException $e) {
+                    return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
+                }
+            }
+
             return $this->renderDefaultImage($fileType, $filter);
         }
 
-        try {
-            return $this->imagineController->filterAction($request, $filename, $filter);
-        } catch (NotFoundHttpException $e) {
-            return $this->renderDefaultImage(FileTypes::IMAGE, $filter);
-        }
+        return $this->renderDefaultImage(FileTypes::MISC, $filter);
     }
 
     /**

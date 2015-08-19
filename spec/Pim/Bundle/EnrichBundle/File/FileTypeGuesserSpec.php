@@ -14,9 +14,9 @@ class FileTypeGuesserSpec extends ObjectBehavior
 
     function it_guesses_file_types_from_mime_types()
     {
+        $this->guess('text/plain')->shouldReturn(FileTypes::DOCUMENT);
         $this->guess('image/jpeg')->shouldReturn(FileTypes::IMAGE);
-        $this->guess('text/plain')->shouldReturn(FileTypes::TEXT);
         $this->guess('video/mpeg')->shouldReturn(FileTypes::VIDEO);
-        $this->guess('unknown/mime-type')->shouldReturn(FileTypes::UNKNOWN);
+        $this->guess('unknown/mime-type')->shouldReturn(FileTypes::MISC);
     }
 }
