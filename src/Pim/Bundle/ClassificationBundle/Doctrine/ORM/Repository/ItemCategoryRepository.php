@@ -100,9 +100,9 @@ abstract class ItemCategoryRepository implements ItemCategoryRepositoryInterface
     public function getItemsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null)
     {
         $qb = $this->em->createQueryBuilder();
-        $qb->select($qb->expr()->count('distinct p'));
-        $qb->from($this->entityName, 'p');
-        $qb->join('p.categories', 'node');
+        $qb->select($qb->expr()->count('distinct i'));
+        $qb->from($this->entityName, 'i');
+        $qb->join('i.categories', 'node');
 
         if (null === $categoryQb) {
             $qb->where('node.id = :nodeId');
