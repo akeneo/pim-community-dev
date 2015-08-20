@@ -42,7 +42,6 @@ class LocalizableAssetValidator extends ConstraintValidator
     {
         /** @var AssetInterface */
         if ($asset instanceof AssetInterface) {
-
             $references    = $asset->getReferences();
             $nbReferences  = count($references);
             $nbLocalizable = 0;

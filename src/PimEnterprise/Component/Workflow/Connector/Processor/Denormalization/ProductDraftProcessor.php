@@ -21,6 +21,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -106,9 +107,7 @@ class ProductDraftProcessor extends AbstractProcessor
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        $productDraft = $this->buildDraft($product, $item);
-
-        return $productDraft;
+        return $this->buildDraft($product, $item);
     }
 
     /**
@@ -152,7 +151,7 @@ class ProductDraftProcessor extends AbstractProcessor
     /**
      * @param array $convertedItem
      *
-     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      *
      * @return string
      */
