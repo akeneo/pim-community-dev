@@ -85,7 +85,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
         $thumbnailPath = $image->getAttribute('src');
         if (false === strpos($thumbnailPath, sprintf('_%s.', $channelCode))) {
             throw $this->createExpectationException(sprintf(
-                'Expecting thumbnail path of row "%s" to contain scope "%s", got "%s".',
+                'Expecting thumbnail path of row "%s" to contain scope "%s", full path is "%s".',
                 $code,
                 $channelCode,
                 $thumbnailPath
@@ -94,7 +94,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
 
         if (null !== $localeCode && false === strpos($thumbnailPath, sprintf('_%s_', $localeCode))) {
             throw $this->createExpectationException(sprintf(
-                'Expecting thumbnail path of row "%s" to contain locale code "%s", got "%s".',
+                'Expecting thumbnail path of row "%s" to contain locale code "%s", full path is "%s".',
                 $code,
                 $localeCode,
                 $thumbnailPath
