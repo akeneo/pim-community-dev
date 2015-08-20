@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory;
+use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;

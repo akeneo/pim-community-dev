@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use PimEnterprise\Component\ProductAsset\Connector\Factory\TagFactory;
+use PimEnterprise\Component\ProductAsset\Factory\TagFactory;
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;

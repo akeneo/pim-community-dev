@@ -24,7 +24,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
-use PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory;
+use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;

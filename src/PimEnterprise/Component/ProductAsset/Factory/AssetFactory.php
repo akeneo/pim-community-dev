@@ -9,14 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Factory;
+namespace PimEnterprise\Component\ProductAsset\Factory;
 
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
  * Asset factory
- *TODO: component
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */

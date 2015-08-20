@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Factory;
+namespace PimEnterprise\Component\ProductAsset\Factory;
 
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
@@ -17,7 +17,6 @@ use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**
  * Reference factory
- * *TODO: component
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */

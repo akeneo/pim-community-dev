@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Factory;
+namespace spec\PimEnterprise\Component\ProductAsset\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Factory\ReferenceFactory;
+use PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 class AssetFactorySpec extends ObjectBehavior
@@ -19,7 +19,7 @@ class AssetFactorySpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory');
+        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Factory\AssetFactory');
     }
 
     function it_creates_a_not_localized_asset($referenceFactory, ReferenceInterface $reference)

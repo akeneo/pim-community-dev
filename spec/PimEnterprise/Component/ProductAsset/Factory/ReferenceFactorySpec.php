@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Factory;
+namespace spec\PimEnterprise\Component\ProductAsset\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Factory\VariationFactory;
+use PimEnterprise\Component\ProductAsset\Factory\VariationFactory;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 class ReferenceFactorySpec extends ObjectBehavior
@@ -20,7 +20,7 @@ class ReferenceFactorySpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Factory\ReferenceFactory');
+        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory');
     }
 
     function it_creates_a_not_localized_reference(
