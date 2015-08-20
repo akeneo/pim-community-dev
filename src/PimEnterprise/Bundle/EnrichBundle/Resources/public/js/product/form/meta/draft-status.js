@@ -19,14 +19,16 @@ define(
             },
             render: function () {
                 var product = this.getFormData();
+                var html = '';
 
-                this.$el.html(
-                    this.template({
+                if (product.meta.is_owner) {
+                    html = this.template({
                         label: _.__('pimee_enrich.entity.product.meta.draft_status'),
-                        isOwner: product.meta.is_owner,
                         draftStatus: this.getDraftStatus(product)
-                    })
-                );
+                    });
+                }
+
+                this.$el.html(html);
 
                 return this;
             },
