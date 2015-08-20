@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
+use Context\Loader\ProductAssetLoader;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
