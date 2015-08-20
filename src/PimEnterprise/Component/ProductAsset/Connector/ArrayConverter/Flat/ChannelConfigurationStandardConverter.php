@@ -48,7 +48,6 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
     public function convert(array $item, array $options = [])
     {
         $this->validate($item);
-
         $convertedItem = [];
         foreach ($item as $field => $data) {
             $convertedItem = $this->convertField($convertedItem, $field, $data);
@@ -71,7 +70,15 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
                 $convertedItem['channel'] = (string) $data;
                 break;
             case 'configuration':
-                $convertedItem['configuration'] = json_decode($data, true);
+                $convertedConfiguration = json_decode($data, true);
+
+                if (null === $convertedConfiguration) {
+                    throw new ArrayConversionException(
+                        sprintf('Impossible to decode channel configuration "%s"', $data)
+                    );
+                }
+
+                $convertedItem['configuration'] = $convertedConfiguration;
         }
 
         return $convertedItem;

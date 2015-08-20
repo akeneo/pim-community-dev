@@ -26,8 +26,14 @@ locale_accesses:
     yml:
         processor: pimee_base_connector.processor.locale_access
 
+asset_channel_configurations:
+    order: 110
+    csv:
+        reader:    pimee_product_asset.reader.file.csv_channel_configuration
+        processor: pimee_product_asset.processor.denormalization.channel_configuration.flat
+
 asset_categories:
-    order: 30
+    order: 120
     multiple: true
     csv:
         reader:    pim_base_connector.reader.file.csv_category
@@ -37,13 +43,13 @@ asset_categories:
         processor: pimee_base_connector.processor.asset_category
 
 asset_tags:
-    order: 30
+    order: 120
     csv:
         reader:    pimee_product_asset.reader.file.csv_tag
         processor: pimee_product_asset.processor.denormalization.tag.flat
 
 assets:
-    order: 40
+    order: 130
     csv:
         reader:    pimee_product_asset.reader.file.csv_asset
         processor: pimee_product_asset.processor.denormalization.asset.flat

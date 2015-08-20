@@ -38,4 +38,4 @@ services:
     pimee_product_asset.factory.channel_configuration:
         class: %pimee_product_asset.factory.channel_configuration.class%
         arguments:
-            - %pimee_product_asset.model.channel_configuration.class%
+            - %pimee_product_asset.model.channel_variations_configuration.class%

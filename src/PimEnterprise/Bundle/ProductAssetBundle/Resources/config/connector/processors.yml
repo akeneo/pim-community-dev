@@ -1,7 +1,8 @@
 parameters:
-    pimee_product_asset.processor.denormalization.tag.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor
-    pimee_product_asset.processor.denormalization.asset.class: PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\AssetProcessor
-    pimee_product_asset.processor.normalization.asset.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\AssetProcessor
+    pimee_product_asset.processor.denormalization.tag.class:                   PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor
+    pimee_product_asset.processor.denormalization.asset.class:                 PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\AssetProcessor
+    pimee_product_asset.processor.denormalization.channel_configuration.class: PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\ChannelConfigurationProcessor
+    pimee_product_asset.processor.normalization.asset.class:                   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\AssetProcessor
 
 services:
     pimee_product_asset.processor.denormalization.tag.flat:
@@ -11,7 +12,7 @@ services:
             - '@pimee_product_asset.repository.tag'
             - '@pimee_product_asset.updater.tag'
             - '@pimee_product_asset.factory.tag'
-            - '@pim_catalog.validator.product'
+            - '@validator'
 
     pimee_product_asset.processor.denormalization.asset.flat:
         class: %pimee_product_asset.processor.denormalization.asset.class%
@@ -20,7 +21,16 @@ services:
             - '@pimee_product_asset.repository.asset'
             - '@pimee_product_asset.updater.asset'
             - '@pimee_product_asset.factory.asset'
-            - '@pim_catalog.validator.product'
+            - '@validator'
+
+    pimee_product_asset.processor.denormalization.channel_configuration.flat:
+        class: %pimee_product_asset.processor.denormalization.channel_configuration.class%
+        arguments:
+            - '@pimee_product_asset.array_converter.flat.channel_configuration'
+            - '@pimee_product_asset.repository.channel_configuration'
+            - '@pim_catalog.repository.channel'
+            - '@pimee_product_asset.factory.channel_configuration'
+            - '@validator'
 
     pimee_product_asset.processor.normalization.asset.flat:
         class: %pimee_product_asset.processor.normalization.asset.class%

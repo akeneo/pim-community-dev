@@ -106,6 +106,17 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    csv_asset_configuration_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_asset_configuration_import
+        label:     Demo asset configuration import
+        type:      import
+        configuration:
+            filePath:      /tmp/assets_configurations.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
     csv_asset_export:
         connector: Akeneo CSV Connector
         alias:     csv_asset_export

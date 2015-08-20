@@ -50,3 +50,11 @@ services:
             - '@akeneo_storage_utils.saver.base_options_resolver'
             - '@event_dispatcher'
             - %pimee_product_asset.model.category.interface%
+
+    pimee_product_asset.saver.channel_configuration:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
+            - '@event_dispatcher'
+            - %pimee_product_asset.model.channel_variations_configuration.interface%

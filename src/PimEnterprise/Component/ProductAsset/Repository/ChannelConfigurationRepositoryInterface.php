@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Repository;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
@@ -18,6 +19,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface ChannelConfigurationRepositoryInterface extends ObjectRepository
+interface ChannelConfigurationRepositoryInterface extends ObjectRepository, IdentifiableObjectRepositoryInterface
 {
 }
