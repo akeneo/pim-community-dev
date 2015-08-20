@@ -1,0 +1,8 @@
+Dear {{ user.firstName }} {{ user.lastName }},\n\n
+This email is a reminder to inform you that the following Asset(s):
+{% for asset in assets %}
+    “{{ asset.code }}”,
+{% endfor %}
+in the Akeneo PIM will be not authorized to be used in {{ nb }} {{ unit }}, the exact date is {{ assets[0].endOfUseAt|localizeddate('medium', 'none', locale) }}.\n\n
+Best regards,\n
+The Akeneo PIM.
