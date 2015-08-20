@@ -72,8 +72,9 @@ define([
                     FetcherRegistry.getFetcher('locale').fetchAll(),
                     FetcherRegistry.getFetcher('channel').fetchAll(),
                     FetcherRegistry.getFetcher('currency').fetchAll(),
+                    FetcherRegistry.getFetcher('association-type').fetchAll(),
                     AttributeManager.getAttributesForProduct(product)
-                ).then(function (attributes, locales, channels, currencies, productAttributes) {
+                ).then(function (attributes, locales, channels, currencies, associationTypes, productAttributes) {
                     var values = {};
                     product.values = Array.isArray(product.values) && 0 === product.values.length ? {} : product.values;
 
@@ -89,7 +90,15 @@ define([
                         );
                     });
 
-                    product.values = values;
+                    var associations = {};
+                    _.each(associationTypes, function (assocType) {
+                        associations[assocType.code] = AttributeManager.generateMissingAssociations(
+                            _.has(product.associations, assocType.code) ? product.associations[assocType.code] : {}
+                        );
+                    });
+
+                    product.values       = values;
+                    product.associations = associations;
 
                     return product;
                 });
