@@ -1,0 +1,8 @@
+PimEnterprise\Bundle\UserBundle\Entity\User:
+    type: entity
+    table: oro_user
+    fields:
+        assetDelayReminder:
+            type: integer
+            options:
+                default: 5

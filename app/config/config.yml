@@ -103,3 +103,6 @@ akeneo_storage_utils:
         -
             original: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
             override: AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue
+        -
+            original: Pim\Bundle\UserBundle\Entity\User
+            override: PimEnterprise\Bundle\UserBundle\Entity\User
