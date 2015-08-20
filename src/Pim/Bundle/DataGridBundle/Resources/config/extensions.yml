@@ -1,7 +1,7 @@
 parameters:
     pim_datagrid.extension.filter.class:                Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension
-    pim_datagrid.extension.sorter.class:     Pim\Bundle\DataGridBundle\Extension\Sorter\SorterExtension
-    pim_datagrid.extension.pager.class:       Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension
+    pim_datagrid.extension.sorter.class:                Pim\Bundle\DataGridBundle\Extension\Sorter\SorterExtension
+    pim_datagrid.extension.pager.class:                 Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension
     pim_datagrid.extension.selector.orm_selector.class: Pim\Bundle\DataGridBundle\Extension\Selector\OrmSelectorExtension
 
 services:

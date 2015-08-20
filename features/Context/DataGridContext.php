@@ -20,14 +20,10 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
  */
 class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 {
-    /**
-     * @var \SensioLabs\Behat\PageObjectExtension\Context\PageFactory
-     */
+    /** @var PageFactory */
     protected $pageFactory;
 
-    /**
-     * @var \Context\Page\Base\Grid
-     */
+    /** @var Grid */
     public $datagrid;
 
     /**
