@@ -10,9 +10,9 @@ use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator
 
 class FiltersConfiguratorSpec extends ObjectBehavior
 {
-    function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
+    function let(ConfigurationRegistry $registry)
     {
-        $this->beConstructedWith($registry, 'Pim/Catalog/Product');
+        $this->beConstructedWith($registry);
     }
 
     function it_is_a_configurator()
@@ -20,7 +20,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface');
     }
 
-    function it_configures_datagrid_filters($configuration, $registry)
+    function it_configures_datagrid_filters(DatagridConfiguration $configuration, $registry)
     {
         $attributes = [
             'sku' => [
@@ -74,7 +74,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $this->configure($configuration);
     }
 
-    function it_cannot_handle_misconfigured_attribute_type($configuration, $registry)
+    function it_cannot_handle_misconfigured_attribute_type(DatagridConfiguration $configuration, $registry)
     {
         $attributes = [
             'sku' => [

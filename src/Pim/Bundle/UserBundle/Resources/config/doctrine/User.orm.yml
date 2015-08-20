@@ -85,6 +85,11 @@ Pim\Bundle\UserBundle\Entity\User:
             gedmo:
                 timestampable:
                     on: update
+                    on: create
+        productGridFilters:
+            type: json_array
+            nullable: true
+            column: product_grid_filters
     manyToMany:
         roles:
             targetEntity: Oro\Bundle\UserBundle\Entity\Role
