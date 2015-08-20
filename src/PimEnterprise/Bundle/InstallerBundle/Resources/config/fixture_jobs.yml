@@ -73,3 +73,13 @@ jobs:
         configuration:
             filePath: assets.csv
             multiple: false
+
+    fixtures_asset_channel_configurations_csv:
+        order:     110
+        connector: Data fixtures
+        alias:     fixtures_asset_channel_configurations_csv
+        label:     assets data fixtures
+        type:      fixtures
+        configuration:
+            filePath: asset_channel_configurations.csv
+            multiple: false

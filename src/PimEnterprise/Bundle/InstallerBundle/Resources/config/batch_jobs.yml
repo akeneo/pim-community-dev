@@ -91,3 +91,14 @@ connector:
                         reader:    pimee_product_asset.reader.file.csv_asset
                         processor: pimee_product_asset.processor.denormalization.asset.flat
                         writer:    pimee_product_asset.writer.doctrine.asset
+
+        fixtures_asset_channel_configurations_csv:
+            title: pimee_base_connector.jobs.fixtures_asset_channel_configurations_csv.title
+            type:  fixtures
+            steps:
+                import_asset:
+                    title:         pimee_product_asset.jobs.csv_asset_configuration_import.title
+                    services:
+                        reader:    pimee_product_asset.reader.file.csv_channel_configuration
+                        processor: pimee_product_asset.processor.denormalization.channel_configuration.flat
+                        writer:    pimee_product_asset.writer.doctrine.channel_configuration

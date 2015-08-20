@@ -23,6 +23,7 @@ Feature: Filter product assets
       | End of use  | less than 2030-01-01              | dog, autumn, paint, akene                                                                                   |
       | Description | contains animal                   | dog, mouette                                                                                                |
       | Description | does not contain water            | paint, chicagoskyline, akene, dog, machine, minivan, mouette, tiger                                         |
+
   Scenario: Successfully filter product assets by category
     When I select the "Asset main catalog" tree
     Then the grid should contain 15 elements
