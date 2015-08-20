@@ -25,16 +25,18 @@ define(
             },
             render: function () {
                 var product = this.getFormData();
+                var html = '';
 
-                this.$el.html(
-                    this.template({
+                if (product.meta.updated) {
+                    html = this.template({
                         label: _.__('pim_enrich.entity.product.meta.updated'),
                         labelBy: _.__('pim_enrich.entity.product.meta.updated_by'),
-                        isUpdated: product.meta.updated,
                         loggedAt: _.result(product.meta.updated, 'logged_at', null),
                         author: _.result(product.meta.updated, 'author', null)
-                    })
-                );
+                    });
+                }
+
+                this.$el.html(html);
 
                 return this;
             }
