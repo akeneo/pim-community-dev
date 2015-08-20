@@ -1,7 +1,7 @@
 @javascript
 Feature: Remove product assets
   In order to remove product assets
-  As a product manager
+  As an asset manager
   I need to be able to remove asset from its edit page
 
   Background:
@@ -9,7 +9,7 @@ Feature: Remove product assets
     And the following products:
       | sku   |
       | shirt |
-    And I am logged in as "Julia"
+    And I am logged in as "Pamela"
 
   Scenario: Successfully delete product asset
     Given I am on the "shirt" product page

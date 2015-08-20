@@ -1,7 +1,7 @@
 @javascript
 Feature: Create product assets
   In order to create product assets
-  As a product manager
+  As an asset manager
   I need to be able to create an asset
 
   Background:
@@ -12,7 +12,7 @@ Feature: Create product assets
     Then removing "Create an asset" permissions should hide "Create an asset" button on "asset index" page
 
   Scenario: Create a localized asset
-    Given I am logged in as "Julia"
+    Given I am logged in as "Pamela"
     And I am on the assets page
     And I press the "Create an asset" button
     Then I should see a dialog with the following content:
@@ -27,7 +27,7 @@ Feature: Create product assets
     And I switch the locale to "French (France)"
 
   Scenario: Create a non localized asset
-    Given I am logged in as "Julia"
+    Given I am logged in as "Pamela"
     And I am on the assets page
     And I press the "Create an asset" button
     Then I should see a dialog with the following content:
@@ -41,7 +41,7 @@ Feature: Create product assets
     And I should see the Tablet variation upload zone
 
   Scenario: Create a non localized asset with a picture
-    Given I am logged in as "Julia"
+    Given I am logged in as "Pamela"
     And I am on the assets page
     And I press the "Create an asset" button
     Then I should see a dialog with the following content:

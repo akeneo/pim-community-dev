@@ -1,12 +1,12 @@
 @javascript
 Feature: Edit product assets variations
   In order to enrich the existing product assets
-  As a product manager
+  As an asset manager
   I need to be able to edit product assets variations
 
   Background:
     Given a "clothing" catalog configuration
-    And I am logged in as "Julia"
+    And I am logged in as "Pamela"
 
   Scenario: Successfully delete reference file
     Given I am on the "bridge" asset page

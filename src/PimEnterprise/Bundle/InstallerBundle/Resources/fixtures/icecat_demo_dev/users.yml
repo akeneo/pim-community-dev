@@ -69,3 +69,17 @@ users:
         groups:
             - IT support
         enable: true
+    pamela:
+        username: pamela
+        password: pamela
+        email: 'pamela@example.com'
+        firstname: Pamela
+        lastname: Rose
+        catalog_locale: en_US
+        catalog_scope: ecommerce
+        default_tree: master
+        roles:
+            - ROLE_ASSET_MANAGER
+        groups:
+            - Manager
+        enable: true

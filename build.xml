@@ -87,7 +87,7 @@
                 <include name="pim_parameters.yml" />
             </fileset>
         </replaceregexp>
-        <replaceregexp match="installer_data:.*$" replace="installer_data: PimInstallerBundle:minimal" byline="true">
+        <replaceregexp match="installer_data:.*$" replace="installer_data: PimEnterpriseInstallerBundle:minimal" byline="true">
             <fileset dir="${basedir}/app/config/">
                 <include name="pim_parameters.yml" />
             </fileset>

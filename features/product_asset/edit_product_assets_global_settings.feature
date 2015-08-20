@@ -1,7 +1,7 @@
 @javascript
 Feature: Edit product assets global settings
   In order to enrich the existing product assets
-  As a product manager
+  As an asset manager
   I need to be able to edit product assets global settings
 
   Background:
@@ -9,7 +9,7 @@ Feature: Edit product assets global settings
     And the following assets:
       | code       | tags             | description       | end of use at | enabled |
       | blue_shirt | solid_color, men | A beautiful shirt | now           | yes     |
-    And I am logged in as "Julia"
+    And I am logged in as "Pamela"
 
   Scenario: Successfully edit the description of an asset
     Given I am on the "blue_shirt" asset page
