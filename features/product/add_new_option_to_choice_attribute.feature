@@ -30,15 +30,11 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And I save the product
     Then the product Weather conditions should be "Wet, Extremely wet"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4737
+  @unstable @jira https://akeneo.atlassian.net/browse/PIM-4737
   Scenario: Successfully find a created option in a multiselect attribute through several products
-    Given I should not see the following option:
-      | Weather conditions | very_wet |
-    And I add a new option to the "Weather conditions" attribute
-    When I fill in the following information in the popin:
-      | Code  | very_wet      |
-      | en_US | Extremely wet |
-    And I press the "Save" button in the popin
+    Given I add a new option to the "Weather conditions" attribute:
+      | Code | very_wet      |
+      | en   | Extremely wet |
     And I press "Save and back" on the "Save" dropdown button
     And I click on the "shoes" row
     When I fill in the following information:
