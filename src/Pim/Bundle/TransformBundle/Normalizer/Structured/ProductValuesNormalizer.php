@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -39,7 +40,18 @@ class ProductValuesNormalizer implements NormalizerInterface, SerializerAwareInt
         $result = [];
 
         foreach ($data as $value) {
-            if ($value instanceof ProductValueInterface) {
+            if ($value instanceof ProductValueInterface &&
+                (AttributeTypes::IMAGE === $value->getAttribute()->getAttributeType() ||
+                AttributeTypes::FILE === $value->getAttribute()->getAttributeType())
+            ) {
+                $normalizedValue = $this->serializer->normalize($value, 'json', $context);
+                if (null !== $normalizedValue['data']) {
+                    $result[$value->getAttribute()->getCode()][] = $normalizedValue;
+                } else {
+                    $normalizedValue['data'] = ['filePath' => null, 'originalFilename' => null];
+                    $result[$value->getAttribute()->getCode()][] = $normalizedValue;
+                }
+            } elseif ($value instanceof ProductValueInterface) {
                 $result[$value->getAttribute()->getCode()][] = $this->serializer->normalize($value, 'json', $context);
             } else {
                 $result[] = $this->serializer->normalize($value, 'json', $context);
