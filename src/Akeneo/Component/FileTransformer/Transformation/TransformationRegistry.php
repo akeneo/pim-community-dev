@@ -19,7 +19,7 @@ use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationExcept
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-    class TransformationRegistry
+class TransformationRegistry
 {
     /** @var TransformationInterface[] */
     protected $transformations = [];
