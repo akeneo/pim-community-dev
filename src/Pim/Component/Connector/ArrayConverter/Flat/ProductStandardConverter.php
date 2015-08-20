@@ -300,9 +300,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     protected function mergeValueToResult(array $collection, array $value)
     {
-        $collection = array_merge_recursive($collection, $value);
-
-        return $collection;
+        return array_merge_recursive($collection, $value);
     }
 
     /**
