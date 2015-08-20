@@ -88,4 +88,11 @@ interface AssetRepositoryInterface extends
      * @return ProductInterface[]
      */
     public function findProducts(AssetInterface $asset);
+
+    /**
+     * @param int $delay
+     *
+     * @return array
+     */
+    public function findAllAssetsByEndOfUse($delay = 5);
 }

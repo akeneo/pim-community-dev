@@ -255,4 +255,21 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
 
         return $stmt->rowCount();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllAssetsByEndOfUse($delay = 5)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $now = new \DateTime();
+        $endOfUse = $now->add(new \DateInterval(sprintf("P%sD", $delay)))->format('Y-m-d');
+        $qb->select('asset')
+            ->from($this->_entityName, $this->getAlias())
+            ->where('asset.endOfUseAt = :endOfUse')
+            ->setParameter(':endOfUse', $endOfUse);
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }
