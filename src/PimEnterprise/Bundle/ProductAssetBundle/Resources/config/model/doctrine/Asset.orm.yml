@@ -20,7 +20,7 @@ PimEnterprise\Component\ProductAsset\Model\Asset:
             type: boolean
             column: is_enabled
         endOfUseAt:
-            type: datetime
+            type: date
             column: end_of_use_at
             nullable: true
         createdAt:
