@@ -1,3 +1,5 @@
-<% if (product.meta.published) { %>
-    <span title="<%= _.__('pimee_enrich.entity.product.meta.published') %>: <%= product.meta.published.version %>"><%= _.__('pimee_enrich.entity.product.meta.published') %>: <%= product.meta.published.version %></span>
+<% if (isPublished) { %>
+    <span title="<%= label %>: <%= publishedVersion %>">
+        <%= label %>: <%= publishedVersion %>
+    </span>
 <% } %>

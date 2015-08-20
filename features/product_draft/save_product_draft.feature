@@ -30,3 +30,13 @@ Feature: Save a product draft
     Then the product Description should be "Yes I can"
     When I reload the page
     Then the product Description should be "Yes I can"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4597
+  Scenario: Successfully show the product draft status
+    Given I edit the "tshirt" product
+    Then I should see the text "Draft status: Working copy"
+    When I change the "Description" to "Hammer time"
+    And I save the product
+    Then I should see the text "Draft status: In progress"
+    When I press the "Send for approval" button
+    Then I should see the text "Draft status: Waiting for approval"

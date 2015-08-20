@@ -18,13 +18,44 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                this.$el.html(
-                    this.template({
-                        product: this.getFormData()
-                    })
-                );
+                var product = this.getFormData();
+                var html = '';
+
+                if (product.meta.is_owner) {
+                    html = this.template({
+                        label: _.__('pimee_enrich.entity.product.meta.draft_status'),
+                        draftStatus: this.getDraftStatus(product)
+                    });
+                }
+
+                this.$el.html(html);
 
                 return this;
+            },
+
+            /**
+             * Get the human readable draft status
+             *
+             * @param {Object} product
+             *
+             * @returns {string}
+             */
+            getDraftStatus: function (product) {
+                var status;
+
+                switch (product.meta.draft_status) {
+                    case 0:
+                        status = _.__('pimee_enrich.entity.product.meta.draft.in_progress');
+                        break;
+                    case 1:
+                        status = _.__('pimee_enrich.entity.product.meta.draft.sent_for_approval');
+                        break;
+                    default:
+                        status = _.__('pimee_enrich.entity.product.meta.draft.working_copy');
+                        break;
+                }
+
+                return status;
             }
         });
 

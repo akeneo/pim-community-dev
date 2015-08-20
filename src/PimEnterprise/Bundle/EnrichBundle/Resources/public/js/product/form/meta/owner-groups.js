@@ -15,19 +15,23 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        label: _.__('pimee_enrich.entity.product.meta.owner_groups') +
-                            ': ' +
-                            _.reduce(
-                                this.getFormData().meta.owner_groups,
-                                function (memo, group) {
-                                    return memo + ('' !== memo ? ', ' : '') + group.name;
-                                },
-                                ''
-                            )
+                        label: _.__('pimee_enrich.entity.product.meta.owner_groups'),
+                        groups: this.getOwnerGroups(this.getFormData())
                     })
                 );
 
                 return this;
+            },
+
+            /**
+             * Get human readable owner groups for the given product
+             *
+             * @param {Object} product
+             *
+             * @returns {string}
+             */
+            getOwnerGroups: function (product) {
+                return _.pluck(product.meta.owner_groups, 'name').join(', ');
             }
         });
 
