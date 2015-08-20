@@ -56,6 +56,7 @@ class UserContext extends BaseUserContext
      * @param ChainedFilter                 $chainedFilter
      * @param RequestStack                  $requestStack
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ChoicesBuilderInterface       $choicesBuilder
      * @param string                        $defaultLocale
      */
     public function __construct(
