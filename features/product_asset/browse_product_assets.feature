@@ -10,5 +10,5 @@ Feature: Browse product assets
     And I am on the assets page
 
   Scenario: Successfully display product assets
-    Then the grid should contain 15 elements
+    Then the grid should contain 16 elements
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at

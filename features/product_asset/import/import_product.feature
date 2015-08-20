@@ -28,3 +28,25 @@ Feature: Import products with an assets collection
       | gallery | minivan |
     And the product "pant-3" should have the following values:
       | gallery | |
+
+  Scenario: Skip products with unknown collection assets
+    Given the following CSV file to import:
+      """
+      sku;categories;enabled;family;gallery;groups;main_color;name-de_DE;name-en_US;name-fr_FR;price-EUR;price-USD;size
+      pant-1;summer_collection;1;pants;foo,tiger;;white;Hose;Pant;Pantalon;50.00;70.00;S
+      pant-2;summer_collection;0;pants;minivan;;white;Hose;Pant;Pantalon;50.00;70.00;S
+      pant-3;summer_collection;0;pants;bar;;white;Hose;Pant;Pantalon;50.00;70.00;S
+      """
+    And the following job "clothing_product_import" configuration:
+      | filePath          | %file to import% |
+      | enabledComparison | yes              |
+    When I am on the "clothing_product_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_product_import" job to finish
+    Then I should see "created 1"
+    And I should see "skipped 2"
+    And I should see "Attribute or field \"gallery\" expects an array with valid data for the key \"code\". No reference data \"assets\" with code \"foo\" has been found, \"foo\" given (for setter reference data collection)."
+    And I should see "Attribute or field \"gallery\" expects an array with valid data for the key \"code\". No reference data \"assets\" with code \"bar\" has been found, \"bar\" given (for setter reference data collection)."
+    Then there should be 1 products
+    And the product "pant-2" should have the following values:
+      | gallery | minivan |
