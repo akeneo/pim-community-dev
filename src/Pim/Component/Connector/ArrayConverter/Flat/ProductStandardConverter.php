@@ -162,7 +162,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         $mappedItem = $this->mapFields($item, $options);
         $mappedItem = $this->defineDefaultValues($mappedItem, $options['default_values']);
         $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
-        $this->validateItem($filteredItem, $options['with_required_sku']);
+        $this->validateItem($filteredItem, $options['with_required_identifier']);
         $mergedItem = $this->columnsMerger->merge($filteredItem);
         $convertedItem = $this->convertItem($mergedItem);
 
@@ -176,7 +176,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     protected function prepareOptions(array $options)
     {
-        $options['with_required_sku'] = isset($options['with_required_sku']) ? $options['with_required_sku'] : true;
+        $options['with_required_identifier'] = isset($options['with_required_identifier']) ? $options['with_required_identifier'] : true;
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
 
