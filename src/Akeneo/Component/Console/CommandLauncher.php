@@ -61,13 +61,17 @@ class CommandLauncher
      * Launch command in background and return
      *
      * @param string $command
+     * @param string $logfile
      *
      * @return null
      */
-    public function executeBackground($command)
+    public function executeBackground($command, $logfile = null)
     {
         $cmd  = $this->buildCommandString($command);
-        $cmd .= sprintf(' >> %s/logs/command_execute.log 2>&1', $this->rootDir);
+        if (null === $logfile) {
+            $logfile = sprintf('%s/logs/command_execute.log', $this->rootDir);
+        }
+        $cmd .= sprintf(' >> %s 2>&1', $logfile);
         exec($cmd);
 
         return null;
