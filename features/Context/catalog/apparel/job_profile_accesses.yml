@@ -48,6 +48,9 @@ job_profile_accesses:
     variant_group_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
+    apparel_asset_channel_configuration_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
 
     update_product_value:
         executeJobProfile: [IT support, Manager, Redactor]
