@@ -14,6 +14,11 @@ config:
         pim/product-edit-form/cache-invalidator:
             events:
                 - 'pim_enrich:form:entity:post_fetch'
+        pim/product-manager:
+            urls:
+                get:    pim_enrich_product_rest_get
+                post:   pim_enrich_product_rest_post
+                remove: pim_enrich_product_rest_remove
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
@@ -230,3 +235,4 @@ config:
         pim/template/product/field/textarea:                         pimenrich/templates/product/field/textarea.html
         pim/template/attribute-option/form:                          pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:              pimenrich/templates/attribute-option/validation-error.html
+        pim/template/i18n/flag:                                      pimenrich/templates/i18n/flag.html

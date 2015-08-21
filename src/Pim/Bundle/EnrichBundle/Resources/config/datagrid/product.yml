@@ -51,7 +51,7 @@ datagrid:
                     - dataLocale
             delete_link:
                 type: url
-                route: pim_enrich_product_remove
+                route: pim_enrich_product_rest_remove
                 params:
                     - id
             toggle_status_link:

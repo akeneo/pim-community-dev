@@ -8,14 +8,24 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['underscore', 'oro/mediator', 'pim/form', 'text!pim/template/product/meta/family'],
-    function (_, mediator, BaseForm, template) {
+    [
+        'jquery',
+        'underscore',
+        'oro/mediator',
+        'pim/form',
+        'text!pim/template/product/meta/family',
+        'pim/fetcher-registry',
+        'pim/user-context',
+        'pim/i18n'
+    ],
+    function ($, _, mediator, BaseForm, template, FetcherRegistry, UserContext, i18n) {
         return BaseForm.extend({
             tagName: 'span',
             className: 'product-family',
             template: _.template(template),
             configure: function () {
                 this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
+                this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -24,13 +34,23 @@ define(
                     return this;
                 }
 
-                this.$el.html(
-                    this.template({
-                        product: this.getFormData()
-                    })
-                );
+                var familyPromise = _.isNull(this.getFormData().family) ?
+                    $.Deferred().resolve(null) :
+                    FetcherRegistry.getFetcher('family').fetch(this.getFormData().family);
 
-                return BaseForm.prototype.render.apply(this, arguments);
+                familyPromise.then(function (family) {
+                    var product = this.getFormData();
+
+                    this.$el.html(
+                        this.template({
+                            familyLabel: family ?
+                                i18n.getLabel(family.label, UserContext.get('catalogLocale'), product.family) :
+                                _.__('pim_enrich.entity.product.meta.family.none')
+                        })
+                    );
+
+                    BaseForm.prototype.render.apply(this, arguments);
+                }.bind(this));
             }
         });
     }

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -74,9 +73,6 @@ class ProductController extends AbstractDoctrineController
     /** @var SequentialEditManager */
     protected $seqEditManager;
 
-    /** @var RemoverInterface */
-    protected $productRemover;
-
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
@@ -131,7 +127,6 @@ class ProductController extends AbstractDoctrineController
      * @param ProductCategoryManager   $prodCatManager
      * @param SaverInterface           $productSaver
      * @param SequentialEditManager    $seqEditManager
-     * @param RemoverInterface         $productRemover
      * @param ProductBuilderInterface  $productBuilder
      * @param CategoryFactory          $categoryFactory
      */
@@ -153,7 +148,6 @@ class ProductController extends AbstractDoctrineController
         ProductCategoryManager $prodCatManager,
         SaverInterface $productSaver,
         SequentialEditManager $seqEditManager,
-        RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder,
         CategoryFactory $categoryFactory
     ) {
@@ -177,7 +171,6 @@ class ProductController extends AbstractDoctrineController
         $this->productCatManager = $prodCatManager;
         $this->productSaver      = $productSaver;
         $this->seqEditManager    = $seqEditManager;
-        $this->productRemover    = $productRemover;
         $this->productBuilder    = $productBuilder;
         $this->categoryFactory   = $categoryFactory;
     }
@@ -329,27 +322,6 @@ class ProductController extends AbstractDoctrineController
                 'product' => $this->findProductOr404($id),
             ]
         );
-    }
-
-    /**
-     * Remove product
-     *
-     * @param Request $request
-     * @param int     $id
-     *
-     * @AclAncestor("pim_enrich_product_remove")
-     *
-     * @return Response|RedirectResponse
-     */
-    public function removeAction(Request $request, $id)
-    {
-        $product = $this->findProductOr404($id);
-        $this->productRemover->remove($product);
-        if ($request->isXmlHttpRequest()) {
-            return new Response('', 204);
-        } else {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
     }
 
     /**
