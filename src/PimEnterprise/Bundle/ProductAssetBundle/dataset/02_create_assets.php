@@ -23,23 +23,28 @@ $helper->cleanFilesystem();
 foreach (getReferenceFilesConf() as $assetCode => $referenceFiles) {
     echo "Creating asset $assetCode...\n";
     $asset = createNewAsset($assetCode, $environment);
-    foreach ($referenceFiles as $localeCode => $filename) {
-        $currentFilePath = __DIR__ . '/' . $filename;
-        $tmpFileDir = '/tmp/' . $environment;
-        $tmpFilePath = $tmpFileDir . '/' . $filename;
 
-        if (!file_exists($tmpFileDir)) {
-            mkdir($tmpFileDir);
+    if (count($referenceFiles) > 0) {
+        foreach ($referenceFiles as $localeCode => $filename) {
+            $currentFilePath = __DIR__ . '/' . $filename;
+            $tmpFileDir      = '/tmp/' . $environment;
+            $tmpFilePath     = $tmpFileDir . '/' . $filename;
+
+            if (!file_exists($tmpFileDir)) {
+                mkdir($tmpFileDir);
+            }
+
+            copy($currentFilePath, $tmpFilePath);
+
+            $file       = new \SplFileInfo($tmpFilePath);
+            $localeCode = is_int($localeCode) ? null : $localeCode;
+
+            echo "Adding reference (locale=$localeCode)...\n";
+
+            addReferenceToAsset($asset, $file, $localeCode);
         }
-
-        copy($currentFilePath, $tmpFilePath);
-
-        $file       = new \SplFileInfo($tmpFilePath);
-        $localeCode = is_int($localeCode) ? null : $localeCode;
-
-        echo "Adding reference (locale=$localeCode)...\n";
-
-        addReferenceToAsset($asset, $file, $localeCode);
+    } else {
+        addReferenceToAsset($asset, null, null);
     }
     $helper->getEm()->persist($asset);
     $helper->getEm()->flush($asset);
@@ -95,6 +100,7 @@ function getReferenceFilesConf()
         'tiger'          => [
             'tiger.jpg',
         ],
+        'winter'         => [],
     ];
 }
 
@@ -111,7 +117,7 @@ function truncateTables()
 
 function generateEmptyVariationsForReference(
     \PimEnterprise\Component\ProductAsset\Model\Reference $reference,
-    \Akeneo\Component\FileStorage\Model\FileInterface $referenceFile
+    \Akeneo\Component\FileStorage\Model\FileInterface $referenceFile = null
 ) {
     global $helper;
 
@@ -139,7 +145,7 @@ function generateEmptyVariationsForReference(
 
 function addReferenceToAsset(
     \PimEnterprise\Component\ProductAsset\Model\Asset $asset,
-    \SplFileInfo $file,
+    \SplFileInfo $file = null,
     $localeCode = null
 ) {
     global $helper;
@@ -153,12 +159,14 @@ function addReferenceToAsset(
         }
     }
 
-    $file = $helper->getRawFileStorer()->store($file, \PimEnterprise\Component\ProductAsset\FileStorage::ASSET_STORAGE_ALIAS);
+    $storedFile = null;
+    if (null !== $file) {
+        $storedFile = $helper->getRawFileStorer()->store($file, \PimEnterprise\Component\ProductAsset\FileStorage::ASSET_STORAGE_ALIAS);
+        $ref->setFile($storedFile);
+    }
 
-    $ref->setFile($file);
     $ref->setAsset($asset);
-
-    generateEmptyVariationsForReference($ref, $file);
+    generateEmptyVariationsForReference($ref, $storedFile);
 }
 
 function createNewAsset($code, $environment = 'dev')
@@ -259,6 +267,10 @@ function getBehatAssetValues()
         'tiger'          => [
             'description' => 'Tiger of bengal, taken by J. Josh',
             'endOfUseAt'  => new \DateTime('2050-01-25 00:00:01')
+        ],
+        'winter'         => [
+            'description' => 'Cold and white',
+            'endOfUseAt'  => null
         ],
     ];
 }

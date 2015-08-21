@@ -33,3 +33,10 @@ users:
         last_name:     Harvey
         roles:         [ ROLE_USER ]
         groups:        [ Redactor ]
+    Pamela:
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   winter_collection
+        last_name:     Rose
+        roles:         [ ROLE_ASSET_MANAGER ]
+        groups:        [ Manager ]

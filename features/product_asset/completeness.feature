@@ -24,7 +24,7 @@ Feature: Display the completeness of a product with assets
     And I launched the completeness calculator
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-4784
-  Scenario: Successfully update the completeness at product save (global assets)
+  Scenario: Successfully update the completeness at for a product with non localized asset
     Given I am on the "jacket-white" product page
     And I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
@@ -71,7 +71,7 @@ Feature: Display the completeness of a product with assets
       | tablet  | en_US  | warning | weather_conditions rating | 80%   |
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-4784
-  Scenario: Successfully update the completeness at product save (localized assets)
+  Scenario: Successfully update the completeness at for a product with localized asset
     Given I am on the "jacket-white" product page
     And I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
