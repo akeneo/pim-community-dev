@@ -25,7 +25,6 @@ services:
         arguments:
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
-            - '@pim_versioning.manager.version'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.manager.channel'
             - '@security.authorization_checker'
@@ -36,6 +35,8 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@pimee_workflow.manager.published_product'
+            - '@pim_user.context.user'
+            - '@pim_internal_api_serializer'
 
     pimee_workflow.controller.product_draft_rest:
         class: %pimee_workflow.controller.product_draft_rest.class%

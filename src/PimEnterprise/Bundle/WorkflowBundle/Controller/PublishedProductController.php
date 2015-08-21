@@ -15,7 +15,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
@@ -45,9 +44,6 @@ class PublishedProductController extends AbstractController
     /** @var PublishedProductManager */
     protected $manager;
 
-    /** @var VersionManager */
-    protected $versionManager;
-
     /** @var CompletenessManager */
     protected $completenessManager;
 
@@ -68,7 +64,6 @@ class PublishedProductController extends AbstractController
      * @param EventDispatcherInterface      $eventDispatcher
      * @param UserContext                   $userContext
      * @param PublishedProductManager       $manager
-     * @param VersionManager                $versionManager
      * @param CompletenessManager           $completenessManager
      * @param ChannelManager                $channelManager
      * @param AuthorizationCheckerInterface $authorizationChecker
@@ -84,7 +79,6 @@ class PublishedProductController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
         PublishedProductManager $manager,
-        VersionManager $versionManager,
         CompletenessManager $completenessManager,
         ChannelManager $channelManager,
         AuthorizationCheckerInterface $authorizationChecker
@@ -102,7 +96,6 @@ class PublishedProductController extends AbstractController
 
         $this->userContext          = $userContext;
         $this->manager              = $manager;
-        $this->versionManager       = $versionManager;
         $this->completenessManager  = $completenessManager;
         $this->channelManager       = $channelManager;
         $this->authorizationChecker = $authorizationChecker;
@@ -178,18 +171,9 @@ class PublishedProductController extends AbstractController
      *
      * @return array
      */
-    public function viewAction(Request $request, $id)
+    public function viewAction($id)
     {
-        $published = $this->findPublishedOr404($id);
-        $original = $published->getOriginalProduct();
-
-        return [
-            'published'  => $published,
-            'dataLocale' => $this->getDataLocale(),
-            'locales'    => $this->getUserLocales(),
-            'created'    => $this->versionManager->getOldestLogEntry($original),
-            'updated'    => $this->versionManager->getNewestLogEntry($original),
-        ];
+        return ['productId' => $id];
     }
 
     /**

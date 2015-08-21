@@ -1,0 +1,36 @@
+config:
+    config:
+        pimee/published-product-manager:
+            urls:
+                get: pimee_workflow_published_product_rest_get
+        pimee/product-edit-form/original-product:
+            urls:
+                product_edit: pim_enrich_product_edit
+
+    paths:
+        pimee/published-product-manager: pimenterpriseworkflow/js/manager/published-product-manager
+        pimee/product-draft-fetcher:     pimenterpriseworkflow/js/fetcher/product-draft-fetcher
+
+        # Form extensions
+        pimee/product-edit-form/meta/published:          pimenterpriseworkflow/js/product/form/meta/published
+        pimee/product-edit-form/meta/draft-status:       pimenterpriseworkflow/js/product/form/meta/draft-status
+        pimee/product-edit-form/panel/history/published: pimenterpriseworkflow/js/product/form/panel/history/published
+        pimee/product-edit-form/proposals:               pimenterpriseworkflow/js/product/form/proposals
+        pimee/product-edit-form/publish:                 pimenterpriseworkflow/js/product/form/publish
+        pimee/product-edit-form/unpublish:               pimenterpriseworkflow/js/product/form/unpublish
+        pimee/product-edit-form/send-for-approval:       pimenterpriseworkflow/js/product/form/send-for-approval
+        pimee/product-edit-form/source-switcher:         pimenterpriseworkflow/js/product/form/source-switcher
+        pimee/product-edit-form/working-copy:            pimenterpriseworkflow/js/product/form/working-copy
+        pimee/product-edit-form/original-product:        pimenterpriseworkflow/js/product/form/original-product
+
+        # Templates
+        pimee/template/product/meta/published:                  pimenterpriseworkflow/templates/product/meta/published.html
+        pimee/template/product/meta/draft-status:               pimenterpriseworkflow/templates/product/meta/draft-status.html
+        pimee/template/product/panel/history/published:         pimenterpriseworkflow/templates/product/panel/history/published.html
+        pimee/template/product/tab/proposals:                   pimenterpriseworkflow/templates/product/tab/proposals.html
+        pimee/template/product/publish:                         pimenterpriseworkflow/templates/product/publish.html
+        pimee/template/product/unpublish:                       pimenterpriseworkflow/templates/product/unpublish.html
+        pimee/template/product/source-switcher:                 pimenterpriseworkflow/templates/product/source-switcher.html
+        pimee/template/product/submit-draft:                    pimenterpriseworkflow/templates/product/submit-draft.html
+        pimee/template/product/original-product:                pimenterpriseworkflow/templates/product/original-product.html
+        pimee/template/product/tab/attribute/modified-by-draft: pimenterpriseworkflow/templates/product/tab/attributes/modified-by-draft.html

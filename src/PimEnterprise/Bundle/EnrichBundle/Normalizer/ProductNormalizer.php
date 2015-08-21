@@ -109,7 +109,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $normalizedProduct['meta'] = array_merge(
             $normalizedProduct['meta'],
             [
-                'published' => $published ?
+                'published'    => $published ?
                     $this->serializer->normalize($published->getVersion(), 'internal_api', $context) :
                     null,
                 'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),

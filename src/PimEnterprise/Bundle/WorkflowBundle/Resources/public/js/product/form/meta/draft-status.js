@@ -21,7 +21,7 @@ define(
                 var product = this.getFormData();
                 var html = '';
 
-                if (product.meta.is_owner) {
+                if (!product.meta.is_owner) {
                     html = this.template({
                         label: _.__('pimee_enrich.entity.product.meta.draft_status'),
                         draftStatus: this.getDraftStatus(product)

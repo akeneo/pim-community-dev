@@ -67,7 +67,6 @@ extensions:
         module: pimee/product-view-form/attributes
         parent: pimee-product-view-form-tabs
         targetZone: container
-        aclResourceId: pim_enrich_product_edit_attributes
         position: 90
 
     pimee-product-view-attribute-group-selector:
@@ -107,7 +106,7 @@ extensions:
         aclResourceId: pim_enrich_product_comment
         position: 110
 
-    pimee-product-view-selector:
+    pimee-product-view-panel-selector:
         module: pim/product-edit-form/panel/selector
         parent: pimee-product-view-panels
         position: 100

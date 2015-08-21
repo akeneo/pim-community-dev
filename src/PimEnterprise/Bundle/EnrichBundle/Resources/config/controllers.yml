@@ -21,7 +21,6 @@ services:
             - '@pim_catalog.manager.product_category'
             - '@pimee_workflow.saver.product_delegating'
             - '@pim_enrich.manager.sequential_edit'
-            - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.factory.category'
 
@@ -37,6 +36,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
             - '@pimee_enrich.filter.product_edit_data'
+            - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
 
     pimee_enrich.controller.rule_relation:

@@ -2,8 +2,10 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
+        'routing',
         'pim/form',
         'text!pimee/template/picker/asset-grid',
         'text!pimee/template/picker/basket',
@@ -11,7 +13,7 @@ define(
         'oro/mediator',
         'pim/fetcher-registry'
     ],
-    function (_, Backbone, BaseForm, template, basketTemplate, datagridBuilder, mediator, FetcherRegistry) {
+    function ($, _, Backbone, Routing, BaseForm, template, basketTemplate, datagridBuilder, mediator, FetcherRegistry) {
         return BaseForm.extend({
             template: _.template(template),
             basketTemplate: _.template(basketTemplate),

@@ -40,9 +40,7 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                var isOwner = this.getFormData().meta.is_owner;
-
-                if (!isOwner) {
+                if (!this.getFormData().meta.is_owner) {
                     return this.remove();
                 }
 
@@ -74,14 +72,15 @@ define(
                 this.togglePublished(false);
             },
             togglePublished: function (publish) {
-                var productId   = this.getFormData().meta.id;
+                var productId   = this.getProductId();
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();
 
                 var method = publish ? PublishedProductManager.publish : PublishedProductManager.unpublish;
+
                 // TODO: We shouldn't force product fetching, we should use request response (cf. send for approval)
-                method(productId)
+                return method(productId)
                     .done(function () {
                         ProductManager.get(this.getFormData().meta.id).done(function (product) {
                             navigation.addFlashMessage(
@@ -113,6 +112,9 @@ define(
                     .always(function () {
                         loadingMask.hide().$el.remove();
                     });
+            },
+            getProductId: function () {
+                return this.getFormData().meta.id;
             }
         });
     }

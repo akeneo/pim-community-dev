@@ -2,11 +2,13 @@ pimee_workflow_published_product_index:
     path: /
     defaults: { _controller: pimee_workflow.controller.published_product:indexAction }
     methods:  [GET]
+
 pimee_workflow_published_product_view:
-    path: /{id}/view
+    path: /{id}
     defaults: { _controller: pimee_workflow.controller.published_product:viewAction }
     requirements:
         id: '[0-9a-f]+'
+
 pimee_workflow_published_product_completeness:
     path: /{id}/completeness
     defaults: { _controller: pimee_workflow.controller.published_product:completenessAction }
@@ -19,6 +21,12 @@ pimee_workflow_published_product_unpublish:
     requirements:
         id: '[0-9a-f]+'
     methods:  [POST|GET]
+
+pimee_workflow_published_product_rest_get:
+    path: /rest/{id}
+    defaults: { _controller: pimee_workflow.controller.published_product_rest:getAction }
+    requirements:
+        id: '[0-9a-f]+'
 
 pimee_workflow_published_product_rest_publish:
     path: /
