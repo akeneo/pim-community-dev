@@ -89,3 +89,10 @@ extensions:
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
         position: 100
+
+    pim-product-edit-form-associations:
+        module: pimee/product-edit-form/associations
+        parent: pim-product-edit-form-form-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_associations_view
+        position: 110

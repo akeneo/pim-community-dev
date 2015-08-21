@@ -33,6 +33,7 @@ config:
         pimee/product-edit-form/panel/history/revert:                 pimenterpriseenrich/js/product/form/panel/history/revert
         pimee/product-edit-form/save:                                 pimenterpriseenrich/js/product/form/save
         pimee/product-edit-form/categories:                           pimenterpriseenrich/js/product/form/categories
+        pimee/product-edit-form/associations:                         pimenterpriseenrich/js/product/form/associations
 
         # Templates
         pimee/template/product/meta/owner-groups:               pimenterpriseenrich/templates/product/meta/owner-groups.html
