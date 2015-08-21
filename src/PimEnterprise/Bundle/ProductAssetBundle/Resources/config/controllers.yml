@@ -35,7 +35,6 @@ services:
         class: %pim_enrich.controller.category_tree.class%
         arguments:
             - '@event_dispatcher'
-            - '@pim_catalog.manager.category'
             - '@pimee_user.context.user.asset'
             - '@pimee_product_asset.saver.category'
             - '@pimee_product_asset.remover.category_asset'

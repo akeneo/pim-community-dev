@@ -18,7 +18,6 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
 use Pim\Component\Classification\Factory\CategoryFactory;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
@@ -53,7 +52,6 @@ class CategoryTreeController extends BaseCategoryTreeController
 
     /**
      * @param EventDispatcherInterface    $eventDispatcher
-     * @param CategoryManager             $categoryManager
      * @param UserContext                 $userContext
      * @param SaverInterface              $categorySaver
      * @param RemoverInterface            $categoryRemover
@@ -66,7 +64,6 @@ class CategoryTreeController extends BaseCategoryTreeController
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        CategoryManager $categoryManager,
         UserContext $userContext,
         SaverInterface $categorySaver,
         RemoverInterface $categoryRemover,
@@ -79,7 +76,6 @@ class CategoryTreeController extends BaseCategoryTreeController
     ) {
         parent::__construct(
             $eventDispatcher,
-            $categoryManager,
             $userContext,
             $categorySaver,
             $categoryRemover,
