@@ -50,12 +50,18 @@ class SimpleJobLauncher implements JobLauncherInterface
         $executionId  = $jobExecution->getId();
         $pathFinder   = new PhpExecutableFinder();
 
+        //TODO we should not rely on such test
+        $emailParameter = '';
+        if ($this->isConfigTrue('email') && method_exists($user, 'getEmail')) {
+            $emailParameter = sprintf('--email="%s"', $user->getEmail());
+        }
+
         $cmd = sprintf(
             '%s %s/console akeneo:batch:job --env=%s %s %s %s %s >> %s/logs/batch_execute.log 2>&1',
             $pathFinder->find(),
             $this->rootDir,
             $this->environment,
-            $this->isConfigTrue('email') ? sprintf('--email="%s"', $user->getEmail()) : '',
+            $emailParameter,
             $jobInstance->getCode(),
             $executionId,
             !empty($rawConfiguration) ? sprintf('--config="%s"', $rawConfiguration) : '',
@@ -123,7 +129,7 @@ class SimpleJobLauncher implements JobLauncherInterface
     protected function createJobExecution(JobInstance $jobInstance, UserInterface $user)
     {
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance);
-        $jobExecution->setUser($user);
+        $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);
 
         return $jobExecution;
