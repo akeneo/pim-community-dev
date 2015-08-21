@@ -9,6 +9,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Classification\Factory\CategoryFactory;
 use Pim\Component\Classification\Model\CategoryInterface;
@@ -277,7 +278,8 @@ class CategoryTreeController extends Controller
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
-                $this->addFlash('success', sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
+                $message = new Message(sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
+                $this->addFlash('success', $message);
                 $this->eventDispatcher->dispatch(CategoryEvents::POST_CREATE, new GenericEvent($category));
 
                 return $this->redirectToRoute($this->buildRouteName('categorytree_edit'), [
@@ -322,7 +324,8 @@ class CategoryTreeController extends Controller
 
             if ($form->isValid()) {
                 $this->categorySaver->save($category);
-                $this->addFlash('success', sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
+                $message = new Message(sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
+                $this->addFlash('success', $message);
                 $this->eventDispatcher->dispatch(CategoryEvents::POST_EDIT, new GenericEvent($category));
             }
         }
