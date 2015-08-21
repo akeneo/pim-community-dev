@@ -29,13 +29,14 @@ class FiltersConfigurator extends BaseFiltersConfigurator
     public function configure(DatagridConfiguration $configuration)
     {
         parent::configure($configuration);
-        $this->addIsOwnerFilter();
+
+        $this->addIsOwnerFilter($configuration);
     }
 
     /**
      * Add the is owner filter in the datagrid configuration
      */
-    protected function addIsOwnerFilter()
+    protected function addIsOwnerFilter(DatagridConfiguration $configuration)
     {
         $filter = [
             'type'      => 'product_permission',
@@ -53,7 +54,8 @@ class FiltersConfigurator extends BaseFiltersConfigurator
                 ]
             ]
         ];
-        $this->configuration->offsetSetByPath(
+
+        $configuration->offsetSetByPath(
             sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permission'),
             $filter
         );
