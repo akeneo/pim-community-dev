@@ -7,6 +7,9 @@
 define(['pim/product-edit-form/associations'],
     function (Associations) {
         return Associations.extend({
+            /**
+             * {@inheritdoc}
+             */
             isVisible: function () {
                 return this.getFormData().meta.is_owner;
             }

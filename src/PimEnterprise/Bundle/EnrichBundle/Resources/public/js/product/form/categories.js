@@ -7,6 +7,9 @@
 define(['pim/product-edit-form/categories'],
     function (Categories) {
         return Categories.extend({
+            /**
+             * {@inheritdoc}
+             */
             isVisible: function () {
                 return this.getFormData().meta.is_owner;
             }
