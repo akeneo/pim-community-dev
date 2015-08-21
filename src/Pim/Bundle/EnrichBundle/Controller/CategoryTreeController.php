@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -38,9 +37,6 @@ class CategoryTreeController extends Controller
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var CategoryManager */
-    protected $categoryManager;
-
     /** @var UserContext */
     protected $userContext;
 
@@ -66,7 +62,6 @@ class CategoryTreeController extends Controller
      * Constructor
      *
      * @param EventDispatcherInterface    $eventDispatcher
-     * @param CategoryManager             $categoryManager
      * @param UserContext                 $userContext
      * @param SaverInterface              $categorySaver
      * @param RemoverInterface            $categoryRemover
@@ -77,7 +72,6 @@ class CategoryTreeController extends Controller
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        CategoryManager $categoryManager,
         UserContext $userContext,
         SaverInterface $categorySaver,
         RemoverInterface $categoryRemover,
@@ -87,7 +81,6 @@ class CategoryTreeController extends Controller
         array $rawConfiguration
     ) {
         $this->eventDispatcher    = $eventDispatcher;
-        $this->categoryManager    = $categoryManager;
         $this->userContext        = $userContext;
         $this->categorySaver      = $categorySaver;
         $this->categoryRemover    = $categoryRemover;
@@ -151,12 +144,20 @@ class CategoryTreeController extends Controller
             throw new AccessDeniedException();
         }
 
-        $categoryId    = $request->get('id');
-        $parentId      = $request->get('parent');
-        $prevSiblingId = $request->get('prev_sibling');
+        $category = $this->findCategory($request->get('id'));
+        $parent   = $this->findCategory($request->get('parent'));
+        $category->setParent($parent);
 
-        // TODO: Change this in PIM-4409
-        $this->categoryManager->move($categoryId, $parentId, $prevSiblingId);
+        $prevSiblingId = $request->get('prev_sibling');
+        if (!empty($prevSiblingId)) {
+            $prevSibling = $this->categoryRepository->find($prevSiblingId);
+        }
+
+        if (is_object($prevSibling)) {
+            $this->categoryRepository->persistAsNextSiblingOf($category, $prevSibling);
+        } else {
+            $this->categoryRepository->persistAsFirstChildOf($category, $parent);
+        }
 
         return new JsonResponse(['status' => 1]);
     }
