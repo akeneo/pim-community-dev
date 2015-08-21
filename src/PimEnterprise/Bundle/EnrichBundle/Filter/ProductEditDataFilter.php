@@ -18,6 +18,18 @@ class ProductEditDataFilter extends BaseProductEditFilter
      */
     protected function isAllowedToClassify(ProductInterface $product)
     {
-        return $this->securityFacade->isGranted(Attributes::OWN, $product);
+        $hasAcl = parent::isAllowedToClassify($product);
+
+        return $hasAcl && $this->securityFacade->isGranted(Attributes::OWN, $product);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function isAllowedToUpdateAssociations(ProductInterface $product)
+    {
+        $hasAcl = parent::isAllowedToUpdateAssociations($product);
+
+        return $hasAcl && $this->securityFacade->isGranted(Attributes::OWN, $product);
     }
 }
