@@ -132,10 +132,12 @@ class CategoryTreeController extends BaseCategoryTreeController
      */
     protected function getChildrenCategories(Request $request, $selectNode)
     {
-        $parent = $this->findCategory($request->get('id'));
+        $parent        = $this->findCategory($request->get('id'));
+        $isEditGranted = $this->securityFacade->isGranted('pim_enrich_product_category_edit');
+        $context       = $request->get('context', false);
 
-        if (null !== $selectNode) {
-            $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId());
+        if ($isEditGranted && self::CONTEXT_MANAGE === $context) {
+            $categories = $this->categoryRepository->getChildrenByParentId($parent->getId());
         } else {
             $grantedCategoryIds = $this->getGrantedCategories();
             $categories = $this->categoryRepository->getChildrenGrantedByParentId($parent, $grantedCategoryIds);
