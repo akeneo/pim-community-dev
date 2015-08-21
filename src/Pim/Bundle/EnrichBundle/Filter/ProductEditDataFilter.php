@@ -74,20 +74,11 @@ class ProductEditDataFilter implements CollectionFilterInterface
     public function filterCollection($collection, $type, array $options = [])
     {
         $newProductData = [];
-        $allowedToClassify = $this->isAllowedToClassify($options['product']);
+        $product = $options['product'];
 
         foreach ($collection as $type => $data) {
-            $acl = $this->getAclForType($type);
-            $actionGranted = null === $acl || $this->securityFacade->isGranted($acl);
-
-            if ($actionGranted) {
-                $newProductData[$type] = $data;
-            }
-
-            if ('values' === $type) {
-                $newProductData['values'] = $this->filterValuesData($data);
-            } elseif ('categories' === $type && !$allowedToClassify) {
-                unset($newProductData['categories']);
+            if ($this->isAllowed($product, $type)) {
+                $newProductData[$type] = $this->filterData($type, $data);
             }
         }
 
@@ -100,6 +91,23 @@ class ProductEditDataFilter implements CollectionFilterInterface
     public function supportsCollection($collection, $type, array $options = [])
     {
         return false;
+    }
+
+    /**
+     * Filter & return the given $data for the given $type
+     *
+     * @param string $type
+     * @param mixed  $data
+     *
+     * @return mixed
+     */
+    protected function filterData($type, $data)
+    {
+        if ('values' === $type) {
+            $data = $this->filterValuesData($data);
+        }
+
+        return $data;
     }
 
     /**
@@ -159,13 +167,118 @@ class ProductEditDataFilter implements CollectionFilterInterface
     }
 
     /**
+     * Return whether the current user is allowed to update the given modification $type
+     * on the given $product
+     *
+     * @param ProductInterface $product
+     * @param string           $type
+     *
+     * @return bool
+     */
+    protected function isAllowed(ProductInterface $product, $type)
+    {
+        $isAllowed = true;
+
+        switch ($type) {
+            case 'family':
+                $isAllowed = $this->isAllowedToUpdateFamily();
+                break;
+            case 'groups':
+                $isAllowed = $this->isAllowedToUpdateGroups();
+                break;
+            case 'categories':
+                $isAllowed = $this->isAllowedToClassify($product);
+                break;
+            case 'enabled':
+                $isAllowed = $this->isAllowedToUpdateStatus();
+                break;
+            case 'associations':
+                $isAllowed = $this->isAllowedToUpdateAssociations($product);
+                break;
+            case 'values':
+                $isAllowed = $this->isAllowedToUpdateValues();
+                break;
+        }
+
+        return $isAllowed;
+    }
+
+    /**
+     * Return whether the current user is allowed to update family of the product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateFamily()
+    {
+        return $this->checkAclForType('family');
+    }
+
+    /**
+     * Return whether the current user is allowed to update groups of the product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateGroups()
+    {
+        return $this->checkAclForType('groups');
+    }
+
+    /**
+     * Return whether the current user is allowed to update categories of the product
+     *
      * @param ProductInterface $product
      *
      * @return bool
      */
     protected function isAllowedToClassify(ProductInterface $product)
     {
-        return true;
+        return $this->checkAclForType('categories');
+    }
+
+    /**
+     * Return whether the current user is allowed to update status of the product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateStatus()
+    {
+        return $this->checkAclForType('enabled');
+    }
+
+    /**
+     * Return whether the current user is allowed to update associations of the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateAssociations(ProductInterface $product)
+    {
+        return $this->checkAclForType('associations');
+    }
+
+    /**
+     * Return whether the current user is allowed to update product values of the product
+     *
+     * @return bool
+     */
+    protected function isAllowedToUpdateValues()
+    {
+        return $this->checkAclForType('values');
+    }
+
+    /**
+     * Return whether the current user has ACL to do the given modification $type on the product
+     *
+     * @param $type
+     *
+     * @return bool
+     */
+    protected function checkAclForType($type)
+    {
+        $acl = $this->getAclForType($type);
+
+        return null === $acl || $this->securityFacade->isGranted($acl);
     }
 
     /**
