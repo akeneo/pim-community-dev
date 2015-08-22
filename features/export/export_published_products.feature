@@ -36,6 +36,10 @@ Feature: Export published products
       | jacket-white | description | A really stylish white jacket    | en_US  | mobile |
       | jacket-white | description | Ein sehr elegantes weißes Jacket | de_DE  | mobile |
       | jacket-white | gallery     | paint                            |        |        |
+    And I am on the "paint" asset page
+    And I visit the "Variations" tab
+    And I upload the reference file akeneo.jpg
+    And I save the asset
     And I launched the completeness calculator
     And I edit the "jacket-white" product
     When I press the "Publish" button

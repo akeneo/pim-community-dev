@@ -20,7 +20,7 @@ Feature: Edit product assets variations
     And I should not be able to generate Tablet from reference
 
   Scenario: Successfully upload a localized reference file
-    When I am on the "winter" asset page
+    When I am on the "dog" asset page
     And I visit the "Variations" tab
     Then I should see the reference upload zone
     And I upload the reference file akeneo.jpg
