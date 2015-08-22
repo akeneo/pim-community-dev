@@ -26,9 +26,7 @@ Feature: Associate a product
     Then I should see the text "1 products and 0 groups"
     Then the row "shoelaces" should be checked
 
-  # This scenario is skipped to be merged, but we must fix it
-  # This card is about fixing these https://akeneo.atlassian.net/browse/PIM-4788
-  @skip
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4788
   Scenario: Associate a product to another group
     Given I edit the "charcoal-boots" product
     When I visit the "Associations" tab
@@ -41,9 +39,7 @@ Feature: Associate a product
     Then I should see the text "0 products and 1 groups"
     Then the row "caterpillar_boots" should be checked
 
-  # This scenario is skipped to be merged, but we must fix it
-  # This card is about fixing these https://akeneo.atlassian.net/browse/PIM-4788
-  @skip
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4788
   Scenario: Associate a product to multiple products and groups
     Given I edit the "black-boots" product
     When I visit the "Associations" tab
@@ -78,7 +74,7 @@ Feature: Associate a product
     And the row "black-boots" should be checked
     And I should be able to sort the rows by Is associated
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4670
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4670
   Scenario: Keep association selection between tabs
     Given I edit the "charcoal-boots" product
     When I visit the "Associations" tab
