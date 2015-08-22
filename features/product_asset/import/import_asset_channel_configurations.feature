@@ -68,7 +68,26 @@ Feature: Import asset channel configurations
     And I wait for the "clothing_asset_channel_configuration_import" job to finish
     Then I should see "Field \"channel\" must be filled"
 
-  Scenario: Import and update channel configurations with invalid configuration
+  Scenario: Import and update channel configurations with unknown configured transformation
+    Given the "clothing" catalog configuration
+    And I am logged in as "Peter"
+    And the following CSV file to import:
+    """
+    channel;configuration
+    mobile;{"wrongTransformation":{"with":200},"colorspace":{"colorspace":"gray"}}
+    tablet;{"scale":{"ratio":0.25}}
+    """
+    And the following job "clothing_asset_channel_configuration_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_asset_channel_configuration_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_asset_channel_configuration_import" job to finish
+    Then I should see "read lines 2"
+    And I should see "processed 1"
+    And I should see "skipped 1"
+    And I should see "Transformation \"wrongTransformation\" is unknown"
+
+  Scenario: Import and update channel configurations with invalid transformation configuration
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
     And the following CSV file to import:
@@ -85,3 +104,5 @@ Feature: Import asset channel configurations
     Then I should see "read lines 2"
     And I should see "processed 1"
     And I should see "skipped 1"
+    And I should see "Transformation \"scale\" is not well configured"
+    And I should see "Your options does not fulfil the requirements of the \"scale\" transformation."
