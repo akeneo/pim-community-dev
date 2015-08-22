@@ -127,6 +127,7 @@ Feature: Publish many products at once
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4762
   Scenario: Successfully mass-publish products containing attributes
     Given I am logged in as "Peter"
     And the following product:

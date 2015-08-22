@@ -26,6 +26,7 @@ Feature: Publish a product
     And I am on the "my-jacket" published show page
     Then I should see "Edit working copy"
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4762
   Scenario: Not be able to edit the working copy of a publish product I can't edit
     And the following published product:
       | sku    | family | categories | name-en_US |
@@ -33,6 +34,7 @@ Feature: Publish a product
     And I am on the "my-tee" published show page
     Then I should not see "Edit working copy"
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4762
   Scenario: Successfully publish a product containing attributes
     Given the following attributes:
       | code      | label-en_US | type | scopable | unique | date_min   | date_max   | group |
