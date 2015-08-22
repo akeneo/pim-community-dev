@@ -36,13 +36,14 @@ Feature: Unpublish a product
     And I should not see product my-jacket
     And I should see product my-tee
 
+  @javascript
   Scenario: Not being able to unpublish a product I am not owner
     Given a "clothing" catalog configuration
     And the following published product:
       | sku    | family | categories | name-en_US |
       | my-tee | tees   | tees       | Tee1       |
     And I am logged in as "Julia"
-    And I am on the "my-tee" published show page
+    When I am on the "my-tee" published show page
     Then I should not see "Unpublish"
 
   @javascript
