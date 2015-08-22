@@ -46,7 +46,11 @@ class AssociatedProductHydrator implements HydratorInterface
         $query = $queryBuilder->hydrate(false)->getQuery();
         $queryDefinition = $query->getQuery();
 
-        if (null !== $currentProduct && isset($queryDefinition['sort']['normalizedData.is_associated'])) {
+        $hasCurrentProduct = null !== $currentProduct;
+        $sortedByIsAssociated = isset($queryDefinition['sort']['normalizedData.is_associated']);
+        $hasResults = 0 !== $queryDefinition['limit'];
+
+        if ($hasCurrentProduct && $sortedByIsAssociated && $hasResults) {
             $documentManager = $query->getDocumentManager();
             $productFields = $documentManager->getClassMetadata($this->productClass)->getFieldNames();
             $pipeline = $this->pipelineFromQuery($currentProduct, $queryDefinition, $productFields, $associationTypeId);
