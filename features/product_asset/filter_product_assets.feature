@@ -9,6 +9,7 @@ Feature: Filter product assets
     And I am logged in as "Pamela"
     And I am on the assets page
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4784
   Scenario: Successfully filter product assets
     And I should be able to use the following filters:
       | filter      | value                             | result                                                                                                              |
