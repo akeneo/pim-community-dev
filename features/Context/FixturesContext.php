@@ -5,11 +5,14 @@ namespace Context;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
+use League\Flysystem\Filesystem;
+use League\Flysystem\MountManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
@@ -19,9 +22,11 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Connector\Processor\Denormalization\ProductProcessor;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
@@ -39,6 +44,11 @@ class FixturesContext extends RawMinkContext
         'french'     => 'fr_FR',
         'german'     => 'de_DE',
         'english UK' => 'en_GB',
+        'spanish'    => 'es_ES',
+        'italian'    => 'it_IT',
+        'portuguese' => 'pt_PT',
+        'russian'    => 'ru_RU',
+        'japanese'   => 'ja_JP'
     ];
 
     protected $attributeTypes = [
@@ -69,7 +79,7 @@ class FixturesContext extends RawMinkContext
         'ProductCategory' => 'PimCatalogBundle:Category',
         'AssociationType' => 'PimCatalogBundle:AssociationType',
         'JobInstance'     => 'AkeneoBatchBundle:JobInstance',
-        'User'            => 'OroUserBundle:User',
+        'User'            => 'PimUserBundle:User',
         'Role'            => 'OroUserBundle:Role',
         'UserGroup'       => 'OroUserBundle:Group',
         'Locale'          => 'PimCatalogBundle:Locale',
@@ -117,24 +127,14 @@ class FixturesContext extends RawMinkContext
      */
     public function clearPimFilesystem()
     {
-        // FIXME: Remove gitkeep?
-        $fs = $this->getPimFilesystem();
-        foreach ($fs->keys() as $key) {
-            if (strpos($key, '.') !== 0) {
-                $fs->delete($key);
+        foreach ($this->getPimFilesystems() as $fs) {
+            foreach ($fs->listContents() as $key) {
+                if ('dir' === $key['type']) {
+                    $fs->deleteDir($key['path']);
+                } else {
+                    $fs->delete($key['path']);
+                }
             }
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function clearStorageFilesystem()
-    {
-        $storageDir = realpath($this->getContainer()->getParameter('storage_dir'));
-
-        if (false !== $storageDir && is_dir($storageDir)) {
-            exec(sprintf('rm -Rf %s', $storageDir));
         }
     }
 
@@ -282,6 +282,10 @@ class FixturesContext extends RawMinkContext
             $data = ['sku' => $data];
         } elseif (isset($data['enabled']) && in_array($data['enabled'], ['yes', 'no'])) {
             $data['enabled'] = ($data['enabled'] === 'yes');
+        }
+
+        foreach ($data as $key => $value) {
+            $data[$key] = $this->replacePlaceholders($value);
         }
 
         // use the processor part of the import system
@@ -454,6 +458,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['attribute']);
             $attribute->setLocale($this->getLocaleCode($data['locale']))->setLabel($data['label']);
+            $this->validate($attribute);
             $this->persist($attribute);
         }
         // TODO use a Saver
@@ -550,6 +555,8 @@ class FixturesContext extends RawMinkContext
         foreach ($this->listToArray($attributeCodes) as $code) {
             $this->getProductBuilder()->addAttributeToProduct($product, $this->getAttribute($code));
         }
+        $this->validate($product);
+
         // TODO use a Saver
         $this->persist($product);
         $this->flush();
@@ -568,6 +575,8 @@ class FixturesContext extends RawMinkContext
         $family    = $this->getFamily($family);
 
         $family->setAttributeAsLabel($attribute);
+
+        $this->validate($family);
         // TODO use a Saver
         $this->persist($family);
         $this->flush();
@@ -639,6 +648,7 @@ class FixturesContext extends RawMinkContext
 
         foreach ($attributeData as $index => $data) {
             $attribute = $this->loadFixture('attributes', $data);
+            $this->validate($attribute);
             $this->persist($attribute, $index % 200 === 0);
         }
         // TODO use a Saver
@@ -646,6 +656,7 @@ class FixturesContext extends RawMinkContext
 
         foreach ($optionData as $index => $data) {
             $option = $this->loadFixture('attribute_options', $data);
+            $this->validate($option);
             $this->persist($option, $index % 200 === 0);
         }
         // TODO use a Saver
@@ -791,6 +802,7 @@ class FixturesContext extends RawMinkContext
         $localeCode = isset($this->locales[$locale]) ? $this->locales[$locale] : $locale;
         $locale     = $this->getLocale($localeCode);
         $channel->addLocale($locale);
+        $this->validate($channel);
         $this->persist($channel);
         $this->persist($locale);
     }
@@ -812,6 +824,7 @@ class FixturesContext extends RawMinkContext
             $job = $registry->getJob($jobInstance);
             $jobInstance->setJob($job);
 
+            $this->validate($jobInstance);
             $this->persist($jobInstance);
         }
     }
@@ -895,20 +908,21 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $attribute
-     * @param string $options
+     * @param string $rawOptions
      *
      * @Given /^the following "([^"]*)" attribute options?: (.*)$/
      */
-    public function theFollowingAttributeOptions($attribute, $options)
+    public function theFollowingAttributeOptions($attribute, $rawOptions)
     {
         $attribute = $this->getAttribute(strtolower($attribute));
-        foreach ($this->listToArray($options) as $option) {
+        $options = [];
+        foreach ($this->listToArray($rawOptions) as $option) {
             $option = $this->createOption($option);
             $attribute->addOption($option);
-            $this->persist($option);
+            $this->validate($option);
+            $options[] = $option;
         }
-        // TODO use a Saver
-        $this->flush();
+        $this->getAttributeOptionSaver()->saveAll($options);
     }
 
     /**
@@ -1033,10 +1047,7 @@ class FixturesContext extends RawMinkContext
             foreach ($table->getHash() as $price) {
                 $productPrice = $productValue->getPrice($price['currency']);
                 if ('' === trim($price['amount'])) {
-                    assertThat(null, logicalOr(
-                        $productPrice,
-                        $productPrice->getData()
-                    ));
+                    assertEquals(null, $productPrice ? $productPrice->getData() : $productPrice);
                 } else {
                     assertEquals($price['amount'], $productPrice->getData());
                 }
@@ -1149,6 +1160,8 @@ class FixturesContext extends RawMinkContext
     {
         $extension = strtolower($extension);
 
+        $string = $this->replacePlaceholders($string);
+
         $this->placeholderValues['%file to import%'] = $filename =
             sprintf(
                 '%s/pim-import/behat-import-%s.%s',
@@ -1160,6 +1173,26 @@ class FixturesContext extends RawMinkContext
         @mkdir(dirname($filename), 0777, true);
 
         file_put_contents($filename, (string) $string);
+    }
+
+    /**
+     * @Given /^the following random files:$/
+     */
+    public function theFollowingRandomFiles(TableNode $table)
+    {
+        $directory  = realpath(__DIR__ . '/fixtures/');
+        $characters = range('a', 'z');
+
+        foreach ($table->getHash() as $row) {
+            $filepath = $directory . DIRECTORY_SEPARATOR . $row['filename'];
+            $content = '';
+            for ($i = 0; $i < $row['size'] * 1024 * 1024; $i++) {
+                $content .= $characters[rand(0, count($characters) - 1)];
+            }
+
+            touch($filepath);
+            file_put_contents($filepath, $content);
+        }
     }
 
     /**
@@ -1426,7 +1459,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $username
      *
-     * @return \Oro\Bundle\UserBundle\Entity\User
+     * @return User
      *
      * @Then /^there should be a "([^"]*)" user$/
      */
@@ -1525,6 +1558,7 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProduct($identifier);
         $product->setFamily($this->getFamily($family));
         // TODO replace by call to a saver
+        $this->validate($product);
         $this->persist($product);
         $this->flush();
     }
@@ -1539,11 +1573,12 @@ class FixturesContext extends RawMinkContext
     public function iDeleteProductMediaFromFilesystem($productName)
     {
         $product      = $this->getProduct($productName);
-        $mediaManager = $this->getMediaManager();
         $allMedia     = $product->getMedia();
+        $mountManager = $this->getMountManager();
         foreach ($allMedia as $media) {
-            if ($media) {
-                unlink($mediaManager->getFilePath($media));
+            if (null !== $media) {
+                $fs = $mountManager->getFilesystem($media->getStorage());
+                $fs->delete($media->getKey());
             }
         }
     }
@@ -1590,6 +1625,7 @@ class FixturesContext extends RawMinkContext
         $versions = $this->getVersionManager()->buildPendingVersions($product);
         foreach ($versions as $version) {
             // TODO replace by call to a saver
+            $this->validate($version);
             $this->persist($version);
             $this->flush($version);
         }
@@ -1657,6 +1693,36 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^I set the updated date of the (product "([^"]+)") to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateIs(ProductInterface $product, $identifier, $expected)
+    {
+        $product->setUpdated(new \DateTime($expected));
+
+        $this->getProductSaver()->save($product, ['recalculate' => false]);
+    }
+
+    /**
+     * Asserts that we have less than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertLessThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
+     * Asserts that we have more than a minute interval between the product updated date and the argument
+     *
+     * @Then /^the (product "([^"]+)") updated date should not be close to "([^"]+)"$/
+     */
+    public function theProductUpdatedDateShouldNotBeCloseTo(ProductInterface $product, $identifier, $expected)
+    {
+        assertGreaterThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
      * @param string $identifier
      * @param string $attribute
      * @param string $locale
@@ -1700,6 +1766,7 @@ class FixturesContext extends RawMinkContext
         $type->setVariant($isVariant);
         $type->setLocale('en_US')->setLabel($label);
 
+        $this->validate($type);
         $this->persist($type);
 
         return $type;
@@ -1762,8 +1829,10 @@ class FixturesContext extends RawMinkContext
             }
         }
 
+        $this->validate($attribute);
         $this->persist($attribute);
         foreach ($familiesToPersist as $family) {
+            $this->validate($family);
             $this->persist($family);
         }
 
@@ -1818,6 +1887,7 @@ class FixturesContext extends RawMinkContext
          * before adding and persisting products inside it
          */
         $products = $category->getProducts();
+        $this->validate($category);
         $this->persist($category, true);
         foreach ($products as $product) {
             $product->addCategory($category);
@@ -1871,6 +1941,7 @@ class FixturesContext extends RawMinkContext
             $channel->setCategory($this->getCategory($data['tree']));
         }
 
+        $this->validate($channel);
         $this->persist($channel);
     }
 
@@ -1895,6 +1966,7 @@ class FixturesContext extends RawMinkContext
             $group->addAttribute($attribute);
         }
         // TODO replace by call to a saver
+        $this->validate($group);
         $this->persist($group);
         $this->flush($group);
 
@@ -1902,6 +1974,7 @@ class FixturesContext extends RawMinkContext
             if (!empty($sku)) {
                 $product = $this->getProduct($sku);
                 $product->addGroup($group);
+                $this->validate($product);
                 // TODO replace by call to a saver
                 $this->flush($product);
             }
@@ -1918,6 +1991,7 @@ class FixturesContext extends RawMinkContext
         $associationType->setCode($code);
         $associationType->setLocale('en_US')->setLabel($label);
 
+        $this->validate($associationType);
         $this->persist($associationType);
     }
 
@@ -1929,6 +2003,7 @@ class FixturesContext extends RawMinkContext
     protected function createRole($data)
     {
         $role = new Role($data['role']);
+        $this->validate($role);
         $this->persist($role);
 
         return $role;
@@ -1971,6 +2046,7 @@ class FixturesContext extends RawMinkContext
                 throw new \InvalidArgumentException(sprintf('Unknown reference data type "%s".', $type));
         }
 
+        $this->validate($referenceData);
         $this->getEntityManager()->persist($referenceData);
 
         return $referenceData;
@@ -2043,9 +2119,9 @@ class FixturesContext extends RawMinkContext
                 $data[$key] = str_replace(' ', '', $value);
             }
         }
-        $family = $this->loadFixture('families', $data);
 
-        $this->persist($family);
+        $family = $this->loadFixture('families', $data);
+        $this->getFamilySaver()->save($family);
 
         return $family;
     }
@@ -2093,6 +2169,7 @@ class FixturesContext extends RawMinkContext
             $parent = $comments[$data['parent']];
             $parent->setRepliedAt($createdAt);
             $comment->setParent($parent);
+            $this->validate($comment);
             $this->persist($parent);
         }
 
@@ -2124,6 +2201,7 @@ class FixturesContext extends RawMinkContext
         $view->setColumns($columns);
         $view->setOwner($this->getUser('Peter'));
 
+        $this->validate($view);
         $this->persist($view);
 
         return $view;
@@ -2151,7 +2229,42 @@ class FixturesContext extends RawMinkContext
 
         $entity = $processor->process($data);
 
+        // we encountered a bunch of invalid data in behat due to old way to import them
+        // could be removed once all the fixtures will use the new API (processor, updater, validator)
+        $this->validate($entity);
+
         return $entity;
+    }
+
+    /**
+     * @param mixed $object
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function validate($object)
+    {
+        // TODO: split UniqueVariantAxis + spec
+        // TODO: rework validation constraint to forbid to add products with same options in variant group in same time
+        if ($object instanceof ProductInterface) {
+            $validator = $this->getContainer()->get('pim_catalog.validator.product');
+        } else {
+            $validator = $this->getContainer()->get('validator');
+        }
+        $violations = $validator->validate($object);
+
+        if (0 < $violations->count()) {
+            $messages = [];
+            foreach ($violations as $violation) {
+                $messages[] = $violation->getMessage();
+            }
+
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Object "%s" is not valid, cf following constraint violations "%s"',
+                    ClassUtils::getClass($object), implode(', ', $messages)
+                )
+            );
+        }
     }
 
     /**
@@ -2207,11 +2320,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     * @return MountManager
      */
-    protected function getMediaManager()
+    protected function getMountManager()
     {
-        return $this->getContainer()->get('pim_catalog.manager.media');
+        return $this->getContainer()->get('oneup_flysystem.mount_manager');
     }
 
     /**
@@ -2231,6 +2344,22 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @return SaverInterface
+     */
+    protected function getFamilySaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.family');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getAttributeOptionSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.attribute_option');
+    }
+
+    /**
      * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
      */
     protected function getAttributeManager()
@@ -2239,11 +2368,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Gaufrette\Filesystem
+     * @return Filesystem[]
      */
-    protected function getPimFilesystem()
+    protected function getPimFilesystems()
     {
-        return $this->getContainer()->get('pim_filesystem');
+        return [];
     }
 
     /**

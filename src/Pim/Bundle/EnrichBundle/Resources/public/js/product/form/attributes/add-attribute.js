@@ -39,7 +39,7 @@ define(
                 );
             },
             render: function () {
-                this.getAvailableAttributes().then(_.bind(function (attributes) {
+                this.getAvailableAttributes().then(function (attributes) {
                     this.$el.empty();
                     this.$el.html(this.template({
                         groupedAttributes: this.getGroupedAttributes(attributes),
@@ -48,7 +48,7 @@ define(
 
                     this.initializeSelectWidget();
                     this.delegateEvents();
-                }, this));
+                }.bind(this));
 
                 return this;
             },
@@ -82,13 +82,13 @@ define(
                 var $saveButton = $('<a>', {
                     'class': 'btn btn-small',
                     text: _.__('pim_enrich.form.product.tab.attributes.btn.add')
-                }).on('click', _.bind(function () {
+                }).on('click', function () {
                         $select.multiselect('close');
                         var values = $select.val();
                         if (values !== null) {
                             this.addAttributes(values);
                         }
-                    }, this));
+                    }.bind(this));
 
                 $footerContainer.append($saveButton);
                 $menu.append($footerContainer);
@@ -118,9 +118,9 @@ define(
                 return AttributeManager.getAvailableOptionalAttributes(this.getFormData());
             },
             loadAttributeGroups: function () {
-                return FetcherRegistry.getFetcher('attributeGroup').fetchAll().done(_.bind(function (attributeGroups) {
+                return FetcherRegistry.getFetcher('attribute-group').fetchAll().done(function (attributeGroups) {
                     this.attributeGroups = attributeGroups;
-                }, this));
+                }.bind(this));
             },
             getGroupedAttributes: function (attributes) {
                 var attributeCodes = _.pluck(attributes, 'code');

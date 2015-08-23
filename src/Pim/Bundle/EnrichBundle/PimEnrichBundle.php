@@ -26,9 +26,9 @@ class PimEnrichBundle extends Bundle
             ->addCompilerPass(new Compiler\RegisterViewElementsPass(new ReferenceFactory()))
             ->addCompilerPass(new Compiler\RegisterViewUpdatersPass(new ReferenceFactory()))
             ->addCompilerPass(new Compiler\RegisterFormExtensionsPass())
-            ->addCompilerPass(new Compiler\RegisterFieldProvidersPass(new ReferenceFactory()))
-            ->addCompilerPass(new Compiler\RegisterEmptyValueProvidersPass(new ReferenceFactory()))
-            ->addCompilerPass(new Compiler\SerializerPass('pim_internal_api_serializer'))
-            ->addCompilerPass(new Compiler\RegisterCategoryExtensionPass(new ReferenceFactory()));
+            ->addCompilerPass(new Compiler\RegisterGenericProvidersPass(new ReferenceFactory(), 'field'))
+            ->addCompilerPass(new Compiler\RegisterGenericProvidersPass(new ReferenceFactory(), 'empty_value'))
+            ->addCompilerPass(new Compiler\RegisterGenericProvidersPass(new ReferenceFactory(), 'form'))
+            ->addCompilerPass(new Compiler\SerializerPass('pim_internal_api_serializer'));
     }
 }

@@ -7,8 +7,11 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Product saver, define custom logic and options for product saving
@@ -28,19 +31,25 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /** @var SavingOptionsResolverInterface */
     protected $optionsResolver;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * @param ObjectManager                  $om
      * @param CompletenessManager            $completenessManager
      * @param SavingOptionsResolverInterface $optionsResolver
+     * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
         ObjectManager $om,
         CompletenessManager $completenessManager,
-        SavingOptionsResolverInterface $optionsResolver
+        SavingOptionsResolverInterface $optionsResolver,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager       = $om;
         $this->completenessManager = $completenessManager;
         $this->optionsResolver     = $optionsResolver;
+        $this->eventDispatcher     = $eventDispatcher;
     }
 
     /**
@@ -57,6 +66,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
+        $this->eventDispatcher->dispatch(ProductEvents::PRE_SAVE, new GenericEvent($product));
+
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
         $this->objectManager->persist($product);
@@ -72,6 +83,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         if (true === $options['recalculate']) {
             $this->completenessManager->generateMissingForProduct($product);
         }
+
+        $this->eventDispatcher->dispatch(ProductEvents::POST_SAVE, new GenericEvent($product));
     }
 
     /**
@@ -82,6 +95,8 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         if (empty($products)) {
             return;
         }
+
+        $this->eventDispatcher->dispatch(ProductEvents::PRE_SAVE_ALL, new GenericEvent($products));
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
@@ -94,5 +109,7 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
+
+        $this->eventDispatcher->dispatch(ProductEvents::POST_SAVE_ALL, new GenericEvent($products));
     }
 }

@@ -70,9 +70,10 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 'pim_import_export.notification.export.success',
                 'success',
                 [
-                    'route' => 'pim_importexport_export_execution_show',
-                    'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Product export']
+                    'route'         => 'pim_importexport_export_execution_show',
+                    'routeParams'   => ['id' => 5],
+                    'messageParams' => ['%label%' => 'Product export'],
+                    'context'       => ['actionType' => 'export']
                 ]
             )
             ->shouldBeCalled();
@@ -88,9 +89,10 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 'pim_mass_edit.notification.mass_edit.success',
                 'success',
                 [
-                    'route' => 'pim_enrich_job_tracker_show',
-                    'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Product mass edit']
+                    'route'         => 'pim_enrich_job_tracker_show',
+                    'routeParams'   => ['id' => 5],
+                    'messageParams' => ['%label%' => 'Product mass edit'],
+                    'context'       => ['actionType' => 'mass_edit']
                 ]
             )
             ->shouldBeCalled();
@@ -116,9 +118,10 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 'pim_import_export.notification.export.warning',
                 'warning',
                 [
-                    'route' => 'pim_importexport_export_execution_show',
-                    'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Product export']
+                    'route'         => 'pim_importexport_export_execution_show',
+                    'routeParams'   => ['id' => 5],
+                    'messageParams' => ['%label%' => 'Product export'],
+                    'context'       => ['actionType' => 'export']
                 ]
             )
             ->shouldBeCalled();
@@ -140,9 +143,10 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 'pim_import_export.notification.export.error',
                 'error',
                 [
-                    'route' => 'pim_importexport_export_execution_show',
-                    'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Product export']
+                    'route'         => 'pim_importexport_export_execution_show',
+                    'routeParams'   => ['id' => 5],
+                    'messageParams' => ['%label%' => 'Product export'],
+                    'context'       => ['actionType' => 'export']
                 ]
             )
             ->shouldBeCalled();

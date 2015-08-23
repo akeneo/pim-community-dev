@@ -46,6 +46,7 @@ define(
 
                             if ((!node || (node === -1)) && treeHasProduct) {
                                 // First load of the tree: get the checked categories
+                                var selected = this.parseHiddenCategories();
                                 return Routing.generate(
                                     'pim_enrich_product_listcategories',
                                     {
@@ -53,7 +54,8 @@ define(
                                         categoryId: currentTree,
                                         _format: 'json',
                                         dataLocale: dataLocale,
-                                        context: 'associate'
+                                        context: 'associate',
+                                        selected: selected
                                     }
                                 );
                             }
@@ -66,7 +68,7 @@ define(
                                     context: 'associate'
                                 }
                             );
-                        },
+                        }.bind(this),
                         data: function (node) {
                             var data           = {};
                             var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
@@ -132,8 +134,7 @@ define(
 
                 $tree.bind('check_node.jstree', function (e, d) {
                     if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
-                        var selected = $(hiddenCategoryId).val();
-                        selected = selected.length > 0 ? selected.split(',') : [];
+                        var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');
                         if ($.inArray(id, selected) < 0) {
                             selected.push(id);
@@ -145,12 +146,11 @@ define(
                             $('#' + treeLinkId + ' i').removeClass('gray').addClass('green');
                         }
                     }
-                });
+                }.bind(this));
 
                 $tree.bind('uncheck_node.jstree', function (e, d) {
                     if (d.inst.get_checked()) {
-                        var selected = $(hiddenCategoryId).val();
-                        selected = selected.split(',');
+                        var selected = this.parseHiddenCategories();
                         var id = d.rslt.obj[0].id.replace('node_', '');
                         selected.splice($.inArray(id, selected), 1);
                         selected = selected.join(',');
@@ -161,7 +161,7 @@ define(
                             $('#' + treeLinkId + ' i').removeClass('green').addClass('gray');
                         }
                     }
-                });
+                }.bind(this));
             };
 
             var setLocked = function () {
@@ -193,6 +193,14 @@ define(
                 });
                 mediator.on('jstree:lock', this.lock);
                 mediator.on('jstree:unlock', this.unlock);
+            };
+
+            /**
+             * @return {Array}
+             */
+            this.parseHiddenCategories = function () {
+                var hiddenValue = $(hiddenCategoryId).val();
+                return hiddenValue.length > 0 ? hiddenValue.split(',') : [];
             };
 
             this.init = function () {

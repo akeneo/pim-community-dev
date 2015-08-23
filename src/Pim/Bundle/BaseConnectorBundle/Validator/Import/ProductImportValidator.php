@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -214,7 +215,7 @@ class ProductImportValidator extends ImportValidator
         $label = null;
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute() &&
-                ProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
+                AttributeTypes::IDENTIFIER === $columnInfo->getAttribute()->getAttributeType()) {
                 $label = $columnInfo->getLabel();
                 break;
             }

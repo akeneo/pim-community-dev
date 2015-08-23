@@ -24,13 +24,13 @@ define(
         return BaseForm.extend({
             validationErrors: {},
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.onPostUpdate);
+                this.listenTo(mediator, 'pim_enrich:form:entity:pre_save', this.onPreSave);
                 this.listenTo(mediator, 'pim_enrich:form:entity:bad_request', this.onValidationError);
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addExtension);
+                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            onPostUpdate: function () {
+            onPreSave: function () {
                 this.validationErrors = {};
             },
             onValidationError: function (event) {
@@ -43,7 +43,7 @@ define(
 
                 mediator.trigger('pim_enrich:form:entity:validation_error', event);
             },
-            addExtension: function (event) {
+            addFieldExtension: function (event) {
                 var field = event.field;
                 var valuesErrors = this.validationErrors.values;
 

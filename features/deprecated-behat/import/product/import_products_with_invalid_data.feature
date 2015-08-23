@@ -7,8 +7,8 @@ Feature: Execute a job
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code  | label     | axis | type    |
-      | CROSS | Bag Cross |      | VARIANT |
+      | code  | label     | type    |
+      | CROSS | Bag Cross | RELATED |
     And I am logged in as "Julia"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
@@ -164,7 +164,6 @@ Feature: Execute a job
     And import directory of "footwear_product_import" contains the following media:
       | fanatic-freewave-76.gif |
       | fanatic-freewave-76.txt |
-    And I am logged in as "Julia"
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
@@ -197,7 +196,6 @@ Feature: Execute a job
     And import directory of "footwear_product_import" contains the following media:
       | fanatic-freewave-76.gif |
       | fanatic-freewave-76.txt |
-    And I am logged in as "Julia"
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish

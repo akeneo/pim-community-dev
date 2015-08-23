@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
@@ -145,7 +146,7 @@ interface ProductInterface extends
      *
      * @return ProductInterface
      */
-    public function setAssociations(array $associations = array());
+    public function setAssociations(array $associations = []);
 
     /**
      * Add product association
@@ -261,7 +262,7 @@ interface ProductInterface extends
      *
      * @deprecated will be removed in 1.4
      *
-     * @return ProductMediaInterface[]
+     * @return FileInterface[]
      */
     public function getMedia();
 

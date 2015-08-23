@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -180,8 +181,8 @@ class AttributeRepository extends EntityRepository implements
             ->andWhere('a.attributeType IN (:file_type, :image_type)')
             ->setParameters(
                 array(
-                    ':file_type'  => 'pim_catalog_file',
-                    ':image_type' => 'pim_catalog_image',
+                    ':file_type'  => AttributeTypes::FILE,
+                    ':image_type' => AttributeTypes::IMAGE,
                 )
             )
             ->getQuery()
@@ -203,7 +204,7 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect'])
+                $qb->expr()->in('a.attributeType', [AttributeTypes::OPTION_SIMPLE_SELECT, 'pim_reference_data_simpleselect'])
             )
             ->andWhere($qb->expr()->neq('a.scopable', 1))
             ->andWhere($qb->expr()->neq('a.localizable', 1));
@@ -231,7 +232,7 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', array('pim_catalog_text', 'pim_catalog_identifier'))
+                $qb->expr()->in('a.attributeType', array(AttributeTypes::TEXT, AttributeTypes::IDENTIFIER))
             );
 
         return $qb->getQuery()->getResult();
@@ -384,7 +385,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getIdentifier()
     {
-        return $this->findOneBy(array('attributeType' => 'pim_catalog_identifier'));
+        return $this->findOneBy(array('attributeType' => AttributeTypes::IDENTIFIER));
     }
 
     /**
@@ -408,7 +409,7 @@ class AttributeRepository extends EntityRepository implements
 
         $qb
             ->andWhere($qb->expr()->neq('a.attributeType', '?1'))
-            ->setParameter(1, 'pim_catalog_identifier');
+            ->setParameter(1, AttributeTypes::IDENTIFIER);
 
         return $qb->getQuery()->getResult();
     }

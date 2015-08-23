@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
-use Pim\Bundle\UIBundle\Entity\Repository\SearchableRepository;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository;
 use Pim\Component\Classification\Repository\TagRepositoryInterface;
 
 /**

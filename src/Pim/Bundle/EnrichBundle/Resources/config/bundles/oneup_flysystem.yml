@@ -1,0 +1,25 @@
+oneup_flysystem:
+    adapters:
+        catalog_storage_adapter:
+            local:
+                directory: %catalog_storage_dir%
+        tmp_storage_adapter:
+            local:
+                directory: %tmp_storage_dir%
+        archivist_adapter:
+            local:
+                directory: %archive_dir%
+    filesystems:
+        catalog_storage:
+            adapter: catalog_storage_adapter
+            mount: catalogStorage
+        tmp_storage:
+            adapter: tmp_storage_adapter
+            mount: tmpStorage
+            plugins:
+                - oneup_flysystem.plugin.list_files
+        archivist:
+            adapter: archivist_adapter
+            mount: archivist
+            plugins:
+                - oneup_flysystem.plugin.list_files

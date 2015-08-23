@@ -12,6 +12,10 @@ parameters:
     pim_catalog.validator.constraint.variant_group_values.class:           Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValuesValidator
     pim_catalog.validator.constraint.variant_group_axis.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupAxisValidator
     pim_catalog.validator.constraint.has_variant_axes.class:               Pim\Bundle\CatalogBundle\Validator\Constraints\HasVariantAxesValidator
+    pim_catalog.validator.constraint.family_requirements.class:            Pim\Bundle\CatalogBundle\Validator\Constraints\FamilyRequirementsValidator
+    pim_catalog.validator.constraint.scopable_value.class:                 Pim\Bundle\CatalogBundle\Validator\Constraints\ScopableValueValidator
+    pim_catalog.validator.constraint.localizable_value.class:              Pim\Bundle\CatalogBundle\Validator\Constraints\LocalizableValueValidator
+    pim_catalog.validator.constraint.attribute_type_for_option.class:      Pim\Bundle\CatalogBundle\Validator\Constraints\AttributeTypeForOptionValidator
     pim_catalog.validator.constraint_guesser.chained.class:                Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:                  Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser
     pim_catalog.validator.constraint_guesser.file.class:                   Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\FileGuesser
@@ -29,6 +33,7 @@ parameters:
     pim_catalog.validator.constraint_guesser.unique_value.class:           Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
     pim_catalog.validator.constraint_guesser.price_collection.class:       Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\PriceCollectionGuesser
     pim_catalog.validator.constraint_guesser.metric.class:                 Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\MetricGuesser
+    pim_catalog.validator.constraint_guesser.identifier.class:             Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\IdentifierGuesser
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Bundle\CatalogBundle\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Bundle\CatalogBundle\Validator\Mapping\ProductValueMetadataFactory
     pim_catalog.validator.unique_value_set.class:                          Pim\Bundle\CatalogBundle\Validator\UniqueValuesSet
@@ -112,6 +117,33 @@ services:
         class: %pim_catalog.validator.constraint.has_variant_axes.class%
         tags:
             - { name: validator.constraint_validator, alias: pim_has_variant_axes_validator }
+
+    pim_catalog.validator.constraint.family_requirements:
+        class: %pim_catalog.validator.constraint.family_requirements.class%
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_requirements_validator }
+
+    pim_catalog.validator.constraint.scopable_value:
+        class: %pim_catalog.validator.constraint.scopable_value.class%
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_scopable_value_validator }
+
+    pim_catalog.validator.constraint.localizable_value:
+        class: %pim_catalog.validator.constraint.localizable_value.class%
+        arguments:
+            - '@pim_catalog.repository.cached_locale'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_localizable_value_validator }
+
+    pim_catalog.validator.constraint.attribute_type_for_option:
+        class: %pim_catalog.validator.constraint.attribute_type_for_option.class%
+        tags:
+            - { name: validator.constraint_validator, alias: pim_attribute_type_for_option_validator }
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:
@@ -211,6 +243,12 @@ services:
     pim_catalog.validator.constraint_guesser.currency:
         public: false
         class: %pim_catalog.validator.constraint_guesser.currency.class%
+        tags:
+            - { name: pim_catalog.constraint_guesser.attribute }
+
+    pim_catalog.validator.constraint_guesser.identifier:
+        public: false
+        class: %pim_catalog.validator.constraint_guesser.identifier.class%
         tags:
             - { name: pim_catalog.constraint_guesser.attribute }
 

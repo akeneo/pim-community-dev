@@ -3,7 +3,6 @@
 namespace Akeneo\Component\FileStorage\RawFile;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Component\FileStorage\Model\FileInterface;
 use League\Flysystem\FilesystemInterface;
 
 /**
@@ -17,13 +16,13 @@ use League\Flysystem\FilesystemInterface;
 interface RawFileFetcherInterface
 {
     /**
-     * @param FileInterface       $file
      * @param FilesystemInterface $filesystem
+     * @param string              $fileKey
      *
      * @throws FileTransferException
      * @throws \LogicException
      *
      * @return \SplFileInfo
      */
-    public function fetch(FileInterface $file, FilesystemInterface $filesystem);
+    public function fetch(FilesystemInterface $filesystem, $fileKey);
 }

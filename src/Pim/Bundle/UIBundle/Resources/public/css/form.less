@@ -216,6 +216,8 @@ a.add-attribute-option {
 .has-switch {
   margin-right: 3px;
   margin-bottom: -6px;
+  border-radius: 0;
+
   label {
     z-index: 10;
   }
@@ -224,7 +226,10 @@ a.add-attribute-option {
     font-size: 12px;
     font-weight: bold;
     &.switch-primary, &.switch-left {
-      .buttonBackground(@btnPrimaryBackgroundLight, @btnPrimaryBackground);
+      background-color: @color-new-green;
+      background-image: none;
+      border-radius: 0;
+      text-shadow: none;
     }
   }
   &>div.switch-off,
@@ -419,9 +424,8 @@ div.btn-group > .has-switch {
     -ms-transition: background-color 0.5s;
     transition: background-color 0.5s;  }
   i {
-    padding-top: 10px;
-    line-height: 30px;
-    font-size: 30px;
+    line-height: 34px;
+    font-size: 20px;
   }
 }
 .attribute-type-selector {
@@ -809,7 +813,7 @@ div.dropdown-menu.channel {
       background-color: #CCC;
       text-align: center;
       line-height: 34px;
-      background-color: @color-new-grey;
+      background-color: darken(@color-new-grey, 10%);
     }
 
     .flag-language .language {

@@ -35,6 +35,11 @@ define(
             },
             configure: function () {
                 mediator.clear('pim_enrich:form');
+                Backbone.Router.prototype.once('route', this.unbindEvents);
+
+                this.onExtensions('save-buttons:register-button', function (button) {
+                    this.getExtension('save-buttons').trigger('save-buttons:add-button', button);
+                }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -53,6 +58,9 @@ define(
                 this.renderExtensions();
 
                 mediator.trigger('pim_enrich:form:render:after');
+            },
+            unbindEvents: function () {
+                mediator.clear('pim_enrich:form');
             },
             clearCache: function () {
                 FetcherRegistry.clearAll();

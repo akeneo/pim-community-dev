@@ -19,5 +19,5 @@ Feature: Display notifications for mass edit jobs
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message            |
-      | success | Mass edit finished |
+      | type    | message                                 |
+      | success | Mass edit Mass update products finished |

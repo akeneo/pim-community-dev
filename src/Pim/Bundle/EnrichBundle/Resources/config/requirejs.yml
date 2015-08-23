@@ -17,7 +17,7 @@ config:
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
-                attributeGroup:
+                attribute-group:
                     module: pim/base-fetcher
                     options:
                         urls:
@@ -79,6 +79,11 @@ config:
                     options:
                         urls:
                             list: pim_enrich_mass_edit_action_sequential_edit_get
+                product-history:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_product_history_rest_get
 
     paths:
         jquery.wizard:                      pimenrich/js/jquery.wizard
@@ -113,6 +118,9 @@ config:
         pim/base-fetcher:                   pimenrich/js/fetcher/base-fetcher
         pim/attribute-fetcher:              pimenrich/js/fetcher/attribute-fetcher
         pim/completeness-fetcher:           pimenrich/js/fetcher/completeness-fetcher
+
+        # Generator
+        pim/media-url-generator:            pimenrich/js/generator/media-url-generator
 
         # Form
         pim/form-builder:                                          pimenrich/js/form/builder

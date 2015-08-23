@@ -1,6 +1,39 @@
 # 1.4.x
 
-# 1.4.0-alpha (2015-07-31)
+# 1.4.0-BETA2 (2015-08-17)
+
+## Bug fixes
+- PIM-4443: Exporting a product with an attribute with a numeric code gives an error, full numeric codes for entities are now forbidden except for products
+
+## BC breaks
+- Move `Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory` to `Akeneo\Bundle\BatchBundle\Job\JobInstanceFactory`
+- Media classes `Pim\Bundle\CatalogBundle\Model\ProductMedia`, `Pim\Bundle\CatalogBundle\Model\AbstractProductMedia` and `Pim\Bundle\CatalogBundle\Model\ProductMediaInterface` have been removed
+- Media denormalizers `Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\MediaDenormalizer`, `Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MediaDenormalizer` have been removed
+- Media normalizers `Pim\Bundle\TransformBundle\Normalizer\Structured\MediaNormalizer`, `Pim\Bundle\TransformBundle\Normalizer\Flat\MediaNormalizer` have been removed
+- Media related classes `Pim\Component\Catalog\Comparator\Attribute\MediaComparator` and `Pim\Bundle\EnrichBundle\Controller\MediaController` have been removed
+- Class `Pim\Bundle\BaseConnectorBundle\Writer\File\ProductWriter` has been removed
+- Change constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter` to remove `Pim\Bundle\CatalogBundle\Manager\MediaManager`, `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and the upload directory parameter and to add `Akeneo\Component\FileStorage\Repository\FileRepositoryInterface`, `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface` and `League\Flysystem\MountManager`
+- Change constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeCopier` to remove `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and to add `Akeneo\Component\FileStorage\Repository\FileRepositoryInterface`, `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface` and `League\Flysystem\MountManager`
+- Change constructor of `Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer` to remove media class parameter and to add `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface`
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor` to remove the upload directory parameter and to add the media attributes types
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Writer\File\CsvProductWriter` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Pim\Component\Connector\Writer\File\FileExporterInterface`
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Writer\File\CsvVariantGroupWriter` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Pim\Component\Connector\Writer\File\FileExporterInterface`
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\ArchivableFileWriterArchiver` to remove the archive directory parameter
+- Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver` to remove the archive directory parameter
+- Change method `createZip` of `Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory` to return a `League\Flysystem\Filesystem`
+- Change method `getArchive` of `Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface` to return a `resource`
+- Change constructor of `Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface`
+- Remove method `generateFilenamePrefix` of `Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager`
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface` and to remove the upload directory parameter
+- Change constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ChannelSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
+- `updateAction` has been removed from the `Pim\Bundle\EnrichBundle\Controller\ProductController`
+
+# 1.4.0-BETA1 (2015-07-31)
 
 ## Features
 
@@ -15,7 +48,7 @@
 - Re-work the import/export engine by introducing a new Connector (component+bundle), the old one is deprecated but still useable
 - Re-work the installer to use the new import engine (remove the yml format for fixtures)
 - Remove the yml category and association fixtures
-- Migrate to symfony 2.7
+- Migrate to Symfony 2.7
 
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission
@@ -178,8 +211,26 @@
 - Add an argument `Symfony\Component\EventDispatcher\EventDispatcher` in the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemover`
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Reader\ORM\CategoryReader`, argument is now a `Pim\Component\Classification\Repository\CategoryRepositoryInterface`
 - Change constructor of `Pim\Bundle\UserBundle\Context\UserContext`, replace `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface`, add `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
+- Constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
-# 1.3.x
+# 1.3.21 (2015-08-17)
+
+## Bug fixes
+- PIM-4753: Fix updated date issues for Versionable objects
+
+# 1.3.20 (2015-08-14)
+
+## Bug fixes
+- PIM-4737: Fix a bug with the select2 cache.
+
+# 1.3.19 (2015-08-13)
+
+## Bug fixes
+- PIM-4706: Product association import error with identifier containing comma or semicolon
+- PIM-4748: performances issues with product display with 8 locales (attribute and attribute group translations)
+- PIM-4444: performances issues with product display with 10 locales (attribute and attribute group translations)
+- PIM-4756: Filter issue with the option "start with" "0" on the product grid
+- PIM-4758: Fixed attribute filtering on method getFullProducts (Github issue #3028)
 
 # 1.3.18 (2015-07-09)
 

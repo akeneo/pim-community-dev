@@ -261,6 +261,9 @@ pim_enrich:
             edit: Edit an association type
             remove: Remove an association type
             history: View association type history
+        job_tracker:
+            index: View process tracker
+
     acl_group:
         association_type: Association types
         attribute: Attributes
@@ -456,6 +459,7 @@ flash:
         not removable: The last channel cannot be removed
     currency:
         updated: Currency successfully updated
+        error.linked_to_channel: You cannot disable a currency linked to a channel.
     family:
         created:                       Family successfully created
         updated:                       Family successfully updated
@@ -939,13 +943,13 @@ Selected products successfully deleted: Selected products successfully deleted
 pim_mass_edit:
     notification:
         mass_edit:
-            success: Mass edit finished
-            error:   Mass edit failed
-            warning: Mass edit finished with warnings
+            error:   Mass edit <strong>%label%</strong> failed
+            warning: Mass edit <strong>%label%</strong> finished with some warnings
+            success: Mass edit <strong>%label%</strong> finished
         quick_export:
-            success: Quick export finished
-            error:   Quick export failed
-            warning: Quick export finished with warnings
+            error:   Quick export <strong>%label%</strong> failed
+            warning: Quick export <strong>%label%</strong> finished with some warnings
+            success: Quick export <strong>%label%</strong> finished
 
 job_execution.summary:
     mass_edited:        Mass edited

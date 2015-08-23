@@ -148,6 +148,8 @@ pim_enrich:
                 update_failed: The product could not be updated.
                 field_not_ready: The product cannot be saved right now. The following fields are not ready: {{ fields }}
                 already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
+            error:
+                upload: An error occured during the file upload
             meta:
                 created: Created
                 created_by: By
@@ -168,6 +170,7 @@ pim_enrich:
                 select: Select
                 all: All
                 all_visible: All visible
+                none: None
             variant_group:
                 updated_by: Updated by variant group
                 switch:
@@ -175,6 +178,8 @@ pim_enrich:
                     no: No
             optional_attribute:
                 remove: Remove this attribute
+            locale_specific_attribute:
+                unavailable: This locale specific field is not available in this locale
             media:
                 upload: Drag and drop to upload or click here
         attribute_option:
@@ -190,6 +195,8 @@ pim_enrich:
         not_applicable: N/A
         entity:
             updated: There are unsaved changes.
+    error:
+        upload: An error occured during the upload of the file
     alert:
         not_allowed: You are not allowed to access this page
         error_occured: An error occured during the loading of the page

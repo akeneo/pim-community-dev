@@ -34,9 +34,9 @@ class CategoryManager
 
     /**
      * @param ObjectManager               $om
-     * @param string                      $categoryClass
      * @param CategoryRepositoryInterface $productCategoryRepo
      * @param CategoryFactory             $categoryFactory
+     * @param string                      $categoryClass
      */
     public function __construct(
         ObjectManager $om,
@@ -156,7 +156,7 @@ class CategoryManager
      */
     public function getTreeChoices()
     {
-        $trees = $this->getTrees();
+        $trees   = $this->getTrees();
         $choices = [];
         foreach ($trees as $tree) {
             $choices[$tree->getId()] = $tree->getLabel();
@@ -197,7 +197,7 @@ class CategoryManager
 
         foreach ($categories as $category) {
             $categoryParentsIds = [];
-            $path = $this->getEntityRepository()->getPath($category);
+            $path               = $this->getEntityRepository()->getPath($category);
 
             if ($path[0]->getId() === $root->getId()) {
                 foreach ($path as $pathItem) {
@@ -222,7 +222,9 @@ class CategoryManager
      */
     public function getTreeByCode($code)
     {
-        return $this->productCategoryRepo->findOneBy(['code' => $code, 'parent' => null]);
+        return $this
+            ->getEntityRepository()
+            ->findOneBy(['code' => $code, 'parent' => null]);
     }
 
     /**
@@ -236,7 +238,9 @@ class CategoryManager
      */
     public function getCategoryByCode($code)
     {
-        return $this->productCategoryRepo->findOneBy(['code' => $code]);
+        return $this
+            ->getEntityRepository()
+            ->findOneBy(array('code' => $code));
     }
 
     /**
@@ -252,9 +256,9 @@ class CategoryManager
      */
     public function move($categoryId, $parentId, $prevSiblingId)
     {
-        $repo     = $this->productCategoryRepo;
-        $category = $repo->find($categoryId);
-        $parent   = $repo->find($parentId);
+        $repo        = $this->getEntityRepository();
+        $category    = $repo->find($categoryId);
+        $parent      = $repo->find($parentId);
         $prevSibling = null;
 
         $category->setParent($parent);
@@ -263,6 +267,7 @@ class CategoryManager
             $prevSibling = $repo->find($prevSiblingId);
         }
 
+        // Gedmo/Tree virtual methods
         if (is_object($prevSibling)) {
             $repo->persistAsNextSiblingOf($category, $prevSibling);
         } else {
@@ -285,6 +290,6 @@ class CategoryManager
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {
-        return $this->productCategoryRepo->isAncestor($parentNode, $childNode);
+        return $this->getEntityRepository()->isAncestor($parentNode, $childNode);
     }
 }

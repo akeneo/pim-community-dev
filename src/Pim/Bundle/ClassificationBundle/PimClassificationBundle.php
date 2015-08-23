@@ -1,5 +1,6 @@
 <?php
 
+// TODO-4251: Pim\Bundle\ClassificationBundle to Akeneo\Bundle\ClassificationBundle, once the feat-pam branch merged
 namespace Pim\Bundle\ClassificationBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;

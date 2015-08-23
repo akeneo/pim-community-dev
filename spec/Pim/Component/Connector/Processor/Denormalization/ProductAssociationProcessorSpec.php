@@ -86,7 +86,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, ["with_associations" => true])
             ->willReturn($convertedData);
 
         $preFilteredData = $filteredData = [
@@ -153,7 +153,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, ["with_associations" => true])
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -216,7 +216,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, ["with_associations" => true])
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -280,7 +280,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, ["with_associations" => true])
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -349,7 +349,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ]
         ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, ["with_associations" => true])
             ->willReturn($convertedData);
 
         $filteredData = [

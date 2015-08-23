@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
@@ -1002,7 +1003,7 @@ abstract class AbstractAttribute implements AttributeInterface
     public function setAttributeType($type)
     {
         $this->attributeType = $type;
-        if ($this->attributeType === 'pim_catalog_identifier') {
+        if (AttributeTypes::IDENTIFIER === $this->attributeType) {
             $this->required = true;
         }
 

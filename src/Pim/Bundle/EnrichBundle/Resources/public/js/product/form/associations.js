@@ -53,7 +53,7 @@ define(
                 this.datagrids = {
                     products: {
                         name: 'association-product-grid',
-                        getInitialParams: _.bind(function (associationType) {
+                        getInitialParams: function (associationType) {
                             var params = {
                                 product: this.getFormData().meta.id
                             };
@@ -62,11 +62,11 @@ define(
                             params.dataLocale = UserContext.get('catalogLocale');
 
                             return params;
-                        }, this),
+                        }.bind(this),
                         paramName: 'associationType',
-                        getParamValue: _.bind(function (associationType) {
+                        getParamValue: function (associationType) {
                             return _.findWhere(this.state.get('associationTypes'), {code: associationType}).id;
-                        }, this),
+                        }.bind(this),
                         getModelIdentifier: function (model, identifierAttribute) {
                             return model.get(identifierAttribute.code);
                         }
@@ -80,10 +80,10 @@ define(
                             return params;
                         },
                         paramName: 'associatedIds',
-                        getParamValue: _.bind(function (associationType) {
+                        getParamValue: function (associationType) {
                             var associations = this.getFormData().meta.associations;
                             return associations[associationType] ? associations[associationType].groupIds : [];
-                        }, this),
+                        }.bind(this),
                         getModelIdentifier: function (model) {
                             return model.get('code');
                         }
@@ -98,17 +98,17 @@ define(
                     label: _.__('pim_enrich.form.product.tab.associations.title')
                 });
 
-                _.each(this.datagrids, _.bind(function (datagrid) {
-                    mediator.on('datagrid:selectModel:' + datagrid.name, _.bind(function (model) {
+                _.each(this.datagrids, function (datagrid) {
+                    mediator.on('datagrid:selectModel:' + datagrid.name, function (model) {
                         this.selectModel(model, datagrid);
-                    }, this));
+                    }.bind(this));
 
-                    mediator.on('datagrid:unselectModel:' + datagrid.name, _.bind(function (model) {
+                    mediator.on('datagrid:unselectModel:' + datagrid.name, function (model) {
                         this.unselectModel(model, datagrid);
-                    }, this));
-                }, this));
+                    }.bind(this));
+                }.bind(this));
 
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', _.bind(this.postUpdate, this));
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.postUpdate.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -120,7 +120,7 @@ define(
                 $.when(
                     this.loadAssociationTypes(),
                     FetcherRegistry.getFetcher('attribute').getIdentifierField()
-                ).done(_.bind(function (associationTypes, identifierAttribute) {
+                ).then(function (associationTypes, identifierAttribute) {
                     this.state.set(
                         'currentAssociationType',
                         associationTypes.length ? _.first(associationTypes).code : null
@@ -138,22 +138,22 @@ define(
                     this.renderPanes();
 
                     if (associationTypes.length) {
-                        _.each(this.datagrids, _.bind(function (datagrid) {
+                        _.each(this.datagrids, function (datagrid) {
                             this.renderGrid(
                                 datagrid.name,
                                 datagrid.getInitialParams(this.state.get('currentAssociationType'))
                             );
-                        }, this));
+                        }.bind(this));
                         this.setListenerSelectors();
                     }
 
                     this.delegateEvents();
-                }, this));
+                }.bind(this));
 
                 return this;
             },
             renderPanes: function () {
-                this.loadAssociationTypes().then(_.bind(function (associationTypes) {
+                this.loadAssociationTypes().then(function (associationTypes) {
                     this.setAssociationCount(associationTypes);
                     this.$('#association-buttons').siblings('.tab-pane').remove();
                     this.$('#association-buttons').after(
@@ -163,7 +163,7 @@ define(
                             associationTypes: associationTypes
                         })
                     );
-                }, this));
+                }.bind(this));
             },
             postUpdate: function () {
                 this.$('.selection-inputs input').val('');
@@ -232,7 +232,7 @@ define(
                 urlParams.alias = alias;
                 urlParams.params = _.clone(params);
 
-                $.get(Routing.generate('pim_datagrid_load', urlParams)).done(function (resp) {
+                $.get(Routing.generate('pim_datagrid_load', urlParams)).then(function (resp) {
                     $('#grid-' + alias).data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
                     require(resp.metadata.requireJSModules, function () {
@@ -243,14 +243,14 @@ define(
             setListenerSelectors: function () {
                 var gridNames = _.pluck(this.datagrids, 'name');
 
-                mediator.on('column_form_listener:initialized', _.bind(function onColumnListenerReady(gridName) {
+                mediator.on('column_form_listener:initialized', function onColumnListenerReady(gridName) {
                     gridNames = _.without(gridNames, gridName);
                     if (!gridNames.length) {
                         mediator.off('column_form_listener:initialized', onColumnListenerReady);
 
                         this.updateListenerSelectors();
                     }
-                }, this));
+                }.bind(this));
             },
             updateListenerSelectors: function () {
                 var associationType = this.state.get('currentAssociationType');

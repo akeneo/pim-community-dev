@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface as MongoProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -19,9 +20,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Product repository
@@ -685,7 +686,7 @@ class ProductRepository extends DocumentRepository implements
      */
     protected function getIdentifierAttribute()
     {
-        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+        return $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
     }
 
     /**

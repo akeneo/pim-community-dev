@@ -48,7 +48,7 @@ class ProductCategoryController
     public function listAction($id)
     {
         $product = $this->findProductOr404($id);
-        $trees = $this->productCategoryRepository->getProductCountByTree($product);
+        $trees   = $this->productCategoryRepository->getProductCountByTree($product);
 
         $result = [
             'trees'      => [],
@@ -65,8 +65,9 @@ class ProductCategoryController
 
         foreach ($product->getCategories() as $category) {
             $result['categories'][] = [
-                'id'   => $category->getId(),
-                'code' => $category->getCode()
+                'id'     => $category->getId(),
+                'code'   => $category->getCode(),
+                'rootId' => $category->getRoot(),
             ];
         }
 

@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -126,7 +128,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
 
             foreach ($values as $value) {
                 $fieldValue = $this->getFieldValue($value);
-                if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection'
+                if (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()
                     || isset($this->fields[$fieldValue])) {
                     $normalizedValue = $this->serializer->normalize($value, $format, $context);
                     $this->results = array_merge($this->results, $normalizedValue);

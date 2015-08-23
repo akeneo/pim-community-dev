@@ -7,8 +7,8 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_js_routing.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_rest.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/gedmo_doctrine_extensions.yml' }
-    - { resource: '@PimEnrichBundle/Resources/config/bundles/knp_gaufrette.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/liip_imagine.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/oneup_flysystem.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_filter.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_require_js.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_translation.yml' }
@@ -39,20 +39,5 @@ services:
             -
                 db_table: pim_session
 
-doctrine_migrations:
-    dir_name: %doctrine_migrations_dir%
-    namespace: Pim\Upgrade\Schema
-    name: PIM Migrations
-
 pim_enrich:
     max_products_category_removal: %max_products_category_removal%
-
-oneup_flysystem:
-    adapters:
-        storage_adapter:
-            local:
-                directory: %storage_dir%
-    filesystems:
-        storage:
-            adapter: storage_adapter
-            mount: storage

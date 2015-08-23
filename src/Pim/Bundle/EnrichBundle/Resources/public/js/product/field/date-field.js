@@ -31,7 +31,7 @@ define(
                 return this.fieldTemplate(context);
             },
             postRender: function () {
-                this.$('.datepicker').datepicker(this.datepickerOptions);
+                this.$('.datepicker-field').datepicker(this.datepickerOptions);
             },
             updateModel: function () {
                 var data = this.$('.field-input:first input[type="text"]').val();

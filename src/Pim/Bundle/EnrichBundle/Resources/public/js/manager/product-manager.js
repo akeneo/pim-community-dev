@@ -6,22 +6,30 @@ define([
         'oro/mediator',
         'routing',
         'pim/attribute-manager',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/product-edit-form/cache-invalidator'
     ], function (
         $,
         _,
         mediator,
         Routing,
         AttributeManager,
-        FetcherRegistry
+        FetcherRegistry,
+        CacheInvalidator
     ) {
         return {
             productValues: null,
             get: function (id) {
                 return $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
-                    .then(this.generateMissing)
                     .then(function (product) {
-                        mediator.trigger('pim_enrich:form:product:action:post_fetch', product);
+                        var cacheInvalidator = new CacheInvalidator();
+                        cacheInvalidator.checkStructureVersion(product);
+
+                        return this.generateMissing(product);
+                    }.bind(this))
+                    .then(function (product) {
+
+                        mediator.trigger('pim_enrich:form:product:post_fetch', product);
 
                         return product;
                     })
@@ -33,11 +41,11 @@ define([
                     url: Routing.generate('pim_enrich_product_rest_get', {id: id}),
                     contentType: 'application/json',
                     data: JSON.stringify(data)
-                }).then(_.bind(function (product) {
-                    mediator.trigger('pim_enrich:form:entity:action:post_save', product);
+                }).then(function (product) {
+                    mediator.trigger('pim_enrich:form:entity:post_save', product);
 
                     return product;
-                }, this));
+                }.bind(this));
             },
             remove: function (id) {
                 return $.ajax({
@@ -49,16 +57,16 @@ define([
             },
             getValues: function (product) {
                 return AttributeManager.getAttributesForProduct(product).then(function (attributes) {
-                    _.each(attributes, _.bind(function (attributeCode) {
+                    _.each(attributes, function (attributeCode) {
                         if (!product.values[attributeCode]) {
                             product.values[attributeCode] = [];
                         }
-                    }, this));
+                    }.bind(this));
 
                     return product.values;
                 });
             },
-            generateMissing: function (product) {
+            doGenerateMissing: function (product) {
                 return $.when(
                     FetcherRegistry.getFetcher('attribute').fetchAll(),
                     FetcherRegistry.getFetcher('locale').fetchAll(),
@@ -66,7 +74,6 @@ define([
                     FetcherRegistry.getFetcher('currency').fetchAll(),
                     AttributeManager.getAttributesForProduct(product)
                 ).then(function (attributes, locales, channels, currencies, productAttributes) {
-                    var deferred = new $.Deferred();
                     var values = {};
                     product.values = Array.isArray(product.values) && 0 === product.values.length ? {} : product.values;
 
@@ -84,10 +91,11 @@ define([
 
                     product.values = values;
 
-                    deferred.resolve(product);
-
-                    return deferred.promise();
-                }).promise();
+                    return product;
+                });
+            },
+            generateMissing: function (product) {
+                return this.doGenerateMissing(product);
             }
         };
     }

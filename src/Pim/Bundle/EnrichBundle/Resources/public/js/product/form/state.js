@@ -46,16 +46,12 @@ define(
              * @inheritdoc
              */
             configure: function () {
-                this.listenTo(this.getFormModel(), 'change', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:entity:update_state', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.collectAndRender);
                 this.listenTo(mediator, 'pim_enrich:form:state:confirm', this.onConfirmation);
-
-                $(window).on('beforeunload', _.bind(this.beforeUnload, this));
-                $('body')
-                    .off('click', this.linkSelector)
-                    .on('click', this.linkSelector, _.bind(this.linkClicked, this));
+                mediator.on('hash_navigation_click', this.linkClicked.bind(this), 'pim_enrich:form');
+                $(window).on('beforeunload', this.beforeUnload.bind(this));
 
                 Backbone.Router.prototype.on('route', this.unbindEvents);
 
@@ -67,7 +63,6 @@ define(
              */
             unbindEvents: function () {
                 $(window).off('beforeunload', this.beforeUnload);
-                $('body').off('click', this.linkSelector);
             },
 
             /**
@@ -119,11 +114,10 @@ define(
              * @return {boolean}
              */
             linkClicked: function (event) {
-                event.stopImmediatePropagation();
-                event.preventDefault();
+                event.stoppedProcess = true;
 
                 var doAction = function () {
-                    Navigation.getInstance().setLocation($(event.currentTarget).attr('href'));
+                    Navigation.getInstance().setLocation(event.link);
                 };
 
                 this.confirmAction(this.confirmationMessage, this.confirmationTitle, doAction);

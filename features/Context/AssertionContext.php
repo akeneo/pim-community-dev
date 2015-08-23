@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\ResponseTextException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -29,11 +30,27 @@ class AssertionContext extends RawMinkContext
      */
     public function assertPageContainsText($text)
     {
+        //Remove unecessary escaped antislashes
+        $text = str_replace('\\', '', $text);
         $this->getMainContext()->spin(function () use ($text) {
             $this->assertSession()->pageTextContains($text);
 
             return true;
         });
+    }
+
+    /**
+     * Checks, that page does not contain specified text.
+     *
+     * @Then /^(?:|I )should not see the text "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function assertPageNotContainsText($text)
+    {
+        $this->getMainContext()->spin(function () use ($text) {
+            $this->assertSession()->pageTextNotContains($text);
+
+            return true;
+        }, 5);
     }
 
     /**
@@ -156,6 +173,10 @@ class AssertionContext extends RawMinkContext
                     throw $this->createExpectationException(sprintf('Not expecting to see field "%s"', $field));
                 }
             } catch (ElementNotFoundException $e) {
+            } catch (\Exception $e) {
+                if ($e instanceof ExpectationException) {
+                    throw $e;
+                }
             }
         }
     }
@@ -421,28 +442,6 @@ class AssertionContext extends RawMinkContext
                     )
                 );
             }
-        }
-    }
-
-    /**
-     * @param $version
-     *
-     * @Then /^the version (\d+) should be marked as published$/
-     *
-     * @throws ExpectationException
-     */
-    public function versionShouldBeMarkedAsPublished($version)
-    {
-        $row = $this->getCurrentPage()->find('css', '.history-block tr[data-version="' . $version . '"]');
-        if (!$row) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to see history row for version %s, not found', $version)
-            );
-        }
-        if (!$row->find('css', '.label-published')) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to see version %d marked as published, but is not', $version)
-            );
         }
     }
 
@@ -719,6 +718,25 @@ class AssertionContext extends RawMinkContext
                 implode(', ', $string->getLines())
             )
         );
+    }
+
+    /**
+     * @param PyStringNode $text
+     *
+     * @throws ResponseTextException
+     * @throws \Exception
+     *
+     * @Then /^I should see the sequential edit progression:$/
+     */
+    public function iShouldSeeTheSequentialEditProgression(PyStringNode $text)
+    {
+        $this->getCurrentPage()->waitForProgressionBar();
+
+        $this->getMainContext()->spin(function () use ($text) {
+            $this->assertSession()->pageTextContains((string) $text);
+
+            return true;
+        });
     }
 
     /**

@@ -232,7 +232,7 @@ class CategoryRepository extends NestedTreeRepository implements
                 // Node does not exist, and none of his children has
                 // already been in the loop, so we create it.
                 $vectorMap[$node->getId()] = [
-                    'item' => $node,
+                    'item'         => $node,
                     $childrenIndex => []
                 ];
             } else {

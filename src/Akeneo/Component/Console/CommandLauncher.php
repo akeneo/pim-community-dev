@@ -67,7 +67,7 @@ class CommandLauncher
     public function executeBackground($command)
     {
         $cmd  = $this->buildCommandString($command);
-        $cmd .= ' > /dev/null &';
+        $cmd .= sprintf(' >> %s/logs/command_execute.log 2>&1', $this->rootDir);
         exec($cmd);
 
         return null;

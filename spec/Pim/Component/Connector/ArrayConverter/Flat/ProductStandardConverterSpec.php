@@ -12,6 +12,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
+use Pim\Component\Connector\Exception\ArrayConversionException;
 use Prophecy\Argument;
 
 class ProductStandardConverterSpec extends ObjectBehavior
@@ -65,6 +66,8 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
+
+        $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
         $fieldConverter->supportsColumn('sku')->willReturn(false);
         $fieldConverter->supportsColumn('categories')->willReturn(true);
@@ -158,6 +161,58 @@ class ProductStandardConverterSpec extends ObjectBehavior
             ->shouldReturn($result);
     }
 
+    function it_converts_without_associations_depending_on_options(
+        $attrColumnsResolver,
+        $assocColumnsResolver,
+        $fieldConverter,
+        $converterRegistry,
+        $fieldExtractor,
+        $columnsMerger,
+        ValueConverterInterface $converter,
+        AttributeInterface $attribute
+    ) {
+        $item = ['sku' => '1069978', 'enabled' => true, 'unknown-products' => ['sku2'], 'unknown-groups' => 'groupcode'];
+        $filteredItem = ['sku' => '1069978', 'enabled' => true];
+
+        $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku']);
+        $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+
+        $columnsMerger->merge($filteredItem)->willReturn($filteredItem);
+
+        $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
+
+        $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute]);
+        $attribute->getAttributeType()->willReturn('sku');
+        $fieldConverter->supportsColumn('sku')->willReturn(false);
+        $fieldConverter->supportsColumn('enabled')->willReturn(true);
+
+        $converterRegistry->getConverter(Argument::any())->willReturn($converter);
+        $fieldConverter->convert('enabled', true)->willReturn(['enabled' => true]);
+
+        $converter->convert(['attribute' => $attribute], '1069978')->willReturn(
+            [
+                'sku' => [
+                    'locale' => '',
+                    'scope'  => '',
+                    'data'   => 1069978,
+                ]
+            ]
+        );
+
+        $result = [
+            'sku'                    => [
+                'locale' => '',
+                'scope'  => '',
+                'data'   => 1069978,
+            ],
+            'enabled'                => true,
+        ];
+
+        $this
+            ->convert($item, ['with_associations' => false])
+            ->shouldReturn($result);
+    }
+
     function it_throws_an_exception_if_no_converters_found(
         $attrColumnsResolver,
         $assocColumnsResolver,
@@ -173,6 +228,9 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
+
+        $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
+
         $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute]);
         $attribute->getAttributeType()->willReturn('sku');
 
@@ -198,11 +256,87 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
+
+        $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
+
         $fieldConverter->supportsColumn('sku')->willReturn(false);
 
         $this->shouldThrow(new \LogicException('Unable to convert the given column "sku"'))->during(
             'convert',
             [$item]
+        );
+    }
+
+    function it_throws_an_exception_when_field_does_not_exist(
+        $attrColumnsResolver,
+        $assocColumnsResolver,
+        $fieldConverter,
+        $converterRegistry,
+        $fieldExtractor,
+        $columnsMerger,
+        AttributeInterface $attribute
+    ) {
+        $item = ['sku' => '1069978', 'enabled' => true, 'unknown_field' => 'foo', 'other_unknown_field' => 'bar'];
+
+        $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku']);
+        $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+
+        $columnsMerger->merge($item)->willReturn($item);
+
+        $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
+
+        $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute]);
+        $attribute->getAttributeType()->willReturn('sku');
+        $fieldConverter->supportsColumn('sku')->willReturn(false);
+
+        $fieldExtractor->extractColumnInfo('unknown_field')->willReturn(null);
+        $fieldExtractor->extractColumnInfo('other_unknown_field')->willReturn(null);
+
+        $converterRegistry->getConverter(Argument::any())->willReturn(null);
+
+        $this->shouldThrow(
+            new ArrayConversionException('The fields "unknown_field, other_unknown_field" do not exist')
+        )->during(
+            'convert',
+            [$item],
+            ['with_associations' => false]
+        );
+    }
+
+    function it_throws_an_exception_when_association_field_does_not_exist(
+        $attrColumnsResolver,
+        $assocColumnsResolver,
+        $fieldConverter,
+        $converterRegistry,
+        $fieldExtractor,
+        $columnsMerger,
+        AttributeInterface $attribute
+    ) {
+        $item = ['sku' => '1069978', 'enabled' => true, 'unknown-products' => ['sku2'], 'unknown-groups' => 'groupcode'];
+
+        $attrColumnsResolver->resolveAttributeColumns()->willReturn(['sku']);
+        $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
+
+        $columnsMerger->merge($item)->willReturn($item);
+
+        $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
+
+        $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute]);
+        $attribute->getAttributeType()->willReturn('sku');
+
+        $fieldConverter->supportsColumn('sku')->willReturn(true);
+
+        $fieldExtractor->extractColumnInfo('unknown_field')->willReturn(null);
+        $fieldExtractor->extractColumnInfo('other_unknown_field')->willReturn(null);
+
+        $converterRegistry->getConverter(Argument::any())->willReturn(null);
+
+        $this->shouldThrow(
+            new ArrayConversionException('The fields "unknown-products, unknown-groups" do not exist')
+        )->during(
+            'convert',
+            [$item],
+            ['with_associations' => true]
         );
     }
 }

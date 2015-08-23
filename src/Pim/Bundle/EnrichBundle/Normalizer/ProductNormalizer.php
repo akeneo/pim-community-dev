@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -35,25 +36,31 @@ class ProductNormalizer implements NormalizerInterface
     /** @var StructureVersionProviderInterface */
     protected $structureVersionProvider;
 
+    /** @var FormProviderInterface */
+    protected $formProvider;
+
     /**
      * @param NormalizerInterface               $productNormalizer
      * @param NormalizerInterface               $versionNormalizer
      * @param VersionManager                    $versionManager
      * @param LocaleManager                     $localeManager
      * @param StructureVersionProviderInterface $structureVersionProvider
+     * @param FormProviderInterface             $formProvider
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
         LocaleManager $localeManager,
-        StructureVersionProviderInterface $structureVersionProvider
+        StructureVersionProviderInterface $structureVersionProvider,
+        FormProviderInterface $formProvider
     ) {
         $this->productNormalizer        = $productNormalizer;
         $this->versionNormalizer        = $versionNormalizer;
         $this->versionManager           = $versionManager;
         $this->localeManager            = $localeManager;
         $this->structureVersionProvider = $structureVersionProvider;
+        $this->formProvider             = $formProvider;
     }
 
     /**
@@ -70,6 +77,7 @@ class ProductNormalizer implements NormalizerInterface
         $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
         $normalizedProduct['meta'] = [
+            'form'              => $this->formProvider->getForm($product),
             'id'                => $product->getId(),
             'created'           => $created,
             'updated'           => $updated,

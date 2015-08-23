@@ -63,14 +63,14 @@ datagrid:
             edit:
                 type:      tab-redirect
                 label:     Edit attributes of the product
-                tab:       pim_enrich-product-tab-attribute
+                tab:       pim-product-edit-form-attributes
                 icon:      edit
                 link:      edit_link
                 rowAction: true
             edit_categories:
                 type:  tab-redirect
                 label: Classify the product
-                tab:   pim_enrich-product-tab-category
+                tab:   pim-product-edit-form-categories
                 icon:  folder-close
                 link:  edit_link
             delete:
@@ -110,6 +110,7 @@ datagrid:
                 route_parameters:
                     _format: csv
                     _contentType: text/csv
+                    _jobCode: csv_product_quick_export
                 context:
                     withHeader: true
                 messages:

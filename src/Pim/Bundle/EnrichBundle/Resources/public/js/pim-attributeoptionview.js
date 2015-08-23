@@ -134,12 +134,12 @@ define(
                         Dialog.confirm(
                             __('confirm.attribute_option.cancel_edition_on_new_option_text'),
                             __('confirm.attribute_option.cancel_edition_on_new_option_title'),
-                            _.bind(function () {
+                            function () {
                                 this.showReadableItem(this);
                                 if (!this.model.id) {
                                     this.deleteItem();
                                 }
-                            }, this));
+                            }.bind(this));
                     } else {
                         if (!this.model.id) {
                             this.deleteItem();
@@ -157,9 +157,9 @@ define(
                 Dialog.confirm(
                     __('pim_enrich.item.delete.confirm.content', {'itemName': itemCode}),
                     __('pim_enrich.item.delete.confirm.title', {'itemName': itemCode}),
-                    _.bind(function () {
+                    function () {
                         this.parent.deleteItem(this);
-                    }, this)
+                    }.bind(this)
                 );
             },
             updateItem: function () {
@@ -171,13 +171,13 @@ define(
                     {},
                     {
                         url: this.model.url(),
-                        success: _.bind(function () {
+                        success: function () {
                             this.inLoading(false);
                             this.model.set(editedModel.attributes);
                             this.clean();
                             this.stopEditItem();
-                        }, this),
-                        error: _.bind(function (data, xhr) {
+                        }.bind(this),
+                        error: function (data, xhr) {
                             this.inLoading(false);
 
                             var response = xhr.responseJSON;
@@ -199,7 +199,7 @@ define(
                                     __('error.saving.attribute_option')
                                 );
                             }
-                        }, this)
+                        }.bind(this)
                     }
                 );
             },
@@ -226,7 +226,7 @@ define(
                             this.model.get('optionValues')[locale].id :
                             null
                     };
-                }, this);
+                }.bind(this));
 
                 editedModel.set('code', this.$el.find('.attribute_option_code').val());
                 editedModel.set('optionValues', attributeOptions);
@@ -314,7 +314,7 @@ define(
 
                 _.each(this.collection.models, function (attributeOptionItem) {
                     this.addItem({item: attributeOptionItem});
-                }, this);
+                }.bind(this));
 
                 if (0 === this.collection.length) {
                     this.addItem();
@@ -340,9 +340,9 @@ define(
 
                         return ui;
                     },
-                    stop: _.bind(function () {
+                    stop: function () {
                         this.updateSorting();
-                    }, this)
+                    }.bind(this)
                 });
 
                 this.updateSortableStatus(this.sortable);
@@ -354,10 +354,10 @@ define(
                 this.inLoading(true);
                 this.collection
                     .fetch({
-                        success: _.bind(function () {
+                        success: function () {
                             this.inLoading(false);
                             this.render();
-                        }, this)
+                        }.bind(this)
                     });
             },
             addItem: function (opts) {
@@ -427,7 +427,7 @@ define(
                 this.inLoading(true);
 
                 item.model.destroy({
-                    success: _.bind(function () {
+                    success: function () {
                         this.inLoading(false);
 
                         this.collection.remove(item);
@@ -442,8 +442,8 @@ define(
                         } else {
                             item.$el.hide(500);
                         }
-                    }, this),
-                    error: _.bind(function (data, response) {
+                    }.bind(this),
+                    error: function (data, response) {
                         this.inLoading(false);
                         var message;
 
@@ -454,7 +454,7 @@ define(
                         }
 
                         Dialog.alert(message, __('error.removing.attribute_option'));
-                    }, this)
+                    }.bind(this)
                 });
             },
             updateEditionStatus: function () {
@@ -486,9 +486,9 @@ define(
                     url: this.sortingUrl,
                     type: 'PUT',
                     data: JSON.stringify(sorting)
-                }).done(_.bind(function () {
+                }).done(function () {
                     this.inLoading(false);
-                }, this));
+                }.bind(this));
             },
             inLoading: function (loading) {
                 if (loading) {
@@ -517,9 +517,9 @@ define(
                 sortable: $element.data('sortable')
             });
 
-            mediator.on('attribute:auto_option_sorting:changed', _.bind(function (autoSorting) {
+            mediator.on('attribute:auto_option_sorting:changed', function (autoSorting) {
                 itemCollectionView.updateSortableStatus(!autoSorting);
-            }, this));
+            }.bind(this));
         };
     }
 );

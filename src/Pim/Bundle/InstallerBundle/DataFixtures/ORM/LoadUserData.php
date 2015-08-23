@@ -3,6 +3,7 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -65,7 +66,9 @@ class LoadUserData extends AbstractInstallerFixture
      *
      * @param array $data
      *
-     * @return User
+     * @throws \Exception
+     *
+     * @return UserInterface
      */
     protected function buildUser(array $data)
     {

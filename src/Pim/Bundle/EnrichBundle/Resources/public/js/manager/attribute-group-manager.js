@@ -6,7 +6,7 @@ define(
     return {
         getAttributeGroupsForProduct: function (product) {
             return $.when(
-                FetcherRegistry.getFetcher('attributeGroup').fetchAll(),
+                FetcherRegistry.getFetcher('attribute-group').fetchAll(),
                 AttributeManager.getAttributesForProduct(product)
             ).then(function (attributeGroups, productAttributes) {
                 var activeAttributeGroups = {};

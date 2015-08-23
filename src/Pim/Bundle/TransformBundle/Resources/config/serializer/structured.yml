@@ -10,13 +10,13 @@ parameters:
     pim_serializer.normalizer.group.class:                  Pim\Bundle\TransformBundle\Normalizer\Structured\GroupNormalizer
     pim_serializer.normalizer.job_instance.class:           Pim\Bundle\TransformBundle\Normalizer\Structured\JobInstanceNormalizer
     pim_serializer.normalizer.label_translation.class:      Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer
-    pim_serializer.normalizer.media.class:                  Pim\Bundle\TransformBundle\Normalizer\Structured\MediaNormalizer
     pim_serializer.normalizer.metric.class:                 Pim\Bundle\TransformBundle\Normalizer\Structured\MetricNormalizer
     pim_serializer.normalizer.product.class:                Pim\Bundle\TransformBundle\Normalizer\Structured\ProductNormalizer
     pim_serializer.normalizer.product_price.class:          Pim\Bundle\TransformBundle\Normalizer\Structured\ProductPriceNormalizer
     pim_serializer.normalizer.product_values.class:         Pim\Bundle\TransformBundle\Normalizer\Structured\ProductValuesNormalizer
     pim_serializer.normalizer.product_value.class:          Pim\Bundle\TransformBundle\Normalizer\Structured\ProductValueNormalizer
     pim_serializer.normalizer.reference_data.class:         Pim\Bundle\TransformBundle\Normalizer\Structured\ReferenceDataNormalizer
+    pim_serializer.normalizer.file.class:                   Pim\Bundle\TransformBundle\Normalizer\Structured\FileNormalizer
     pim_serializer.filter.product_value.class:              Pim\Bundle\TransformBundle\Normalizer\Filter\ProductValueNormalizerFilter
 
     pim_serializer.denormalizer.product_values.class:            Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValuesDenormalizer
@@ -27,7 +27,7 @@ parameters:
     pim_serializer.denormalizer.prices.class:                    Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\PricesDenormalizer
     pim_serializer.denormalizer.metric.class:                    Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MetricDenormalizer
     pim_serializer.denormalizer.datetime.class:                  Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\DateTimeDenormalizer
-    pim_serializer.denormalizer.media.class:                     Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\MediaDenormalizer
+    pim_serializer.denormalizer.file.class:                      Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\FileDenormalizer
     pim_serializer.denormalizer.boolean.class:                   Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\BooleanDenormalizer
     pim_serializer.denormalizer.reference_data.class:            Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\ReferenceDataDenormalizer
     pim_serializer.denormalizer.reference_data_collection.class: Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\ReferenceDataCollectionDenormalizer
@@ -63,13 +63,6 @@ services:
 
     pim_serializer.normalizer.metric:
         class: %pim_serializer.normalizer.metric.class%
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_serializer.normalizer.media:
-        class: %pim_serializer.normalizer.media.class%
-        arguments:
-            - '@pim_catalog.manager.media'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -142,6 +135,11 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
+    pim_serializer.normalizer.file:
+        class: %pim_serializer.normalizer.file.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
     # Filters
     pim_serializer.filter.product_value:
         class: %pim_serializer.filter.product_value.class%
@@ -209,11 +207,11 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_serializer.denormalizer.media:
-        class: %pim_serializer.denormalizer.media.class%
+    pim_serializer.denormalizer.file:
+        class: %pim_serializer.denormalizer.file.class%
         arguments:
             - ['pim_catalog_image', 'pim_catalog_file']
-            - '@pim_catalog.manager.media'
+            - '@akeneo_file_storage.repository.file'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

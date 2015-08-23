@@ -93,7 +93,7 @@ class Form extends Base
             return $this->getElement('Panel selector');
         });
 
-        if (!$elt->find('css', sprintf('button.active[data-panel="%s"]', strtolower($panel)))) {
+        if (!$elt->find('css', sprintf('button.active:contains("%s")', $panel))) {
             $elt->find('css', sprintf('button[data-panel]:contains("%s")', $panel))->click();
         }
     }
@@ -119,12 +119,35 @@ class Form extends Base
      */
     public function getTabs()
     {
-        $tabs = $this->find('css', $this->elements['Tabs']['css']);
+        $tabs = $this->spin(function () {
+            return $this->find('css', $this->elements['Tabs']['css']);
+        });
+
         if (!$tabs) {
             $tabs = $this->getElement('Oro tabs');
         }
 
         return $tabs->findAll('css', 'a');
+    }
+
+    /**
+     * Get the form tab containg $tab text
+     *
+     * @param string $tab
+     *
+     * @return NodeElement|null
+     */
+    public function getFormTab($tab)
+    {
+        try {
+            $node = $this->spin(function () use ($tab) {
+                return $this->getElement('Form tabs')->find('css', sprintf('a:contains("%s")', $tab));
+            }, 5);
+        } catch (\Exception $e) {
+            $node = null;
+        }
+
+        return $node;
     }
 
     /**
@@ -435,6 +458,24 @@ class Form extends Base
     }
 
     /**
+     * Fill field in a simple popin
+     *
+     * @param array $fields
+     */
+    public function fillPopinFields($fields)
+    {
+        foreach ($fields as $field => $value) {
+            $field = $this->spin(function () use ($field) {
+                return $this->find('css', sprintf('.modal-body .control-label:contains("%s") input', $field));
+            });
+
+            $field->setValue($value);
+            $this->getSession()
+                ->executeScript('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');');
+        }
+    }
+
+    /**
      * Find a price field
      *
      * @param string $name
@@ -622,7 +663,8 @@ class Form extends Base
         $this->getSession()->wait(2000);
 
         $allValues = array_filter($allValues);
-        if (1 === count($allValues)) {
+
+        if (1 === count($allValues) && null !== $label->getParent()->find('css', 'select')) {
             $value = array_shift($allValues);
             $this->fillSelectField($label, $value);
         }
@@ -634,8 +676,7 @@ class Form extends Base
             if (trim($value)) {
                 $label->getParent()->find('css', 'input[type="text"]')->click();
                 $this->getSession()->wait(100000, "$('div:contains(\"Searching\")').length == 0");
-
-                $option = $this->find('css', sprintf('li:contains("%s")', trim($value)));
+                $option = $this->find('css', sprintf('.select2-result:contains("%s")', trim($value)));
 
                 if (!$option) {
                     throw new \InvalidArgumentException(

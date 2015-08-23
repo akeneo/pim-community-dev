@@ -65,8 +65,6 @@ families:
     order: 60
     csv:
         processor:         pim_connector.processor.denormalization.family.flat
-    yml:
-        processor:         pim_base_connector.processor.family
 
 groups:
     order: 70

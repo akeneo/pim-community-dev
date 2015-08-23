@@ -21,10 +21,3 @@ Feature: View an export detail page
       | Akeneo CSV Connector | csv_product_export | acme_product_export | Product export for Acme.com | export |
     When I am on the "acme_product_export" export job page
     Then I should see "This value should not be blank." next to the channel
-
-  Scenario: Fail to show a job instance for which the job does not exist anymore
-    Given the following job:
-      | connector            | alias          | code                        | label                       | type   |
-      | Akeneo CSV Connector | removed_export | removed_acme_product_export | Product export for Acme.com | export |
-    When I am on the "removed_acme_product_export" export job page
-    Then I should see "The following export does not exist anymore."

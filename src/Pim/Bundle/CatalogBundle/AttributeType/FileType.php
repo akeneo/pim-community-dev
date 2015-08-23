@@ -42,6 +42,6 @@ class FileType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'pim_catalog_file';
+        return AttributeTypes::FILE;
     }
 }

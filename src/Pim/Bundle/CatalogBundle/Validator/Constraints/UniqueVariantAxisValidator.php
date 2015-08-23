@@ -65,13 +65,22 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $values = array();
             foreach ($variantGroup->getAxisAttributes() as $attribute) {
                 $code = $attribute->getCode();
-                $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : '';
+                $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : null;
+
+                if (null === $option) {
+                    $this->addEmptyAxisViolation(
+                        $constraint,
+                        $variantGroup->getLabel(),
+                        $product->getIdentifier()->getVarchar(),
+                        $attribute->getCode()
+                    );
+                }
                 $values[] = sprintf('%s: %s', $code, $option);
             }
             $combination = implode(', ', $values);
 
             if (in_array($combination, $existingCombinations)) {
-                $this->addViolation($constraint, $variantGroup->getLabel(), $combination);
+                $this->addExistingCombinationViolation($constraint, $variantGroup->getLabel(), $combination);
             } else {
                 $existingCombinations[] = $combination;
             }
@@ -92,14 +101,14 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
         foreach ($product->getGroups() as $variantGroup) {
             if ($variantGroup->getType()->isVariant()) {
-                $criteria = $this->prepareQueryCriterias($variantGroup, $product);
+                $criteria = $this->prepareQueryCriterias($variantGroup, $product, $constraint);
                 $matchingProducts = $this->getMatchingProducts($variantGroup, $product, $criteria);
                 if (count($matchingProducts) !== 0) {
                     $values = array();
                     foreach ($criteria as $item) {
                         $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
                     }
-                    $this->addViolation(
+                    $this->addExistingCombinationViolation(
                         $constraint,
                         $variantGroup->getLabel(),
                         implode(', ', $values)
@@ -114,11 +123,15 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *
      * @param GroupInterface   $variantGroup
      * @param ProductInterface $product
+     * @param Constraint       $constraint
      *
      * @return array
      */
-    protected function prepareQueryCriterias(GroupInterface $variantGroup, ProductInterface $product)
-    {
+    protected function prepareQueryCriterias(
+        GroupInterface $variantGroup,
+        ProductInterface $product,
+        Constraint $constraint
+    ) {
         $criteria = array();
         foreach ($variantGroup->getAxisAttributes() as $attribute) {
             $value = $product->getValue($attribute->getCode());
@@ -128,6 +141,13 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                     'attribute' => $attribute,
                     'option'    => $value->getOption(),
                 ];
+            } else {
+                $this->addEmptyAxisViolation(
+                    $constraint,
+                    $variantGroup->getLabel(),
+                    $product->getIdentifier()->getVarchar(),
+                    $attribute->getCode()
+                );
             }
         }
 
@@ -167,19 +187,37 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     }
 
     /**
-     * Add violation to the executioncontext
+     * Add existing combination violation
      *
      * @param Constraint $constraint
      * @param string     $variantLabel
      * @param string     $values
      */
-    protected function addViolation(Constraint $constraint, $variantLabel, $values)
+    protected function addExistingCombinationViolation(Constraint $constraint, $variantLabel, $values)
     {
         $this->context->buildViolation(
             $constraint->message,
             [
                 '%variant group%' => $variantLabel,
                 '%values%'        => $values
+            ]
+        )->addViolation();
+    }
+
+    /**
+     * @param Constraint $constraint
+     * @param string     $variantLabel
+     * @param string     $productIdentifier
+     * @param string     $axisCode
+     */
+    protected function addEmptyAxisViolation(Constraint $constraint, $variantLabel, $productIdentifier, $axisCode)
+    {
+        $this->context->buildViolation(
+            $constraint->missingAxisMessage,
+            [
+                '%group%'   => $variantLabel,
+                '%product%' => $productIdentifier,
+                '%axis%'    => $axisCode
             ]
         )->addViolation();
     }

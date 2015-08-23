@@ -1,11 +1,13 @@
 parameters:
     pim_enrich.provider.colors.class:                    Pim\Bundle\EnrichBundle\Provider\ColorsProvider
     pim_enrich.provider.form_extension.class:            Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider
-    pim_enrich.provider.field.registry.class:            Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderRegistry
+    pim_enrich.provider.field.chained.class:             Pim\Bundle\EnrichBundle\Provider\Field\FieldChainedProvider
     pim_enrich.provider.field.base.class:                Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
     pim_enrich.provider.field.wysiwyg.class:             Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
-    pim_enrich.provider.empty_value.registry.class:      Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderRegistry
+    pim_enrich.provider.empty_value.chained.class:       Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueChainedProvider
     pim_enrich.provider.empty_value.base.class:          Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
+    pim_enrich.provider.form.chained.class:              Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
+    pim_enrich.provider.form.product.class:              Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
     pim_enrich.provider.structure_version.product.class: Pim\Bundle\EnrichBundle\Provider\StructureVersion\ProductStructureVersionProvider
 
 services:
@@ -21,8 +23,8 @@ services:
             - '@oro_security.security_facade'
 
     # Field registry
-    pim_enrich.provider.field.registry:
-        class: %pim_enrich.provider.field.registry.class%
+    pim_enrich.provider.field.chained:
+        class: %pim_enrich.provider.field.chained.class%
 
     pim_enrich.provider.field.base:
         class: %pim_enrich.provider.field.base.class%
@@ -35,13 +37,22 @@ services:
             - { name: pim_enrich.provider.field, priority: 90 }
 
     # Empty value registry
-    pim_enrich.provider.empty_value.registry:
-        class: %pim_enrich.provider.empty_value.registry.class%
+    pim_enrich.provider.empty_value.chained:
+        class: %pim_enrich.provider.empty_value.chained.class%
 
     pim_enrich.provider.empty_value.base:
         class: %pim_enrich.provider.empty_value.base.class%
         tags:
             - { name: pim_enrich.provider.empty_value, priority: 100 }
+
+    # Form registry
+    pim_enrich.provider.form.chained:
+        class: %pim_enrich.provider.form.chained.class%
+
+    pim_enrich.provider.form.product:
+        class: %pim_enrich.provider.form.product.class%
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
 
     # Structure version provider
     pim_enrich.provider.structure_version.product:

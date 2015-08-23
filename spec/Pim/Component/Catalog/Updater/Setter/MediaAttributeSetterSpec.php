@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
@@ -18,17 +18,16 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
-        MediaManager $manager,
-        MediaFactory $mediaFactory,
-        AttributeValidatorHelper $attrValidatorHelper
+        AttributeValidatorHelper $attrValidatorHelper,
+        RawFileStorerInterface $storer,
+        FileRepositoryInterface $repository
     ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
-            $manager,
-            $mediaFactory,
-            ['pim_catalog_file', 'pim_catalog_image'],
-            '../../../../../../app/uploads/product/'
+            $storer,
+            $repository,
+            ['pim_catalog_file', 'pim_catalog_image']
         );
     }
 
@@ -60,13 +59,18 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
     function it_checks_locale_and_scope_when_setting_an_attribute_data(
         $attrValidatorHelper,
+        $repository,
+        $storer,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $mediaValue,
-        ProductMediaInterface $media
+        FileInterface $file
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
+
+        $repository->findOneByIdentifier(Argument::any())->willReturn(null);
+        $storer->store(Argument::cetera())->willReturn($file);
 
         $data = [
             'originalFilename' => 'akeneo',
@@ -75,8 +79,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('front_view');
         $product->getValue('front_view', 'fr_FR', 'mobile')->willReturn($mediaValue);
-        $mediaValue->getMedia()->willReturn($media);
-        $mediaValue->setMedia($media)->shouldBeCalled();
+        $mediaValue->setMedia($file)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
@@ -144,10 +147,10 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::expected(
                 'attributeCode',
-                'a valid file path',
+                'a valid pathname',
                 'setter',
                 'media',
-                '../../../../../../app/uploads/product/path/to/unknown/file'
+                'path/to/unknown/file'
             )
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
@@ -157,9 +160,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         AttributeInterface $file,
         AttributeInterface $image,
         ProductValueInterface $fileValue,
-        ProductValueInterface $imageValue,
-        ProductMediaInterface $fileMedia,
-        ProductMediaInterface $imageMedia
+        ProductValueInterface $imageValue
     ) {
         $file->getCode()->willReturn('file');
         $image->getCode()->willReturn('image');
@@ -167,79 +168,47 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         $product->getValue('file', null, null)->shouldBeCalled()->willReturn($fileValue);
         $product->getValue('image', null, null)->shouldBeCalled()->willReturn($imageValue);
 
-        $fileValue->getMedia()->willReturn($fileMedia);
-        $imageValue->getMedia()->willReturn($imageMedia);
-
-        $fileMedia->setRemoved(true)->shouldBeCalled();
-        $imageMedia->setRemoved(true)->shouldBeCalled();
-
-        $fileValue->setMedia($fileMedia)->shouldBeCalled();
-        $imageValue->setMedia($imageMedia)->shouldBeCalled();
+        $fileValue->setMedia(null)->shouldBeCalled();
+        $imageValue->setMedia(null)->shouldBeCalled();
 
         $this->setAttributeData($product, $file, null, ['locale' => null, 'scope' => null]);
         $this->setAttributeData($product, $image, ['originalFilename' => null, 'filePath' => null], ['locale' => null, 'scope' => null]);
     }
 
-    function it_sets_a_attribute_data_media_to_a_product_that_already_has_a_media(
-        $manager,
+    function it_sets_a_attribute_data_media_to_a_product(
+        $repository,
+        $storer,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $value,
-        ProductMediaInterface $media
+        FileInterface $file
     ) {
         $attribute->getCode()->willReturn('attributeCode');
         $product->getValue('attributeCode', Argument::cetera())->willReturn($value);
-        $value->getMedia()->willReturn($media);
 
         $data = [
             'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            'filePath'         => realpath(__DIR__ . '/../../../../../../features/Context/fixtures/akeneo.jpg'),
         ];
 
-        $value->setMedia($media)->shouldBeCalled();
-        $media->setFile(Argument::any())->shouldBeCalled();
-        $media->setOriginalFilename('akeneo')->shouldBeCalled();
-        $manager->handleProductMedias($product)->shouldBeCalled();
-
-        $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
-    function it_sets_a_attribute_data_media_to_a_product_that_has_no_media(
-        $manager,
-        $mediaFactory,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        ProductValueInterface $value,
-        ProductMediaInterface $media
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-        $product->getValue('attributeCode', Argument::cetera())->willReturn($value);
-        $value->getMedia()->willReturn(null);
-        $mediaFactory->createMedia(Argument::any())->shouldBeCalled()->willReturn($media);
-
-        $data = [
-            'originalFilename' => 'akeneo',
-            'filePath' => realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
-        ];
-
-        $value->setMedia($media)->shouldBeCalled();
-        $manager->handleProductMedias($product)->shouldBeCalled();
+        $repository->findOneByIdentifier(Argument::any())->willReturn(null);
+        $storer->store(Argument::cetera())->willReturn($file);
+        $value->setMedia($file)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
     function it_sets_an_attribute_data_media_to_a_product_that_has_no_value(
-        $manager,
+        $storer,
+        $repository,
         $builder,
-        $mediaFactory,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $value,
-        ProductMediaInterface $media
+        FileInterface $file
     ) {
         $attribute->getCode()->willReturn('attributeCode');
         $product->getValue('attributeCode', Argument::cetera())->willReturn(null);
-        $value->getMedia()->willReturn(null);
 
         $data = [
             'originalFilename' => 'akeneo',
@@ -247,9 +216,31 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         ];
 
         $builder->addProductValue($product, $attribute, Argument::cetera())->shouldBeCalled()->willReturn($value);
-        $mediaFactory->createMedia(Argument::any())->shouldBeCalled()->willReturn($media);
-        $value->setMedia($media)->shouldBeCalled($value);
-        $manager->handleProductMedias($product)->shouldBeCalled();
+        $repository->findOneByIdentifier(Argument::any())->willReturn(null);
+        $storer->store(Argument::cetera())->willReturn($file);
+
+        $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
+    }
+
+    function it_does_not_store_an_attribute_data_that_has_already_been_stored_as_media(
+        $repository,
+        $storer,
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        ProductValueInterface $value,
+        FileInterface $file
+    ) {
+        $attribute->getCode()->willReturn('attributeCode');
+        $product->getValue('attributeCode', Argument::cetera())->willReturn($value);
+
+        $data = [
+            'originalFilename' => 'my file.jpg',
+            'filePath' => '4/e/6/c/4e6cb2788fa565037745ee01e48102780cc4d52b_my_file.jpg',
+        ];
+
+        $repository->findOneByIdentifier(Argument::any())->willReturn($file);
+        $storer->store(Argument::cetera())->shouldNotBeCalled();
+        $value->setMedia($file)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }

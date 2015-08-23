@@ -250,6 +250,20 @@ class Grid extends Index
     }
 
     /**
+     * Indicate if the grid is empty (i.e. has the "No records found" div)
+     *
+     * @return bool
+     */
+    public function isGridEmpty()
+    {
+        $noDataDiv = $this->getElement('Grid')
+            ->getParent()
+            ->find('css', '.no-data');
+
+        return $noDataDiv && $noDataDiv->isVisible();
+    }
+
+    /**
      * Get toolbar count
      *
      * @throws \InvalidArgumentException
@@ -319,7 +333,20 @@ class Grid extends Index
      */
     public function getColumnValue($column, $row)
     {
-        return $this->getRowCell($this->getRow($row), $this->getColumnPosition($column, true))->getText();
+        return $this->getColumnNode($column, $row)->getText();
+    }
+
+    /**
+     * Get the node in the specified column of the specified row
+     *
+     * @param string $column
+     * @param string $row
+     *
+     * @return NodeElement
+     */
+    public function getColumnNode($column, $row)
+    {
+        return $this->getRowCell($this->getRow($row), $this->getColumnPosition($column, true));
     }
 
     /**

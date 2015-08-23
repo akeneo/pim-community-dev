@@ -16,9 +16,11 @@ define([
         'text!pim/template/product/field/media',
         'pim/dialog',
         'oro/mediator',
+        'oro/navigation',
+        'pim/media-url-generator',
         'jquery.slimbox'
     ],
-    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, Navigation, MediaUrlGenerator) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             events: {
@@ -32,35 +34,26 @@ define([
             },
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments)
-                    .then(_.bind(function (templateContext) {
-                        templateContext.mediaUrl = this.getMediaUrl(templateContext.value.data);
-                        templateContext.inUpload = !this.isReady();
-                        return templateContext;
-                    }, this));
-            },
-            getMediaUrl: function (value) {
-                if (value && value.filePath) {
-                    var filename = value.filePath;
-                    filename = filename.substring(filename.lastIndexOf('/') + 1);
-                    return Routing.generate('pim_enrich_media_show', {
-                        filename: filename
-                    });
-                }
+                    .then(function (templateContext) {
+                        templateContext.inUpload          = !this.isReady();
+                        templateContext.mediaUrlGenerator = MediaUrlGenerator;
 
-                return null;
+                        return templateContext;
+                    }.bind(this));
             },
+
             renderCopyInput: function (value) {
                 return this.getTemplateContext()
-                    .then(_.bind(function (context) {
+                    .then(function (context) {
                         var copyContext = $.extend(true, {}, context);
                         copyContext.value = value;
-                        copyContext.mediaUrl = this.getMediaUrl(value.data);
-                        copyContext.context.locale = value.locale;
-                        copyContext.context.scope = value.scope;
-                        copyContext.editMode = 'view';
+                        copyContext.context.locale    = value.locale;
+                        copyContext.context.scope     = value.scope;
+                        copyContext.editMode          = 'view';
+                        copyContext.mediaUrlGenerator = MediaUrlGenerator;
 
                         return this.renderInput(copyContext);
-                    }, this));
+                    }.bind(this));
             },
             updateModel: function () {
                 if (!this.isReady()) {
@@ -84,6 +77,8 @@ define([
                     'scope':  this.context.scope
                 };
 
+                var navigation = Navigation.getInstance();
+
                 $.ajax({
                     url: Routing.generate('pim_enrich_media_rest_post'),
                     type: 'POST',
@@ -91,22 +86,31 @@ define([
                     contentType: false,
                     cache: false,
                     processData: false,
-                    xhr: _.bind(function () {
+                    xhr: function () {
                         var myXhr = $.ajaxSettings.xhr();
                         if (myXhr.upload) {
-                            myXhr.upload.addEventListener('progress', _.bind(this.handleProcess, this), false);
+                            myXhr.upload.addEventListener('progress', this.handleProcess.bind(this), false);
                         }
 
                         return myXhr;
-                    }, this)
-                }).done(_.bind(function (data) {
+                    }.bind(this)
+                })
+                .done(function (data) {
                     this.setUploadContextValue(data);
                     this.render();
-                }, this)).then(_.bind(function () {
-                    this.$('> .media-field .progress').css({opacity: 0});
+                }.bind(this))
+                .fail(function (xhr) {
+                    var message = xhr.responseJSON && xhr.responseJSON.message ?
+                        xhr.responseJSON.message :
+                        _.__('pim_enrich.entity.product.error.upload');
+                    navigation.addFlashMessage('error', message);
+                    navigation.afterRequest();
+                })
+                .always(function () {
+                    this.$('> .akeneo-media-uploader-field .progress').css({opacity: 0});
                     this.setReady(true);
                     this.uploadContext = {};
-                }, this));
+                }.bind(this));
             },
             clearField: function () {
                 this.setCurrentValue(this.attribute.empty_value);
@@ -117,14 +121,14 @@ define([
                 if (this.uploadContext.locale === this.context.locale &&
                     this.uploadContext.scope === this.context.scope
                 ) {
-                    this.$('> .media-field .progress').css({opacity: 1});
-                    this.$('> .media-field .progress .bar').css({
+                    this.$('> .akeneo-media-uploader-field .progress').css({opacity: 1});
+                    this.$('> .akeneo-media-uploader-field .progress .bar').css({
                         width: ((e.loaded / e.total) * 100) + '%'
                     });
                 }
             },
             previewImage: function () {
-                var mediaUrl = this.getMediaUrl(this.getCurrentValue().data);
+                var mediaUrl = MediaUrlGenerator.getMediaShowUrl(this.getCurrentValue().data.filePath, 'preview');
                 if (mediaUrl) {
                     $.slimbox(mediaUrl, '', {overlayOpacity: 0.3});
                 }

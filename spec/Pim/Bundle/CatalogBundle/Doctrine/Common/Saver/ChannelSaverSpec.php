@@ -5,17 +5,21 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\CompletenessSavingOptionsResolver;
+use Pim\Bundle\CatalogBundle\Event\ChannelEvents;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ChannelSaverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
         CompletenessManager $completenessManager,
-        CompletenessSavingOptionsResolver $optionsResolver
+        CompletenessSavingOptionsResolver $optionsResolver,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($objectManager, $completenessManager, $optionsResolver);
+        $this->beConstructedWith($objectManager, $completenessManager, $optionsResolver, $eventDispatcher);
     }
 
     function it_is_a_saver()
@@ -23,7 +27,7 @@ class ChannelSaverSpec extends ObjectBehavior
         $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
     }
 
-    function it_saves_a_channel_and_flushes_by_default($objectManager, $optionsResolver, ChannelInterface $channel)
+    function it_saves_a_channel_and_flushes_by_default($objectManager, $optionsResolver, $eventDispatcher, ChannelInterface $channel)
     {
         $channel->getCode()->willReturn('my_code');
         $optionsResolver->resolveSaveOptions([])
@@ -31,10 +35,13 @@ class ChannelSaverSpec extends ObjectBehavior
             ->willReturn(['flush' => true, 'schedule' => true]);
         $objectManager->persist($channel)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $eventDispatcher->dispatch(ChannelEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(ChannelEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($channel);
     }
 
-    function it_saves_a_channel_and_does_not_flushe($objectManager, $optionsResolver, ChannelInterface $channel)
+    function it_saves_a_channel_and_does_not_flushe($objectManager, $optionsResolver, $eventDispatcher, ChannelInterface $channel)
     {
         $channel->getCode()->willReturn('my_code');
         $optionsResolver->resolveSaveOptions(['flush' => false])
@@ -42,6 +49,9 @@ class ChannelSaverSpec extends ObjectBehavior
         ->willReturn(['flush' => false, 'schedule' => true]);
         $objectManager->persist($channel)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
+
+        $eventDispatcher->dispatch(ChannelEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(ChannelEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($channel, ['flush' => false]);
     }
 
@@ -49,6 +59,7 @@ class ChannelSaverSpec extends ObjectBehavior
         $completenessManager,
         $optionsResolver,
         $objectManager,
+        $eventDispatcher,
         ChannelInterface $channel
     ) {
         $channel->getCode()->willReturn('my_code');
@@ -58,6 +69,9 @@ class ChannelSaverSpec extends ObjectBehavior
         $objectManager->persist($channel)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
         $completenessManager->scheduleForchannel($channel)->shouldNotBeCalled($channel);
+
+        $eventDispatcher->dispatch(ChannelEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(ChannelEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($channel, ['schedule' => false]);
     }
 

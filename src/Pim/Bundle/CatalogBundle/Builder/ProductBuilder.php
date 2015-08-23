@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -270,7 +271,7 @@ class ProductBuilder implements ProductBuilderInterface
     {
         $activeCurrencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
 
-        if ('pim_catalog_price_collection' === $value->getAttribute()->getAttributeType()) {
+        if (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()) {
             $prices = $value->getPrices();
 
             foreach ($activeCurrencyCodes as $currencyCode) {

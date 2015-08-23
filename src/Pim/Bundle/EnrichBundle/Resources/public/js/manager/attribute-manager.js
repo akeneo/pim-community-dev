@@ -109,8 +109,8 @@ define([
              * @return {*}
              */
             generateMissingValues: function (values, attribute, locales, channels, currencies) {
-                _.each(locales, _.bind(function (locale) {
-                    _.each(channels, _.bind(function (channel) {
+                _.each(locales, function (locale) {
+                    _.each(channels, function (channel) {
                         var newValue = this.getValue(
                             values,
                             attribute,
@@ -126,8 +126,8 @@ define([
                         if ('pim_catalog_price_collection' === attribute.type) {
                             newValue.data = this.generateMissingPrices(newValue.data, currencies);
                         }
-                    }, this));
-                }, this));
+                    }.bind(this));
+                }.bind(this));
 
                 return values;
             },

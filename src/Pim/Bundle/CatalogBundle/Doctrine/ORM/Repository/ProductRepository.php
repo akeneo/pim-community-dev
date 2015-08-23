@@ -6,6 +6,7 @@ use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositor
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
@@ -241,17 +242,23 @@ class ProductRepository extends EntityRepository implements
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be removed in 1.5
      */
-    public function getFullProducts(array $productIds, array $attributeIds = array())
+    public function getFullProducts(array $productIds, array $attributeIds = [])
     {
         $qb = $this->getFullProductQB();
         $qb
             ->addSelect('c, assoc, g')
-            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
+            ->leftJoin('v.attribute', 'a')
             ->leftJoin('p.categories', 'c')
             ->leftJoin('p.associations', 'assoc')
             ->leftJoin('p.groups', 'g')
             ->where($qb->expr()->in('p.id', $productIds));
+
+        if (!empty($attributeIds)) {
+            $qb->andWhere($qb->expr()->in('a.id', $attributeIds));
+        }
 
         return $qb->getQuery()->execute();
     }
@@ -493,16 +500,12 @@ class ProductRepository extends EntityRepository implements
         $qb = $productQb->getQueryBuilder();
         $rootAlias = current($qb->getRootAliases());
         $this->addJoinToValueTables($qb);
-        $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
         $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
         $qb->addSelect('Value');
         $qb->addSelect('Attribute');
-        $qb->addSelect('AttributeTranslations');
         $qb->addSelect('AttributeLocales');
         $qb->leftJoin('Attribute.group', 'AttributeGroup');
         $qb->addSelect('AttributeGroup');
-        $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
-        $qb->addSelect('AGroupTranslations');
         $qb->andWhere(
             $qb->expr()->eq($rootAlias.'.id', $id)
         );
@@ -562,7 +565,7 @@ class ProductRepository extends EntityRepository implements
      */
     protected function getIdentifierAttribute()
     {
-        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+        return $this->attributeRepository->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
     }
 
     /**

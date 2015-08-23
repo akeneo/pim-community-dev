@@ -31,7 +31,7 @@
         }
     }) }}
         {{ elements.form_errors(uploadForm) }}
-        <div class="row-fluid">
+        <div class="row-fluid buffer-top">
             {{ form_row(uploadForm.file) }}
             {{ elements.submitBtn('Upload and '~action~' now', 'upload-alt') }}
         </div>

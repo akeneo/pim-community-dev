@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -93,6 +94,11 @@ class ProductProcessor extends AbstractProcessor
     {
         $convertedItem = $this->convertItemData($item);
         $identifier    = $this->getIdentifier($convertedItem);
+
+        if (null === $identifier) {
+            $this->skipItemWithMessage($item, 'The identifier must be filled');
+        }
+
         $familyCode    = $this->getFamilyCode($convertedItem);
         $filteredItem  = $this->filterItemData($convertedItem);
 
@@ -382,7 +388,11 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function getArrayConverterOptions()
     {
-        return ['mapping' => $this->getMapping(), 'default_values' => $this->getDefaultValues()];
+        return [
+            'mapping'           => $this->getMapping(),
+            'default_values'    => $this->getDefaultValues(),
+            'with_associations' => false
+        ];
     }
 
     /**

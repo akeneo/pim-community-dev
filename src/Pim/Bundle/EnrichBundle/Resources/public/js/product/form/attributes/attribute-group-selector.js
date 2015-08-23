@@ -24,24 +24,37 @@ define(
             tagName: 'ul',
             className: 'nav nav-tabs attribute-group-selector',
             template: _.template(template),
-            state: null,
+            attributeGroups: [],
             badges: {},
             events: {
                 'click li': 'change'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             initialize: function () {
-                this.state = new Backbone.Model({});
-                this.listenTo(this.state, 'change', this.render);
-                this.badges = {};
+                this.badges          = {};
+                this.attributeGroups = [];
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.onValidationError);
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.onPostUpdate);
+                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+
+            /**
+             * Triggered on validation error
+             *
+             * @param {Event} event
+             */
             onValidationError: function (event) {
                 this.removeBadges();
 
@@ -49,14 +62,14 @@ define(
                 var valuesErrors = event.response.values;
                 if (valuesErrors) {
                     AttributeGroupManager.getAttributeGroupsForProduct(product)
-                        .then(_.bind(function (attributeGroups) {
-                            _.each(valuesErrors, _.bind(function (fieldError, attributeCode) {
+                        .then(function (attributeGroups) {
+                            _.each(valuesErrors, function (fieldError, attributeCode) {
                                 var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                                     attributeGroups,
                                     attributeCode
                                 );
                                 this.addToBadge(attributeGroup, 'invalid');
-                            }, this));
+                            }.bind(this));
 
                             if (0 < valuesErrors.length) {
                                 mediator.trigger(
@@ -64,17 +77,25 @@ define(
                                     {attribute: _.first(_.keys(valuesErrors))}
                                 );
                             }
-                        }, this));
+                        }.bind(this));
                 }
             },
-            onPostUpdate: function () {
+
+            /**
+             * Triggered on post fetch
+             */
+            onPostFetch: function () {
                 this.removeBadges();
             },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.$el.empty();
                 this.$el.html(this.template({
-                    current: this.state.get('current'),
-                    attributeGroups: this.state.get('attributeGroups'),
+                    current: this.getCurrent(),
+                    attributeGroups: this.getAttributeGroups(),
                     badges: this.badges,
                     locale: UserContext.get('catalogLocale'),
                     i18n: i18n
@@ -84,40 +105,96 @@ define(
 
                 return this;
             },
+
+            /**
+             * Get attribute list and update it
+             *
+             * @param {Object} product
+             *
+             * @return {Promise}
+             */
             updateAttributeGroups: function (product) {
                 return AttributeGroupManager.getAttributeGroupsForProduct(product)
-                    .then(_.bind(function (attributeGroups) {
-                        this.state.set('attributeGroups', attributeGroups);
+                    .then(function (attributeGroups) {
+                        this.attributeGroups = attributeGroups;
+                        this.ensureDefault();
 
-                        if (undefined === this.state.get('current') || !attributeGroups[this.state.get('current')]) {
-                            this.state.set('current', _.first(_.keys(attributeGroups)));
-                        }
-
-                        return this.state.get('attributeGroups');
-                    }, this));
+                        return this.getAttributeGroups();
+                    }.bind(this));
             },
+
+            /**
+             * On attribute group change
+             *
+             * @param {Event} event
+             */
             change: function (event) {
-                if (event.currentTarget.dataset.attributeGroup !== this.state.get('current')) {
-                    this.state.set('current', event.currentTarget.dataset.attributeGroup);
-                    this.trigger('attribute-group:change');
-                }
+                this.setCurrent(event.currentTarget.dataset.attributeGroup);
             },
-            getCurrent: function () {
-                return this.state.get('current');
-            },
-            getCurrentAttributeGroup: function () {
-                if (!this.state.get('attributeGroups')[this.state.get('current')]) {
-                    this.state.set('current', _.first(_.keys(this.state.get('attributeGroups'))));
-                }
 
-                return this.state.get('attributeGroups')[this.state.get('current')];
+            /**
+             * Get current attribute group
+             *
+             * @return {string}
+             */
+            getCurrent: function () {
+                return sessionStorage.getItem('current_attribute_group');
             },
-            setCurrent: function (current) {
-                this.state.set('current', current);
+
+            /**
+             * Set current attribute group
+             *
+             * @param {srting} current
+             * @param {Object} options
+             */
+            setCurrent: function (current, options) {
+                options = options || {silent: false};
+
+                if (current !== this.getCurrent()) {
+                    sessionStorage.setItem('current_attribute_group', current);
+
+                    if (!options.silent) {
+                        this.trigger('attribute-group:change');
+                        this.render();
+                    }
+                }
             },
+
+            /**
+             * Ensure default values for the current attribute group
+             */
+            ensureDefault: function () {
+                if (_.isUndefined(this.getCurrent()) ||
+                    !this.getAttributeGroups()[this.getCurrent()]
+                ) {
+                    this.setCurrent(_.first(_.keys(this.getAttributeGroups())), {silent: true});
+                }
+            },
+
+            /**
+             * Get the current attribute group
+             *
+             * @return {string}
+             */
+            getCurrentAttributeGroup: function () {
+                return this.getAttributeGroups()[this.getCurrent()];
+            },
+
+            /**
+             * Get all attribute groups
+             *
+             * @return {object}
+             */
             getAttributeGroups: function () {
-                return this.state.get('attributeGroups');
+                return this.attributeGroups;
             },
+
+            /**
+             * Increment count on attribute group for the given code
+             *
+             * @param {string} attributeGroup
+             * @param {string} code
+             */
             addToBadge: function (attributeGroup, code) {
                 if (!this.badges[attributeGroup]) {
                     this.badges[attributeGroup] = {};
@@ -130,18 +207,31 @@ define(
 
                 this.render();
             },
+
+            /**
+             * Remove badge for the given attribute group
+             *
+             * @param {string} attributeGroup
+             * @param {string} code
+             */
             removeBadge: function (attributeGroup, code) {
                 delete this.badges[attributeGroup][code];
 
                 this.render();
             },
+
+            /**
+             * Remove badges for all attribute groups
+             *
+             * @param {string} code
+             */
             removeBadges: function (code) {
                 if (!code) {
                     this.badges = {};
                 } else {
-                    _.each(this.badges, _.bind(function (badge) {
+                    _.each(this.badges, function (badge) {
                         delete badge[code];
-                    }, this));
+                    }.bind(this));
                 }
 
                 this.render();

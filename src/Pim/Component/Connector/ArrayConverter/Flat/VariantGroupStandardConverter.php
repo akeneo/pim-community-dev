@@ -96,7 +96,10 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
         }
 
         if (isset($convertedItem['values'])) {
-            $convertedItem['values'] = $this->productConverter->convert($convertedItem['values']);
+            $convertedItem['values'] = $this->productConverter->convert(
+                $convertedItem['values'],
+                ['with_required_sku' => false]
+            );
             unset($convertedItem['values']['enabled']);
         }
 

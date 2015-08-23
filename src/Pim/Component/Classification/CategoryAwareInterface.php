@@ -1,5 +1,6 @@
 <?php
 
+// TODO-4251: Pim\Component\Classification to Akeneo\Component\Classification, once the feat-pam branch merged
 namespace Pim\Component\Classification;
 
 use Doctrine\Common\Collections\ArrayCollection;
