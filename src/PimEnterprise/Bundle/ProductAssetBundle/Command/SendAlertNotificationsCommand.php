@@ -26,7 +26,6 @@ use Symfony\Component\Routing\RouterInterface;
  * It can generate all missing variations or missing variations for a specific asset code
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
- * TODO: find a better name for the class and the command and a better description for the command
  */
 class SendAlertNotificationsCommand extends ContainerAwareCommand
 {
@@ -51,7 +50,7 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
 
         foreach ($users as $user) {
             if ($user->isEmailNotifications()) {
-                $assets = $this->getAssetRepository()->findAllAssetsByEndOfUse($user->getAssetDelayReminder());
+                $assets = $this->getAssetRepository()->findAllAssetsByEndOfUse(new \DateTime(), $user->getAssetDelayReminder());
 
                 foreach ($assets as &$asset) {
                     $uri = $this->getRouter()->generate('pimee_product_asset_view', ['id' => $asset['id']]);

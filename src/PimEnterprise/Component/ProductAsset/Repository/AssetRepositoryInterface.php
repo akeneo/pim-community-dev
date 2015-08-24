@@ -90,9 +90,10 @@ interface AssetRepositoryInterface extends
     public function findProducts(AssetInterface $asset);
 
     /**
-     * @param int $delay
+     * @param \DateTime $now
+     * @param int       $delay
      *
      * @return array
      */
-    public function findAllAssetsByEndOfUse($delay = 5);
+    public function findAllAssetsByEndOfUse(\DateTime $now, $delay = 5);
 }
