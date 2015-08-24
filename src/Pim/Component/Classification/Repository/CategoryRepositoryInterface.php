@@ -114,7 +114,7 @@ interface CategoryRepositoryInterface extends
      *
      * @return array
      */
-    public function getChildrenTreeByParentId($parentId, $selectNodeId = false);
+    public function getChildrenTreeByParentId($parentId, $selectNodeId = false, array $grantedCategoryIds = []);
 
     /**
      * Based on the Gedmo\Tree\RepositoryUtils\buildTreeArray, but with

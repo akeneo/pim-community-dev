@@ -181,7 +181,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getChildrenTreeByParentId($parentId, $selectNodeId = false)
+    public function getChildrenTreeByParentId($parentId, $selectNodeId = false, array $grantedCategoryIds = [])
     {
         $children = [];
 
@@ -210,6 +210,12 @@ class CategoryRepository extends NestedTreeRepository implements
                 $qb->andWhere(
                     $qb->expr()->in('node.' . $config['parent'], $ancestorsIds)
                 );
+
+                if (!empty($grantedCategoryIds)) {
+                    $qb->andWhere('node.id IN (:ids)')
+                        ->setParameter('ids', $grantedCategoryIds);
+                }
+
                 $nodes = $qb->getQuery()->getResult();
                 $children = $this->buildTreeNode($nodes);
             }
