@@ -133,7 +133,7 @@ class UserContext extends BaseUserContext
 //        }
 
         $grantedCategoryIds = $this->getGrantedCategories();
-        $grantedTrees = $this->categoryRepository->getTreesGranted($grantedCategoryIds);
+        $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
 
         if (!empty($grantedTrees)) {
             return current($grantedTrees);
@@ -145,7 +145,7 @@ class UserContext extends BaseUserContext
     /**
      * Get granted categories
      *
-     * @return array
+     * @return integer[]
      */
     protected function getGrantedCategories()
     {

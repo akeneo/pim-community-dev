@@ -162,7 +162,7 @@ class ProductAssetController extends Controller
      * @Template
      * @AclAncestor("pimee_product_asset_index")
      *
-     * @return array
+     * @return array|RedirectResponse
      */
     public function indexAction()
     {
@@ -183,10 +183,10 @@ class ProductAssetController extends Controller
     /**
      * View an asset
      *
-     * @param int|string $id
-     *
      * @Template
      * @AclAncestor("pimee_product_asset_index")
+     *
+     * @param int|string $id
      *
      * @throws AccessDeniedException()
      *
@@ -196,8 +196,8 @@ class ProductAssetController extends Controller
     {
         $productAsset = $this->findProductAssetOr404($id);
 
-        $viewAssetGranted = $this->isGranted(Attributes::VIEW, $productAsset);
-        if (!$viewAssetGranted) {
+        $isViewAssetGranted = $this->isGranted(Attributes::VIEW, $productAsset);
+        if (!$isViewAssetGranted) {
             throw new AccessDeniedException();
         }
 
@@ -349,9 +349,9 @@ class ProductAssetController extends Controller
     public function editAction(Request $request, $id)
     {
         $productAsset     = $this->findProductAssetOr404($id);
-        $editAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
+        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
 
-        if (!$editAssetGranted) {
+        if (!$isEditAssetGranted) {
             if ($this->isGranted(Attributes::VIEW, $productAsset)) {
                 $parameters = $this->viewAction($id);
 
@@ -419,8 +419,8 @@ class ProductAssetController extends Controller
     public function removeAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
-        $editAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
-        if (!$editAssetGranted) {
+        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
+        if (!$isEditAssetGranted) {
             throw new AccessDeniedException();
         }
 
@@ -444,8 +444,8 @@ class ProductAssetController extends Controller
     public function deleteReferenceFileAction(Request $request, $id)
     {
         $reference = $this->findReferenceOr404($id);
-        $editAssetGranted = $this->isGranted(Attributes::EDIT, $reference);
-        if (!$editAssetGranted) {
+        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $reference);
+        if (!$isEditAssetGranted) {
             throw new AccessDeniedException();
         }
 
@@ -479,8 +479,8 @@ class ProductAssetController extends Controller
     public function deleteVariationFileAction(Request $request, $id)
     {
         $variation = $this->findVariationOr404($id);
-        $editAssetGranted = $this->isGranted(Attributes::EDIT, $variation);
-        if (!$editAssetGranted) {
+        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $variation);
+        if (!$isEditAssetGranted) {
             throw new AccessDeniedException();
         }
 
@@ -515,8 +515,8 @@ class ProductAssetController extends Controller
     public function resetVariationFileAction(Request $request, $id)
     {
         $variation = $this->findVariationOr404($id);
-        $editAssetGranted = $this->isGranted(Attributes::EDIT, $variation);
-        if (!$editAssetGranted) {
+        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $variation);
+        if (!$isEditAssetGranted) {
             throw new AccessDeniedException();
         }
 
@@ -556,8 +556,8 @@ class ProductAssetController extends Controller
     public function resetVariationsFilesAction(Request $request, $id)
     {
         $reference = $this->findReferenceOr404($id);
-        $editAssetGranted = $this->isGranted(Attributes::EDIT, $reference);
-        if (!$editAssetGranted) {
+        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $reference);
+        if (!$isEditAssetGranted) {
             throw new AccessDeniedException();
         }
 
@@ -621,20 +621,20 @@ class ProductAssetController extends Controller
     /**
      * Dispatch to asset view or asset edit when a user click on an asset grid row
      *
+     * @AclAncestor("pimee_product_asset_index")
+     *
      * @param Request $request
      * @param int     $id
      *
      * @throws AccessDeniedException
      *
      * @return RedirectResponse
-     *
-     * @AclAncestor("pimee_product_asset_index")
      */
     public function dispatchAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
-        $editGranted = $this->isGranted(Attributes::EDIT, $productAsset);
-        if ($editGranted) {
+        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
+        if ($isEditAssetGranted) {
             $edit = $this->editAction($request, $id);
 
             return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', $edit);

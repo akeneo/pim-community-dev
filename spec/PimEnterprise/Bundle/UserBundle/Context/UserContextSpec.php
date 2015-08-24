@@ -75,7 +75,7 @@ class UserContextSpec extends ObjectBehavior
         $grantedTrees = [$thirdTree, $firstTree];
 
         $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([1]);
-        $categoryRepository->getTreesGranted([1])->willReturn($grantedTrees);
+        $categoryRepository->getGrantedTrees([1])->willReturn($grantedTrees);
 
         $this->getAccessibleUserTree()->shouldReturn($thirdTree);
     }
@@ -91,7 +91,7 @@ class UserContextSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(false);
 
         $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([1]);
-        $categoryRepository->getTreesGranted([1])->willReturn([]);
+        $categoryRepository->getGrantedTrees([1])->willReturn([]);
 
         $this->shouldThrow(new \LogicException('User should have a default product tree'))->during('getAccessibleUserTree');
     }

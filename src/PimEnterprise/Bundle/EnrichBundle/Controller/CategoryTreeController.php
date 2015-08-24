@@ -112,7 +112,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         }
 
         $grantedCategoryIds = $this->getGrantedCategories();
-        $grantedTrees = $this->categoryRepository->getTreesGranted($grantedCategoryIds);
+        $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
 
         return [
             'trees'          => $grantedTrees,
@@ -145,7 +145,7 @@ class CategoryTreeController extends BaseCategoryTreeController
     /**
      * Get granted categories
      *
-     * @return array
+     * @return integer[]
      */
     protected function getGrantedCategories()
     {
@@ -160,7 +160,6 @@ class CategoryTreeController extends BaseCategoryTreeController
      * @param int    $categoryId the category id
      * @param string $context    the retrieving context
      *
-     * @throws NotFoundHttpException
      * @throws AccessDeniedException
      *
      * @return CategoryInterface
@@ -172,7 +171,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             throw new AccessDeniedException('You can not access this category');
         }
 
-        if ($context === self::CONTEXT_MANAGE && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
+        if (self::CONTEXT_MANAGE === $context && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
             throw new AccessDeniedException('You can not access this category');
         }
 

@@ -45,8 +45,6 @@ class GrantedCategoryItemsCounter extends CategoryItemsCounter
     protected $tokenStorage;
 
     /**
-     * Constructor
-     *
      * @param ItemCategoryRepositoryInterface $itemRepository       Item repository
      * @param CategoryRepositoryInterface     $categoryRepo         Category repository
      * @param CategoryAccessRepository        $categoryAccessRepo   Category Access repository
@@ -137,7 +135,7 @@ class GrantedCategoryItemsCounter extends CategoryItemsCounter
             Attributes::VIEW_PRODUCTS
         );
 
-        $rootAlias  = current($childrenQb->getRootAliases());
+        $rootAlias = current($childrenQb->getRootAliases());
         $grantedQb = $this->categoryRepository->createQueryBuilder($rootAlias);
         $grantedQb->select($rootAlias.'.id');
         $grantedQb->where($grantedQb->expr()->in($rootAlias.'.id', ':categoryIds'));
