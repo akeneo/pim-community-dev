@@ -11,7 +11,8 @@
 
 namespace Akeneo\Component\FileTransformer\Transformation\Image;
 
-use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageHeightException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
 use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 use Akeneo\Component\FileTransformer\Transformation\AbstractTransformation;
 use Imagine\Image\Box;
@@ -53,9 +54,9 @@ class Resize extends AbstractTransformation
         $image   = $imagine->open($file->getPathname());
 
         if ($options['width'] > $image->getSize()->getWidth()) {
-            throw NotApplicableTransformationException::imageWidthTooBig($file->getPathname(), $this->getName());
+            throw new ImageWidthException($file->getPathname(), $this->getName());
         } elseif ($options['height'] > $image->getSize()->getHeight()) {
-            throw NotApplicableTransformationException::imageHeightTooBig($file->getPathname(), $this->getName());
+            throw new ImageHeightException($file->getPathname(), $this->getName());
         }
 
         $image->resize(new Box($options['width'], $options['height']));

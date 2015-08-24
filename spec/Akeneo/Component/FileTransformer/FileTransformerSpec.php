@@ -2,7 +2,6 @@
 
 namespace spec\Akeneo\Component\FileTransformer;
 
-use Akeneo\Component\FileTransformer\Exception\InvalidFileTransformerOptionsException;
 use Akeneo\Component\FileTransformer\Transformation\TransformationInterface;
 use Akeneo\Component\FileTransformer\Transformation\TransformationRegistry;
 use PhpSpec\ObjectBehavior;

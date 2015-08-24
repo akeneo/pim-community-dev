@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use PimEnterprise\Bundle\CatalogBundle\Doctrine\EnterpriseCompletenessGeneratorInterface;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
@@ -126,7 +126,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
-     * @return EnterpriseCompletenessGeneratorInterface
+     * @return CompletenessGeneratorInterface
      */
     protected function getCompletenessGenerator()
     {

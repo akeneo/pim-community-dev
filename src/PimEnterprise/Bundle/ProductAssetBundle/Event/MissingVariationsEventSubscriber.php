@@ -11,7 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
-use Akeneo\Component\Console\CommandLauncher;
+use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
+use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -21,15 +22,20 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class MissingVariationsEventSubscriber implements EventSubscriberInterface
 {
-    /** @var CommandLauncher */
-    protected $commandLauncher;
+    /** @var VariationsCollectionFilesGeneratorInterface */
+    protected $generator;
+
+    /** @var AssetFinderInterface */
+    protected $finder;
 
     /**
-     * @param CommandLauncher $commandLauncher
+     * @param VariationsCollectionFilesGeneratorInterface $generator
+     * @param AssetFinderInterface                        $finder
      */
-    public function __construct(CommandLauncher $commandLauncher)
+    public function __construct(VariationsCollectionFilesGeneratorInterface $generator, AssetFinderInterface $finder)
     {
-        $this->commandLauncher = $commandLauncher;
+        $this->generator = $generator;
+        $this->finder    = $finder;
     }
 
     /**
@@ -52,20 +58,11 @@ class MissingVariationsEventSubscriber implements EventSubscriberInterface
      */
     public function onAssetFilesUploaded(AssetEvent $event)
     {
-        $asset      = $event->getSubject();
-        $cmd        = 'pim:asset:generate-missing-variation-files';
-        $background = true;
+        $assetCode  = null !== $event->getSubject() ? $event->getSubject()->getCode() : null;
+        $variations = $this->finder->retrieveVariationsNotGenerated($assetCode);
+        $processed  = $this->generator->generate($variations, true);
 
-        if (null !== $asset) {
-            $background = false;
-            $cmd .= sprintf(' --asset=%s', $asset->getCode());
-        }
-
-        if ($background) {
-            $this->commandLauncher->executeBackground($cmd);
-        } else {
-            $this->commandLauncher->executeForeground($cmd);
-        }
+        $event->setProcessedList($processed);
 
         return $event;
     }

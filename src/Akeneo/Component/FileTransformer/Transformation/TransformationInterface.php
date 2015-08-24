@@ -26,7 +26,7 @@ interface TransformationInterface
      * @param \SplFileInfo $file
      * @param array        $options
      *
-     * @throws \Akeneo\Component\FileTransformer\Exception\NotApplicableTransformationException
+     * @throws \Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\NotApplicableTransformationException
      *
      * @return null
      */

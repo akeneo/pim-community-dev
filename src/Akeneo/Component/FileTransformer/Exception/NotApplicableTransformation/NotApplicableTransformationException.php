@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Akeneo\Component\FileTransformer\Exception;
+namespace Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation;
 
 /**
- * Thrown options given to FileTransformer are wrong
+ * Exception thrown when Transformation is not applicable due to a bad option value
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class InvalidFileTransformerOptionsException extends \Exception
+class NotApplicableTransformationException extends \LogicException
 {
+
 }
