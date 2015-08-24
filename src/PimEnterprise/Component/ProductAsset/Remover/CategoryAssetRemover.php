@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Remover;
+namespace PimEnterprise\Component\ProductAsset\Remover;
 
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
