@@ -95,6 +95,7 @@ define(
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
+                    isVisible: this.isVisible.bind(this),
                     label: _.__('pim_enrich.form.product.tab.associations.title')
                 });
 
@@ -359,6 +360,15 @@ define(
                 });
 
                 return assocTarget;
+            },
+
+            /**
+             * Check if this extension is visible
+             *
+             * @returns {boolean}
+             */
+            isVisible: function () {
+                return true;
             }
         });
     }
