@@ -77,6 +77,6 @@ datagrid:
             default:
                 category:
                     value:
-                        treeId: %pim_filter.product_category_filter.class%::UNKNOWN_TREE
-                        categoryId: %pim_filter.product_category_filter.class%::ALL_CATEGORY
-                    type: %pim_filter.product_category_filter.class%::DEFAULT_TYPE
+                        treeId: %pimee_product_asset.filter.asset_category_filter.class%::UNKNOWN_TREE
+                        categoryId: %pimee_product_asset.filter.asset_category_filter.class%::ALL_CATEGORY
+                    type: %pimee_product_asset.filter.asset_category_filter.class%::DEFAULT_TYPE
