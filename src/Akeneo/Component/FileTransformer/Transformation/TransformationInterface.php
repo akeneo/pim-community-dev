@@ -11,6 +11,7 @@
 
 namespace Akeneo\Component\FileTransformer\Transformation;
 
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\NotApplicableTransformationException;
 use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 
 /**
@@ -26,7 +27,7 @@ interface TransformationInterface
      * @param \SplFileInfo $file
      * @param array        $options
      *
-     * @throws \Akeneo\Component\FileTransformer\Exception\NotApplicableTransformationException
+     * @throws NotApplicableTransformationException
      *
      * @return null
      */

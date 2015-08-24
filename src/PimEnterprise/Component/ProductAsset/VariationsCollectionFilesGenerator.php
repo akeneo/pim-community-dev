@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
+use PimEnterprise\Component\ProductAsset\Exception\LockedVariationGenerationException;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**
@@ -41,7 +42,10 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
 
         foreach ($variations as $variation) {
             if (!$variation instanceof VariationInterface) {
-                throw new \InvalidArgumentException('The collection should contains only VariationInterfaces');
+                throw new \InvalidArgumentException(
+                    'The collection should contains only ' .
+                    '"PimEnterprise\Component\ProductAsset\Model\VariationInterface"'
+                );
             }
 
             if ($force || !$variation->isLocked()) {
@@ -49,10 +53,15 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
                     $this->variationFileGenerator->generate($variation);
                     $processedVariations->addItem($variation, ProcessedItem::STATE_SUCCESS);
                 } catch (\Exception $e) {
-                    $processedVariations->addItem($variation, ProcessedItem::STATE_ERROR, $e->getMessage());
+                    $processedVariations->addItem($variation, ProcessedItem::STATE_ERROR, null, $e);
                 }
             } else {
-                $processedVariations->addItem($variation, ProcessedItem::STATE_SKIPPED, 'The variation is locked');
+                $processedVariations->addItem(
+                    $variation,
+                    ProcessedItem::STATE_SKIPPED,
+                    null,
+                    new LockedVariationGenerationException()
+                );
             }
         }
 

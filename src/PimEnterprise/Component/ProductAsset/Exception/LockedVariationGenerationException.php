@@ -12,10 +12,11 @@
 namespace PimEnterprise\Component\ProductAsset\Exception;
 
 /**
- * Exception thrown when a file deletion has failed.
+ * Exception thrown when attempting to generate a locked variation
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class FileRemovalException extends \Exception
+class LockedVariationGenerationException extends \LogicException
 {
+
 }

@@ -3,9 +3,9 @@
 namespace spec\PimEnterprise\Component\ProductAsset;
 
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\ProductAsset\Exception\LockedVariationGenerationException;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
-use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Prophecy\Argument;
 
@@ -43,11 +43,10 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
         $res->shouldBeListOfProcessedVariations();
     }
 
-    function it_can_generate_locked_variation_files_from_a_reference(
+    function it_generates_locked_variation_files_from_a_reference(
         $variationFileGenerator,
         VariationInterface $variation1,
-        VariationInterface $variation2,
-        VariationInterface $variation3
+        VariationInterface $variation2
     ) {
         $variation1->isLocked()->willReturn(false);
         $variation2->isLocked()->willReturn(true);
@@ -69,8 +68,8 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
                     ProcessedItem::STATE_SUCCESS === $subject[0]->getState() &&
                     ProcessedItem::STATE_ERROR === $subject[1]->getState() &&
                     ProcessedItem::STATE_SKIPPED === $subject[2]->getState() &&
-                    'Impossible to build the variation' === $subject[1]->getReason() &&
-                    'The variation is locked' === $subject[2]->getReason();
+                    'Impossible to build the variation' === $subject[1]->getException()->getMessage() &&
+                    $subject[2]->getException() instanceof LockedVariationGenerationException;
             },
             'beListOfSuccessfulProcessedVariations' => function($processedlist) {
                 $success = true;

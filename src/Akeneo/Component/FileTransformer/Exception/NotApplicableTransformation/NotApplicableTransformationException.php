@@ -9,13 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Exception;
+namespace Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation;
 
 /**
- * Exception thrown when a file transfer has failed.
+ * Exception thrown when Transformation is not applicable due to a bad option value
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class FileTransferException extends \Exception
+class NotApplicableTransformationException extends \LogicException
 {
+
 }

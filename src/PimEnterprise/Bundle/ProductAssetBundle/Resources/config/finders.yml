@@ -5,5 +5,4 @@ services:
     pimee_product_asset.finder.asset:
         class: %pimee_product_asset.finder.asset.class%
         arguments:
-            - '@pimee_product_asset.repository.asset'
             - '@pimee_product_asset.repository.variation'

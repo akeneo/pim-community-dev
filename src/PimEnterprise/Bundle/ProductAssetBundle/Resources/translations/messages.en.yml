@@ -32,7 +32,7 @@ pimee_product_asset:
             download: Download
         flash:
             update:
-                success: Asset has been updated
+                success: Asset has been updated.
                 error: Asset has not been updated. An error occured.
             create:
                 success: Asset has been created.
@@ -42,15 +42,22 @@ pimee_product_asset:
     enrich_reference:
         flash:
             delete:
-                success: Reference file has been deleted
+                success: Reference file has been deleted.
                 error: Reference file has not been deleted. An error occured.
     enrich_variation:
         flash:
+            transformation:
+                invalid_options: Impossible to generate the variation %channel% due to invalid options.
+                image_width_error: Impossible to generate the variation %channel% because the uploaded image has a width smaller than the one required by the transformation.
+                image_height_error: Impossible to generate the variation %channel% because the uploaded image has a height smaller than the one required by the transformation.
+                not_applicable: Impossible to generate the variation %channel%.
+                error: Impossible to generate the variation %channel%.
+                success: Variation files have been generated successfully.
             update:
-                success: Variation file has been updated
+                success: Variation file has been updated.
                 error: Variation file has not been updated. An error occured.
             delete:
-                success: Variation file has been deleted
+                success: Variation file has been deleted.
                 error: Variation file has not been deleted. An error occured.
     popin.create:
         title: Create a new asset

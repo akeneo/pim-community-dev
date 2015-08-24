@@ -11,7 +11,8 @@
 
 namespace Akeneo\Component\FileTransformer\Transformation\Image;
 
-use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageHeightException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
 use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 use Akeneo\Component\FileTransformer\Transformation\AbstractTransformation;
 use Imagine\Imagick\Imagine;
@@ -60,12 +61,12 @@ class Scale extends AbstractTransformation
             $box = $box->scale($ratio);
         } elseif (null !== $width) {
             if ($width > $image->getSize()->getWidth()) {
-                throw NotApplicableTransformationException::imageWidthTooBig($file->getPathname(), $this->getName());
+                throw new ImageWidthException($file->getPathname(), $this->getName());
             }
             $box = $box->widen($width);
         } elseif (null !== $height) {
             if ($height > $image->getSize()->getHeight()) {
-                throw NotApplicableTransformationException::imageHeightTooBig($file->getPathname(), $this->getName());
+                throw new ImageHeightException($file->getPathname(), $this->getName());
             }
             $box = $box->heighten($height);
         }

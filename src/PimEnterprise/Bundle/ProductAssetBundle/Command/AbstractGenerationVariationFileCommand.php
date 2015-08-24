@@ -70,7 +70,11 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function retrieveAsset($assetCode)
     {
-        return $this->getAssetFinder()->retrieveAsset($assetCode);
+        if (null === $asset = $this->getAssetRepository()->findOneByIdentifier($assetCode)) {
+            throw new \LogicException(sprintf('The asset "%s" does not exist.', $assetCode));
+        }
+
+        return $asset;
     }
 
     /**

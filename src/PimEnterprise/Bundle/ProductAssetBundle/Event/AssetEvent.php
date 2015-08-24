@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
@@ -21,6 +22,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class AssetEvent extends GenericEvent
 {
+    /** @var ProcessedItemList */
+    protected $processedList;
+
     /** @var string Event triggered after upload of assets files */
     const POST_UPLOAD_FILES = 'pimee_product_asset.asset.files_upload.post';
 
@@ -59,5 +63,21 @@ final class AssetEvent extends GenericEvent
     public function getSubject()
     {
         return parent::getSubject();
+    }
+
+    /**
+     * @return ProcessedItemList
+     */
+    public function getProcessedList()
+    {
+        return $this->processedList;
+    }
+
+    /**
+     * @param ProcessedItemList $processedList
+     */
+    public function setProcessedList(ProcessedItemList $processedList)
+    {
+        $this->processedList = $processedList;
     }
 }

@@ -15,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 
 /**
@@ -25,33 +24,15 @@ use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface
  */
 class AssetFinder implements AssetFinderInterface
 {
-    /** @var AssetRepositoryInterface */
-    protected $assetRepository;
-
     /** @var VariationRepositoryInterface */
     protected $variationsRepository;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(
-        AssetRepositoryInterface $assetRepository,
-        VariationRepositoryInterface $variationsRepository
-    ) {
-        $this->assetRepository      = $assetRepository;
-        $this->variationsRepository = $variationsRepository;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function retrieveAsset($assetCode)
+    public function __construct(VariationRepositoryInterface $variationsRepository)
     {
-        if (null === $asset = $this->assetRepository->findOneByIdentifier($assetCode)) {
-            throw new \LogicException(sprintf('The asset "%s" does not exist.', $assetCode));
-        }
-
-        return $asset;
+        $this->variationsRepository = $variationsRepository;
     }
 
     /**
@@ -79,12 +60,11 @@ class AssetFinder implements AssetFinderInterface
     /**
      * {@inheritdoc}
      */
-    public function retrieveVariationsNotGenerated($assetCode = null)
+    public function retrieveVariationsNotGenerated(AssetInterface $asset = null)
     {
         $missingVariations = [];
 
-        if (null !== $assetCode) {
-            $asset = $this->retrieveAsset($assetCode);
+        if (null !== $asset) {
             foreach ($asset->getVariations() as $variation) {
                 if (null === $variation->getFile() && null !== $variation->getSourceFile()) {
                     $missingVariations[] = $variation;

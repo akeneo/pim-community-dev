@@ -11,6 +11,8 @@
 
 namespace Akeneo\Component\FileTransformer\Exception;
 
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\NotApplicableTransformationException;
+
 /**
  * Exception thrown when Transformation options are invalid
  *
