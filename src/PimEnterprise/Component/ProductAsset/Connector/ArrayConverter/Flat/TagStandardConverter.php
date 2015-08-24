@@ -62,15 +62,11 @@ class TagStandardConverter implements StandardArrayConverterInterface
      * @param mixed  $data
      *
      * @return array
-     *
-     * TODO: qualification when import, tags when export ... + localized field, we should be able to import what we export
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
-        switch ($field) {
-            case 'qualification':
-                $convertedItem['tags'] = array_unique(explode(',', $data));
-                break;
+        if ('qualification' === $field) {
+            $convertedItem['tags'] = array_unique(explode(',', $data));
         }
 
         return $convertedItem;

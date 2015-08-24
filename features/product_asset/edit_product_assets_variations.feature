@@ -1,7 +1,7 @@
 @javascript
 Feature: Edit product assets variations
   In order to enrich the existing product assets
-  As a product manager
+  As a asset manager
   I need to be able to edit product assets variations
 
   Background:

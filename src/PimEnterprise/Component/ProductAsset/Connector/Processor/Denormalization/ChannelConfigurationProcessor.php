@@ -100,7 +100,7 @@ class ChannelConfigurationProcessor extends AbstractProcessor
     }
 
     /**
-     * Find or create the asset
+     * Find or create the asset channel configuration
      *
      * @param array $convertedItem
      *
@@ -124,7 +124,7 @@ class ChannelConfigurationProcessor extends AbstractProcessor
     }
 
     /**
-     * Update the asset fields
+     * Update the asset channel configuration fields
      *
      * @param ChannelVariationsConfigurationInterface $channelConfiguration
      * @param array                                   $convertedItem

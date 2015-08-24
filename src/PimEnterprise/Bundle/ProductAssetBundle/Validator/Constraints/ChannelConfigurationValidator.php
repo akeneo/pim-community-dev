@@ -38,7 +38,6 @@ class ChannelConfigurationValidator extends ConstraintValidator
     public function __construct(TransformationRegistry $registry)
     {
         $this->registry = $registry;
-        // TODO: we could change the channel conf to get the mime type from the new conf
         $this->mimeType = 'image/jpeg';
     }
 
@@ -48,7 +47,6 @@ class ChannelConfigurationValidator extends ConstraintValidator
      */
     public function validate($channelConfiguration, Constraint $constraint)
     {
-        /** @var ChannelVariationsConfigurationInterface */
         if ($channelConfiguration instanceof ChannelVariationsConfigurationInterface) {
             $configuration = $channelConfiguration->getConfiguration();
             foreach ($configuration as $transformationKey => $transformationOptions) {
