@@ -161,7 +161,7 @@ interface CategoryRepositoryInterface extends
      *
      * @return array
      */
-    public function getTreesGranted(array $grantedCategoryIds = []);
+    public function getGrantedTrees(array $grantedCategoryIds = []);
 
     /**
      * Check if a parent node is an ancestor of a child node
