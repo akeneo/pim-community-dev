@@ -37,7 +37,20 @@ Feature: Assign assets to a product
     Then the "Front view" asset gallery should contains akene, dog
 
   Scenario: Display assets thumbnails for current scope and locale
-    Given I am on the "shirt" product page
+    Given I am on the "paint" asset page
+    And I visit the "Variations" tab
+    And I upload the reference file akene.jpg
+    And I save the asset
+    And I am on the "chicagoskyline" asset page
+    And I visit the "Variations" tab
+    And I switch the locale to "German (Germany)"
+    And I upload the reference file akene.jpg
+    And I save the asset
+    And I visit the "Variations" tab
+    And I switch the locale to "English (United States)"
+    And I upload the reference file akene.jpg
+    And I save the asset
+    And I am on the "shirt" product page
     And I add available attributes Front view
     When I start to manage assets for "Front view"
     Then the row "paint" should contain the thumbnail for channel "tablet"
