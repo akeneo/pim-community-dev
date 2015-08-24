@@ -99,28 +99,28 @@ define([
                 this.value = value;
             },
 
-           /**
-            * Bound this copy field to the original field
-            *
-            * @param {Field} field
-            */
+            /**
+             * Bound this copy field to the original field
+             *
+             * @param {Field} field
+             */
             setField: function (field) {
                 this.field = field;
             },
 
-           /**
-            * Callback called when the copy field is clicked, toggle the select checkbox state
-            */
+            /**
+             * Callback called when the copy field is clicked, toggle the select checkbox state
+             */
             onSelect: function () {
                 this.selected = !this.selected;
                 this.$('.copy-field-selector').prop('checked', this.selected);
             },
 
-           /**
-            * Mark this copy field as selected or not
-            *
-            * @param {boolean} selected
-            */
+            /**
+             * Mark this copy field as selected or not
+             *
+             * @param {boolean} selected
+             */
             setSelected: function (selected) {
                 this.selected = selected;
             }

@@ -12,7 +12,7 @@ define(
         'underscore',
         'pim/form',
         'pim/fetcher-registry',
-        'oro/mediator',
+        'oro/mediator'
     ],
     function ($, _, BaseForm, FetcherRegistry, mediator) {
         return BaseForm.extend({
