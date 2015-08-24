@@ -49,8 +49,12 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $assetCode         = $input->getOption('asset');
-            $missingVariations = $this->getAssetFinder()->retrieveVariationsNotGenerated($assetCode);
+            $asset = null;
+            if (null !== $assetCode = $input->getOption('asset')) {
+                $asset = $this->retrieveAsset($assetCode);
+            }
+
+            $missingVariations = $this->getAssetFinder()->retrieveVariationsNotGenerated($asset);
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 

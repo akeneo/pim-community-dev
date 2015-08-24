@@ -58,8 +58,7 @@ class MissingVariationsEventSubscriber implements EventSubscriberInterface
      */
     public function onAssetFilesUploaded(AssetEvent $event)
     {
-        $assetCode  = null !== $event->getSubject() ? $event->getSubject()->getCode() : null;
-        $variations = $this->finder->retrieveVariationsNotGenerated($assetCode);
+        $variations = $this->finder->retrieveVariationsNotGenerated($event->getSubject());
         $processed  = $this->generator->generate($variations, true);
 
         $event->setProcessedList($processed);

@@ -16,8 +16,6 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 
 /**
  * Finder for assets and asset related entities
@@ -26,24 +24,6 @@ use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface
  */
 interface AssetFinderInterface
 {
-    /**
-     * @param AssetRepositoryInterface     $assetRepository
-     * @param VariationRepositoryInterface $variationsRepository
-     */
-    public function __construct(
-        AssetRepositoryInterface $assetRepository,
-        VariationRepositoryInterface $variationsRepository
-    );
-
-    /**
-     * @param string $assetCode
-     *
-     * @throws \LogicException
-     *
-     * @return AssetInterface
-     */
-    public function retrieveAsset($assetCode);
-
     /**
      * @param AssetInterface  $asset
      * @param LocaleInterface $locale
@@ -55,11 +35,11 @@ interface AssetFinderInterface
     public function retrieveReference(AssetInterface $asset, LocaleInterface $locale = null);
 
     /**
-     * @param int|null $assetCode
+     * @param AssetInterface|null $asset
      *
      * @return VariationInterface[]
      */
-    public function retrieveVariationsNotGenerated($assetCode = null);
+    public function retrieveVariationsNotGenerated(AssetInterface $asset = null);
 
     /**
      * @param ReferenceInterface $reference
