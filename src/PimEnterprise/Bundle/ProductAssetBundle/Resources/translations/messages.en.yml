@@ -48,8 +48,8 @@ pimee_product_asset:
         flash:
             transformation:
                 invalid_options: Impossible to generate the variation %channel% due to invalid options.
-                image_width_error: Impossible to generate the variation %channel% because the image you uploaded has a width smaller than the one required by the transformation.
-                image_height_error: Impossible to generate the variation %channel% because the image you uploaded has a height smaller than the one required by the transformation.
+                image_width_error: Impossible to generate the variation %channel% because the uploaded image has a width smaller than the one required by the transformation.
+                image_height_error: Impossible to generate the variation %channel% because the uploaded image has a height smaller than the one required by the transformation.
                 not_applicable: Impossible to generate the variation %channel%.
                 error: Impossible to generate the variation %channel%.
                 success: Variation files have been generated successfully.

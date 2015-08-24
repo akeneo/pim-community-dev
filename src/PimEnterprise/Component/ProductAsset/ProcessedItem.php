@@ -22,7 +22,7 @@ namespace PimEnterprise\Component\ProductAsset;
  *
  * This class should not be used for large batches.
  *
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class ProcessedItem
 {

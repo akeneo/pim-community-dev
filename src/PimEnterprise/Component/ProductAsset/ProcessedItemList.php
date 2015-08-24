@@ -169,14 +169,8 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
      */
     public function getItemsInState($state)
     {
-        $items = [];
-
-        foreach ($this->items as $item) {
-            if ($state === $item->getState()) {
-                $items[] = $item;
-            }
-        }
-
-        return $items;
+        return array_filter($this->items, function (ProcessedItem $item) use ($state) {
+            return $state === $item->getState();
+        });
     }
 }
