@@ -93,6 +93,18 @@ extensions:
         targetZone: context-selectors
         position: 110
 
+    pimee-product-view-locale-specific:
+        module: pim/product-edit-form/attributes/locale-specific
+        parent: pimee-product-view-attributes
+        targetZone: self
+        position: 100
+
+    pimee-product-view-localizable:
+        module: pim/product-edit-form/attributes/localizable
+        parent: pimee-product-view-attributes
+        targetZone: self
+        position: 100
+
     pimee-product-view-completeness:
         module: pim/product-edit-form/panel/completeness
         parent: pimee-product-view-panels
