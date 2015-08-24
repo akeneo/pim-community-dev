@@ -363,7 +363,7 @@ define(
             },
 
             /**
-             * Set if this extension is visible
+             * Check if this extension is visible
              *
              * @returns {boolean}
              */

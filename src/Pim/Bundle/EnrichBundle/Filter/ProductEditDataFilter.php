@@ -181,22 +181,22 @@ class ProductEditDataFilter implements CollectionFilterInterface
 
         switch ($type) {
             case 'family':
-                $isAllowed = $this->isAllowedToUpdateFamily();
+                $isAllowed = $this->isAllowedToUpdateFamily($product);
                 break;
             case 'groups':
-                $isAllowed = $this->isAllowedToUpdateGroups();
+                $isAllowed = $this->isAllowedToUpdateGroups($product);
                 break;
             case 'categories':
                 $isAllowed = $this->isAllowedToClassify($product);
                 break;
             case 'enabled':
-                $isAllowed = $this->isAllowedToUpdateStatus();
+                $isAllowed = $this->isAllowedToUpdateStatus($product);
                 break;
             case 'associations':
                 $isAllowed = $this->isAllowedToUpdateAssociations($product);
                 break;
             case 'values':
-                $isAllowed = $this->isAllowedToUpdateValues();
+                $isAllowed = $this->isAllowedToUpdateValues($product);
                 break;
         }
 
@@ -206,9 +206,11 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update family of the product
      *
+     * @param ProductInterface $product
+     *
      * @return bool
      */
-    protected function isAllowedToUpdateFamily()
+    protected function isAllowedToUpdateFamily(ProductInterface $product)
     {
         return $this->checkAclForType('family');
     }
@@ -216,9 +218,11 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update groups of the product
      *
+     * @param ProductInterface $product
+     *
      * @return bool
      */
-    protected function isAllowedToUpdateGroups()
+    protected function isAllowedToUpdateGroups(ProductInterface $product)
     {
         return $this->checkAclForType('groups');
     }
@@ -238,9 +242,11 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update status of the product
      *
+     * @param ProductInterface $product
+     *
      * @return bool
      */
-    protected function isAllowedToUpdateStatus()
+    protected function isAllowedToUpdateStatus(ProductInterface $product)
     {
         return $this->checkAclForType('enabled');
     }
@@ -260,9 +266,11 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update product values of the product
      *
+     * @param ProductInterface $product
+     *
      * @return bool
      */
-    protected function isAllowedToUpdateValues()
+    protected function isAllowedToUpdateValues(ProductInterface $product)
     {
         return $this->checkAclForType('values');
     }
