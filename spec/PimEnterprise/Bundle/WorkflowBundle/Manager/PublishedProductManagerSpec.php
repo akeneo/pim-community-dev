@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
@@ -36,6 +37,11 @@ class PublishedProductManagerSpec extends ObjectBehavior
             $publisher,
             $unpublisher
         );
+    }
+
+    function it_is_a_configurable_step_element()
+    {
+        $this->beAnInstanceOf('Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface');
     }
 
     function it_publishes_a_product(
@@ -149,5 +155,16 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $om->flush()->shouldBeCalled();
 
         $this->unpublish($published);
+    }
+
+    function it_returns_the_published_repository($repository)
+    {
+        $this->getProductRepository()->shouldReturn($repository);
+    }
+
+    function it_returns_the_product_manager_s_attribute_repository($manager, AttributeRepositoryInterface $repository)
+    {
+        $manager->getAttributeRepository()->willReturn($repository);
+        $this->getAttributeRepository()->shouldReturn($repository);
     }
 }

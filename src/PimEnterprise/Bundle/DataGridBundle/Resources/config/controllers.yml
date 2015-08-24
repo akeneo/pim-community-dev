@@ -7,4 +7,4 @@ services:
             - '@pimee_workflow.repository.published_product'
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.context.catalog'
-            - '@pim_datagrid.extension.mass_action.util.product_fields_builder'
+            - '@pimee_datagrid.extension.mass_action.util.published_product_fields_builder'
