@@ -100,16 +100,6 @@ Feature: Display the completeness of a product with assets
     And I should see the completeness:
       | channel | locale | state   | missing_values            | ratio |
       | mobile  | de_DE  | success |                           | 100%  |
-      | mobile  | en_US  | success |                           | 100%  |
-      | tablet  | de_DE  | warning | weather_conditions rating | 80%   |
-      | tablet  | en_US  | warning | weather_conditions rating | 80%   |
-    Given I delete the chicagoskyline variation for channel mobile and locale "en_US"
-    When I am on the "jacket-white" product page
-    When I open the "Completeness" panel
-    Then I should see the completeness summary
-    And I should see the completeness:
-      | channel | locale | state   | missing_values            | ratio |
-      | mobile  | de_DE  | success |                           | 100%  |
       | mobile  | en_US  | warning | gallery                   | 83%   |
       | tablet  | de_DE  | warning | weather_conditions rating | 80%   |
       | tablet  | en_US  | warning | weather_conditions rating | 80%   |
