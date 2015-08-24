@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager
+class ProductManager implements ProductManagerInterface
 {
     /** @var array */
     protected $configuration;
@@ -104,7 +104,7 @@ class ProductManager
     }
 
     /**
-     * @return ProductRepositoryInterface
+     * {@inheritdoc}
      */
     public function getProductRepository()
     {
@@ -371,9 +371,7 @@ class ProductManager
     }
 
     /**
-     * Return related repository
-     *
-     * @return ObjectRepository
+     * {@inheritdoc}
      */
     public function getAttributeRepository()
     {
