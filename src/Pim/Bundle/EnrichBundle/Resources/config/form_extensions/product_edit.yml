@@ -185,6 +185,12 @@ extensions:
         targetZone: self
         position: 100
 
+    pim-product-edit-form-localizable:
+        module: pim/product-edit-form/attributes/localizable
+        parent: pim-product-edit-form-attributes
+        targetZone: self
+        position: 100
+
     pim-product-edit-form-completeness:
         module: pim/product-edit-form/panel/completeness
         parent: pim-product-edit-form-panels
