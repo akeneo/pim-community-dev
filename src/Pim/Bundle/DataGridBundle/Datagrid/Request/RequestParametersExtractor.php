@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Request;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +15,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RequestParametersExtractor implements RequestParametersExtractorInterface
 {
-    /**
-     * @var RequestParameters
-     */
+    /** @var RequestParameters */
     protected $requestParams;
+
+    /** @var Request */
+    protected $request;
 
     /**
      * @param RequestParameters $requestParams

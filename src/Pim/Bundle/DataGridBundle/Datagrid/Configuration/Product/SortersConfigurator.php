@@ -1,11 +1,12 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 
 /**
  * Sorters configurator for product grid
@@ -16,14 +17,10 @@ use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfigu
  */
 class SortersConfigurator implements ConfiguratorInterface
 {
-    /**
-     * @param DatagridConfiguration
-     */
+    /** @var DatagridConfiguration */
     protected $configuration;
 
-    /**
-     * @param ConfigurationRegistry
-     */
+    /** @var ConfigurationRegistry */
     protected $registry;
 
     /**
@@ -31,7 +28,7 @@ class SortersConfigurator implements ConfiguratorInterface
      */
     public function __construct(ConfigurationRegistry $registry)
     {
-        $this->registry        = $registry;
+        $this->registry = $registry;
     }
 
     /**
@@ -49,7 +46,7 @@ class SortersConfigurator implements ConfiguratorInterface
      */
     protected function addAttributeSorters()
     {
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
         $columns = $this->configuration->offsetGetByPath(
@@ -74,10 +71,10 @@ class SortersConfigurator implements ConfiguratorInterface
                 if (isset($attributeTypeConf['sorter'])) {
                     $this->configuration->offsetSetByPath(
                         sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attributeCode),
-                        array(
+                        [
                             PropertyInterface::DATA_NAME_KEY => $attributeCode,
                             'sorter'                         => $attributeTypeConf['sorter']
-                        )
+                        ]
                     );
                 }
             }

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Datagrid;
+namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Request;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use PhpSpec\ObjectBehavior;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Request;
 
 /**
  * Extract request parameters from Oro RequestParameters and fallback on Request, idea is to wrap
