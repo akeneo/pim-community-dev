@@ -51,7 +51,7 @@ class ProductDraftApplier implements ProductDraftApplierInterface
         $changes = $productDraft->getChanges();
 
         if (!isset($changes['values'])) {
-            return null;
+            return;
         }
 
         foreach ($changes['values'] as $code => $values) {
