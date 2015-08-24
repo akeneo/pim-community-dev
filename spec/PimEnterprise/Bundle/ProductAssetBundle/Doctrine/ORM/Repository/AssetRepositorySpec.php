@@ -97,4 +97,20 @@ class AssetRepositorySpec extends ObjectBehavior
 
         $this->createAssetDatagridQueryBuilder([]);
     }
+
+    function it_finds_all_assets_by_end_of_use_delay($em, QueryBuilder $qb,AbstractQuery $query)
+    {
+        $now = new \DateTime('2015-08-10');
+        $em->createQueryBuilder()->willReturn($qb);
+
+        $qb->select('asset')->willReturn($qb);
+        $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'asset')->willReturn($qb);
+        $qb->where('asset.endOfUseAt = :endOfUse')->willReturn($qb);
+        $qb->setParameter(':endOfUse', '2015-08-15')->willReturn($qb);
+
+        $qb->getQuery()->willReturn($query);
+        $query->getArrayResult()->shouldBeCalled();
+
+        $this->findAllAssetsByEndOfUse($now, 5);
+    }
 }

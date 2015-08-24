@@ -263,7 +263,6 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     {
         $qb = $this->_em->createQueryBuilder();
 
-
         $endOfUse = $now->add(new \DateInterval(sprintf("P%sD", $delay)))->format('Y-m-d');
         $qb->select('asset')
             ->from($this->_entityName, $this->getAlias())
