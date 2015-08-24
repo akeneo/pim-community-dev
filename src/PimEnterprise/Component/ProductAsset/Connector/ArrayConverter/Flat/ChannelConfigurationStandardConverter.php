@@ -47,7 +47,7 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validate($item);
+        $this->validateRequiredFields($item, ['channel', 'configuration']);
         $convertedItem = [];
         foreach ($item as $field => $data) {
             $convertedItem = $this->convertField($convertedItem, $field, $data);
@@ -82,14 +82,6 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
         }
 
         return $convertedItem;
-    }
-
-    /**
-     * @param array $item
-     */
-    protected function validate(array $item)
-    {
-        $this->validateRequiredFields($item, ['channel', 'configuration']);
     }
 
     /**
