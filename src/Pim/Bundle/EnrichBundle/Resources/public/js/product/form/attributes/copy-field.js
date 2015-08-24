@@ -19,8 +19,6 @@ define([
         return Field.extend({
             tagName: 'div',
             field: null,
-            locale: null,
-            scope: null,
             value: {},
             template: _.template(template),
             selected: false,
@@ -53,8 +51,7 @@ define([
                     config: this.field.config,
                     attribute: this.field.attribute,
                     selected: this.selected,
-                    locale: this.locale,
-                    scope: this.scope,
+                    context: this.context,
                     i18n: i18n
                 };
 

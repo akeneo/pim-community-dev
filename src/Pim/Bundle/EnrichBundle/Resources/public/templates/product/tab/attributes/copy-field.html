@@ -4,10 +4,10 @@
         <header>
             <label><%= label %></label>
             <span class="field-info pull-right">
-                <% if (attribute.scopable || attribute.scopable) { %>
+                <% if (attribute.localizable || attribute.scopable) { %>
                     <span class="field-context">
-                        <% if (attribute.scopable) { %> <span><%= scope %></span> <% } %>
-                        <% if (attribute.localizable) { %> <span><%= i18n.getFlag(locale) %></span> <% } %>
+                        <% if (attribute.scopable) { %> <span><%= context.scope %></span> <% } %>
+                        <% if (attribute.localizable) { %> <span><%= i18n.getFlag(context.locale) %></span> <% } %>
                     </span>
                 <% } %>
             </span>
