@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Voter;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter;
@@ -11,7 +11,6 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class AssetVoterSpec extends ObjectBehavior
 {
@@ -22,7 +21,7 @@ class AssetVoterSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter');
     }
 
-    function let(CategoryAccessRepository $categoryAccessRepository, TokenInterface $token, User $user)
+    function let(CategoryAccessRepository $categoryAccessRepository, TokenInterface $token, UserInterface $user)
     {
         $token->getUser()->willReturn($user);
 
