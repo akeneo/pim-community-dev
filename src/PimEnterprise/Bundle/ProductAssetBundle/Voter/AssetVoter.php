@@ -92,8 +92,8 @@ class AssetVoter implements VoterInterface
         }
 
         $assetToCategory = [
-            Attributes::EDIT => Attributes::EDIT_PRODUCTS,
-            Attributes::VIEW => Attributes::VIEW_PRODUCTS,
+            Attributes::EDIT => Attributes::EDIT_ITEMS,
+            Attributes::VIEW => Attributes::VIEW_ITEMS,
         ];
         if (!isset($assetToCategory[$attribute])) {
             return false;

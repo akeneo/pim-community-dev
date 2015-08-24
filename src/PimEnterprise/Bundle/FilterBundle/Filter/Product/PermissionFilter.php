@@ -103,8 +103,8 @@ class PermissionFilter extends OroChoiceFilter
     {
         $mapping = [
             self::OWN  => Attributes::OWN_PRODUCTS,
-            self::EDIT => Attributes::EDIT_PRODUCTS,
-            self::VIEW => Attributes::VIEW_PRODUCTS
+            self::EDIT => Attributes::EDIT_ITEMS,
+            self::VIEW => Attributes::VIEW_ITEMS
         ];
 
         if (!isset($data['value'])) {

@@ -37,10 +37,10 @@ final class Attributes
     const EDIT_ATTRIBUTES = 'EDIT_ATTRIBUTES';
 
     /** @staticvar string */
-    const VIEW_PRODUCTS = 'VIEW_PRODUCTS';
+    const VIEW_ITEMS = 'VIEW_ITEMS';
 
     /** @staticvar string */
-    const EDIT_PRODUCTS = 'EDIT_PRODUCTS';
+    const EDIT_ITEMS = 'EDIT_ITEMS';
 
     /** @staticvar string */
     const OWN_PRODUCTS = 'OWN_PRODUCTS';

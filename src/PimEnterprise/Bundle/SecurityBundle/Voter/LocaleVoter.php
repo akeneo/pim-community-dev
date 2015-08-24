@@ -43,7 +43,7 @@ class LocaleVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [Attributes::VIEW_PRODUCTS, Attributes::EDIT_PRODUCTS]);
+        return in_array($attribute, [Attributes::VIEW_ITEMS, Attributes::EDIT_ITEMS]);
     }
 
     /**
@@ -88,7 +88,7 @@ class LocaleVoter implements VoterInterface
      */
     protected function extractUserGroups($attribute, $locale)
     {
-        if ($attribute === Attributes::EDIT_PRODUCTS) {
+        if ($attribute === Attributes::EDIT_ITEMS) {
             $grantedGroups = $this->accessManager->getEditUserGroups($locale);
         } else {
             $grantedGroups = $this->accessManager->getViewUserGroups($locale);

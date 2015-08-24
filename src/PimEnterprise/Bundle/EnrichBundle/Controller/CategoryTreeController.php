@@ -156,7 +156,7 @@ class CategoryTreeController extends BaseCategoryTreeController
     {
         $user = $this->tokenStorage->getToken()->getUser();
 
-        return $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+        return $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS);
     }
 
     /**
@@ -181,7 +181,7 @@ class CategoryTreeController extends BaseCategoryTreeController
         }
 
         $category = $this->findCategory($categoryId);
-        if (false === $this->securityFacade->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+        if (false === $this->securityFacade->isGranted(Attributes::VIEW_ITEMS, $category)) {
             throw new AccessDeniedException('You can not access this category');
         }
 

@@ -68,7 +68,7 @@ class ProductController extends BaseController
     public function downloadPdfAction(Request $request, $id)
     {
         $locale = $this->userContext->getCurrentLocale();
-        $viewLocaleGranted = $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale);
+        $viewLocaleGranted = $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale);
         if (!$viewLocaleGranted) {
             throw new AccessDeniedException();
         }

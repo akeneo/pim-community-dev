@@ -67,8 +67,8 @@ class PermissionRestController
             function ($locale) use ($authorizationChecker) {
                 return [
                     'code' => $locale->getCode(),
-                    'view' => $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale),
-                    'edit' => $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)
+                    'view' => $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale),
+                    'edit' => $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)
                 ];
             },
             $this->userContext->getUserLocales()
@@ -89,8 +89,8 @@ class PermissionRestController
 
         $categories = [];
         $permissions = [
-            Attributes::VIEW_PRODUCTS,
-            Attributes::EDIT_PRODUCTS,
+            Attributes::VIEW_ITEMS,
+            Attributes::EDIT_ITEMS,
             Attributes::OWN_PRODUCTS
         ];
         foreach ($permissions as $permission) {

@@ -16,14 +16,14 @@ class LocaleViewRightFilterSpec extends ObjectBehavior
 
     public function it_does_not_filter_a_locale_if_the_user_is_granted_to_see_this_locale($authorizationChecker, LocaleInterface $enUS)
     {
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $enUS)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enUS)->willReturn(true);
 
         $this->filterObject($enUS, 'pim:locale:view', [])->shouldReturn(false);
     }
 
     public function it_filters_a_locale_if_the_user_is_not_granted_to_see_this_locale($authorizationChecker, LocaleInterface $enUS)
     {
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $enUS)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enUS)->willReturn(false);
 
         $this->filterObject($enUS, 'pim:locale:view', [])->shouldReturn(true);
     }

@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class CategoryVoterSpec extends ObjectBehavior
 {
-    protected $attributes = array(Attributes::VIEW_PRODUCTS, Attributes::EDIT_PRODUCTS);
+    protected $attributes = [Attributes::VIEW_ITEMS, Attributes::EDIT_ITEMS];
 
     function let(CategoryAccessManager $accessManager, TokenInterface $token)
     {
@@ -23,14 +23,14 @@ class CategoryVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_non_attribute_group_entity($token)
     {
         $this
-            ->vote($token, 'foo', array('bar', 'baz'))
+            ->vote($token, 'foo', ['bar', 'baz'])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
     function it_returns_abstain_access_if_not_supported_entity($token, CategoryVoter $wrongClass)
     {
         $this
-            ->vote($token, $wrongClass, [Attributes::VIEW_PRODUCTS])
+            ->vote($token, $wrongClass, [Attributes::VIEW_ITEMS])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
@@ -42,8 +42,8 @@ class CategoryVoterSpec extends ObjectBehavior
     ) {
         $token->getUser()->willReturn($user);
 
-        $accessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS)->willReturn(false);
-        $accessManager->isUserGranted($user, $category, Attributes::EDIT_PRODUCTS)->willReturn(false);
+        $accessManager->isUserGranted($user, $category, Attributes::VIEW_ITEMS)->willReturn(false);
+        $accessManager->isUserGranted($user, $category, Attributes::EDIT_ITEMS)->willReturn(false);
 
         $this
             ->vote($token, $category, $this->attributes)
@@ -58,8 +58,8 @@ class CategoryVoterSpec extends ObjectBehavior
     ) {
         $token->getUser()->willReturn($user);
 
-        $accessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS)->willReturn(false);
-        $accessManager->isUserGranted($user, $category, Attributes::EDIT_PRODUCTS)->willReturn(true);
+        $accessManager->isUserGranted($user, $category, Attributes::VIEW_ITEMS)->willReturn(false);
+        $accessManager->isUserGranted($user, $category, Attributes::EDIT_ITEMS)->willReturn(true);
 
         $this
             ->vote($token, $category, $this->attributes)

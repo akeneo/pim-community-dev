@@ -65,7 +65,7 @@ class AssetVoterSpec extends ObjectBehavior
         CategoryInterface $categoryFive,
         CategoryInterface $categorySix
     ) {
-        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_PRODUCTS, [5, 6])->willReturn(false);
+        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_ITEMS, [5, 6])->willReturn(false);
         $asset->getCategories()->willReturn([$categoryFive, $categorySix]);
         $categoryFive->getId()->willReturn(5);
         $categorySix->getId()->willReturn(6);
@@ -83,7 +83,7 @@ class AssetVoterSpec extends ObjectBehavior
         CategoryInterface $categoryOne,
         CategoryInterface $categorySix
     ) {
-        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_PRODUCTS, [1, 6])->willReturn(true);
+        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_ITEMS, [1, 6])->willReturn(true);
         $asset->getCategories()->willReturn([$categoryOne, $categorySix]);
         $categoryOne->getId()->willReturn(1);
         $categorySix->getId()->willReturn(6);

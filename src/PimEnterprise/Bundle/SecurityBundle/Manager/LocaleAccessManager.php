@@ -56,7 +56,7 @@ class LocaleAccessManager
      */
     public function getViewUserGroups(LocaleInterface $locale)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::VIEW_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::VIEW_ITEMS);
     }
 
     /**
@@ -68,7 +68,7 @@ class LocaleAccessManager
      */
     public function getEditUserGroups(LocaleInterface $locale)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::EDIT_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::EDIT_ITEMS);
     }
 
     /**
@@ -82,13 +82,13 @@ class LocaleAccessManager
     {
         $grantedUserGroups = [];
         foreach ($editUserGroups as $group) {
-            $this->grantAccess($locale, $group, Attributes::EDIT_PRODUCTS);
+            $this->grantAccess($locale, $group, Attributes::EDIT_ITEMS);
             $grantedUserGroups[] = $group;
         }
 
         foreach ($viewUserGroups as $group) {
             if (!in_array($group, $grantedUserGroups)) {
-                $this->grantAccess($locale, $group, Attributes::VIEW_PRODUCTS);
+                $this->grantAccess($locale, $group, Attributes::VIEW_ITEMS);
                 $grantedUserGroups[] = $group;
             }
         }
@@ -109,7 +109,7 @@ class LocaleAccessManager
         $access = $this->getLocaleAccess($locale, $group);
         $access
             ->setViewProducts(true)
-            ->setEditProducts($accessLevel === Attributes::EDIT_PRODUCTS);
+            ->setEditProducts($accessLevel === Attributes::EDIT_ITEMS);
 
         $this->getObjectManager()->persist($access);
     }

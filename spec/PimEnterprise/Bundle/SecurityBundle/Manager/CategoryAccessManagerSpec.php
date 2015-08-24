@@ -34,8 +34,8 @@ class CategoryAccessManagerSpec extends ObjectBehavior
 
     function it_provides_user_groups_that_have_access_to_a_category(CategoryInterface $category, $accessRepository)
     {
-        $accessRepository->getGrantedUserGroups($category, Attributes::VIEW_PRODUCTS)->willReturn(['foo', 'bar']);
-        $accessRepository->getGrantedUserGroups($category, Attributes::EDIT_PRODUCTS)->willReturn(['bar']);
+        $accessRepository->getGrantedUserGroups($category, Attributes::VIEW_ITEMS)->willReturn(['foo', 'bar']);
+        $accessRepository->getGrantedUserGroups($category, Attributes::EDIT_ITEMS)->willReturn(['bar']);
         $accessRepository->getGrantedUserGroups($category, Attributes::OWN_PRODUCTS)->willReturn(['bar']);
 
         $this->getViewUserGroups($category)->shouldReturn(['foo', 'bar']);

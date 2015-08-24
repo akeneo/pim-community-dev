@@ -70,7 +70,7 @@ class CategoryFilter extends BaseCategoryFilter
     protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
     {
         $user = $this->tokenStorage->getToken()->getUser();
-        $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+        $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS);
         if (count($grantedCategoryIds) > 0) {
             $this->util->applyFilter($ds, 'categories.id', 'IN OR UNCLASSIFIED', $grantedCategoryIds);
         } else {
@@ -95,7 +95,7 @@ class CategoryFilter extends BaseCategoryFilter
 
             // we add a filter on granted categories
             $user = $this->tokenStorage->getToken()->getUser();
-            $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+            $grantedIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS);
             $this->util->applyFilter($ds, 'categories.id', 'IN OR UNCLASSIFIED', $grantedIds);
 
             return true;
@@ -112,7 +112,7 @@ class CategoryFilter extends BaseCategoryFilter
     protected function getAllChildrenIds(CategoryInterface $category)
     {
         if ($category instanceof Category) { // TODO: Remove this first if in PIM-4292
-            if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+            if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
                 return [];
             }
         }

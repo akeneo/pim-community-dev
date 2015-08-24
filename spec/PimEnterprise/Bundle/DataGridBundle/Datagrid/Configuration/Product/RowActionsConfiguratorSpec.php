@@ -51,7 +51,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
     function it_configures_the_grid($datagridConfiguration, $authorizationChecker)
     {
         $authorizationChecker->isGranted(Attributes::EDIT, Argument::any())->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, Argument::any())->willReturn(true);
 
         $this->configure($datagridConfiguration);
     }
@@ -59,7 +59,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
     function it_configures_the_view_actions_for_a_row($record, $product, $authorizationChecker)
     {
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, Argument::any())->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
@@ -77,7 +77,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
     {
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
@@ -99,7 +99,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
     ) {
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)->willReturn(false);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
@@ -121,7 +121,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
     ) {
         $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(

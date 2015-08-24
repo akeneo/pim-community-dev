@@ -80,17 +80,17 @@ class UserContext extends BaseUserContext
     public function getCurrentGrantedLocale()
     {
         $locale = $this->getRequestLocale();
-        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
             return $locale;
         }
 
         $locale = $this->getUserLocale();
-        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
             return $locale;
         }
 
         $locale = $this->getDefaultLocale();
-        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
             return $locale;
         }
 
@@ -108,7 +108,7 @@ class UserContext extends BaseUserContext
      *
      * @return LocaleInterface[]
      */
-    public function getGrantedUserLocales($permissionLevel = Attributes::VIEW_PRODUCTS)
+    public function getGrantedUserLocales($permissionLevel = Attributes::VIEW_ITEMS)
     {
         return array_filter(
             $this->getUserLocales(),
@@ -128,7 +128,7 @@ class UserContext extends BaseUserContext
     public function getAccessibleUserTree()
     {
 //        $defaultTree = $this->getUserOption('defaultTree');
-//        if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $defaultTree)) {
+//        if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $defaultTree)) {
 //            return $defaultTree;
 //        }
 
@@ -155,6 +155,6 @@ class UserContext extends BaseUserContext
             return [];
         }
 
-        return $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+        return $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS);
     }
 }

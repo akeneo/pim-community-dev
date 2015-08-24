@@ -16,14 +16,14 @@ class LocaleEditRightFilterSpec extends ObjectBehavior
 
     public function it_does_not_filter_a_locale_if_the_user_is_granted_to_edit_this_locale($authorizationChecker, LocaleInterface $enUS)
     {
-        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $enUS)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $enUS)->willReturn(true);
 
         $this->filterObject($enUS, 'pim:locale:edit', [])->shouldReturn(false);
     }
 
     public function it_filters_a_locale_if_the_user_is_not_granted_to_edit_this_locale($authorizationChecker, LocaleInterface $enUS)
     {
-        $authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $enUS)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $enUS)->willReturn(false);
 
         $this->filterObject($enUS, 'pim:locale:edit', [])->shouldReturn(true);
     }

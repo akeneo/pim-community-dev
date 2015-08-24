@@ -53,7 +53,7 @@ class ProductValueLocaleRightFilter extends AbstractFilter implements Collection
 
         return $productValue->getAttribute()->isLocalizable() &&
             !$this->authorizationChecker->isGranted(
-                Attributes::VIEW_PRODUCTS,
+                Attributes::VIEW_ITEMS,
                 $this->localeManager->getLocaleByCode($productValue->getLocale())
             );
     }

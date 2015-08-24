@@ -799,7 +799,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         if (in_array($type, ['product category', 'asset category', 'locale'])) {
-            return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
+            return ($action === 'edit') ? Attributes::EDIT_ITEMS : Attributes::VIEW_ITEMS;
         }
 
         throw new \Exception('Undefined access type');

@@ -55,7 +55,7 @@ class UserContextSpec extends ObjectBehavior
 //    function it_gets_the_default_tree_if_accessible($user, $authorizationChecker, CategoryInterface $secondTree)
 //    {
 //        $user->getDefaultTree()->willReturn($secondTree);
-//        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(true);
+//        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $secondTree)->willReturn(true);
 //
 //        $this->getAccessibleUserTree()->shouldReturn($secondTree);
 //    }
@@ -70,11 +70,11 @@ class UserContextSpec extends ObjectBehavior
         CategoryInterface $thirdTree
     ) {
         $user->getDefaultTree()->willReturn($secondTree);
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $secondTree)->willReturn(false);
 
         $grantedTrees = [$thirdTree, $firstTree];
 
-        $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([1]);
+        $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([1]);
         $categoryRepository->getGrantedTrees([1])->willReturn($grantedTrees);
 
         $this->getAccessibleUserTree()->shouldReturn($thirdTree);
@@ -88,9 +88,9 @@ class UserContextSpec extends ObjectBehavior
         CategoryInterface $firstTree
     ) {
         $user->getDefaultTree()->willReturn($firstTree);
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $firstTree)->willReturn(false);
 
-        $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([1]);
+        $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([1]);
         $categoryRepository->getGrantedTrees([1])->willReturn([]);
 
         $this->shouldThrow(new \LogicException('User should have a default product tree'))->during('getAccessibleUserTree');

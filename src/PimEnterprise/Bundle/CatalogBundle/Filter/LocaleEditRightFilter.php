@@ -45,7 +45,7 @@ class LocaleEditRightFilter extends AbstractFilter implements CollectionFilterIn
             throw new \LogicException('This filter only handles objects of type "LocaleInterface"');
         }
 
-        return !$this->authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale);
+        return !$this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale);
     }
 
     /**

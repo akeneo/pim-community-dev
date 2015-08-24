@@ -65,7 +65,7 @@ class CategoryAccessManager
      */
     public function getViewUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::VIEW_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::VIEW_ITEMS);
     }
 
     /**
@@ -77,7 +77,7 @@ class CategoryAccessManager
      */
     public function getEditUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::EDIT_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::EDIT_ITEMS);
     }
 
     /**
@@ -105,9 +105,9 @@ class CategoryAccessManager
      */
     public function isUserGranted(UserInterface $user, CategoryInterface $category, $attribute)
     {
-        if (Attributes::EDIT_PRODUCTS === $attribute) {
+        if (Attributes::EDIT_ITEMS === $attribute) {
             $grantedUserGroups = $this->getEditUserGroups($category);
-        } elseif (Attributes::VIEW_PRODUCTS === $attribute) {
+        } elseif (Attributes::VIEW_ITEMS === $attribute) {
             $grantedUserGroups = $this->getViewUserGroups($category);
         } else {
             throw new \LogicException(sprintf('Attribute "%" is not supported.', $attribute));
@@ -141,14 +141,14 @@ class CategoryAccessManager
 
         foreach ($editGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($category, $group, Attributes::EDIT_PRODUCTS, $flush);
+                $this->grantAccess($category, $group, Attributes::EDIT_ITEMS, $flush);
                 $grantedGroups[] = $group;
             }
         }
 
         foreach ($viewGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($category, $group, Attributes::VIEW_PRODUCTS, $flush);
+                $this->grantAccess($category, $group, Attributes::VIEW_ITEMS, $flush);
                 $grantedGroups[] = $group;
             }
         }
@@ -420,7 +420,7 @@ class CategoryAccessManager
         $access = $this->getCategoryAccess($category, $group);
         $access
             ->setViewItems(true)
-            ->setEditItems(in_array($accessLevel, [Attributes::EDIT_PRODUCTS, Attributes::OWN_PRODUCTS]))
+            ->setEditItems(in_array($accessLevel, [Attributes::EDIT_ITEMS, Attributes::OWN_PRODUCTS]))
             ->setOwnItems($accessLevel === Attributes::OWN_PRODUCTS);
 
         $this->getObjectManager()->persist($access);

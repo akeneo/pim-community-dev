@@ -93,7 +93,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
     public function getFormOptions()
     {
         return [
-            'locales'        => $this->userContext->getGrantedUserLocales(Attributes::EDIT_PRODUCTS),
+            'locales'        => $this->userContext->getGrantedUserLocales(Attributes::EDIT_ITEMS),
             'all_attributes' => $this->getAllAttributes(),
             'current_locale' => $this->getLocale()->getCode()
         ];

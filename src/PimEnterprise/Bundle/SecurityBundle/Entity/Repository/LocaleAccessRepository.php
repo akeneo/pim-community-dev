@@ -83,8 +83,8 @@ class LocaleAccessRepository extends EntityRepository
     protected function getAccessField($accessLevel)
     {
         $mapping = [
-            Attributes::EDIT_PRODUCTS => 'editProducts',
-            Attributes::VIEW_PRODUCTS => 'viewProducts'
+            Attributes::EDIT_ITEMS => 'editProducts',
+            Attributes::VIEW_ITEMS => 'viewProducts'
         ];
         if (!isset($mapping[$accessLevel])) {
             throw new \LogicException(sprintf('%s access level not exists', $accessLevel));

@@ -75,7 +75,7 @@ class GrantedCategoryItemsCounter extends CategoryItemsCounter
         $inChildren = false,
         $inProvided = true
     ) {
-        if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+        if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
             return 0;
         }
 
@@ -103,7 +103,7 @@ class GrantedCategoryItemsCounter extends CategoryItemsCounter
             $path = $this->categoryRepository->getPath($category);
             $fullPathGranted = true;
             foreach ($path as $pathItem) {
-                if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
+                if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $pathItem)) {
                     $fullPathGranted = false;
                     break;
                 }
@@ -132,7 +132,7 @@ class GrantedCategoryItemsCounter extends CategoryItemsCounter
         $categoryIds = $this->categoryAccessRepo->getGrantedCategoryIdsFromQB(
             $childrenQb,
             $this->tokenStorage->getToken()->getUser(),
-            Attributes::VIEW_PRODUCTS
+            Attributes::VIEW_ITEMS
         );
 
         $rootAlias = current($childrenQb->getRootAliases());

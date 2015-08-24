@@ -46,7 +46,7 @@ class ProductVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_non_attribute_group_entity($token)
     {
         $this
-            ->vote($token, 'foo', array('bar', 'baz'))
+            ->vote($token, 'foo', ['bar', 'baz'])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
@@ -65,7 +65,7 @@ class ProductVoterSpec extends ObjectBehavior
         CategoryInterface $categoryFive,
         CategoryInterface $categorySix
     ) {
-        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_PRODUCTS, [5, 6])->willReturn(false);
+        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_ITEMS, [5, 6])->willReturn(false);
         $product->getCategories()->willReturn([$categoryFive, $categorySix]);
         $categoryFive->getId()->willReturn(5);
         $categorySix->getId()->willReturn(6);
@@ -83,7 +83,7 @@ class ProductVoterSpec extends ObjectBehavior
         CategoryInterface $categoryOne,
         CategoryInterface $categorySix
     ) {
-        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_PRODUCTS, [1, 6])->willReturn(true);
+        $categoryAccessRepository->isCategoriesGranted($user, Attributes::EDIT_ITEMS, [1, 6])->willReturn(true);
         $product->getCategories()->willReturn([$categoryOne, $categorySix]);
         $categoryOne->getId()->willReturn(1);
         $categorySix->getId()->willReturn(6);

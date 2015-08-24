@@ -33,7 +33,7 @@ class CategoryRightFilterSpec extends ObjectBehavior
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
-        $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([3,4]);
+        $categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([3,4]);
 
         $bootCategory->getId()->willReturn(1);
         $shirtCategory->getId()->willReturn(2);
@@ -49,9 +49,9 @@ class CategoryRightFilterSpec extends ObjectBehavior
         $authorizationChecker,
         CategoryInterface $category
     ) {
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)->willReturn(true);
         $this->filterObject($category, 'view')->shouldReturn(false);
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)->willReturn(false);
         $this->filterObject($category, 'view')->shouldReturn(true);
     }
 

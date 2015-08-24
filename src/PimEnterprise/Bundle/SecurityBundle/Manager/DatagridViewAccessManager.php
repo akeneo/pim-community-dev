@@ -132,7 +132,7 @@ class DatagridViewAccessManager
             return false;
         }
 
-        return $this->catAccessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS);
+        return $this->catAccessManager->isUserGranted($user, $category, Attributes::VIEW_ITEMS);
     }
 
     /**

@@ -84,7 +84,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
 
         $categoryRepository->find('3')->willReturn($category);
-        $categoryAccessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS)->willReturn(false);
+        $categoryAccessManager->isUserGranted($user, $category, Attributes::VIEW_ITEMS)->willReturn(false);
 
         $this->isUserGranted($user, $view, Attributes::VIEW)->shouldReturn(false);
     }
@@ -107,7 +107,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $attributeGroupAccessManager->isUserGranted($user, $group, Attributes::VIEW_ATTRIBUTES)->willReturn(true);
 
         $categoryRepository->find('3')->willReturn($category);
-        $categoryAccessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS)->willReturn(true);
+        $categoryAccessManager->isUserGranted($user, $category, Attributes::VIEW_ITEMS)->willReturn(true);
 
         $this->isUserGranted($user, $view, Attributes::VIEW)->shouldReturn(true);
     }
