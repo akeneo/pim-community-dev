@@ -6,9 +6,6 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
@@ -124,7 +121,7 @@ abstract class ItemCategoryRepository implements ItemCategoryRepositoryInterface
     {
         $categoryIds = $this->getCategoryIds($category, $categoryQb);
 
-        $items = $this->getProductIdsInCategories($categoryIds);
+        $items = $this->getItemIdsInCategories($categoryIds);
 
         return array_keys(iterator_to_array($items));
     }
@@ -136,18 +133,18 @@ abstract class ItemCategoryRepository implements ItemCategoryRepositoryInterface
     {
         $categoryIds = $this->getCategoryIds($category, $categoryQb);
 
-        return $this->getProductIdsInCategories($categoryIds)->count();
+        return $this->getItemIdsInCategories($categoryIds)->count();
     }
 
     /**
-     * Return a cursor on the product ids belonging the categories
+     * Return a cursor on the item ids belonging the categories
      * with category ids provided
      *
      * @param array $categoryIds
      *
      * @return Cursor mongoDB cursor on the Ids
      */
-    public function getProductIdsInCategories(array $categoryIds)
+    public function getItemIdsInCategories(array $categoryIds)
     {
         if (empty($categoryIds)) {
             return 0;

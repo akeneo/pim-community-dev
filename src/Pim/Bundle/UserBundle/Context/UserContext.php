@@ -40,7 +40,7 @@ class UserContext
     protected $channelRepository;
 
     /** @var CategoryRepositoryInterface */
-    protected $productCategoryRepo;
+    protected $categoryRepository;
 
     /** @var RequestStack */
     protected $requestStack;
@@ -58,7 +58,7 @@ class UserContext
      * @param TokenStorageInterface       $tokenStorage
      * @param LocaleRepositoryInterface   $localeRepository
      * @param ChannelRepositoryInterface  $channelRepository
-     * @param CategoryRepositoryInterface $productCategoryRepo
+     * @param CategoryRepositoryInterface $categoryRepository
      * @param RequestStack                $requestStack
      * @param string                      $defaultLocale
      */
@@ -66,18 +66,18 @@ class UserContext
         TokenStorageInterface $tokenStorage,
         LocaleRepositoryInterface $localeRepository,
         ChannelRepositoryInterface $channelRepository,
-        CategoryRepositoryInterface $productCategoryRepo,
+        CategoryRepositoryInterface $categoryRepository,
         RequestStack $requestStack,
         ChoicesBuilderInterface $choicesBuilder,
         $defaultLocale
     ) {
-        $this->tokenStorage        = $tokenStorage;
-        $this->localeRepository    = $localeRepository;
-        $this->channelRepository   = $channelRepository;
-        $this->productCategoryRepo = $productCategoryRepo;
-        $this->requestStack        = $requestStack;
-        $this->choicesBuilder      = $choicesBuilder;
-        $this->defaultLocale       = $defaultLocale;
+        $this->tokenStorage      = $tokenStorage;
+        $this->localeRepository  = $localeRepository;
+        $this->channelRepository = $channelRepository;
+        $this->categoryRepository= $categoryRepository;
+        $this->requestStack      = $requestStack;
+        $this->choicesBuilder    = $choicesBuilder;
+        $this->defaultLocale     = $defaultLocale;
     }
 
     /**
@@ -225,7 +225,7 @@ class UserContext
     {
         $defaultTree = $this->getUserOption('defaultTree');
 
-        return $defaultTree ?: current($this->productCategoryRepo->getTrees());
+        return $defaultTree ?: current($this->categoryRepository->getTrees());
     }
 
     /**
