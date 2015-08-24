@@ -133,10 +133,15 @@ class CategoryTreeController extends BaseCategoryTreeController
         $context       = $request->get('context', false);
 
         if ($isEditGranted && self::CONTEXT_MANAGE === $context) {
-            $categories = $this->categoryRepository->getChildrenByParentId($parent->getId());
+            $categories = parent::getChildrenCategories($request, $selectNode);
         } else {
             $grantedCategoryIds = $this->getGrantedCategories();
-            $categories = $this->categoryRepository->getChildrenGrantedByParentId($parent, $grantedCategoryIds);
+
+            if (null !== $selectNode) {
+                $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId(), $grantedCategoryIds);
+            } else {
+                $categories = $this->categoryRepository->getChildrenGrantedByParentId($parent, $grantedCategoryIds);
+            }
         }
 
         return $categories;
