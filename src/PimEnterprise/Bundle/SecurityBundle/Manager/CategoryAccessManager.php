@@ -19,6 +19,7 @@ use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -166,10 +167,16 @@ class CategoryAccessManager
      * Set the accesses of a category like its parent.
      *
      * @param CategoryInterface $category
+     * @param array             $options
      * @param bool              $flush
      */
-    public function setAccessLikeParent(CategoryInterface $category, $flush = false)
+    public function setAccessLikeParent(CategoryInterface $category, array $options = [], $flush = false)
     {
+        $resolver = new OptionsResolver();
+        $this->configure($resolver);
+
+        $options = $resolver->resolve($options);
+
         // in case we have several new nested categories, we need to find the first ancestor that is managed
         // (ie: that has an ID and so permissions)
         $current = $category;
@@ -184,7 +191,7 @@ class CategoryAccessManager
                 $category,
                 $this->getViewUserGroups($ancestor),
                 $this->getEditUserGroups($ancestor),
-                $this->getOwnUserGroups($ancestor),
+                (true === $options['owner']) ? $this->getOwnUserGroups($ancestor) : [],
                 $flush
             );
         } else {
@@ -194,7 +201,7 @@ class CategoryAccessManager
                 $category,
                 [$defaultUserGroup],
                 [$defaultUserGroup],
-                [$defaultUserGroup],
+                (!isset($options['owner']) || true === $options['owner']) ? [$defaultUserGroup] : [],
                 $flush
             );
         }
@@ -508,5 +515,14 @@ class CategoryAccessManager
     protected function getObjectManager()
     {
         return $this->registry->getManagerForClass($this->categoryAccessClass);
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    protected function configure(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(['owner' => true])
+            ->setAllowedTypes('owner', 'boolean');
     }
 }
