@@ -11,7 +11,7 @@ Feature: Edit product assets variations
   Scenario: Successfully delete reference file
     Given I am on the "bridge" asset page
     And I visit the "Variations" tab
-    And I upload the reference file bridge.jpg
+    And I upload the reference file akene.jpg
     And I save the asset
     And I delete the reference file
     And I confirm the deletion
@@ -40,7 +40,7 @@ Feature: Edit product assets variations
   Scenario: Successfully delete variation file
     Given I am on the "bridge" asset page
     And I visit the "Variations" tab
-    And I upload the reference file bridge.jpg
+    And I upload the reference file akene.jpg
     And I save the asset
     Given I delete the Tablet variation file
     And I confirm the deletion
@@ -54,7 +54,7 @@ Feature: Edit product assets variations
   Scenario: Successfully reset variations files
     Given I am on the "bridge" asset page
     And I visit the "Variations" tab
-    And I upload the reference file bridge.jpg
+    And I upload the reference file akene.jpg
     And I save the asset
     Given I reset variations files
     And I confirm the action
@@ -62,7 +62,7 @@ Feature: Edit product assets variations
   Scenario: Successfully reset one variation file
     Given I am on the "bridge" asset page
     And I visit the "Variations" tab
-    And I upload the reference file bridge.jpg
+    And I upload the reference file akene.jpg
     And I save the asset
     Given I delete the Mobile variation file
     And I confirm the deletion
