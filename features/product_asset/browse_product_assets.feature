@@ -7,6 +7,19 @@ Feature: Browse product assets
   Background:
     Given a "clothing" catalog configuration
     And I am logged in as "Pamela"
+    And I am on the "paint" asset page
+    And I visit the "Variations" tab
+    And I upload the reference file akene.jpg
+    And I save the asset
+    And I am on the "chicagoskyline" asset page
+    And I visit the "Variations" tab
+    And I switch the locale to "German (Germany)"
+    And I upload the reference file akene.jpg
+    And I save the asset
+    And I visit the "Variations" tab
+    And I switch the locale to "English (United States)"
+    And I upload the reference file akene.jpg
+    And I save the asset
     And I am on the assets page
 
   Scenario: Successfully display product assets
