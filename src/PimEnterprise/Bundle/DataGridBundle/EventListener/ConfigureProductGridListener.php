@@ -12,12 +12,12 @@
 namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ColumnsConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener as BaseConfigureProductGridListener;
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator;
+use PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\RowActionsConfigurator;
 
 /**
  * Grid listener to configure columns, filters, sorters and rows actions
@@ -27,14 +27,10 @@ use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator;
  */
 class ConfigureProductGridListener extends BaseConfigureProductGridListener
 {
-    /**
-     * @var RowActionsConfigurator
-     */
+    /** @var RowActionsConfigurator */
     protected $actionsConfigurator;
 
     /**
-     * Constructor
-     *
      * @param ContextConfigurator    $contextConfigurator
      * @param ColumnsConfigurator    $columnsConfigurator
      * @param FiltersConfigurator    $filtersConfigurator

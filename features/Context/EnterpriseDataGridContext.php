@@ -61,4 +61,44 @@ class EnterpriseDataGridContext extends BaseDataGridContext
 
         $this->wait();
     }
+
+    /**
+     * @Then /^the row "([^"]+)" should contain the thumbnail for channel "([^"]+)"(?: and locale "([^"]+)")?$/
+     *
+     * @param string      $code
+     * @param string      $channelCode
+     * @param string|null $localeCode
+     *
+     * @throws ExpectationException
+     */
+    public function theRowShouldContainThumbnailForContext($code, $channelCode, $localeCode = null)
+    {
+        $cell  = $this->datagrid->getColumnNode('thumbnail', $code);
+        $image = $cell->find('css', 'img');
+
+        if (!$image) {
+            throw $this->createExpectationException(
+                sprintf('Column "thumbnail" of row "%s" contains no image.', $code)
+            );
+        }
+
+        $thumbnailPath = $image->getAttribute('src');
+        if (false === strpos($thumbnailPath, sprintf('_%s.', $channelCode))) {
+            throw $this->createExpectationException(sprintf(
+                'Expecting thumbnail path of row "%s" to contain scope "%s", full path is "%s".',
+                $code,
+                $channelCode,
+                $thumbnailPath
+            ));
+        }
+
+        if (null !== $localeCode && false === strpos($thumbnailPath, sprintf('_%s_', $localeCode))) {
+            throw $this->createExpectationException(sprintf(
+                'Expecting thumbnail path of row "%s" to contain locale code "%s", full path is "%s".',
+                $code,
+                $localeCode,
+                $thumbnailPath
+            ));
+        }
+    }
 }

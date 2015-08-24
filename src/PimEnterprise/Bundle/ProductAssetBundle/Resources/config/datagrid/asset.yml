@@ -9,42 +9,42 @@ datagrid:
             repository_parameters:
                 - currentUser
         columns:
-            references:
-                label:         pimee_product_asset.thumbnail.label
+            thumbnail:
                 type:          asset_thumbnail
-                template:      PimEnterpriseProductAssetBundle:Property:thumbnail.html.twig
                 frontend_type: html
+                label:         pimee_product_asset.thumbnail.label
+                template:      PimEnterpriseProductAssetBundle:Property:thumbnail.html.twig
                 selector:      asset_thumbnail
             code:
-                type: field
+                type:          field
                 frontend_type: string
-                label: pimee_product_asset.code.label
+                label:         pimee_product_asset.code.label
             description:
-                type: field
+                type:          field
                 frontend_type: string
-                label: pimee_product_asset.description.label
+                label:         pimee_product_asset.description.label
             tags:
-                label: Tags
-                type: twig
-                template: PimDataGridBundle:Property:options.html.twig
+                type:          twig
                 frontend_type: html
+                label:         pimee_product_asset.tags.label
+                template:      PimDataGridBundle:Property:options.html.twig
 #            enabled:
 #                label:         pimee_product_asset.status.label
 #                type:          twig
 #                template:      PimDataGridBundle:Property:enabled.html.twig
 #                frontend_type: html
             endOfUseAt:
-                type: field
+                type:          field
                 frontend_type: date
-                label: pimee_product_asset.endOfUse.label
+                label:         pimee_product_asset.endOfUse.label
             createdAt:
-                type: field
+                type:          field
                 frontend_type: date
-                label: pimee_product_asset.createdAt.label
+                label:         pimee_product_asset.createdAt.label
             updatedAt:
-                type: field
+                type:          field
                 frontend_type: date
-                label: pimee_product_asset.updatedAt.label
+                label:         pimee_product_asset.updatedAt.label
         sorters:
             columns:
                 code:
@@ -113,4 +113,3 @@ datagrid:
                 route: pimee_product_asset_edit
                 params:
                     - id
-#                    - dataLocale

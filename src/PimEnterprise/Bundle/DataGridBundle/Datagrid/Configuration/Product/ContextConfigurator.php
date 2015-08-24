@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
+namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as BaseContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator as BaseContextConfigurator;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
@@ -30,19 +30,13 @@ class ContextConfigurator extends BaseContextConfigurator
     /** @staticvar string */
     const CURRENT_TREE_ID_KEY = 'current_tree_id';
 
-    /**
-     * @var AttributeGroupAccessRepository
-     */
+    /** @var AttributeGroupAccessRepository */
     protected $accessRepository;
 
-    /**
-     * @param integer[]
-     */
+    /** @param integer[] */
     protected $grantedGroupIds;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
     /**

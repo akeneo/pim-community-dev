@@ -9,6 +9,7 @@ Feature: Assign assets to a product
     And the following products:
       | sku   |
       | shirt |
+    And I generate missing variations
     And I am logged in as "Julia"
 
   Scenario: Succesfully assign assets to a product
@@ -34,3 +35,16 @@ Feature: Assign assets to a product
     Then the "Front view" asset gallery should contains akene, dog
     And I save the product
     Then the "Front view" asset gallery should contains akene, dog
+
+  Scenario: Display assets thumbnails for current scope and locale
+    Given I am on the "shirt" product page
+    And I add available attributes Front view
+    When I start to manage assets for "Front view"
+    Then the row "paint" should contain the thumbnail for channel "tablet"
+    And the row "chicagoskyline" should contain the thumbnail for channel "tablet" and locale "en_US"
+    When I cancel the asset modification
+    And I switch the scope to "mobile"
+    And I switch the locale to "de_DE"
+    And I start to manage assets for "[front_view]"
+    Then the row "paint" should contain the thumbnail for channel "mobile"
+    And the row "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "de_DE"

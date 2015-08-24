@@ -57,7 +57,7 @@ datagrid:
                 label: pimee_workflow.product_draft.action.refuse
                 icon: remove
                 link: refuse_link
-        action_configuration: '@pimee_datagrid.datagrid.proposal.grid_helper->getActionConfigurationClosure'
+        action_configuration: '@pimee_datagrid.datagrid.configuration.proposal.grid_helper->getActionConfigurationClosure'
         mass_actions:
             mass_approve:
                 type: redirect
@@ -81,7 +81,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices: '@pimee_datagrid.datagrid.proposal.grid_helper->getAuthorChoices'
+                            choices: '@pimee_datagrid.datagrid.configuration.proposal.grid_helper->getAuthorChoices'
                 createdAt:
                     type:      product_draft_date
                     ftype:     date

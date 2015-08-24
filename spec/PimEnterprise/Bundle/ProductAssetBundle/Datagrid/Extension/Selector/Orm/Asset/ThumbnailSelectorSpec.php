@@ -23,9 +23,11 @@ class ThumbnailSelectorSpec extends ObjectBehavior
         $qb->getRootAlias()->willReturn('pa');
 
         $qb->leftJoin('pa.references', 'aReferences')->willReturn($qb);
-        $qb->leftJoin('aReferences.file', 'aReferencesFile')->willReturn($qb);
-        $qb->addSelect('aReferencesFile')->willReturn($qb);
+        $qb->leftJoin('aReferences.variations', 'rVariations')->willReturn($qb);
+        $qb->leftJoin('rVariations.file', 'vFile')->willReturn($qb);
         $qb->addSelect('aReferences')->willReturn($qb);
+        $qb->addSelect('rVariations')->willReturn($qb);
+        $qb->addSelect('vFile')->willReturn($qb);
 
         $this->apply($datasource, $config);
     }

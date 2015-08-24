@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal;
+namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;

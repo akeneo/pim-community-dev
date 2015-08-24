@@ -101,8 +101,16 @@ Based on a PIM standard installation, execute the following command in your proj
 
 ```
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\MongoDBODM\\ProductMassActionRepository/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\MongoDBODM\\Repository\\ProductMassActionRepository/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Entity\\Repository\\AttributeRepository/PimEnterprise\\Bundle\\CatalogBundle\\{Entity → Doctrine\\ORM}\\Repository\\AttributeRepository/g'
-    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\ORM\\{ → Repository}\\ProductMassActionRepository/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\ProductMassActionRepository/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Entity\\Repository\\AttributeRepository/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\AttributeRepository/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\ORM\\ProductMassActionRepository/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\ProductMassActionRepository/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Product\\ContextConfigurator/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\ContextConfigurator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Product\\FiltersConfigurator/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\FiltersConfigurator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Product\\RowActionsConfigurator/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\RowActionsConfigurator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\ProductDraft\\GridHelper/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\Draft\\GridHelper/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\ProductHistory\\GridHelper/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\History\\GridHelper/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Proposal\\ContextConfigurator/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Proposal\\ContextConfigurator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Proposal\\GridHelper/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Proposal\\GridHelper/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\PublishedProduct\\GridHelper/PimEnterprise\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Publish\edProduct\\GridHelper/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\MongoDBODM\\ProductDraftRepository/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\MongoDBODM\\Repository\\ProductDraftRepository/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\MongoDBODM\\PublishedProductRepository/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\MongoDBODM\\Repository\\PublishedProductRepository/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\ORM\\ProductDraftRepository/PimEnterprise\\Bundle\\WorkflowBundle\\Doctrine\\ORM\\Repository\\ProductDraftRepository/g'

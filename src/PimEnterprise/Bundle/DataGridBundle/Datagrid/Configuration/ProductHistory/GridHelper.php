@@ -9,36 +9,36 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\PublishedProduct;
+namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\ProductHistory;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Helper for published datagrid
+ * Helper for product history to display revert action
  *
- * @author Julien Janvier <julien.janvier@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class GridHelper
 {
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var PublishedProductRepositoryInterface */
-    protected $publishedRepository;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /**
-     * @param AuthorizationCheckerInterface       $authorizationChecker
-     * @param PublishedProductRepositoryInterface $publishedRepository
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ProductRepositoryInterface    $productRepository
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        PublishedProductRepositoryInterface $publishedRepository
+        ProductRepositoryInterface $productRepository
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->publishedRepository  = $publishedRepository;
+        $this->productRepository    = $productRepository;
     }
 
     /**
@@ -49,13 +49,11 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            /** @var \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface $published */
-            $published = $this->publishedRepository->findOneById($record->getValue('id'));
-            $product = $published->getOriginalProduct();
+            $product = $this->productRepository->findOneById($record->getValue('resourceId'));
             $ownershipGranted = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 
             return [
-                'unpublish' => $ownershipGranted,
+                'revert' => $ownershipGranted
             ];
         };
     }

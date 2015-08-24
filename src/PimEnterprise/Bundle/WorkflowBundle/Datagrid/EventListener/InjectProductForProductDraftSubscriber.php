@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 
 /**
  * Inject the product id for product draft datagrid
@@ -47,7 +47,7 @@ class InjectProductForProductDraftSubscriber
         if (null !== $productId) {
             $datagridConfig = $event->getConfig();
             $datagridConfig->offsetSetByPath(
-                sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::REPOSITORY_PARAMETERS_KEY),
+                sprintf(ConfiguratorInterface::SOURCE_PATH, ConfiguratorInterface::REPOSITORY_PARAMETERS_KEY),
                 ['product' => $productId]
             );
         }

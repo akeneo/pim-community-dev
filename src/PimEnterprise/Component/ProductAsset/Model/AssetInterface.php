@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -131,38 +132,48 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
     public function setEnabled($isEnabled);
 
     /**
-     * @return \Datetime
+     * @return \DateTime
      */
     public function getEndOfUseAt();
 
     /**
-     * @param \Datetime|null $endOfUseAt
+     * @param \DateTime|null $endOfUseAt
      *
      * @return AssetInterface
      */
     public function setEndOfUseAt($endOfUseAt);
 
     /**
-     * @return \Datetime
+     * @return \DateTime
      */
     public function getCreatedAt();
 
     /**
-     * @param \Datetime $createdAt
+     * @param \DateTime $createdAt
      *
      * @return AssetInterface
      */
-    public function setCreatedAt(\Datetime $createdAt);
+    public function setCreatedAt(\DateTime $createdAt);
 
     /**
-     * @return \Datetime
+     * @return \DateTime
      */
     public function getUpdatedAt();
 
     /**
-     * @param \Datetime $updatedAt
+     * @param \DateTime $updatedAt
      *
      * @return AssetInterface
      */
-    public function setUpdatedAt(\Datetime $updatedAt);
+    public function setUpdatedAt(\DateTime $updatedAt);
+
+    /**
+     * Look for the variation corresponding to the specified channel and locale and return its file.
+     *
+     * @param ChannelInterface     $channel
+     * @param LocaleInterface|null $locale
+     *
+     * @return FileInterface|null
+     */
+    public function getFileForContext(ChannelInterface $channel, LocaleInterface $locale = null);
 }
