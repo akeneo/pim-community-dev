@@ -25,12 +25,3 @@ services:
             - '@security.token_storage'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_asset_category }
-
-    pimee_product_asset.filter.category:
-        class: %pimee_catalog.filter.category.class%
-        arguments:
-            - '@security.token_storage'
-            - '@pimee_product_asset.repository.asset_category_access' # TODO: Update to the entity agnostic category access repo in PIM-4411
-            - '@security.authorization_checker'
-        tags:
-            - { name: pim_catalog.filter.object, type: pim.internal_api.asset_category.view }
