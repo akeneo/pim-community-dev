@@ -24,7 +24,7 @@ Feature: Check product edit tabs visibility
     Then I should see the "Categories" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-4797
-  Scenario: Not being able to update associations of a product if I am not owner
+  Scenario: Not being able to view associations of a product if I am not owner
     Given I am logged in as "Mary"
     And I edit the "rangers" product
     Then I should not see the "Associations" tab
