@@ -10,11 +10,13 @@
 define([
         'backbone',
         'underscore',
+        'pim/field',
         'text!pim/template/product/tab/attribute/copy-field',
-        'pim/i18n'
+        'pim/i18n',
+        'oro/mediator'
     ],
-    function (Backbone, _, template, i18n) {
-        return Backbone.View.extend({
+    function (Backbone, _, Field, template, i18n, mediator) {
+        return Field.extend({
             tagName: 'div',
             field: null,
             locale: null,
@@ -32,6 +34,8 @@ define([
             initialize: function () {
                 this.selected = false;
                 this.field    = null;
+
+                Field.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -54,15 +58,39 @@ define([
                     i18n: i18n
                 };
 
+                mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': []});
+
                 this.$el.html(this.template(templateContext));
-                this.field.renderCopyInput(this.value)
+                this.field.renderCopyInput(this.getCurrentValue())
                     .then(function (render) {
                         this.$('.field-input').html(render);
+                        this.renderElements();
                     }.bind(this));
 
                 this.delegateEvents();
 
                 return this;
+            },
+
+            /**
+             * Render elements of this field in different available positions.
+             * In the copy case, only implements extension on input position.
+             */
+            renderElements: function () {
+                _.each(this.elements, function (elements, position) {
+                    if ('field-input' === position) {
+                        var $container = this.$('.field-input');
+                        $container.empty();
+
+                        _.each(elements, function (element) {
+                            if (typeof element.render === 'function') {
+                                $container.append(element.render().$el);
+                            } else {
+                                $container.append(element);
+                            }
+                        }.bind(this));
+                    }
+                }.bind(this));
             },
 
             /**
@@ -74,46 +102,28 @@ define([
                 this.value = value;
             },
 
-            /**
-             * Set the locale
-             *
-             * @param {string} locale
-             */
-            setLocale: function (locale) {
-                this.locale = locale;
-            },
-
-            /**
-             * Set the scope
-             *
-             * @param {string} scope
-             */
-            setScope: function (scope) {
-                this.scope = scope;
-            },
-
-            /**
-             * Bound this copy field to the original field
-             *
-             * @param {Field} field
-             */
+           /**
+            * Bound this copy field to the original field
+            *
+            * @param {Field} field
+            */
             setField: function (field) {
                 this.field = field;
             },
 
-            /**
-             * Callback called when the copy field is clicked, toggle the select checkbox state
-             */
+           /**
+            * Callback called when the copy field is clicked, toggle the select checkbox state
+            */
             onSelect: function () {
                 this.selected = !this.selected;
                 this.$('.copy-field-selector').prop('checked', this.selected);
             },
 
-            /**
-             * Mark this copy field as selected or not
-             *
-             * @param {boolean} selected
-             */
+           /**
+            * Mark this copy field as selected or not
+            *
+            * @param {boolean} selected
+            */
             setSelected: function (selected) {
                 this.selected = selected;
             }
