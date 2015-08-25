@@ -1,7 +1,11 @@
 Dear {{ user.firstName }} {{ user.lastName }},<br><br>
 This email is a reminder to inform you that the following {% if assets|length > 1 %}Asset{% else %}Asset{% endif %}:
 {% for asset in assets %}
-    <a href="{{ asset['url'] }}" >“{{ asset.code }}”</a>,
+    {% if null != baseUrl %}
+        <a href="{{ baseUrl }}{{ asset['url'] }}" >“{{ asset.code }}”</a>,
+    {% else %}
+        “{{ asset.code }}”,
+    {% endif %}
 {% endfor %}
 in the Akeneo PIM will be not authorized to be used in {{ nb }} {{ unit }}, the exact expiration date is {{ assets[0].endOfUseAt|localizeddate('medium', 'none', locale) }}.<br><br>
 Best regards,<br>

@@ -15,6 +15,7 @@ use Pim\Bundle\NotificationBundle\Email\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -27,16 +28,40 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class SendAlertNotificationsCommand extends ContainerAwareCommand
 {
+    /** @var string */
+    protected $htmlBodyTemplate = '@PimEnterpriseProductAsset/Email/notification.html.twig';
+
+    /** @var string */
+    protected $textBodyTemplate = '@PimEnterpriseProductAsset/Email/notification.txt.twig';
+
+    /** @var string */
+    protected $baseUrl = null;
+
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('pim:asset:send-notification');
-        $this->setDescription(
-            'Send a notification and an email if it\'s
-             enabled for the user when an Asset will be outdated soon'
-        );
+        $this->setName('pim:asset:send-expiration-notification')
+            ->setDescription(
+                'Send a notification and an email if it\'s
+                 enabled for the user when an Asset will be outdated soon'
+            )
+            ->addArgument(
+                'base-url',
+                InputArgument::OPTIONAL,
+                'The base url for the website'
+            )
+            ->addArgument(
+                'html-template',
+                InputArgument::OPTIONAL,
+                'The html template you want to use for emails'
+            )
+            ->addArgument(
+                'text-template',
+                InputArgument::OPTIONAL,
+                'The text template you want to use for emails'
+            );
     }
 
     /**
@@ -44,31 +69,46 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (null !== $htmlBodyTemplate = $input->getArgument('html-template')) {
+            $this->htmlBodyTemplate = $htmlBodyTemplate;
+        }
+
+        if (null !== $textBodyTemplate = $input->getArgument('text-template')) {
+            $this->textBodyTemplate = $textBodyTemplate;
+        }
+
+        if (null !== $baseUrl = $input->getArgument('base-url')) {
+            $this->baseUrl = $baseUrl;
+        }
+
         $users = $this->getUserRepository()->findBy(['emailNotifications' => true]);
 
         foreach ($users as $user) {
             $assets = $this->getAssetRepository()
-                ->findAllAssetsByEndOfUse(new \DateTime(), $user->getAssetDelayReminder());
+                ->findExpiringAssets(new \DateTime(), $user->getAssetDelayReminder());
 
             foreach ($assets as &$asset) {
                 $uri = $this->getRouter()->generate('pimee_product_asset_view', ['id' => $asset['id']]);
                 $asset['url'] = $uri;
             }
 
-            $parameters = [
-                    'user'   => $user,
-                    'assets' => $assets,
-                    'nb'     => $user->getAssetDelayReminder(),
-                    'unit'   => 'days',
-                    'locale' => 'en_US'
+            if (!empty($assets)) {
+                $parameters = [
+                    'user'    => $user,
+                    'assets'  => $assets,
+                    'baseUrl' => $baseUrl,
+                    'nb'      => $user->getAssetDelayReminder(),
+                    'unit'    => 'days',
+                    'locale'  => 'en_US'
                 ];
 
-            $htmlBody = $this->getTemplating()
-                ->render('@PimEnterpriseProductAsset/Email/notification.html.twig', $parameters);
-            $txtBody = $this->getTemplating()
-                ->render('@PimEnterpriseProductAsset/Email/notification.txt.twig', $parameters);
+                $htmlBody = $this->getTemplating()
+                    ->render($this->htmlBodyTemplate, $parameters);
+                $txtBody = $this->getTemplating()
+                    ->render($this->textBodyTemplate, $parameters);
 
-            $this->getMailNotifier()->notify([$user], 'Asset expiration', $txtBody, $htmlBody);
+                $this->getMailNotifier()->notify([$user], 'Asset expiration', $txtBody, $htmlBody);
+            }
         }
 
         $output->writeln('<info>Done!</info>');

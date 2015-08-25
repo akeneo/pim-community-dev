@@ -95,5 +95,5 @@ interface AssetRepositoryInterface extends
      *
      * @return AssetInterface[]
      */
-    public function findAllAssetsByEndOfUse(\DateTime $now, $delay = 5);
+    public function findExpiringAssets(\DateTime $now, $delay = 5);
 }
