@@ -105,6 +105,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
+            $stepStats = [
+                'scenario_file'  => strstr($event->getLogicalParent()->getFile(), 'features/'),
+                'scenario_line'  => $event->getLogicalParent()->getLine(),
+                'scenario_label' => $event->getLogicalParent()->getTitle(),
+                'exception'      => $event->getException()->getMessage(),
+                'step_line'      => $event->getStep()->getLine(),
+                'step_label'     => $event->getStep()->getText(),
+                'status'         => 'failed'
+            ];
+
             if ($driver instanceof Selenium2Driver) {
                 $dir      = getenv('WORKSPACE');
                 $buildUrl = getenv('BUILD_URL');
@@ -130,7 +140,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                     );
                 }
 
+                $stepStats['screenshot'] = $path;
                 $this->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
+            }
+
+            if ('JENKINS' === getenv('BEHAT_CONTEXT')) {
+                echo sprintf("\033[1;37m##glados_step##%s##glados_step##\033[0m\n", json_encode($stepStats));
             }
         }
     }

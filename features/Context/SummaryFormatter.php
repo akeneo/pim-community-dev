@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Behat\DataCollector\LoggerDataCollector;
 use Behat\Behat\Event\FeatureEvent;
 use Behat\Behat\Formatter\ProgressFormatter;
 
@@ -42,5 +43,24 @@ class SummaryFormatter extends ProgressFormatter
 
         $this->writeLn();
         $this->write(sprintf('Executed feature %s', $relativeName));
+    }
+
+    /**
+     * Prints scenarios summary information.
+     *
+     * @param LoggerDataCollector $logger suite logger
+     */
+    protected function printScenariosSummary(LoggerDataCollector $logger)
+    {
+        parent::printScenariosSummary($logger);
+
+        if ('JENKINS' === getenv('BEHAT_CONTEXT')) {
+            $this->write(
+                sprintf(
+                    "\033[1;37m##glados_scenario##%s##glados_scenario##\033[0m",
+                    json_encode($logger->getScenariosStatuses())
+                )
+            );
+        }
     }
 }

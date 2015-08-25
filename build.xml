@@ -329,6 +329,7 @@
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
             <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
+            <env key="BEHAT_CONTEXT" value="JENKINS" />
         </exec>
     </target>
 
