@@ -5,7 +5,7 @@ Feature: Display the asset category history
 
   @javascript @skip-doc
   Scenario: Display asset category updates
-    Given the "default" catalog configuration
+    Given the "clothing" catalog configuration
     And I am logged in as "Pamela"
     And I am on the asset category tree creation page
     When I fill in the following information:

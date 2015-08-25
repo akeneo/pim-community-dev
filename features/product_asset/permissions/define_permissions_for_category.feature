@@ -15,8 +15,8 @@ Feature: Define permissions for an asset category
     And I save the category
     When I edit the "newcategory" asset category
     And I visit the "Permissions" tab
-    Then I should see the permission Allowed to view assets with user groups All, IT support, Manager and Redactor
-    And I should see the permission Allowed to edit assets with user groups All, IT support, Manager and Redactor
+    Then I should see the permission Allowed to view assets with user groups IT support, Manager and Redactor
+    And I should see the permission Allowed to edit assets with user groups IT support, Manager and Redactor
 
   Scenario: By default, update children when the parent's permissions are changed
     Given the following assets categories:

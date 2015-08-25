@@ -81,13 +81,13 @@ Feature: Import categories
       | tshirts            | Tshirts            | clothes            |
     When I edit the "clothes" asset category
     And I visit the "Permissions" tab
-    Then I should see the permission Allowed to view assets with user groups All, IT support, Manager and Redactor
-    And I should see the permission Allowed to edit assets with user groups All, IT support, Manager and Redactor
+    Then I should see the permission Allowed to view assets with user groups IT support, Manager and Redactor
+    And I should see the permission Allowed to edit assets with user groups IT support, Manager and Redactor
     And I should not see "Allowed to own assets"
     When I edit the "tshirts" asset category
     And I visit the "Permissions" tab
-    Then I should see the permission Allowed to view assets with user groups All, IT support, Manager and Redactor
-    And I should see the permission Allowed to edit assets with user groups All, IT support, Manager and Redactor
+    Then I should see the permission Allowed to view assets with user groups IT support, Manager and Redactor
+    And I should see the permission Allowed to edit assets with user groups IT support, Manager and Redactor
     And I should not see "Allowed to own assets"
 
   Scenario: Set default permissions to categories that belongs to a new tree
