@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Flat category normalizer
+ * Flat asset category normalizer
  *
- * @author Julien Sanchez <julien@akeneo.com>
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class CategoryNormalizer implements NormalizerInterface
+class AssetCategoryNormalizer implements NormalizerInterface
 {
     /** @var array */
     protected $supportedFormats = ['csv'];
@@ -28,17 +28,19 @@ class CategoryNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $categoryNormalizer;
 
-    /** @var CategoryAccessManager */
-    protected $accessManager;
+    /** @var CategoryAccessRepository */
+    protected $categoryManager;
 
     /**
-     * @param NormalizerInterface   $categoryNormalizer
-     * @param CategoryAccessManager $accessManager
+     * @param NormalizerInterface      $categoryNormalizer
+     * @param CategoryAccessRepository $categoryManager
      */
-    public function __construct(NormalizerInterface $categoryNormalizer, CategoryAccessManager $accessManager)
-    {
+    public function __construct(
+        NormalizerInterface $categoryNormalizer,
+        CategoryAccessManager $categoryManager
+    ) {
         $this->categoryNormalizer = $categoryNormalizer;
-        $this->accessManager      = $accessManager;
+        $this->categoryManager    = $categoryManager;
     }
 
     /**
@@ -50,15 +52,11 @@ class CategoryNormalizer implements NormalizerInterface
 
         if (true === $context['versioning']) {
             $normalizedCategory['view_permission'] = implode(
-                array_map('strval', $this->accessManager->getViewUserGroups($category)),
+                array_map('strval', $this->categoryManager->getViewUserGroups($category)),
                 ','
             );
             $normalizedCategory['edit_permission'] = implode(
-                array_map('strval', $this->accessManager->getEditUserGroups($category)),
-                ','
-            );
-            $normalizedCategory['own_permission'] = implode(
-                array_map('strval', $this->accessManager->getOwnUserGroups($category)),
+                array_map('strval', $this->categoryManager->getEditUserGroups($category)),
                 ','
             );
         }

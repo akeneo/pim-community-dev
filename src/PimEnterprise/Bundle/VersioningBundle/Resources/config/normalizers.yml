@@ -1,7 +1,8 @@
 parameters:
     pimee_versioning.normalizer.category.class:        PimEnterprise\Bundle\TransformBundle\Normalizer\Flat\CategoryNormalizer
     pimee_versioning.normalizer.attribute_group.class: PimEnterprise\Bundle\TransformBundle\Normalizer\Flat\AttributeGroupNormalizer
-    pimee_versioning.normalizer.locale.class: PimEnterprise\Bundle\TransformBundle\Normalizer\Flat\LocaleNormalizer
+    pimee_versioning.normalizer.locale.class:          PimEnterprise\Bundle\TransformBundle\Normalizer\Flat\LocaleNormalizer
+    pimee_versioning.normalizer.asset_category.class:  PimEnterprise\Bundle\TransformBundle\Normalizer\Flat\AssetCategoryNormalizer
 
 services:
     pimee_versioning.normalizer.category:
@@ -25,5 +26,13 @@ services:
         arguments:
             - '@pim_versioning.serializer.normalizer.flat.locale'
             - '@pimee_security.manager.locale_access'
+        tags:
+            - { name: pim_versioning.serializer.normalizer, priority: 100 }
+
+    pimee_versioning.normalizer.asset_category:
+        class: %pimee_versioning.normalizer.asset_category.class%
+        arguments:
+            - '@pim_serializer.normalizer.flat.category'
+            - '@pimee_product_asset.manager.category_access'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 100 }
