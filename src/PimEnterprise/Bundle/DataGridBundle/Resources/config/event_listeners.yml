@@ -2,3 +2,11 @@ parameters:
     pim_datagrid.event_listener.configure_product_grid_listener.class:       PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener
     pimee_datagrid.event_listener.add_permissions_to_grid.class:             PimEnterprise\Bundle\DataGridBundle\EventListener\AddPermissionsToGridListener
     pimee_datagrid.event_listener.configure_job_profile_grid_listener.class: PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureJobProfileGridListener
+
+services:
+    pim_datagrid.event_listener.configure_published_product_filters:
+        class: %pim_datagrid.event_listener.configure_product_filters.class%
+        arguments:
+            - @pim_user.context.user
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.published-product-grid, method: onBuildAfter }
