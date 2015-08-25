@@ -1,14 +1,14 @@
 @javascript
 Feature: List assets categories
   In order to be able to see the categories in my catalog
-  As a product manager
+  As an asset manager
   I need to be able to list existing categories
 
   Background:
     Given a "clothing" catalog configuration
 
   Scenario: Successfully display assets categories
-    Given I am logged in as "Julia"
+    Given I am logged in as "Pamela"
     When I am on the assets categories page
     Then I should see "Asset main catalog"
     And I should see "Images"

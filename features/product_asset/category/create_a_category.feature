@@ -1,11 +1,11 @@
 Feature: Create an asset category
   In order to provide a tree of my asset categories
-  As a product manager
+  As an asset manager
   I need to be able to create a new asset category tree or a node of a category tree
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "Julia"
+    And I am logged in as "Pamela"
 
   Scenario: Create an asset category tree
     Given I am on the asset category tree creation page

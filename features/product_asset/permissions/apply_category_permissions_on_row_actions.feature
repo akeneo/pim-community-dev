@@ -1,7 +1,7 @@
 @javascript
 Feature: Apply defined asset category permissions on asset grid row actions
   In order to know when I have the rights to do some actions
-  As Julia
+  As Pamela
   I want to see asset grid row actions only when I have the rights to execute them
 
   Background:
@@ -13,7 +13,7 @@ Feature: Apply defined asset category permissions on asset grid row actions
       | technical_doc | technical documentation | yes     | technical_documents |
 
   Scenario: Display the asset classification action only if the user owns the asset
-    Given I am logged in as "Julia"
+    Given I am logged in as "Pamela"
     And I am on the assets page
     Then the grid should contain 17 elements
     And I should see assets logo and other_image

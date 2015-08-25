@@ -1,12 +1,12 @@
 Feature: Display the asset category history
   In order to know who, when and what changes has been made to a category
-  As a product manager
+  As an asset manager
   I need to have access to a category history
 
   @javascript @skip-doc
   Scenario: Display asset category updates
     Given the "default" catalog configuration
-    And I am logged in as "Julia"
+    And I am logged in as "Pamela"
     And I am on the asset category tree creation page
     When I fill in the following information:
       | Code                    | book          |

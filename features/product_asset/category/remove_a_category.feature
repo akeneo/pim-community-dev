@@ -1,7 +1,7 @@
 @javascript
 Feature: Remove an asset category
   In order to be able to remove an unused category
-  As a product manager
+  As an asset manager
   I need to be able to remove a category
 
   Background:
@@ -10,7 +10,7 @@ Feature: Remove an asset category
       | code   | categories                       |
       | logo_1 | images, print                    |
       | cgv    | store_documents, sales_documents |
-    And I am logged in as "Julia"
+    And I am logged in as "Pamela"
 
   Scenario: Remove a simple asset category
     Given I am on the "situ" asset category page

@@ -1,11 +1,11 @@
 Feature: Edit an asset category
   In order to be able to modify the asset category tree
-  As a product manager
+  As an asset manager
   I need to be able to edit an asset category
 
   Background:
     Given a "clothing" catalog configuration
-    And I am logged in as "Julia"
+    And I am logged in as "Pamela"
 
   @javascript
   Scenario: Successfully edit an asset category
