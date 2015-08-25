@@ -207,7 +207,6 @@ services:
             - '@pim_catalog.remover.association_type'
 
     pim_enrich.controller.file:
-        scope: request
         class: %pim_enrich.controller.file.class%
         arguments:
             - '@liip_imagine.controller'
