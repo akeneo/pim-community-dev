@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,16 +13,14 @@ namespace PimEnterprise\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\UserBundle\Entity\User as BaseUser;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface as BaseUserInterface;
 
 /**
  * Enterprise override of the Community user
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class User extends BaseUser
+class User extends BaseUser implements BaseUserInterface
 {
     /**
      * The delay in day to send an email before the expiration of an asset
@@ -32,7 +30,7 @@ class User extends BaseUser
     protected $assetDelayReminder = 5;
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getAssetDelayReminder()
     {
@@ -40,9 +38,7 @@ class User extends BaseUser
     }
 
     /**
-     * @param int $assetDelayReminder
-     *
-     * @return UserInterface
+     * {@inheritdoc}
      */
     public function setAssetDelayReminder($assetDelayReminder)
     {

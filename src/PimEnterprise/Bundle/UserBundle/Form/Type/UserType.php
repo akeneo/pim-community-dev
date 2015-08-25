@@ -35,5 +35,14 @@ class UserType extends BaseUserType
                 'required' => false,
             ]
         );
+
+        $builder->add(
+            'assetDelayReminder',
+            'integer',
+            [
+                'label'    => 'Asset delay reminder (in days)',
+                'required' => true,
+            ]
+        );
     }
 }
