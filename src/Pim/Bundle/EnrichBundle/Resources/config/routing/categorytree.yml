@@ -1,36 +1,36 @@
 pim_enrich_categorytree_listtree:
     path: /list-tree.{_format}
-    defaults: { _controller: pim_enrich.controller.category_tree:listTreeAction }
+    defaults: { _controller: pim_enrich.controller.category_tree.product:listTreeAction }
     requirements:
         _format: json
 
 pim_enrich_categorytree_movenode:
     path: /move-node
-    defaults: { _controller: pim_enrich.controller.category_tree:moveNodeAction }
+    defaults: { _controller: pim_enrich.controller.category_tree.product:moveNodeAction }
 
 pim_enrich_categorytree_children:
     path: /children.{_format}
-    defaults: { _controller: pim_enrich.controller.category_tree:childrenAction }
+    defaults: { _controller: pim_enrich.controller.category_tree.product:childrenAction }
     requirements:
         _format: json
 
 pim_enrich_categorytree_index:
     path: /
-    defaults: { _controller: pim_enrich.controller.category_tree:indexAction }
+    defaults: { _controller: pim_enrich.controller.category_tree.product:indexAction }
 
 pim_enrich_categorytree_create:
     path: /create/{parent}
-    defaults: { _controller: pim_enrich.controller.category_tree:createAction, parent: null }
+    defaults: { _controller: pim_enrich.controller.category_tree.product:createAction, parent: null }
 
 pim_enrich_categorytree_edit:
     path: /{id}/edit
-    defaults: { _controller: pim_enrich.controller.category_tree:editAction }
+    defaults: { _controller: pim_enrich.controller.category_tree.product:editAction }
     requirements:
         id: \d+
 
 pim_enrich_categorytree_remove:
     path: /{id}/remove
-    defaults: { _controller: pim_enrich.controller.category_tree:removeAction }
+    defaults: { _controller: pim_enrich.controller.category_tree.product:removeAction }
     requirements:
         id: \d+
     methods: [DELETE]

@@ -46,7 +46,7 @@ interface CategoryRepositoryInterface extends
      *
      * @return Collection of categories
      */
-    public function getCategoriesByIds(array $categoriesIds = array());
+    public function getCategoriesByIds(array $categoriesIds = []);
 
     /**
      * Get a tree filled with children and their parents
@@ -96,6 +96,14 @@ interface CategoryRepositoryInterface extends
     public function getChildrenByParentId($parentId);
 
     /**
+     * @param CategoryInterface $parent
+     * @param array             $grantedCategoryIds
+     *
+     * @return array
+     */
+    public function getChildrenGrantedByParentId(CategoryInterface $parent, array $grantedCategoryIds = []);
+
+    /**
      * Get children tree from a parent id.
      * If the select node id is provided, the tree will be returned
      * down to the node specified by select node id. Otherwise, the
@@ -106,7 +114,7 @@ interface CategoryRepositoryInterface extends
      *
      * @return array
      */
-    public function getChildrenTreeByParentId($parentId, $selectNodeId = false);
+    public function getChildrenTreeByParentId($parentId, $selectNodeId = false, array $grantedCategoryIds = []);
 
     /**
      * Based on the Gedmo\Tree\RepositoryUtils\buildTreeArray, but with
@@ -145,6 +153,15 @@ interface CategoryRepositoryInterface extends
      * @return array
      */
     public function getTrees();
+
+    /**
+     * Get trees of granted categories
+     *
+     * @param array $grantedCategoryIds
+     *
+     * @return array
+     */
+    public function getGrantedTrees(array $grantedCategoryIds = []);
 
     /**
      * Check if a parent node is an ancestor of a child node

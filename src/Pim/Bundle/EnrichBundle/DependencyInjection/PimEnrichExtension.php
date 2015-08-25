@@ -32,11 +32,13 @@ class PimEnrichExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_icons.yml');
+        $loader->load('category_counters.yml');
         $loader->load('colors.yml');
         $loader->load('command.yml');
         $loader->load('connector/cleaners.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
+        $loader->load('category_counters.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');

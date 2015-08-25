@@ -5,7 +5,7 @@
             'use strict';
             $(function() {
                 var buttons = [];
-                {% if resource_granted('pim_enrich_product_category_create') %}
+                {% if resource_granted(acl ~ '_category_create') %}
                     buttons.push($('<a>', {
                         'class': 'no-hash',
                         'data-toggle': 'tooltip',
@@ -14,12 +14,12 @@
                     }).html(
                         $('<i>', { 'class': 'icon-plus-sign' })
                     ).on('click', function () {
-                        Backbone.history.navigate('url={{ path("pim_enrich_categorytree_create") }}', { trigger: true });
+                        Backbone.history.navigate('url={{ path(route ~ '_categorytree_create') }}', { trigger: true });
                     }).tooltip());
                 {% endif %}
                 // Instantiate sidebar
                 $('#category-tree-container').sidebarize({ buttons: buttons });
-                new TreeManage('#tree');
+                new TreeManage('#tree', '{{ route }}');
             });
         }
     );

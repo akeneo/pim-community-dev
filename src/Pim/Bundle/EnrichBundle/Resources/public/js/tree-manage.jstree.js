@@ -13,7 +13,7 @@ define(
     function ($, _, Backbone, Routing, LoadingMask, OroError, UI) {
         'use strict';
 
-        return function (elementId) {
+        return function (elementId, route) {
             var $el = $(elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate tree on this element');
@@ -51,7 +51,7 @@ define(
                 tree_selector: {
                     ajax: {
                         url: Routing.generate(
-                            'pim_enrich_categorytree_listtree',
+                            route + '_categorytree_listtree',
                             {
                                 _format: 'json',
                                 select_node_id: selectedNodeOrTree,
@@ -72,7 +72,7 @@ define(
                 json_data: {
                     ajax: {
                         url: Routing.generate(
-                            'pim_enrich_categorytree_children',
+                            route + '_categorytree_children',
                             {
                                 _format: 'json',
                                 context: 'manage'
@@ -123,7 +123,7 @@ define(
                         $.ajax({
                             async: false,
                             type: 'POST',
-                            url: Routing.generate('pim_enrich_categorytree_movenode'),
+                            url: Routing.generate(route + '_categorytree_movenode'),
                             data: {
                                 id: $(this).attr('id').replace('node_', ''),
                                 parent: data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_', ''),
@@ -150,7 +150,7 @@ define(
                         return;
                     }
                     var id  = data.rslt.obj.attr('id').replace('node_', '');
-                    var url = Routing.generate('pim_enrich_categorytree_edit', { id: id });
+                    var url = Routing.generate(route + '_categorytree_edit', { id: id });
                     if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
                         preventFirst = false;
                         return;
@@ -180,7 +180,7 @@ define(
                 }).bind('create.jstree', function (e, data) {
                     $.jstree._focused().lock();
                     var id       = data.rslt.parent.attr('id').replace('node_', '');
-                    var url      = Routing.generate('pim_enrich_categorytree_create', { parent: id });
+                    var url      = Routing.generate(route + '_categorytree_create', { parent: id });
                     var position = data.rslt.position;
                     var label    = data.rslt.name;
 
