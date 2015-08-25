@@ -427,6 +427,18 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function getDefaultTree();
 
     /**
+     * @param array $productGridFilters
+     *
+     * @return UserInterface
+     */
+    public function setProductGridFilters(array $productGridFilters = []);
+
+    /**
+     * @return array
+     */
+    public function getProductGridFilters();
+
+    /**
      * @param CategoryInterface $defaultTree
      *
      * @return UserInterface

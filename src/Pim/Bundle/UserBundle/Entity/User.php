@@ -133,6 +133,9 @@ class User implements UserInterface
     /** @var bool */
     protected $emailNotifications = false;
 
+    /** @var array */
+    protected $productGridFilters = [];
+
     public function __construct()
     {
         $this->salt   = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
@@ -924,6 +927,24 @@ class User implements UserInterface
     public function setEmailNotifications($emailNotifications)
     {
         $this->emailNotifications = $emailNotifications;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductGridFilters()
+    {
+        return $this->productGridFilters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductGridFilters(array $productGridFilters = [])
+    {
+        $this->productGridFilters = $productGridFilters;
 
         return $this;
     }

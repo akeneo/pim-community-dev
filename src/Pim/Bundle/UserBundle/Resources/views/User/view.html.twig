@@ -104,6 +104,12 @@
     {#
       EntityExtend fields START
     #}
+
+    {% set filters = [] %}
+    {% for filter in entity.productGridFilters %}
+      {% set filters = filters|merge([filter_label(filter)]) %}
+    {% endfor %}
+
     {% set additional = [
         {
             'title': 'Additional Information'|trans,
@@ -114,7 +120,8 @@
                     'data': [
                         UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
                         UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
-                        UI.attibuteRow('Default tree'|trans, entity.defaultTree)
+                        UI.attibuteRow('Default tree'|trans, entity.defaultTree),
+                        UI.attibuteRow('user.product_grid_filters'|trans, filters|join(', ')),
                     ]
                 },
                 {
