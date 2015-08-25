@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
+use PimEnterprise\Component\ProductAsset\Upload\UploadStatus;
 use Prophecy\Argument;
 
 class UploadCheckerSpec extends ObjectBehavior
@@ -14,10 +15,9 @@ class UploadCheckerSpec extends ObjectBehavior
     protected $uploadDirectory = null;
 
     function let(
-        UploaderInterface $uploader,
         AssetRepositoryInterface $assetRepo
     ) {
-        $this->beConstructedWith($uploader, $assetRepo);
+        $this->beConstructedWith($assetRepo);
     }
 
     function letGo()
@@ -31,70 +31,85 @@ class UploadCheckerSpec extends ObjectBehavior
         $this->shouldImplement('PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface');
     }
 
-    function it_checks_a_valid_filename_for_non_existing_asset($uploader, $assetRepo)
+    function it_parses_filename()
+    {
+        $filename = 'foobar-fr_FR.png';
+        $expected = ['code' => 'foobar', 'locale' => 'fr_FR'];
+
+        $this->parseFilename($filename)->shouldReturn($expected);
+
+        $filename = 'foobar.png';
+        $expected = ['code' => 'foobar', 'locale' => null];
+
+        $this->parseFilename($filename)->shouldReturn($expected);
+
+        $filename = 'foobar-notALocale.png';
+        $expected = ['code' => null, 'locale' => null];
+
+        $this->parseFilename($filename)->shouldReturn($expected);
+
+        $filename = 'Invalid-code-fr_FR.png';
+        $expected = ['code' => null, 'locale' => null];
+
+        $this->parseFilename($filename)->shouldReturn($expected);
+    }
+
+    function it_checks_a_valid_filename_for_non_existing_asset($assetRepo)
     {
         $filename = 'foobar-fr_FR.png';
 
-        $uploader->parseFilename($filename)->willReturn(['code' => 'foobar', 'locale' => 'fr_FR']);
-        $uploader->getUserUploadDir()->willReturn($this->uploadDirectory . DIRECTORY_SEPARATOR . 'source');
-        $uploader->getUserScheduleDir()->willReturn($this->uploadDirectory . DIRECTORY_SEPARATOR . 'scheduled');
-
         $assetRepo->findOneByIdentifier('foobar')->willReturn(null);
 
-        $this->isValidFilename($filename)->shouldReturn(true);
+        $status = $this->checkFilename($filename, 'dummySourceDir', 'dummyScheduledDir');
+        $status->shouldBe(UploadStatus::STATUS_NEW);
+        $this->isError($status)->shouldReturn(false);
     }
 
     function it_checks_an_invalid_filename_for_existing_asset_without_locale(
-        $uploader,
         $assetRepo,
         AssetInterface $asset
     ) {
         $filename = 'foobar-fr_FR.png';
 
-        $uploader->parseFilename($filename)->willReturn(['code' => 'foobar', 'locale' => 'fr_FR']);
-
         $assetRepo->findOneByIdentifier('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn([]);
 
-        $this->isValidFilename($filename)->shouldReturn(false);
+        $status = $this->checkFilename($filename, 'dummySourceDir', 'dummyScheduledDir');
+        $status->shouldBe(UploadStatus::STATUS_ERROR_LOCALE);
+        $this->isError($status)->shouldReturn(true);
     }
 
     function it_checks_an_invalid_filename_for_existing_asset_with_other_locale(
-        $uploader,
         $assetRepo,
         AssetInterface $asset,
         LocaleInterface $locale
     ) {
         $filename = 'foobar-fr_FR.png';
-
-        $uploader->parseFilename($filename)->willReturn(['code' => 'foobar', 'locale' => 'fr_FR']);
 
         $assetRepo->findOneByIdentifier('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn(['en_US' => $locale]);
 
-        $this->isValidFilename($filename)->shouldReturn(false);
+        $status = $this->checkFilename($filename, 'dummySourceDir', 'dummyScheduledDir');
+        $status->shouldBe(UploadStatus::STATUS_ERROR_LOCALE);
+        $this->isError($status)->shouldReturn(true);
     }
 
     function it_checks_a_valid_filename_for_existing_asset_with_locale(
-        $uploader,
         $assetRepo,
         AssetInterface $asset,
         LocaleInterface $locale
     ) {
         $filename = 'foobar-fr_FR.png';
 
-        $uploader->parseFilename($filename)->willReturn(['code' => 'foobar', 'locale' => 'fr_FR']);
-        $uploader->getUserUploadDir()->willReturn($this->uploadDirectory . DIRECTORY_SEPARATOR . 'source');
-        $uploader->getUserScheduleDir()->willReturn($this->uploadDirectory . DIRECTORY_SEPARATOR . 'scheduled');
-
         $assetRepo->findOneByIdentifier('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn(['fr_FR' => $locale]);
 
-        $this->isValidFilename($filename)->shouldReturn(true);
+        $status = $this->checkFilename($filename, 'dummySourceDir', 'dummyScheduledDir');
+        $status->shouldBe(UploadStatus::STATUS_UPDATED);
+        $this->isError($status)->shouldReturn(false);
     }
 
     function it_checks_an_invalid_filename_for_existing_uploaded_file(
-        $uploader,
         $assetRepo
     ) {
         $filename = 'foobar-fr_FR.png';
@@ -104,39 +119,36 @@ class UploadCheckerSpec extends ObjectBehavior
 
         file_put_contents($sourceDirectory . DIRECTORY_SEPARATOR . $filename, 'foobar');
 
-        $uploader->parseFilename($filename)->willReturn(['code' => 'foobar', 'locale' => 'fr_FR']);
-        $uploader->getUserUploadDir()->willReturn($sourceDirectory);
-
         $assetRepo->findOneByIdentifier('foobar')->willReturn(null);
 
-        $this->isValidFilename($filename)->shouldReturn(false);
+        $status = $this->checkFilename($filename, $sourceDirectory, 'dummyScheduledDir');
+        $status->shouldBe(UploadStatus::STATUS_ERROR_EXISTS);
+        $this->isError($status)->shouldReturn(true);
     }
 
     function it_checks_an_invalid_filename_for_existing_scheduled_file(
-        $uploader,
         $assetRepo
     ) {
         $filename = 'foobar-fr_FR.png';
 
         $this->createUploadBaseDirectory();
-        $sourceDirectory = $this->createSourceDirectory();
+        $sourceDirectory    = $this->createSourceDirectory();
         $scheduledDirectory = $this->createScheduledDirectory();
 
         file_put_contents($scheduledDirectory . DIRECTORY_SEPARATOR . $filename, 'foobar');
 
-        $uploader->parseFilename($filename)->willReturn(['code' => 'foobar', 'locale' => 'fr_FR']);
-        $uploader->getUserUploadDir()->willReturn($sourceDirectory);
-        $uploader->getUserScheduleDir()->willReturn($scheduledDirectory);
-
         $assetRepo->findOneByIdentifier('foobar')->willReturn(null);
 
-        $this->isValidFilename($filename)->shouldReturn(false);
+        $status = $this->checkFilename($filename, $sourceDirectory, $scheduledDirectory);
+        $status->shouldBe(UploadStatus::STATUS_ERROR_EXISTS);
+        $this->isError($status)->shouldReturn(true);
     }
 
     protected function createUploadBaseDirectory()
     {
         if (null === $this->uploadDirectory) {
-            $this->uploadDirectory = '/tmp/pim_spec/' . uniqid();
+            $this->uploadDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR
+                . 'pim_spec' . DIRECTORY_SEPARATOR . uniqid();
             mkdir($this->uploadDirectory, 0700, true);
         }
     }
@@ -152,10 +164,10 @@ class UploadCheckerSpec extends ObjectBehavior
             $objects = scandir($dir);
             foreach ($objects as $object) {
                 if ($object != "." && $object != "..") {
-                    if (filetype($dir . "/" . $object) == "dir") {
-                        $this->rrmdir($dir . "/" . $object);
+                    if (filetype($dir . DIRECTORY_SEPARATOR . $object) == "dir") {
+                        $this->rrmdir($dir . DIRECTORY_SEPARATOR . $object);
                     } else {
-                        unlink($dir . "/" . $object);
+                        unlink($dir . DIRECTORY_SEPARATOR . $object);
                     }
                 }
             }

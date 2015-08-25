@@ -12,14 +12,15 @@
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 class Scheduler implements SchedulerInterface
 {
-    /** @var UploaderInterface */
-    protected $uploader;
+    /** @var UploadCheckerInterface */
+    protected $uploadChecker;
 
     /** @var string */
     protected $checkStatus;
@@ -34,15 +35,15 @@ class Scheduler implements SchedulerInterface
     protected $rawFileStorer;
 
     /**
-     * @param UploaderInterface        $uploader
-     * @param RawFileStorerInterface   $rawFileStorer
+     * @param UploadCheckerInterface      $uploadChecker
+     * @param RawFileStorerInterface $rawFileStorer
      */
     public function __construct(
-        UploaderInterface $uploader,
+        UploadCheckerInterface $uploadChecker,
         RawFileStorerInterface $rawFileStorer
     ) {
-        $this->uploader        = $uploader;
-        $this->rawFileStorer   = $rawFileStorer;
+        $this->uploadChecker      = $uploadChecker;
+        $this->rawFileStorer = $rawFileStorer;
     }
 
     /**
@@ -63,10 +64,14 @@ class Scheduler implements SchedulerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * - check uploaded files
+     * - Move files from tmp uploaded storage to tmp scheduled storage
      */
     public function schedule()
     {
-        $files = [];
+        $files      = [];
+        $fileSystem = new Filesystem();
 
         $storedFiles = array_diff(scandir($this->getSourceDir()), ['.', '..']);
 
@@ -78,15 +83,14 @@ class Scheduler implements SchedulerInterface
             if (!$this->isValidScheduledFilename($storedFiles, $file)) {
                 $result['error'] = UploadStatus::STATUS_ERROR_CONFLICTS;
                 $files[]         = $result;
-                var_dump('bar');
                 continue;
             }
             $filepath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $file;
             $newPath  = $this->getScheduleDir() . DIRECTORY_SEPARATOR . $file;
             if (!is_dir(dirname($newPath))) {
-                mkdir(dirname($newPath), 0700, true);
+                $fileSystem->mkdir(dirname($newPath));
             }
-            rename($filepath, $newPath);
+            $fileSystem->rename($filepath, $newPath);
             $files[] = $result;
         }
 
@@ -112,25 +116,25 @@ class Scheduler implements SchedulerInterface
 
     /**
      * @param string[] $storedFiles
-     * @param string   $checkedFilename
+     * @param string   $filenameToCheck
      *
      * @return bool
      */
-    protected function isValidScheduledFilename($storedFiles, $checkedFilename)
+    protected function isValidScheduledFilename($storedFiles, $filenameToCheck)
     {
         $valid = true;
 
-        $otherFilenames = array_diff($storedFiles, [$checkedFilename]);
+        $otherFilenames = array_diff($storedFiles, [$filenameToCheck]);
 
-        $checkedFilenameInfos = $this->uploader->parseFilename($checkedFilename);
+        $checkedFilenameInfos = $this->uploadChecker->parseFilename($filenameToCheck);
         $checkedIsLocalized   = null !== $checkedFilenameInfos['locale'];
 
         foreach ($otherFilenames as $filename) {
-            $comparedInfos       = $this->uploader->parseFilename($filename);
+            $comparedInfos       = $this->uploadChecker->parseFilename($filename);
             $comparedIsLocalized = null !== $comparedInfos['locale'];
 
             if ($checkedFilenameInfos['code'] === $comparedInfos['code']
-                && $checkedIsLocalized != $comparedIsLocalized
+                && $checkedIsLocalized !== $comparedIsLocalized
             ) {
                 $valid = false;
                 break;

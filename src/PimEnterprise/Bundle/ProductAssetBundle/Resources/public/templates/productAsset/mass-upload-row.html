@@ -1,0 +1,25 @@
+<tr class="file-row">
+    <td class="preview">
+        <span class="preview"><img data-dz-thumbnail/></span>
+    </td>
+    <td class="filename">
+        <p class="name" data-dz-name></p>
+        <strong class="error text-danger" data-dz-errormessage></strong>
+    </td>
+    <td class="filetype">
+        <p class="dz-type" data-dz-type></p>
+    </td>
+    <td class="status">
+        <p class="dz-status"></p>
+    </td>
+    <td class="dz-progress-wrapper">
+        <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
+             aria-valuemax="100" aria-valuenow="0">
+            <div class="bar" style="width:0%;" data-dz-uploadprogress></div>
+        </div>
+    </td>
+    <td class="action-cell">
+        <button data-dz-remove class="btn btn-warning cancel"><%= _.__('pimee_product_asset.mass_upload.cancel') %></button>
+        <button data-dz-remove class="btn btn-danger delete"><%= _.__('pimee_product_asset.mass_upload.delete') %></button>
+    </td>
+</tr>

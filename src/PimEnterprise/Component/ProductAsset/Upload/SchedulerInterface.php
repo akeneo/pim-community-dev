@@ -14,6 +14,8 @@ namespace PimEnterprise\Component\ProductAsset\Upload;
 use SplFileInfo;
 
 /**
+ * Schedule uploaded assets files for processing
+ *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 interface SchedulerInterface

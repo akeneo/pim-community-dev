@@ -143,6 +143,7 @@ class EnterpriseAssetContext extends RawMinkContext
             $iconContainer = $code->getParent()->find('css', '.icons-container');
             $this->getMainContext()->spin(function () use ($iconContainer) {
                 $tooltip = $iconContainer->find('css', 'i.validation-tooltip');
+
                 return $tooltip ? true : false;
             });
         }
@@ -185,7 +186,7 @@ class EnterpriseAssetContext extends RawMinkContext
     {
         if ($this->getMinkParameter('files_path')) {
             $fullPath = rtrim(realpath($this->getMinkParameter('files_path')),
-                    DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
+                    DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
             if (is_file($fullPath)) {
                 $file = $fullPath;
             }
@@ -251,9 +252,9 @@ class EnterpriseAssetContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $this->getMainContext()->executeScript(
                 "document.querySelector('.dz-hidden-input').style.visibility = 'visible';
-            document.querySelector('.dz-hidden-input').style.height = '10px';
-            document.querySelector('.dz-hidden-input').style.width = '10px';
-            document.querySelector('.dz-hidden-input').style.display = 'block';"
+                document.querySelector('.dz-hidden-input').style.height = '10px';
+                document.querySelector('.dz-hidden-input').style.width = '10px';
+                document.querySelector('.dz-hidden-input').style.display = 'block';"
             );
             $uploadContainer = $this->getCurrentPage()->find('css', '.dz-hidden-input');
 
@@ -285,7 +286,7 @@ class EnterpriseAssetContext extends RawMinkContext
             }
 
             foreach ((array) $assetElements as $assetElement) {
-                $row = $assetElement->getParent();
+                $row   = $assetElement->getParent();
                 $found = $row->find('css', sprintf('td:contains("%s")', $text));
                 if ($found) {
                     break;
@@ -337,11 +338,22 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
+     * @When /^I clear the asset temporary file storage$/
+     */
+    public function clearAssetTmpFileStorage()
+    {
+        $fileSystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.tmp_storage_filesystem');
+        foreach ($fileSystem->listFiles('', true) as $file) {
+            $fileSystem->delete($file['path']);
+        }
+    }
+
+    /**
      * @return EnterpriseFixturesContext
      */
     protected function getFixturesContext()
     {
-        return $this->getMainContext()->getSubcontext('fixtures');
+        return $this->getMainContext()->getParameter('mailer.transport');
     }
 
     /**
@@ -351,6 +363,7 @@ class EnterpriseAssetContext extends RawMinkContext
     {
         /** @var Container $container */
         $container = $this->getMainContext()->getContainer();
+
         return $container->get('pimee_product_asset.updater.files');
     }
 
@@ -361,6 +374,7 @@ class EnterpriseAssetContext extends RawMinkContext
     {
         /** @var Container $container */
         $container = $this->getMainContext()->getContainer();
+
         return $container->get('pimee_product_asset.saver.variation');
     }
 }

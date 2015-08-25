@@ -18,5 +18,4 @@ class MassUpload extends Form
 {
     /** @var string */
     protected $path = '/enrich/asset/mass-upload';
-
 }

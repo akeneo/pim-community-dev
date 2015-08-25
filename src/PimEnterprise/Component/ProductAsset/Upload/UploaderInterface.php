@@ -19,13 +19,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 interface UploaderInterface
 {
     /**
-     * Set asset upload subdirectory
-     *
-     * @param string $subDirectory
-     */
-    public function setSubDirectory($subDirectory);
-
-    /**
      * @return string
      */
     public function getUserUploadDir();
@@ -34,15 +27,6 @@ interface UploaderInterface
      * @return string
      */
     public function getUserScheduleDir();
-
-    /**
-     * Extract asset code and locale from filename
-     *
-     * @param string $filename
-     *
-     * @return string[] Asset informations : ['code' => 'foo', 'locale' => 'en_US']
-     */
-    public function parseFilename($filename);
 
     /**
      * Move uploaded file in the file system

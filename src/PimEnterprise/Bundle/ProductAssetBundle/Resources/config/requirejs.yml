@@ -7,6 +7,7 @@ config:
         pimee/template/product/field/asset-collection: pimenterpriseproductasset/templates/product/field/asset-collection.html
         pimee/template/picker/asset-grid: pimenterpriseproductasset/templates/picker/asset-grid.html
         pimee/template/picker/basket: pimenterpriseproductasset/templates/picker/basket.html
+        pimee/template/asset/mass-upload-row: pimenterpriseproductasset/templates/productAsset/mass-upload-row.html
 
         # Extensions
         pimee/picker/asset-grid: pimenterpriseproductasset/js/picker/asset-grid

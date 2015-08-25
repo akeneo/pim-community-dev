@@ -6,44 +6,47 @@ define(
         'backbone',
         'routing',
         'pim/dropzonejs',
-        'oro/messenger'
+        'oro/messenger',
+        'text!pimee/template/asset/mass-upload-row'
     ],
-    function ($, _,
-              Backbone,
-              Routing,
-              Dropzone,
-              messenger) {
+    function (
+        $,
+        _,
+        Backbone,
+        Routing,
+        Dropzone,
+        messenger,
+        rowTemplate
+    ) {
         /**
          * Override to be able to use template root different other than 'div'
+         *
          * @param string
+         *
          * @returns {*}
          */
         Dropzone.createElement = function (string) {
             var el = $(string);
+
             return el[0];
         };
         Dropzone.autoDiscover = false;
 
         return Backbone.View.extend({
-            el: 'body',
+            el: '.mass-upload-wrapper',
             myDropzone: null,
 
             initialize: function () {
-                // Get the template HTML and remove it from the doument
-                var previewNode = this.$el.find('#template');
-                previewNode.id = '';
+                var previewTemplate = _.template(rowTemplate);
 
-                var previewTemplate = previewNode.parent().html();
-                previewNode.parent().html('');
-
-                var myDropzone = new Dropzone(this.el, {
+                var myDropzone = new Dropzone(document.body, {
                     url: Routing.generate('pimee_product_asset_upload'),
                     thumbnailWidth: 70,
                     thumbnailHeight: 70,
                     parallelUploads: 4,
-                    previewTemplate: previewTemplate,
+                    previewTemplate: previewTemplate(),
                     autoQueue: false,
-                    previewsContainer: '#previews',
+                    previewsContainer: 'tbody',
                     clickable: '.fileinput-button',
                     maxFilesize: 1000
                 });
@@ -52,6 +55,7 @@ define(
                     if (Dropzone.SUCCESS === file.status) {
                         this.setStatus(file);
                         file.previewElement.querySelector('.dz-type').textContent = file.type;
+
                         return;
                     }
                     $.ajax({
@@ -89,7 +93,7 @@ define(
 
                 myDropzone.on('error', function (file, error) {
                     file.previewElement.querySelector('.filename .error.text-danger')
-                        .textContent =  _.__(error.error);
+                        .textContent = _.__(error.error);
                     this.setStatus(file);
                 }.bind(this));
 
@@ -106,36 +110,35 @@ define(
 
                 $.ajax({
                     url: Routing.generate('pimee_product_asset_mass_upload_rest_list'),
-                    type: 'GET',
-                    success: function (response) {
-                        _.each(response.files, function (file) {
-                            var mockFile = {
-                                name: file.name,
-                                type: file.type,
-                                size: file.size,
-                                status: Dropzone.SUCCESS,
-                                upload: {progress: 100}
-                            };
-                            myDropzone.files.push(mockFile);
-                            myDropzone.emit('addedfile', mockFile);
-                            //myDropzone.emit('thumbnail', mockFile, '/image/url');
-                            myDropzone.emit('complete', mockFile);
-                            myDropzone.emit('success', mockFile, {});
-                        });
-                    }
+                    type: 'GET'
+                }).done(function (response) {
+                    _.each(response.files, function (file) {
+                        var mockFile = {
+                            name: file.name,
+                            type: file.type,
+                            size: file.size,
+                            status: Dropzone.SUCCESS,
+                            upload: {progress: 100}
+                        };
+                        myDropzone.files.push(mockFile);
+                        myDropzone.emit('addedfile', mockFile);
+                        myDropzone.emit('complete', mockFile);
+                        myDropzone.emit('success', mockFile, {});
+                    });
+                }).fail(function () {
+                    messenger.notificationFlashMessage(
+                        'error',
+                        _.__('pimee_product_asset.mass_upload.error.list')
+                    );
                 });
 
-                $('.navbar-buttons .start').on('click', function () {
-                    this.startAll();
-                }.bind(this));
-                $('.navbar-buttons .cancel').on('click', function () {
-                    this.cancelAll();
-                }.bind(this));
-                $('.navbar-buttons .schedule').on('click', function () {
-                    this.scheduleAll();
-                }.bind(this));
-
                 this.myDropzone = myDropzone;
+            },
+
+            events: {
+                'click .navbar-buttons .start': 'startAll',
+                'click .navbar-buttons .cancel': 'cancelAll',
+                'click .navbar-buttons .schedule': 'scheduleAll'
             },
 
             /**
@@ -164,24 +167,28 @@ define(
                 this.$('.navbar-buttons .btn.schedule').hide();
                 $.ajax({
                     url: Routing.generate('pimee_product_asset_mass_upload_rest_schedule'),
-                    type: 'GET',
-                    success: function (response) {
-                        _.each(response.result, function (result) {
-                            var file = this.findFile(result.file);
-                            if (result.error) {
-                                file.status = Dropzone.ERROR;
-                                this.setStatus(file);
-                                file.previewElement.querySelector('.filename .error.text-danger')
-                                    .textContent = _.__(result.error);
-                            } else {
-                                this.myDropzone.removeFile(file);
-                            }
-                        }.bind(this));
-                        messenger.notificationFlashMessage(
-                            'success',
-                            _.__('pimee_product_asset.mass_upload.scheduled')
-                        );
-                    }.bind(this)
+                    type: 'GET'
+                }).done(function (response) {
+                    _.each(response.result, function (result) {
+                        var file = this.findFile(result.file);
+                        if (result.error) {
+                            file.status = Dropzone.ERROR;
+                            this.setStatus(file);
+                            file.previewElement.querySelector('.filename .error.text-danger')
+                                .textContent = _.__(result.error);
+                        } else {
+                            this.myDropzone.removeFile(file);
+                        }
+                    }.bind(this));
+                    messenger.notificationFlashMessage(
+                        'success',
+                        _.__('pimee_product_asset.mass_upload.scheduled')
+                    );
+                }.bind(this)).fail(function () {
+                    messenger.notificationFlashMessage(
+                        'error',
+                        _.__('pimee_product_asset.mass_upload.error.schedule')
+                    );
                 });
             },
 
@@ -200,7 +207,8 @@ define(
              * Find a dropzone file with filename
              *
              * @param {String} filename
-             * @returns {Boolean}
+             *
+             * @returns {Object|null}
              */
             findFile: function (filename) {
                 var found = null;
@@ -210,6 +218,7 @@ define(
                         found = file;
                     }
                 });
+
                 return found;
             }
         });

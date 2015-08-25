@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
+use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use Prophecy\Argument;
 
 class SchedulerSpec extends ObjectBehavior
@@ -12,10 +12,10 @@ class SchedulerSpec extends ObjectBehavior
     protected $uploadDirectory = null;
 
     function let(
-        UploaderInterface $uploader,
+        UploadCheckerInterface $uploadChecker,
         RawFileStorerInterface $rawFileStorer
     ) {
-        $this->beConstructedWith($uploader, $rawFileStorer);
+        $this->beConstructedWith($uploadChecker, $rawFileStorer);
 
         $this->createUploadBaseDirectory();
 
@@ -68,7 +68,8 @@ class SchedulerSpec extends ObjectBehavior
     protected function createUploadBaseDirectory()
     {
         if (null === $this->uploadDirectory) {
-            $this->uploadDirectory = '/tmp/pim_spec/' . uniqid();
+            $this->uploadDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR
+                . 'pim_spec' . DIRECTORY_SEPARATOR . uniqid();
             mkdir($this->uploadDirectory, 0700, true);
         }
     }
@@ -84,10 +85,10 @@ class SchedulerSpec extends ObjectBehavior
             $objects = scandir($dir);
             foreach ($objects as $object) {
                 if ($object != "." && $object != "..") {
-                    if (filetype($dir . "/" . $object) == "dir") {
-                        $this->rrmdir($dir . "/" . $object);
+                    if (filetype($dir . DIRECTORY_SEPARATOR . $object) == "dir") {
+                        $this->rrmdir($dir . DIRECTORY_SEPARATOR . $object);
                     } else {
-                        unlink($dir . "/" . $object);
+                        unlink($dir . DIRECTORY_SEPARATOR . $object);
                     }
                 }
             }

@@ -15,7 +15,13 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
+use PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor;
 
+/**
+ * Launch the asset upload processor to create/update assets from uploaded files
+ *
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ */
 class MassUploadTasklet implements TaskletInterface
 {
     /** @staticvar string */
@@ -55,7 +61,8 @@ class MassUploadTasklet implements TaskletInterface
      */
     public function execute(array $configuration)
     {
-        $username = $this->stepExecution->getJobExecution()->getUser();
+        $jobExecution = $this->stepExecution->getJobExecution();
+        $username     = $jobExecution->getUser();
 
         $this->massUploadProcessor->getUploader()->setSubDirectory($username);
 
@@ -83,7 +90,7 @@ class MassUploadTasklet implements TaskletInterface
                     $this->stepExecution->addWarning(self::TASKLET_NAME,
                         $item->getReason(),
                         [],
-                        $file->getFilename()
+                        ['filename' => $file->getFilename()]
                     );
                     break;
                 default:
@@ -95,7 +102,13 @@ class MassUploadTasklet implements TaskletInterface
         $this->notificationManager->notify(
             [$username],
             'pimee_product_asset.mass_upload.executed',
-            'success'
+            'success',
+            [
+                'route'         => 'pim_enrich_job_tracker_show',
+                'routeParams'   => ['id' => $jobExecution->getId()],
+                'messageParams' => ['%label%' => $jobExecution->getJobInstance()->getLabel()],
+                'context'       => ['actionType' => 'mass_upload']
+            ]
         );
     }
 }

@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Manage upload of an asset file
@@ -33,55 +34,27 @@ class Uploader implements UploaderInterface
     /** @var string */
     protected $scheduledDirectory;
 
-    /** @var int */
-    protected $subDirectory;
-
     /** @var RawFileStorerInterface */
     protected $rawFileStorer;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
+     * @param TokenStorageInterface  $tokenStorage
      * @param RawFileStorerInterface $rawFileStorer
      * @param string                 $uploadDirectory
      */
     public function __construct(
+        TokenStorageInterface $tokenStorage,
         RawFileStorerInterface $rawFileStorer,
         $uploadDirectory
     ) {
         $this->rawFileStorer = $rawFileStorer;
+        $this->tokenStorage  = $tokenStorage;
 
         $this->uploadDirectory    = $uploadDirectory . DIRECTORY_SEPARATOR . static::DIR_UPLOAD_TMP;
         $this->scheduledDirectory = $uploadDirectory . DIRECTORY_SEPARATOR . static::DIR_UPLOAD_SCHEDULED;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSubDirectory($subDirectory)
-    {
-        $this->subDirectory = $subDirectory;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function parseFilename($filename)
-    {
-        $parsed = [
-            'code'   => null,
-            'locale' => null,
-        ];
-
-        $patternCodePart   = '[a-zA-Z0-9_]+';
-        $patternLocalePart = '[a-z]{2}_[A-Z]{2}';
-
-        $pattern = sprintf('/^ (%s) (?:-(%s))? \.[^.]+$/x', $patternCodePart, $patternLocalePart);
-
-        if (preg_match($pattern, $filename, $matches)) {
-            $parsed['code']   = $matches[1];
-            $parsed['locale'] = isset($matches[2]) ? $matches[2] : null;
-        }
-
-        return $parsed;
     }
 
     /**
@@ -100,7 +73,7 @@ class Uploader implements UploaderInterface
      */
     public function getUserUploadDir()
     {
-        return $this->uploadDirectory . DIRECTORY_SEPARATOR . $this->subDirectory;
+        return $this->uploadDirectory . DIRECTORY_SEPARATOR . $this->getUsername();
     }
 
     /**
@@ -108,6 +81,14 @@ class Uploader implements UploaderInterface
      */
     public function getUserScheduleDir()
     {
-        return $this->scheduledDirectory . DIRECTORY_SEPARATOR . $this->subDirectory;
+        return $this->scheduledDirectory . DIRECTORY_SEPARATOR . $this->getUsername();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUsername()
+    {
+        return $this->tokenStorage->getToken()->getUser()->getUsername();
     }
 }

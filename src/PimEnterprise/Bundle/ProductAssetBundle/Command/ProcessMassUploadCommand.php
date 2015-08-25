@@ -11,10 +11,9 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetSaver;
-use PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadProcessor;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
+use PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor;
 use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -58,15 +57,6 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
 
         foreach ($processedList as $item) {
             $file = $item->getItem();
-
-            if (!$file instanceof \SplFileInfo) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a "\SplFileInfo", "%s" provided.',
-                        ClassUtils::getClass($file)
-                    )
-                );
-            }
 
             switch ($item->getState()) {
                 case ProcessedItem::STATE_ERROR:

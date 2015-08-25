@@ -12,12 +12,12 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use finfo;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Scheduler;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,7 +44,7 @@ class MassUploadController
     protected $scheduler;
 
     /** @var UserInterface */
-    protected $currentUser;
+    protected $tokenStorage;
 
     /** @var JobLauncherInterface */
     protected $jobLauncher;
@@ -72,17 +72,11 @@ class MassUploadController
     ) {
         $this->assetRepository       = $assetRepository;
         $this->jobLauncher           = $jobLauncher;
-        $this->currentUser           = $tokenStorage->getToken()->getUser();
+        $this->tokenStorage          = $tokenStorage;
         $this->jobInstanceRepository = $jobInstanceRepository;
-
-        $this->uploader      = $uploader;
-        $this->uploadChecker = $uploadChecker;
-        $this->scheduler     = $scheduler;
-
-        $this->uploader->setSubDirectory($this->currentUser->getUsername());
-
-        $this->scheduler->setSourceDirectory($this->uploader->getUserUploadDir());
-        $this->scheduler->setScheduleDirectory($this->uploader->getUserScheduleDir());
+        $this->uploader              = $uploader;
+        $this->uploadChecker         = $uploadChecker;
+        $this->scheduler             = $scheduler;
     }
 
     /**
@@ -96,12 +90,13 @@ class MassUploadController
     {
         $response = new JsonResponse();
 
-        $valid = $this->uploadChecker->isValidFilename($filename);
+        $uploadStatus = $this->uploadChecker
+            ->checkFilename($filename, $this->uploader->getUserUploadDir(), $this->uploader->getUserScheduleDir());
 
-        if (!$valid) {
+        if ($this->uploadChecker->isError($uploadStatus)) {
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);
             $response->setData([
-                'error' => $this->uploadChecker->getCheckStatus()
+                'error' => $uploadStatus
             ]);
         }
 
@@ -118,9 +113,7 @@ class MassUploadController
     public function uploadAction(Request $request)
     {
         $response = new JsonResponse();
-
-        $files = $request->files;
-
+        $files    = $request->files;
         $uploaded = null;
 
         if ($files->count() > 0) {
@@ -145,8 +138,6 @@ class MassUploadController
      */
     public function deleteUploadedFileAction($filename)
     {
-        $response = new JsonResponse();
-
         $filepath = $this->uploader
                 ->getUserUploadDir() . DIRECTORY_SEPARATOR . $filename;
 
@@ -154,7 +145,7 @@ class MassUploadController
             unlink($filepath);
         }
 
-        return $response;
+        return new JsonResponse();
     }
 
     /**
@@ -171,16 +162,16 @@ class MassUploadController
         if (is_dir($this->uploader->getUserUploadDir())) {
             $storedFiles = array_diff(scandir($this->uploader->getUserUploadDir()), ['.', '..']);
 
-            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mimeTypeGuesser = MimeTypeGuesser::getInstance();
 
             foreach ($storedFiles as $file) {
                 $filepath = $this->uploader->getUserUploadDir() . DIRECTORY_SEPARATOR . $file;
-                $infos    = [
+                $mimeType = $mimeTypeGuesser->guess($filepath);
+                $files[]  = [
                     'name' => $file,
-                    'type' => $finfo->file($filepath),
+                    'type' => $mimeType,
                     'size' => filesize($filepath),
                 ];
-                $files[]  = $infos;
             }
         }
 
@@ -196,13 +187,15 @@ class MassUploadController
      */
     public function scheduleAction()
     {
-        $response    = new JsonResponse();
+        $this->scheduler->setSourceDirectory($this->uploader->getUserUploadDir());
+        $this->scheduler->setScheduleDirectory($this->uploader->getUserScheduleDir());
+
         $result      = $this->scheduler->schedule();
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('apply_assets_mass_upload');
 
-        $this->jobLauncher->launch($jobInstance, $this->currentUser, '{}');
+        $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), '{}');
 
-        $response->setData(['result' => $result]);
+        $response = new JsonResponse(['result' => $result]);
 
         return $response;
     }

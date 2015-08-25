@@ -9,21 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\MassUpload;
+namespace PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory;
+use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
-use PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface;
-use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
-use PimEnterprise\Component\ProductAsset\Upload\UploadStatus;
 use SplFileInfo;
 
 /**
@@ -35,6 +32,9 @@ class MassUploadProcessor
 {
     /** @var UploaderInterface */
     protected $uploader;
+
+    /** @var UploadCheckerInterface */
+    protected $uploadChecker;
 
     /** @var SchedulerInterface */
     protected $scheduler;
@@ -59,6 +59,7 @@ class MassUploadProcessor
 
     /**
      * @param UploaderInterface         $uploader
+     * @param UploadCheckerInterface    $uploadChecker
      * @param SchedulerInterface        $scheduler
      * @param AssetFactory              $assetFactory
      * @param AssetRepositoryInterface  $assetRepository
@@ -69,6 +70,7 @@ class MassUploadProcessor
      */
     public function __construct(
         UploaderInterface $uploader,
+        UploadCheckerInterface $uploadChecker,
         SchedulerInterface $scheduler,
         AssetFactory $assetFactory,
         AssetRepositoryInterface $assetRepository,
@@ -78,6 +80,7 @@ class MassUploadProcessor
         LocaleRepositoryInterface $localeRepository
     ) {
         $this->uploader         = $uploader;
+        $this->uploadChecker    = $uploadChecker;
         $this->scheduler        = $scheduler;
         $this->assetFactory     = $assetFactory;
         $this->assetRepository  = $assetRepository;
@@ -136,7 +139,7 @@ class MassUploadProcessor
      */
     public function applyScheduledUpload(SplFileInfo $file)
     {
-        $assetInfo   = $this->uploader->parseFilename($file->getFilename());
+        $assetInfo   = $this->uploadChecker->parseFilename($file->getFilename());
         $isLocalized = null !== $assetInfo['locale'];
 
         /** @var AssetInterface $asset */

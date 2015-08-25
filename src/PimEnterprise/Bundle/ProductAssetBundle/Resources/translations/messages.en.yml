@@ -116,8 +116,10 @@ pimee_product_asset:
     mass_upload:
         menu: Upload assets
         new: A new asset will be created
+        add_files: add files
         start: Start upload
         cancel: Cancel upload
+        schedule: schedule
         executed: Mass upload executed
         error:
             upload: An error occured while uploading
@@ -142,3 +144,6 @@ job_execution.summary:
     asset_file_processed: Asset file processed
     pimee_product_asset.mass_upload.new: Asset created from file
     pimee_product_asset.mass_upload.updated: Asset updated
+
+assets_mass_upload.steps:
+    asset_mass_upload.title: Assets mass upload

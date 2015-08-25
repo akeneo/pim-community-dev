@@ -1,19 +1,20 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\MassUpload;
+namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetSaver;
-use PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory;
+use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface;
+use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
 use Prophecy\Argument;
 use SplFileInfo;
@@ -22,6 +23,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
 {
     function let(
         UploaderInterface $uploader,
+        UploadCheckerInterface $uploadChecker,
         SchedulerInterface $scheduler,
         AssetFactory $assetFactory,
         AssetRepositoryInterface $assetRepository,
@@ -31,6 +33,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository
     ) {
         $this->beConstructedWith($uploader,
+            $uploadChecker,
             $scheduler,
             $assetFactory,
             $assetRepository,
@@ -42,7 +45,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadProcessor');
+        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor');
     }
 
     function it_creates_an_asset_from_a_non_localizable_file(
@@ -50,7 +53,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         FileInterface $rawFile,
         AssetInterface $asset,
         ReferenceInterface $reference,
-        $uploader,
+        $uploadChecker,
         $assetFactory,
         $assetRepository,
         $filesUpdater,
@@ -70,7 +73,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             'locale' => null
         ];
 
-        $uploader->parseFilename('foobar.jpg')
+        $uploadChecker->parseFilename('foobar.jpg')
             ->willReturn($assetInfos);
 
         $assetRepository->findOneByIdentifier('foobar')
@@ -97,7 +100,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         FileInterface $rawFile,
         AssetInterface $asset,
         ReferenceInterface $reference,
-        $uploader,
+        $uploadChecker,
         $assetFactory,
         $assetRepository,
         $filesUpdater,
@@ -117,7 +120,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             'locale' => 'en_US'
         ];
 
-        $uploader->parseFilename('foobar.jpg')
+        $uploadChecker->parseFilename('foobar.jpg')
             ->willReturn($assetInfos);
 
         $assetRepository->findOneByIdentifier('foobar')
@@ -144,7 +147,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         FileInterface $rawFile,
         AssetInterface $asset,
         ReferenceInterface $reference,
-        $uploader,
+        $uploadChecker,
         $assetFactory,
         $assetRepository,
         $filesUpdater,
@@ -164,7 +167,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             'locale' => 'en_US'
         ];
 
-        $uploader->parseFilename('foobar.jpg')
+        $uploadChecker->parseFilename('foobar.jpg')
             ->willReturn($assetInfos);
 
         $assetRepository->findOneByIdentifier('foobar')

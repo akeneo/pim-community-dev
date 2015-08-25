@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
@@ -21,70 +20,90 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
  */
 class UploadChecker implements UploadCheckerInterface
 {
-    /** @var UploaderInterface */
-    protected $uploader;
-
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
-    /** @var string */
-    protected $checkStatus;
-
     /**
-     * @param UploaderInterface        $uploader
      * @param AssetRepositoryInterface $assetRepository
      */
     public function __construct(
-        UploaderInterface $uploader,
         AssetRepositoryInterface $assetRepository
     ) {
-        $this->uploader        = $uploader;
         $this->assetRepository = $assetRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getCheckStatus()
+    public function isError($uploadStatus)
     {
-        return $this->checkStatus;
+        $errorStatus = [
+            UploadStatus::STATUS_ERROR_CODE,
+            UploadStatus::STATUS_ERROR_LOCALE,
+            UploadStatus::STATUS_ERROR_EXISTS,
+            UploadStatus::STATUS_ERROR_CONFLICTS
+        ];
+
+        return in_array($uploadStatus, $errorStatus);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isValidFilename($filename)
+    public function checkFilename($filename, $tmpUploadDir, $tmpScheduleDir)
     {
-        $this->checkStatus = UploadStatus::STATUS_NEW;
-
-        $parsedName = $this->uploader->parseFilename($filename);
+        $parsedName = $this->parseFilename($filename);
 
         if (null !== $parsedName['code']) {
-            $assetCode  = $parsedName['code'];
-            $localeCode = $parsedName['locale'];
-            $valid      = $this->checkWithExistingAsset($assetCode, $localeCode);
+            $assetCode   = $parsedName['code'];
+            $localeCode  = $parsedName['locale'];
+            $checkStatus = $this->checkWithExistingAsset($assetCode, $localeCode);
         } else {
-            $this->checkStatus = UploadStatus::STATUS_ERROR_CODE;
-            $valid             = false;
+            $checkStatus = UploadStatus::STATUS_ERROR_CODE;
         }
 
-        if (true === $valid) {
-            $uploadPath = $this->uploader->getUserUploadDir() . DIRECTORY_SEPARATOR . $filename;
+        if (!$this->isError($checkStatus)) {
+            $uploadPath = $tmpUploadDir . DIRECTORY_SEPARATOR . $filename;
             if (file_exists($uploadPath)) {
-                $valid             = false;
-                $this->checkStatus = UploadStatus::STATUS_ERROR_EXISTS;
+                $checkStatus = UploadStatus::STATUS_ERROR_EXISTS;
             }
         }
 
-        if (true === $valid) {
-            $schedulePath = $this->uploader->getUserScheduleDir() . DIRECTORY_SEPARATOR . $filename;
+        if (!$this->isError($checkStatus)) {
+            $schedulePath = $tmpScheduleDir . DIRECTORY_SEPARATOR . $filename;
             if (file_exists($schedulePath)) {
-                $valid             = false;
-                $this->checkStatus = UploadStatus::STATUS_ERROR_EXISTS;
+                $checkStatus = UploadStatus::STATUS_ERROR_EXISTS;
             }
         }
 
-        return $valid;
+        return $checkStatus;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parseFilename($filename)
+    {
+        $parsed = [
+            'code'   => null,
+            'locale' => null,
+        ];
+
+        $patternCodePart   = '[a-zA-Z0-9_]+';
+        $patternLocalePart = '[a-z]{2}_[A-Z]{2}';
+
+        $pattern = sprintf('/^
+            (%s)        #asset code
+            (?:-(%s))?  #locale code (optionnal)
+            \.[^.]+     #file extension
+            $/x', $patternCodePart, $patternLocalePart);
+
+        if (preg_match($pattern, $filename, $matches)) {
+            $parsed['code']   = $matches[1];
+            $parsed['locale'] = isset($matches[2]) ? $matches[2] : null;
+        }
+
+        return $parsed;
     }
 
     /**
@@ -97,18 +116,18 @@ class UploadChecker implements UploadCheckerInterface
      */
     protected function checkWithExistingAsset($assetCode, $localeCode = null)
     {
-        /** @var AssetInterface $asset */
         $asset = $this->assetRepository->findOneByIdentifier($assetCode);
 
-        if (null === $asset
-            || (empty($asset->getLocales()) && null === $localeCode)
-            || (in_array($localeCode, array_keys($asset->getLocales())))
+        if (null === $asset) {
+            $status = UploadStatus::STATUS_NEW;
+        } elseif ((empty($asset->getLocales()) && null === $localeCode) ||
+            (in_array($localeCode, array_keys($asset->getLocales())))
         ) {
-            return true;
+            $status = UploadStatus::STATUS_UPDATED;
+        } else {
+            $status = UploadStatus::STATUS_ERROR_LOCALE;
         }
 
-        $this->checkStatus = UploadStatus::STATUS_ERROR_LOCALE;
-
-        return false;
+        return $status;
     }
 }
