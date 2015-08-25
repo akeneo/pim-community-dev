@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Prophecy\Argument;
 
 class AssetRepositorySpec extends ObjectBehavior
@@ -98,8 +99,13 @@ class AssetRepositorySpec extends ObjectBehavior
         $this->createAssetDatagridQueryBuilder([]);
     }
 
-    function it_finds_all_assets_by_end_of_use_delay($em, QueryBuilder $qb,AbstractQuery $query)
-    {
+    function it_finds_all_assets_by_end_of_use_delay(
+        $em,
+        QueryBuilder $qb,
+        AbstractQuery $query,
+        AssetInterface $asset,
+        AssetInterface $asset2
+    ) {
         $now = new \DateTime('2015-08-10');
         $em->createQueryBuilder()->willReturn($qb);
 
@@ -109,8 +115,8 @@ class AssetRepositorySpec extends ObjectBehavior
         $qb->setParameter(':endOfUse', '2015-08-15')->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
-        $query->getArrayResult()->shouldBeCalled();
+        $query->getArrayResult()->willReturn([$asset, $asset2]);
 
-        $this->findAllAssetsByEndOfUse($now, 5);
+        $this->findAllAssetsByEndOfUse($now, 5)->shouldReturn([$asset, $asset2]);
     }
 }
