@@ -258,3 +258,6 @@ pim_enrich:
                 title: Add attribute option
                 confirm: Add
                 cancel: Cancel
+
+pim_enrich.error:
+    exception.title: Oh snap! A {{ status_code }} error occured...

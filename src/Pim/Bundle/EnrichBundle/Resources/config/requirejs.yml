@@ -108,6 +108,7 @@ config:
         pim/item/view:                      pimenrich/js/pim-item-view
         pim/i18n:                           pimenrich/js/i18n
         pim/user-context:                   pimenrich/js/user-context
+        pim/error:                          pimenrich/js/error/error
 
         # Security
         pim/security-context:               pimenrich/js/security-context
@@ -238,3 +239,4 @@ config:
         pim/template/attribute-option/form:                          pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:              pimenrich/templates/attribute-option/validation-error.html
         pim/template/i18n/flag:                                      pimenrich/templates/i18n/flag.html
+        pim/template/error/error:                                    pimenrich/templates/error/error.html

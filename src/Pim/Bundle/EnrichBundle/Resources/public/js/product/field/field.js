@@ -193,7 +193,7 @@ define([
             /**
              * Add an element to this field block
              *
-             * @param {string} position
+             * @param {string} position 'footer', 'label' or 'comparision'
              * @param {string} code
              * @param {Object} element
              */
