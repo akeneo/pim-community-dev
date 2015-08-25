@@ -80,8 +80,9 @@ class CategoryAssetRemover implements RemoverInterface
         $this->eventDispatcher->dispatch($eventName, new RemoveEvent($category, $categoryId));
 
         $assetsToUpdate = [];
-        if (!empty($category->getAssets())) {
-            foreach ($category->getAssets() as $asset) {
+        $assets = $category->getAssets();
+        if (!empty($assets)) {
+            foreach ($assets as $asset) {
                 $asset->removeCategory($category);
                 $assetsToUpdate[] = $asset;
             }
