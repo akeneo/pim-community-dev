@@ -50,7 +50,7 @@ define(
             updateFieldElements: function (field) {
                 field.addElement(
                     'field-input',
-                    'locale_specific',
+                    'input_placeholder',
                     _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable')
                 );
             }

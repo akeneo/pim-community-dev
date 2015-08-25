@@ -68,7 +68,7 @@ define(
             updateFieldElements: function (context, field) {
                 field.addElement(
                     'field-input',
-                    'couple_locale_channel',
+                    'input_placeholder',
                     _.__('pim_enrich.entity.product.localizable.channel_locale_unavailable', {
                         channel: context.scope,
                         locale: context.locale
