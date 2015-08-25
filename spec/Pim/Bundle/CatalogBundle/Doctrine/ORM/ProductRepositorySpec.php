@@ -10,21 +10,15 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Prophecy\Argument;
 
 class ProductRepositorySpec extends ObjectBehavior
 {
-    function let(
-		EntityManager $em,
-		ClassMetadata $class,
-		ProductQueryBuilderFactory $pqbFactory,
-		AttributeRepository $attributeRepository
-	) {
+    function let(EntityManager $em, ClassMetadata $class, ProductQueryBuilderFactory $pqbFactory)
+    {
         $class->name = 'Pim\Bundle\CatalogBundle\Model\Product';
         $this->beConstructedWith($em, $class);
         $this->setProductQueryBuilderFactory($pqbFactory);
-        $this->setAttributeRepository($attributeRepository);
     }
 
     function it_is_a_product_repository()
@@ -34,7 +28,6 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_does_join_product_attribute_and_values_but_not_translations_when_find_one_product(
         $em,
-        $attributeRepository,
         $pqbFactory,
         QueryBuilder $queryBuilder,
         Expr $expr,
@@ -42,9 +35,6 @@ class ProductRepositorySpec extends ObjectBehavior
         ProductQueryBuilder $pqb
     )
     {
-        $attributeRepository->findOneBy(['code' => 'id'])->willReturn(null);
-        $this->setAttributeRepository($attributeRepository);
-
         $pqbFactory->create()->willReturn($pqb);
         $em->createQueryBuilder()->willReturn($queryBuilder);
         $pqb->getQueryBuilder()->willReturn($queryBuilder);
@@ -127,3 +117,4 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->getFullProducts([42]);
     }
 }
+
