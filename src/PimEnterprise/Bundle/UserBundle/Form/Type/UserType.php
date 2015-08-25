@@ -31,7 +31,7 @@ class UserType extends BaseUserType
             'emailNotifications',
             'checkbox',
             [
-                'label'    => 'Email notifications',
+                'label'    => 'user.email.notifications',
                 'required' => false,
             ]
         );
@@ -40,7 +40,7 @@ class UserType extends BaseUserType
             'assetDelayReminder',
             'integer',
             [
-                'label'    => 'Asset delay reminder (in days)',
+                'label'    => 'user.asset_delay_reminder',
                 'required' => true,
             ]
         );
