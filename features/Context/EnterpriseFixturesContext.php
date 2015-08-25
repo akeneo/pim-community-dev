@@ -43,6 +43,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected $enterpriseEntities = [
         'Published'     => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
         'AssetCategory' => 'PimEnterprise\Component\ProductAsset\Model\Category',
+        'User'          => 'PimEnterprise\Bundle\UserBundle\Entity\User',
     ];
 
     /**
@@ -648,6 +649,43 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         return $steps;
+    }
+
+    /**
+     * @param string $user
+     *
+     * @Then /^the user "([^"]*)" should have email notifications enabled$/
+     */
+    public function userShouldHaveEmailNotificationsEnabled($user)
+    {
+        $user = $this->getUser($user);
+        $this->getEntityManager()->refresh($user);
+        assertEquals($user->isEmailNotifications(), true);
+    }
+
+    /**
+     * @param string $user
+     *
+     * @Then /^the user "([^"]*)" should have email notifications disabled$/
+     */
+    public function userShouldHaveEmailNotificationsDisabled($user)
+    {
+        $user = $this->getUser($user);
+        $this->getEntityManager()->refresh($user);
+        assertEquals($user->isEmailNotifications(), false);
+    }
+
+    /**
+     * @param string $user
+     * @param int    $delay
+     *
+     * @Then /^the user "([^"]*)" should have an asset delay notification set to (\d+)$/
+     */
+    public function userShouldHaveAnAssetDelayNotification($user, $delay)
+    {
+        $user = $this->getUser($user);
+        $this->getEntityManager()->refresh($user);
+        assertEquals($user->getAssetDelayReminder(), $delay);
     }
 
     /**
