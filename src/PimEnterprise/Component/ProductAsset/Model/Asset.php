@@ -427,6 +427,10 @@ class Asset implements AssetInterface
             $reference = $this->getReference();
         }
 
+        if (null === $reference) {
+            return null;
+        }
+
         if (null !== $variation = $reference->getVariation($channel)) {
             return $variation->getFile();
         }
