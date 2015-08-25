@@ -138,3 +138,4 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->getFullProducts([42]);
     }
 }
+

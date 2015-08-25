@@ -1,0 +1,129 @@
+# 1.1.0 - "Rabbit Punch" (2014-04-16)
+
+## Features
+- Implement creating, updating, applying and removing datagrid views
+- MongoDB storage support
+
+## Improvements
+- Allow to add many quick export on datagrids
+- Optimize products mass deletion
+- Improve get product REST API
+- Improve entity history context display for entities updated during import jobs
+- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
+- Introduced custom ODM types to map document to one or many entities
+- Define specific route and configuration for datagrid quick exports
+- Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
+- Dispatch event pre/post handler for each mass action
+- Enhance the error message displayed when a related entity doesn't exist during an import (for instance we import products and a family doesn't exist)
+- Default product datagrid sorting is done descending on updated property
+
+## Bug fixes
+- Fixed the verbose option always used in the install command
+- Fixed issue on attribute option removal
+- Fixed identifier is required attribute
+- Fixed get common attributes with common values
+- Fixed completeness not removed from changed family
+- Fixed Product ORM mapping: activated orphanRemoval of values
+- Fixed family import fixtures, we now throw an exception if attribute used as requirement not exists
+- Fixed the CSV import of attribute options which can fail due to missing columns when options are not 100% translated
+- Fixed the CSV import of attribute option to throw exception when the attribute is not known
+- Fixed the CSV export of attributes to avoid to export the virtual group 'Other'
+- Prevent considering 0 as a null value when importing metric data
+- Ensured the attribute option validation when edit an option
+- Fixed the product CSV export when a metric attribute is exported without unit
+- Fixed the missed 'there are unsaved changes' message when I delete an option
+- Ensured the ability to change the user catalog locale from user fixtures
+- Fixed mass delete and pagination
+- Fixed the CSV import of family when an attribute does not exist
+- Fixed the CSV import of option when an attribute does not exist
+- Fixed the erroneous message on completeness tab to display "not yet calculated" instead of "locale non associated to this channel"
+- Fixed the 'null' displayed after a dynamic option creation
+- Fixed the quick Export to be able to export all the products
+- Ensured that we're able to configure the email to use in monolog handler
+- Fixed the missing translation keys
+- Fixed the route exception for less/address in prod.log
+- Fixed the categories tree get cut off on a long list on categiry management
+- Fixed the deletion of an attribute option
+- Remove the deprecated fallback property in locale and in locales.yml file
+- Avoid to recalculate the completeness when I add some products to one or more group with the mass-edit wizard
+- Fixed the unique attributes validation during product CSV imports
+- Fixed the exception on file_get_content if the image doesn't exist anymore
+- Ensure the required property for an identifier when importing attributes
+- Fixed the error message when the family is not known when importing products
+- Removed useless ```app/entities``` directory
+
+## BC breaks
+- Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
+- Add an argument $adapterClass (string for FQCN) in ProductFilterExtension and OrmFilterExtension constructors (MongoDBODM support)
+- Remove deprecated fallback property of Locale entity
+- Add a generateProductCompletenesses method on CompletenessGeneratorInterface, to generate completeness for one product
+- Add setCompletenesses and getCompletenesses method on ProductInterface and Product class
+- Add methods getProductQueryBuilder, deleteProductIds methods in ProductRepositoryInterface
+- Remove methods setLocale/getLocale, setScope/getScope, setConfiguration/getConfiguration from ProductRepositoryInterface
+- Remove methods setLocale/getLocale, setScope/getScope from ProductManager
+- Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface
+- Move setFlexibleQueryBuilder, findAllByAttributes, findOneByWithValues, getFlexibleQueryBuilder, addJoinToValueTables, findAllByAttributesQB from FlexibleEntityRepository to ProductRepository (ORM)
+- Move FilterBundle/Filter/ScopeFilter.php, ProductCompletenessFilter.php, ProductGroupsFilter.php, CategoryFilter.php -> FilterBundle/Filter/Product/ScopeFilter.php, CompletenessFilter, GroupsFilter.php, CategoryFilter.php
+- Move FilterBundle/Resources/public/js/datafilter/filter/scope-filter.js, category-filter.js -> FilterBundle/Resources/public/js/datafilter/filter/product_scope-filter.js, product_category-filter.js
+- Move FilterBundle/Filter/Flexible/FilterUtility.php -> Filter/ProductFilterUtility.php, remove the flexibleEntityName argument of applyFlexibleFilter, rename applyFlexibleFilter to applyFilterByAttribute
+- ProductValueNonBlank renamed to ProductValueComplete
+- Remove the AclHelper $aclHelper argument from the DataGridBundle/Extension/Pager/Orm/Pager.php constructor
+- Moved CustomEntityBundle to its own repository
+- Move `FlexibleEntityBundle/Doctrine/*` -> `CatalogBundle/Doctrine/ORM/*`, rename `FlexibleQueryBuilder*` to `ProductQueryBuilder*`, specialize the implementation and pass the CatalogContext as constructor argument
+- Changes in the implementation of storing datagrid state - adding 'pim/datagrid/state-listener' to the datagrid configuration is no longer required, instead, the grid should be rendered with dataGrid.renderStatefulGrid()
+- Move `FilterBundle/Filter/Flexible/*` -> `FilterBundle/Filter/ProductValue/*`
+- Remove unused FilterBundle/Filter/ProductValue/EntityFilter
+- Replace FlexibleManager by ProductManager in ContextConfigurator constructor arguments
+- Replace tag `pim_flexibleentity.attributetype` by `pim_catalog.attribute_type`
+- Replace service `@pim_flexibleentity.validator.attribute_constraint_guesser` by `@pim_catalog.validator.attribute_constraint_guesser`
+- Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
+- Update ProductValueInterface, add getData, setData and getAttribute methods
+- Move `DataGridBundle/Extension/Formatter/Property/*` to `DataGridBundle\Extension\Formatter\Property\ProductValue\*`
+- Use CatalogContext and not ProductManager as constructor argument in AddParametersToProductGridListener
+- Move mass export in specific controller
+- Add an affectsCompleteness method to MassEditActionInterface to indicate whether performing the mass action requires recalculating the product completeness
+- Remove DeleteMassActionHandler, replaced by ProductDeleteMassActionHandler
+- Change product REST API data and url format
+- Remove incomplete REST API for getting multiple products
+- Remove Router dependency from json ProductNormalizer
+- Replace RegistryInterface with ManagerRegistry in controllers - retrieving the ObjectManager from the AbstractController now requires passing the class name (AbstractDoctrineController::getManagerForClass())
+- Change Completeness Manager and Repository function names to something more coherent (generateMissingForxxx)
+- Move `DataGridBundle/Extension/Sorter\Orm\FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
+- Move `DataGridBundle/Extension/Sorter/Orm/FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
+- Move `DataGridBundle/Extension/Selector/Orm/*` to `DataGridBundle/Extension/Selector/Orm/Product` and `DataGridBundle/Extension/Selector/Orm/ProductValue`
+- ProductRepository does not extend anymore FlexibleEntityRepository, getFlexibleConfig/setFlexibleConfig have been replaced by getConfiguration/setConfiguration
+- Change mass action route for products and create own controller for these mass actions
+- Add a MassActionHandlerRegistry for mass action handlers services (works with handler alias)
+- Rename ProductDeleteMassActionHandler to DeleteMassActionHandler
+- Create MassActionHandlerInterface instead of using OroPlatform one
+- Change MassActionDispatcher::dispatch parameters
+- Replace `@pim_datagrid.datasource.product.result_record.hydrator` by `@pim_datagrid.datasource.result_record.hydrator.product` and same for class parameter
+- Move mass action handlers to its own `Handler` directory
+- Create PimDatasourceInterface extending OroDatasourceInterface
+- Use PimVersioningBundle:Version for all entity audits instead of OroDataAuditBundle:Audit, replace AuditManager with VersionManager, drop AuditBuilder and refactor listeners that create object versions
+- Redefine DeleteMassAction, EditMassAction and ExportMassAction
+- Remove data_identifier property defined on datagrid.yml for mass actions
+- Rename parameter $queryBuilder as $qb in HydratorInterface
+- Add findFamilyCommonAttributeIds and findValuesCommonAttributeIds methods to ProductRepository interface
+- Remove queryBuilder property from MassEditActionController and remove $request from each action
+- Remove queryBuilder from methods initialize and perform in AbstractMassEditAction and children
+- Add setProductsToMassEdit and getProductsToMassEdit in AbstractMassEditAction
+- Remove EntityManager property from AddToGroups mass edit action and directly inject GroupRepository
+- Remove ProductManager property from Classify mass edit action
+- Remove method getProductIdsFromQB from EditCommonAttributes mass edit action
+- Remove ProductRepository::findFamilyCommonAttributes() and ProductRepository::findValuesCommonAttributeIds() to replace them by ProductRepository::findCommonAttributeIds()
+- Disable global search feature
+- Remove the 'searchable' property of AbstractAttribute
+- Move ProductRepository::getIdentifier() to attribute repository
+- Move CatalogBundle\Entity\Repository\ProductRepository to CatalogBundle\Doctrine\ORM
+- Move CatalogBundle\Entity\Repository\AssociationRepository to CatalogBundle\Doctrine\ORM
+- Move CatalogBundle\Model\ProductRepositoryInterface to CatalogBundle\Repository
+- Move CatalogBundle\Model\AssociationRepositoryInterface to CatalogBundle\Repository
+- Move CatalogBundle\Model\CompletenessRepositoryInterface to CatalogBundle\Repository
+- EditCommonAttributes class needs the ProductBuilder and ProductMassActionManager now
+- Move prepareDBALQuery from ProductRepository to QueryBuilderUtility
+- Add a ProductCategoryManager and move here the methods getProductsCountInCategory, getProductIdsInCategory from the ProductManager
+- Renamed service writer ids `pim_base_connector.writer.orm.*` -> `pim_base_connector.writer.doctrine.*`
+- Replace `@security.context` by `@pim_user.context.user` in `ContextConfigurator`
+- Delete the attribute virtual group and the `getVirtualGroup` method of the class `Pim\Bundle\CatalogBundle\Model\AbstractAttribute`
+- Render the attribute group mandatory for the creation and the edition of an attribute
