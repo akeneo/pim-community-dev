@@ -141,6 +141,8 @@ config:
         pim/product-edit-form/attributes/attribute-group-selector: pimenrich/js/product/form/attributes/attribute-group-selector
         pim/product-edit-form/attributes/add-attribute:            pimenrich/js/product/form/attributes/add-attribute
         pim/product-edit-form/attributes/variant-group:            pimenrich/js/product/form/attributes/variant-group
+        pim/product-edit-form/attributes/locale-specific:          pimenrich/js/product/form/attributes/locale-specific
+        pim/product-edit-form/attributes/localizable:              pimenrich/js/product/form/attributes/localizable
         pim/product-edit-form/categories:                          pimenrich/js/product/form/categories
         pim/product-edit-form/associations:                        pimenrich/js/product/form/associations
         pim/product-edit-form/panel/panels:                        pimenrich/js/product/form/panel/panels

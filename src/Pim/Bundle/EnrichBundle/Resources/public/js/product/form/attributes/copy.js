@@ -111,21 +111,10 @@ define(
                 var code = field.attribute.code;
                 if (!_.has(this.copyFields, code)) {
                     var sourceData = this.getSourceData();
-                    var valueToCopy = AttributeManager.getValue(
-                        sourceData[code],
-                        field.attribute,
-                        this.locale,
-                        this.scope
-                    );
+                    var copyField = new CopyField(field.attribute);
 
-                    if (_.isUndefined(valueToCopy)) {
-                        valueToCopy = AttributeManager.generateValue(field.attribute, this.locale, this.scope);
-                    }
-
-                    var copyField = new CopyField();
-                    copyField.setLocale(this.locale);
-                    copyField.setScope(this.scope);
-                    copyField.setValue(valueToCopy);
+                    copyField.setContext({locale: this.locale, scope: this.scope});
+                    copyField.setValues(sourceData[code]);
                     copyField.setField(field);
 
                     this.copyFields[code] = copyField;
@@ -158,7 +147,7 @@ define(
                             UserContext.get('catalogScope')
                         );
 
-                        oldValue.data = copyField.value.data;
+                        oldValue.data = copyField.getCurrentValue().data;
                         mediator.trigger('pim_enrich:form:entity:update_state');
                         copyField.setSelected(false);
                     }

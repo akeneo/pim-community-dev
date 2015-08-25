@@ -180,6 +180,8 @@ pim_enrich:
                 remove: Remove this attribute
             locale_specific_attribute:
                 unavailable: This locale specific field is not available in this locale
+            localizable:
+                channel_locale_unavailable: This localizable field is not available for locale '{{ locale }}' and channel '{{ channel }}'
             media:
                 upload: Drag and drop to upload or click here
         attribute_option:

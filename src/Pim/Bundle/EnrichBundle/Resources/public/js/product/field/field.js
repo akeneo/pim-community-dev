@@ -68,36 +68,40 @@ define([
                 mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': promises});
 
                 $.when.apply($, promises)
-                    .then(function () {
-                        return this.getTemplateContext();
-                    }.bind(this))
+                    .then(this.getTemplateContext.bind(this))
                     .then(function (templateContext) {
                         this.$el.html(this.template(templateContext));
 
-                        if (this.inputCanBeSeen(this.context)) {
-                            this.$('.form-field .field-input').append(this.renderInput(templateContext));
-                        } else {
-                            this.$('.form-field .field-input').append(
-                                _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable')
-                            );
-                        }
+                        this.$('.original-field .field-input').append(this.renderInput(templateContext));
 
-                        _.each(this.elements, function (elements, position) {
-                            var $container = this.$('.' + position + '-elements-container');
-                            $container.empty();
-                            _.each(elements, function (element) {
-                                if (typeof element.render === 'function') {
-                                    $container.append(element.render().$el);
-                                } else {
-                                    $container.append(element);
-                                }
-                            }.bind(this));
-                        }.bind(this));
+                        this.renderElements();
                         this.postRender();
                         this.delegateEvents();
                     }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Render elements of this field in different available positions
+             */
+            renderElements: function () {
+                _.each(this.elements, function (elements, position) {
+                    var $container = 'field-input' === position ?
+                        this.$('.original-field .field-input') :
+                        this.$('.' + position + '-elements-container');
+
+                    $container.empty();
+
+                    _.each(elements, function (element) {
+                        if (typeof element.render === 'function') {
+                            $container.append(element.render().$el);
+                        } else {
+                            $container.append(element);
+                        }
+                    }.bind(this));
+
+                }.bind(this));
             },
 
             /**
@@ -130,9 +134,7 @@ define([
                         copyContext.context.scope = value.scope;
                         copyContext.editMode = 'view';
 
-                        return this.inputCanBeSeen(copyContext.context) ?
-                            this.renderInput(copyContext) :
-                            _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
+                        return this.renderInput(copyContext);
                     }.bind(this));
             },
 
@@ -295,19 +297,6 @@ define([
              */
             canBeSeen: function () {
                 return true;
-            },
-
-            /**
-             * Return whether input of the field can be seen
-             *
-             * @param {Object} context
-             *
-             * @returns {boolean}
-             */
-            inputCanBeSeen: function (context) {
-                return this.attribute.is_locale_specific ?
-                    _.contains(this.attribute.locale_specific_codes, context.locale) :
-                    true;
             },
 
             /**

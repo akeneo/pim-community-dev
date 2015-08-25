@@ -10,16 +10,15 @@
 define([
         'backbone',
         'underscore',
+        'pim/field',
         'text!pim/template/product/tab/attribute/copy-field',
-        'pim/i18n'
+        'pim/i18n',
+        'oro/mediator'
     ],
-    function (Backbone, _, template, i18n) {
-        return Backbone.View.extend({
+    function (Backbone, _, Field, template, i18n, mediator) {
+        return Field.extend({
             tagName: 'div',
             field: null,
-            locale: null,
-            scope: null,
-            value: {},
             template: _.template(template),
             selected: false,
             events: {
@@ -32,6 +31,8 @@ define([
             initialize: function () {
                 this.selected = false;
                 this.field    = null;
+
+                Field.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -49,15 +50,17 @@ define([
                     config: this.field.config,
                     attribute: this.field.attribute,
                     selected: this.selected,
-                    locale: this.locale,
-                    scope: this.scope,
+                    context: this.context,
                     i18n: i18n
                 };
 
+                mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': []});
+
                 this.$el.html(this.template(templateContext));
-                this.field.renderCopyInput(this.value)
+                this.field.renderCopyInput(this.getCurrentValue())
                     .then(function (render) {
                         this.$('.field-input').html(render);
+                        this.renderElements();
                     }.bind(this));
 
                 this.delegateEvents();
@@ -66,30 +69,24 @@ define([
             },
 
             /**
-             * Set the value to be displayed in the copy field
-             *
-             * @param {Object} value
+             * Render elements of this field in different available positions.
+             * In the copy case, only implements extension on input position.
              */
-            setValue: function (value) {
-                this.value = value;
-            },
+            renderElements: function () {
+                _.each(this.elements, function (elements, position) {
+                    if ('field-input' === position) {
+                        var $container = this.$('.field-input');
+                        $container.empty();
 
-            /**
-             * Set the locale
-             *
-             * @param {string} locale
-             */
-            setLocale: function (locale) {
-                this.locale = locale;
-            },
-
-            /**
-             * Set the scope
-             *
-             * @param {string} scope
-             */
-            setScope: function (scope) {
-                this.scope = scope;
+                        _.each(elements, function (element) {
+                            if (typeof element.render === 'function') {
+                                $container.append(element.render().$el);
+                            } else {
+                                $container.append(element);
+                            }
+                        }.bind(this));
+                    }
+                }.bind(this));
             },
 
             /**
