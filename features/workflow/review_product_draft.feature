@@ -54,7 +54,7 @@ Feature: Review a product draft
   Scenario: Successfully accept a textarea attribute from a product draft
     Given the following product drafts:
       | product   | author | result                                                                                    | status |
-      | my-jacket | mary   | {"values":{"description":[{"locale":"en_US","scope":"mobile","data":"An awesome coat"}]}} | ready  |
+      | my-jacket | Mary   | {"values":{"description":[{"locale":"en_US","scope":"mobile","data":"An awesome coat"}]}} | ready  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
@@ -67,7 +67,7 @@ Feature: Review a product draft
   Scenario: Successfully accept a number attribute from a product draft
     Given the following product drafts:
       | product   | author | result                                                                                                                      | status |
-      | my-jacket | mary   | {"values":{"number_in_stock":[{"locale":null,"scope":"mobile","data":"40"},{"locale":null,"scope":"tablet","data":"200"}]}} | ready  |
+      | my-jacket | Mary   | {"values":{"number_in_stock":[{"locale":null,"scope":"mobile","data":"40"},{"locale":null,"scope":"tablet","data":"200"}]}} | ready  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
@@ -165,7 +165,7 @@ Feature: Review a product draft
   Scenario: Successfully accept a date attribute from a product draft
     Given the following product drafts:
       | product   | author | result                                                                             | status |
-      | my-jacket | mary   | {"values":{"release_date":[{"locale":null,"scope":"mobile","data":"2014-05-20"}]}} | ready  |
+      | my-jacket | Mary   | {"values":{"release_date":[{"locale":null,"scope":"mobile","data":"2014-05-20"}]}} | ready  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
@@ -178,7 +178,7 @@ Feature: Review a product draft
   Scenario: Successfully accept a metric attribute from a product draft
     Given the following product drafts:
       | product   | author | result                                                                                        | status |
-      | my-jacket | mary   | {"values":{"length":[{"locale":null,"scope":null,"data":{"data":"40","unit":"CENTIMETER"}}]}} | ready  |
+      | my-jacket | Mary   | {"values":{"length":[{"locale":null,"scope":null,"data":{"data":"40","unit":"CENTIMETER"}}]}} | ready  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
@@ -244,7 +244,7 @@ Feature: Review a product draft
   Scenario: Successfully display the original value in the copy panel
     Given the following product drafts:
       | product   | author | result                                                                 | status |
-      | my-jacket | mary   | {"values":{"sku":[{"locale":null,"scope":null,"data":"your-jacket"}]}} | ready  |
+      | my-jacket | Mary   | {"values":{"sku":[{"locale":null,"scope":null,"data":"your-jacket"}]}} | ready  |
     And I am logged in as "Mary"
     And I edit the "my-jacket" product
     Then the SKU original value for scope "mobile" and locale "en_US" should be "my-jacket"
