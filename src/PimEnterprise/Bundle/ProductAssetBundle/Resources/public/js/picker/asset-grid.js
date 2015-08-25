@@ -52,19 +52,19 @@ define(
                     paramName: 'assetCodes'
                 };
 
-                mediator.on('datagrid:selectModel:' + this.datagrid.name, _.bind(this.selectModel, this));
-                mediator.on('datagrid:unselectModel:' + this.datagrid.name, _.bind(this.unselectModel, this));
-                mediator.on('datagrid_collection_set_after', _.bind(this.updateChecked, this));
-                mediator.on('datagrid_collection_set_after', _.bind(this.setDatagrid, this));
-                mediator.on('grid_load:complete', _.bind(this.updateChecked, this));
-                mediator.once('column_form_listener:initialized', _.bind(function onColumnListenerReady(gridName) {
+                mediator.on('datagrid:selectModel:' + this.datagrid.name, this.selectModel.bind(this));
+                mediator.on('datagrid:unselectModel:' + this.datagrid.name, this.unselectModel.bind(this));
+                mediator.on('datagrid_collection_set_after', this.updateChecked.bind(this));
+                mediator.on('datagrid_collection_set_after', this.setDatagrid.bind(this));
+                mediator.on('grid_load:complete', this.updateChecked.bind(this));
+                mediator.once('column_form_listener:initialized', function onColumnListenerReady(gridName) {
                     if (!this.configured) {
                         mediator.trigger(
                             'column_form_listener:set_selectors:' + gridName,
                             { included: '#asset-appendfield' }
                         );
                     }
-                }, this));
+                }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -97,7 +97,7 @@ define(
                     }
                 };
 
-                $.get(Routing.generate('pim_datagrid_load', urlParams)).done(_.bind(function (response) {
+                $.get(Routing.generate('pim_datagrid_load', urlParams)).done(function (response) {
                     this.$('#grid-' + this.datagrid.name).data(
                         { 'metadata': response.metadata, 'data': JSON.parse(response.data) }
                     );
@@ -106,7 +106,7 @@ define(
                         datagridBuilder(_.toArray(arguments));
                     });
 
-                }, this));
+                }.bind(this));
             },
 
             /**
@@ -177,7 +177,7 @@ define(
             getAssets: function () {
                 var assets = $('#asset-appendfield').val();
 
-                return ('' !== assets) ? assets.split(',') : [];
+                return (!_.isUndefined(assets) && '' !== assets) ? assets.split(',') : [];
             },
 
             /**
@@ -202,13 +202,13 @@ define(
             updateChecked: function (datagrid) {
                 var assets = this.getAssets();
 
-                _.each(datagrid.models, _.bind(function (row) {
+                _.each(datagrid.models, function (row) {
                     if (_.contains(assets, row.get('code'))) {
                         row.set('is_checked', true);
                     } else {
                         row.set('is_checked', null);
                     }
-                }, this));
+                }.bind(this));
 
                 this.setAssets(assets);
             },
@@ -226,20 +226,20 @@ define(
             },
 
             /**
-             * Render the basket to update it's content
+             * Render the basket to update its content
              */
             updateBasket: function () {
-                var assetCodes = this.getAssets();
-
                 FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.getAssets())
-                    .then(_.bind(function (assets) {
-                        assets = _.map(assetCodes, function (assetCode) {
-                            return _.findWhere(assets, { code: assetCode });
-                        });
+                    .then(function (assets) {
+                        this.$('.basket').html(this.basketTemplate({
+                            assets: assets,
+                            thumbnailFilter: 'thumbnail',
+                            scope: this.getScope(),
+                            locale: this.getLocale()
+                        }));
 
-                        this.$('.basket').html(this.basketTemplate({ assets: assets }));
                         this.delegateEvents();
-                    }, this));
+                    }.bind(this));
             },
 
             /**

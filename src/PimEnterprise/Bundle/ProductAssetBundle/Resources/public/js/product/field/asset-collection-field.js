@@ -39,14 +39,14 @@ define(
                 return $.when(
                     Field.prototype.getTemplateContext.apply(this, arguments),
                     FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.getCurrentValue().data)
-                ).then(_.bind(function (templateContext, assets) {
-                    templateContext.assets = _.map(this.getCurrentValue().data, function (assetCode) {
-                        return _.findWhere(assets, {code: assetCode});
+                ).then(function (templateContext, assets) {
+                    _.extend(templateContext, {
+                        assets: assets,
+                        thumbnailFilter: 'thumbnail'
                     });
-                    templateContext.Routing = Routing;
 
                     return templateContext;
-                }, this));
+                }.bind(this));
             },
 
             /**
@@ -60,10 +60,10 @@ define(
              * Launch the asset picker and set the assets after update
              */
             updateAssets: function () {
-                this.manageAssets().done(_.bind(function (assets) {
+                this.manageAssets().then(function (assets) {
                     this.setCurrentValue(assets);
                     this.render();
-                }, this));
+                }.bind(this));
             },
 
             /**
@@ -74,7 +74,7 @@ define(
             manageAssets: function () {
                 var deferred = $.Deferred();
 
-                FormBuilder.build('pimee-product-asset-picker-form').done(_.bind(function (form) {
+                FormBuilder.build('pimee-product-asset-picker-form').then(function (form) {
                     var modal = new Backbone.BootstrapModal({
                         modalOptions: {
                             backdrop: 'static',
@@ -95,13 +95,13 @@ define(
                         .setAssets(this.getCurrentValue().data);
 
                     modal.on('cancel', deferred.reject);
-                    modal.on('ok', _.bind(function () {
-                        var assets = _.sortBy(form.getAssets());
+                    modal.on('ok', function () {
+                        var assets = _.sortBy(form.getAssets(), 'code');
                         modal.close();
 
                         deferred.resolve(assets);
-                    }, this));
-                }, this));
+                    }.bind(this));
+                }.bind(this));
 
                 return deferred.promise();
             }

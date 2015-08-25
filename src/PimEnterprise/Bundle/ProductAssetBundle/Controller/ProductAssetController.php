@@ -22,6 +22,8 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -66,6 +68,9 @@ class ProductAssetController extends Controller
     /** @var FileMetadataRepositoryInterface */
     protected $metadataRepository;
 
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
@@ -105,11 +110,15 @@ class ProductAssetController extends Controller
     /** @var UserContext */
     protected $userContext;
 
+    /** @var FileController */
+    protected $fileController;
+
     /**
      * @param AssetRepositoryInterface        $assetRepository
      * @param ReferenceRepositoryInterface    $referenceRepository
      * @param VariationRepositoryInterface    $variationRepository
      * @param FileMetadataRepositoryInterface $metadataRepository
+     * @param LocaleRepositoryInterface       $localeRepository
      * @param ChannelRepositoryInterface      $channelRepository
      * @param VariationFileGeneratorInterface $variationFileGenerator
      * @param FilesUpdaterInterface           $assetFilesUpdater
@@ -121,12 +130,14 @@ class ProductAssetController extends Controller
      * @param AssetFactory                    $assetFactory
      * @param FileFactoryInterface            $fileFactory
      * @param UserContext                     $userContext
+     * @param FileController                  $fileController
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         ReferenceRepositoryInterface $referenceRepository,
         VariationRepositoryInterface $variationRepository,
         FileMetadataRepositoryInterface $metadataRepository,
+        LocaleRepositoryInterface $localeRepository,
         ChannelRepositoryInterface $channelRepository,
         VariationFileGeneratorInterface $variationFileGenerator,
         FilesUpdaterInterface $assetFilesUpdater,
@@ -137,12 +148,14 @@ class ProductAssetController extends Controller
         EventDispatcherInterface $eventDispatcher,
         AssetFactory $assetFactory,
         FileFactoryInterface $fileFactory,
-        UserContext $userContext
+        UserContext $userContext,
+        FileController $fileController
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
         $this->variationRepository    = $variationRepository;
         $this->metadataRepository     = $metadataRepository;
+        $this->localeRepository       = $localeRepository;
         $this->channelRepository      = $channelRepository;
         $this->variationFileGenerator = $variationFileGenerator;
         $this->assetFilesUpdater      = $assetFilesUpdater;
@@ -154,6 +167,7 @@ class ProductAssetController extends Controller
         $this->assetFactory           = $assetFactory;
         $this->fileFactory            = $fileFactory;
         $this->userContext            = $userContext;
+        $this->fileController         = $fileController;
     }
 
     /**
@@ -579,6 +593,38 @@ class ProductAssetController extends Controller
     }
 
     /**
+     * Action to render the asset thumbnail depending on a channel (and a locale if the asset is localizable).
+     *
+     * @see PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext()
+     *
+     * @param Request $request
+     * @param string  $code
+     * @param string  $filter
+     * @param string  $channelCode
+     * @param string  $localeCode
+     *
+     * @return RedirectResponse
+     */
+    public function thumbnailAction(Request $request, $code, $filter, $channelCode, $localeCode = null)
+    {
+        $asset    = $this->findProductAssetByCodeOr404($code);
+        $filename = FileController::DEFAULT_IMAGE_KEY;
+
+        if (null !== $channel = $this->channelRepository->findOneByIdentifier($channelCode)) {
+            $locale = null;
+            if (null !== $localeCode) {
+                $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+            }
+
+            if (null !== $file = $asset->getFileForContext($channel, $locale)) {
+                $filename = $file->getKey();
+            }
+        }
+
+        return $this->fileController->showAction($request, urlencode($filename), $filter);
+    }
+
+    /**
      * @param AssetEvent $event
      */
     protected function handleGenerationEventResult(AssetEvent $event)
@@ -728,7 +774,29 @@ class ProductAssetController extends Controller
 
         if (null === $productAsset) {
             throw $this->createNotFoundException(
-                sprintf('Product asset with id "%s" could not be found.', (string) $id)
+                sprintf('Product asset with id "%s" cannot be found.', (string) $id)
+            );
+        }
+
+        return $productAsset;
+    }
+
+    /**
+     * Find an Asset by its code or return a 404 response
+     *
+     * @param string $code
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return AssetInterface
+     */
+    protected function findProductAssetByCodeOr404($code)
+    {
+        $productAsset = $this->assetRepository->findOneByIdentifier($code);
+
+        if (null === $productAsset) {
+            throw $this->createNotFoundException(
+                sprintf('Product asset with code "%s" cannot be found.', $code)
             );
         }
 

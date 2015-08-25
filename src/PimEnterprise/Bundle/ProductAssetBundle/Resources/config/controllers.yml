@@ -10,6 +10,7 @@ services:
             - '@pimee_product_asset.repository.reference'
             - '@pimee_product_asset.repository.variation'
             - '@pimee_product_asset.repository.file_metadata'
+            - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.channel'
             - '@pimee_product_asset.variation_file_generator'
             - '@pimee_product_asset.updater.files'
@@ -21,6 +22,7 @@ services:
             - '@pimee_product_asset.factory.asset'
             - '@akeneo_file_storage.file_storage.file_factory'
             - '@pimee_product_asset.context.user'
+            - '@pim_enrich.controller.file'
         calls:
             - [ setContainer, [ @service_container ] ]
 
