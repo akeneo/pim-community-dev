@@ -98,7 +98,12 @@ PIM-4443: Exporting a product with an attribute with a numeric code gives an err
 
 # 1.3.x
 
-# 1.3.18 (2015-07-09)
+# 1.3.22 (2015-08-25)
+
+## Bug fixes
+- PIM-4612: Error on Quick Export (MongoDB)
+
+# 1.3.21 (2015-08-17)
 
 # 1.3.17 (2015-07-07)
 
