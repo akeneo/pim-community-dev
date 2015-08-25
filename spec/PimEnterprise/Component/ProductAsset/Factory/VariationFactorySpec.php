@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Factory;
+namespace spec\PimEnterprise\Component\ProductAsset\Factory;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
@@ -16,7 +16,7 @@ class VariationFactorySpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Factory\VariationFactory');
+        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Factory\VariationFactory');
     }
 
     function it_creates_a_new_variation_without_channel()

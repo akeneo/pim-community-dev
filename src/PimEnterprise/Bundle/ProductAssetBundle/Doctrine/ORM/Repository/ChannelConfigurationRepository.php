@@ -21,4 +21,19 @@ use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationReposito
  */
 class ChannelConfigurationRepository extends EntityRepository implements ChannelConfigurationRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['channel'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        return $this->findOneBy(['channel' => $identifier]);
+    }
 }

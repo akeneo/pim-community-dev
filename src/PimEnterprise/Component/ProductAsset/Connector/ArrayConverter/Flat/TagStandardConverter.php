@@ -15,11 +15,11 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
- * Product Asset Flat Converter
+ * Product Asset Tag Converter
  *
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class AssetStandardConverter implements StandardArrayConverterInterface
+class TagStandardConverter implements StandardArrayConverterInterface
 {
     /**
      * {@inheritdoc}
@@ -28,39 +28,25 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *      'code'          => 'mycode',
-     *      'localized'     => 0,
-     *      'description'   => 'My awesome description',
-     *      'categories'    => 'myCat1,myCat2,myCat3'
      *      'qualification' => 'dog,flowers,cities,animal,sunset',
-     *      'end_of_use'    => '2018-02-01',
      * ]
      *
      * After:
      * [
-     *      'code'        => 'mycode',
-     *      'localized'   => false,
-     *      'description' => 'My awesome description',
-     *      'categories'  => [
-     *          'myCat1',
-     *          'myCat2',
-     *          'myCat3',
-     *      ],
      *      'tags'        => [
      *          'dog',
      *          'flowers',
      *          'cities',
      *          'animal',
      *          'sunset',
-     *      ],
-     *      'end_of_use'  => '2018-02-01',
+     *      ]
      * ]
      */
     public function convert(array $item, array $options = [])
     {
         $this->validate($item);
 
-        $convertedItem = ['tags' => [], 'categories' => []];
+        $convertedItem = ['tags' => []];
         foreach ($item as $field => $data) {
             if ('' !== $data) {
                 $convertedItem = $this->convertField($convertedItem, $field, $data);
@@ -76,26 +62,11 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      * @param mixed  $data
      *
      * @return array
-     *
-     * TODO: qualification when import, tags when export ... + localized field, we should be able to import what we export
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
-        switch ($field) {
-            case 'code':
-            case 'description':
-            case 'end_of_use':
-                $convertedItem[$field] = (string) $data;
-                break;
-            case 'localized':
-                $convertedItem[$field] = (bool) $data;
-                break;
-            case 'qualification':
-                $convertedItem['tags'] = array_unique(explode(',', $data));
-                break;
-            case 'categories':
-                $convertedItem['categories'] = array_unique(explode(',', $data));
-                break;
+        if ('qualification' === $field) {
+            $convertedItem['tags'] = array_unique(explode(',', $data));
         }
 
         return $convertedItem;
@@ -106,7 +77,7 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      */
     protected function validate(array $item)
     {
-        $this->validateRequiredFields($item, ['code', 'localized']);
+        $this->validateRequiredFields($item, ['qualification']);
     }
 
     /**
@@ -127,22 +98,6 @@ class AssetStandardConverter implements StandardArrayConverterInterface
                     )
                 );
             }
-
-            if ('' === $item[$requiredField]) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" must be filled',
-                        $requiredField,
-                        implode(', ', array_keys($item))
-                    )
-                );
-            }
-        }
-
-        if (!in_array($item['localized'], ['0', '1'])) {
-            throw new ArrayConversionException(
-                'Localized field contains invalid data only "0" or "1" is accepted'
-            );
         }
     }
 }

@@ -1,8 +1,9 @@
 parameters:
-    pimee_product_asset.factory.asset.class:     PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory
-    pimee_product_asset.factory.reference.class: PimEnterprise\Bundle\ProductAssetBundle\Factory\ReferenceFactory
-    pimee_product_asset.factory.variation.class: PimEnterprise\Bundle\ProductAssetBundle\Factory\VariationFactory
-    pimee_product_asset.factory.tag.class:       PimEnterprise\Component\ProductAsset\Connector\Factory\TagFactory
+    pimee_product_asset.factory.asset.class:                 PimEnterprise\Component\ProductAsset\Factory\AssetFactory
+    pimee_product_asset.factory.reference.class:             PimEnterprise\Component\ProductAsset\Factory\ReferenceFactory
+    pimee_product_asset.factory.variation.class:             PimEnterprise\Component\ProductAsset\Factory\VariationFactory
+    pimee_product_asset.factory.tag.class:                   PimEnterprise\Component\ProductAsset\Factory\TagFactory
+    pimee_product_asset.factory.channel_configuration.class: PimEnterprise\Component\ProductAsset\Factory\ChannelConfigurationFactory
 
 services:
     pimee_product_asset.factory.asset:
@@ -33,3 +34,8 @@ services:
         class: %pim_classification.factory.category.class%
         arguments:
             - %pimee_product_asset.model.category.class%
+
+    pimee_product_asset.factory.channel_configuration:
+        class: %pimee_product_asset.factory.channel_configuration.class%
+        arguments:
+            - %pimee_product_asset.model.channel_variations_configuration.class%

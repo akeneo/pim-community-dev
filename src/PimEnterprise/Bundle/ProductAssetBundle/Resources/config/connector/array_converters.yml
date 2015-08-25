@@ -1,6 +1,14 @@
 parameters:
-    pimee_product_asset.array_converter.flat.asset.class: PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\AssetStandardConverter
+    pimee_product_asset.array_converter.flat.asset.class:                 PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\AssetStandardConverter
+    pimee_product_asset.array_converter.flat.tag.class:                   PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\TagStandardConverter
+    pimee_product_asset.array_converter.flat.channel_configuration.class: PimEnterprise\Component\ProductAsset\Connector\ArrayConverter\Flat\ChannelConfigurationStandardConverter
 
 services:
     pimee_product_asset.array_converter.flat.asset:
         class: %pimee_product_asset.array_converter.flat.asset.class%
+
+    pimee_product_asset.array_converter.flat.tag:
+        class: %pimee_product_asset.array_converter.flat.tag.class%
+
+    pimee_product_asset.array_converter.flat.channel_configuration:
+        class: %pimee_product_asset.array_converter.flat.channel_configuration.class%

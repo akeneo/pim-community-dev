@@ -9,7 +9,7 @@ Feature: Export published products
     And I am logged in as "Julia"
     And the missing product asset variations have been generated
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-4600 @jira https://akeneo.atlassian.net/browse/PIM-4784
+  @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully export published products
     Given the following job "clothing_mobile_published_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/clothing_mobile_published_product_export.csv |
@@ -36,6 +36,10 @@ Feature: Export published products
       | jacket-white | description | A really stylish white jacket    | en_US  | mobile |
       | jacket-white | description | Ein sehr elegantes weißes Jacket | de_DE  | mobile |
       | jacket-white | gallery     | paint                            |        |        |
+    And I am on the "paint" asset page
+    And I visit the "Variations" tab
+    And I upload the reference file akeneo.jpg
+    And I save the asset
     And I launched the completeness calculator
     And I edit the "jacket-white" product
     When I press the "Publish" button

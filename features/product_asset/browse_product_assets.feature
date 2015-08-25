@@ -6,13 +6,25 @@ Feature: Browse product assets
 
   Background:
     Given a "clothing" catalog configuration
-    And I generate missing variations
     And I am logged in as "Pamela"
+    And I am on the "paint" asset page
+    And I visit the "Variations" tab
+    And I upload the reference file akene.jpg
+    And I save the asset
+    And I am on the "chicagoskyline" asset page
+    And I visit the "Variations" tab
+    And I switch the locale to "German (Germany)"
+    And I upload the reference file akene.jpg
+    And I save the asset
+    And I visit the "Variations" tab
+    And I switch the locale to "English (United States)"
+    And I upload the reference file akene.jpg
+    And I save the asset
     And I am on the assets page
 
   Scenario: Successfully display product assets
-    Then the grid should contain 16 elements
-    And I should see the columns Thumbnail, Code, Description, Tags, End of use, Created at and Last updated at
+    Then the grid should contain 15 elements
+    And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And the row "paint" should contain the thumbnail for channel "mobile"
     And the row "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "en_US"
     When I switch the locale to "German (Germany)"

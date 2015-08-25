@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Connector\Factory;
+namespace PimEnterprise\Component\ProductAsset\Factory;
 
 use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 

@@ -97,7 +97,10 @@ pimee_product_asset:
         csv_asset_export.title: Asset export in csv
         csv_tag_import.title: Tag import in csv
         csv_asset_category_import.title: Asset category import in csv
+        csv_asset_configuration_import.title: Asset channel configuration import in csv
         csv_asset_category_export.title: Asset category export in csv
+    steps:
+        channel_configuration.processor.title: Process channel configurations
     notAvailable:
         label: not available
     asset:

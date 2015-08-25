@@ -7,3 +7,6 @@ services:
 
     pimee_product_asset.reader.file.csv_asset_category:
         alias: pim_connector.reader.file.csv_category
+
+    pimee_product_asset.reader.file.csv_channel_configuration:
+        alias: pim_connector.reader.file.csv
