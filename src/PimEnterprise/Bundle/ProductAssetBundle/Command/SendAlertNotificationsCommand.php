@@ -11,9 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use Pim\Bundle\NotificationBundle\Email\MailNotifier;
+use Pim\Bundle\NotificationBundle\Email\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
-use PimEnterprise\Bundle\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,7 +44,7 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $users = $this->getUserRepository()->findBy(['isEmailNotifications' => true]);
+        $users = $this->getUserRepository()->findBy(['emailNotifications' => true]);
 
         foreach ($users as $user) {
             $assets = $this->getAssetRepository()
@@ -110,7 +109,7 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return MailNotifier
+     * @return NotifierInterface
      */
     protected function getMailNotifier()
     {

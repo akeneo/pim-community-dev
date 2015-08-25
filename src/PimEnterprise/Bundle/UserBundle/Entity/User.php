@@ -38,7 +38,7 @@ class User extends BaseUser implements UserInterface
      */
     public function setAssetDelayReminder($assetDelayReminder)
     {
-        $this->assetDelayReminder = $assetDelayReminder;
+        $this->assetDelayReminder = (int) $assetDelayReminder;
 
         return $this;
     }

@@ -16,7 +16,6 @@ use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFile
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFileCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFilesFromReferenceCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\SendAlertNotificationsCommand;
-use PimEnterprise\Bundle\ProductAssetBundle\Command\StoreFileCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\RegisterMetadataBuildersPass;
 use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\Console\Application;
@@ -63,7 +62,6 @@ class PimEnterpriseProductAssetBundle extends Bundle
         $application->add(new GenerateMissingVariationFilesCommand());
         $application->add(new GenerateVariationFileCommand());
         $application->add(new GenerateVariationFilesFromReferenceCommand());
-        $application->add(new StoreFileCommand());
         $application->add(new SendAlertNotificationsCommand());
     }
 }

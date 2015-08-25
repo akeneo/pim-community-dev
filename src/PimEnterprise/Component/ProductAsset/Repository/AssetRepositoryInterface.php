@@ -93,7 +93,7 @@ interface AssetRepositoryInterface extends
      * @param \DateTime $now
      * @param int       $delay
      *
-     * @return array
+     * @return AssetInterface[]
      */
     public function findAllAssetsByEndOfUse(\DateTime $now, $delay = 5);
 }
