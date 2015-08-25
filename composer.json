@@ -16,7 +16,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-PIM-4292",
+        "akeneo/pim-community-dev": "dev-PIM-4292-master",
         "oro/platform": "dev-user-override",
         "akeneo/batch-bundle": "0.4.x-dev",
         "akeneo/measure-bundle": "0.4.x-dev",
