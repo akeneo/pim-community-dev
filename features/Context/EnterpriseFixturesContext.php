@@ -1077,9 +1077,18 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $assetCategory = $this->getAssetCategory($data['code']);
             $this->refresh($assetCategory);
 
-            assertEquals($data['label-en_US'], $assetCategory->getTranslation('en_US')->getLabel());
-            assertEquals($data['label-fr_FR'], $assetCategory->getTranslation('fr_FR')->getLabel());
-            assertEquals($data['label-de_DE'], $assetCategory->getTranslation('de_DE')->getLabel());
+            if (isset($data['label-en_US'])) {
+                assertEquals($data['label-en_US'], $assetCategory->getTranslation('en_US')->getLabel());
+            }
+
+            if (isset($data['label-fr_FR'])) {
+                assertEquals($data['label-fr_FR'], $assetCategory->getTranslation('fr_FR')->getLabel());
+            }
+
+            if (isset($data['label-de_DE'])) {
+                assertEquals($data['label-de_DE'], $assetCategory->getTranslation('de_DE')->getLabel());
+            }
+
             if (empty($data['parent'])) {
                 assertNull($assetCategory->getParent());
             } else {
