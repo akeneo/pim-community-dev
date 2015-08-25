@@ -21,8 +21,8 @@ Feature: Import categories
     And I launch the import job
     And I wait for the "clothing_asset_category_import" job to finish
     And I should see "read lines 4"
-    And I should see "processed 3"
-    And I should see "created 1"
+    And I should see "processed 2"
+    And I should see "created 2"
     Then there should be the following assets categories:
       | code               | label-de_DE | label-en_US        | label-fr_FR                  | parent             |
       | asset_main_catalog |             | Asset main catalog | Catalogue principal d'Assets |                    |
@@ -83,10 +83,12 @@ Feature: Import categories
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups All, IT support, Manager and Redactor
     And I should see the permission Allowed to edit assets with user groups All, IT support, Manager and Redactor
+    And I should not see "Allowed to own assets"
     When I edit the "tshirts" asset category
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups All, IT support, Manager and Redactor
     And I should see the permission Allowed to edit assets with user groups All, IT support, Manager and Redactor
+    And I should not see "Allowed to own assets"
 
   Scenario: Set default permissions to categories that belongs to a new tree
     Given the "clothing" catalog configuration
@@ -112,10 +114,12 @@ Feature: Import categories
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups All
     And I should see the permission Allowed to edit assets with user groups All
+    And I should not see "Allowed to own assets"
     When I edit the "2015_jeans" asset category
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups All
     And I should see the permission Allowed to edit assets with user groups All
+    And I should not see "Allowed to own assets"
     When I edit the "2015_tees" asset category
     And I visit the "Permissions" tab
     Then I should see the permission Allowed to view assets with user groups All
