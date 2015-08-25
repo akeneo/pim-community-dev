@@ -103,7 +103,7 @@ extensions:
         module: pim/product-edit-form/attributes/localizable
         parent: pimee-product-view-attributes
         targetZone: self
-        position: 100
+        position: 90
 
     pimee-product-view-completeness:
         module: pim/product-edit-form/panel/completeness
