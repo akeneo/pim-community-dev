@@ -225,6 +225,12 @@
 - Change constructor of `Pim\Bundle\UserBundle\Context\UserContext`, replace `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and `Pim\Bundle\CatalogBundle\Manager\ChannelManager` by `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface` and `Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface`, add `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`
 - Constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager` has been changed
 
+# 1.3.22 (2015-08-25)
+
+## Bug fixes
+- PIM-4612: Error on Quick Export (MongoDB)
+- PIM-4803: Drag & Drop is too long when I filter on attribute group
+
 # 1.3.21 (2015-08-17)
 
 ## Bug fixes
