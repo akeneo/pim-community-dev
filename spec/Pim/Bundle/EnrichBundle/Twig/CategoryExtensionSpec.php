@@ -5,10 +5,8 @@ namespace spec\Pim\Bundle\EnrichBundle\Twig;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Component\Classification\Counter\CategoryItemsCounterInterface;
-use Pim\Component\Classification\Counter\CategoryItemsCounterRegistryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
 use Prophecy\Argument;
 
 class CategoryExtensionSpec extends ObjectBehavior
