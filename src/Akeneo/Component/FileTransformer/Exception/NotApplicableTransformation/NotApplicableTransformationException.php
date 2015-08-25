@@ -18,5 +18,4 @@ namespace Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation
  */
 class NotApplicableTransformationException extends \LogicException
 {
-
 }

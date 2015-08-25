@@ -5,7 +5,7 @@ Feature: Update multiple product by applying rules
 
   Background:
     Given a "footwear" catalog configuration
-    And I add the "french" locale to the "mobile" channel
+    And I add the "french" locale to the "tablet" channel
     And I am logged in as "Julia"
 
   @javascript
