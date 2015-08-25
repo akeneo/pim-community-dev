@@ -1,10 +1,11 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 
 /**
  * Columns configurator for product grid, first column is identifier, then properties then ordered attributes
@@ -15,49 +16,31 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
  */
 class ColumnsConfigurator implements ConfiguratorInterface
 {
-    /**
-     * @param DatagridConfiguration
-     */
+    /** @var DatagridConfiguration */
     protected $configuration;
 
-    /**
-     * @param ConfigurationRegistry
-     */
+    /** @var ConfigurationRegistry */
     protected $registry;
 
-    /**
-     * @param array
-     */
+    /** @var array */
     protected $propertiesColumns;
 
-    /**
-     * @param array
-     */
+    /** @var array */
     protected $editableColumns;
 
-    /**
-     * @param array
-     */
+    /** @var array */
     protected $primaryColumns;
 
-    /**
-     * @param array
-     */
+    /** @var array */
     protected $identifierColumn;
 
-    /**
-     * @param array
-     */
+    /** @var array */
     protected $attributesColumns;
 
-    /**
-     * @param array
-     */
+    /** @var array */
     protected $availableColumns;
 
-    /**
-     * @param array
-     */
+    /** @var array */
     protected $displayedColumns;
 
     /**
@@ -109,7 +92,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
      */
     protected function prepareAttributesColumns()
     {
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
         $this->identifierColumn  = [];
@@ -160,7 +143,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
     protected function sortColumns()
     {
         $userColumns = $this->configuration->offsetGetByPath(
-            sprintf('[source][%s]', ContextConfigurator::DISPLAYED_COLUMNS_KEY)
+            sprintf(self::SOURCE_PATH, self::DISPLAYED_COLUMNS_KEY)
         );
 
         $this->availableColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
@@ -191,7 +174,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
         );
 
         $this->configuration->offsetSetByPath(
-            sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY),
+            sprintf(self::SOURCE_PATH, self::AVAILABLE_COLUMNS_KEY),
             $this->availableColumns
         );
     }

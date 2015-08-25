@@ -19,16 +19,18 @@ Feature: Edit a user
 
   @javascript
   Scenario: Successfully edit and apply user preferences
-    And an enabled "teapot" product
     When I edit the "Peter" user
     And I visit the "Additional" tab
     And I fill in the following information:
-      | Catalog locale | de_DE           |
-      | Catalog scope  | Print           |
-      | Default tree   | 2015 collection |
+      | Catalog locale       | de_DE             |
+      | Catalog scope        | Print             |
+      | Default tree         | 2015 collection   |
+      | Product grid filters | SKU, Name, Family |
     And I save the user
     When I am on the products page
     Then I should see "Products / DE"
     And I should see "Print"
     And I should see "2015 Männer-Kollektion"
     And I should see "2015 Damenkollektion"
+    And I should see the filters Name, Family and SKU
+    And I should not see the filters Status

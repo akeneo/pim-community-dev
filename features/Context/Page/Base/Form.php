@@ -196,7 +196,10 @@ class Form extends Base
 
     public function selectAssociation($assocation)
     {
-        $associations = $this->find('css', $this->elements['Associations list']['css']);
+        $associations = $this->spin(function () {
+            return $this->find('css', $this->elements['Associations list']['css']);
+        });
+
         $associations->clickLink($assocation);
     }
 
@@ -676,7 +679,7 @@ class Form extends Base
             if (trim($value)) {
                 $label->getParent()->find('css', 'input[type="text"]')->click();
                 $this->getSession()->wait(100000, "$('div:contains(\"Searching\")').length == 0");
-                $option = $this->find('css', sprintf('.select2-result:contains("%s")', trim($value)));
+                $option = $this->find('css', sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', trim($value)));
 
                 if (!$option) {
                     throw new \InvalidArgumentException(

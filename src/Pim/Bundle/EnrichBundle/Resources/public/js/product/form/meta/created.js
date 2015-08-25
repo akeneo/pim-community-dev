@@ -18,11 +18,19 @@ define(
             tagName: 'span',
             template: _.template(formTemplate),
             render: function () {
-                this.$el.html(
-                    this.template({
-                        product: this.getFormData()
-                    })
-                );
+                var product = this.getFormData();
+                var html = '';
+
+                if (product.meta.created) {
+                    html = this.template({
+                        label: _.__('pim_enrich.entity.product.meta.created'),
+                        labelBy: _.__('pim_enrich.entity.product.meta.created_by'),
+                        loggedAt: _.result(product.meta.created, 'logged_at', null),
+                        author: _.result(product.meta.created, 'author', null)
+                    });
+                }
+
+                this.$el.html(html);
 
                 return this;
             }

@@ -73,6 +73,10 @@ class FileComparator implements ComparatorInterface
             return null;
         }
 
+        if (!isset($data['data']['filePath']) && !isset($originals['data']['filePath'])) {
+            return null;
+        }
+
         return $data;
     }
 

@@ -1,10 +1,11 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
+namespace Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
@@ -16,14 +17,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
  */
 class FiltersConfigurator implements ConfiguratorInterface
 {
-    /**
-     * @param DatagridConfiguration
-     */
-    protected $configuration;
-
-    /**
-     * @param ConfigurationRegistry
-     */
+    /** @var ConfigurationRegistry */
     protected $registry;
 
     /**
@@ -39,18 +33,20 @@ class FiltersConfigurator implements ConfiguratorInterface
      */
     public function configure(DatagridConfiguration $configuration)
     {
-        $this->configuration = $configuration;
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
-        $attributes = $this->configuration->offsetGetByPath($path);
+        $path       = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
+        $attributes = $configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
 
         $displayedFilters = [];
         foreach ($attributes as $attributeCode => $attribute) {
-            $showFilter        = $attribute['useableAsGridFilter'];
+            if (!$attribute['useableAsGridFilter']) {
+                continue;
+            }
+
             $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
-            if ($showFilter && (!$attributeTypeConf || !isset($attributeTypeConf['filter']))) {
+            if (!$attributeTypeConf || !isset($attributeTypeConf['filter'])) {
                 throw new \LogicException(
                     sprintf(
                         'Attribute type %s must be configured to allow grid filter on attribute %s',
@@ -60,28 +56,27 @@ class FiltersConfigurator implements ConfiguratorInterface
                 );
             }
 
-            if ($showFilter && $attributeTypeConf && isset($attributeTypeConf['filter'])) {
-                $filterConfig = $attributeTypeConf['filter'];
-                $filterConfig = $filterConfig + array(
-                    ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
-                    'label'                             => $attribute['label'],
-                    'enabled'                           => (AttributeTypes::IDENTIFIER === $attributeType),
-                    'order'                             => $attribute['sortOrder'],
-                    'group'                             => $attribute['group'],
-                    'groupOrder'                        => $attribute['groupOrder']
-                );
+            $filterConfig = $attributeTypeConf['filter'];
+            $filterConfig = $filterConfig + [
+                ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
+                'label'                             => $attribute['label'],
+                'enabled'                           => (AttributeTypes::IDENTIFIER === $attributeType),
+                'order'                             => $attribute['sortOrder'],
+                'group'                             => $attribute['group'],
+                'groupOrder'                        => $attribute['groupOrder']
+            ];
 
-                if (AttributeTypes::METRIC === $attributeType) {
-                    $filterConfig['family'] = $attribute['metricFamily'];
-                }
-
-                $displayedFilters[$attributeCode] = $filterConfig;
+            if (AttributeTypes::METRIC === $attributeType) {
+                $filterConfig['family'] = $attribute['metricFamily'];
             }
+
+            $displayedFilters[$attributeCode] = $filterConfig;
         }
+
         $this->sortFilters($displayedFilters);
 
         foreach ($displayedFilters as $attributeCode => $filterConfig) {
-            $this->configuration->offsetSetByPath(
+            $configuration->offsetSetByPath(
                 sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
                 $filterConfig
             );

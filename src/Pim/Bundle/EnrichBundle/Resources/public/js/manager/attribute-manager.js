@@ -152,6 +152,20 @@ define([
                 });
 
                 return _.sortBy(prices, 'currency');
+            },
+
+            /**
+             * Generate missing product associations
+             *
+             * @param {Array} values
+             *
+             * @return {Array}
+             */
+            generateMissingAssociations: function (values) {
+                values.products = _.result(values, 'products', []).sort();
+                values.groups = _.result(values, 'groups', []).sort();
+
+                return values;
             }
         };
     }

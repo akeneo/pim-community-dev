@@ -13,7 +13,6 @@ Feature: Create and delete a user role
     And I fill in the following information:
       | Role | Dummy role |
     When I save the role
-    Then the grid should contain 4 elements
     And I should see the text "Dummy role"
     When I edit the "Dummy role" user role
     And I fill in the following information:
@@ -30,7 +29,6 @@ Feature: Create and delete a user role
     When I click on the "Delete" action of the row which contains "Administrator"
     And I cancel the deletion
     And I should see the text "Administrator"
-    And the grid should contain 3 elements
 
   @javascript
   Scenario: Successfully display validation errors when creating or editing a user role

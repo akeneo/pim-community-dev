@@ -7,7 +7,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**

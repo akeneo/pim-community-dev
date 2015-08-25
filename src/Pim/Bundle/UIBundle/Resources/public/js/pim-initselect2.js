@@ -33,7 +33,6 @@ define(
                 });
             },
             initSelect: function ($select) {
-                var selectId = $select.context.id;
                 var options = {
                     multiple: false,
                     allowClear: false
@@ -84,7 +83,7 @@ define(
                         });
                     }, 400);
                 };
-                options.initSelection = function(element, callback) {
+                options.initSelection = function (element, callback) {
                     var choices = $.parseJSON($select.attr('data-choices'));
 
                     callback(choices);

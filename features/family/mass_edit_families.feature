@@ -40,6 +40,7 @@ Feature: Mass Edit Families
     And attribute "Name" should be optional in family "sneakers" for channel "Tablet"
     And attribute "Name" should be optional in family "sandals" for channel "Tablet"
 
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-4796
   Scenario: Successfully return to the family page when cancelling family mass edit
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"

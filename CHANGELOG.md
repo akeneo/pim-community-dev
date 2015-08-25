@@ -1,5 +1,15 @@
 # 1.4.x
 
+## BC breaks
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\GroupColumnsConfigurator` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\GroupColumnsConfigurator`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator` to `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\SortersConfigurator`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractor` to `Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractor`
+- Move `Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface` to `Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface`
+
 # 1.4.0-BETA2 (2015-08-17)
 
 ## Bug fixes
@@ -32,6 +42,8 @@
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - `updateAction` has been removed from the `Pim\Bundle\EnrichBundle\Controller\ProductController`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to remove product remover `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ProductRemover`
+- Moved the `removeAction` from `Pim\Bundle\EnrichBundle\Controller\ProductController` to `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`
 
 # 1.4.0-BETA1 (2015-07-31)
 
@@ -199,10 +211,10 @@
 - Add an argument BulkSaverInterface in the constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\CategoryRemover`
 - Constructor of `Pim\Bundle/CatalogBundle/Manager/CompletenessManager` : removed dependency on `Symfony\Component\Validator\ValidatorInterface`
 - Constructor of `Pim\Bundle/CatalogBundle/Manager/CompletenessManager` : added dependency on `Pim\Component\Catalog\Completeness\Checker\ChainedProductValueCompleteChecker`
-- Change constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager`, added `Pim\Component\Classification\Repository\CategoryRepositoryInterface` and `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` as third and fourth argument. 
+- Change constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager`, added `Pim\Component\Classification\Repository\CategoryRepositoryInterface` and `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` as third and fourth argument.
 - Change `Pim\Bundle\CatalogBundle\Manager\CategoryManager`, updated method `getEntityRepository` to return return a `Pim\Component\Classification\Repository\CategoryRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\CategoryTreeController`, added `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` and `Pim\Component\Classification\Repository\CategoryRepositoryInterface` as last arguments
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController`, added `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` as last argument 
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController`, added `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` as last argument
 - Move `Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter` to `Pim\Bundle\FilterBundle\Filter\CategoryFilter`
 - Change constructor of `Pim\Bundle\FilterBundle\Filter\CategoryFilter`, last argument is now a `Pim\Component\Classification\Repository\CategoryRepositoryInterface`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter`, second argument is now a `Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface`

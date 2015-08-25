@@ -1,26 +1,26 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
+namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ConfigurationRegistry;
+use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator;
 
 class FiltersConfiguratorSpec extends ObjectBehavior
 {
-    function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
+    function let(ConfigurationRegistry $registry)
     {
-        $this->beConstructedWith($registry, 'Pim/Catalog/Product');
+        $this->beConstructedWith($registry);
     }
 
     function it_is_a_configurator()
     {
-        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
+        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Configuration\ConfiguratorInterface');
     }
 
-    function it_configures_datagrid_filters($configuration, $registry)
+    function it_configures_datagrid_filters(DatagridConfiguration $configuration, $registry)
     {
         $attributes = [
             'sku' => [
@@ -74,7 +74,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $this->configure($configuration);
     }
 
-    function it_cannot_handle_misconfigured_attribute_type($configuration, $registry)
+    function it_cannot_handle_misconfigured_attribute_type(DatagridConfiguration $configuration, $registry)
     {
         $attributes = [
             'sku' => [

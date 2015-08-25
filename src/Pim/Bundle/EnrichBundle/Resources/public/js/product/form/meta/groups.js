@@ -58,21 +58,56 @@ define(
                 }
 
                 GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
+                    groups = this.prepareGroupsForTemplate(groups);
+
                     this.$el.html(
                         this.template({
-                            groups: groups,
-                            locale: UserContext.get('catalogLocale')
+                            label: _.__('pim_enrich.entity.product.meta.groups.title'),
+                            groups: groups
                         })
                     );
                 }.bind(this));
 
                 return this;
             },
+
+            /**
+             * Prepare groups for being displayed in the template
+             *
+             * @param {Array} groups
+             *
+             * @returns {Array}
+             */
+            prepareGroupsForTemplate: function (groups) {
+                var locale = UserContext.get('catalogLocale');
+
+                return _.map(groups, function (group) {
+                    return {
+                        label: group.label[locale] || '[' + group.code + ']',
+                        code: group.code,
+                        isVariant: 'VARIANT' === group.type
+                    };
+                });
+            },
+
+            /**
+             * Get the product list for the given group
+             *
+             * @param {integer} groupCode
+             *
+             * @returns {Array}
+             */
             getProductList: function (groupCode) {
                 return $.getJSON(
                     Routing.generate('pim_enrich_group_rest_list_products', { identifier: groupCode })
                 ).then(_.identity);
             },
+
+            /**
+             * Show the modal which displays infos about produt groups
+             *
+             * @param {Object} event
+             */
             displayModal: function (event) {
                 GroupManager.getProductGroups(this.getFormData()).done(function (groups) {
                     var group = _.findWhere(groups, { code: event.currentTarget.dataset.group });

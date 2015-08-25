@@ -112,6 +112,9 @@ class UserType extends OroUserType
             ->add(
                 'change_password',
                 'oro_change_password'
-            );
+            )
+            ->add('productGridFilters', 'pim_datagrid_product_filter_choice', [
+                'multiple' => true,
+            ]);
     }
 }
