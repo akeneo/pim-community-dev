@@ -1,3 +1,3 @@
 channel;configuration
 mobile;{"scale":{"width":200},"colorspace":{"colorspace":"gray"}}
-tablet;{"scale":{"ratio":0.25}}
+tablet;{"scale":{"ratio":25}}

@@ -59,7 +59,7 @@ class InvalidOptionsTransformationException extends NotApplicableTransformationE
     public static function ratio($option, $transformation)
     {
         return new self(
-            sprintf('The option "%s" of the "%s" transformation should be between 0 and 1.', $option, $transformation)
+            sprintf('The option "%s" of the "%s" transformation should be between 0 and 100.', $option, $transformation)
         );
     }
 }

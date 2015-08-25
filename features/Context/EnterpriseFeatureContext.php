@@ -29,6 +29,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('technical', new TechnicalContext());
         $this->useContext('command', new EnterpriseCommandContext());
         $this->useContext('asset', new EnterpriseAssetContext());
+        $this->useContext('file_transformer', new EnterpriseFileTransformerContext());
     }
 
     /**

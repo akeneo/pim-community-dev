@@ -3,6 +3,7 @@
 # 1.4.0-BETA2 (2015-08-17)
 
 ## BC Breaks
+- `imagemagick` is now a requirement of the PIM
 - Change the constructor of `PimEnterprise\Bundle\UserBundle\Context\UserContext`. Takes `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`, `Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface`, `Pim\Component\Classification\Repository\CategoryRepositoryInterface`, `Symfony\Component\HttpFoundation\RequestStack`, `Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface`, a `$defaultLocale` string, `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` and `PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository`
 - Change the constructor of `PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter` to add a string `$className`
 - Rename constants `VIEW_PRODUCTS` and `EDIT_PRODUCTS` of `PimEnterprise\Bundle\SecurityBundle\Attributes` to `VIEW_ITEMS` and `EDIT_ITEMS`

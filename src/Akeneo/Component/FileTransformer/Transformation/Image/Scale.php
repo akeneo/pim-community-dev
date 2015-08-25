@@ -15,7 +15,7 @@ use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\Image
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
 use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 use Akeneo\Component\FileTransformer\Transformation\AbstractTransformation;
-use Imagine\Imagick\Imagine;
+use Imagine\Gd\Imagine;
 
 /**
  * Transform the size of an image with scale
@@ -24,16 +24,22 @@ use Imagine\Imagick\Imagine;
  */
 class Scale extends AbstractTransformation
 {
+    /** @var ImagickLauncher */
+    protected $launcher;
+
     /**
      * @param TransformationOptionsResolverInterface $optionsResolver
+     * @param ImagickLauncher                        $launcher
      * @param array                                  $supportedMimeTypes
      */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
+        ImagickLauncher $launcher,
         array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
         $this->optionsResolver    = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;
+        $this->launcher           = $launcher;
     }
 
     /**
@@ -52,27 +58,25 @@ class Scale extends AbstractTransformation
 
         $imagine = new Imagine();
         $image   = $imagine->open($file->getPathname());
-        $box     = $image->getSize();
         $ratio   = $options['ratio'];
         $width   = $options['width'];
         $height  = $options['height'];
 
         if (null !== $ratio) {
-            $box = $box->scale($ratio);
+            $command = '-scale ' . $ratio . '%';
         } elseif (null !== $width) {
             if ($width > $image->getSize()->getWidth()) {
                 throw new ImageWidthException($file->getPathname(), $this->getName());
             }
-            $box = $box->widen($width);
-        } elseif (null !== $height) {
+            $command = sprintf('-scale %d', $width);
+        } else {
             if ($height > $image->getSize()->getHeight()) {
                 throw new ImageHeightException($file->getPathname(), $this->getName());
             }
-            $box = $box->heighten($height);
+            $command = sprintf('-scale x%d', $height);
         }
 
-        $image->resize($box);
-        $image->save();
+        $this->launcher->convert($command, $file->getPathname());
     }
 
     /**

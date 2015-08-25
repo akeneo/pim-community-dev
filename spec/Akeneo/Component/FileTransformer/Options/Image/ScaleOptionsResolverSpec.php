@@ -51,7 +51,7 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
     {
         $this->shouldThrow(
             new InvalidOptionsTransformationException(
-                'Your options does not fulfil the requirements of the "scale" transformation.'
+                'The option "ratio" of the "scale" transformation should be between 0 and 100.'
             )
         )->during('resolve', [['ratio' => 1036 ]]);
     }
@@ -60,6 +60,6 @@ class ScaleOptionsResolverSpec extends ObjectBehavior
     {
         $this->resolve(['width' => 100]);
         $this->resolve(['height' => 100]);
-        $this->resolve(['ratio' => 0.36]);
+        $this->resolve(['ratio' => 33]);
     }
 }

@@ -23,16 +23,22 @@ use Imagine\Imagick\Imagine;
  */
 class Thumbnail extends AbstractTransformation
 {
+    /** @var ImagickLauncher */
+    protected $launcher;
+
     /**
      * @param TransformationOptionsResolverInterface $optionsResolver
+     * @param ImagickLauncher                        $launcher
      * @param array                                  $supportedMimeTypes
      */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
+        ImagickLauncher $launcher,
         array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
         $this->optionsResolver    = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;
+        $this->launcher           = $launcher;
     }
 
     /**
@@ -48,10 +54,10 @@ class Thumbnail extends AbstractTransformation
     {
         $options = $this->optionsResolver->resolve($options);
 
-        $imagine = new Imagine();
-        $image   = $imagine->open($file->getPathname());
-        $thumbnail = $image->thumbnail(new Box($options['width'], $options['height']));
-        $thumbnail->save($file->getPathname());
+        $this->launcher->convert(
+            sprintf('-thumbnail %dx%d^', $options['width'], $options['height']),
+            $file->getPathname()
+        );
     }
 
     /**
