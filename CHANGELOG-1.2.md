@@ -431,6 +431,12 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
+# 1.2.37 (2015-08-18)
+
+## Bug fixes
+- PIM-4748: remove left joins to fix perf issue with many locales
+- PIM-4780: performance issue due to numerous label
+
 # 1.2.36 (2015-07-06)
 
 ## Bug fixes
