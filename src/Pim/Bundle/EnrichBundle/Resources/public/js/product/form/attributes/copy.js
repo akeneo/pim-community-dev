@@ -111,20 +111,10 @@ define(
                 var code = field.attribute.code;
                 if (!_.has(this.copyFields, code)) {
                     var sourceData = this.getSourceData();
-                    var valueToCopy = AttributeManager.getValue(
-                        sourceData[code],
-                        field.attribute,
-                        this.locale,
-                        this.scope
-                    );
-
-                    if (_.isUndefined(valueToCopy)) {
-                        valueToCopy = AttributeManager.generateValue(field.attribute, this.locale, this.scope);
-                    }
-
                     var copyField = new CopyField(field.attribute);
+
                     copyField.setContext({locale: this.locale, scope: this.scope});
-                    copyField.setValues(field.model.get('values'));
+                    copyField.setValues(sourceData[code]);
                     copyField.setField(field);
 
                     this.copyFields[code] = copyField;
