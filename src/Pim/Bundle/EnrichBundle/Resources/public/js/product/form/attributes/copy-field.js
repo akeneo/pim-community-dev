@@ -19,7 +19,6 @@ define([
         return Field.extend({
             tagName: 'div',
             field: null,
-            value: {},
             template: _.template(template),
             selected: false,
             events: {
@@ -88,15 +87,6 @@ define([
                         }.bind(this));
                     }
                 }.bind(this));
-            },
-
-            /**
-             * Set the value to be displayed in the copy field
-             *
-             * @param {Object} value
-             */
-            setValue: function (value) {
-                this.value = value;
             },
 
             /**

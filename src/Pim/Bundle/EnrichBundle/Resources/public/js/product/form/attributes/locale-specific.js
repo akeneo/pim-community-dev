@@ -36,7 +36,7 @@ define(
                 }
 
                 if (!_.contains(field.attribute.locale_specific_codes, field.context.locale)) {
-                    this.updateInput(field);
+                    this.updateFieldElements(field);
                 }
 
                 return this;
@@ -47,10 +47,10 @@ define(
              *
              * @param {Object} field
              */
-            updateInput: function (field) {
+            updateFieldElements: function (field) {
                 field.addElement(
                     'field-input',
-                    'input_placeholder',
+                    'locale_specific',
                     _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable')
                 );
             }

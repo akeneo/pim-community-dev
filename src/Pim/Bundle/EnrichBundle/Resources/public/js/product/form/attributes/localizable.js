@@ -40,7 +40,7 @@ define(
                     .fetch(field.context.scope)
                     .then(function (channel) {
                         if (!this.channelHasLocale(channel, field.context.locale)) {
-                            this.updateInput(field.context, field);
+                            this.updateFieldElements(field.context, field);
                         }
                     }.bind(this));
 
@@ -65,10 +65,10 @@ define(
              *
              * @param {Object} field
              */
-            updateInput: function (context, field) {
+            updateFieldElements: function (context, field) {
                 field.addElement(
                     'field-input',
-                    'input_placeholder',
+                    'couple_locale_channel',
                     _.__('pim_enrich.entity.product.localizable.channel_locale_unavailable', {
                         channel: context.scope,
                         locale: context.locale
