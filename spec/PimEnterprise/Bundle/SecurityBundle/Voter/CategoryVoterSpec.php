@@ -2,12 +2,13 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
+use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Component\ProductAsset\Model\Category;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -17,7 +18,7 @@ class CategoryVoterSpec extends ObjectBehavior
 
     function let(CategoryAccessManager $accessManager, TokenInterface $token)
     {
-        $this->beConstructedWith($accessManager);
+        $this->beConstructedWith($accessManager, 'Pim\Component\Classification\Model\CategoryInterface');
     }
 
     function it_returns_abstain_access_if_non_attribute_group_entity($token)
@@ -37,7 +38,7 @@ class CategoryVoterSpec extends ObjectBehavior
     function it_returns_denied_access_if_user_has_no_access(
         $accessManager,
         $token,
-        CategoryInterface $category,
+        Category $category,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
@@ -53,7 +54,7 @@ class CategoryVoterSpec extends ObjectBehavior
     function it_returns_granted_access_if_user_has_access(
         $accessManager,
         $token,
-        CategoryInterface $category,
+        Category $category,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);

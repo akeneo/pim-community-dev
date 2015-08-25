@@ -1,10 +1,18 @@
 parameters:
-    pimee_security.voter.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter
+    pimee_product_asset.voter.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Voter\AssetVoter
 
 services:
-    pimee_security.voter.asset:
-        class: %pimee_security.voter.asset.class%
+    pimee_product_asset.voter.asset:
+        class: %pimee_product_asset.voter.asset.class%
         arguments:
             - '@pimee_product_asset.repository.asset_category_access'
+        tags:
+            - { name: security.voter }
+
+    pimee_product_asset.voter.category:
+        class: %pimee_security.voter.category.class%
+        arguments:
+            - '@pimee_product_asset.manager.category_access'
+            - %pimee_product_asset.model.category.interface%
         tags:
             - { name: security.voter }
