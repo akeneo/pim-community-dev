@@ -5,12 +5,12 @@ pimee_product_asset:
             create: Create an asset
             remove: Remove asset
         category:
-            create:   Create a category
-            edit:     Edit a category
-            list:     List categories
-            remove:   Remove a category
-            manage:   Manage category permissions
-            history:  View category history
+            create:  Create an asset category
+            edit:    Edit an asset category
+            list:    List asset categories
+            remove:  Remove an asset category
+            manage:  Manage asset category permissions
+            history: View asset category history
     acl_group:
         asset:    Product assets
         category: Asset categories

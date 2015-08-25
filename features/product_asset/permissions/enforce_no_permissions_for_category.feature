@@ -16,7 +16,7 @@ Feature: Enforce no permissions for an asset category
   Scenario: Display only granted assets in assets grid, I see all assets
     Given I am logged in as "Mary"
     And I am on the assets page
-    And the grid should contain 14 elements
+    And the grid should contain 15 elements
 
   @javascript
   Scenario: Display only granted assets in assets grid, I see a sub set of assets
@@ -28,7 +28,7 @@ Feature: Enforce no permissions for an asset category
       | Allowed to edit assets | Manager |
     And I save the category
     And I am on the assets page
-    And the grid should contain 12 elements
+    And the grid should contain 13 elements
 
   @javascript
   Scenario: Display only granted assets in assets grid when filtering by unclassified

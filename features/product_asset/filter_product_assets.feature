@@ -27,7 +27,7 @@ Feature: Filter product assets
     When I select the "Asset main catalog" tree
     Then the grid should contain 15 elements
     When I uncheck the "Include sub-categories" switch
-    And I expand the "images" category
+    And I expand the "Images" category
     Then I should be able to use the following filters:
       | filter         | value  | result                                          |
       | asset category | images | paint, chicagoskyline, akene, autumn and bridge |

@@ -24,12 +24,12 @@ Feature: List assets categories
   Scenario: Click on a asset category without the right permissions do nothing
     Given I am logged in as "Peter"
     When I am on the "Administrator" role page
-    And I remove rights to Edit a category
-    And I remove rights to Create a category
+    And I remove rights to Edit an asset category
+    And I remove rights to Create an asset category
     And I save the role
     And I wait 5 seconds
-    Given I am on the categories page
+    Given I am on the assets categories page
     Then I should not see "Please select a category on the left or Create a new category"
-    When I click on the "Summer collection" category
+    When I click on the "Asset main catalog" category
     Then I should not see "Server error"
     Then I reset the "Administrator" rights
