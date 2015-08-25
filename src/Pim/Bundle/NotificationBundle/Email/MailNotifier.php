@@ -9,30 +9,22 @@ namespace Pim\Bundle\NotificationBundle\Email;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class MailNotifier implements Notifier
+class MailNotifier implements NotifierInterface
 {
     /** @var \Swift_Mailer */
     protected $mailer;
 
-    /** @var string  */
+    /** @var string */
     protected $senderEmail;
 
-    /** @var \Swift_Transport */
-    protected $transport;
-
     /**
-     * @param \Swift_Mailer    $mailer
-     * @param \Swift_Transport $transport
-     * @param string           $senderEmail
+     * @param \Swift_Mailer $mailer
+     * @param string        $senderEmail
      */
-    public function __construct(
-        \Swift_Mailer $mailer,
-        \Swift_Transport $transport,
-        $senderEmail
-    ) {
-        $this->mailer       = $mailer;
-        $this->transport    = $transport;
-        $this->senderEmail  = $senderEmail;
+    public function __construct(\Swift_Mailer $mailer, $senderEmail)
+    {
+        $this->mailer      = $mailer;
+        $this->senderEmail = $senderEmail;
     }
 
     /**
@@ -42,7 +34,7 @@ class MailNotifier implements Notifier
     {
         foreach ($users as $user) {
             $message = $this->mailer->createMessage();
-            $message->setSubject('Asset expiration')
+            $message->setSubject($subject)
                 ->setFrom($this->senderEmail)
                 ->setTo($user->getEmail())
                 ->setCharset('UTF-8')

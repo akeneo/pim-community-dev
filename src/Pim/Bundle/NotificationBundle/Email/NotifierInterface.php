@@ -3,16 +3,16 @@
 namespace Pim\Bundle\NotificationBundle\Email;
 
 /**
- * Interface of the notifiers
+ * Interface for the notifiers
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-interface Notifier
+interface NotifierInterface
 {
     /**
-     * Notify the user about the job execution
+     * Notify the user
      *
      * @param array  $users
      * @param string $subject
