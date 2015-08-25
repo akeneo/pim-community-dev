@@ -1,6 +1,7 @@
 Feature: Update user preferences
   In order for users to be able to choose their preferences
-  As an product manager I need to be able to setup my preferences
+  As an product manager
+  I need to be able to setup my preferences
 
   Background:
     Given an "apparel" catalog configuration

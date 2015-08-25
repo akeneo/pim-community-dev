@@ -13,20 +13,16 @@ namespace PimEnterprise\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\UserBundle\Entity\User as BaseUser;
-use PimEnterprise\Bundle\UserBundle\Entity\UserInterface as BaseUserInterface;
 
 /**
  * Enterprise override of the Community user
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class User extends BaseUser implements BaseUserInterface
+class User extends BaseUser implements UserInterface
 {
-    /**
-     * The delay in day to send an email before the expiration of an asset
-     *
-     * @var int
-     */
+
+     /** @var int The delay in day to send an email before the expiration of an asset */
     protected $assetDelayReminder = 5;
 
     /**

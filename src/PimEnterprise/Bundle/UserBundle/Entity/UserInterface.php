@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\UserBundle\Entity\UserInterface as BaseUserInterface;
 
 /**

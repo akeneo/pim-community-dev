@@ -22,8 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
- * Generate the missing variation files
- * It can generate all missing variations or missing variations for a specific asset code
+ * Send email to the users based on their configuration when an asset is near to expiration
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -46,34 +45,31 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $users = $this->getUserRepository()->findAll();
+        $users = $this->getUserRepository()->findBy(['isEmailNotifications' => true]);
 
         foreach ($users as $user) {
-            if ($user->isEmailNotifications()) {
-                $assets = $this->getAssetRepository()->findAllAssetsByEndOfUse(new \DateTime(), $user->getAssetDelayReminder());
+            $assets = $this->getAssetRepository()
+                ->findAllAssetsByEndOfUse(new \DateTime(), $user->getAssetDelayReminder());
 
-                foreach ($assets as &$asset) {
-                    $uri = $this->getRouter()->generate('pimee_product_asset_view', ['id' => $asset['id']]);
-                    $asset['url'] = $uri;
-                }
-
-                $parameters =
-                    [
-                        'user'   => $user,
-                        'assets' => $assets,
-                        'nb'     => $user->getAssetDelayReminder(),
-                        'unit'   => 'days',
-                        'locale' => 'en_US'
-                    ];
-
-                $htmlBody = $this->getTemplating()
-                    ->render('@PimEnterpriseProductAsset/Email/notification.html.twig', $parameters);
-                $txtBody = $this->getTemplating()
-                    ->render('@PimEnterpriseProductAsset/Email/notification.txt.twig', $parameters);
-
-                $output->writeln(sprintf('<info>Sending email for user "%s"</info>', $user->getUsername()));
-                $this->getMailNotifier()->notify([$user], 'Asset expiration',$txtBody, $htmlBody);
+            foreach ($assets as &$asset) {
+                $uri = $this->getRouter()->generate('pimee_product_asset_view', ['id' => $asset['id']]);
+                $asset['url'] = $uri;
             }
+
+            $parameters = [
+                    'user'   => $user,
+                    'assets' => $assets,
+                    'nb'     => $user->getAssetDelayReminder(),
+                    'unit'   => 'days',
+                    'locale' => 'en_US'
+                ];
+
+            $htmlBody = $this->getTemplating()
+                ->render('@PimEnterpriseProductAsset/Email/notification.html.twig', $parameters);
+            $txtBody = $this->getTemplating()
+                ->render('@PimEnterpriseProductAsset/Email/notification.txt.twig', $parameters);
+
+            $this->getMailNotifier()->notify([$user], 'Asset expiration', $txtBody, $htmlBody);
         }
 
         $output->writeln('<info>Done!</info>');
