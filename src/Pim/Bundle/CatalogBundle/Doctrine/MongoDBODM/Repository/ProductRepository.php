@@ -561,19 +561,19 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getAvailableAttributeIdsToExport(array $productIds)
     {
-        $productIds = array_map(function($id) {
+        $productIds = array_map(function ($id) {
             return new \MongoId($id);
         }, $productIds);
 
         $results = $this->getDocumentManager()
             ->getDocumentCollection($this->getDocumentName())
             ->aggregate([
-                ['$match' => ['_id' => ['$in' => $productIds]]],
+                ['$match'  => ['_id' => ['$in' => $productIds]]],
                 ['$unwind' => '$values'],
-                ['$group' => ['_id' => '$values.attribute']]
+                ['$group'  => ['_id' => '$values.attribute']]
             ])->toArray();
 
-        $ids = array_map(function($result) {
+        $ids = array_map(function ($result) {
             return $result['_id'];
         }, $results);
 
