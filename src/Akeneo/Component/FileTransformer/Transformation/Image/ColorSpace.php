@@ -26,17 +26,17 @@ use Imagine\Imagick\Imagine;
  */
 class ColorSpace extends AbstractTransformation
 {
-    /** @var ImagickLauncher */
+    /** @var ImageMagickLauncher */
     protected $launcher;
 
     /**
      * @param TransformationOptionsResolverInterface $optionsResolver
-     * @param ImagickLauncher                        $launcher
+     * @param ImageMagickLauncher                        $launcher
      * @param array                                  $supportedMimeTypes
      */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
-        ImagickLauncher $launcher,
+        ImageMagickLauncher $launcher,
         array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
         $this->optionsResolver    = $optionsResolver;
