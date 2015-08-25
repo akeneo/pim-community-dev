@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
@@ -27,7 +28,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class PublishedProductManager
+class PublishedProductManager implements ProductManagerInterface
 {
     /** @var ProductManager */
     protected $productManager;
@@ -250,5 +251,21 @@ class PublishedProductManager
     protected function dispatchEvent($name, ProductInterface $product, PublishedProductInterface $published = null)
     {
         $this->eventDispatcher->dispatch($name, new PublishedProductEvent($product, $published));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductRepository()
+    {
+        return $this->repository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeRepository()
+    {
+        return $this->productManager->getAttributeRepository();
     }
 }

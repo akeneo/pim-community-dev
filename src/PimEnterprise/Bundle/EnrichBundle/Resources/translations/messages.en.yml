@@ -8,7 +8,7 @@ attribute group.permissions:
     view.label: Allowed to view attributes
     view.help: Allow to view the products in this attribute group
     edit.label: Allowed to edit attributes
-    edit.help: Allow to view the products in this attribute group
+    edit.help: Allow to edit the products in this attribute group
     no_access_to_attributes: You don't have access to any attributes of this product. Please contact your administrator.
 
 category.permissions:

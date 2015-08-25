@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -37,7 +37,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
     /**
      * Constructor
      *
-     * @param ProductManager                 $productManager
+     * @param ProductManagerInterface        $productManager
      * @param LocaleManager                  $localeManager
      * @param CurrencyManager                $currencyManager
      * @param AssociationTypeManager         $assocTypeManager
@@ -46,7 +46,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
      * @param TokenStorageInterface          $tokenStorage
      */
     public function __construct(
-        ProductManager $productManager,
+        ProductManagerInterface $productManager,
         LocaleManager $localeManager,
         CurrencyManager $currencyManager,
         AssociationTypeManager $assocTypeManager,
@@ -68,6 +68,10 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
     protected function prepareAvailableAttributeIds($productIds)
     {
         parent::prepareAvailableAttributeIds($productIds);
+
+        if (empty($this->attributeIds)) {
+            return;
+        }
 
         $this->attributeIds = $this
             ->accessRepository
