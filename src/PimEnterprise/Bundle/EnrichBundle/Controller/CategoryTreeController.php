@@ -138,7 +138,8 @@ class CategoryTreeController extends BaseCategoryTreeController
             $grantedCategoryIds = $this->getGrantedCategories();
 
             if (null !== $selectNode) {
-                $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId(), $grantedCategoryIds);
+                $categories = $this->categoryRepository
+                    ->getChildrenTreeByParentId($parent->getId(), $selectNode->getId(), $grantedCategoryIds);
             } else {
                 $categories = $this->categoryRepository->getChildrenGrantedByParentId($parent, $grantedCategoryIds);
             }

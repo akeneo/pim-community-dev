@@ -59,14 +59,17 @@ class UserContext extends BaseUserContext
         CategoryAccessRepository $categoryAccessRepo,
         $defaultLocale
     ) {
-        $this->tokenStorage         = $tokenStorage;
-        $this->localeRepository     = $localeRepository;
-        $this->channelRepository    = $channelRepository;
-        $this->categoryRepository   = $categoryRepository;
-        $this->requestStack         = $requestStack;
-        $this->choicesBuilder       = $choicesBuilder;
+        parent::__construct(
+            $tokenStorage,
+            $localeRepository,
+            $channelRepository,
+            $categoryRepository,
+            $requestStack,
+            $choicesBuilder,
+            $defaultLocale
+        );
+
         $this->authorizationChecker = $authorizationChecker;
-        $this->defaultLocale        = $defaultLocale;
         $this->categoryAccessRepo   = $categoryAccessRepo;
     }
 
