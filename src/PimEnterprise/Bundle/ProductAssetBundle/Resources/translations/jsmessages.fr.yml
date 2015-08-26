@@ -1,0 +1,24 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Gérer les ressources
+        panel:
+          basket:
+            title: Panier
+            empty_basket: Panier est vide
+        manage_asset:
+          title: Gérer les ressources
+          cancel: Annuler
+          confirm: Confirmer
+  enrich_asset:
+    grid:
+      edit: Editer les propriétés de la ressource
+  enrich_variation:
+    popin:
+      delete:
+        title: Confirmer la suppression
+        message: Êtes-vous certain de vouloir supprimer cet élément ?
+      reset:
+        title: Réinitialisation les variations
+        message: Êtes-vous sûr de que vouloir réinitialiser toutes les variations ?

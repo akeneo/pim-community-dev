@@ -1,0 +1,109 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Enrichir les ressources
+      create: Créer une ressource
+      remove: Supprimer une ressource
+  acl_group:
+    asset: Ressources du produit
+  enrich_asset:
+    button:
+      upload: Télécharger
+      delete: Supprimer
+      generate_from_reference: Générer depuis la référence
+      reset_variations: Réinitialiser les variations
+    confirmation.remove: 'Êtes-vous sûr de que vouloir supprimer la ressource «%asset% » ?'
+    grid:
+      edit: Editer les propriétés de la ressource
+    view:
+      title: Ressources du produit
+      code: Code
+      description: Description
+      end_of_use: "Fin de l'utilisation"
+      reference: Référence
+      filename: Nom du fichier
+      width: Largeur 
+      height: Hauteur
+      resolution: Résolution 
+      colors: Espace colorimétrique
+      filesize: Taille du fichier
+      filetype: Type de fichier
+      actions: Actions
+      download: Téléchargement
+    flash:
+      update:
+        success: Ressource a été mise à jour.
+        error: "Ressource n'a pas été mise à jour. Une erreur s'est produite."
+      create:
+        success: Ressource a été créée.
+        error: "Ressource n'a pas été mise à jour. Une erreur s'est produite."
+      remove:
+        success: Ressource a été supprimée.
+  enrich_reference:
+    flash:
+      delete:
+        success: Le fichier de référence a été supprimé.
+        error: "Le fichier de référence n'a pas été supprimé. Une erreur s'est produite."
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: 'Impossible de générer la variation pour le canal %channel%, la configuration est erronée.'
+        image_width_error: "Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une largeur inférieure à celle requise par la transformation."
+        image_height_error: "Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une hauteur inférieure à celle requise par la transformation."
+        not_applicable: 'Impossible de générer la variation pour le canal %channel%.'
+        error: 'Impossible de générer la variation pour le canal %channel%.'
+        success: Les fichiers de variation ont été générés avec succès.
+      update:
+        success: Le fichier de variation a été mis à jour.
+        error: "Fichier de variation n'a pas été mis à jour. Une erreur s'est produite."
+      delete:
+        success: Le fichier de variation a été supprimé.
+        error: "Le fichier de variation n'a pas été supprimé. Une erreur s'est produite."
+  popin.create:
+    title: Créer une nouvelle ressource
+    is_localized: Localisable
+  menu: Ressources
+  page_tab:
+    title:
+      view: 'Ressource produit %asset.code% | Vue'
+      edit: 'Ressource produit %asset.code% | Edition'
+      index: Ressources du produit
+  code:
+    label: Code
+  thumbnail:
+    label: Miniature
+  status:
+    label: Statut
+  description:
+    label: Description
+  endOfUse:
+    label: "Fin de l'utilisation"
+  createdAt:
+    label: Crée le
+  updatedAt:
+    label: Dernière mise à jour à
+  tags:
+    label: Mots clés
+  tabs:
+    global-settings.title: Paramètres généraux
+    variations.title: Variations
+  validation:
+    code:
+      not_empty: Code est requis. Le champ ne peut pas être vide.
+      unique: Code doit être unique.
+      new_generation: Nous avons généré un nouveau code pour vous.
+  jobs:
+    csv_asset_import.title: Import des ressources en csv
+    csv_asset_export.title: Export des ressources en csv
+    csv_tag_import.title: Import des mots clés en csv
+    csv_asset_category_import.title: Import des catégories de ressources en csv
+    csv_asset_configuration_import.title: Import des configurations des transformations pour les canaux en csv
+    csv_asset_category_export.title: Export des catégories de ressources en csv
+  steps:
+    channel_configuration.processor.title: Traiter les configurations des canaux
+  notAvailable:
+    label: pas disponible
+  asset:
+    title: Ressource
+btn.create.asset: Créer une ressource
+btn.drag_or_upload: Glisser-déposer un fichier ou cliquer ici
