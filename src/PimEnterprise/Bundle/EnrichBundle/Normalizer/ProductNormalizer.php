@@ -87,18 +87,18 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
+        $workingCopy = $this->normalizer->normalize($product, 'json', $context);
+
         if (!$this->authorizationChecker->isGranted(Attributes::OWN, $product) &&
             null !== $draft = $this->findDraftForProduct($product)
         ) {
-            $workingCopy = $this->normalizer->normalize($product, 'json', $context);
             $draftStatus = $draft->getStatus();
             $this->draftApplier->apply($product, $draft);
-            $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
         } else {
-            $workingCopy = null;
             $draftStatus = null;
-            $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
         }
+
+        $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
 
         $published   = $this->publishedManager->findPublishedProductByOriginalId($product->getId());
         $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForProduct(

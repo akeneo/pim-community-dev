@@ -94,9 +94,7 @@ define(
                 var data = {};
                 switch (this.currentSource) {
                     case 'working_copy':
-                        data = null === this.getWorkingCopy() ?
-                            this.getFormData().values :
-                            this.getWorkingCopy().values;
+                        data = _.result(this.getWorkingCopy(), 'values', null);
                         break;
                     case 'draft':
                         data = this.getFormData().values;
