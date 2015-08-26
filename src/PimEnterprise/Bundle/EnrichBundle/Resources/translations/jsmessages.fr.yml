@@ -13,3 +13,55 @@ permission-changes:
   job profile:
     grant: 'Le groupe <strong>{{ group }}</strong> sera <strong>{{ permission }}</strong>'
     revoke: 'Le groupe <strong>{{ group }}</strong> ne sera pas <strong>{{ permission }}</strong>'
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Publié
+        revert: Restaurer
+      smart_attribute:
+        come_from: 'Cet attribut peut être mis à jour par une règle :'
+      btn:
+        publish: Publier
+        publish_this_version: Publier cette version
+        unpublish: Dépublier
+        save_draft: Enregistrer le brouillon
+      flash:
+        product_unpublished: Produit dépublié avec succès
+        product_published: Produit publié avec succès
+        product_not_published: Échec de la publication du produit
+        product_not_unpublished: Échec de la dépublication du produit
+        product_reverted: Produit restauré à la version antérieure
+      meta:
+        published: Version publiée
+        owner_groups: Groupes propriétaires
+      confirmation:
+        revert:
+          title: "Confirmer la restauration d'une version antérieure"
+          content: Êtes-vous sûr de que vouloir restaurer le produit dans cette version ?
+        publish:
+          title: Publier ce produit
+          content: Êtes-vous sûr de vouloir publier ce produit ?
+        unpublish:
+          title: Dépublier ce produit
+          content: Êtes-vous sûr de vouloir dépublier ce produit ?
+      info:
+        update_successful: La version de travail a bien été mise à jour
+      copy:
+        source:
+          working_copy: Version de travail
+          draft: Mon brouillon
+    product_draft:
+      info:
+        update_successful: Le brouillon a bien été enregistré
+        update_failed: "Le brouillon du produit n'a pas pu être mis à jour"
+        value_modified: Cette valeur est modifiée par le brouillon actuel
+      flash:
+        sent_for_approval: Le brouillon a été envoyé pour validation
+        draft_not_sendable: Vous ne pouvez pas envoyer ce brouillon pour validation
+      btn:
+        send_for_approval: Envoyer pour validation
+        sent_for_approval: Envoyé pour validation
+      confirmation:
+        discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications?
+        discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon?
