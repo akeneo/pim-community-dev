@@ -167,9 +167,11 @@ define(
                 }.bind(this));
             },
             postUpdate: function () {
-                this.$('.selection-inputs input').val('');
-                this.state.set('selectedAssociations', {});
-                this.render();
+                if (this.isVisible()) {
+                    this.$('.selection-inputs input').val('');
+                    this.state.set('selectedAssociations', {});
+                    this.render();
+                }
             },
             loadAssociationTypes: function () {
                 return FetcherRegistry.getFetcher('association-type').fetchAll();
