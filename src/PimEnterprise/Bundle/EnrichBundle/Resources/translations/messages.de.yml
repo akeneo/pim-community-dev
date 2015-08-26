@@ -24,16 +24,6 @@ locale.permissions:
   edit.label: Berechtigt Produktinformationen zu bearbeiten
   edit.help: Erlauben, die Produkteinformationen in diesem Gebietsschema zu bearbeiten (beinhaltet die Berechtigung anzuzeigen)
   no_access_to_products: Sie haben keinen Zugriff auf Produktinformationen in ausgewählten Gebietsschemata . Bitte kontaktieren Sie Ihren Administrator.
-pimee_enrich:
-  attribute_group:
-    tab:
-      permission.title: Berechtigungen
-  product:
-    tab:
-      proposal.title: Vorschläge
-  category:
-    tab:
-      permission.title: Berechtigungen
 btn:
   save working copy: Arbeitskopie speichern
   save draft: Entwurf speichern
@@ -51,8 +41,9 @@ pim_enrich:
       label: Produkte veröffentlichen
       description: Die ausgewählten Produkte veröffentlichen, dabei werden die aktuell veröffentlichten Daten von der aktuellen Arbeitskopie überschrieben.
       success_flash: Die ausgewählten Produkte wurden erfolgreich veröffentlicht.
+      launched_flash: Der Produkt/e-Veröffentlichen Job läuft im Moment.
       message:
-        error: Sie sind nicht der Eigentümer der ausgewählten Produkte. Sie können diese nicht veröffentlichen.
+        error: Sie sind nicht der Eigentümer von diesem Produkt. Sie können es nicht veröffentlichen.
         warning: 'Sie sind nicht der Eigentümer aller ausgewählten Produkte. Sie können diese Produkte nicht veröffentlichen: "%notGranted%".'
         info: 'Die %nbProducts% ausgewählten Produkte werden veröffentlicht.'
       not_editable: 'Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.'
@@ -72,13 +63,11 @@ pim_enrich:
       description: Die Veröffentlichung der ausgewählten Produkte entziehen, die aktuell veröffentlichten Daten werden gelöscht.
       success_flash: Die Veröffentlichung der ausgewählten Produkte wurde erfolgreich entzogen.
       message:
-        error: Sie sind nicht der Eigentümer der ausgewählten Produkte. Sie können die Veröffentlichung nicht aufheben.
         warning: 'Sie sind nicht der Eigentümer von allen ausgewählten Produkten. Sie können die Veröffentlichung dieser Produkte nicht aufheben: %notGranted%".'
         info: 'Den %nbProducts% ausgewählten Produkten wird die Veröffentlichung entzogen.'
       not_editable: 'Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.'
     classify:
       message:
-        error: Sie sind nicht der Eigentümer der ausgewählten Produkte. Sie können diese nicht klassifizieren.
         warning: 'Sie sind nicht der Eigentümer aller ausgewählten Produkte. Sie können diese Produkte nicht klassifizieren: "%notGranted%".'
 pim_enrich.mass_edit_action:
   limit_exceeded: 'Bitte wählen Sie weniger als %limit% Elemente für die Bearbeitung'
@@ -96,3 +85,19 @@ pim_enrich.mass_edit_action:
 flash.product.updated: Die Arbeitskopie des Produktes wurde aktualisiert
 flash.product_draft.updated: Entwurf erfolgreich gespeichert
 flash.locale.updated: Das Gebietsschema und die Berechtigungen wurden erfolgreich aktualisiert
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Berechtigungen
+  product:
+    tab:
+      proposal.title: Vorschläge
+  category:
+    tab:
+      permission.title: Berechtigungen
+  acl.product_ownership.title: Eigentum
+  attributes:
+    empty: keine
+  groups:
+    label: Eigentümer-Gruppen
+    empty: keine
