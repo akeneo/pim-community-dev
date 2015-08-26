@@ -426,6 +426,14 @@ class Asset implements AssetInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isLocalizable()
+    {
+        return count($this->getReferences()) > 1;
+    }
+
+    /**
      * Look for the variation corresponding to the specified channel and return its file.
      * If the asset is localizable the search will be done in the variations of the specified locale.
      * If the reference has no variations or variation files are not generated, return null.

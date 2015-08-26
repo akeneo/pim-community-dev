@@ -28,7 +28,7 @@ class TagStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *      'qualification' => 'dog,flowers,cities,animal,sunset',
+     *      'tags' => 'dog,flowers,cities,animal,sunset',
      * ]
      *
      * After:
@@ -77,7 +77,7 @@ class TagStandardConverter implements StandardArrayConverterInterface
      */
     protected function validate(array $item)
     {
-        $this->validateRequiredFields($item, ['qualification']);
+        $this->validateRequiredFields($item, ['tags']);
     }
 
     /**
