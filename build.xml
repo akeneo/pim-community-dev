@@ -255,6 +255,7 @@
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
             <env key="FEATURES_DIRECTORY" value="features" />
+            <env key="BEHAT_CONTEXT" value="JENKINS" />
         </exec>
 
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
@@ -266,6 +267,7 @@
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
             <env key="FEATURES_DIRECTORY" value="vendor/akeneo/pim-community-dev/features" />
+            <env key="BEHAT_CONTEXT" value="JENKINS" />
         </exec>
     </target>
 
