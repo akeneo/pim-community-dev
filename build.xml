@@ -317,13 +317,19 @@
     </target>
 
     <target name="behat" description="Run acceptance tests with Behat">
-        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <arg value="-c ${behat.concurrency}" />
-            <arg value="-x ${behat.xdebug}" />
-            <arg value="-d${symfony.database.name}_" />
-            <arg value="-p${behat.profile.prefix}-" />
-            <arg value="-f ${behat.features}" unless:blank="${behat.features}"/>
-            <arg value="${basedir}/bin/behat ${behat.options}" />
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" >
+            <arg value="-c" />
+            <arg value="${behat.concurrency}" />
+            <arg value="-x" />
+            <arg value="${behat.xdebug}" />
+            <arg value="-d" />
+            <arg value="${symfony.database.name}_" />
+            <arg value="-p" />
+            <arg value="${behat.profile.prefix}-" />
+            <arg value="-f"/>
+            <arg value="${behat.features} "/>
+            <arg value="-b"/>
+            <arg value="${basedir}/bin/behat ${behat.options}"/>
             <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
