@@ -9,6 +9,7 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: 'Die Werten von diesen Attributen können von der/den Regel(n) <strong>%rule%</strong> stammen. Das bedeutet, dass wenn die Bedingungen der Regel gültig sind, Ihre Änderungen überschrieben werden.'
+      variant_attribute_affected_by_a_rule.content: 'Variantengruppen-Attribute haben in den Produktattributen Priorität. Das bedeutet, dass jedes Attribut dieser Variantengruppe die entsprechenden Werte in den betreffenden Produkten überschreiben wird. Die Regel/n <strong>%rule%</strong>, wird/werden nicht auf die Produkte angewendet.'
       loading.title: Lädt...
     history: 'Angewandte Regel "%rule%"'
   product_value:
@@ -21,3 +22,7 @@ pimee_catalog_rule:
     yml_rule_export:
       title: Regel-Export in YAML
       export.title: Regelexport
+  steps:
+    product_rule_definition_reader.title: Produktimport-Regeln Reader
+    rule_definition_processor.title: Produktimport-Regeln Processor
+    product_rule_definition_writer.title: Produktimport-Regeln Writer
