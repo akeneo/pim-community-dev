@@ -19,7 +19,7 @@ Feature: Revert an assets collection in a product
     And I check the row "minivan"
     Then the asset basket should contain minivan, machine
     And I confirm the asset modification
-    Then the "gallery" asset gallery should contains machine, minivan
+    Then the "gallery" asset gallery should contain machine, minivan
     When I save the product
     And I open the history
     Then I should see history:
@@ -31,7 +31,7 @@ Feature: Revert an assets collection in a product
     And I uncheck the row "machine"
     Then the asset basket should contain minivan
     And I confirm the asset modification
-    Then the "gallery" asset gallery should contains minivan
+    Then the "gallery" asset gallery should contain minivan
     When I save the product
     And I open the history
     Then I should see history:

@@ -21,9 +21,9 @@ Feature: Assign assets to a product
     And I check the row "machine"
     Then the asset basket should contain paint, machine
     And I confirm the asset modification
-    Then the "Front view" asset gallery should contains paint, machine
+    Then the "Front view" asset gallery should contain paint, machine
     And I save the product
-    Then the "Front view" asset gallery should contains paint, machine
+    Then the "Front view" asset gallery should contain paint, machine
     And I start to manage assets for "Front view"
     And I change the page size to 100
     And I uncheck the row "paint"
@@ -32,9 +32,9 @@ Feature: Assign assets to a product
     And I remove "machine" from the asset basket
     Then the asset basket should contain akene, dog
     And I confirm the asset modification
-    Then the "Front view" asset gallery should contains akene, dog
+    Then the "Front view" asset gallery should contain akene, dog
     And I save the product
-    Then the "Front view" asset gallery should contains akene, dog
+    Then the "Front view" asset gallery should contain akene, dog
 
   Scenario: Display assets thumbnails for current scope and locale
     Given I am on the "paint" asset page
@@ -61,3 +61,10 @@ Feature: Assign assets to a product
     And I start to manage assets for "[front_view]"
     Then the row "paint" should contain the thumbnail for channel "mobile"
     And the row "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "de_DE"
+    When I check the row "paint"
+    And I check the row "chicagoskyline"
+    Then the asset basket item "paint" should contain the thumbnail for channel "mobile"
+    And the asset basket item "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "de_DE"
+    When I confirm the asset modification
+    Then the "[front_view]" asset gallery item "paint" should contain the thumbnail for channel "mobile"
+    Then the "[front_view]" asset gallery item "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "de_DE"
