@@ -11,15 +11,23 @@ pimee_workflow:
       working_copy: Version de travail
       in_progress: En cours
       ready: En attente d’approbation
-      can_not_be_approved: Ne peut pas être approuvé ou refusé
+      can_not_be_approved: Ne peut pas être validé
       can_not_be_deleted: Ne peut pas être supprimé
     status_message:
-      can_not_be_approved: "Vous ne pouvez pas approuver ou refuser cette proposition qui applique des modifications sur des valeurs que vous ne pouvez pas modifier. S'il vous plaît contactez votre administrateur pour modifier vos droits."
+      can_not_be_approved: Vous ne pouvez pas approuver ou refuser cette proposition qui intègre des modifications sur des valeurs que vous ne pouvez pas modifier. Contactez votre administrateur pour modifier vos droits.
       can_not_be_deleted: "Vous ne pouvez pas supprimer cette proposition qui applique des modifications sur des valeurs que vous ne pouvez pas modifier. S'il vous plaît contactez votre administrateur pour modifier vos droits."
     action:
       approve: Accepter
       refuse: Refuser
       remove: Supprimer
+    mass_review_action:
+      approve: Approuver les éléments sélectionnés
+      refuse: Rejeter les éléments sélectionnés
+      error:
+        draft_not_ready: "Cette propostion n'est pas prêt à être approuvée"
+        not_product_owner: "Vous n'êtes pas propriétaire du produit associé à cette proposition"
+        cannot_edit_attributes: Vous ne pouvez pas modifier les attributs modifiés par cette proposition
+        invalid_draft: "La proposition ne peut être appliquée en raison de l'erreur suivante. %error%"
   published_product:
     index: Produits publiés
     title: Produit publié
@@ -31,13 +39,30 @@ pimee_workflow:
       own: Examiner / publier
       edit: Modifier
       view: Voir
+  jobs:
+    csv_product_proposal_import:
+      title: Import des propositions de produit en CSV
+      import.title: Import des propositions de produit
+    approve_product_draft:
+      title: Approuver la proposition
+      perform.title: Approuver la proposition
+    refuse_product_draft:
+      title: Rejeter les propositions
+      perform.title: Rejeter les propositions
+  steps:
+    product_draft_processor.title: Processeur de proposition
 btn.publish: Publier
 btn.unpublish: Dépublier
-flash.product.published: Le produit a été publié avec succès.
-flash.product.unpublished: Le produit a été depublié avec succès.
-flash.product_draft.approve.success: La proposition a été appliquée avec succès.
-flash.product_draft.approve.error: "La proposition ne peut être appliquée en raison de l'erreur suivante. %error%"
-flash.product_draft.refuse.success: La proposition a été refusée.
+flash:
+  product:
+    published: Le produit a été publié avec succès.
+    unpublished: Le produit a été depublié avec succès.
+  product_draft:
+    approve:
+      success: La proposition a été soumise avec succès.
+      error: "La proposition ne peut être soumise en raison de l'erreur suivante. %error%"
+    refuse:
+      success: La proposition a été rejetée.
 pim_menu:
   item:
     published_product: Produits publiés
@@ -57,3 +82,19 @@ confirmation:
     publish: Êtes-vous sûr de vouloir publier ce produit ?
     unpublish: Êtes-vous sûr de vouloir dépublier ce produit ?
 proposal.overview: Propositions
+Attributes.title: Attributs
+Completeness.title: Complétude
+publish_product.steps.publish_product_tasklet.title: Publier le produit
+unpublish_product.steps.unpublish_product_tasklet.title: Dépublier le produit
+approve_product_draft.steps.approve.title: Approuver la proposition
+approve_product_draft.steps.refuse.title: Rejeter la proposition
+job_execution.summary:
+  approved: approuvé
+  refused: rejets
+  mass_published: Produit(s) publié(s)
+  mass_unpublished: Produit dépublié
+  proposal: Proposition(s) créée(s)
+  proposal_deleted: proposition(s) supprimée(s)
+  proposal_updated: proposition(s) mise(s) à jour
+  proposal_created: proposition(s) créée(s)
+  proposal_skipped: proposition(s) ignorée(s) (aucune différence)
