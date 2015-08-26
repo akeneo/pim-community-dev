@@ -3,8 +3,6 @@
     <property name="symfony.catalog.storage.dir" value="catalog" />
     <property name="symfony.asset.storage.dir" value="asset" />
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpspec,phpcb"/>
-
     <target name="build-phpspec" depends="prepare,composer,require-mongo,vendors-no-scripts,phpspec,phpspec-junit"/>
 
     <target name="build-phpspec-coverage" depends="prepare,composer,vendors"/>
@@ -267,17 +265,6 @@
         </exec>
     </target>
 
-    <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
-        <exec executable="phpcb">
-            <arg value="--log" />
-            <arg path="${basedir}/app/build/logs" />
-            <arg value="--source" />
-            <arg path="${basedir}/src" />
-            <arg value="--output" />
-            <arg path="${basedir}/app/build/code-browser" />
-        </exec>
-    </target>
-
     <target name="composer" description="Install composer.phar">
         <exec executable="bash">
             <arg value="-c"/>
@@ -354,20 +341,6 @@
         </replaceregexp>
     </target>
 
-    <target name="setupdb" description="Setup db">
-        <exec executable="app/console" failonerror="true">
-          <arg value="pim:install" />
-          <arg value="--task=db" />
-          <arg value="--force" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
-          <env key="SYMFONY__ASSET__STORAGE__DIR" value="${symfony.asset.storage.dir}" />
-        </exec>
-    </target>
-
     <target name="install-all-behat" description="Setup db and install assets for Behat">
         <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
@@ -380,30 +353,5 @@
           <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
           <env key="SYMFONY__ASSET__STORAGE__DIR" value="${symfony.asset.storage.dir}" />
         </exec>
-        <exec executable="app/console" failonerror="true">
-          <arg value="cache:warmup" />
-          <arg value="--env=behat" />
-          <arg value="--no-debug" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
-          <env key="SYMFONY__ASSET__STORAGE__DIR" value="${symfony.asset.storage.dir}" />
-        </exec>
     </target>
-
-    <target name="fixtures" description="Load fixtures">
-        <exec executable="app/console">
-          <arg value="doctrine:fixtures:load" />
-          <arg value="--no-interaction" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
-          <env key="SYMFONY__ASSET__STORAGE__DIR" value="${symfony.asset.storage.dir}" />
-        </exec>
-    </target>
-
 </project>
