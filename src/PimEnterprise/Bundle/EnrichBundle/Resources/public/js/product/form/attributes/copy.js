@@ -78,7 +78,7 @@ define(
              * @returns {Array}
              */
             getSources: function () {
-                if (null === this.getWorkingCopy()) {
+                if (null === this.getFormData().meta.draft_status) {
                     return _.without(this.sources, 'draft');
                 } else {
                     return this.sources;
