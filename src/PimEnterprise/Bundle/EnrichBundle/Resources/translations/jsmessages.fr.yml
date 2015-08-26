@@ -35,6 +35,22 @@ pimee_enrich:
       meta:
         published: Version publiée
         owner_groups: Groupes propriétaires
+        draft_status: Statut brouillon
+        draft:
+          in_progress: En cours
+          sent_for_approval: En attente d’approbation
+          working_copy: Version de travail
+      tab:
+        proposals:
+          title: Propositions
+          messages:
+            approve:
+              success: La proposition a été appliquée avec succès.
+              error:
+                The proposal can't be applied due to the following error:
+                  - erreur
+            reject:
+              success: La proposition a été rejetée.
       confirmation:
         revert:
           title: "Confirmer la restauration d'une version antérieure"
