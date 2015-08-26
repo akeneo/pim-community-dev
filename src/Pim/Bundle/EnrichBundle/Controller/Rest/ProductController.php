@@ -340,14 +340,29 @@ class ProductController
 
                 $valueIndex = substr($path, $codeStart, $codeLength);
                 $value = $product->getValues()[$valueIndex];
+                $attributeCode = $value->getAttribute()->getCode();
 
-                $errors['values'][$value->getAttribute()->getCode()][] = [
-                    'attribute'     => $value->getAttribute()->getCode(),
+                $currentError = [
+                    'attribute'     => $attributeCode,
                     'locale'        => $value->getLocale(),
                     'scope'         => $value->getScope(),
                     'message'       => $violation->getMessage(),
                     'invalid_value' => $violation->getInvalidValue()
                 ];
+
+                isset($errors['values'][$attributeCode]) || $errors['values'][$attributeCode] = [];
+
+                // Is error already in errors array?
+                $errorInArray = array_reduce(
+                    $errors['values'][$attributeCode],
+                    function ($found, $error) use ($currentError) {
+                        return $found || isset($error['message']) && $error['message'] === $currentError['message'];
+                    }
+                );
+
+                if (!$errorInArray) {
+                    $errors['values'][$attributeCode][] = $currentError;
+                }
             } else {
                 $errors[$path] = [
                     'message'       => $violation->getMessage(),
