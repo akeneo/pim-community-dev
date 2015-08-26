@@ -24,16 +24,6 @@ locale.permissions:
   edit.label: Autorisé à éditer les informations produits
   edit.help: "Permet d'éditer les informations produits dans cette locale (sous entend les droits de lecture)"
   no_access_to_products: "Vous n'avez accès à aucune information produit dans aucune locale, contactez votre administrateur pour résoudre le problème"
-pimee_enrich:
-  attribute_group:
-    tab:
-      permission.title: Autorisations 
-  product:
-    tab:
-      proposal.title: Propositions
-  category:
-    tab:
-      permission.title: Autorisations 
 btn:
   save working copy: Enregistrer la version de travail
   save draft: Enregistrer le brouillon
@@ -52,8 +42,9 @@ pim_enrich:
       label: Publier les produits
       description: Publie les produits sélectionnés, les données produits déjà publiées seront écrasées par celles des copies de travail actuelles.
       success_flash: Les produits sélectionnés ont bien été publiés.
+      launched_flash: "Le processus de publication de produits est en cours d'exécution."
       message:
-        error: "Vous n'êtes pas le propriétaire des produits sélectionnés, vous n'êtes pas autorisé à les publier."
+        error: "Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le publier."
         warning: |-
           Vous n'êtes pas propriétaire de tous les produits sélectionnés. Vous ne pouvez pas publier les produits "%notGranted%".
         info: 'Les %nbProducts% produits sélectionnés vont être publiés.'
@@ -74,8 +65,9 @@ pim_enrich:
       label: Dépublier des produits
       description: Dépublier les produits sélectionnés, les données actuellement publiées seront supprimées.
       success_flash: Les produits sélectionnés ont bien été dépubliés.
+      launched_flash: "Le processus de dépublication de produits est en cours d'exécution."
       message:
-        error: "Vous n'êtes pas le propriétaire des produits sélectionnés, vous ne pouvez pas les dépublier."
+        error: "Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le dépublier."
         warning: |-
           Vous n'êtes pas le propriétaire de tous les produits sélectionnés. Vous ne pouvez pas dépublier les produits "%notGranted%".
         info: 'Les %nbProducts% produits sélectionnés vont être dépubliés.'
@@ -83,9 +75,12 @@ pim_enrich:
         Vous n'avez pas la permission d'éditer les produits "%identifiers%".
     classify:
       message:
-        error: "Vous n'êtes pas le propriétaire des produits sélectionnés, vous ne pouvez pas les catégoriser."
+        error: "Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le classifier."
         warning: |-
           Vous n'êtes pas le propriétaire de tous les produits sélectionnés. Vous ne pouvez pas catégoriser les produits "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: "Vous n'êtes pas le propriétaire du produit, vous ne pouvez pas le modifier."
 pim_enrich.mass_edit_action:
   limit_exceeded: 'Veuillez sélectionner moins de %limit% produits à éditer'
   product:
@@ -102,3 +97,21 @@ pim_enrich.mass_edit_action:
 flash.product.updated: La copie de travail a bien été mise à jour
 flash.product_draft.updated: Le brouillon a bien été enregistré
 flash.locale.updated: Les locales et les permissions ont bien étés mises à jour
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Autorisations 
+  product:
+    tab:
+      proposal.title: Propositions
+  category:
+    tab:
+      permission.title: Autorisations 
+  acl.product_ownership.title: Propriété
+  attributes:
+    empty: aucun
+  groups:
+    label: Groupes propriétaires
+    empty: aucun
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: "Impossible d'ajouter des informations de produit sans autorisation"
+edit_common_attributes_with_permission: Édition des attributs communs avec permission

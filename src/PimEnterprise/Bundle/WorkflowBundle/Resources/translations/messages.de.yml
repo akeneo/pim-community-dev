@@ -11,7 +11,7 @@ pimee_workflow:
       working_copy: Arbeitskopie
       in_progress: In Arbeit
       ready: Auf Genehmigung warten
-      can_not_be_approved: Kann nicht genehmigt oder abgelehnt werden
+      can_not_be_approved: Kann nicht überprüft werden
       can_not_be_deleted: Kann nicht gelöscht werden
     status_message:
       can_not_be_approved: Sie können diesen Vorschlag nicht genehmigen oder ablehnen da er Werte enthält, die Sie nicht bearbeiten dürfen. Bitte kontaktieren Sie Ihren Administrator damit Ihre Rechte angepasst werden können.
@@ -20,6 +20,14 @@ pimee_workflow:
       approve: Genehmigen
       refuse: Ablehnen
       remove: Entfernen
+    mass_review_action:
+      approve: Ausgewählte genehmigen
+      refuse: Ausgewählte ablehnen
+      error:
+        draft_not_ready: Dieser Vorschlag ist noch nicht bereit um genehmigt zu werden
+        not_product_owner: Sie besitzen das Produkt welches zu diesem Vorschlag gehört nicht
+        cannot_edit_attributes: Sie können die Attribute, welche durch diesen Vorschlag geändert wurden, nicht bearbeiten
+        invalid_draft: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
   published_product:
     index: Veröffentlichte Produkte
     title: Veröffentlichtes Produkt
@@ -31,13 +39,30 @@ pimee_workflow:
       own: Überprüfung / Veröffentlichen
       edit: Bearbeiten
       view: Ansehen
+  jobs:
+    csv_product_proposal_import:
+      title: Produktvorschläge in CSV-Datei importieren
+      import.title: Produktvorschlag-Import
+    approve_product_draft:
+      title: Vorschlag freigeben
+      perform.title: Vorschlag freigeben
+    refuse_product_draft:
+      title: Vorschläge verweigern
+      perform.title: Vorschläge verweigern
+  steps:
+    product_draft_processor.title: Vorschlag-Prozessor
 btn.publish: Veröffentlichen
 btn.unpublish: Veröffentlichung entziehen
-flash.product.published: Das Produkt wurde erfolgreich veröffentlicht.
-flash.product.unpublished: Die Veröffentlichung des Produktes wurde erfolgreich entzogen.
-flash.product_draft.approve.success: Der Vorschlag wurde erfolgreich freigegeben.
-flash.product_draft.approve.error: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
-flash.product_draft.refuse.success: Der Vorschlag wurde abgelehnt.
+flash:
+  product:
+    published: Das Produkt wurde erfolgreich veröffentlicht.
+    unpublished: Die Veröffentlichung des Produktes wurde erfolgreich entzogen.
+  product_draft:
+    approve:
+      success: Der Vorschlag wurde erfolgreich freigegeben.
+      error: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden. %error%'
+    refuse:
+      success: Der Vorschlag wurde abgelehnt.
 pim_menu:
   item:
     published_product: Veröffentlichte Produkte
@@ -57,3 +82,19 @@ confirmation:
     publish: Sind Sie sicher, dass Sie dieses Produkt veröffentlichen möchten?
     unpublish: Sind Sie sicher, dass Sie diesem Produkt die Veröffentlichung entziehen möchten?
 proposal.overview: Vorschläge
+Attributes.title: Attribute
+Completeness.title: Vollständigkeit
+publish_product.steps.publish_product_tasklet.title: Produkte veröffentlichen
+unpublish_product.steps.unpublish_product_tasklet.title: Produktveröffentlichungen entziehen
+approve_product_draft.steps.approve.title: Vorschlag freigeben
+approve_product_draft.steps.refuse.title: Vorschlag ablehnen
+job_execution.summary:
+  approved: Freigegeben
+  refused: Abgelehnt
+  mass_published: Produkt veröffentlicht
+  mass_unpublished: Produktveröffentlichung entzogen
+  proposal: Vorschlag angelegt
+  proposal_deleted: Vorschlag gelöscht
+  proposal_updated: Vorschlag aktualisiert
+  proposal_created: Vorschlag erstellt
+  proposal_skipped: Übersprungener Vorschlag (keine Unterschiede)

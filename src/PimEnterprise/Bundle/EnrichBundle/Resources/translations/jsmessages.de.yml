@@ -13,3 +13,66 @@ permission-changes:
   job profile:
     grant: 'Die Gruppe <strong>{{ group }}</strong> wird <strong>{{ permission }}</strong> sein'
     revoke: 'Die Gruppe <strong>{{ group }}</strong> wird nicht <strong>{{ permission }}</strong> sein'
+pimee_enrich:
+  entity:
+    product:
+      history:
+        published: Veröffentlicht
+        revert: Wiederherstellen
+      smart_attribute:
+        come_from: 'Dieses Attribut kann durch eine Regel aktualisiert werden:'
+      btn:
+        publish: Veröffentlichen
+        publish_this_version: Diese Version veröffentlichen
+        unpublish: Veröffentlichung entziehen
+        save_draft: Entwurf speichern
+      flash:
+        product_unpublished: Veröffentlichung für das Produkt erfolgreich entzogen
+        product_published: Produkt erfolgreich veröffentlicht
+        product_not_published: Fehler beim Veröffentlichen des Produkts
+        product_not_unpublished: Fehler beim Entziehen der Veröffentlichung für dieses Produkt
+        product_reverted: Produkt erfolgreich zurückgesetzt
+      meta:
+        published: Veröffentlichte Version
+        owner_groups: Eigentümer-Gruppen
+      tab:
+        proposals:
+          title: Vorschläge
+          messages:
+            approve:
+              success: Der Vorschlag wurde erfolgreich freigegeben.
+              error:
+                The proposal can't be applied due to the following error:
+                  - Fehler
+            reject:
+              success: Der Vorschlag wurde abgelehnt.
+      confirmation:
+        revert:
+          title: Zurücksetzen bestätigen
+          content: Sind Sie sicher, dass die das Produkt auf diese Version zurücksetzen möchten?
+        publish:
+          title: Dieses Produkt veröffentlichen
+          content: Sind Sie sicher, dass Sie dieses Produkt veröffentlichen möchten?
+        unpublish:
+          title: Die Veröffentlichung des Produktes entziehen
+          content: Sind Sie sicher, dass Sie diesem Produkt die Veröffentlichung entziehen möchten?
+      info:
+        update_successful: Die Arbeitskopie des Produktes wurde aktualisiert
+      copy:
+        source:
+          working_copy: Arbeitskopie
+          draft: Mein Entwurf
+    product_draft:
+      info:
+        update_successful: Produktentwurf wurde erfolgreich gespeichert
+        update_failed: Produktentwurf konnte nicht aktualisiert werden
+        value_modified: Dieser Wert wurde durch den aktuellen Entwurf geändert
+      flash:
+        sent_for_approval: Produktentwurf zur Freigabe gesendet
+        draft_not_sendable: Sie können diesen Produktentwurf nicht zur Freigabe senden
+      btn:
+        send_for_approval: Zur Freigabe senden
+        sent_for_approval: Zur Freigabe gesendet
+      confirmation:
+        discard_changes: Ungespeicherte Änderungen gehen verloren. Sind Sie sicher, dass Sie den Produktentwurf mit den ungespeicherten Anpassungen zur Freigabe senden möchten?
+        discard_changes_title: Sind Sie sicher, dass Sie diesen Produktentwurf absenden möchten?
