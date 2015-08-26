@@ -50,6 +50,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('finders.yml');
         $loader->load('formatters.yml');
         $loader->load('forms.yml');
+        $loader->load('managers.yml');
         $loader->load('models.yml');
         $loader->load('normalizers.yml');
         $loader->load('processors.yml');
