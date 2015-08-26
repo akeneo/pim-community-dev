@@ -6,4 +6,4 @@ services:
         class: %pimee_ui.controller.ajax_option.class%
         arguments:
             - '@doctrine'
-            - '@pimee_user.context.user.asset'
+            - '@pimee_product_asset.context.user'

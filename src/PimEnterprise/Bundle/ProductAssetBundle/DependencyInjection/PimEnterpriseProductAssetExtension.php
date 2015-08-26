@@ -37,6 +37,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
         $loader->load('connector/writers.yml');
+        $loader->load('context.yml');
         $loader->load('controllers.yml');
         $loader->load('data_sources.yml');
         $loader->load('datagrid/attribute_types.yml');

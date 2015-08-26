@@ -20,7 +20,7 @@ services:
             - '@event_dispatcher'
             - '@pimee_product_asset.factory.asset'
             - '@akeneo_file_storage.file_storage.file_factory'
-            - '@pimee_user.context.user.asset'
+            - '@pimee_product_asset.context.user'
         calls:
             - [ setContainer, [ @service_container ] ]
 
@@ -35,7 +35,7 @@ services:
         class: %pim_enrich.controller.category_tree.class%
         arguments:
             - '@event_dispatcher'
-            - '@pimee_user.context.user.asset'
+            - '@pimee_product_asset.context.user'
             - '@pimee_product_asset.saver.category'
             - '@pimee_product_asset.remover.category_asset'
             - '@pimee_product_asset.factory.category'
