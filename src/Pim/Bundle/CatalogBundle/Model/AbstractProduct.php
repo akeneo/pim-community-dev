@@ -554,27 +554,63 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function hasAttributeInFamily(AttributeInterface $attribute)
+    {
+        return null !== $this->family && $this->family->getAttributes()->contains($attribute);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAttributeInVariantGroup(AttributeInterface $attribute)
+    {
+        foreach ($this->groups as $group) {
+            if ($group->getType()->isVariant()) {
+                if ($group->getAxisAttributes()->contains($attribute)) {
+                    return true;
+                }
+
+                $template = $group->getProductTemplate();
+                if (null !== $template && $template->hasValueForAttribute($attribute)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
         if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
             return false;
         }
 
-        if (null !== $this->family && $this->family->getAttributes()->contains($attribute)) {
+        if ($this->hasAttributeInFamily($attribute)) {
             return false;
         }
 
-        foreach ($this->groups as $group) {
-            if ($group->getType()->isVariant()) {
-                if ($group->getAttributes()->contains($attribute)) {
-                    return false;
-                }
+        if ($this->hasAttributeInVariantGroup($attribute)) {
+            return false;
+        }
 
-                $template = $group->getProductTemplate();
-                if (null !== $template && $template->hasValueForAttribute($attribute)) {
-                    return false;
-                }
-            }
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAttributeEditable(AttributeInterface $attribute)
+    {
+        if ($this->hasAttributeInFamily($attribute)) {
+            return false;
+        }
+
+        if ($this->hasAttributeInVariantGroup($attribute)) {
+            return false;
         }
 
         return true;
