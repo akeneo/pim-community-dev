@@ -92,7 +92,8 @@ abstract class ItemCategoryRepository implements ItemCategoryRepositoryInterface
         $categoryTable = $this->em->getClassMetadata($this->categoryClass)->getTableName();
         $categoryIds = implode(',', $categoryIds);
 
-        $sql = "SELECT tree.id AS tree_id, COUNT(category.id) AS item_count " .
+        $sql = "SELECT tree.id AS tree_id, ";
+        $sql.= ((!empty($categoryIds)) ? "COUNT(category.id)" : "0") . " AS item_count ".
                "FROM $categoryTable tree " .
                "LEFT JOIN $categoryTable category ON category.root = tree.id ";
         $sql.= (!empty($categoryIds)) ? " AND category.id IN ($categoryIds) " : "";
