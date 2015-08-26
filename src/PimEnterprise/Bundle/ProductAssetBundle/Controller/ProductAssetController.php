@@ -14,9 +14,9 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 use Akeneo\Component\FileStorage\FileFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageHeightException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
-use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\NotApplicableTransformationException;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -643,7 +643,7 @@ class ProductAssetController extends Controller
                     case $item->getException() instanceof ImageHeightException:
                         $flash = 'pimee_product_asset.enrich_variation.flash.transformation.image_height_error';
                         break;
-                    case $item->getException() instanceof NotApplicableTransformationException:
+                    case $item->getException() instanceof GenericTransformationException:
                         $flash = 'pimee_product_asset.enrich_variation.flash.transformation.not_applicable';
                         break;
                     default:

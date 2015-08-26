@@ -99,8 +99,9 @@ class EnterpriseFileTransformerContext extends RawMinkContext
     /**
      * @param $inputPathname
      *
-     * @return \SplFileInfo
      * @throws \Exception
+     *
+     * @return \SplFileInfo
      */
     protected function copyInputFile($inputPathname)
     {
@@ -118,6 +119,8 @@ class EnterpriseFileTransformerContext extends RawMinkContext
     /**
      * @param string $expectedPathname
      * @param string $pathname
+     *
+     * @throws \LogicException
      */
     protected function execPerceptualDiff($expectedPathname, $pathname)
     {

@@ -1,5 +1,5 @@
 Feature: Apply transformations on images
-  In order manipulate the images
+  In order to manipulate the images
   As a developer
   I need to be able to apply transformations on images
 
@@ -50,9 +50,3 @@ Feature: Apply transformations on images
       | type      | options                    |
       | thumbnail | {"width":80, "height":120} |
     Then the result file should be the same than "%fixtures%/file_transformer/akene_angel_thumbnail.png"
-
-
-
-
-
-

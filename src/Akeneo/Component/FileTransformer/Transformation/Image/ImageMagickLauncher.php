@@ -11,7 +11,7 @@
 
 namespace Akeneo\Component\FileTransformer\Transformation\Image;
 
-use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\NotApplicableTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
 use Symfony\Component\Process\ExecutableFinder;
 
 /**
@@ -40,7 +40,7 @@ class ImageMagickLauncher
      * @param string $command
      * @param string $pathName
      *
-     * @throws NotApplicableTransformationException
+     * @throws GenericTransformationException
      */
     public function convert($command, $pathName)
     {
@@ -57,7 +57,7 @@ class ImageMagickLauncher
         exec($cmd, $output, $status);
 
          if (0 !== $status) {
-            throw new NotApplicableTransformationException(print_r($output, true));
+            throw new GenericTransformationException(implode(',', $output));
         }
     }
 
@@ -65,11 +65,13 @@ class ImageMagickLauncher
      * Get the CONVERT tool path
      *
      * @throws \RuntimeException in case convert is not installed
+     *
      * @return string
      */
     public function getConvertBinaryPath()
     {
-        if (null === $convertPath = $this->executableFinder->find('convert', $this->defaultConvertPath)) {
+        $convertPath = $this->executableFinder->find('convert', $this->defaultConvertPath);
+        if (null === $convertPath) {
             throw new \RuntimeException('Unable to find Image Magick command line tool "convert".');
         }
 

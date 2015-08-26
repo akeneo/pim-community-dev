@@ -28,7 +28,7 @@ class Thumbnail extends AbstractTransformation
 
     /**
      * @param TransformationOptionsResolverInterface $optionsResolver
-     * @param ImageMagickLauncher                        $launcher
+     * @param ImageMagickLauncher                    $launcher
      * @param array                                  $supportedMimeTypes
      */
     public function __construct(

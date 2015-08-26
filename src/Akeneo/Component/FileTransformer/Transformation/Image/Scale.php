@@ -29,7 +29,7 @@ class Scale extends AbstractTransformation
 
     /**
      * @param TransformationOptionsResolverInterface $optionsResolver
-     * @param ImageMagickLauncher                        $launcher
+     * @param ImageMagickLauncher                    $launcher
      * @param array                                  $supportedMimeTypes
      */
     public function __construct(
@@ -63,7 +63,7 @@ class Scale extends AbstractTransformation
         $height  = $options['height'];
 
         if (null !== $ratio) {
-            $command = '-scale ' . $ratio . '%';
+            $command = sprintf('-scale %d%%', $ratio);
         } elseif (null !== $width) {
             if ($width > $image->getSize()->getWidth()) {
                 throw new ImageWidthException($file->getPathname(), $this->getName());
