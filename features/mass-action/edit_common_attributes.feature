@@ -12,15 +12,22 @@ Feature: Edit common attributes of many products at once
     And the following attributes:
       | code         | label       | type   | metric family | default metric unit | families                 |
       | weight       | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
-      | heel_height  | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
+      | heel_height  | Heel Height | metric | Length        | CENTIMETER          | high_heels, sandals      |
       | buckle_color | Buckle      | text   |               |                     | high_heels               |
+    And the following product groups:
+      | code          | label         | axis  | type    |
+      | variant_heels | Variant Heels | color | VARIANT |
+    And the following variant group values:
+      | group         | attribute   | value         |
+      | variant_heels | heel_height | 12 CENTIMETER |
     And the following products:
-      | sku       | family     |
-      | boots     | boots      |
-      | sneakers  | sneakers   |
-      | sandals   | sandals    |
-      | pump      |            |
-      | highheels | high_heels |
+      | sku            | family     | color  | groups        |
+      | boots          | boots      |        |               |
+      | sneakers       | sneakers   |        |               |
+      | sandals        | sandals    |        |               |
+      | pump           |            |        |               |
+      | highheels      | high_heels | red    | variant_heels |
+      | blue_highheels | high_heels | blue   | variant_heels |
     And I am logged in as "Julia"
     And I am on the products page
 
@@ -274,3 +281,14 @@ Feature: Edit common attributes of many products at once
     Then I should not see "Product information"
     And I should not see "Weight"
     And I should not see "Name"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4777
+  Scenario: Doing a mass edit of an attribute from a variant group does not override group value
+    Given I mass-edit products highheels, blue_highheels and sandals
+    And I choose the "Edit common attributes" operation
+    And I display the Heel Height attribute
+    And fill in "Heel Height" with "3"
+    And I move on to the next step
+    And I wait for the "edit-common-attributes" mass-edit job to finish
+    Then the metric "heel_height" of products highheels, blue_highheels should be "12"
+    And the metric "heel_height" of products sandals should be "3"
