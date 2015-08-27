@@ -37,7 +37,5 @@ Action: Ação
 Unit: Unidade
 Currency: Moeda
 jstree:
-  all: Todos os produtos
-  unclassified: Produtos não classificados
   no_tree: Nenhuma árvore de classificação disponível
   include_sub: Incluir subcategorias
