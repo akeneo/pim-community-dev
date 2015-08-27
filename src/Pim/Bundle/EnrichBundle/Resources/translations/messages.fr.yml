@@ -98,13 +98,11 @@ pim_enrich:
       label: Changer de statut (activé / désactivé)
       description: Les produits sélectionnés vont être activés ou désactivés.
       success_flash: Le statut du/des produit(s) a/ont été changé(s)
-      launched_flash: "Le processus de mise à jour de statut de produit(s) est en cours d'exécution"
     edit-common-attributes:
       label: Modifier les attributs
       description: Les attributs sélectionnés vont être modifié avec les valeurs suivantes pour la locale choisie.
       empty: Veuillez sélectionner le ou les attribut(s) à modifier
       success_flash: "Le processus de mise à jour du statut de produit(s) est en cours d'exécution"
-      launched_flash: "Le processus de mise à jour des attributs communs de produit(s) est en cours d'exécution"
       message:
         warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
         invalid_attribute: |-
@@ -114,17 +112,14 @@ pim_enrich:
       label: Classer les produits dans des catégories
       description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."
       success_flash: Le(s) produit(s) ont été classés dans les catégories sélectionnées
-      launched_flash: "Le processus de mise à jour des catégories de produit(s) est en cours d'exécution"
     change-family:
       label: Changer la famille des produits
       description: La famille des produits sélectionnés sera remplacée par la famille choisie
       success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
-      launched_flash: "Le processus de mise à jour des familles de produit(s) est en cours d'exécution"
     add-to-groups:
       label: Ajouter aux groupes
       description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
       success_flash: Les produits ont été ajoutés aux groupes sélectionnés
-      launched_flash: "Le processus de mise à jour du (des) groupe(s) de produit(s) est en cours d'exécution"
       no_group: "Aucun groupe pour l'instant. Veuillez commencer par créer un groupe."
     add-to-variant-group:
       label: Ajouter à un groupe de variantes
@@ -135,12 +130,10 @@ pim_enrich:
       no_valid_variant_group: Aucun groupe de variantes ne partage des attributs avec les produits sélectionnés.
       some_variant_groups_are_skipped:
         The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
-      launched_flash: "Le processus de mise à jour des groupes de variantes de produit(s) est en cours d'exécution"
     set-attribute-requirements:
       label: Choisir les attributs requis
       description: "Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées"
       success_flash: "Les exigences d'attributs ont été appliqués aux familles sélectionnées"
-      launched_flash: "Le processus de mise à jour des attributs requis des familles est en cours d'exécution"
     mass_action:
       quick_export:
         launched_flash: "Le processus d'export des produits est en cours d'exécution"
@@ -823,16 +816,6 @@ oro.locale:
       timezone: "Sélectionnez le fuseau horaire pour afficher la date et l'heure"
       currency: Sélectionnez la monnaie par défaut
 Selected products successfully deleted: La sélection de produits a été supprimée
-pim_mass_edit:
-  notification:
-    mass_edit:
-      success: Édition en masse terminée
-      error: "Échec de l'édition en masse"
-      warning: Édition en masse terminée avec avertissements
-    quick_export:
-      success: Export rapide terminé
-      error: "Échec de l'export rapide"
-      warning: Export rapide terminé avec avertissements
 job_execution.summary:
   mass_edited: Édition en masse
   skip: Ignoré
