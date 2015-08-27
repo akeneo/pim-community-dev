@@ -23,10 +23,11 @@ default:
 jenkins-1:
     context:
         parameters:
-            base_url: http://pim-behat-1.ci/
+            base_url: http://behat-1.ci/
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: http://pim-behat-1.ci/
+            base_url: http://behat-1.ci/
+            selenium2: http://localhost:4444/wd/hub
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat1
@@ -40,10 +41,11 @@ jenkins-1:
 jenkins-2:
     context:
         parameters:
-            base_url: http://pim-behat-2.ci/
+            base_url: http://behat-2.ci/
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: http://pim-behat-2.ci/
+            base_url: http://behat-2.ci/
+            selenium2: http://localhost:4445/wd/hub
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat2
@@ -57,10 +59,11 @@ jenkins-2:
 jenkins-3:
     context:
         parameters:
-            base_url: http://pim-behat-3.ci/
+            base_url: http://behat-3.ci/
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: http://pim-behat-3.ci/
+            base_url: http://behat-3.ci/
+            selenium2: http://localhost:4446/wd/hub
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat3
@@ -74,10 +77,11 @@ jenkins-3:
 jenkins-4:
     context:
         parameters:
-            base_url: http://pim-behat-4.ci/
+            base_url: http://behat-4.ci/
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: http://pim-behat-4.ci/
+            base_url: http://behat-4.ci/
+            selenium2: http://localhost:4447/wd/hub
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat4
