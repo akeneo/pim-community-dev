@@ -169,15 +169,15 @@
     <target name="php-cs-fixer" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="bash">
             <arg value="-c"/>
-            <arg value="curl http://get.sensiolabs.org/php-cs-fixer.phar -o ${basedir}/bin/php-cs-fixer"/>
+            <arg value="curl http://get.sensiolabs.org/php-cs-fixer.phar -o ${basedir}/php-cs-fixer"/>
         </exec>
 
         <exec executable="bash">
             <arg value="-c"/>
-            <arg value="chmod a+x ${basedir}/bin/php-cs-fixer"/>
+            <arg value="chmod a+x ${basedir}/php-cs-fixer"/>
         </exec>
 
-        <exec executable="${basedir}/bin/php-cs-fixer" failonerror="true">
+        <exec executable="${basedir}/php-cs-fixer" failonerror="true">
             <arg value="fix" />
             <arg path="${basedir}/src" />
             <arg value="-v" />
