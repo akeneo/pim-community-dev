@@ -98,3 +98,14 @@ pim_enrich:
     delete:
       confirm.content: "Êtes-vous sûr de que vouloir supprimer  {{ itemName }} ? Il n'est pas possible d'annuler cette action"
       confirm.title: 'Supprimer {{ itemName }}'
+  entity:
+    product:
+      variant_group:
+        switch:
+          "yes": true
+          "no": false
+  form:
+    product:
+      switch:
+        "no": false
+        "yes": true
