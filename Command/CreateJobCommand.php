@@ -47,7 +47,7 @@ class CreateJobCommand extends ContainerAwareCommand
         $label = $input->getArgument('label');
         $label = $label ? $label : $code;
         $jsonConfig = $input->getArgument('config');
-        $rawConfig = json_decode($jsonConfig);
+        $rawConfig = json_decode($jsonConfig, true);
 
         $factory = $this->getJobInstanceFactory();
         $jobInstance = $factory->createJobInstance($type);
