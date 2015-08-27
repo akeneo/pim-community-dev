@@ -11,37 +11,93 @@ CHECK_WAIT="0.5"
 OUTPUT=`mktemp`
 
 usage() {
-    echo "Usage: $0 (concurrency) (xdebug|noxdebug) (database_prefix) (profile_prefix) [behat command and options]"
-    echo "(feature file name will automatically appended)"
+    echo "Usage: $0 -c concurrency -x xdebug|noxdebug -d database_prefix -p profile_prefix [-f behat_feature1:behat_feature2:behat_dir1] [-h] -b behat_command_and_options"
+    echo "  -f : Force features file or directory. If not specified, all features are executed"
     exit 1;
 }
 
-if [ $# -lt 5 ] ; then
+APP_ROOT=`dirname $0`/../../../..
+FEATURES_DIR=$APP_ROOT/$FEATURES_DIRECTORY
+
+IS_OPTION='echo $1 | grep "^-" > /dev/null'
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -x)     shift
+                eval $IS_OPTION || XDEBUG=$1
+                [ -n "$XDEBUG" ] && shift
+                ;;
+
+
+        -c)     shift
+                eval $IS_OPTION || CONCURRENCY=$1
+                [ -n "$CONCURRENCY" ] && shift
+                ;;
+
+        -f)     shift
+                eval $IS_OPTION || FORCED_FEATURES=$1
+                [ -n "$FORCED_FEATURES" ] && shift
+                ;;
+
+        -d)     shift
+                eval $IS_OPTION || DB_PREFIX=$1
+                [ -n "$DB_PREFIX" ] && shift
+                ;;
+
+        -p)     shift
+                eval $IS_OPTION || PROFILE_PREFIX=$1
+                [ -n "$PROFILE_PREFIX" ] && shift
+                ;;
+
+        -b)     shift
+                eval $IS_OPTION || BEHAT_CMD=$1
+                [ -n "$BEHAT_CMD" ] && shift
+                ;;
+
+        *|-h)   usage
+                ;;
+    esac
+done
+
+FEATURES=""
+for FORCED_FEATURE in $(echo $FORCED_FEATURES | sed -e "s#:# #g"); do
+
+    if (echo $FORCED_FEATURE | grep "\.feature$" > /dev/null); then
+        # Feature file provided
+        FEATURES="$FEATURES $FEATURES_DIR/$FORCED_FEATURE"
+    else
+        # Directory provided
+        FEATURES="$FEATURES $(find $FEATURES_DIR/$FORCED_FEATURE -name *.feature)"
+    fi
+done
+
+if [ -z "$XDEBUG" ] || [ $XDEBUG != 'xdebug' ] && [ $XDEBUG != 'noxdebug' ] ; then
+    echo "Missing or Invalid xdebug parameter [$XDEBUG]"
     usage
-else
-    CONCURRENCY=$1
-    XDEBUG=$2
-    DB_PREFIX=$3
-    PROFILE_PREFIX=$4
-    BEHAT_CMD=`echo $* | sed -e "s/$CONCURRENCY//" -e "s/$XDEBUG//" -e "s/$DB_PREFIX//" -e "s/$PROFILE_PREFIX//"`
+fi
 
-    if [ $XDEBUG != 'xdebug' ] && [ $XDEBUG != 'noxdebug' ] ; then
-        echo "Invalid xdebug parameter [$XDEBUG]"
-        usage
-    fi
+if [ -z "$PROFILE_PREFIX" ]; then
+    echo "Missing profile prefix parameter"
+    usage
+fi
 
-    expr $CONCURRENCY + 0 > /dev/null 2>&1
-    if [ $? != 0 ]; then
-        echo "Invalid concurrency parameter [$CONCURRENCY]"
-        usage
-    fi
+if [ -z "$DB_PREFIX" ]; then
+    echo "Missing DB prefix parameter"
+    usage
+fi
+
+if [ -z "$BEHAT_CMD" ]; then
+    echo "Missing Behat command and options"
+    usage
+fi
+
+expr $CONCURRENCY + 0 > /dev/null 2>&1
+if [ $? != 0 ]; then
+    echo "Invalid concurrency parameter [$CONCURRENCY]"
+    usage
 fi
 
 ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/_$//"`
-
-APP_ROOT=`dirname $0`/../../../..
-
-FEATURES_DIR=$APP_ROOT/$FEATURES_DIRECTORY
 
 if [ "$XDEBUG" = 'xdebug' ]; then
     PHP_EXTENSION_DIR=`php -i | grep extension_dir | cut -d ' ' -f3`
@@ -49,15 +105,10 @@ if [ "$XDEBUG" = 'xdebug' ]; then
        echo "Unable to find xdebug extension $PHP_EXTENSION_DIR/$XDEBUG_EXTENSION"
        exit 2
     fi
-fi
-
-if [ "$XDEBUG" = 'xdebug' ]; then
     BEHAT_CMD="php -d zend_extension=$PHP_EXTENSION_DIR/$XDEBUG_EXTENSION $BEHAT_CMD"
 fi
 
 export DISPLAY=:0
-
-FEATURES_NAMES=""
 
 # Install the assets and db on all environments
 cd $APP_ROOT
@@ -71,7 +122,10 @@ for PROC in `seq 1 $CONCURRENCY`; do
 done
 cd -
 
-FEATURES=`find $FEATURES_DIR/ -name *.feature`
+if [ -z "$FEATURES" ]; then
+    FEATURES=$(find $FEATURES_DIR/ -name *.feature)
+fi
+
 for FEATURE in $FEATURES; do
 
     FEATURE_NAME=`echo "${FEATURE#$APP_ROOT/}"`
