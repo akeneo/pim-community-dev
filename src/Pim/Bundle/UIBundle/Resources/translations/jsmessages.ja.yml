@@ -37,7 +37,5 @@ Action: アクション
 Unit: 単位
 Currency: 通貨
 jstree:
-  all: すべての製品
-  unclassified: 未分類の製品
   no_tree: 利用できるツリーがありません
   include_sub: サブカテゴリを含む
