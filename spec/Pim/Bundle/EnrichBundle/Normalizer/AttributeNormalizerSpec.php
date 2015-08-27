@@ -24,6 +24,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $price->isLocaleSpecific()->willReturn(false);
         $price->getLocaleSpecificCodes()->willReturn([]);
 
+        $price->getDateMin()->willReturn(null);
+        $price->getDateMax()->willReturn(null);
+        $price->getMaxCharacters()->willReturn('');
+        $price->getValidationRule()->willReturn('');
+        $price->getValidationRegexp()->willReturn('');
+        $price->getNumberMin()->willReturn('');
+        $price->getNumberMax()->willReturn('');
+        $price->isDecimalsAllowed()->willReturn(true);
+        $price->isNegativeAllowed()->willReturn(false);
+        $price->getMetricFamily()->willReturn('');
+        $price->getDefaultMetricUnit()->willReturn('');
+        $price->getMaxFileSize()->willReturn('');
+
         $fieldProvider->getField($price)->willReturn('akeneo-text-field');
         $emptyValueProvider->getEmptyValue($price)->willReturn([]);
 
@@ -35,7 +48,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'empty_value'           => [],
                 'field_type'            => 'akeneo-text-field',
                 'is_locale_specific'    => 0,
-                'locale_specific_codes' => []
+                'locale_specific_codes' => [],
+                'max_characters'        => '',
+                'validation_rule'       => '',
+                'validation_regexp'     => '',
+                'number_min'            => '',
+                'number_max'            => '',
+                'decimals_allowed'      => true,
+                'negative_allowed'      => false,
+                'date_min'              => '',
+                'date_max'              => '',
+                'metric_family'         => '',
+                'default_metric_unit'   => '',
+                'max_file_size'         => ''
             ]
         );
     }
@@ -49,6 +74,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $attribute->isLocaleSpecific()->willReturn(false);
         $attribute->getLocaleSpecificCodes()->willReturn([]);
 
+        $attribute->getDateMin()->willReturn(null);
+        $attribute->getDateMax()->willReturn(null);
+        $attribute->getMaxCharacters()->willReturn('2048');
+        $attribute->getValidationRule()->willReturn('');
+        $attribute->getValidationRegexp()->willReturn('');
+        $attribute->getNumberMin()->willReturn('');
+        $attribute->getNumberMax()->willReturn('');
+        $attribute->isDecimalsAllowed()->willReturn('');
+        $attribute->isNegativeAllowed()->willReturn('');
+        $attribute->getMetricFamily()->willReturn('');
+        $attribute->getDefaultMetricUnit()->willReturn('');
+        $attribute->getMaxFileSize()->willReturn('');
+
         $fieldProvider->getField($attribute)->willReturn('akeneo-text-field');
         $emptyValueProvider->getEmptyValue($attribute)->willReturn([]);
 
@@ -59,7 +97,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'empty_value'           => [],
             'field_type'            => 'akeneo-text-field',
             'is_locale_specific'    => 0,
-            'locale_specific_codes' => []
+            'locale_specific_codes' => [],
+            'max_characters'        => '2048',
+            'validation_rule'       => '',
+            'validation_regexp'     => '',
+            'number_min'            => '',
+            'number_max'            => '',
+            'decimals_allowed'      => '',
+            'negative_allowed'      => '',
+            'date_min'              => '',
+            'date_max'              => '',
+            'metric_family'         => '',
+            'default_metric_unit'   => '',
+            'max_file_size'         => ''
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'boolean']);
@@ -74,7 +124,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'empty_value'           => [],
             'field_type'            => 'akeneo-text-field',
             'is_locale_specific'    => 0,
-            'locale_specific_codes' => []
+            'locale_specific_codes' => [],
+            'max_characters'        => '2048',
+            'validation_rule'       => '',
+            'validation_regexp'     => '',
+            'number_min'            => '',
+            'number_max'            => '',
+            'decimals_allowed'      => '',
+            'negative_allowed'      => '',
+            'date_min'              => '',
+            'date_max'              => '',
+            'metric_family'         => '',
+            'default_metric_unit'   => '',
+            'max_file_size'         => ''
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'collection']);
@@ -89,7 +151,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'empty_value'           => [],
             'field_type'            => 'akeneo-text-field',
             'is_locale_specific'    => 0,
-            'locale_specific_codes' => []
+            'locale_specific_codes' => [],
+            'max_characters'        => '2048',
+            'validation_rule'       => '',
+            'validation_regexp'     => '',
+            'number_min'            => '',
+            'number_max'            => '',
+            'decimals_allowed'      => '',
+            'negative_allowed'      => '',
+            'date_min'              => '',
+            'date_max'              => '',
+            'metric_family'         => '',
+            'default_metric_unit'   => '',
+            'max_file_size'         => ''
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'collection']);
@@ -104,7 +178,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'empty_value'           => [],
             'field_type'            => 'akeneo-text-field',
             'is_locale_specific'    => 0,
-            'locale_specific_codes' => []
+            'locale_specific_codes' => [],
+            'max_characters'        => '2048',
+            'validation_rule'       => '',
+            'validation_regexp'     => '',
+            'number_min'            => '',
+            'number_max'            => '',
+            'decimals_allowed'      => '',
+            'negative_allowed'      => '',
+            'date_min'              => '',
+            'date_max'              => '',
+            'metric_family'         => '',
+            'default_metric_unit'   => '',
+            'max_file_size'         => ''
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'metric']);
@@ -120,7 +206,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'empty_value'           => [],
             'field_type'            => 'akeneo-text-field',
             'is_locale_specific'    => 0,
-            'locale_specific_codes' => []
+            'locale_specific_codes' => [],
+            'max_characters'        => '2048',
+            'validation_rule'       => '',
+            'validation_regexp'     => '',
+            'number_min'            => '',
+            'number_max'            => '',
+            'decimals_allowed'      => '',
+            'negative_allowed'      => '',
+            'date_min'              => '',
+            'date_max'              => '',
+            'metric_family'         => '',
+            'default_metric_unit'   => 'kg',
+            'max_file_size'         => ''
         ]);
 
         $normalizer->normalize($attribute, 'json', [])->willReturn(['code' => 'default']);
@@ -135,7 +233,19 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'empty_value'           => [],
             'field_type'            => 'akeneo-text-field',
             'is_locale_specific'    => 0,
-            'locale_specific_codes' => []
+            'locale_specific_codes' => [],
+            'max_characters'        => '2048',
+            'validation_rule'       => '',
+            'validation_regexp'     => '',
+            'number_min'            => '',
+            'number_max'            => '',
+            'decimals_allowed'      => '',
+            'negative_allowed'      => '',
+            'date_min'              => '',
+            'date_max'              => '',
+            'metric_family'         => '',
+            'default_metric_unit'   => 'kg',
+            'max_file_size'         => ''
         ]);
     }
 
