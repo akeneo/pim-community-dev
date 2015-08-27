@@ -50,6 +50,7 @@ define(
                 return this.fieldTemplate(context);
             },
             postRender: function () {
+                this.$('[data-toggle="tooltip"]').tooltip();
                 this.getChoiceUrl().then(function (choiceUrl) {
                     this.$('input.select-field').select2('destroy').select2({
                         ajax: {
