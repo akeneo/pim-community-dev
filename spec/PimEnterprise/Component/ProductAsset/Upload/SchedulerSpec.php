@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
+use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Prophecy\Argument;
 
 class SchedulerSpec extends ObjectBehavior
@@ -18,9 +19,6 @@ class SchedulerSpec extends ObjectBehavior
         $this->beConstructedWith($uploadChecker, $rawFileStorer);
 
         $this->createUploadBaseDirectory();
-
-        $this->setSourceDirectory($this->uploadDirectory . DIRECTORY_SEPARATOR . 'source');
-        $this->setScheduleDirectory($this->uploadDirectory . DIRECTORY_SEPARATOR . 'scheduled');
     }
 
     function letGo()
@@ -34,9 +32,13 @@ class SchedulerSpec extends ObjectBehavior
         $this->shouldImplement('PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface');
     }
 
-    function it_schedules_files_for_processing()
+    function it_schedules_files_for_processing(UploadContext $uploadContext)
     {
         $sourceDirectory = $this->createSourceDirectory();
+        $scheduledDirectory = $this->createScheduledDirectory();
+
+        $uploadContext->getTemporaryUploadDirectory()->willReturn($sourceDirectory);
+        $uploadContext->getTemporaryScheduleDirectory()->willReturn($scheduledDirectory);
 
         // create dummy files
         $filename1 = $sourceDirectory . DIRECTORY_SEPARATOR . 'foo.png';
@@ -44,23 +46,28 @@ class SchedulerSpec extends ObjectBehavior
         $filename2 = $sourceDirectory . DIRECTORY_SEPARATOR . 'bar.png';
         file_put_contents($filename2, 'bar');
 
-        $this->schedule()->shouldReturn([
+        $this->schedule($uploadContext)
+            ->shouldReturn([
             ['file' => 'bar.png', 'error' => null],
             ['file' => 'foo.png', 'error' => null],
         ]);
     }
 
-    function it_gets_scheduled_files()
+    function it_gets_scheduled_files(UploadContext $uploadContext)
     {
-        $scheduleDirectory = $this->createScheduledDirectory();
+        $sourceDirectory = $this->createSourceDirectory();
+        $scheduledDirectory = $this->createScheduledDirectory();
+
+        $uploadContext->getTemporaryUploadDirectory()->willReturn($sourceDirectory);
+        $uploadContext->getTemporaryScheduleDirectory()->willReturn($scheduledDirectory);
 
         // create dummy files
-        $filename1 = $scheduleDirectory . DIRECTORY_SEPARATOR . 'foo.png';
+        $filename1 = $scheduledDirectory . DIRECTORY_SEPARATOR . 'foo.png';
         file_put_contents($filename1, 'foo');
-        $filename2 = $scheduleDirectory . DIRECTORY_SEPARATOR . 'bar.png';
+        $filename2 = $scheduledDirectory . DIRECTORY_SEPARATOR . 'bar.png';
         file_put_contents($filename2, 'bar');
 
-        $scheduledFiles = $this->getScheduledFiles();
+        $scheduledFiles = $this->getScheduledFiles($uploadContext);
 
         $scheduledFiles->shouldHaveCount(2);
     }
@@ -102,7 +109,7 @@ class SchedulerSpec extends ObjectBehavior
      */
     protected function createSourceDirectory()
     {
-        $directory = $this->uploadDirectory . DIRECTORY_SEPARATOR . 'source';
+        $directory = $this->uploadDirectory . DIRECTORY_SEPARATOR . UploadContext::DIR_UPLOAD_TMP;
         if (!is_dir($directory)) {
             mkdir($directory, 0700, true);
         }
@@ -115,7 +122,7 @@ class SchedulerSpec extends ObjectBehavior
      */
     protected function createScheduledDirectory()
     {
-        $directory = $this->uploadDirectory . DIRECTORY_SEPARATOR . 'scheduled';
+        $directory = $this->uploadDirectory . DIRECTORY_SEPARATOR . UploadContext::DIR_UPLOAD_SCHEDULED;
         if (!is_dir($directory)) {
             mkdir($directory, 0700, true);
         }

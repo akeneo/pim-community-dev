@@ -62,7 +62,7 @@ Feature: Mass uploads assets
     And I start assets mass upload
     Then I should see "SUCCESS" for asset "akeneo.jpg"
     And I should see "Schedule"
-    When I press the "Delete" button
+    When I press the "delete" button
     Then I should not see "akeneo.jpg"
     And I should not see "Schedule"
     When I select the assets to upload:

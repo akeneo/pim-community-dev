@@ -35,16 +35,15 @@ define(
         return Backbone.View.extend({
             el: '.mass-upload-wrapper',
             myDropzone: null,
+            template: _.template(rowTemplate),
 
             initialize: function () {
-                var previewTemplate = _.template(rowTemplate);
-
                 var myDropzone = new Dropzone(document.body, {
                     url: Routing.generate('pimee_product_asset_upload'),
                     thumbnailWidth: 70,
                     thumbnailHeight: 70,
                     parallelUploads: 4,
-                    previewTemplate: previewTemplate(),
+                    previewTemplate: this.template(),
                     autoQueue: false,
                     previewsContainer: 'tbody',
                     clickable: '.fileinput-button',
@@ -165,10 +164,9 @@ define(
              */
             scheduleAll: function () {
                 this.$('.navbar-buttons .btn.schedule').hide();
-                $.ajax({
-                    url: Routing.generate('pimee_product_asset_mass_upload_rest_schedule'),
-                    type: 'GET'
-                }).done(function (response) {
+                $.get(
+                    Routing.generate('pimee_product_asset_mass_upload_rest_schedule')
+                ).done(function (response) {
                     _.each(response.result, function (result) {
                         var file = this.findFile(result.file);
                         if (result.error) {
@@ -211,15 +209,7 @@ define(
              * @returns {Object|null}
              */
             findFile: function (filename) {
-                var found = null;
-                var acceptedFiles = this.myDropzone.files;
-                _.each(acceptedFiles, function (file) {
-                    if (file.name === filename) {
-                        found = file;
-                    }
-                });
-
-                return found;
+                return _.findWhere(this.myDropzone.files, {name: filename});
             }
         });
     }

@@ -15,6 +15,10 @@ use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
+ * Schedule previously uploaded files for processing
+ * - read uploaded files
+ * - move them to schedule directory where they will be collected by the processor
+ *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 class Scheduler implements SchedulerInterface
@@ -22,44 +26,19 @@ class Scheduler implements SchedulerInterface
     /** @var UploadCheckerInterface */
     protected $uploadChecker;
 
-    /** @var string */
-    protected $checkStatus;
-
-    /** @var string Source directory for files to schedule */
-    protected $sourceDirectory;
-
-    /** @var string Target directory for files to schedule */
-    protected $scheduleDirectory;
-
     /** @var RawFileStorerInterface */
     protected $rawFileStorer;
 
     /**
-     * @param UploadCheckerInterface      $uploadChecker
+     * @param UploadCheckerInterface $uploadChecker
      * @param RawFileStorerInterface $rawFileStorer
      */
     public function __construct(
         UploadCheckerInterface $uploadChecker,
         RawFileStorerInterface $rawFileStorer
     ) {
-        $this->uploadChecker      = $uploadChecker;
+        $this->uploadChecker = $uploadChecker;
         $this->rawFileStorer = $rawFileStorer;
-    }
-
-    /**
-     * @param string $sourceDirectory
-     */
-    public function setSourceDirectory($sourceDirectory)
-    {
-        $this->sourceDirectory = $sourceDirectory;
-    }
-
-    /**
-     * @param string $scheduleDirectory
-     */
-    public function setScheduleDirectory($scheduleDirectory)
-    {
-        $this->scheduleDirectory = $scheduleDirectory;
     }
 
     /**
@@ -68,12 +47,18 @@ class Scheduler implements SchedulerInterface
      * - check uploaded files
      * - Move files from tmp uploaded storage to tmp scheduled storage
      */
-    public function schedule()
+    public function schedule(UploadContext $uploadContext)
     {
-        $files      = [];
-        $fileSystem = new Filesystem();
+        $files             = [];
+        $fileSystem        = new Filesystem();
+        $uploadDirectory   = $uploadContext->getTemporaryUploadDirectory();
+        $scheduleDirectory = $uploadContext->getTemporaryScheduleDirectory();
 
-        $storedFiles = array_diff(scandir($this->getSourceDir()), ['.', '..']);
+        $storedFiles = array_diff(scandir($uploadDirectory), ['.', '..']);
+
+        if (!is_dir($scheduleDirectory)) {
+            $fileSystem->mkdir($scheduleDirectory);
+        }
 
         foreach ($storedFiles as $file) {
             $result = [
@@ -85,11 +70,8 @@ class Scheduler implements SchedulerInterface
                 $files[]         = $result;
                 continue;
             }
-            $filepath = $this->getSourceDir() . DIRECTORY_SEPARATOR . $file;
-            $newPath  = $this->getScheduleDir() . DIRECTORY_SEPARATOR . $file;
-            if (!is_dir(dirname($newPath))) {
-                $fileSystem->mkdir(dirname($newPath));
-            }
+            $filepath = $uploadDirectory . DIRECTORY_SEPARATOR . $file;
+            $newPath  = $scheduleDirectory . DIRECTORY_SEPARATOR . $file;
             $fileSystem->rename($filepath, $newPath);
             $files[] = $result;
         }
@@ -100,9 +82,9 @@ class Scheduler implements SchedulerInterface
     /**
      * {@inheritdoc}
      */
-    public function getScheduledFiles()
+    public function getScheduledFiles(UploadContext $uploadContext)
     {
-        $scheduleDir    = $this->getScheduleDir();
+        $scheduleDir    = $uploadContext->getTemporaryScheduleDirectory();
         $scheduledFiles = [];
         if (is_dir($scheduleDir)) {
             $scheduledFiles = array_diff(scandir($scheduleDir), ['.', '..']);
@@ -115,48 +97,38 @@ class Scheduler implements SchedulerInterface
     }
 
     /**
+     * Check for valid filename :
+     * - code must be unique if not localized
+     * - two file with the same code, one localized, one not are invalid
+     *
      * @param string[] $storedFiles
      * @param string   $filenameToCheck
      *
      * @return bool
      */
-    protected function isValidScheduledFilename($storedFiles, $filenameToCheck)
+    protected function isValidScheduledFilename(array $storedFiles, $filenameToCheck)
     {
-        $valid = true;
-
         $otherFilenames = array_diff($storedFiles, [$filenameToCheck]);
 
         $checkedFilenameInfos = $this->uploadChecker->parseFilename($filenameToCheck);
         $checkedIsLocalized   = null !== $checkedFilenameInfos['locale'];
 
-        foreach ($otherFilenames as $filename) {
+        $filenamesIterator = new \ArrayIterator($otherFilenames);
+
+        while ($filenamesIterator->valid()) {
+            $filename = $filenamesIterator->current();
+
             $comparedInfos       = $this->uploadChecker->parseFilename($filename);
             $comparedIsLocalized = null !== $comparedInfos['locale'];
 
             if ($checkedFilenameInfos['code'] === $comparedInfos['code']
                 && $checkedIsLocalized !== $comparedIsLocalized
             ) {
-                $valid = false;
-                break;
+                return false;
             }
+            $filenamesIterator->next();
         }
 
-        return $valid;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getSourceDir()
-    {
-        return $this->sourceDirectory;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getScheduleDir()
-    {
-        return $this->scheduleDirectory;
+        return true;
     }
 }

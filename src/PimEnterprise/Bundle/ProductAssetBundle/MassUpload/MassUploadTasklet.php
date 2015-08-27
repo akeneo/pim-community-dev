@@ -12,10 +12,12 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\MassUpload;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor;
+use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 
 /**
  * Launch the asset upload processor to create/update assets from uploaded files
@@ -33,16 +35,24 @@ class MassUploadTasklet implements TaskletInterface
     /** @var MassUploadProcessor */
     protected $massUploadProcessor;
 
+    /** @var UploadContext */
+    protected $uploadContext;
+
     /** @var NotificationManager */
     protected $notificationManager;
 
     /**
      * @param MassUploadProcessor $massUploadProcessor
+     * @param UploadContext       $uploadContext
      * @param NotificationManager $notificationManager
      */
-    public function __construct(MassUploadProcessor $massUploadProcessor, NotificationManager $notificationManager)
-    {
+    public function __construct(
+        MassUploadProcessor $massUploadProcessor,
+        UploadContext $uploadContext,
+        NotificationManager $notificationManager
+    ) {
         $this->massUploadProcessor = $massUploadProcessor;
+        $this->uploadContext       = $uploadContext;
         $this->notificationManager = $notificationManager;
     }
 
@@ -64,9 +74,9 @@ class MassUploadTasklet implements TaskletInterface
         $jobExecution = $this->stepExecution->getJobExecution();
         $username     = $jobExecution->getUser();
 
-        $this->massUploadProcessor->getUploader()->setSubDirectory($username);
+        $this->uploadContext->setUsername($username);
 
-        $processedList = $this->massUploadProcessor->applyMassUpload();
+        $processedList = $this->massUploadProcessor->applyMassUpload($this->uploadContext);
 
         foreach ($processedList as $item) {
             $file = $item->getItem();
@@ -75,7 +85,7 @@ class MassUploadTasklet implements TaskletInterface
                 throw new \InvalidArgumentException(
                     sprintf(
                         'Expects a "\SplFileInfo", "%s" provided.',
-                        get_class($file)
+                        ClassUtils::getClass($file)
                     )
                 );
             }

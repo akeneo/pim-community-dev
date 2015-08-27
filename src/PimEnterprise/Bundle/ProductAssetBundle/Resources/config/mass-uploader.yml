@@ -1,16 +1,14 @@
 parameters:
-    pimee_product_asset.uploader.class:              PimEnterprise\Component\ProductAsset\Upload\Uploader
+    pimee_product_asset.upload_context.class:        PimEnterprise\Component\ProductAsset\Upload\UploadContext
     pimee_product_asset.upload_checker.class:        PimEnterprise\Component\ProductAsset\Upload\UploadChecker
     pimee_product_asset.upload_scheduler.class:      PimEnterprise\Component\ProductAsset\Upload\Scheduler
     pimee_product_asset.mass_upload_processor.class: PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor
     pimee_product_asset.mass_upload.tasklet.class:   PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet
 
 services:
-    pimee_product_asset.uploader:
-        class: %pimee_product_asset.uploader.class%
+    pimee_product_asset.upload_context:
+        class: %pimee_product_asset.upload_context.class%
         arguments:
-            - '@security.token_storage'
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
             - '%tmp_storage_dir%'
 
     pimee_product_asset.upload_checker:
@@ -27,7 +25,6 @@ services:
     pimee_product_asset.mass_upload_processor:
         class: %pimee_product_asset.mass_upload_processor.class%
         arguments:
-            - '@pimee_product_asset.uploader'
             - '@pimee_product_asset.upload_checker'
             - '@pimee_product_asset.upload_scheduler'
             - '@pimee_product_asset.factory.asset'
@@ -41,4 +38,5 @@ services:
         class: %pimee_product_asset.mass_upload.tasklet.class%
         arguments:
             - '@pimee_product_asset.mass_upload_processor'
+            - '@pimee_product_asset.upload_context'
             - '@pim_notification.manager.notification'

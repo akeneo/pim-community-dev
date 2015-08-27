@@ -57,10 +57,6 @@ class AssetFactory
     {
         $asset = new $this->assetClass();
 
-        if (!$asset instanceof AssetInterface) {
-            throw new \InvalidArgumentException('$asset must be an instance of AssetInterface');
-        }
-
         if ($isLocalized) {
             foreach ($this->localeRepository->getActivatedLocales() as $locale) {
                 $reference = $this->referenceFactory->create($locale);

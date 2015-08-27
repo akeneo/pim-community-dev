@@ -285,7 +285,7 @@ class EnterpriseAssetContext extends RawMinkContext
                 $assetElements = [$assetElements];
             }
 
-            foreach ((array) $assetElements as $assetElement) {
+            foreach ($assetElements as $assetElement) {
                 $row   = $assetElement->getParent();
                 $found = $row->find('css', sprintf('td:contains("%s")', $text));
                 if ($found) {

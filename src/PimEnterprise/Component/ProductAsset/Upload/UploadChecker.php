@@ -14,7 +14,7 @@ namespace PimEnterprise\Component\ProductAsset\Upload;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
- * Manage upload of an asset file
+ * Check uploaded files
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
@@ -26,9 +26,8 @@ class UploadChecker implements UploadCheckerInterface
     /**
      * @param AssetRepositoryInterface $assetRepository
      */
-    public function __construct(
-        AssetRepositoryInterface $assetRepository
-    ) {
+    public function __construct(AssetRepositoryInterface $assetRepository)
+    {
         $this->assetRepository = $assetRepository;
     }
 
@@ -55,25 +54,19 @@ class UploadChecker implements UploadCheckerInterface
         $parsedName = $this->parseFilename($filename);
 
         if (null !== $parsedName['code']) {
-            $assetCode   = $parsedName['code'];
-            $localeCode  = $parsedName['locale'];
-            $checkStatus = $this->checkWithExistingAsset($assetCode, $localeCode);
+            $checkStatus = $this->checkWithExistingAsset($parsedName['code'], $parsedName['locale']);
         } else {
-            $checkStatus = UploadStatus::STATUS_ERROR_CODE;
+            return UploadStatus::STATUS_ERROR_CODE;
         }
 
-        if (!$this->isError($checkStatus)) {
-            $uploadPath = $tmpUploadDir . DIRECTORY_SEPARATOR . $filename;
-            if (file_exists($uploadPath)) {
-                $checkStatus = UploadStatus::STATUS_ERROR_EXISTS;
-            }
+        $uploadPath = $tmpUploadDir . DIRECTORY_SEPARATOR . $filename;
+        if (file_exists($uploadPath)) {
+            return UploadStatus::STATUS_ERROR_EXISTS;
         }
 
-        if (!$this->isError($checkStatus)) {
-            $schedulePath = $tmpScheduleDir . DIRECTORY_SEPARATOR . $filename;
-            if (file_exists($schedulePath)) {
-                $checkStatus = UploadStatus::STATUS_ERROR_EXISTS;
-            }
+        $schedulePath = $tmpScheduleDir . DIRECTORY_SEPARATOR . $filename;
+        if (file_exists($schedulePath)) {
+            return UploadStatus::STATUS_ERROR_EXISTS;
         }
 
         return $checkStatus;
@@ -107,7 +100,7 @@ class UploadChecker implements UploadCheckerInterface
     }
 
     /**
-     * Check with existing assets
+     * Check if an uploaded file could be applied to an existing asset
      *
      * @param string      $assetCode
      * @param string|null $localeCode
@@ -119,15 +112,17 @@ class UploadChecker implements UploadCheckerInterface
         $asset = $this->assetRepository->findOneByIdentifier($assetCode);
 
         if (null === $asset) {
-            $status = UploadStatus::STATUS_NEW;
-        } elseif ((empty($asset->getLocales()) && null === $localeCode) ||
-            (in_array($localeCode, array_keys($asset->getLocales())))
-        ) {
-            $status = UploadStatus::STATUS_UPDATED;
-        } else {
-            $status = UploadStatus::STATUS_ERROR_LOCALE;
+            return UploadStatus::STATUS_NEW;
         }
 
-        return $status;
+        $assetLocales = $asset->getLocales();
+
+        if ((empty($assetLocales) && null === $localeCode) ||
+            (in_array($localeCode, array_keys($asset->getLocales())))
+        ) {
+            return UploadStatus::STATUS_UPDATED;
+        }
+
+        return UploadStatus::STATUS_ERROR_LOCALE;
     }
 }

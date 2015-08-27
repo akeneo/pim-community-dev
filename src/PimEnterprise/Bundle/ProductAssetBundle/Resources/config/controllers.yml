@@ -37,7 +37,7 @@ services:
         class: %pimee_product_asset.controller.rest.mass_upload.class%
         arguments:
             - '@pimee_product_asset.repository.asset'
-            - '@pimee_product_asset.uploader'
+            - '@pimee_product_asset.upload_context'
             - '@pimee_product_asset.upload_checker'
             - '@pimee_product_asset.upload_scheduler'
             - '@security.token_storage'

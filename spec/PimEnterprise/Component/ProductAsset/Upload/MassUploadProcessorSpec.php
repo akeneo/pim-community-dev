@@ -15,14 +15,12 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
-use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
 use Prophecy\Argument;
 use SplFileInfo;
 
 class MassUploadProcessorSpec extends ObjectBehavior
 {
     function let(
-        UploaderInterface $uploader,
         UploadCheckerInterface $uploadChecker,
         SchedulerInterface $scheduler,
         AssetFactory $assetFactory,
@@ -32,8 +30,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         RawFileStorerInterface $rawFileStorer,
         LocaleRepositoryInterface $localeRepository
     ) {
-        $this->beConstructedWith($uploader,
-            $uploadChecker,
+        $this->beConstructedWith($uploadChecker,
             $scheduler,
             $assetFactory,
             $assetRepository,

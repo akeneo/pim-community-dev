@@ -2,9 +2,6 @@
 
 namespace Context\Page\Asset;
 
-use Behat\Mink\Element\Element;
-use Behat\Mink\Element\NodeElement;
-use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
 
 /**

@@ -21,24 +21,18 @@ use SplFileInfo;
 interface SchedulerInterface
 {
     /**
-     * @param string $sourceDirectory
-     */
-    public function setSourceDirectory($sourceDirectory);
-
-    /**
-     * @param string $scheduleDirectory
-     */
-    public function setScheduleDirectory($scheduleDirectory);
-
-    /**
      * Schedule all uploaded files
+     *
+     * @param UploadContext $uploadContext
      *
      * @return array
      */
-    public function schedule();
+    public function schedule(UploadContext $uploadContext);
 
     /**
-     * @return SplFileInfo[]
+     * @param UploadContext $uploadContext
+     *
+     * @return \SplFileInfo[]
      */
-    public function getScheduledFiles();
+    public function getScheduledFiles(UploadContext $uploadContext);
 }

@@ -25,14 +25,14 @@ use SplFileInfo;
 
 /**
  * Process mass uploaded files
+ * For a given username :
+ * - read all scheduled files
+ * - create or update asset
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 class MassUploadProcessor
 {
-    /** @var UploaderInterface */
-    protected $uploader;
-
     /** @var UploadCheckerInterface */
     protected $uploadChecker;
 
@@ -58,7 +58,6 @@ class MassUploadProcessor
     protected $localeRepository;
 
     /**
-     * @param UploaderInterface         $uploader
      * @param UploadCheckerInterface    $uploadChecker
      * @param SchedulerInterface        $scheduler
      * @param AssetFactory              $assetFactory
@@ -69,7 +68,6 @@ class MassUploadProcessor
      * @param LocaleRepositoryInterface $localeRepository
      */
     public function __construct(
-        UploaderInterface $uploader,
         UploadCheckerInterface $uploadChecker,
         SchedulerInterface $scheduler,
         AssetFactory $assetFactory,
@@ -79,7 +77,6 @@ class MassUploadProcessor
         RawFileStorerInterface $rawFileStorer,
         LocaleRepositoryInterface $localeRepository
     ) {
-        $this->uploader         = $uploader;
         $this->uploadChecker    = $uploadChecker;
         $this->scheduler        = $scheduler;
         $this->assetFactory     = $assetFactory;
@@ -91,26 +88,17 @@ class MassUploadProcessor
     }
 
     /**
-     * @return UploaderInterface
-     */
-    public function getUploader()
-    {
-        return $this->uploader;
-    }
-
-    /**
      * Process all scheduled uploaded files
+     *
+     * @param UploadContext $uploadContext
      *
      * @return ProcessedItemList
      */
-    public function applyMassUpload()
+    public function applyMassUpload(UploadContext $uploadContext)
     {
         $processedFiles = new ProcessedItemList();
 
-        $this->scheduler->setSourceDirectory($this->uploader->getUserUploadDir());
-        $this->scheduler->setScheduleDirectory($this->uploader->getUserScheduleDir());
-
-        $scheduledFiles = $this->scheduler->getScheduledFiles();
+        $scheduledFiles = $this->scheduler->getScheduledFiles($uploadContext);
 
         foreach ($scheduledFiles as $file) {
             try {
@@ -142,7 +130,6 @@ class MassUploadProcessor
         $assetInfo   = $this->uploadChecker->parseFilename($file->getFilename());
         $isLocalized = null !== $assetInfo['locale'];
 
-        /** @var AssetInterface $asset */
         $asset = $this->assetRepository->findOneByIdentifier($assetInfo['code']);
 
         if (null === $asset) {

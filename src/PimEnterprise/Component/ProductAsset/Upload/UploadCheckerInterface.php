@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
 /**
- * Manage upload of an asset file
+ * Check uploaded files
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */

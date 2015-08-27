@@ -14,9 +14,9 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Upload\Scheduler;
+use PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
-use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
+use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,13 +34,13 @@ class MassUploadController
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
-    /** @var UploaderInterface */
-    protected $uploader;
+    /** @var UploadContext */
+    protected $uploadContext;
 
     /** @var UploadCheckerInterface */
     protected $uploadChecker;
 
-    /** @var Scheduler */
+    /** @var SchedulerInterface */
     protected $scheduler;
 
     /** @var UserInterface */
@@ -54,29 +54,32 @@ class MassUploadController
 
     /**
      * @param AssetRepositoryInterface $assetRepository
-     * @param UploaderInterface        $uploader
+     * @param UploadContext            $uploadContext
      * @param UploadCheckerInterface   $uploadChecker
-     * @param Scheduler                $scheduler
+     * @param SchedulerInterface       $scheduler
      * @param TokenStorageInterface    $tokenStorage
      * @param JobLauncherInterface     $jobLauncher
      * @param JobInstanceRepository    $jobInstanceRepository
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
-        UploaderInterface $uploader,
+        UploadContext $uploadContext,
         UploadCheckerInterface $uploadChecker,
-        Scheduler $scheduler,
+        SchedulerInterface $scheduler,
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
         JobInstanceRepository $jobInstanceRepository
     ) {
         $this->assetRepository       = $assetRepository;
-        $this->jobLauncher           = $jobLauncher;
-        $this->tokenStorage          = $tokenStorage;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->uploader              = $uploader;
+        $this->uploadContext         = $uploadContext;
         $this->uploadChecker         = $uploadChecker;
         $this->scheduler             = $scheduler;
+        $this->tokenStorage          = $tokenStorage;
+        $this->jobLauncher           = $jobLauncher;
+        $this->jobInstanceRepository = $jobInstanceRepository;
+
+        $username = $this->tokenStorage->getToken()->getUsername();
+        $this->uploadContext->setUsername($username);
     }
 
     /**
@@ -91,7 +94,10 @@ class MassUploadController
         $response = new JsonResponse();
 
         $uploadStatus = $this->uploadChecker
-            ->checkFilename($filename, $this->uploader->getUserUploadDir(), $this->uploader->getUserScheduleDir());
+            ->checkFilename($filename,
+                $this->uploadContext->getTemporaryUploadDirectory(),
+                $this->uploadContext->getTemporaryScheduleDirectory()
+            );
 
         if ($this->uploadChecker->isError($uploadStatus)) {
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);
@@ -117,8 +123,12 @@ class MassUploadController
         $uploaded = null;
 
         if ($files->count() > 0) {
-            $file     = $files->getIterator()->current();
-            $uploaded = $this->uploader->upload($file);
+            $file = $files->getIterator()->current();
+
+            $filename  = $file->getClientOriginalName();
+            $targetDir = $this->uploadContext->getTemporaryUploadDirectory();
+
+            $uploaded = $file->move($targetDir, $filename);
         }
 
         if (null === $uploaded) {
@@ -138,8 +148,7 @@ class MassUploadController
      */
     public function deleteUploadedFileAction($filename)
     {
-        $filepath = $this->uploader
-                ->getUserUploadDir() . DIRECTORY_SEPARATOR . $filename;
+        $filepath = $this->uploadContext->getTemporaryUploadDirectory() . DIRECTORY_SEPARATOR . $filename;
 
         if (is_file($filepath)) {
             unlink($filepath);
@@ -155,17 +164,16 @@ class MassUploadController
      */
     public function listAction()
     {
-        $response = new JsonResponse();
+        $temporaryUploadDirectory = $this->uploadContext->getTemporaryUploadDirectory();
+        $files                    = [];
 
-        $files = [];
-
-        if (is_dir($this->uploader->getUserUploadDir())) {
-            $storedFiles = array_diff(scandir($this->uploader->getUserUploadDir()), ['.', '..']);
+        if (is_dir($temporaryUploadDirectory)) {
+            $storedFiles = array_diff(scandir($temporaryUploadDirectory), ['.', '..']);
 
             $mimeTypeGuesser = MimeTypeGuesser::getInstance();
 
             foreach ($storedFiles as $file) {
-                $filepath = $this->uploader->getUserUploadDir() . DIRECTORY_SEPARATOR . $file;
+                $filepath = $this->uploadContext->getTemporaryUploadDirectory() . DIRECTORY_SEPARATOR . $file;
                 $mimeType = $mimeTypeGuesser->guess($filepath);
                 $files[]  = [
                     'name' => $file,
@@ -175,7 +183,7 @@ class MassUploadController
             }
         }
 
-        $response->setData(['files' => $files]);
+        $response = new JsonResponse(['files' => $files]);
 
         return $response;
     }
@@ -187,10 +195,7 @@ class MassUploadController
      */
     public function scheduleAction()
     {
-        $this->scheduler->setSourceDirectory($this->uploader->getUserUploadDir());
-        $this->scheduler->setScheduleDirectory($this->uploader->getUserScheduleDir());
-
-        $result      = $this->scheduler->schedule();
+        $result      = $this->scheduler->schedule($this->uploadContext);
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('apply_assets_mass_upload');
 
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), '{}');
