@@ -15,11 +15,11 @@ Feature: Filter products
       | color | Color | simpleselect |
     And the following "color" attribute options: Black and White
     And the following products:
-      | sku    | family    |
-      | BOOK   | library   |
-      | MUG-1  | furniture |
-      | MUG-2  | furniture |
-      | POSTIT | furniture |
+      | sku    | family    | color |
+      | BOOK   | library   |       |
+      | MUG-1  | furniture | white |
+      | MUG-2  | furniture | black |
+      | POSTIT | furniture |       |
     And the following product groups:
       | code   | label  | axis  | type    | products     |
       | MUG    | Mug    | color | VARIANT | MUG-1, MUG-2 |

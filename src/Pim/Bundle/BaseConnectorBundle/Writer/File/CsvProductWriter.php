@@ -4,7 +4,6 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Pim\Component\Connector\Writer\File\FileExporterInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Write product data into a csv file on the local filesystem
@@ -23,8 +22,9 @@ class CsvProductWriter extends CsvWriter
      */
     public function __construct(FileExporterInterface $fileExporter)
     {
+        parent::__construct();
+
         $this->fileExporter = $fileExporter;
-        $this->localFs      = new Filesystem();
     }
 
     /**

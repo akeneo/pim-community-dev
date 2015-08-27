@@ -22,7 +22,7 @@ class CommandLauncherSpec extends ObjectBehavior
     {
         $command = 'router:debug';
 
-        $this->executeBackground($command)->shouldReturn(null);
+        $this->executeBackground($command, '/dev/null')->shouldReturn(null);
     }
 
     public function it_can_execute_in_foreground()

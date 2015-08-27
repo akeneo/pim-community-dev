@@ -22,13 +22,6 @@ pim_enrich_product_toggle_status:
         id: '[0-9a-f]+'
     methods: [GET, POST]
 
-pim_enrich_product_remove:
-    path: /{id}/remove
-    defaults: { _controller: pim_enrich.controller.product:removeAction }
-    requirements:
-        id: '[0-9a-f]+'
-    methods: [DELETE]
-
 pim_enrich_product_listcategories:
     path: /list-categories/product/{id}/parent/{categoryId}.{_format}
     defaults: { _controller: pim_enrich.controller.product:listCategoriesAction }
@@ -50,6 +43,13 @@ pim_enrich_product_rest_post:
     requirements:
         id: '[0-9a-f]+'
     methods: [POST]
+
+pim_enrich_product_rest_remove:
+    path: /rest/{id}
+    defaults: { _controller: pim_enrich.controller.rest.product:removeAction, _format: json }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [DELETE]
 
 pim_enrich_product_category_rest_list:
     path: /rest/{id}/categories

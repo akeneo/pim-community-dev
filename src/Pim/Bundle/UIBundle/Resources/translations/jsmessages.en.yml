@@ -43,6 +43,8 @@ Unit:     Unit
 Currency: Currency
 
 jstree:
+    all:          All products
+    unclassified: Unclassified products
     product:
         all:          All products
         unclassified: Unclassified products

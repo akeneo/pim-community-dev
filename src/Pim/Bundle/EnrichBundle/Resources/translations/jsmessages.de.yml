@@ -13,6 +13,12 @@ confirmation:
     export profile: Möchten Sie dieses Exportprofil wirklich löschen?
     user: Möchten Sie diesen Benutzer wirklich löschen?
     role: Möchten Sie diese Rolle wirklich löschen?
+pim_datagrid:
+  mass_action:
+    delete:
+      confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
+      success: Ausgewählte Produkte erfolgreich gelöscht.
+      error: Es ist ein Fehler beim Löschen der ausgewählten Produkte aufgetreten, bitte versuchen Sie es erneut.
 flash:
   item:
     removed: Element erfolgreich entfernt
@@ -92,3 +98,14 @@ pim_enrich:
     delete:
       confirm.content: 'Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden'
       confirm.title: '{{ itemName }} löschen'
+  entity:
+    product:
+      variant_group:
+        switch:
+          "yes": true
+          "no": false
+  form:
+    product:
+      switch:
+        "no": false
+        "yes": true

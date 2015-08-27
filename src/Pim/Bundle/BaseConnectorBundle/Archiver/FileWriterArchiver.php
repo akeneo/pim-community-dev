@@ -10,7 +10,7 @@ use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 
 /**
- * Archive job execution files into conventional directories
+ * Archive files written by job execution to provide them through a download button
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

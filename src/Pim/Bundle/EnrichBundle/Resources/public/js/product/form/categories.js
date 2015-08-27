@@ -41,6 +41,7 @@ define(
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
+                    isVisible: this.isVisible.bind(this),
                     label: _.__('pim_enrich.form.product.tab.categories.title')
                 });
 
@@ -166,6 +167,15 @@ define(
                 }
 
                 return this.cache[id].code;
+            },
+
+            /**
+             * Check if this extension is visible
+             *
+             * @returns {boolean}
+             */
+            isVisible: function () {
+                return true;
             }
         });
     }

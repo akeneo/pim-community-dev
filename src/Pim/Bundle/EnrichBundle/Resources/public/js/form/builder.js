@@ -9,6 +9,7 @@ define(
                 FormRegistry.getFormExtensions(formName)
             ).then(function (Form, extensionMeta) {
                 var form = new Form();
+                form.code = formName;
 
                 var extensionPromises = [];
                 _.each(extensionMeta, function (extension) {

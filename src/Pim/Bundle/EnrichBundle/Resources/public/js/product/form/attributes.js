@@ -64,8 +64,6 @@ define(
                 this.listenTo(mediator, 'pim_enrich:form:add-attribute:after', this.render);
                 this.listenTo(mediator, 'pim_enrich:form:show_attribute', this.showAttribute);
 
-                window.addEventListener('resize', this.resize.bind(this));
-                this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
                 FieldManager.clearFields();
 
                 this.onExtensions('comparison:change', this.comparisonChange.bind(this));
@@ -83,9 +81,8 @@ define(
                 }
 
                 this.rendering = true;
+                this.$el.html(this.template({}));
                 this.getConfig().then(function () {
-                    this.$el.html(this.template({}));
-                    this.resize();
                     var product = this.getFormData();
                     $.when(
                         FetcherRegistry.getFetcher('family').fetchAll(),
@@ -116,6 +113,8 @@ define(
                                 $productValuesPanel.append(field.$el);
                             }
                         }.bind(this));
+
+                        this.resize();
                     }.bind(this));
                     this.delegateEvents();
 

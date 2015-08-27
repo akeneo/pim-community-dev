@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;

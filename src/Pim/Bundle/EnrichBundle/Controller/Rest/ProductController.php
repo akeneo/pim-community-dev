@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -60,6 +61,9 @@ class ProductController
     /** @var CollectionFilterInterface */
     protected $productEditDataFilter;
 
+    /** @var RemoverInterface */
+    protected $productRemover;
+
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
@@ -73,6 +77,7 @@ class ProductController
      * @param UserContext                  $userContext
      * @param ObjectFilterInterface        $objectFilter
      * @param CollectionFilterInterface    $productEditDataFilter
+     * @param RemoverInterface             $productRemover
      * @param ProductBuilderInterface      $productBuilder
      */
     public function __construct(
@@ -85,6 +90,7 @@ class ProductController
         UserContext $userContext,
         ObjectFilterInterface $objectFilter,
         CollectionFilterInterface $productEditDataFilter,
+        RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder
     ) {
         $this->productRepository     = $productRepository;
@@ -96,6 +102,7 @@ class ProductController
         $this->userContext           = $userContext;
         $this->objectFilter          = $objectFilter;
         $this->productEditDataFilter = $productEditDataFilter;
+        $this->productRemover        = $productRemover;
         $this->productBuilder        = $productBuilder;
     }
 
@@ -184,6 +191,23 @@ class ProductController
 
             return new JsonResponse($errors, 400);
         }
+    }
+
+    /**
+     * Remove product
+     *
+     * @param int $id
+     *
+     * @AclAncestor("pim_enrich_product_remove")
+     *
+     * @return JsonResponse
+     */
+    public function removeAction($id)
+    {
+        $product = $this->findProductOr404($id);
+        $this->productRemover->remove($product);
+
+        return new JsonResponse();
     }
 
     /**

@@ -405,7 +405,10 @@ class AssertionContext extends RawMinkContext
             $parsedText = '';
             foreach ($changesetRows as $row) {
                 $innerHtml = $row->find('css', 'td:first-of-type')->getHtml();
+
                 $parsedText = trim(preg_replace('/(<[^>]+>)+/', ' ', $innerHtml));
+                $parsedText = preg_replace('/\s+/', ' ', $parsedText);
+
                 if ($parsedText === $data['property']) {
                     $matchingRow = $row;
                     break;
@@ -442,28 +445,6 @@ class AssertionContext extends RawMinkContext
                     )
                 );
             }
-        }
-    }
-
-    /**
-     * @param $version
-     *
-     * @Then /^the version (\d+) should be marked as published$/
-     *
-     * @throws ExpectationException
-     */
-    public function versionShouldBeMarkedAsPublished($version)
-    {
-        $row = $this->getCurrentPage()->find('css', '.history-block tr[data-version="' . $version . '"]');
-        if (!$row) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to see history row for version %s, not found', $version)
-            );
-        }
-        if (!$row->find('css', '.label-published')) {
-            throw $this->createExpectationException(
-                sprintf('Expecting to see version %d marked as published, but is not', $version)
-            );
         }
     }
 

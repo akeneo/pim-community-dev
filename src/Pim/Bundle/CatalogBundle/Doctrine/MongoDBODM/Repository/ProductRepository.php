@@ -20,9 +20,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Product repository
@@ -561,15 +561,23 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getAvailableAttributeIdsToExport(array $productIds)
     {
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->field('_id')->in($productIds)
-            ->distinct('values.attribute')
-            ->hydrate(false);
+        $productIds = array_map(function ($id) {
+            return new \MongoId($id);
+        }, $productIds);
 
-        $cursor = $qb->getQuery()->execute();
+        $results = $this->getDocumentManager()
+            ->getDocumentCollection($this->getDocumentName())
+            ->aggregate([
+                ['$match'  => ['_id' => ['$in' => $productIds]]],
+                ['$unwind' => '$values'],
+                ['$group'  => ['_id' => '$values.attribute']]
+            ])->toArray();
 
-        return $cursor->toArray();
+        $ids = array_map(function ($result) {
+            return $result['_id'];
+        }, $results);
+
+        return $ids;
     }
 
     /**

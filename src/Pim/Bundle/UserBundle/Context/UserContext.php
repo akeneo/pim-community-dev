@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\UserBundle\Context;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Builder\ChoicesBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -322,7 +322,7 @@ class UserContext
     /**
      * Get authenticated user
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function getUser()
     {

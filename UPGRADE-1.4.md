@@ -151,4 +151,12 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Updater\\ProductTemplateUpdaterInterface/Pim\\Component\\Catalog\\Updater\\ProductTemplateUpdaterInterface/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\CategoryRepository/Pim\\Bundle\\ClassificationBundle\\Doctrine\\ORM\\Repository\\CategoryRepository/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\CategoryRepositoryInterface/Pim\\Component\\Classification\\Repository\\CategoryRepositoryInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DataGridBundle\\Datagrid\\Product\\ConfiguratorInterface/Pim\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\ConfiguratorInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DataGridBundle\\Datagrid\\Product\\ConfigurationRegistry/Pim\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\ConfigurationRegistry/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DataGridBundle\\Datagrid\\Product\\ContextConfigurator/Pim\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\ContextConfigurator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DataGridBundle\\Datagrid\\Product\\FiltersConfigurator/Pim\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\FiltersConfigurator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DataGridBundle\\Datagrid\\Product\\GroupColumnsConfigurator/Pim\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\GroupColumnsConfigurator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DataGridBundle\\Datagrid\\Product\\SortersConfigurator/Pim\\Bundle\\DataGridBundle\\Datagrid\\Configuration\\Product\\SortersConfigurator/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DataGridBundle\\Datagrid\\RequestParametersExtractor/Pim\\Bundle\\DataGridBundle\\Datagrid\\Request\\RequestParametersExtractor/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\DataGridBundle\\Datagrid\\RequestParametersExtractorInterface/Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface/g'
 ```

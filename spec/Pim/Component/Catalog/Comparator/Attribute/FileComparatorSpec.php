@@ -67,4 +67,27 @@ class FileComparatorSpec extends ObjectBehavior
             ['data' => ['filePath' => 'key/of/my/original/file.txt']]
         )->shouldReturn(null);
     }
+
+    function it_returns_null_when_filepath_are_equals_and_null()
+    {
+        $this->compare(
+            ['data' => ['filePath' => null]],
+            ['data' => ['filePath' => null]]
+        )->shouldReturn(null);
+
+        $this->compare(
+            ['data' => null],
+            ['data' => null]
+        )->shouldReturn(null);
+
+        $this->compare(
+            ['data' => ['filePath' => null]],
+            ['data' => null]
+        )->shouldReturn(null);
+
+        $this->compare(
+            ['data' => null],
+            ['data' => ['filePath' => null]]
+        )->shouldReturn(null);
+    }
 }

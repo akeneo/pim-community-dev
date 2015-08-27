@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
 
 /**
@@ -19,7 +19,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
  */
 class ProductFieldsBuilder
 {
-    /** @var ProductManager $productManager */
+    /** @var ProductManagerInterface $productManager */
     protected $productManager;
 
     /** @var LocaleManager $localeManager */
@@ -40,14 +40,14 @@ class ProductFieldsBuilder
     /**
      * Constructor
      *
-     * @param ProductManager         $productManager
-     * @param LocaleManager          $localeManager
-     * @param CurrencyManager        $currencyManager
-     * @param AssociationTypeManager $assocTypeManager
-     * @param CatalogContext         $catalogContext
+     * @param ProductManagerInterface $productManager
+     * @param LocaleManager           $localeManager
+     * @param CurrencyManager         $currencyManager
+     * @param AssociationTypeManager  $assocTypeManager
+     * @param CatalogContext          $catalogContext
      */
     public function __construct(
-        ProductManager $productManager,
+        ProductManagerInterface $productManager,
         LocaleManager $localeManager,
         CurrencyManager $currencyManager,
         AssociationTypeManager $assocTypeManager,
@@ -70,11 +70,16 @@ class ProductFieldsBuilder
     public function getFieldsList($productIds)
     {
         $this->prepareAvailableAttributeIds($productIds);
-        $attributeRepo  = $this->productManager->getAttributeRepository();
-        $attributesList = $attributeRepo->findBy(['id' => $this->getAttributeIds()]);
-        $fieldsList     = $this->prepareFieldsList($attributesList);
 
-        return $fieldsList;
+        $attributes = $this->getAttributeIds();
+
+        if (empty($attributes)) {
+            return [];
+        }
+
+        $attributes = $this->productManager->getAttributeRepository()->findBy(array('id' => $this->getAttributeIds()));
+
+        return $this->prepareFieldsList($attributes);
     }
 
     /**
@@ -94,8 +99,9 @@ class ProductFieldsBuilder
      */
     protected function prepareAvailableAttributeIds($productIds)
     {
-        $productRepo = $this->productManager->getProductRepository();
-        $this->attributeIds = $productRepo->getAvailableAttributeIdsToExport($productIds);
+        $this->attributeIds = $this->productManager
+            ->getProductRepository()
+            ->getAvailableAttributeIdsToExport($productIds);
     }
 
     /**
