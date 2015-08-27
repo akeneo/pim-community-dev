@@ -1,0 +1,5 @@
+pimee_enrich_channel_transformation_view:
+    path: /{id}/view
+    defaults: { _controller: pimee_enrich.controller.channel_transformation:viewAction }
+    requirements:
+        id: \d+

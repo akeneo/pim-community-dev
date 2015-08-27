@@ -1,0 +1,11 @@
+parameters:
+    pimee_enrich.view_element.channel.tab.assset_transformation.template: 'PimEnterpriseEnrichBundle:Channel:Tab/asset_transformation.html.twig'
+
+services:
+    pim_enrich.view_element.channel.tab.transformation:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_enrich.channel.tab.asset_transformation'
+            - %pimee_enrich.view_element.channel.tab.assset_transformation.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pim_enrich_channel_form.form_tab, position: 105 }

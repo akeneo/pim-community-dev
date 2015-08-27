@@ -1,0 +1,3 @@
+<div class="tab-pane tab-property {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {{ render(controller('pimee_enrich.controller.channel_transformation:viewAction', {'id': form.vars.value.id})) }}
+</div>

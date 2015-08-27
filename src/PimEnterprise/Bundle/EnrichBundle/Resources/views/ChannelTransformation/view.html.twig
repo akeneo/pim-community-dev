@@ -1,0 +1,24 @@
+<table>
+    <thead>
+        <tr>
+            <th>{{ 'pimee_enrich.asset_transformation.title.transformation'|trans }}</th>
+            <th>{{ 'pimee_enrich.asset_transformation.title.options'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transformation, options in channelTransformations.configuration %}
+            <tr>
+                {% set transformationType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.title' %}
+                <td>{{ transformationType|trans }}</td>
+                <td>
+                    {% for optionKey, optionValue in options %}
+                        <div>
+                            {% set optionType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.options.' ~ optionKey %}
+                            {{ optionType|trans({'%value%': optionValue}) }}<br>
+                        </div>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

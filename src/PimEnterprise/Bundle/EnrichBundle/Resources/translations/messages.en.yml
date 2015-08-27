@@ -112,12 +112,44 @@ pimee_enrich:
     category:
         tab:
             permission.title: Permissions
+    channel:
+        tab:
+            asset_transformation.title: Asset transformations
     acl.product_ownership.title: Ownership
     attributes:
         empty: none
     groups:
         label: owner groups
         empty: none
+    asset_transformation:
+        title:
+            transformation: Transformation
+            options: Options
+        colorspace:
+            title: Colorspace
+            options:
+                colorspace: %value% colorspace
+        resize:
+            title: Resize
+            options:
+                width: %value%px width
+                height: %value%px height
+        resolution:
+            title: Resolution
+            options:
+                resolution: %value%
+                resolution-unit: %value%
+        scale:
+            title: Scale
+            options:
+                width: %value%px width
+                height: %value%px height
+                ratio: %value%% ratio
+        thumbnail:
+            title: Thumbnail
+            options:
+                width: %value%px width
+                height: %value%px height
 
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
 edit_common_attributes_with_permission: Edit common attributes with permission
