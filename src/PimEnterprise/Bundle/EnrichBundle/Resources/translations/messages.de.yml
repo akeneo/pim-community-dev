@@ -6,7 +6,6 @@ attribute group.permissions:
   view.label: Berechtigt Attribute anzuzeigen
   view.help: Erlauben, die Produkte in dieser Attributgruppe anzusehen
   edit.label: Berechtigt Attribute zu bearbeiten
-  edit.help: Erlauben, die Produkte in dieser Attributgruppe anzusehen
   no_access_to_attributes: Sie haben keinen Zugriff auf die Attribute dieses Produktes. Bitte kontaktieren Sie Ihren Administrator.
 category.permissions:
   view.label: Berechtigt Produkte anzuzeigen
