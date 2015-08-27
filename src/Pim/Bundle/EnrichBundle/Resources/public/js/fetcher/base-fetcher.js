@@ -84,27 +84,25 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          * @return {Promise}
          */
         fetchByIdentifiers: function (identifiers) {
-            _.each(identifiers, function (identifier) {
-                if (identifier in this.entityPromises) {
-                    identifiers = _.without(identifiers, identifier);
-                }
-            }.bind(this));
-
             if (0 === identifiers.length) {
-                return getObjects(this.entityPromises);
+                return $.Deferred().resolve([]).promise();
+            }
+
+            var uncachedIdentifiers = _.difference(identifiers, _.keys(this.entityPromises));
+            if (0 === uncachedIdentifiers.length) {
+                return getObjects(_.pick(this.entityPromises, identifiers));
             }
 
             return $.when(
-                    $.getJSON(Routing.generate(this.options.urls.list, { identifiers: identifiers.join(',') }))
+                    $.getJSON(Routing.generate(this.options.urls.list, { identifiers: uncachedIdentifiers.join(',') }))
                         .then(_.identity),
                     this.getIdentifierField()
-                )
-                .then(function (entities, identifierCode) {
+                ).then(function (entities, identifierCode) {
                     _.each(entities, function (entity) {
                         this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity);
                     }.bind(this));
 
-                    return getObjects(this.entityPromises);
+                    return getObjects(_.pick(this.entityPromises, identifiers));
                 }.bind(this));
         },
 
