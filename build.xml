@@ -317,7 +317,7 @@
     </target>
 
     <target name="behat" description="Run acceptance tests with Behat">
-        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" >
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
             <arg value="-c" />
             <arg value="${behat.concurrency}" />
             <arg value="-x" />
