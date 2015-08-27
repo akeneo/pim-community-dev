@@ -255,4 +255,24 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
 
         return $stmt->rowCount();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findExpiringAssets(\DateTime $now, $delay = 5)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $endOfUse1 = $now->add(new \DateInterval(sprintf("P%sD", $delay)))->setTime(0, 0, 0)->format('Y-m-d G:i:s');
+        $endOfUse2 = $now->setTime(23, 59, 59)->format('Y-m-d G:i:s');
+
+        $qb->select('asset')
+            ->from($this->_entityName, $this->getAlias())
+            ->where(':endOfUse1 < asset.endOfUseAt')
+            ->andWhere('asset.endOfUseAt < :endOfUse2')
+            ->setParameter(':endOfUse1', $endOfUse1)
+            ->setParameter(':endOfUse2', $endOfUse2);
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }

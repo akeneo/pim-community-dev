@@ -1,0 +1,2 @@
+parameters:
+    pim_user.view_element.user.tab.group_and_role.template: 'PimEnterpriseEnrichBundle:User/Tab:group_and_role.html.twig'

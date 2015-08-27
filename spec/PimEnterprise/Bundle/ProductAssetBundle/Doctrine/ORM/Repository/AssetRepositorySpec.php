@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Prophecy\Argument;
 
 class AssetRepositorySpec extends ObjectBehavior
@@ -96,5 +97,28 @@ class AssetRepositorySpec extends ObjectBehavior
         $qb->groupBy('asset.id')->willReturn($qb);
 
         $this->createAssetDatagridQueryBuilder([]);
+    }
+
+    function it_finds_all_assets_by_end_of_use_delay(
+        $em,
+        QueryBuilder $qb,
+        AbstractQuery $query,
+        AssetInterface $asset,
+        AssetInterface $asset2
+    ) {
+        $now = new \DateTime('2015-08-10');
+        $em->createQueryBuilder()->willReturn($qb);
+
+        $qb->select('asset')->willReturn($qb);
+        $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'asset')->willReturn($qb);
+        $qb->where(':endOfUse1 < asset.endOfUseAt')->willReturn($qb);
+        $qb->andWhere('asset.endOfUseAt < :endOfUse2')->willReturn($qb);
+        $qb->setParameter(':endOfUse1', '2015-08-15 0:00:00')->willReturn($qb);
+        $qb->setParameter(':endOfUse2', '2015-08-15 23:59:59')->willReturn($qb);
+
+        $qb->getQuery()->willReturn($query);
+        $query->getArrayResult()->willReturn([$asset, $asset2]);
+
+        $this->findExpiringAssets($now, 5)->shouldReturn([$asset, $asset2]);
     }
 }

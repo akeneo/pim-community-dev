@@ -88,4 +88,12 @@ interface AssetRepositoryInterface extends
      * @return ProductInterface[]
      */
     public function findProducts(AssetInterface $asset);
+
+    /**
+     * @param \DateTime $now
+     * @param int       $delay
+     *
+     * @return AssetInterface[]
+     */
+    public function findExpiringAssets(\DateTime $now, $delay = 5);
 }

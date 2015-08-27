@@ -1,0 +1,3 @@
+parameters:
+    pim_user.entity.user.class: PimEnterprise\Bundle\UserBundle\Entity\User
+    oro_user.entity.class:      PimEnterprise\Bundle\UserBundle\Entity\User
