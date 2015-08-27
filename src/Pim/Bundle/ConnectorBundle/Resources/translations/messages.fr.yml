@@ -65,6 +65,7 @@ pim_connector:
     variant_group_processor.title: Création / Mise à jour des groupes de variantes
     category_processor.title: Création de catégorie
     association_processor.title: "Création d'association"
+    product_association_processor.title: "Création d'association"
     group_processor.title: Création de groupe
     attribute_processor.title: "Création d'attribut"
     attribute_option_processor.title: "Création des options d'attributs"
@@ -77,14 +78,14 @@ pim_connector:
     category_writer.title: Stockage des catégories
     variant_group_writer.title: Stockage des groupes de variantes
     writer.title: Stockage des entités
-    csv_writer.title: Ecriture CSV
+    csv_writer.title: Ecriture Csv
   export:
     delimiter:
       label: Délimiteur
-      help: Caractère utilisé pour délimiter les valeurs
+      help: Caractère unique utilisé pour délimiter les valeurs
     enclosure:
-      label: "Caractère d'encadrement (enclosure)"
-      help: Délimiteur de champs
+      label: "Caractère d'encadrement"
+      help: Caractère unique utilisé pour encadrer les champs
     withHeader:
       label: Avec en-tête
       help: Définit si la première ligne du fichier contient les libellés des colonnes
@@ -118,10 +119,10 @@ pim_connector:
       help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
     delimiter:
       label: Délimiteur
-      help: Caractère utilisé pour délimiter les valeurs
+      help: Caractère unique utilisé pour délimiter les valeurs
     enclosure:
       label: "Caractère d'encadrement"
-      help: Délimiteur de champs
+      help: Caractère unique utilisé pour encadrer les champs
     escape:
       label: Echapper
       help: Le caractère utilisé pour échapper les champs
@@ -130,7 +131,25 @@ pim_connector:
       help: "Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories"
     realTimeVersioning:
       label: "Mise à jour de l'historique en temps réel"
-      help: "Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances."
+      help: "Signifie que l'historique des produits est automatiquement mis à jour, peut être désactivé pour améliorer les performances"
     copyValuesToProducts:
       label: Copie des valeurs liées aux groupes de variantes dans les produits
-      help: "Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes."
+      help: "Les produits associés aux groupes de variantes seront mis à jour automatiquement avec les valeurs d'attributs liées aux groupes. Cette option peut être désactivée pour mettre à jour uniquement les groupes de variantes"
+    enabledComparison:
+      label: Comparer les valeurs
+      help: "Permettre la comparaison entre les valeurs d'origine et des valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine"
+job_execution.summary:
+  read: lu
+  read_lines: lignes lues
+  write: écrit
+  skip: ignoré
+  create: créé
+  process: traitées
+  update_products: produits mis à jour
+  process_products: produits traités
+  skip_products: produits ignorés
+  displayed: premiers avertissements affichés
+  charset_validator:
+    title: 'Encodage du fichier:'
+    skipped: ignoré, extension dans la liste blanche
+  product_skipped_no_diff: produit ignoré (aucune différence)
