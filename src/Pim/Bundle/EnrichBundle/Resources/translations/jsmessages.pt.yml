@@ -55,3 +55,15 @@ error:
     export profile: Não é possível excluir esse perfil de exportação
     user: Não é possível excluir este usuário
     role: Não é possível excluir esta função
+pim_enrich:
+  entity:
+    product:
+      variant_group:
+        switch:
+          "yes": true
+          "no": false
+  form:
+    product:
+      switch:
+        "no": false
+        "yes": true
