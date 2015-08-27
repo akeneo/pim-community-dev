@@ -5,7 +5,7 @@ asset_category_accesses:
     images:
         viewItems: [IT support, Manager, Redactor]
         editItems: [IT support, Manager, Redactor]
-    autre:
+    other:
         viewItems: [IT support, Manager, Redactor]
         editItems: [IT support, Manager, Redactor]
     situ:

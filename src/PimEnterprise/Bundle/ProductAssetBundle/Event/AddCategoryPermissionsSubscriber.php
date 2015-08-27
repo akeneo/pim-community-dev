@@ -43,9 +43,7 @@ class AddCategoryPermissionsSubscriber implements DoctrineEventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            // @codingStandardsIgnoreStart
-            DoctrineEvents::prePersist,
-            // @codingStandardsIgnoreEnd
+            'prePersist'
         ];
     }
 

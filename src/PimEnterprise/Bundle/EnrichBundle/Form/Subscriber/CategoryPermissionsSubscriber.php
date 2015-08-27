@@ -144,7 +144,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             $addedOwnRoles       = array_diff($currentRoles['own'], $this->previousRoles['own']);
             $removedOwnRoles     = array_diff($this->previousRoles['own'], $currentRoles['own']);
         } else {
-            $addedOwnRoles = [];
+            $addedOwnRoles   = [];
             $removedOwnRoles = [];
         }
 

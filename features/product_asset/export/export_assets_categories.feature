@@ -20,7 +20,7 @@ Feature: Export assets categories
     code;parent;label-de_DE;label-en_US;label-fr_FR
     asset_main_catalog;;;"Asset main catalog";
     images;asset_main_catalog;;Images;
-    autre;images;;"Other picture";
+    other;images;;"Other picture";
     situ;images;;"In situ pictures";
     prioritized_images;images;;"Prioritised images";
     print;asset_main_catalog;;Print;

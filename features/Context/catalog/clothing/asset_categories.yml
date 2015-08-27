@@ -4,7 +4,7 @@ asset_categories:
     images:
         parent: asset_main_catalog
         label-en_US: Images
-    autre:
+    other:
         parent: images
         label-en_US: Other picture
     situ:

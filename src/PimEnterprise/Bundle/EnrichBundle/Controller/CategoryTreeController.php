@@ -151,7 +151,7 @@ class CategoryTreeController extends BaseCategoryTreeController
     /**
      * Get granted categories
      *
-     * @return integer[]
+     * @return int[]
      */
     protected function getGrantedCategories()
     {

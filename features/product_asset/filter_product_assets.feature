@@ -31,7 +31,7 @@ Feature: Filter product assets
     Then I should be able to use the following filters:
       | filter         | value  | result                                          |
       | asset category | images | paint, chicagoskyline, akene, autumn and bridge |
-      | asset category | autre  | autumn, bridge, dog, eagle and machine          |
+      | asset category | other  | autumn, bridge, dog, eagle and machine          |
       | asset category | situ   | paint, man_wall, minivan, mouette and mountain  |
     When I check the "Include sub-categories" switch
     Then I should be able to use the following filters:

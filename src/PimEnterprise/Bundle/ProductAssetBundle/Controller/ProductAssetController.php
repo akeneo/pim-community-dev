@@ -348,10 +348,8 @@ class ProductAssetController extends Controller
      */
     public function editAction(Request $request, $id)
     {
-        $productAsset     = $this->findProductAssetOr404($id);
-        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
-
-        if (!$isEditAssetGranted) {
+        $productAsset = $this->findProductAssetOr404($id);
+        if (!$this->isGranted(Attributes::EDIT, $productAsset)) {
             if ($this->isGranted(Attributes::VIEW, $productAsset)) {
                 $parameters = $this->viewAction($id);
 
@@ -419,8 +417,7 @@ class ProductAssetController extends Controller
     public function removeAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
-        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
-        if (!$isEditAssetGranted) {
+        if (!$this->isGranted(Attributes::EDIT, $productAsset)) {
             throw new AccessDeniedException();
         }
 
@@ -444,8 +441,7 @@ class ProductAssetController extends Controller
     public function deleteReferenceFileAction(Request $request, $id)
     {
         $reference = $this->findReferenceOr404($id);
-        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $reference->getAsset());
-        if (!$isEditAssetGranted) {
+        if (!$this->isGranted(Attributes::EDIT, $reference->getAsset())) {
             throw new AccessDeniedException();
         }
 
@@ -479,8 +475,7 @@ class ProductAssetController extends Controller
     public function deleteVariationFileAction(Request $request, $id)
     {
         $variation = $this->findVariationOr404($id);
-        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $variation->getAsset());
-        if (!$isEditAssetGranted) {
+        if (!$this->isGranted(Attributes::EDIT, $variation->getAsset())) {
             throw new AccessDeniedException();
         }
 
@@ -515,8 +510,7 @@ class ProductAssetController extends Controller
     public function resetVariationFileAction(Request $request, $id)
     {
         $variation = $this->findVariationOr404($id);
-        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $variation->getAsset());
-        if (!$isEditAssetGranted) {
+        if (!$this->isGranted(Attributes::EDIT, $variation->getAsset())) {
             throw new AccessDeniedException();
         }
 
@@ -556,8 +550,7 @@ class ProductAssetController extends Controller
     public function resetVariationsFilesAction(Request $request, $id)
     {
         $reference = $this->findReferenceOr404($id);
-        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $reference->getAsset());
-        if (!$isEditAssetGranted) {
+        if (!$this->isGranted(Attributes::EDIT, $reference->getAsset())) {
             throw new AccessDeniedException();
         }
 
@@ -633,8 +626,7 @@ class ProductAssetController extends Controller
     public function dispatchAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
-        $isEditAssetGranted = $this->isGranted(Attributes::EDIT, $productAsset);
-        if ($isEditAssetGranted) {
+        if ($this->isGranted(Attributes::EDIT, $productAsset)) {
             $edit = $this->editAction($request, $id);
 
             return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', $edit);
