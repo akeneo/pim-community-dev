@@ -25,6 +25,7 @@
                     <% if (completeness.completeness) { %>
                         <div>
                             <span class="channel" data-channel="<%= channel %>"><%= channel %></span>
+                            <span class="literal-progress"><%= completeness.completeness.ratio %>%</span>
                             <div class="progress <%= completeness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
                                 <div class="bar" data-ratio="<%= completeness.completeness.ratio %>" style="width: <%= completeness.completeness.ratio %>%;"></div>
                             </div>
