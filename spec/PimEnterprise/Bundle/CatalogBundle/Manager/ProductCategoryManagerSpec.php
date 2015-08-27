@@ -56,12 +56,12 @@ class ProductCategoryManagerSpec extends ObjectBehavior
         $secondTree->getId()->willReturn(2);
 
         $categoryRepo->getPath($firstCat)->willReturn([0 => $firstTree, 1 => $firstCat]);
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $firstCat)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $firstTree)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $firstCat)->willReturn(false);
 
         $categoryRepo->getPath($secondCat)->willReturn([0 => $secondTree, 1 => $secondCat]);
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $secondCat)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $secondTree)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $secondCat)->willReturn(true);
 
         $categoryRepo->getChildren(null, true, 'created', 'DESC')->willReturn([0 => $firstTree, 1 => $secondTree]);
 

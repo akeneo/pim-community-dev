@@ -58,3 +58,10 @@ pimee_product_asset_rest_index:
     path: /rest/
     defaults: { _controller: pimee_product_asset.controller.rest.product_asset:indexAction, _format: json }
     methods: [GET]
+
+pimee_product_asset_dispatch:
+    path: /{id}/dispatch
+    defaults: { _controller: pimee_product_asset.controller.product_asset:dispatchAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]

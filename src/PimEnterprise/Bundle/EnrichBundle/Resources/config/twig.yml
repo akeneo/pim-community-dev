@@ -1,23 +1,10 @@
 parameters:
     pimee_enrich.twig.version_extension.class:   PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
-    pim_enrich.twig.category_extension.class:    PimEnterprise\Bundle\EnrichBundle\Twig\CategoryExtension
     pimee_enrich.twig.attribute_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\AttributeExtension
 
 services:
     pimee_enrich.twig.version_extension:
         class: %pimee_enrich.twig.version_extension.class%
-        tags:
-            - { name: twig.extension }
-
-    pim_enrich.twig.category_extension:
-        class: %pim_enrich.twig.category_extension.class%
-        arguments:
-            - '@pim_catalog.repository.category'
-            - '@pim_catalog.repository.product_category'
-            - '@pimee_product_asset.repository.category'
-            - '@pimee_product_asset.repository.asset_category'
-            - '@pimee_workflow.repository.published_product_category'
-            - %pim_enrich_max_products_category_removal%
         tags:
             - { name: twig.extension }
 

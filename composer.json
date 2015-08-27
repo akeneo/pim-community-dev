@@ -20,18 +20,13 @@
         "oro/platform": "dev-user-override",
         "akeneo/batch-bundle": "0.4.x-dev",
         "akeneo/measure-bundle": "0.4.x-dev",
-        "phpspec/php-diff": "1.0.2",
+        "doctrine/doctrine-migrations-bundle": "1.0.0",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
-        "doctrine/doctrine-migrations-bundle": "1.0.0"
+        "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
-        "sensio/generator-bundle": "2.3.5",
-        "phpunit/phpunit": "3.7.*",
-        "squizlabs/php_codesniffer": "1.*",
-        "pdepend/pdepend": "1.1.*",
-        "phpmd/phpmd": "1.*",
+        "akeneo/phpspec-skip-example-extension": "1.1.*",
         "behat/behat": "2.5.5",
-        "kriswallsmith/buzz": ">=0.5",
         "behat/common-contexts": "1.2.0",
         "behat/gherkin":"2.3.5",
         "behat/mink":"1.6.0",
@@ -40,9 +35,14 @@
         "behat/mink-selenium2-driver": "1.2.0",
         "behat/symfony2-extension": "1.1.2",
         "behat/transliterator":"1.0.1",
-        "sensiolabs/behat-page-object-extension": "1.0.1",
+        "kriswallsmith/buzz": ">=0.5",
+        "pdepend/pdepend": "1.1.*",
+        "phpmd/phpmd": "1.*",
         "phpspec/phpspec": "2.1.*",
-        "akeneo/phpspec-skip-example-extension": "1.1.*"
+        "phpunit/phpunit": "3.7.*",
+        "sensiolabs/behat-page-object-extension": "1.0.1",
+        "sensio/generator-bundle": "2.3.5",
+        "squizlabs/php_codesniffer": "1.*"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo"

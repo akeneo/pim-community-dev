@@ -13,27 +13,20 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
 use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
 use Pim\Component\Classification\Factory\CategoryFactory;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Overriden category controller
@@ -51,67 +44,120 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @staticvar string */
     const CONTEXT_ASSOCIATE = 'associate';
 
-    /** @var ChainedFilter */
-    protected $chainedFilter;
+    /** @var ObjectRepository */
+    protected $categoryAccessRepo;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
 
     /**
-     * @param Request                     $request
-     * @param EngineInterface             $templating
-     * @param RouterInterface             $router
-     * @param TokenStorageInterface       $tokenStorage
-     * @param FormFactoryInterface        $formFactory
-     * @param ValidatorInterface          $validator
-     * @param TranslatorInterface         $translator
      * @param EventDispatcherInterface    $eventDispatcher
-     * @param ManagerRegistry             $doctrine
-     * @param CategoryManager             $categoryManager
      * @param UserContext                 $userContext
-     * @param SecurityFacade              $securityFacade
      * @param SaverInterface              $categorySaver
      * @param RemoverInterface            $categoryRemover
      * @param CategoryFactory             $categoryFactory
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param ChainedFilter               $chainedFilter
+     * @param SecurityFacade              $securityFacade
+     * @param array                       $rawConfiguration
+     * @param CategoryAccessRepository    $categoryAccessRepo
+     * @param TokenStorageInterface       $tokenStorage
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
-        ManagerRegistry $doctrine,
-        CategoryManager $categoryManager,
         UserContext $userContext,
-        SecurityFacade $securityFacade,
         SaverInterface $categorySaver,
         RemoverInterface $categoryRemover,
         CategoryFactory $categoryFactory,
         CategoryRepositoryInterface $categoryRepository,
-        ChainedFilter $chainedFilter
+        SecurityFacade $securityFacade,
+        array $rawConfiguration,
+        CategoryAccessRepository $categoryAccessRepo,
+        TokenStorageInterface $tokenStorage
     ) {
         parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $tokenStorage,
-            $formFactory,
-            $validator,
-            $translator,
             $eventDispatcher,
-            $doctrine,
-            $categoryManager,
             $userContext,
-            $securityFacade,
             $categorySaver,
             $categoryRemover,
             $categoryFactory,
-            $categoryRepository
+            $categoryRepository,
+            $securityFacade,
+            $rawConfiguration
         );
 
-        $this->chainedFilter = $chainedFilter;
+        $this->categoryAccessRepo = $categoryAccessRepo;
+        $this->tokenStorage       = $tokenStorage;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
+     */
+    public function listTreeAction(Request $request)
+    {
+        if (false === $this->securityFacade->isGranted($this->buildAclName('category_list'))) {
+            throw new AccessDeniedException();
+        }
+
+        $selectNodeId  = $request->get('select_node_id', -1);
+        $context       = $request->get('context', false);
+
+        try {
+            $selectNode = $this->findGrantedCategory($selectNodeId, $context);
+        } catch (NotFoundHttpException $e) {
+            $selectNode = $this->userContext->getAccessibleUserTree();
+        } catch (AccessDeniedException $e) {
+            $selectNode = $this->userContext->getAccessibleUserTree();
+        }
+
+        $grantedCategoryIds = $this->getGrantedCategories();
+        $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
+
+        return [
+            'trees'          => $grantedTrees,
+            'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
+            'include_sub'    => (bool) $request->get('include_sub', false),
+            'item_count'     => (bool) $request->get('with_items_count', true),
+            'related_entity' => $this->rawConfiguration['related_entity'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getChildrenCategories(Request $request, $selectNode)
+    {
+        $parent        = $this->findCategory($request->get('id'));
+        $isEditGranted = $this->securityFacade->isGranted('pim_enrich_product_category_edit');
+        $context       = $request->get('context', false);
+
+        if ($isEditGranted && self::CONTEXT_MANAGE === $context) {
+            $categories = parent::getChildrenCategories($request, $selectNode);
+        } else {
+            $grantedCategoryIds = $this->getGrantedCategories();
+
+            if (null !== $selectNode) {
+                $categories = $this->categoryRepository
+                    ->getChildrenTreeByParentId($parent->getId(), $selectNode->getId(), $grantedCategoryIds);
+            } else {
+                $categories = $this->categoryRepository->getChildrenGrantedByParentId($parent, $grantedCategoryIds);
+            }
+        }
+
+        return $categories;
+    }
+
+    /**
+     * Get granted categories
+     *
+     * @return int[]
+     */
+    protected function getGrantedCategories()
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        return $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS);
     }
 
     /**
@@ -120,85 +166,26 @@ class CategoryTreeController extends BaseCategoryTreeController
      * @param int    $categoryId the category id
      * @param string $context    the retrieving context
      *
-     * @throws NotFoundHttpException
      * @throws AccessDeniedException
      *
      * @return CategoryInterface
      */
     protected function findGrantedCategory($categoryId, $context)
     {
-        $category = $this->findCategory($categoryId);
         $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE];
-
         if (!in_array($context, $allowed)) {
             throw new AccessDeniedException('You can not access this category');
         }
 
-        if ($context === self::CONTEXT_MANAGE && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
+        if (self::CONTEXT_MANAGE === $context && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
             throw new AccessDeniedException('You can not access this category');
-        } elseif (false === $this->securityFacade->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+        }
+
+        $category = $this->findCategory($categoryId);
+        if (false === $this->securityFacade->isGranted(Attributes::VIEW_ITEMS, $category)) {
             throw new AccessDeniedException('You can not access this category');
         }
 
         return $category;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
-     * @AclAncestor("pim_enrich_category_list")
-     */
-    public function listTreeAction(Request $request)
-    {
-        $selectNodeId  = $request->get('select_node_id', -1);
-        $context       = $request->get('context', false);
-        $relatedEntity = $request->get('related_entity', 'product');
-
-        try {
-            $selectNode = $this->findGrantedCategory($selectNodeId, $context);
-        } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getAccessibleUserCategoryTree($relatedEntity);
-        } catch (AccessDeniedException $e) {
-            $selectNode = $this->userContext->getAccessibleUserCategoryTree($relatedEntity);
-        }
-
-        // TODO: In PIM-4292, check the right permissions depending on $context
-        $trees = $this->categoryRepository->getTrees();
-        $grantedTrees = $this->chainedFilter->filterCollection(
-            $trees,
-            sprintf('pim.internal_api.%s_category.view', $relatedEntity)
-        );
-
-        return [
-            'trees'          => $grantedTrees,
-            'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
-            'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
-            'item_count'     => (bool) $this->getRequest()->get('with_items_count', true),
-            'related_entity' => $relatedEntity,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Override parent to use only granted categories
-     */
-    protected function getChildrenCategories(Request $request, $selectNode)
-    {
-        $categories = parent::getChildrenCategories($request, $selectNode);
-
-        $context = $request->get('context', false);
-        $relatedEntity = $request->get('related_entity', 'product');
-        $editGranted = $this->securityFacade->isGranted('pim_enrich_product_category_edit');
-
-        if ($editGranted && self::CONTEXT_MANAGE === $context) {
-            return $categories;
-        } else {
-            return $this->chainedFilter->filterCollection(
-                $categories,
-                sprintf('pim.internal_api.%s_category.view', $relatedEntity)
-            );
-        }
     }
 }

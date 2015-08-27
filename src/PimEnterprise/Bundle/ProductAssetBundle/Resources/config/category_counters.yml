@@ -1,0 +1,11 @@
+services:
+    pimee_product_asset.doctrine.counter.category_asset:
+        class: %pimee_enrich.doctrine.counter.granted_category_items.class%
+        arguments:
+            - '@pimee_product_asset.repository.asset_category'
+            - '@pimee_product_asset.repository.category'
+            - '@pimee_product_asset.repository.asset_category_access'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+        tags:
+            - { name: pim_enrich.doctrine.counter.category_item, type: asset }

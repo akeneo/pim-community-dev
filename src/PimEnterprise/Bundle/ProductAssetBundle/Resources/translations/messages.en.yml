@@ -4,8 +4,16 @@ pimee_product_asset:
             index: Enrich asset
             create: Create an asset
             remove: Remove asset
+        category:
+            create:  Create an asset category
+            edit:    Edit an asset category
+            list:    List asset categories
+            remove:  Remove an asset category
+            manage:  Manage asset category permissions
+            history: View asset category history
     acl_group:
-        asset: Product assets
+        asset:    Product assets
+        category: Asset categories
     enrich_asset:
         button:
             upload: Upload
@@ -105,6 +113,17 @@ pimee_product_asset:
         label: not available
     asset:
         title: Asset
+
+    category:
+        menu: Asset categories
+        permissions:
+            view.label: Allowed to view assets
+            view.help: Allow to view the assets in this category
+            edit.label: Allowed to edit assets
+            edit.help: Allow to edit the assets in this category (implies the view permission)
+            no_access_to_products: You don't have access to assets in any tree, please contact your administrator
+            apply_on_children.label: Apply changes on children
+            apply_on_children.help: Copy the permissions changes on all children, existing permissions on children are kept
 
 btn.create.asset: Create an asset
 btn.drag_or_upload: Drag and drop a file or click here

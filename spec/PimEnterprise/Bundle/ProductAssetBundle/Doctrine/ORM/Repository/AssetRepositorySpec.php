@@ -93,7 +93,7 @@ class AssetRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($qb);
 
         $qb->select('asset')->willReturn($qb);
-        $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'asset', 'asset.id')->willReturn($qb);
+        $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'asset')->willReturn($qb);
         $qb->groupBy('asset.id')->willReturn($qb);
 
         $this->createAssetDatagridQueryBuilder([]);

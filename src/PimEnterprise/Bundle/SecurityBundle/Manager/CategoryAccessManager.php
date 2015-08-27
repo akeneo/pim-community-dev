@@ -19,6 +19,7 @@ use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -65,7 +66,7 @@ class CategoryAccessManager
      */
     public function getViewUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::VIEW_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::VIEW_ITEMS);
     }
 
     /**
@@ -77,7 +78,7 @@ class CategoryAccessManager
      */
     public function getEditUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::EDIT_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::EDIT_ITEMS);
     }
 
     /**
@@ -105,9 +106,9 @@ class CategoryAccessManager
      */
     public function isUserGranted(UserInterface $user, CategoryInterface $category, $attribute)
     {
-        if (Attributes::EDIT_PRODUCTS === $attribute) {
+        if (Attributes::EDIT_ITEMS === $attribute) {
             $grantedUserGroups = $this->getEditUserGroups($category);
-        } elseif (Attributes::VIEW_PRODUCTS === $attribute) {
+        } elseif (Attributes::VIEW_ITEMS === $attribute) {
             $grantedUserGroups = $this->getViewUserGroups($category);
         } else {
             throw new \LogicException(sprintf('Attribute "%" is not supported.', $attribute));
@@ -141,14 +142,14 @@ class CategoryAccessManager
 
         foreach ($editGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($category, $group, Attributes::EDIT_PRODUCTS, $flush);
+                $this->grantAccess($category, $group, Attributes::EDIT_ITEMS, $flush);
                 $grantedGroups[] = $group;
             }
         }
 
         foreach ($viewGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($category, $group, Attributes::VIEW_PRODUCTS, $flush);
+                $this->grantAccess($category, $group, Attributes::VIEW_ITEMS, $flush);
                 $grantedGroups[] = $group;
             }
         }
@@ -166,10 +167,16 @@ class CategoryAccessManager
      * Set the accesses of a category like its parent.
      *
      * @param CategoryInterface $category
+     * @param array             $options
      * @param bool              $flush
      */
-    public function setAccessLikeParent(CategoryInterface $category, $flush = false)
+    public function setAccessLikeParent(CategoryInterface $category, array $options = [], $flush = false)
     {
+        $resolver = new OptionsResolver();
+        $this->configure($resolver);
+
+        $options = $resolver->resolve($options);
+
         // in case we have several new nested categories, we need to find the first ancestor that is managed
         // (ie: that has an ID and so permissions)
         $current = $category;
@@ -184,7 +191,7 @@ class CategoryAccessManager
                 $category,
                 $this->getViewUserGroups($ancestor),
                 $this->getEditUserGroups($ancestor),
-                $this->getOwnUserGroups($ancestor),
+                (true === $options['owner']) ? $this->getOwnUserGroups($ancestor) : [],
                 $flush
             );
         } else {
@@ -194,7 +201,7 @@ class CategoryAccessManager
                 $category,
                 [$defaultUserGroup],
                 [$defaultUserGroup],
-                [$defaultUserGroup],
+                (!isset($options['owner']) || true === $options['owner']) ? [$defaultUserGroup] : [],
                 $flush
             );
         }
@@ -420,7 +427,7 @@ class CategoryAccessManager
         $access = $this->getCategoryAccess($category, $group);
         $access
             ->setViewItems(true)
-            ->setEditItems(in_array($accessLevel, [Attributes::EDIT_PRODUCTS, Attributes::OWN_PRODUCTS]))
+            ->setEditItems(in_array($accessLevel, [Attributes::EDIT_ITEMS, Attributes::OWN_PRODUCTS]))
             ->setOwnItems($accessLevel === Attributes::OWN_PRODUCTS);
 
         $this->getObjectManager()->persist($access);
@@ -508,5 +515,14 @@ class CategoryAccessManager
     protected function getObjectManager()
     {
         return $this->registry->getManagerForClass($this->categoryAccessClass);
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    protected function configure(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(['owner' => true])
+            ->setAllowedTypes('owner', 'boolean');
     }
 }

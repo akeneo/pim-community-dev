@@ -3,8 +3,9 @@ datagrid:
         options:
             entityHint: asset
         source:
-            type: pimee_datasource_asset
-            entity: 'PimEnterprise\Component\ProductAsset\Model\Asset'
+            acl_resource:      pimee_product_asset_index
+            type:              pimee_datasource_asset
+            entity:            %pimee_product_asset.model.asset.class%
             repository_method: createAssetDatagridQueryBuilder
             repository_parameters:
                 - currentUser
@@ -98,6 +99,12 @@ datagrid:
                     options:
                         field_options:
                             choices: '@pim_catalog.manager.channel->getChannelChoices'
+            default:
+                category:
+                    value:
+                        treeId: %pimee_product_asset.filter.asset_category_filter.class%::UNKNOWN_TREE
+                        categoryId: %pimee_product_asset.filter.asset_category_filter.class%::ALL_CATEGORY
+                    type: %pimee_product_asset.filter.asset_category_filter.class%::DEFAULT_TYPE
         actions:
             edit:
                 type:      tab-redirect
@@ -110,6 +117,6 @@ datagrid:
             id: ~
             edit_link:
                 type: url
-                route: pimee_product_asset_edit
+                route: pimee_product_asset_dispatch
                 params:
                     - id

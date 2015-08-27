@@ -81,7 +81,7 @@ class CategoryManager extends BaseCategoryManager
      */
     public function getAccessibleTrees(
         UserInterface $user,
-        $accessLevel = Attributes::VIEW_PRODUCTS,
+        $accessLevel = Attributes::VIEW_ITEMS,
         $relatedEntity = 'product'
     ) {
         $trees = [];
@@ -114,7 +114,7 @@ class CategoryManager extends BaseCategoryManager
         $children = $this->getChildren($parentId, $selectNodeId);
         foreach ($children as $indChild => $child) {
             $category = (is_object($child)) ? $child : $child['item'];
-            if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+            if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
                 unset($children[$indChild]);
             }
         }
@@ -154,7 +154,7 @@ class CategoryManager extends BaseCategoryManager
             $isLeaf   = is_object($categoryData);
             $category = $isLeaf ? $categoryData : $categoryData['item'];
 
-            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
                 unset($filledTree[$categoryIdx]);
             } elseif (!$isLeaf) {
                 $this->filterGrantedFilledTree($categoryData['__children']);

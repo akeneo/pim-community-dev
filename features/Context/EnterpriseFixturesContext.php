@@ -376,7 +376,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $asset->addTag($tag);
                 }
             }
-            if (isset($data['categories'])) {
+            if (isset($data['categories']) && '' !== $data['categories']) {
                 $categories = explode(',', $data['categories']);
                 foreach ($categories as $code) {
                     $category = $this->getAssetCategoryRepository()->findOneByIdentifier(trim($code));
@@ -707,7 +707,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function getAccessManager($type)
     {
-        if ('product category' === $type) {
+        if (in_array($type, ['product category', 'asset category'])) {
             $type = 'category';
         }
 
@@ -798,8 +798,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             return ($action === 'edit') ? Attributes::EDIT_ATTRIBUTES : Attributes::VIEW_ATTRIBUTES;
         }
 
-        if ('product category' === $type || 'locale' === $type) {
-            return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
+        if (in_array($type, ['product category', 'asset category', 'locale'])) {
+            return ($action === 'edit') ? Attributes::EDIT_ITEMS : Attributes::VIEW_ITEMS;
         }
 
         throw new \Exception('Undefined access type');
@@ -1077,9 +1077,18 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $assetCategory = $this->getAssetCategory($data['code']);
             $this->refresh($assetCategory);
 
-            assertEquals($data['label-en_US'], $assetCategory->getTranslation('en_US')->getLabel());
-            assertEquals($data['label-fr_FR'], $assetCategory->getTranslation('fr_FR')->getLabel());
-            assertEquals($data['label-de_DE'], $assetCategory->getTranslation('de_DE')->getLabel());
+            if (isset($data['label-en_US'])) {
+                assertEquals($data['label-en_US'], $assetCategory->getTranslation('en_US')->getLabel());
+            }
+
+            if (isset($data['label-fr_FR'])) {
+                assertEquals($data['label-fr_FR'], $assetCategory->getTranslation('fr_FR')->getLabel());
+            }
+
+            if (isset($data['label-de_DE'])) {
+                assertEquals($data['label-de_DE'], $assetCategory->getTranslation('de_DE')->getLabel());
+            }
+
             if (empty($data['parent'])) {
                 assertNull($assetCategory->getParent());
             } else {
@@ -1105,6 +1114,46 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 'command' => $generateCommand->getName(),
             ]
         );
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following assets categor(?:y|ies):$/
+     */
+    public function theFollowingAssetsCategories(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createAssetCategory($data);
+        }
+    }
+
+    /**
+     * @param array|string $data
+     *
+     * @return CategoryInterface
+     */
+    protected function createAssetCategory($data)
+    {
+        if (is_string($data)) {
+            $data = [['code' => $data]];
+        }
+
+        $category = $this->loadFixture('asset_categories', $data);
+
+        /*
+         * When using ODM, one must persist and flush category without product
+         * before adding and persisting products inside it
+         */
+        $assets = $category->getAssets();
+        $this->persist($category, true);
+        foreach ($assets as $asset) {
+            $asset->addCategory($category);
+            // TODO replace by call to a saver
+            $this->flush($asset);
+        }
+
+        return $category;
     }
 
     /**

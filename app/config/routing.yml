@@ -12,6 +12,9 @@ pim_enrich:
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"
 
+pimee_ui:
+    resource: "@PimEnterpriseUIBundle/Resources/config/routing.yml"
+
 pim_user:
     resource: "@PimUserBundle/Resources/config/routing.yml"
 

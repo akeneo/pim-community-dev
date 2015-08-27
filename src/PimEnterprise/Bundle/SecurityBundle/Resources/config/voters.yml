@@ -20,6 +20,7 @@ services:
         class: %pimee_security.voter.category.class%
         arguments:
             - '@pimee_security.manager.category_access'
+            - %pim_catalog.model.category.interface%
         tags:
             - { name: security.voter }
 

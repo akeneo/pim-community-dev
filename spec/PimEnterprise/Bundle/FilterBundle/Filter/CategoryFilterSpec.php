@@ -52,7 +52,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $user,
         $utility
     ) {
-        $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([42, 19]);
+        $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([42, 19]);
         $utility->applyFilter($datasource, 'categories.id', 'IN OR UNCLASSIFIED', [42, 19])->shouldBeCalled();
 
         $this->apply(
@@ -70,7 +70,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $user,
         $utility
     ) {
-        $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([]);
+        $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([]);
         $utility->applyFilter($datasource, 'categories.id', 'UNCLASSIFIED', [])->shouldBeCalled();
 
         $this->apply(
@@ -96,7 +96,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $repo->find(1)->willReturn($tree);
 
         $repo->getAllChildrenIds($tree)->willReturn([2, 3, 4]);
-        $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)->willReturn([2, 3, 4, 5, 6, 7]);
+        $accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)->willReturn([2, 3, 4, 5, 6, 7]);
 
         $utility->applyFilter($datasource, 'categories.id', 'NOT IN', [2, 3, 4])->shouldBeCalled();
         $utility->applyFilter($datasource, 'categories.id', 'IN OR UNCLASSIFIED', [2, 3, 4, 5, 6, 7])->shouldBeCalled();
@@ -134,7 +134,7 @@ class CategoryFilterSpec extends ObjectBehavior
         $repo->find(42)->willReturn($category);
         $repo->getAllChildrenIds($category)->willReturn([2, 3]);
 
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)->willReturn(true);
         $accessRepository->getCategoryIdsWithExistingAccess([], [2, 3])->willReturn([2]);
 
         $utility->applyFilter($datasource, 'categories.id', 'IN', [2, 42])->shouldBeCalled();

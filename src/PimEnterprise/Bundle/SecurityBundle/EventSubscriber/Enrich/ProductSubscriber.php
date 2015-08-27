@@ -67,7 +67,7 @@ class ProductSubscriber implements EventSubscriberInterface
             throw new AccessDeniedException();
         }
         $locale = $this->userContext->getCurrentLocale();
-        if (false === $this->authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale)) {
+        if (false === $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale)) {
             throw new AccessDeniedException();
         }
     }

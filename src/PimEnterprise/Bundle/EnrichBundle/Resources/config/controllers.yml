@@ -46,20 +46,40 @@ services:
             - '@pim_internal_api_serializer'
             - '@pim_catalog.resolver.fqcn'
 
-    # overidden to filter categories with a chained filter that handles permissions
-    pim_enrich.controller.category_tree:
+    # overidden to filter categories with a category access repository that handles permissions
+    pim_enrich.controller.category_tree.product:
         scope: request
         class: %pim_enrich.controller.category_tree.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.category'
+            - '@event_dispatcher'
             - '@pim_user.context.user'
-            - '@oro_security.security_facade'
             - '@pim_catalog.saver.category'
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
-            - '@pim_catalog.filter.chained'
+            - '@oro_security.security_facade'
+            - { related_entity: product, form_type: pim_category, acl: pim_enrich_product, route: pim_enrich }
+            - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
+        calls:
+            - [ setContainer, [ @service_container ] ]
+
+    pim_enrich.controller.category_tree.published_product:
+        scope: request
+        class: %pim_enrich.controller.category_tree.class%
+        arguments:
+            - '@event_dispatcher'
+            - '@pim_user.context.user'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.category'
+            - '@pim_catalog.factory.category'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - { related_entity: published_product, form_type: pim_category, acl: pim_enrich_product, route: pim_enrich }
+            - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
+        calls:
+            - [ setContainer, [ @service_container ] ]
 
     pim_enrich.controller.file:
         scope: request

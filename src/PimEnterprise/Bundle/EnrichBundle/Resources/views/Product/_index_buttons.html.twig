@@ -1,4 +1,4 @@
-{% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_PRODUCTS'), dataLocale) %}
+{% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_ITEMS'), dataLocale) %}
     {{ elements.createBtn(
         'product',
         path('pim_enrich_product_create'),

@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
@@ -51,11 +51,11 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA  => 'preSetData',
             FormEvents::POST_SET_DATA => 'postSetData',
             FormEvents::POST_SUBMIT   => 'postSubmit'
-        );
+        ];
     }
 
     /**
@@ -93,9 +93,11 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         $form->get('edit')->setData($editRoles);
         $this->previousRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
 
-        $ownRoles = $this->accessManager->getOwnUserGroups($event->getData());
-        $form->get('own')->setData($ownRoles);
-        $this->previousRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
+        if (isset($this->previousRoles['own'])) {
+            $ownRoles = $this->accessManager->getOwnUserGroups($event->getData());
+            $form->get('own')->setData($ownRoles);
+            $this->previousRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
+        }
     }
 
     /**
@@ -113,7 +115,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         if ($form->isValid()) {
             $viewRoles = $form->get('permissions')->get('view')->getData();
             $editRoles = $form->get('permissions')->get('edit')->getData();
-            $ownRoles = $form->get('permissions')->get('own')->getData();
+            $ownRoles = isset($this->previousRoles['own']) ? $form->get('permissions')->get('own')->getData() : [];
             $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles, $ownRoles, true);
 
             $updateChildren = $form->get('permissions')->get('apply_on_children')->getData();
@@ -136,14 +138,21 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         $currentRoles = [];
         $currentRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
         $currentRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
-        $currentRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
+
+        if (isset($this->previousRoles['own'])) {
+            $currentRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
+            $addedOwnRoles       = array_diff($currentRoles['own'], $this->previousRoles['own']);
+            $removedOwnRoles     = array_diff($this->previousRoles['own'], $currentRoles['own']);
+        } else {
+            $addedOwnRoles   = [];
+            $removedOwnRoles = [];
+        }
 
         $addedViewRoles = array_diff($currentRoles['view'], $this->previousRoles['view']);
         $addedEditRoles = array_diff($currentRoles['edit'], $this->previousRoles['edit']);
-        $addedOwnRoles = array_diff($currentRoles['own'], $this->previousRoles['own']);
+
         $removedViewRoles = array_diff($this->previousRoles['view'], $currentRoles['view']);
         $removedEditRoles = array_diff($this->previousRoles['edit'], $currentRoles['edit']);
-        $removedOwnRoles = array_diff($this->previousRoles['own'], $currentRoles['own']);
 
         $changedRoles = count($addedViewRoles) > 0 || count($addedEditRoles) > 0 || count($addedOwnRoles) > 0
             || count($removedViewRoles) > 0 || count($removedEditRoles) > 0 || count($removedOwnRoles) > 0;

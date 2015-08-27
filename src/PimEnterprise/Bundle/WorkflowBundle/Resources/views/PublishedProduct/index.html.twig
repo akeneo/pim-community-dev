@@ -42,9 +42,9 @@
     {{ elements.page_header(title, [], subtitle) }}
 
     <div class="row-fluid has-sidebar">
-        <div id="tree" data-datalocale="{{ dataLocale }}" data-relatedentity="published_product"></div>
+        <div id="tree" data-datalocale="{{ dataLocale }}"></div>
         <div id="published-product-grid">
-            {{ dataGrid.renderStatefulGrid('published-product-grid', { dataLocale: dataLocale }, {}, 'pim_enrich_categorytree') }}
+            {{ dataGrid.renderStatefulGrid('published-product-grid', { dataLocale: dataLocale }, {}, 'pim_enrich_published_product_categorytree') }}
         </div>
     </div>
 

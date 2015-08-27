@@ -83,7 +83,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
 
             $editGranted = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
             $ownershipGranted = $editGranted ? $this->authorizationChecker->isGranted(Attributes::OWN, $product) : false;
-            $localeGranted = $this->authorizationChecker->isGranted(Attributes::EDIT_PRODUCTS, $locale);
+            $localeGranted = $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale);
 
             return [
                 'show'            => !$editGranted || !$localeGranted,

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Remover;
+namespace spec\PimEnterprise\Component\ProductAsset\Remover;
 
 use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;

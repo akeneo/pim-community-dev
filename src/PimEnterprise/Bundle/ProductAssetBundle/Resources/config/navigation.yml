@@ -7,6 +7,13 @@ oro_menu_config:
             extras:
                 routes: ['/^pimee_product_asset_\w+$/']
                 position: 80
+        pim_asset_categorytree:
+            label: pimee_product_asset.category.menu
+            route: pimee_asset_categorytree_index
+            aclResourceId: pimee_product_asset_category_list
+            extras:
+                routes: ['/^pimee_product_asset_categorytree_\w+$/']
+                position: 90
 
     tree:
         application_menu:
@@ -14,6 +21,7 @@ oro_menu_config:
                 pim_enrich_tab:
                     children:
                         pim_asset_tab: ~
+                        pim_asset_categorytree: ~
 
 oro_titles:
     pimee_product_asset_view: pimee_product_asset.page_tab.title.view

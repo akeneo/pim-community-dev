@@ -21,11 +21,11 @@ Feature: Export assets
     paint;Photo of a paint.;1;2006-05-12;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images,situ
     chicagoskyline;This is chicago!;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images
     akene;Because Akeneo;1;2015-08-01;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images
-    autumn;Leaves and water;1;2015-12-01;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;autre,images
-    bridge;Architectural bridge of a city, above water;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;autre,images
-    dog;Obviously not a cat, but still an animal;1;2006-05-12;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;autre
-    eagle;;1;;backless,big_sizes,dress_suit,flower,lacework,men,neckline,pattern,pea,solid_color,stripes,vintage;autre
-    machine;A big machine;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;autre
+    autumn;Leaves and water;1;2015-12-01;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;other,images
+    bridge;Architectural bridge of a city, above water;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;other,images
+    dog;Obviously not a cat, but still an animal;1;2006-05-12;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;other
+    eagle;;1;;backless,big_sizes,dress_suit,flower,lacework,men,neckline,pattern,pea,solid_color,stripes,vintage;other
+    machine;A big machine;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;other
     man_wall;;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;situ
     minivan;My car;1;;backless,big_sizes,dress_suit,flower,lacework,men,neckline,pattern,pea,solid_color,stripes,vintage;situ
     mouette;Majestic animal;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage,women;situ

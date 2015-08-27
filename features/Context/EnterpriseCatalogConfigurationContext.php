@@ -19,7 +19,8 @@ class EnterpriseCatalogConfigurationContext extends CatalogConfigurationContext
     {
         parent::aCatalogConfiguration($catalog);
 
-        $this->cleanCategoryAccesses();
+        $this->cleanProductCategoryAccesses();
+        $this->cleanAssetCategoryAccesses();
     }
 
     /**
@@ -27,10 +28,26 @@ class EnterpriseCatalogConfigurationContext extends CatalogConfigurationContext
      * The "All" user group is added via the subscriber
      * \PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber
      */
-    protected function cleanCategoryAccesses()
+    protected function cleanProductCategoryAccesses()
     {
         $catAccessManager = $this->getContainer()->get('pimee_security.repository.category_access');
         $categories = $this->getContainer()->get('pim_catalog.repository.category')->findAll();
+        $userGroups = $this->getContainer()->get('pim_user.repository.group')->findAllButDefault();
+
+        foreach ($categories as $category) {
+            $catAccessManager->revokeAccess($category, $userGroups);
+        }
+    }
+
+    /**
+     * Remove "All" user group from all category accesses.
+     * The "All" user group is added via the subscriber
+     * \PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber
+     */
+    protected function cleanAssetCategoryAccesses()
+    {
+        $catAccessManager = $this->getContainer()->get('pimee_product_asset.repository.asset_category_access');
+        $categories = $this->getContainer()->get('pimee_product_asset.repository.category')->findAll();
         $userGroups = $this->getContainer()->get('pim_user.repository.group')->findAllButDefault();
 
         foreach ($categories as $category) {

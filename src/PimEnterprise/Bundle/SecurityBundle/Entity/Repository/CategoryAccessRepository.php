@@ -30,9 +30,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  */
 class CategoryAccessRepository extends EntityRepository
 {
-    /**
-     * @var TableNameBuilder
-     */
+    /** @var TableNameBuilder */
     protected $tableNameBuilder;
 
     /**
@@ -400,8 +398,8 @@ class CategoryAccessRepository extends EntityRepository
     {
         $mapping = [
             Attributes::OWN_PRODUCTS  => 'ownItems',
-            Attributes::EDIT_PRODUCTS => 'editItems',
-            Attributes::VIEW_PRODUCTS => 'viewItems',
+            Attributes::EDIT_ITEMS => 'editItems',
+            Attributes::VIEW_ITEMS => 'viewItems',
         ];
         if (!isset($mapping[$accessLevel])) {
             throw new \LogicException(sprintf('"%s" access level does not exist', $accessLevel));

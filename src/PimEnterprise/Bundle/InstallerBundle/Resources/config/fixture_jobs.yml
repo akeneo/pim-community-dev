@@ -34,6 +34,16 @@ jobs:
             circularRefsChecked: true
             uploadAllowed: true
 
+    fixtures_asset_category_access_yml:
+        order: 170
+        connector: Data fixtures
+        alias:     fixtures_asset_category_access_yml
+        label:     Asset category accesses data fixtures
+        type:      fixtures
+        configuration:
+            filePath: asset_category_accesses.yml
+            multiple: false
+
     fixtures_job_profile_access_yml:
         order:     150
         connector: Data fixtures

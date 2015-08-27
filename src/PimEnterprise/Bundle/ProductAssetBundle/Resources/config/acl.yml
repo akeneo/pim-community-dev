@@ -12,3 +12,29 @@ pimee_product_asset_remove:
     type: action
     label: pimee_product_asset.acl.asset.remove
     group_name: pimee_product_asset.acl_group.asset
+
+# Asset category
+pimee_product_asset_category_list:
+    type: action
+    label: pimee_product_asset.acl.category.list
+    group_name: pimee_product_asset.acl_group.category
+pimee_product_asset_category_create:
+    type: action
+    label: pimee_product_asset.acl.category.create
+    group_name: pimee_product_asset.acl_group.category
+pimee_product_asset_category_edit:
+    type: action
+    label: pimee_product_asset.acl.category.edit
+    group_name: pimee_product_asset.acl_group.category
+pimee_product_asset_category_remove:
+    type: action
+    label: pimee_product_asset.acl.category.remove
+    group_name: pimee_product_asset.acl_group.category
+pimee_product_asset_category_history:
+    type: action
+    label: pimee_product_asset.acl.category.history
+    group_name: pimee_product_asset.acl_group.category
+pimee_product_asset_category_edit_permissions:
+    type: action
+    label: pimee_product_asset.acl.category.manage
+    group_name: pimee_product_asset.acl_group.category

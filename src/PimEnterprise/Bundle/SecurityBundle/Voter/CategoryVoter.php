@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -25,17 +24,20 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  */
 class CategoryVoter implements VoterInterface
 {
-    /**
-     * @var CategoryAccessManager
-     */
+    /** @var CategoryAccessManager */
     protected $accessManager;
+
+    /** @var string */
+    protected $className;
 
     /**
      * @param CategoryAccessManager $accessManager
+     * @param                       $className
      */
-    public function __construct(CategoryAccessManager $accessManager)
+    public function __construct(CategoryAccessManager $accessManager, $className)
     {
         $this->accessManager = $accessManager;
+        $this->className     = $className;
     }
 
     /**
@@ -43,7 +45,7 @@ class CategoryVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [Attributes::VIEW_PRODUCTS, Attributes::EDIT_PRODUCTS]);
+        return in_array($attribute, [Attributes::VIEW_ITEMS, Attributes::EDIT_ITEMS]);
     }
 
     /**
@@ -51,7 +53,7 @@ class CategoryVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof CategoryInterface;
+        return $class instanceof $this->className;
     }
 
     /**

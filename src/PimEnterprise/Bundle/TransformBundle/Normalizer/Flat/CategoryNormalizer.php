@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\TransformBundle\Normalizer\Flat;
 
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -21,6 +22,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CategoryNormalizer implements NormalizerInterface
 {
+    /** @var array */
+    protected $supportedFormats = ['csv'];
+
     /** @var NormalizerInterface */
     protected $categoryNormalizer;
 
@@ -67,6 +71,6 @@ class CategoryNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $this->categoryNormalizer->supportsNormalization($data, $format);
+        return $data instanceof CategoryInterface && in_array($format, $this->supportedFormats);
     }
 }

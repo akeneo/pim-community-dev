@@ -96,8 +96,8 @@ class ProductVoter implements VoterInterface
 
         $productToCategory = [
             Attributes::OWN  => Attributes::OWN_PRODUCTS,
-            Attributes::EDIT => Attributes::EDIT_PRODUCTS,
-            Attributes::VIEW => Attributes::VIEW_PRODUCTS,
+            Attributes::EDIT => Attributes::EDIT_ITEMS,
+            Attributes::VIEW => Attributes::VIEW_ITEMS,
         ];
         if (!isset($productToCategory[$attribute])) {
             return false;

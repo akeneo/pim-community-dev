@@ -3,6 +3,7 @@
 namespace Context;
 
 use Context\NavigationContext as BaseNavigationContext;
+use PimEnterprise\Component\ProductAsset\Model\Category;
 
 /**
  * Navigation context
@@ -13,10 +14,11 @@ use Context\NavigationContext as BaseNavigationContext;
 class EnterpriseNavigationContext extends BaseNavigationContext
 {
     protected $enterprisePageMapping = [
-        'published'      => 'Published index',
-        'proposals'      => 'Proposal index',
-        'assets'         => 'Asset index',
-        'asset edit'     => 'Asset edit'
+        'published'         => 'Published index',
+        'proposals'         => 'Proposal index',
+        'assets'            => 'Asset index',
+        'asset edit'        => 'Asset edit',
+        'assets categories' => 'Asset Category tree index',
     ];
 
     /**
@@ -58,5 +60,40 @@ class EnterpriseNavigationContext extends BaseNavigationContext
         $expectedAddress = $this->getPage('Asset index')->getUrl();
         $this->assertAddress($expectedAddress);
         $this->currentPage = 'Asset index';
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I edit the "([^"]*)" asset category$/
+     * @Given /^I am on the "([^"]*)" asset category page$/
+     */
+    public function iEditTheAssetCategory($identifier)
+    {
+        $page   = 'AssetCategory';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('Asset Category edit', $page), ['id' => $entity->getId()]);
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @Given /^I am on the (asset category "([^"]*)") node creation page$/
+     */
+    public function iAmOnTheAssetCategoryNodeCreationPage(Category $category)
+    {
+        $this->openPage('Asset Category node creation', ['id' => $category->getId()]);
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @Then /^I should be on the (asset category "([^"]*)") edit page$/
+     */
+    public function iShouldBeOnTheAssetCategoryEditPage(Category $category)
+    {
+        $expectedAddress = $this->getPage('Asset Category edit')->getUrl(['id' => $category->getId()]);
+        $this->assertAddress($expectedAddress);
     }
 }

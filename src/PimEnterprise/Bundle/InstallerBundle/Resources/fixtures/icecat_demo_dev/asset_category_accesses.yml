@@ -1,0 +1,40 @@
+asset_category_accesses:
+    asset_main_catalog:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+    images:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+    autre:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+    situ:
+        viewItems: [IT support, Manager]
+        editItems: [IT support, Manager]
+    prioritized_images:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+    print:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+    videos:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager]
+    audio:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+    client_documents:
+        viewItems: [IT support, Manager]
+        editItems: [IT support]
+    store_documents:
+        viewItems: [IT support, Manager, Redactor]
+        editItems: [IT support, Manager, Redactor]
+    technical_documents:
+        viewItems: [IT support]
+        editItems: [IT support]
+    sales_documents:
+        viewItems: [IT support, Manager]
+        editItems: [IT support, Manager]
+    archives:
+        viewItems: []
+        editItems: []

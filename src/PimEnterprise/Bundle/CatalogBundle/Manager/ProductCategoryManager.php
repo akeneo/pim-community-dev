@@ -72,7 +72,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
         $trees     = $this->categoryRepository->getChildren(null, true, 'created', 'DESC');
         $treeCount = [];
         foreach ($trees as $tree) {
-            if ($this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $tree)) {
+            if ($this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $tree)) {
                 $treeCount[] = [
                     'tree'         => $tree,
                     'productCount' => isset($count[$tree->getId()]) ? $count[$tree->getId()] : 0
@@ -93,7 +93,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
         $inChildren = false,
         $inProvided = true
     ) {
-        if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+        if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
             return 0;
         }
 
@@ -121,7 +121,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
             $path = $this->categoryRepository->getPath($category);
             $fullPathGranted = true;
             foreach ($path as $pathItem) {
-                if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
+                if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $pathItem)) {
                     $fullPathGranted = false;
                     break;
                 }
@@ -150,7 +150,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
         $categoryIds = $this->categoryAccessRepo->getGrantedCategoryIdsFromQB(
             $childrenQb,
             $this->tokenStorage->getToken()->getUser(),
-            Attributes::VIEW_PRODUCTS
+            Attributes::VIEW_ITEMS
         );
 
         $rootAlias  = current($childrenQb->getRootAliases());

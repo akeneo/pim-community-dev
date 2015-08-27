@@ -1,0 +1,9 @@
+parameters:
+    pimee_ui.controller.ajax_option.class: PimEnterprise\Bundle\UIBundle\Controller\AjaxOptionController
+
+services:
+    pimee_ui.controller.ajax_option:
+        class: %pimee_ui.controller.ajax_option.class%
+        arguments:
+            - '@doctrine'
+            - '@pimee_product_asset.context.user'

@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess:
     type: entity
     table: pimee_security_asset_category_access
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryAccessRepository # TODO: Change namespace
     uniqueConstraints:
         category_user_group_idx:
@@ -21,11 +22,6 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess:
         editItems:
             type: boolean
             column: edit_items
-            options:
-                default: false
-        ownItems:
-            type: boolean
-            column: own_items
             options:
                 default: false
     manyToOne:

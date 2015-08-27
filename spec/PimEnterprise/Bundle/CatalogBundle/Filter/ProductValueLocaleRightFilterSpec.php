@@ -24,7 +24,7 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
         $priceAttribute->isLocalizable()->willReturn(true);
         $localeManager->getLocaleByCode('en_US')->willReturn($enUS);
 
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $enUS)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enUS)->willReturn(true);
 
         $this->filterObject($price, 'pim:product_value:view', [])->shouldReturn(false);
     }
@@ -36,7 +36,7 @@ class ProductValueLocaleRightFilterSpec extends ObjectBehavior
         $priceAttribute->isLocalizable()->willReturn(true);
         $localeManager->getLocaleByCode('en_US')->willReturn($enUS);
 
-        $authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $enUS)->willReturn(false);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $enUS)->willReturn(false);
 
         $this->filterObject($price, 'pim:product_value:view', [])->shouldReturn(true);
     }

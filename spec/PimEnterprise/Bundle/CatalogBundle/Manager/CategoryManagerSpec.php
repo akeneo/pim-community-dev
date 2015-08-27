@@ -58,10 +58,10 @@ class CategoryManagerSpec extends ObjectBehavior
 
         $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree, $thirdTree]);
 
-        $accessibleCategoryIds = array(1, 3);
+        $accessibleCategoryIds = [1, 3];
 
         $categoryAccessRepo
-            ->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)
+            ->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS)
             ->willReturn($accessibleCategoryIds);
 
         $this->getAccessibleTrees($user)->shouldReturn([$firstTree, $thirdTree]);
@@ -81,13 +81,13 @@ class CategoryManagerSpec extends ObjectBehavior
 
         $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree, $thirdTree]);
 
-        $accessibleCategoryIds = array(1);
+        $accessibleCategoryIds = [1];
 
         $categoryAccessRepo
-            ->getGrantedCategoryIds($user, Attributes::EDIT_PRODUCTS)
+            ->getGrantedCategoryIds($user, Attributes::EDIT_ITEMS)
             ->willReturn($accessibleCategoryIds);
 
-        $this->getAccessibleTrees($user, Attributes::EDIT_PRODUCTS)->shouldReturn([$firstTree]);
+        $this->getAccessibleTrees($user, Attributes::EDIT_ITEMS)->shouldReturn([$firstTree]);
     }
 
     function it_gets_granted_children(
@@ -97,8 +97,8 @@ class CategoryManagerSpec extends ObjectBehavior
         $context
     ) {
         $productCategoryRepo->getChildrenByParentId(42)->willReturn([$childOne, $childTwo]);
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->shouldBeCalled();
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->shouldBeCalled();
+        $context->isGranted(Attributes::VIEW_ITEMS, $childOne)->shouldBeCalled();
+        $context->isGranted(Attributes::VIEW_ITEMS, $childTwo)->shouldBeCalled();
         $this->getGrantedChildren(42);
     }
 
@@ -132,9 +132,9 @@ class CategoryManagerSpec extends ObjectBehavior
         $childOne->getId()->willReturn(1);
         $childTwo->getId()->willReturn(2);
 
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $parent)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_ITEMS, $parent)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_ITEMS, $childOne)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_ITEMS, $childTwo)->willReturn(true);
         $productCategoryRepo->getTreeFromParents([3, 1, 2])->willReturn(
             [
                 0 => [
@@ -150,9 +150,9 @@ class CategoryManagerSpec extends ObjectBehavior
                 ]
             ]
         );
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $parent)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_ITEMS, $parent)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_ITEMS, $childOne)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_ITEMS, $childTwo)->willReturn(true);
 
         $this->getGrantedFilledTree($parent, new ArrayCollection([$childTwo]));
     }

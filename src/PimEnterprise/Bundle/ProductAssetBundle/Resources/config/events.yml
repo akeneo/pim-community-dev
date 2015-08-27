@@ -1,5 +1,7 @@
 parameters:
-    pimee_product_asset.subscriber.missing_variations.class: PimEnterprise\Bundle\ProductAssetBundle\Event\MissingVariationsEventSubscriber
+    pimee_product_asset.subscriber.missing_variations.class:                     PimEnterprise\Bundle\ProductAssetBundle\Event\MissingVariationsEventSubscriber
+    pimee_product_asset.form.subscriber.category_permissions.class:              PimEnterprise\Bundle\ProductAssetBundle\Event\CategoryPermissionsSubscriber
+    pimee_product_asset.subscriber.import_export.add_category_permissions.class: PimEnterprise\Bundle\ProductAssetBundle\Event\AddCategoryPermissionsSubscriber
 
 services:
     pimee_product_asset.subscriber.missing_variations:
@@ -9,3 +11,16 @@ services:
             - '@pimee_product_asset.finder.asset'
         tags:
             - { name: kernel.event_subscriber }
+
+    pimee_product_asset.form.subscriber.category_permissions:
+        class: %pimee_product_asset.form.subscriber.category_permissions.class%
+        arguments:
+            - '@pimee_product_asset.manager.category_access'
+            - '@oro_security.security_facade'
+
+    pimee_product_asset.event_subscriber.import_export.add_category_permissions:
+        class: %pimee_product_asset.subscriber.import_export.add_category_permissions.class%
+        arguments:
+            - '@pimee_product_asset.manager.category_access'
+        tags:
+            - { name: doctrine.event_subscriber }

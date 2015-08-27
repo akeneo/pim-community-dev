@@ -11,7 +11,7 @@ Feature: Import assets
     """
     code;categories;localized;description;qualification;end_of_use
     car;images;0;Photo of a car.;car,cities;2006-05-12
-    landscape;otherP;1;This is a beautiful landscape!;landscape,cities,flowers;
+    landscape;other;1;This is a beautiful landscape!;landscape,cities,flowers;
     """
     And the following job "clothing_asset_import" configuration:
       | filePath | %file to import% |
@@ -21,7 +21,7 @@ Feature: Import assets
     Then there should be the following assets:
       | code      | description                    | categories |
       | car       | Photo of a car.                | images     |
-      | landscape | This is a beautiful landscape! | otherP     |
+      | landscape | This is a beautiful landscape! | other      |
     Then there should be the following tags:
       | code      |
       | car       |
@@ -38,7 +38,7 @@ Feature: Import assets
     And the following CSV file to import:
     """
     code;categories;localized;description;qualification;end_of_use
-    paint;otherP;0;New description of my paint.;car,cities,vintage,awesome;2006-05-12
+    paint;other;0;New description of my paint.;car,cities,vintage,awesome;2006-05-12
     akene;images;1;Beautiful akene;cities,flowers,akeneo;
     """
     And the following job "clothing_asset_import" configuration:
@@ -48,7 +48,7 @@ Feature: Import assets
     And I wait for the "clothing_asset_import" job to finish
     Then there should be the following assets:
       | code  | description                  | tags                       | categories |
-      | paint | New description of my paint. | awesome,car,cities,vintage | otherP     |
+      | paint | New description of my paint. | awesome,car,cities,vintage | other     |
       | akene | Beautiful akene              | akeneo,cities,flowers      | images     |
     Then I should see "read lines 2"
     And I should see "created 5"
@@ -61,7 +61,7 @@ Feature: Import assets
     """
     categories;localized;description;qualification;end_of_use
     images;0;New description of my paint.;car,cities;2006-05-12
-    otherP;1;Beautiful akene;cities,flowers,akeneo;
+    other;1;Beautiful akene;cities,flowers,akeneo;
     """
     And the following job "clothing_asset_import" configuration:
       | filePath | %file to import% |
@@ -76,7 +76,7 @@ Feature: Import assets
     And the following CSV file to import:
     """
     code;categories;description;qualification;end_of_use
-    paint;otherP;New description of my paint.;car,cities;2006-05-12
+    paint;other;New description of my paint.;car,cities;2006-05-12
     akene;images;Beautiful akene;cities,flowers,akeneo;
     """
     And the following job "clothing_asset_import" configuration:
@@ -107,7 +107,7 @@ Feature: Import assets
     And the following CSV file to import:
     """
     code;categories;localized;description;qualification;end_of_use
-    invliad#$%;face;0;New description of my paint.;car,cities;2006-05-12
+    invliad#$%;images;0;New description of my paint.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
       | filePath | %file to import% |
@@ -206,7 +206,7 @@ Feature: Import assets
     And the following CSV file to import:
     """
     code;categories;localized;description;qualification;end_of_use
-    car;images,otherP,3quart;0;Photo of a car.;car,cities;2006-05-12
+    car;images,other,prioritized_images;0;Photo of a car.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
       | filePath | %file to import% |
@@ -214,8 +214,8 @@ Feature: Import assets
     And I launch the import job
     And I wait for the "clothing_asset_import" job to finish
     Then there should be the following assets:
-      | code      | description     | categories           |
-      | car       | Photo of a car. | 3quart,images,otherP |
+      | code      | description     | categories                      |
+      | car       | Photo of a car. | other,images,prioritized_images |
     Then there should be the following tags:
       | code      |
       | car       |
@@ -230,7 +230,7 @@ Feature: Import assets
     And the following CSV file to import:
     """
     code;categories;localized;description;qualification;end_of_use
-    car;images,nonexistent,3quart;0;Photo of a car.;car,cities;2006-05-12
+    car;images,nonexistent,prioritized_images;0;Photo of a car.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
       | filePath | %file to import% |

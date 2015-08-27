@@ -56,7 +56,7 @@ class CategoryRightFilter extends AbstractFilter
     {
         $filteredCategories = [];
         $user = $this->tokenStorage->getToken()->getUser();
-        $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+        $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, Attributes::VIEW_ITEMS);
 
         foreach ($categories as $key => $category) {
             if (in_array($category->getId(), $grantedCategoryIds)) {
@@ -76,7 +76,7 @@ class CategoryRightFilter extends AbstractFilter
             throw new \LogicException('This filter only handles objects of type "CategoryInterface"');
         }
 
-        return !$this->authorizationChecker->isGranted(Attributes::VIEW_PRODUCTS, $category);
+        return !$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category);
     }
 
     /**

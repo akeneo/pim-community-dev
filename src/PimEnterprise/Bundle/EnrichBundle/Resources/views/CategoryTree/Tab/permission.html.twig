@@ -16,12 +16,18 @@
                     revokeMessage: 'permission-changes.category.revoke',
                     update: {
                         add: {
-                            '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.view.vars.id }}'],
-                            '{{ form.permissions.own.vars.id }}': ['{{ form.permissions.edit.vars.id }}']
+                            '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.view.vars.id }}']
+                            {% if form.permissions.own is defined %}
+                                ,
+                                '{{ form.permissions.own.vars.id }}': ['{{ form.permissions.edit.vars.id }}']
+                            {% endif %}
                         },
                         remove: {
-                            '{{ form.permissions.view.vars.id }}': ['{{ form.permissions.edit.vars.id }}'],
-                            '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.own.vars.id }}']
+                            '{{ form.permissions.view.vars.id }}': ['{{ form.permissions.edit.vars.id }}']
+                            {% if form.permissions.own is defined %}
+                                ,
+                                '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.own.vars.id }}']
+                            {% endif %}
                         }
                     }
                 };

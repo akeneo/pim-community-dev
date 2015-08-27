@@ -6,7 +6,8 @@ parameters:
     pimee_product_asset.model.reference.class:          PimEnterprise\Component\ProductAsset\Model\Reference
     pimee_product_asset.model.reference.interface:      PimEnterprise\Component\ProductAsset\Model\ReferenceInterface
     pimee_product_asset.model.category.interface:       PimEnterprise\Component\ProductAsset\Model\CategoryInterface
-    pimee_product_asset.model.category.class:           PimEnterprise\Component\ProductAsset\Model\Category
+    pimee_product_asset.model.category.class:             PimEnterprise\Component\ProductAsset\Model\Category
+    pimee_product_asset.model.category_translation.class: PimEnterprise\Component\ProductAsset\Model\CategoryTranslation
     pimee_product_asset.model.tag.interface:            PimEnterprise\Component\ProductAsset\Model\TagInterface
     pimee_product_asset.model.tag.class:                PimEnterprise\Component\ProductAsset\Model\Tag
     pimee_product_asset.model.file_metadata.interface:  PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface
