@@ -78,7 +78,7 @@ define(
              * @returns {Array}
              */
             getSources: function () {
-                if (null === this.getWorkingCopy()) {
+                if (null === this.getFormData().meta.draft_status) {
                     return _.without(this.sources, 'draft');
                 } else {
                     return this.sources;
@@ -94,9 +94,7 @@ define(
                 var data = {};
                 switch (this.currentSource) {
                     case 'working_copy':
-                        data = null === this.getWorkingCopy() ?
-                            this.getFormData().values :
-                            this.getWorkingCopy().values;
+                        data = _.result(this.getWorkingCopy(), 'values', null);
                         break;
                     case 'draft':
                         data = this.getFormData().values;
