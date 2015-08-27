@@ -111,8 +111,9 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             if (null === $attribute) {
                 throw new \LogicException(sprintf('Attribute with code %s does not exist'), $action['field']);
             }
+            $family = $product->getFamily();
 
-            if ($product->isAttributeEditable($attribute)) {
+            if (null !== $family && $family->hasAttribute($attribute)) {
                 $this->propertySetter->setData($product, $action['field'], $action['value'], $action['options']);
                 $modifiedAttributesNb++;
             }

@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
@@ -47,50 +48,10 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution)->shouldReturn($this);
     }
 
-    function it_does_not_sets_values_from_variant_group(
-        $validator,
-        $propertySetter,
-        AttributeInterface $attribute,
-        AttributeRepository $attributeRepository,
-        ProductInterface $product,
-        StepExecution $stepExecution,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo,
-        JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
-    ) {
-        $this->setStepExecution($stepExecution);
-        $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $stepExecution->incrementSummaryInfo("skipped_products")->shouldBeCalled();
-        $stepExecution->addWarning(
-            'edit_common_attributes_processor',
-            'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
-            [],
-            $product
-        )->shouldBeCalled();
-
-        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
-        $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(
-                [
-                    'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
-                ]
-            )
-        );
-
-        $violations = new ConstraintViolationList([]);
-        $validator->validate($product)->willReturn($violations);
-
-        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
-        $product->isAttributeEditable($attribute)->willReturn(false);
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldNotBeCalled();
-
-        $this->process($product)->shouldReturn(null);;
-    }
-
     function it_sets_values_to_attributes(
         $validator,
         $propertySetter,
+        FamilyInterface $family,
         AttributeInterface $attribute,
         AttributeRepository $attributeRepository,
         ProductInterface $product,
@@ -116,7 +77,9 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator->validate($product)->willReturn($violations);
 
         $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
-        $product->isAttributeEditable($attribute)->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
+        $product->getFamily()->willReturn($family);
+
         $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
 
         $this->process($product);
@@ -125,6 +88,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function it_sets_invalid_values_to_attributes(
         $validator,
         $propertySetter,
+        FamilyInterface $family,
         AttributeInterface $attribute,
         AttributeRepository $attributeRepository,
         ProductInterface $product,
@@ -152,7 +116,8 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $validator->validate($product)->willReturn($violations);
 
         $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
-        $product->isAttributeEditable($attribute)->willReturn(true);
+        $family->hasAttribute($attribute)->willReturn(true);
+        $product->getFamily()->willReturn($family);
 
         $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
         $this->setStepExecution($stepExecution);

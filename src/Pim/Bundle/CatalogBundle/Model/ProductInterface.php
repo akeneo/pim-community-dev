@@ -242,20 +242,6 @@ interface ProductInterface extends
     public function getUsedAttributeCodes();
 
     /**
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    public function hasAttributeInFamily(AttributeInterface $attribute);
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    public function hasAttributeInVariantGroup(AttributeInterface $attribute);
-
-    /**
      * Check if an attribute can be removed from the product
      *
      * @param AttributeInterface $attribute
@@ -263,15 +249,6 @@ interface ProductInterface extends
      * @return bool
      */
     public function isAttributeRemovable(AttributeInterface $attribute);
-
-    /**
-     * Check if an attribute can be edited from the product
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    public function isAttributeEditable(AttributeInterface $attribute);
 
     /**
      * Mark the indexed as outdated
