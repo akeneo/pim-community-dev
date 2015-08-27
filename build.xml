@@ -3,15 +3,13 @@
     <property name="symfony.catalog.storage.dir" value="catalog" />
     <property name="symfony.asset.storage.dir" value="asset" />
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpspec,phpcb"/>
-
     <target name="build-phpspec" depends="prepare,composer,require-mongo,vendors-no-scripts,phpspec,phpspec-junit"/>
 
     <target name="build-phpspec-coverage" depends="prepare,composer,vendors"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
-    <target name="build-behat-deprecated" depends="prepare,composer,vendors,prepare-deprecated-behat,install-all-behat,behat"/>
+    <target name="build-behat-deprecated" depends="prepare-deprecated-behat,prepare,composer,vendors,install-all-behat,behat"/>
 
     <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
@@ -110,11 +108,9 @@
         <apply executable="php" failonerror="true">
             <arg value="-l" />
 
-            <fileset dir="${basedir}/src/PimEnterprise">
+            <fileset dir="${basedir}/src">
                 <include name="**/*.php" />
-                <modified />
             </fileset>
-
         </apply>
     </target>
 
@@ -131,7 +127,7 @@
         <exec executable="phploc">
             <arg value="--log-csv" />
             <arg value="${basedir}/app/build/logs/phploc.csv" />
-            <arg path="${basedir}/src/PimEnterprise" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
@@ -141,20 +137,20 @@
             <arg value="--jdepend-chart=${basedir}/app/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${basedir}/app/build/pdepend/overview-pyramid.svg" />
             <arg value="--ignore=Tests" />
-            <arg path="${basedir}/src/PimEnterprise" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
     <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/PimEnterprise,${basedir}/features" />
+            <arg path="${basedir}/src,${basedir}/features" />
             <arg value="text" />
         </exec>
     </target>
 
     <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/PimEnterprise" />
+            <arg path="${basedir}/src" />
             <arg value="xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/app/build/logs/pmd.xml" />
@@ -162,10 +158,10 @@
     </target>
 
     <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="phpcs">
+        <exec executable="${basedir}/bin/phpcs">
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
-            <arg path="${basedir}/src/PimEnterprise" />
+            <arg path="${basedir}/src" />
             <arg path="${basedir}/features" />
         </exec>
     </target>
@@ -173,15 +169,15 @@
     <target name="php-cs-fixer" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="bash">
             <arg value="-c"/>
-            <arg value="curl http://get.sensiolabs.org/php-cs-fixer.phar -o ${basedir}/php-cs-fixer"/>
+            <arg value="curl http://get.sensiolabs.org/php-cs-fixer.phar -o ${basedir}/bin/php-cs-fixer"/>
         </exec>
 
         <exec executable="bash">
             <arg value="-c"/>
-            <arg value="chmod a+x ${basedir}/php-cs-fixer"/>
+            <arg value="chmod a+x ${basedir}/bin/php-cs-fixer"/>
         </exec>
 
-        <exec executable="${basedir}/php-cs-fixer" failonerror="true">
+        <exec executable="${basedir}/bin/php-cs-fixer" failonerror="true">
             <arg value="fix" />
             <arg path="${basedir}/src" />
             <arg value="-v" />
@@ -204,7 +200,7 @@
             <arg value="--report-file=${basedir}/app/build/logs/checkstyle.xml" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
-            <arg path="${basedir}/src/PimEnterprise" />
+            <arg path="${basedir}/src" />
             <arg path="${basedir}/features" />
         </exec>
     </target>
@@ -215,7 +211,7 @@
             <arg value="Tests" />
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
-            <arg path="${basedir}/src/PimEnterprise" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
@@ -271,17 +267,6 @@
         </exec>
     </target>
 
-    <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
-        <exec executable="phpcb">
-            <arg value="--log" />
-            <arg path="${basedir}/app/build/logs" />
-            <arg value="--source" />
-            <arg path="${basedir}/src/PimEnterprise" />
-            <arg value="--output" />
-            <arg path="${basedir}/app/build/code-browser" />
-        </exec>
-    </target>
-
     <target name="composer" description="Install composer.phar">
         <exec executable="bash">
             <arg value="-c"/>
@@ -295,12 +280,6 @@
             <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm-bundle" />
             <arg value="v3.0.0-BETA6@dev" />
-        </exec>
-        <exec executable="${basedir}/composer.phar" failonerror="true">
-            <arg value="require" />
-            <arg value="--no-update" />
-            <arg value="doctrine/mongodb-odm" />
-            <arg value="v1.0.0-beta12@dev" />
         </exec>
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="require" />
@@ -364,20 +343,6 @@
         </replaceregexp>
     </target>
 
-    <target name="setupdb" description="Setup db">
-        <exec executable="app/console" failonerror="true">
-          <arg value="pim:install" />
-          <arg value="--task=db" />
-          <arg value="--force" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
-          <env key="SYMFONY__ASSET__STORAGE__DIR" value="${symfony.asset.storage.dir}" />
-        </exec>
-    </target>
-
     <target name="install-all-behat" description="Setup db and install assets for Behat">
         <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
@@ -390,30 +355,5 @@
           <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
           <env key="SYMFONY__ASSET__STORAGE__DIR" value="${symfony.asset.storage.dir}" />
         </exec>
-        <exec executable="app/console" failonerror="true">
-          <arg value="cache:warmup" />
-          <arg value="--env=behat" />
-          <arg value="--no-debug" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
-          <env key="SYMFONY__ASSET__STORAGE__DIR" value="${symfony.asset.storage.dir}" />
-        </exec>
     </target>
-
-    <target name="fixtures" description="Load fixtures">
-        <exec executable="app/console">
-          <arg value="doctrine:fixtures:load" />
-          <arg value="--no-interaction" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__CATALOG__STORAGE__DIR" value="${symfony.catalog.storage.dir}" />
-          <env key="SYMFONY__ASSET__STORAGE__DIR" value="${symfony.asset.storage.dir}" />
-        </exec>
-    </target>
-
 </project>
