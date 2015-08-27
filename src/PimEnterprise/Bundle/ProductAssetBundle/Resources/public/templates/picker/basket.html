@@ -4,7 +4,13 @@
     <% if (!_.isEmpty(assets)) { %>
         <% _.each(assets, function (asset) { %>
             <li data-asset="<%= asset.code %>">
-                <div class="asset-thumbnail" style="background-image: url('<%= Routing.generate('pim_enrich_media_show', { filename: encodeURIComponent(_.first(asset.references).file), filter: 'thumbnail'}) %>')"></div>
+                <div class="asset-thumbnail" style="background-image: url('<%= Routing.generate('pimee_product_asset_thumbnail', {
+                        code: asset.code,
+                        filter: thumbnailFilter,
+                        channelCode: scope,
+                        localeCode: locale
+                    }) %>')">
+                </div>
                 <div class="asset-description">
                     <% if (asset.description) { %>
                         <%= asset.description.substring(0, 120) %><%= asset.description.length > 120 ? '...' : '' %>
@@ -15,7 +21,7 @@
         <% }); %>
     <% } else { %>
         <li class="empty-basket">
-        <%= _.__('pimee_product_asset.form.product.asset.panel.basket.empty_basket') %>
+            <%= _.__('pimee_product_asset.form.product.asset.panel.basket.empty_basket') %>
         </li>
     <% } %>
     <span class="clearfix"></span>

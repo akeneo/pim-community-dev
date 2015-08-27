@@ -152,11 +152,24 @@ class Asset implements AssetInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \LogicException
      */
     public function getReference(LocaleInterface $locale = null)
     {
         if ($this->getReferences()->isEmpty()) {
             return null;
+        }
+
+        if (!$this->isLocalizable()) {
+            return $this->getReferences()[0];
+        }
+
+        if (null === $locale) {
+            throw new \LogicException(sprintf(
+                'Cannot retrieve the reference of the localizable asset "%s" if no locale is specified',
+                $this->getCode()
+            ));
         }
 
         foreach ($this->getReferences() as $reference) {
@@ -414,8 +427,7 @@ class Asset implements AssetInterface
 
     /**
      * Look for the variation corresponding to the specified channel and return its file.
-     * If the asset is localizable the search will be done in the variations of the specified locale. If no locale is
-     * specified, the first reference found will be used.
+     * If the asset is localizable the search will be done in the variations of the specified locale.
      * If the reference has no variations or variation files are not generated, return null.
      *
      * {@inheritdoc}
@@ -423,9 +435,6 @@ class Asset implements AssetInterface
     public function getFileForContext(ChannelInterface $channel, LocaleInterface $locale = null)
     {
         $reference = $this->getReference($locale);
-        if (null === $reference) {
-            $reference = $this->getReference();
-        }
 
         if (null === $reference) {
             return null;
@@ -436,5 +445,13 @@ class Asset implements AssetInterface
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isLocalizable()
+    {
+        return 1 < count($this->getReferences());
     }
 }

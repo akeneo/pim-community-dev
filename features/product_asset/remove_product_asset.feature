@@ -28,7 +28,7 @@ Feature: Remove product assets
     And I should not see asset chicagoskyline
     Then I am on the "shirt" product page
     And I visit the "Media" group
-    And the "Front view" asset gallery should contains akene
+    And the "Front view" asset gallery should contain akene
 
   Scenario: Remove an asset is forbidden if the asset is used in a published product
     Given I am on the "shirt" product page
