@@ -112,7 +112,7 @@ class CategoryTreeController extends Controller
             throw new AccessDeniedException();
         }
 
-        $selectNodeId  = $request->get('select_node_id', -1);
+        $selectNodeId = $request->get('select_node_id', -1);
 
         try {
             $selectNode = $this->findCategory($selectNodeId);
@@ -190,7 +190,7 @@ class CategoryTreeController extends Controller
             return ['categories' => []];
         }
 
-        $selectNodeId   = $request->get('select_node_id', -1);
+        $selectNodeId = $request->get('select_node_id', -1);
 
         try {
             $selectNode = $this->findCategory($selectNodeId);
@@ -359,7 +359,7 @@ class CategoryTreeController extends Controller
 
         $category = $this->findCategory($id);
         $parent   = $category->getParent();
-        $params   = ($parent !== null) ? ['node' => $parent->getId()] : [];
+        $params   = (null !== $parent) ? ['node' => $parent->getId()] : [];
 
         $this->categoryRemover->remove($category, ['flush' => true]);
 

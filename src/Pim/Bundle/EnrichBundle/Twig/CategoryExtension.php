@@ -168,8 +168,9 @@ class CategoryExtension extends \Twig_Extension
      * @param bool              $includeSub
      * @param string            $relatedEntity
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public function exceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub, $relatedEntity = 'product')
     {
