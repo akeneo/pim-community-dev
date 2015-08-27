@@ -6,7 +6,7 @@ attribute group.permissions:
   view.label: Autorisé à voir les attributs
   view.help: "Autoriser à voir les attributs dans ce groupe d'attributs"
   edit.label: Autorisé à modifier les attributs
-  edit.help: "Autoriser à éditer les attributs dans ce groupe d'attributs"
+  edit.help: "Autoriser à éditer les attributs produits contenus dans ce groups d'attributs"
   no_access_to_attributes: "Vous n'avez accès à aucun des attributs de ce produit. Contactez votre administrateur pour résoudre le problème."
 category.permissions:
   view.label: Autorisé à voir les produits
