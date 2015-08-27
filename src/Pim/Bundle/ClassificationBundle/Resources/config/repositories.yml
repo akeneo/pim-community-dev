@@ -1,0 +1,7 @@
+parameters:
+    pim_classifiation.repository.item_category.class: Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\ItemCategoryRepository
+
+services:
+    pim_classifiation.repository.item_category:
+        class:    %pim_classifiation.repository.item_category.class%
+        abstract: true

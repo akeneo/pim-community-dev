@@ -69,18 +69,20 @@ services:
             - '@pim_catalog.remover.attribute_group'
             - %pim_catalog.entity.attribute.class%
 
-    pim_enrich.controller.category_tree:
+    pim_enrich.controller.category_tree.product:
         scope: request
         class: %pim_enrich.controller.category_tree.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.manager.category'
+            - '@event_dispatcher'
             - '@pim_user.context.user'
-            - '@oro_security.security_facade'
             - '@pim_catalog.saver.category'
             - '@pim_catalog.remover.category'
             - '@pim_catalog.factory.category'
             - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - { related_entity: product, form_type: pim_category, acl: pim_enrich_product, route: pim_enrich }
+        calls:
+            - [ setContainer, [ @service_container ] ]
 
     pim_enrich.controller.channel:
         scope: request
