@@ -16,3 +16,4 @@ This value should not be a decimal.:                                            
 The file extension is not allowed (allowed extensions: %extensions%).:                    The file extension is not allowed (allowed extensions: %extensions%).
 The value %value% is already set on another product for the unique attribute %attribute%: The value %value% is already set on another product for the unique attribute %attribute%
 regex.comma_or_semicolon.message:                                                         This field should not contain any comma or semicolon.
+file.extensions.message:                                                                  'The file extension is not allowed (allowed extensions: %extensions%).'
