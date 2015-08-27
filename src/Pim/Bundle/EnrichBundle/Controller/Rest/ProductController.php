@@ -350,17 +350,15 @@ class ProductController
                     'invalid_value' => $violation->getInvalidValue()
                 ];
 
-                isset($errors['values'][$attributeCode]) || $errors['values'][$attributeCode] = [];
+                $errors['values'][$attributeCode] = isset($errors['values'][$attributeCode])
+                    ? $errors['values'][$attributeCode]
+                    : [];
 
-                // Is error already in errors array?
-                $errorInArray = array_reduce(
-                    $errors['values'][$attributeCode],
-                    function ($found, $error) use ($currentError) {
-                        return $found || isset($error['message']) && $error['message'] === $currentError['message'];
-                    }
-                );
+                $identicalErrors = array_filter($errors['values'][$attributeCode], function ($error) use ($currentError) {
+                    return isset($error['message']) && $error['message'] === $currentError['message'];
+                });
 
-                if (!$errorInArray) {
+                if (empty($identicalErrors)) {
                     $errors['values'][$attributeCode][] = $currentError;
                 }
             } else {

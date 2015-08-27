@@ -1426,7 +1426,7 @@ class Edit extends Form
             // Is panel already open?
             $this->spin(function () {
                 return $this->getElement('Copy actions')->find('css', '.stop-copying');
-            }, 20, "Copy panel seems not open nor closed.");
+            }, 20, "Copy panel seems neither open nor closed.");
         }
 
         $this->switchLocale($localeCode, true);
