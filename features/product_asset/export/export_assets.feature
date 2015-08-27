@@ -17,20 +17,20 @@ Feature: Export assets
     Then file "%tmp%/asset_export/asset_export.csv" should contain 16 rows
     Then exported file of "clothing_asset_export" should contain:
     """
-    code;description;enabled;end_of_use;tags;categories
-    paint;"Photo of a paint.";1;2006-05-12;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images,situ
-    chicagoskyline;"This is chicago!";1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images
-    akene;"Because Akeneo";1;2015-08-01;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images
-    autumn;"Leaves and water";1;2015-12-01;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images,other
-    bridge;"Architectural bridge of a city, above water";1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images,other
-    dog;"Obviously not a cat, but still an animal";1;2006-05-12;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;other
-    eagle;;1;;backless,big_sizes,dress_suit,flower,lacework,men,neckline,pattern,pea,solid_color,stripes,vintage;other
-    machine;"A big machine";1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;other
-    man_wall;;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;situ
-    minivan;"My car";1;;backless,big_sizes,dress_suit,flower,lacework,men,neckline,pattern,pea,solid_color,stripes,vintage;situ
-    mouette;"Majestic animal";1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage,women;situ
-    mountain;;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;situ
-    mugs;;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;
-    photo;;1;;;
-    tiger;"Tiger of bengal, taken by J. Josh";1;2050-01-25;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;
+    code;localized;description;enabled;end_of_use;tags;categories
+    paint;0;"Photo of a paint.";1;2006-05-12;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images,situ
+    chicagoskyline;1;"This is chicago!";1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images
+    akene;0;"Because Akeneo";1;2015-08-01;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images
+    autumn;0;"Leaves and water";1;2015-12-01;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images,other
+    bridge;0;"Architectural bridge of a city, above water";1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;images,other
+    dog;0;"Obviously not a cat, but still an animal";1;2006-05-12;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;other
+    eagle;0;;1;;backless,big_sizes,dress_suit,flower,lacework,men,neckline,pattern,pea,solid_color,stripes,vintage;other
+    machine;0;"A big machine";1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;other
+    man_wall;0;;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;situ
+    minivan;0;"My car";1;;backless,big_sizes,dress_suit,flower,lacework,men,neckline,pattern,pea,solid_color,stripes,vintage;situ
+    mouette;0;"Majestic animal";1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage,women;situ
+    mountain;0;;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;situ
+    mugs;0;;1;;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;
+    photo;0;;1;;;
+    tiger;0;"Tiger of bengal, taken by J. Josh";1;2050-01-25;backless,big_sizes,dress_suit,flower,neckline,pattern,pea,solid_color,stripes,vintage;
     """

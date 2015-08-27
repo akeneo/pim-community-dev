@@ -65,7 +65,7 @@ class TagStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
-        if ('qualification' === $field) {
+        if ('tags' === $field) {
             $convertedItem['tags'] = array_unique(explode(',', $data));
         }
 

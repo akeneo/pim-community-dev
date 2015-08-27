@@ -32,7 +32,7 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      *      'localized'     => 0,
      *      'description'   => 'My awesome description',
      *      'categories'    => 'myCat1,myCat2,myCat3'
-     *      'qualification' => 'dog,flowers,cities,animal,sunset',
+     *      'tags'          => 'dog,flowers,cities,animal,sunset',
      *      'end_of_use'    => '2018-02-01',
      * ]
      *
@@ -76,8 +76,6 @@ class AssetStandardConverter implements StandardArrayConverterInterface
      * @param mixed  $data
      *
      * @return array
-     *
-     * TODO: qualification when import, tags when export ... + localized field, we should be able to import what we export
      */
     protected function convertField(array $convertedItem, $field, $data)
     {
@@ -90,7 +88,7 @@ class AssetStandardConverter implements StandardArrayConverterInterface
             case 'localized':
                 $convertedItem[$field] = (bool) $data;
                 break;
-            case 'qualification':
+            case 'tags':
                 $convertedItem['tags'] = array_unique(explode(',', $data));
                 break;
             case 'categories':
