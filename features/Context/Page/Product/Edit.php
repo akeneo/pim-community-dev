@@ -47,6 +47,7 @@ class Edit extends Form
                 'Comparison dropdown'     => ['css' => '.attribute-copy-actions'],
                 'Copy selection dropdown' => ['css' => '.attribute-copy-actions .selection-dropdown'],
                 'Copy translations link'  => ['css' => '.attribute-copy-actions .copy'],
+                'Copy actions'            => ['css' => '.copy-actions'],
                 'Comment threads'         => ['css' => '.comment-threads'],
                 'Meta zone'               => ['css' => '.baseline > .meta'],
                 'Modal'                   => ['css' => '.modal'],
@@ -1402,7 +1403,11 @@ class Edit extends Form
      */
     public function startCopy()
     {
-        $this->getElement('Comparison dropdown')->find('css', 'div.start-copying')->click();
+        $startCopyBtn = $this->spin(function () {
+            return $this->getElement('Comparison dropdown')->find('css', 'div.start-copying');
+        }, 5);
+
+        $startCopyBtn->click();
         $this->getSession()->wait(500);
     }
 
@@ -1415,7 +1420,15 @@ class Edit extends Form
      */
     public function compareWith($localeCode, $scope = null, $source = null)
     {
-        $this->startCopy();
+        try {
+            $this->startCopy();
+        } catch (\Exception $e) {
+            // Is panel already open?
+            $this->spin(function () {
+                return $this->getElement('Copy actions')->find('css', '.stop-copying');
+            }, 20, "Copy panel seems not open nor closed.");
+        }
+
         $this->switchLocale($localeCode, true);
         if (null !== $scope) {
             $this->switchScope($scope, true);
