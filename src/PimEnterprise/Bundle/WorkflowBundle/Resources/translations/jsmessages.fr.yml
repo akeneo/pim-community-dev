@@ -4,3 +4,8 @@ Approve: Accepter
 Refuse: Rejeter
 Approve selected: Approuver les éléments sélectionnés
 Refuse selected: Rejeter les éléments sélectionnés
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Editer la copie de travail
