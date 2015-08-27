@@ -243,11 +243,18 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh">
+            <arg value="-c" />
             <arg value="${behat.concurrency}" />
+            <arg value="-x" />
             <arg value="${behat.xdebug}" />
+            <arg value="-d" />
             <arg value="${symfony.database.name}_" />
+            <arg value="-p" />
             <arg value="${behat.profile.prefix}-" />
-            <arg value="${basedir}/bin/behat ${behat.options}" />
+            <arg value="-f"/>
+            <arg value="${behat.features_ee} "/>
+            <arg value="-b"/>
+            <arg value="${basedir}/bin/behat ${behat.options}"/>
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
             <env key="FEATURES_DIRECTORY" value="features" />
@@ -255,11 +262,18 @@
         </exec>
 
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="-c" />
             <arg value="${behat.concurrency}" />
+            <arg value="-x" />
             <arg value="${behat.xdebug}" />
+            <arg value="-d" />
             <arg value="${symfony.database.name}_" />
+            <arg value="-p" />
             <arg value="${behat.profile.prefix}-" />
-            <arg value="${basedir}/bin/behat ${behat.options}" />
+            <arg value="-f"/>
+            <arg value="${behat.features} "/>
+            <arg value="-b"/>
+            <arg value="${basedir}/bin/behat ${behat.options}"/>
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
             <env key="FEATURES_DIRECTORY" value="vendor/akeneo/pim-community-dev/features" />
