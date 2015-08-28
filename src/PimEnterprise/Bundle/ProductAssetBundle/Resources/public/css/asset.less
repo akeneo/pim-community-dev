@@ -54,12 +54,18 @@
     h3 {
       height: 42px;
     }
+    .hasDatepicker {
+      width: 300px;
+    }
   }
 
   #pimee_product_asset-tabs-variations {
     .variations {
       h3 {
         height: 42px;
+        margin: 0;
+        padding: 0;
+        border-top: none;
 
         .language {
           font-size: 15px;
@@ -67,8 +73,25 @@
         }
 
         #locale-switcher {
+          margin-left: 10px;
+
           span.dropdown-toggle {
+            background-color: transparent;
             font-size: 18px;
+            height: 42px;
+            line-height: 42px;
+
+            .icon-caret-down {
+              top: 8px;
+              right: 5px;
+              width: 24px;
+              height: 24px;
+              line-height: 24px;
+              border-radius: 2px;
+              border: #a1a9b7 solid 1px;
+              color: #a1a9b7;
+              background-color: transparent;
+            }
           }
         }
       }
