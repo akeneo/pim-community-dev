@@ -5,12 +5,15 @@ namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -25,6 +28,9 @@ class EditCommonAttributesProcessor extends BaseProcessor
 
     /** @var UserManager */
     protected $userManager;
+
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
 
     /**
      * @param PropertySetterInterface              $propertySetter
@@ -42,7 +48,8 @@ class EditCommonAttributesProcessor extends BaseProcessor
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         BaseProcessor::__construct(
             $propertySetter,
@@ -52,8 +59,9 @@ class EditCommonAttributesProcessor extends BaseProcessor
             $jobConfigurationRepo
         );
 
-        $this->tokenStorage = $tokenStorage;
-        $this->userManager  = $userManager;
+        $this->tokenStorage         = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->userManager          = $userManager;
     }
 
     /**
@@ -80,5 +88,19 @@ class EditCommonAttributesProcessor extends BaseProcessor
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function isProductEditable(ProductInterface $product)
+    {
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $product)
+            && !$this->authorizationChecker->isGranted(Attributes::EDIT, $product)
+        ) {
+            return false;
+        }
+
+        return parent::isProductEditable($product);
     }
 }
