@@ -8,11 +8,8 @@
 .has-switch {
   display: inline-block;
   cursor: pointer;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
   border: 1px solid;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  border-color: #ddd;
   position: relative;
   text-align: left;
   overflow: hidden;
@@ -104,24 +101,12 @@
   margin-bottom: -1px;
   z-index: 100;
   width: 34%;
-  border-left: 1px solid #cccccc;
-  border-right: 1px solid #cccccc;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #f5f5f5;
-  background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
-  background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
-  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-  border-color: #e6e6e6 #e6e6e6 #bfbfbf;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #e6e6e6;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-color: white;
+  border-color: #ddd;
 }
 .has-switch label:hover,
 .has-switch label:focus,
@@ -149,30 +134,11 @@
   width: 33%;
 }
 .has-switch span.switch-left {
-  -webkit-border-top-left-radius: 4px;
-  -moz-border-radius-topleft: 4px;
-  border-top-left-radius: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  -moz-border-radius-bottomleft: 4px;
-  border-bottom-left-radius: 4px;
+
 }
 .has-switch span.switch-right {
   color: #333333;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   background-color: #f0f0f0;
-  background-image: -moz-linear-gradient(top, #e6e6e6, #ffffff);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#e6e6e6), to(#ffffff));
-  background-image: -webkit-linear-gradient(top, #e6e6e6, #ffffff);
-  background-image: -o-linear-gradient(top, #e6e6e6, #ffffff);
-  background-image: linear-gradient(to bottom, #e6e6e6, #ffffff);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe6e6e6', endColorstr='#ffffffff', GradientType=0);
-  border-color: #ffffff #ffffff #d9d9d9;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #ffffff;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
 .has-switch span.switch-right:hover,
 .has-switch span.switch-right:focus,
@@ -191,21 +157,7 @@
 .has-switch span.switch-primary,
 .has-switch span.switch-left {
   color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  background-color: #005fcc;
-  background-image: -moz-linear-gradient(top, #0044cc, #0088cc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#0044cc), to(#0088cc));
-  background-image: -webkit-linear-gradient(top, #0044cc, #0088cc);
-  background-image: -o-linear-gradient(top, #0044cc, #0088cc);
-  background-image: linear-gradient(to bottom, #0044cc, #0088cc);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0044cc', endColorstr='#ff0088cc', GradientType=0);
-  border-color: #0088cc #0088cc #005580;
-  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-  *background-color: #0088cc;
-  /* Darken IE7 buttons by default so they stand out more given they won't have borders */
-
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  background-color: #67b373;
 }
 .has-switch span.switch-primary:hover,
 .has-switch span.switch-left:hover,
@@ -220,8 +172,7 @@
 .has-switch span.switch-primary[disabled],
 .has-switch span.switch-left[disabled] {
   color: #ffffff;
-  background-color: #0088cc;
-  *background-color: #0077b3;
+  background-color: #67b373;
 }
 .has-switch span.switch-primary:active,
 .has-switch span.switch-left:active,
