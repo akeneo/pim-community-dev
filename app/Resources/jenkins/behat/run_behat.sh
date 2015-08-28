@@ -138,7 +138,7 @@ cd -
 
 for FEATURE in $FEATURES; do
 
-    FEATURE_NAME=$FEATURE
+    FEATURE_NAME=`echo "${FEATURE#$APP_ROOT/}"`
 
     while [ ! -z $FEATURE_NAME ]; do
 
