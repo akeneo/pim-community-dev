@@ -1,5 +1,8 @@
 # 1.4.x
 
+## Bug fixes
+PIM-4775: When I mass-edit products I can view only, proposals are created
+
 # 1.4.0-BETA2 (2015-08-17)
 
 ## BC Breaks
