@@ -3,7 +3,7 @@
 namespace Context;
 
 use Context\TransformationContext as BaseTransformationContext;
-use Behat\MinkExtension\Context\RawMinkContext;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 /**
  * Context for data transformations
@@ -18,7 +18,7 @@ class EnterpriseTransformationContext extends BaseTransformationContext
      *
      * @Transform /^asset category "([^"]*)"$/
      *
-     * @return Category
+     * @return CategoryInterface
      */
     public function castAssetCategoryCodeToAssetCategory($code)
     {
