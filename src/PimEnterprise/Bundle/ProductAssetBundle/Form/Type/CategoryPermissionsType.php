@@ -31,7 +31,7 @@ class CategoryPermissionsType extends BaseCategoryPermissionsType
             'pimee_security_groups',
             [
                 'label' => 'pimee_product_asset.category.permissions.view.label',
-                'help' => 'pimee_product_asset.category.permissions.view.help'
+                'help'  => 'pimee_product_asset.category.permissions.view.help'
             ]
         );
         $builder->add(
@@ -39,7 +39,7 @@ class CategoryPermissionsType extends BaseCategoryPermissionsType
             'pimee_security_groups',
             [
                 'label' => 'pimee_product_asset.category.permissions.edit.label',
-                'help' => 'pimee_product_asset.category.permissions.edit.help'
+                'help'  => 'pimee_product_asset.category.permissions.edit.help'
             ]
         );
         $builder->add(

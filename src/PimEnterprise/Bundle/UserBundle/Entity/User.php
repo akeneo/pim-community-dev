@@ -21,7 +21,7 @@ use Pim\Bundle\UserBundle\Entity\User as BaseUser;
  */
 class User extends BaseUser implements UserInterface
 {
-     /** @var int The delay in days to send an email before the expiration of an asset */
+    /** @var int The delay in days to send an email before the expiration of an asset */
     protected $assetDelayReminder = 5;
 
     /**
