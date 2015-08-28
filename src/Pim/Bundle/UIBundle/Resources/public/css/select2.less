@@ -6,8 +6,7 @@
   color: #333;
   font-size: 13px;
   border: 1px solid #ddd;
-  #gradient > .vertical(#ffffff, #f3f3f3);
-  border-radius: 3px;
+  border-radius: 0px;
   outline: none;
   .select2-choice {
     border: none;
@@ -29,20 +28,28 @@
       }
     }
     .select2-arrow {
-      right: 8px;
-      top: 4px;
+      right: 0px;
+      top: 0px;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      background-color: #e7e7eC;
+      text-align: center;
+      border-radius: 0;
       font:normal 16px 'FontAwesome';
       font-style: normal;
       text-decoration: inherit;
       -webkit-font-smoothing: antialiased;
       *margin-right: .3em;
       border: none;
-      background: transparent;
-      width: auto;
+      background-image: none;
+
       &:before {
         content: "\f0d7";
+        color: #67768a;
         text-decoration: inherit;
         display: inline-block;
+        line-height: 30px;
         speak: none;
       }
     }
@@ -68,7 +75,6 @@
 
 .select2-container,
 .select2-search input {
-  .border-radius(3px);
   box-sizing: border-box;
 }
 
@@ -153,7 +159,7 @@ a.select2-choice {
 .select2-container-multi .select2-search-choice-close {
   font-family: FontAwesome;
   font-size: 12px;
-  color: @textColor + #333;
+
   &:before {
     content: "\f00d";
   }
@@ -164,7 +170,8 @@ a.select2-choice {
 }
 
 .form-horizontal .select2-container {
-  width: 290px ;
+  width: 300px ;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.04);
 }
 
 .form-inline {
