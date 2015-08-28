@@ -42,13 +42,13 @@ To migrate all drafts structure to new JSON structure, you can execute the follo
     php upgrades/1.3-1.4/common/migrate_draft.php --env=YOUR_ENV
 ```
 
-## MIGRATION TO SYMFONY 2.7
+Migration to Symfony 2.7
+------------------------
 
 PIM has been migrated to Symfony 2.7.
 You can read this guide to see all modifications: https://gist.github.com/mickaelandrieu/5211d0047e7a6fbff925.
  
 You can execute the following commands in your project folder:
-
 ```
     find ./src -type f -print0 | xargs -0 sed -i 's/use Symfony\\Component\\OptionsResolver\\OptionsResolverInterface;/use Symfony\\Component\\OptionsResolver\\OptionsResolver;/g'
     find ./src -type f -print0 | xargs -0 sed -i 's/public function setDefaultOptions(OptionsResolverInterface $resolver)/public function configureOptions(OptionsResolver $resolver)/g'
@@ -62,7 +62,6 @@ You can execute the following commands in your project folder:
 ```
 
 In 2.7, the `Symfony\Component\Security\Core\SecurityContext` is marked as deprecated in favor of the `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` (see: http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements).
-
 ```
    isGranted  => AuthorizationCheckerInterface
    getToken   => TokenStorageInterface
@@ -91,14 +90,22 @@ To use AuthorizationCheckerInterface:
     find PATH_OF_SPECIFIC_CLASSES -type f -print0 | xargs -0 sed -i 's/$securityContext/$authorizationChecker/g'
 ```
 
-## Partially fix BC breaks
+Miscellaneous
+-------------
+
+`imagemagick` is now a requirement of the PIM to transform asset images. On Debian and Ubuntu it can be installed via the following command:
+```
+    apt-get install imagemagick
+ ```
+
+Partially fix BC breaks
+-----------------------
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
 
 **It does not cover all possible BC breaks, as the changes of arguments of a service, consider using this script on versioned files to be able to check the changes with a `git diff` for instance.**
 
 Based on a PIM standard installation, execute the following command in your project folder:
-
 ```
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\MongoDBODM\\ProductMassActionRepository/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\MongoDBODM\\Repository\\ProductMassActionRepository/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/PimEnterprise\\Bundle\\CatalogBundle\\Entity\\Repository\\AttributeRepository/PimEnterprise\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\AttributeRepository/g'

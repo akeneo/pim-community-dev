@@ -30,7 +30,7 @@ class ScaleOptionsResolver implements TransformationOptionsResolverInterface
         $this->resolver = new OptionsResolver();
         $this->resolver->setOptional(['ratio', 'width', 'height']);
         $this->resolver->setAllowedTypes(
-            ['ratio' => ['float', 'null'], 'width' => ['int', 'null'], 'height' => ['int', 'null']]
+            ['ratio' => ['int', 'null'], 'width' => ['int', 'null'], 'height' => ['int', 'null']]
         );
         $this->resolver->setDefaults(['ratio' => null, 'width' => null, 'height' => null]);
     }
@@ -54,7 +54,7 @@ class ScaleOptionsResolver implements TransformationOptionsResolverInterface
             throw InvalidOptionsTransformationException::chooseOneOption(['ratio', 'width', 'height'], 'scale');
         }
 
-        if (null !== $ratio && ($ratio <= 0 || $ratio >= 1)) {
+        if (null !== $ratio && ($ratio <= 0 || $ratio >= 100)) {
             throw InvalidOptionsTransformationException::ratio('ratio', 'scale');
         }
 

@@ -15,8 +15,8 @@ use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\Image
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
 use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 use Akeneo\Component\FileTransformer\Transformation\AbstractTransformation;
+use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
-use Imagine\Imagick\Imagine;
 
 /**
  * Transform the size of an image without scaling
@@ -25,16 +25,22 @@ use Imagine\Imagick\Imagine;
  */
 class Resize extends AbstractTransformation
 {
+    /** @var ImageMagickLauncher */
+    protected $launcher;
+
     /**
      * @param TransformationOptionsResolverInterface $optionsResolver
+     * @param ImageMagickLauncher                    $launcher
      * @param array                                  $supportedMimeTypes
      */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
+        ImageMagickLauncher $launcher,
         array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
         $this->optionsResolver    = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;
+        $this->launcher           = $launcher;
     }
 
     /**
@@ -59,8 +65,10 @@ class Resize extends AbstractTransformation
             throw new ImageHeightException($file->getPathname(), $this->getName());
         }
 
-        $image->resize(new Box($options['width'], $options['height']));
-        $image->save();
+        $this->launcher->convert(
+            sprintf('-resize %dx%d', $options['width'], $options['height']),
+            $file->getPathname()
+        );
     }
 
     /**

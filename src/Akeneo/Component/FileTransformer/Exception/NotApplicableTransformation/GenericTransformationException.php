@@ -16,6 +16,6 @@ namespace Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class NotApplicableTransformationException extends \LogicException
+class GenericTransformationException extends \LogicException
 {
 }

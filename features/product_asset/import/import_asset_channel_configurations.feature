@@ -27,7 +27,7 @@ Feature: Import asset channel configurations
     """
     channel;configuration
     mobile;{"scale":{"width":200},"colorspace":{"colorspace":"gray"}}
-    tablet;{"scale":{"ratio":0.25}}
+    tablet;{"scale":{"ratio":25}}
     """
     And the following job "clothing_asset_channel_configuration_import" configuration:
       | filePath | %file to import% |
@@ -44,7 +44,7 @@ Feature: Import asset channel configurations
     """
     wrongcolumn;configuration
     mobile;{"scale":{"width":200},"colorspace":{"colorspace":"gray"}}
-    tablet;{"scale":{"ratio":0.25}}
+    tablet;{"scale":{"ratio":25}}
     """
     And the following job "clothing_asset_channel_configuration_import" configuration:
       | filePath | %file to import% |
@@ -75,7 +75,7 @@ Feature: Import asset channel configurations
     """
     channel;configuration
     mobile;{"wrongTransformation":{"with":200},"colorspace":{"colorspace":"gray"}}
-    tablet;{"scale":{"ratio":0.25}}
+    tablet;{"scale":{"ratio":25}}
     """
     And the following job "clothing_asset_channel_configuration_import" configuration:
       | filePath | %file to import% |
@@ -94,7 +94,7 @@ Feature: Import asset channel configurations
     """
     channel;configuration
     mobile;{"scale":{"wrongField":200},"colorspace":{"colorspace":"gray"}}
-    tablet;{"scale":{"ratio":0.25}}
+    tablet;{"scale":{"ratio":25}}
     """
     And the following job "clothing_asset_channel_configuration_import" configuration:
       | filePath | %file to import% |

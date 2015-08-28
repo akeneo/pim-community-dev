@@ -11,14 +11,14 @@
 
 namespace Akeneo\Component\FileTransformer\Exception;
 
-use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\NotApplicableTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
 
 /**
  * Exception thrown when Transformation options are invalid
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class InvalidOptionsTransformationException extends NotApplicableTransformationException
+class InvalidOptionsTransformationException extends GenericTransformationException
 {
     /**
      * @param \Exception $e
@@ -59,7 +59,7 @@ class InvalidOptionsTransformationException extends NotApplicableTransformationE
     public static function ratio($option, $transformation)
     {
         return new self(
-            sprintf('The option "%s" of the "%s" transformation should be between 0 and 1.', $option, $transformation)
+            sprintf('The option "%s" of the "%s" transformation should be between 0 and 100.', $option, $transformation)
         );
     }
 }

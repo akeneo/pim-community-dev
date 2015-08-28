@@ -15,7 +15,6 @@ use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterf
 use Akeneo\Component\FileTransformer\Transformation\AbstractTransformation;
 use Imagine\Imagick\Imagine;
 
-//TODO: check this transformation
 /**
  * Transform resolution of an image
  *
@@ -23,15 +22,22 @@ use Imagine\Imagick\Imagine;
  */
 class Resolution extends AbstractTransformation
 {
+    /** @var ImageMagickLauncher */
+    protected $launcher;
+
     /**
-     * {@inheritdoc}
+     * @param TransformationOptionsResolverInterface $optionsResolver
+     * @param ImageMagickLauncher                    $launcher
+     * @param array                                  $supportedMimeTypes
      */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
+        ImageMagickLauncher $launcher,
         array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
         $this->optionsResolver    = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;
+        $this->launcher           = $launcher;
     }
 
     /**
@@ -47,15 +53,15 @@ class Resolution extends AbstractTransformation
     {
         $options = $this->optionsResolver->resolve($options);
 
-        $imagickOptions = [
-            'resolution-x'     => $options['resolution'],
-            'resolution-y'     => $options['resolution'],
-            'resolution-units' => $options['resolution-unit'],
-        ];
+        $unit = 'PixelsPerInch';
+        if ('ppc' === $options['resolution-unit']) {
+            $unit = 'PixelsPerCentimeter';
+        }
 
-        $imagine = new Imagine();
-        $image   = $imagine->open($file->getPathname());
-        $image->save($file->getPathname(), $imagickOptions);
+        $this->launcher->convert(
+            sprintf('-density %dx%d -units %s', $options['resolution'], $options['resolution'], $unit),
+            $file->getPathname()
+        );
     }
 
     /**

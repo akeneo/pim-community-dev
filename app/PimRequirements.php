@@ -21,7 +21,7 @@ class PimRequirements extends OroRequirements
     /**
      * {@inheritdoc}
      */
-    public function __construct(array $directoriesToCheck = array())
+    public function __construct(array $directoriesToCheck = [])
     {
         parent::__construct();
 
@@ -47,6 +47,12 @@ class PimRequirements extends OroRequirements
             function_exists('exec'),
             'The exec() function should be enabled in order to run jobs',
             'Make sure the <strong>exec()</strong> function is not disabled in php.ini'
+        );
+
+        $this->addPimRequirement(
+            $this->isConvertInstalled(),
+            'The convert tool should be installed in order to transform images of the PAM',
+            'Make sure to install <strong>Image Magick</strong> command line tool <strong>convert</strong>'
         );
 
         // Check directories
@@ -93,6 +99,22 @@ class PimRequirements extends OroRequirements
         return array_filter(parent::getMandatoryRequirements(), function ($requirement) {
             return !$requirement instanceof PimRequirement;
         });
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isConvertInstalled()
+    {
+        $imagickLauncher = new \Akeneo\Component\FileTransformer\Transformation\Image\ImageMagickLauncher();
+
+        try {
+            $imagickLauncher->getConvertBinaryPath();
+        } catch (\RuntimeException $e) {
+            return false;
+        }
+
+        return true;
     }
 }
 

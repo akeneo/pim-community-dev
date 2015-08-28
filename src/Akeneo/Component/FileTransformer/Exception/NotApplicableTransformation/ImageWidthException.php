@@ -16,7 +16,7 @@ namespace Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ImageWidthException extends NotApplicableTransformationException
+class ImageWidthException extends GenericTransformationException
 {
     /**
      * @param string $image

@@ -26,16 +26,22 @@ use Imagine\Imagick\Imagine;
  */
 class ColorSpace extends AbstractTransformation
 {
+    /** @var ImageMagickLauncher */
+    protected $launcher;
+
     /**
      * @param TransformationOptionsResolverInterface $optionsResolver
+     * @param ImageMagickLauncher                    $launcher
      * @param array                                  $supportedMimeTypes
      */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
+        ImageMagickLauncher $launcher,
         array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
         $this->optionsResolver    = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;
+        $this->launcher           = $launcher;
     }
 
     /**
@@ -46,26 +52,7 @@ class ColorSpace extends AbstractTransformation
     public function transform(\SplFileInfo $file, array $options = [])
     {
         $options = $this->optionsResolver->resolve($options);
-
-        $imagine = new Imagine();
-        $image   = $imagine->open($file->getPathname());
-
-        if ($options['colorspace'] !== $image->palette()->name()) {
-            switch ($options['colorspace']) {
-                case PaletteInterface::PALETTE_CMYK:
-                    $palette = new CMYK();
-                    break;
-                case PaletteInterface::PALETTE_RGB:
-                    $palette = new RGB();
-                    break;
-                default:
-                    $palette = new Grayscale();
-                    break;
-            }
-
-            $image->usePalette($palette);
-            $image->save();
-        }
+        $this->launcher->convert('-colorspace ' . $options['colorspace'], $file->getPathname());
     }
 
     /**
