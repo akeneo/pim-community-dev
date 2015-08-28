@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-4810: Correctly detach association reference when transformation fails
+
 # 1.3.22 (2015-08-25)
 
 ## Bug fixes
