@@ -1,3 +1,4 @@
+@javascript
 Feature: Create a user
   In order to manage the users and rights
   As an administrator
@@ -7,7 +8,6 @@ Feature: Create a user
     Given the "default" catalog configuration
     And I am logged in as "Peter"
 
-  @javascript
   Scenario: Successfully create a user
     Given I am on the user creation page
     And I fill in the following information:
@@ -25,7 +25,6 @@ Feature: Create a user
     When I save the user
     Then there should be a "jack" user
 
-  @javascript
   Scenario: Successfully delete a user
     Given I am on the users page
     When I click on the "Delete" action of the row which contains "Julia"

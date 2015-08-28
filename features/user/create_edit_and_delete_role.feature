@@ -1,3 +1,4 @@
+@javascript
 Feature: Create and delete a user role
   In order to manage the users and rights
   As an administrator
@@ -7,7 +8,6 @@ Feature: Create and delete a user role
     Given the "default" catalog configuration
     And I am logged in as "Peter"
 
-  @javascript
   Scenario: Successfully create, edit and delete a user role
     Given I am on the user roles creation page
     And I fill in the following information:
@@ -30,7 +30,6 @@ Feature: Create and delete a user role
     And I cancel the deletion
     And I should see the text "Administrator"
 
-  @javascript
   Scenario: Successfully display validation errors when creating or editing a user role
     Given I am on the user roles creation page
     When I save the role
