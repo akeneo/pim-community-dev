@@ -1,0 +1,31 @@
+oro_system_configuration:
+    groups:
+        notification:
+            title: pim_notification.system_config.group.notification.title
+            icon:  'icon-info-sign'
+
+        version_update:
+            title: pim_notification.system_config.group.version_update.title
+
+    fields:
+        pim_notification.version_update:
+            type: oro_config_checkbox
+            priority: 50
+            options:
+                label:   pim_notification.system_config.form.version_update.label
+                tooltip: pim_notification.system_config.form.version_update.tooltip
+                required: true
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            notification:
+                                priority: 254
+                                children:
+                                    version_update:
+                                        priority: 100
+                                        children:
+                                            - pim_notification.version_update
