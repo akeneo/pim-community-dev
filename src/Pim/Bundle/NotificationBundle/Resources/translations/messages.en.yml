@@ -1,3 +1,10 @@
 pim_notification:
     no_notifications: No new notifications
     mark_all_as_read: Mark all as read
+    system_config:
+        group:
+            notification.title: Notifications
+            version_update.title: Version updates
+        form:
+            version_update.label: New versions notifications
+            version_update.tooltip: Send request to a distant server to retrieve information about the release of new patchs
