@@ -12,7 +12,8 @@ define(
         'oro/datagrid-builder',
         'oro/mediator',
         'pim/fetcher-registry',
-        'pim/user-context'
+        'pim/user-context',
+        'oro/datafilter/product_category-filter'
     ],
     function (
         $,
@@ -25,7 +26,8 @@ define(
         datagridBuilder,
         mediator,
         FetcherRegistry,
-        UserContext
+        UserContext,
+        CategoryFilter
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -77,7 +79,9 @@ define(
                     return this;
                 }
 
-                this.$el.html(this.template({}));
+                this.$el.html(this.template({
+                    locale: this.getLocale()
+                }));
                 this.renderGrid(this.datagrid);
 
                 return this.renderExtensions();
@@ -96,6 +100,8 @@ define(
                         }
                     }
                 };
+
+                new CategoryFilter(urlParams, 'asset-grid', 'pimee_asset_categorytree');
 
                 $.get(Routing.generate('pim_datagrid_load', urlParams)).done(function (response) {
                     this.$('#grid-' + this.datagrid.name).data(
