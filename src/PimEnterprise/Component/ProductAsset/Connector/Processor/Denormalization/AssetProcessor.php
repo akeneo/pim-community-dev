@@ -15,6 +15,7 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\Exception\ArrayConversionException;
 use Pim\Component\Connector\Processor\Denormalization\AbstractProcessor;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -69,7 +70,14 @@ class AssetProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->convertItemData($item);
+        try {
+            $convertedItem = $this->convertItemData($item);
+        } catch (ArrayConversionException $exception) {
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
+
+            return null;
+        }
+
         $asset = $this->findOrCreateAsset($convertedItem);
 
         try {
