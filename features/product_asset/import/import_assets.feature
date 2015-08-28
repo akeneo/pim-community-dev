@@ -215,7 +215,7 @@ Feature: Import assets
     And I wait for the "clothing_asset_import" job to finish
     Then there should be the following assets:
       | code      | description     | categories                      |
-      | car       | Photo of a car. | other,images,prioritized_images |
+      | car       | Photo of a car. | images,other,prioritized_images |
     Then there should be the following tags:
       | code      |
       | car       |
