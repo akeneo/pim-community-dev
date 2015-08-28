@@ -31,7 +31,6 @@ class AssetNormalizer implements NormalizerInterface
             'code'        => $asset->getCode(),
             'localized'   => (int) $asset->isLocalizable(),
             'description' => $asset->getDescription(),
-            'enabled'     => $asset->isEnabled(),
             'end_of_use'  => (null !== $asset->getEndOfUseAt()) ? $asset->getEndOfUseAt()->format('Y-m-d') : null,
         ];
     }
