@@ -61,6 +61,8 @@ Feature: Leave a comment on a product
     And I open the "Comments" panel
     And I add a new comment "My comment"
     When I delete the "My comment" comment
+    Then I should see "Confirm deletion"
+    And I confirm the removal
     Then I should not see "My comment"
 
   @javascript
