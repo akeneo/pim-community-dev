@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
-use PimEnterprise\Component\ProductAsset\Upload\UploadStatus;
+use PimEnterprise\Component\ProductAsset\Upload\UploadMessages;
 use Prophecy\Argument;
 
 class UploadCheckerSpec extends ObjectBehavior
@@ -58,11 +58,9 @@ class UploadCheckerSpec extends ObjectBehavior
     {
         $filename = 'foobar-fr_FR.png';
 
-        $assetRepo->findOneByIdentifier('foobar')->willReturn(null);
+        $assetRepo->findOneByCode('foobar')->willReturn(null);
 
-        $status = $this->checkFilename($filename, 'dummySourceDir', 'dummyScheduledDir');
-        $status->shouldBe(UploadStatus::STATUS_NEW);
-        $this->isError($status)->shouldReturn(false);
+        $this->validateSchedule($filename, 'dummySourceDir', 'dummyScheduledDir');
     }
 
     function it_checks_an_invalid_filename_for_existing_asset_without_locale(
@@ -71,12 +69,11 @@ class UploadCheckerSpec extends ObjectBehavior
     ) {
         $filename = 'foobar-fr_FR.png';
 
-        $assetRepo->findOneByIdentifier('foobar')->willReturn($asset);
+        $assetRepo->findOneByCode('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn([]);
 
-        $status = $this->checkFilename($filename, 'dummySourceDir', 'dummyScheduledDir');
-        $status->shouldBe(UploadStatus::STATUS_ERROR_LOCALE);
-        $this->isError($status)->shouldReturn(true);
+        $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidLocaleException')
+            ->during('validateSchedule', [$filename, 'dummySourceDir', 'dummyScheduledDir']);
     }
 
     function it_checks_an_invalid_filename_for_existing_asset_with_other_locale(
@@ -86,12 +83,11 @@ class UploadCheckerSpec extends ObjectBehavior
     ) {
         $filename = 'foobar-fr_FR.png';
 
-        $assetRepo->findOneByIdentifier('foobar')->willReturn($asset);
+        $assetRepo->findOneByCode('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn(['en_US' => $locale]);
 
-        $status = $this->checkFilename($filename, 'dummySourceDir', 'dummyScheduledDir');
-        $status->shouldBe(UploadStatus::STATUS_ERROR_LOCALE);
-        $this->isError($status)->shouldReturn(true);
+        $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidLocaleException')
+            ->during('validateSchedule', [$filename, 'dummySourceDir', 'dummyScheduledDir']);
     }
 
     function it_checks_a_valid_filename_for_existing_asset_with_locale(
@@ -101,12 +97,10 @@ class UploadCheckerSpec extends ObjectBehavior
     ) {
         $filename = 'foobar-fr_FR.png';
 
-        $assetRepo->findOneByIdentifier('foobar')->willReturn($asset);
+        $assetRepo->findOneByCode('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn(['fr_FR' => $locale]);
 
-        $status = $this->checkFilename($filename, 'dummySourceDir', 'dummyScheduledDir');
-        $status->shouldBe(UploadStatus::STATUS_UPDATED);
-        $this->isError($status)->shouldReturn(false);
+        $this->validateSchedule($filename, 'dummySourceDir', 'dummyScheduledDir');
     }
 
     function it_checks_an_invalid_filename_for_existing_uploaded_file(
@@ -119,11 +113,10 @@ class UploadCheckerSpec extends ObjectBehavior
 
         file_put_contents($sourceDirectory . DIRECTORY_SEPARATOR . $filename, 'foobar');
 
-        $assetRepo->findOneByIdentifier('foobar')->willReturn(null);
+        $assetRepo->findOneByCode('foobar')->willReturn(null);
 
-        $status = $this->checkFilename($filename, $sourceDirectory, 'dummyScheduledDir');
-        $status->shouldBe(UploadStatus::STATUS_ERROR_EXISTS);
-        $this->isError($status)->shouldReturn(true);
+        $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\DuplicateFileException')
+            ->during('validateSchedule', [$filename, $sourceDirectory, 'dummyScheduledDir']);
     }
 
     function it_checks_an_invalid_filename_for_existing_scheduled_file(
@@ -137,11 +130,10 @@ class UploadCheckerSpec extends ObjectBehavior
 
         file_put_contents($scheduledDirectory . DIRECTORY_SEPARATOR . $filename, 'foobar');
 
-        $assetRepo->findOneByIdentifier('foobar')->willReturn(null);
+        $assetRepo->findOneByCode('foobar')->willReturn(null);
 
-        $status = $this->checkFilename($filename, $sourceDirectory, $scheduledDirectory);
-        $status->shouldBe(UploadStatus::STATUS_ERROR_EXISTS);
-        $this->isError($status)->shouldReturn(true);
+        $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\DuplicateFileException')
+            ->during('validateSchedule', [$filename, $sourceDirectory, $scheduledDirectory]);
     }
 
     protected function createUploadBaseDirectory()

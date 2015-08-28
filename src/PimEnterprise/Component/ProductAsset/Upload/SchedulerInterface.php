@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
-use SplFileInfo;
-
 /**
  * Schedule uploaded assets files for processing
  *

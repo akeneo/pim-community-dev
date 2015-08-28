@@ -22,6 +22,15 @@ class UploadContextSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Upload\UploadContext');
     }
 
+    function it_must_be_initailized_with_username()
+    {
+        $this->shouldThrow('RuntimeException')
+            ->during('getTemporaryUploadDirectory');
+
+        $this->shouldThrow('RuntimeException')
+            ->during('getTemporaryScheduleDirectory');
+    }
+
     function it_gets_upload_directories()
     {
         $this->setUsername('foobar');

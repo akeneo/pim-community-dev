@@ -96,7 +96,7 @@ class MassUploadTasklet implements TaskletInterface
                     $this->stepExecution->addError($item->getReason());
                     break;
                 case ProcessedItem::STATE_SKIPPED:
-                    $this->stepExecution->incrementSummaryInfo('skip');
+                    $this->stepExecution->incrementSummaryInfo('skipped');
                     $this->stepExecution->addWarning(self::TASKLET_NAME,
                         $item->getReason(),
                         [],

@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
+use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
+
 /**
  * Check uploaded files
  *
@@ -28,22 +30,15 @@ interface UploadCheckerInterface
     public function parseFilename($filename);
 
     /**
-     * Check the upload status for a filename
+     * Validate a filename before scheduling it
      *
      * @param string $filename       Filename to check
      * @param string $tmpUploadDir   Temporary directory for uploaded files
      * @param string $tmpScheduleDir Temporary directory for scheduled files
      *
-     * @return string
-     */
-    public function checkFilename($filename, $tmpUploadDir, $tmpScheduleDir);
-
-    /**
-     * Check if upload status is an error
+     * @throws UploadException
      *
-     * @param string $uploadStatus
-     *
-     * @return bool
+     * @return null
      */
-    public function isError($uploadStatus);
+    public function validateSchedule($filename, $tmpUploadDir, $tmpScheduleDir);
 }

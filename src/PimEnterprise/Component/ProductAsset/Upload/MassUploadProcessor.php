@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
@@ -21,7 +21,6 @@ use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
-use SplFileInfo;
 
 /**
  * Process mass uploaded files
@@ -45,7 +44,7 @@ class MassUploadProcessor
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
-    /** @var SaverInterface */
+    /** @var BulkSaverInterface */
     protected $assetSaver;
 
     /** @var FilesUpdaterInterface */
@@ -62,7 +61,7 @@ class MassUploadProcessor
      * @param SchedulerInterface        $scheduler
      * @param AssetFactory              $assetFactory
      * @param AssetRepositoryInterface  $assetRepository
-     * @param SaverInterface            $assetSaver
+     * @param BulkSaverInterface        $assetSaver
      * @param FilesUpdaterInterface     $filesUpdater
      * @param RawFileStorerInterface    $rawFileStorer
      * @param LocaleRepositoryInterface $localeRepository
@@ -72,7 +71,7 @@ class MassUploadProcessor
         SchedulerInterface $scheduler,
         AssetFactory $assetFactory,
         AssetRepositoryInterface $assetRepository,
-        SaverInterface $assetSaver,
+        BulkSaverInterface $assetSaver,
         FilesUpdaterInterface $filesUpdater,
         RawFileStorerInterface $rawFileStorer,
         LocaleRepositoryInterface $localeRepository
@@ -100,20 +99,20 @@ class MassUploadProcessor
 
         $scheduledFiles = $this->scheduler->getScheduledFiles($uploadContext);
 
+        $assetsToSave = [];
+
         foreach ($scheduledFiles as $file) {
             try {
                 $asset = $this->applyScheduledUpload($file);
-                if (null === $asset->getId()) {
-                    $reason = UploadStatus::STATUS_NEW;
-                } else {
-                    $reason = UploadStatus::STATUS_UPDATED;
-                }
-                $this->assetSaver->save($asset, ['flush' => true]);
+                $reason = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
+                $assetsToSave[] = $asset;
                 $processedFiles->addItem($file, ProcessedItem::STATE_SUCCESS, $reason);
             } catch (\Exception $e) {
                 $processedFiles->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage());
             }
         }
+
+        $this->assetSaver->saveAll($assetsToSave, ['flush' => true, 'schedule' => true]);
 
         return $processedFiles;
     }
@@ -121,11 +120,11 @@ class MassUploadProcessor
     /**
      * Create or update asset reference from an uploaded file
      *
-     * @param SplFileInfo $file
+     * @param \SplFileInfo $file
      *
      * @return AssetInterface
      */
-    public function applyScheduledUpload(SplFileInfo $file)
+    public function applyScheduledUpload(\SplFileInfo $file)
     {
         $assetInfo   = $this->uploadChecker->parseFilename($file->getFilename());
         $isLocalized = null !== $assetInfo['locale'];
@@ -135,8 +134,6 @@ class MassUploadProcessor
         if (null === $asset) {
             $asset = $this->assetFactory->create($isLocalized);
             $asset->setCode($assetInfo['code']);
-
-            $assets[$asset->getCode()] = $asset;
         }
 
         $file = $this->rawFileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);

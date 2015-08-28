@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
 use PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
@@ -93,16 +94,16 @@ class MassUploadController
     {
         $response = new JsonResponse();
 
-        $uploadStatus = $this->uploadChecker
-            ->checkFilename($filename,
-                $this->uploadContext->getTemporaryUploadDirectory(),
-                $this->uploadContext->getTemporaryScheduleDirectory()
-            );
-
-        if ($this->uploadChecker->isError($uploadStatus)) {
+        try {
+            $this->uploadChecker
+                ->validateSchedule($this->cleanFilename($filename),
+                    $this->uploadContext->getTemporaryUploadDirectory(),
+                    $this->uploadContext->getTemporaryScheduleDirectory()
+                );
+        } catch (UploadException $e) {
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);
             $response->setData([
-                'error' => $uploadStatus
+                'error' => $e->getMessage()
             ]);
         }
 
@@ -148,7 +149,8 @@ class MassUploadController
      */
     public function deleteUploadedFileAction($filename)
     {
-        $filepath = $this->uploadContext->getTemporaryUploadDirectory() . DIRECTORY_SEPARATOR . $filename;
+        $filepath = $this->uploadContext->getTemporaryUploadDirectory()
+            . DIRECTORY_SEPARATOR . $this->cleanFilename($filename);
 
         if (is_file($filepath)) {
             unlink($filepath);
@@ -183,9 +185,7 @@ class MassUploadController
             }
         }
 
-        $response = new JsonResponse(['files' => $files]);
-
-        return $response;
+        return new JsonResponse(['files' => $files]);
     }
 
     /**
@@ -200,8 +200,20 @@ class MassUploadController
 
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), '{}');
 
-        $response = new JsonResponse(['result' => $result]);
+        return new JsonResponse(['result' => $result]);
+    }
 
-        return $response;
+    /**
+     * Clean a requested filename
+     *
+     * @param $filename
+     *
+     * @return string
+     */
+    protected function cleanFilename($filename)
+    {
+        $clean = basename(trim($filename));
+
+        return $clean;
     }
 }

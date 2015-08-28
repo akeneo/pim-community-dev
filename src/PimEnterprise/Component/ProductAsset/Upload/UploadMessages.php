@@ -12,11 +12,11 @@
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
 /**
- * Upload status
+ * Upload messages
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-final class UploadStatus
+final class UploadMessages
 {
     /** @var string */
     const STATUS_NEW = 'pimee_product_asset.mass_upload.new';
@@ -28,14 +28,14 @@ final class UploadStatus
     const STATUS_SCHEDULED = 'pimee_product_asset.mass_upload.scheduled';
 
     /** @var string */
-    const STATUS_ERROR_CODE = 'pimee_product_asset.mass_upload.error.code';
+    const ERROR_CODE = 'pimee_product_asset.mass_upload.error.code';
 
     /** @var string */
-    const STATUS_ERROR_LOCALE = 'pimee_product_asset.mass_upload.error.locale';
+    const ERROR_LOCALE = 'pimee_product_asset.mass_upload.error.locale';
 
     /** @var string */
-    const STATUS_ERROR_EXISTS = 'pimee_product_asset.mass_upload.error.exists';
+    const ERROR_EXISTS = 'pimee_product_asset.mass_upload.error.exists';
 
     /** @var string */
-    const STATUS_ERROR_CONFLICTS = 'pimee_product_asset.mass_upload.error.conflicts';
+    const ERROR_CONFLICTS = 'pimee_product_asset.mass_upload.error.conflicts';
 }

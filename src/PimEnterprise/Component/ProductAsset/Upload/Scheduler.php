@@ -66,14 +66,14 @@ class Scheduler implements SchedulerInterface
                 'error' => null,
             ];
             if (!$this->isValidScheduledFilename($storedFiles, $file)) {
-                $result['error'] = UploadStatus::STATUS_ERROR_CONFLICTS;
+                $result['error'] = UploadMessages::ERROR_CONFLICTS;
                 $files[]         = $result;
-                continue;
+            } else {
+                $filepath = $uploadDirectory . DIRECTORY_SEPARATOR . $file;
+                $newPath  = $scheduleDirectory . DIRECTORY_SEPARATOR . $file;
+                $fileSystem->rename($filepath, $newPath);
+                $files[] = $result;
             }
-            $filepath = $uploadDirectory . DIRECTORY_SEPARATOR . $file;
-            $newPath  = $scheduleDirectory . DIRECTORY_SEPARATOR . $file;
-            $fileSystem->rename($filepath, $newPath);
-            $files[] = $result;
         }
 
         return $files;
@@ -99,7 +99,7 @@ class Scheduler implements SchedulerInterface
     /**
      * Check for valid filename :
      * - code must be unique if not localized
-     * - two file with the same code, one localized, one not are invalid
+     * - if twos file exist with the same code, one localized, one not, then the two are invalid
      *
      * @param string[] $storedFiles
      * @param string   $filenameToCheck

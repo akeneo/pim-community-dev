@@ -54,6 +54,10 @@ class UploadContext
      */
     public function getTemporaryUploadDirectory()
     {
+        if (is_null($this->username)) {
+            throw new \RuntimeException('Username must be set to initialize the upload context');
+        }
+
         return $this->uploadDirectory . DIRECTORY_SEPARATOR . $this->username;
     }
 
@@ -62,6 +66,10 @@ class UploadContext
      */
     public function getTemporaryScheduleDirectory()
     {
+        if (is_null($this->username)) {
+            throw new \RuntimeException('Username must be set to initialize the upload context');
+        }
+
         return $this->scheduledDirectory . DIRECTORY_SEPARATOR . $this->username;
     }
 }

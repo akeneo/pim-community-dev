@@ -12,6 +12,9 @@
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Upload\Exception\DuplicateFileException;
+use PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidCodeException;
+use PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidLocaleException;
 
 /**
  * Check uploaded files
@@ -34,42 +37,25 @@ class UploadChecker implements UploadCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isError($uploadStatus)
-    {
-        $errorStatus = [
-            UploadStatus::STATUS_ERROR_CODE,
-            UploadStatus::STATUS_ERROR_LOCALE,
-            UploadStatus::STATUS_ERROR_EXISTS,
-            UploadStatus::STATUS_ERROR_CONFLICTS
-        ];
-
-        return in_array($uploadStatus, $errorStatus);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function checkFilename($filename, $tmpUploadDir, $tmpScheduleDir)
+    public function validateSchedule($filename, $tmpUploadDir, $tmpScheduleDir)
     {
         $parsedName = $this->parseFilename($filename);
 
-        if (null !== $parsedName['code']) {
-            $checkStatus = $this->checkWithExistingAsset($parsedName['code'], $parsedName['locale']);
-        } else {
-            return UploadStatus::STATUS_ERROR_CODE;
+        if (null === $parsedName['code']) {
+            throw new InvalidCodeException();
         }
+
+        $this->checkWithExistingAsset($parsedName['code'], $parsedName['locale']);
 
         $uploadPath = $tmpUploadDir . DIRECTORY_SEPARATOR . $filename;
         if (file_exists($uploadPath)) {
-            return UploadStatus::STATUS_ERROR_EXISTS;
+            throw new DuplicateFileException();
         }
 
         $schedulePath = $tmpScheduleDir . DIRECTORY_SEPARATOR . $filename;
         if (file_exists($schedulePath)) {
-            return UploadStatus::STATUS_ERROR_EXISTS;
+            throw new DuplicateFileException();
         }
-
-        return $checkStatus;
     }
 
     /**
@@ -105,24 +91,26 @@ class UploadChecker implements UploadCheckerInterface
      * @param string      $assetCode
      * @param string|null $localeCode
      *
-     * @return bool
+     * @throws InvalidLocaleException
+     *
+     * @return null
      */
     protected function checkWithExistingAsset($assetCode, $localeCode = null)
     {
-        $asset = $this->assetRepository->findOneByIdentifier($assetCode);
+        $asset = $this->assetRepository->findOneByCode($assetCode);
 
         if (null === $asset) {
-            return UploadStatus::STATUS_NEW;
+            return null;
         }
 
         $assetLocales = $asset->getLocales();
 
         if ((empty($assetLocales) && null === $localeCode) ||
-            (in_array($localeCode, array_keys($asset->getLocales())))
+            (in_array($localeCode, array_keys($assetLocales)))
         ) {
-            return UploadStatus::STATUS_UPDATED;
+            return null;
         }
 
-        return UploadStatus::STATUS_ERROR_LOCALE;
+        throw new InvalidLocaleException();
     }
 }

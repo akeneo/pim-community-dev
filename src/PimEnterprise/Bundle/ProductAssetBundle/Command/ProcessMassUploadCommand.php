@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetSaver;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor;
-use PimEnterprise\Component\ProductAsset\Upload\UploaderInterface;
+use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,10 +36,10 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
         $this
             ->setName('pim:product-asset:mass-upload')
             ->addOption(
-                'dir',
+                'user',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Source directory'
+                'Username to process'
             );
     }
 
@@ -51,29 +51,30 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
         $sourceDir = $input->getOption('dir');
         $processor = $this->getMassUploadProcessor();
 
-        $processor->getUploader()->setSubDirectory($sourceDir);
+        $context = $this->getUploadContext();
+        $context->setUsername($sourceDir);
 
-        $processedList = $processor->applyMassUpload();
+        $processedList = $processor->applyMassUpload($context);
 
         foreach ($processedList as $item) {
             $file = $item->getItem();
 
             switch ($item->getState()) {
                 case ProcessedItem::STATE_ERROR:
-                    $msg = sprintf('<error>%s\n%s</error>', $file->getFilename(), $item->getReason());
+                    $msg = sprintf("<error>%s\n%s</error>", $file->getFilename(), $item->getReason());
                     break;
                 case ProcessedItem::STATE_SKIPPED:
                     $msg = sprintf('%s <comment>Skipped (%s)</comment>', $file->getFilename(), $item->getReason());
                     break;
                 default:
-                    $msg = sprintf('%s <info>Done!</info>', $file->getFilename());
+                    $msg = sprintf('%s <info>processed</info>', $file->getFilename());
                     break;
             }
 
             $output->writeln($msg);
         }
 
-        $output->writeln('<info>Done!</info>');
+        $output->writeln('<info>Done !</info>');
 
         return 0;
     }
@@ -95,10 +96,10 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return UploaderInterface
+     * @return UploadContext
      */
-    protected function getUploader()
+    protected function getUploadContext()
     {
-        return $this->getContainer()->get('pimee_product_asset.uploader');
+        return $this->getContainer()->get('pimee_product_asset.upload_context');
     }
 }
