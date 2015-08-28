@@ -305,10 +305,10 @@ class EnterpriseAssetContext extends RawMinkContext
         $actionButton = null;
 
         if ('start' === $action) {
-            $actionButton = $this->getCurrentPage()->find('css', '.btn:contains("Start upload")');
+            $actionButton = $this->getCurrentPage()->find('css', '.btn:contains("start")');
         }
         if ('schedule' === $action) {
-            $actionButton = $this->getCurrentPage()->find('css', '.btn:contains("Schedule")');
+            $actionButton = $this->getCurrentPage()->find('css', '.btn:contains("schedule")');
         }
         if (!$actionButton) {
             throw new ElementNotFoundException($this->getSession(),

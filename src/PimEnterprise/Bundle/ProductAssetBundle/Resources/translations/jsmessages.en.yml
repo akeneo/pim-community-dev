@@ -28,8 +28,11 @@ pimee_product_asset:
         new: A new asset will be created
         scheduled: Files scheduled for asset processing
         canceled: Upload successfully canceled
-        cancel: Cancel
+        add_files: Add files
+        cancel: Cancel upload
         delete: Delete
+        schedule: Schedule
+        start: Start upload
         error:
             list: Cannot read already uploaded files
             upload: An error occured while uploading
@@ -38,6 +41,16 @@ pimee_product_asset:
             locale: An asset exists but is not localizable
             exists: A file with the same name is already scheduled for upload
             conflicts: File names conflict
+        grid:
+            medias: medias
+            filename: filename
+            filetype: filetype
+            status: status
+            progress: progress
+            actions: actions
+        action:
+            cancel: Cancel
+            delete: Delete
 pim_dashboard:
   widget:
     last_operations:

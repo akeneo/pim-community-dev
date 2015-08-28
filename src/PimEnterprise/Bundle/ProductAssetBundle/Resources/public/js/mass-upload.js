@@ -7,6 +7,7 @@ define(
         'routing',
         'pim/dropzonejs',
         'oro/messenger',
+        'text!pimee/template/asset/mass-upload',
         'text!pimee/template/asset/mass-upload-row'
     ],
     function (
@@ -16,6 +17,7 @@ define(
         Routing,
         Dropzone,
         messenger,
+        pageTemplate,
         rowTemplate
     ) {
         /**
@@ -33,17 +35,17 @@ define(
         Dropzone.autoDiscover = false;
 
         return Backbone.View.extend({
-            el: '.mass-upload-wrapper',
             myDropzone: null,
-            template: _.template(rowTemplate),
+            pageTemplate: _.template(pageTemplate),
+            rowTemplate: _.template(rowTemplate),
 
-            initialize: function () {
+            initializeDropzone: function () {
                 var myDropzone = new Dropzone(document.body, {
                     url: Routing.generate('pimee_product_asset_upload'),
                     thumbnailWidth: 70,
                     thumbnailHeight: 70,
                     parallelUploads: 4,
-                    previewTemplate: this.template(),
+                    previewTemplate: this.rowTemplate(),
                     autoQueue: false,
                     previewsContainer: 'tbody',
                     clickable: '.fileinput-button',
@@ -138,6 +140,12 @@ define(
                 'click .navbar-buttons .start': 'startAll',
                 'click .navbar-buttons .cancel': 'cancelAll',
                 'click .navbar-buttons .schedule': 'scheduleAll'
+            },
+
+            render: function () {
+                this.$el.html(this.pageTemplate());
+                this.initializeDropzone();
+                return this;
             },
 
             /**

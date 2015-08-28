@@ -53,18 +53,18 @@ Feature: Mass uploads assets
     And I select the assets to upload:
       | name        |
       | akeneo.jpg  |
-    And I press the "Cancel" button
+    And I press the "cancel" button
     Then I should not see "akeneo.jpg"
-    And I should not see "Schedule"
+    And I should not see "schedule"
     When I select the assets to upload:
       | name        |
       | akeneo.jpg  |
     And I start assets mass upload
     Then I should see "SUCCESS" for asset "akeneo.jpg"
-    And I should see "Schedule"
+    And I should see "schedule"
     When I press the "delete" button
     Then I should not see "akeneo.jpg"
-    And I should not see "Schedule"
+    And I should not see "schedule"
     When I select the assets to upload:
       | name              |
       | akeneo.jpg        |
@@ -72,11 +72,11 @@ Feature: Mass uploads assets
     And I start assets mass upload
     Then I should see "SUCCESS" for asset "akeneo.jpg"
     And I should see "SUCCESS" for asset "akeneo2.jpg"
-    And I should see "Schedule"
-    When I press the "Cancel upload" button
+    And I should see "schedule"
+    When I press the "cancel" button
     Then I should not see "akeneo.jpg"
     And I should not see "akeneo2.jpg"
-    And I should not see "Schedule"
+    And I should not see "schedule"
 
   Scenario: Complete mass upload
     And I am on the asset mass upload page
@@ -85,7 +85,7 @@ Feature: Mass uploads assets
       | akeneo.jpg  |
       | akeneo2.jpg  |
     And I start assets mass upload
-    And I press the "Schedule" button
+    And I press the "schedule" button
     And I wait 2 seconds
     Then I should not see "akeneo.jpg"
     And I should not see "akeneo2.jpg"
