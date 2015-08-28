@@ -38,10 +38,10 @@ class TagStepSpec extends ObjectBehavior
     ) {
         $value = [
             'code' => 'mycode',
-            'localized' => 0,
+            'localized'   => 0,
             'description' => 'My awesome description',
-            'qualification' => 'dog,flowers,cities,animal,sunset',
-            'end_of_use' => '2018-02-01',
+            'tags'        => 'dog,flowers,cities,animal,sunset',
+            'end_of_use'  => '2018-02-01',
         ];
 
         $csvReader->read()->willReturn($value, null);

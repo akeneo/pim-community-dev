@@ -16,6 +16,7 @@ class AssetNormalizerSpec extends ObjectBehavior
     {
         $normalizedValues = [
             'code'        => 'code',
+            'localized'   => 0,
             'description' => 'my description',
             'enabled'     => true,
             'end_of_use'  => '2010-10-10',
@@ -25,6 +26,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $asset->getDescription()->willReturn('my description');
         $asset->isEnabled()->willReturn(true);
         $asset->getEndOfUseAt()->willReturn(new \Datetime('2010-10-10'));
+        $asset->isLocalizable()->willReturn(false);
 
         $this->normalize($asset)->shouldReturn($normalizedValues);
     }

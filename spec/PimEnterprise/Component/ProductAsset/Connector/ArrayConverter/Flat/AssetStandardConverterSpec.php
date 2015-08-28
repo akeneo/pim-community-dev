@@ -13,7 +13,7 @@ class AssetStandardConverterSpec extends ObjectBehavior
             'code'          => 'mycode',
             'localized'     => 0,
             'description'   => 'My awesome description',
-            'qualification' => 'dog,flowers',
+            'tags'          => 'dog,flowers',
             'categories'    => 'cat1,cat2,cat3',
             'end_of_use'    => '2018-02-01',
         ];
@@ -53,11 +53,11 @@ class AssetStandardConverterSpec extends ObjectBehavior
     function it_throws_an_exception_if_required_field_localized_does_not_contain_valid_value()
     {
         $fields = [
-            'code'          => 'mycode',
-            'localized'     => 'y',
-            'description'   => 'My awesome description',
-            'qualification' => 'dog,flowers',
-            'end_of_use'    => '2018-02-01',
+            'code'        => 'mycode',
+            'localized'   => 'y',
+            'description' => 'My awesome description',
+            'tags'        => 'dog,flowers',
+            'end_of_use'  => '2018-02-01',
         ];
 
         $this->shouldThrow(

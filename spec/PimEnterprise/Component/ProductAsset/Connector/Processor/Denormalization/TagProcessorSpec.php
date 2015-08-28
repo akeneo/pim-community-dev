@@ -135,11 +135,11 @@ class TagProcessorSpec extends ObjectBehavior
     {
         return [
             'original_values'  => [
-                'code'          => 'mycode',
-                'localized'     => 0,
-                'description'   => 'My awesome description',
-                'qualification' => 'dog,flowers',
-                'end_of_use'    => '2018/02/01',
+                'code'        => 'mycode',
+                'localized'   => 0,
+                'description' => 'My awesome description',
+                'tags'        => 'dog,flowers',
+                'end_of_use'  => '2018/02/01',
             ],
             'converted_values' => [
                 'code'        => 'mycode',

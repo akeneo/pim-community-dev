@@ -66,6 +66,11 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
     public function getLocales();
 
     /**
+     * @return bool
+     */
+    public function isLocalizable();
+
+    /**
      * @param ArrayCollection of ReferenceInterface $references
      *
      * @return AssetInterface
@@ -176,9 +181,4 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
      * @return FileInterface|null
      */
     public function getFileForContext(ChannelInterface $channel, LocaleInterface $locale = null);
-
-    /**
-     * @return bool
-     */
-    public function isLocalizable();
 }

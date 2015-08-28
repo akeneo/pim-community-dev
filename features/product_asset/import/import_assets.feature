@@ -9,7 +9,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     car;images;0;Photo of a car.;car,cities;2006-05-12
     landscape;other;1;This is a beautiful landscape!;landscape,cities,flowers;
     """
@@ -37,7 +37,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     paint;other;0;New description of my paint.;car,cities,vintage,awesome;2006-05-12
     akene;images;1;Beautiful akene;cities,flowers,akeneo;
     """
@@ -48,7 +48,7 @@ Feature: Import assets
     And I wait for the "clothing_asset_import" job to finish
     Then there should be the following assets:
       | code  | description                  | tags                       | categories |
-      | paint | New description of my paint. | awesome,car,cities,vintage | other     |
+      | paint | New description of my paint. | awesome,car,cities,vintage | other      |
       | akene | Beautiful akene              | akeneo,cities,flowers      | images     |
     Then I should see "read lines 2"
     And I should see "created 5"
@@ -59,7 +59,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    categories;localized;description;qualification;end_of_use
+    categories;localized;description;tags;end_of_use
     images;0;New description of my paint.;car,cities;2006-05-12
     other;1;Beautiful akene;cities,flowers,akeneo;
     """
@@ -68,14 +68,14 @@ Feature: Import assets
     When I am on the "clothing_asset_import" import job page
     And I launch the import job
     And I wait for the "clothing_asset_import" job to finish
-    And I should see "Field \"code\" is expected, provided fields are \"categories, localized, description, qualification, end_of_use\""
+    And I should see "Field \"code\" is expected, provided fields are \"categories, localized, description, tags, end_of_use\""
 
   Scenario: Import asset file with missing required localized header
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;description;qualification;end_of_use
+    code;categories;description;tags;end_of_use
     paint;other;New description of my paint.;car,cities;2006-05-12
     akene;images;Beautiful akene;cities,flowers,akeneo;
     """
@@ -84,14 +84,14 @@ Feature: Import assets
     When I am on the "clothing_asset_import" import job page
     And I launch the import job
     And I wait for the "clothing_asset_import" job to finish
-    And I should see "Field \"localized\" is expected, provided fields are \"code, categories, description, qualification, end_of_use\""
+    And I should see "Field \"localized\" is expected, provided fields are \"code, categories, description, tags, end_of_use\""
 
   Scenario: Import asset with missing value for code field
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     ;image;0;New description of my paint.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -106,8 +106,8 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
-    invliad#$%;images;0;New description of my paint.;car,cities;2006-05-12
+    code;categories;localized;description;tags;end_of_use
+    invalid#$%;images;0;New description of my paint.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
       | filePath | %file to import% |
@@ -121,7 +121,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     code;pack;;New description of my paint.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -136,7 +136,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     code;3quart;Y;New description of my paint.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -151,7 +151,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     code;audio;0;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer venenatis pulvinar accumsan. Nam in leo ut turpis molestie ultricies. Fusce eget nulla fermentum turpis laoreet feugiat vel dapibus massa. Aenean nisi arcu, pulvinar ac dolor non, porttitor faucibus nulla. Maecenas mattis mauris in nulla tincidunt consectetur. Cras sem nisl, aliquet eu quam quis, euismod iaculis mauris. Fusce luctus sodales sodales. Phasellus non purus quis neque tristique tristique sed sit amet est. Mauris at lacus posuere.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -168,7 +168,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     code;images;0;New description of my paint.;car,cities;2006/05/12
     """
     And the following job "clothing_asset_import" configuration:
@@ -185,7 +185,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     car;wrong;0;Photo of a car.;car,cities;2006-05-12
     landscape;not a category;1;This is a beautiful landscape!;landscape,cities,flowers;
     """
@@ -205,7 +205,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     car;images,other,prioritized_images;0;Photo of a car.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:
@@ -214,12 +214,12 @@ Feature: Import assets
     And I launch the import job
     And I wait for the "clothing_asset_import" job to finish
     Then there should be the following assets:
-      | code      | description     | categories                      |
-      | car       | Photo of a car. | images,other,prioritized_images |
+      | code | description     | categories                      |
+      | car  | Photo of a car. | images,other,prioritized_images |
     Then there should be the following tags:
-      | code      |
-      | car       |
-      | cities    |
+      | code   |
+      | car    |
+      | cities |
     Then I should see "read lines 1"
     And I should see "created 2"
     And I should see "created 1"
@@ -229,7 +229,7 @@ Feature: Import assets
     And I am logged in as "Peter"
     And the following CSV file to import:
     """
-    code;categories;localized;description;qualification;end_of_use
+    code;categories;localized;description;tags;end_of_use
     car;images,nonexistent,prioritized_images;0;Photo of a car.;car,cities;2006-05-12
     """
     And the following job "clothing_asset_import" configuration:

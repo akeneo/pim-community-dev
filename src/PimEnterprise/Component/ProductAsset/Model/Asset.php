@@ -119,6 +119,30 @@ class Asset implements AssetInterface
     /**
      * {@inheritdoc}
      */
+    public function getLocales()
+    {
+        $locales = [];
+
+        foreach ($this->getReferences() as $reference) {
+            if (null !== $reference->getLocale()) {
+                $locales[$reference->getLocale()->getCode()] = $reference->getLocale();
+            }
+        }
+
+        return $locales;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isLocalizable()
+    {
+        return count($this->getReferences()) > 1;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setReferences(ArrayCollection $references)
     {
         $this->references = $references;
@@ -298,6 +322,32 @@ class Asset implements AssetInterface
     }
 
     /**
+     * Look for the variation corresponding to the specified channel and return its file.
+     * If the asset is localizable the search will be done in the variations of the specified locale. If no locale is
+     * specified, the first reference found will be used.
+     * If the reference has no variations or variation files are not generated, return null.
+     *
+     * {@inheritdoc}
+     */
+    public function getFileForContext(ChannelInterface $channel, LocaleInterface $locale = null)
+    {
+        $reference = $this->getReference($locale);
+        if (null === $reference) {
+            $reference = $this->getReference();
+        }
+
+        if (null === $reference) {
+            return null;
+        }
+
+        if (null !== $variation = $reference->getVariation($channel)) {
+            return $variation->getFile();
+        }
+
+        return null;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getSortOrder()
@@ -407,51 +457,5 @@ class Asset implements AssetInterface
         sort($codes);
 
         return implode(',', $codes);
-    }
-
-    /**
-     * @return LocaleInterface[]
-     */
-    public function getLocales()
-    {
-        $locales = [];
-
-        foreach ($this->getReferences() as $reference) {
-            if (null !== $reference->getLocale()) {
-                $locales[$reference->getLocale()->getCode()] = $reference->getLocale();
-            }
-        }
-
-        return $locales;
-    }
-
-    /**
-     * Look for the variation corresponding to the specified channel and return its file.
-     * If the asset is localizable the search will be done in the variations of the specified locale.
-     * If the reference has no variations or variation files are not generated, return null.
-     *
-     * {@inheritdoc}
-     */
-    public function getFileForContext(ChannelInterface $channel, LocaleInterface $locale = null)
-    {
-        $reference = $this->getReference($locale);
-
-        if (null === $reference) {
-            return null;
-        }
-
-        if (null !== $variation = $reference->getVariation($channel)) {
-            return $variation->getFile();
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isLocalizable()
-    {
-        return 1 < count($this->getReferences());
     }
 }
