@@ -34,5 +34,6 @@ class PimNotificationExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('repositories.yml');
         $loader->load('twig.yml');
+        $loader->load('update.yml');
     }
 }
