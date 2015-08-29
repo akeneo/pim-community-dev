@@ -8,7 +8,7 @@ define(
              * @return {Object}
              */
             fetch: function () {
-                $.getJSON(Routing.generate('pim_notification_version_collect_data'))
+                $.getJSON(Routing.generate('pim_notification_update_collect_data'))
                     .done(function(updateData) {
                         $.getJSON(updateData.update_url)
                             .done(function(versionData) {
