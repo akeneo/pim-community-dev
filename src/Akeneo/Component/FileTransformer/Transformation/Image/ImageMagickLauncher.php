@@ -56,7 +56,7 @@ class ImageMagickLauncher
 
         exec($cmd, $output, $status);
 
-         if (0 !== $status) {
+        if (0 !== $status) {
             throw new GenericTransformationException(implode(',', $output));
         }
     }

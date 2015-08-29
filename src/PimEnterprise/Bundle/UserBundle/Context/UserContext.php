@@ -130,11 +130,11 @@ class UserContext extends BaseUserContext
      */
     public function getAccessibleUserTree()
     {
-//        TODO: uncomment with PIM-4736
-//        $defaultTree = $this->getUserOption('defaultTree');
-//        if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $defaultTree)) {
-//            return $defaultTree;
-//        }
+        // TODO: uncomment with PIM-4736
+        // $defaultTree = $this->getUserOption('defaultTree');
+        // if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $defaultTree)) {
+        //     return $defaultTree;
+        // }
 
         $grantedCategoryIds = $this->getGrantedCategories();
         $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);
