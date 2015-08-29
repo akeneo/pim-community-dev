@@ -1,1 +1,31 @@
-<strong>{{ 'pim_dashboard.version'|trans }}:</strong> {{ version() }}
+
+<script type="application/javascript">
+    require(
+        ['jquery', 'underscore', 'routing'],
+        function ($, _, Routing) {
+            'use strict';
+
+            $.getJSON(Routing.generate('pim_notification_version_collect_data'))
+                .done(function(updateData) {
+                    $.getJSON(updateData.update_url)
+                        .done(function(versionData) {
+                            var lastPatch = _.first(versionData);
+                            console.log(lastPatch);
+                            $('.new-patch').first().append(lastPatch.name);
+                        })
+                        .fail(function( jqxhr, textStatus, error ) {
+                            var err = textStatus + ", " + error;
+                            console.log( "Request Failed: " + err );
+                        });
+                })
+                .fail(function( jqxhr, textStatus, error ) {
+                    var err = textStatus + ", " + error;
+                    console.log( "Request Failed: " + err );
+                });
+        }
+    );
+</script>
+
+
+<strong>{{ 'pim_dashboard.version'|trans }}:</strong><span class="current-version">{{ version() }}</span>
+<strong>{{ 'pim_dashboard.last_patch'|trans }}:</strong><span class="new-patch"></span>

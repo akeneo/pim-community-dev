@@ -1,5 +1,6 @@
 parameters:
     pim_notification.controller.notification.class: Pim\Bundle\NotificationBundle\Controller\NotificationController
+    pim_notification.controller.version.class:      Pim\Bundle\NotificationBundle\Controller\VersionController
 
 services:
     pim_notification.controller.notification:
@@ -8,3 +9,9 @@ services:
             - '@templating'
             - '@pim_notification.manager.notification'
             - '@pim_user.context.user'
+
+    pim_notification.controller.version:
+        class: %pim_notification.controller.version.class%
+        arguments:
+            - '@security.token_storage'
+            - '%pim_notification_update_server_url%'

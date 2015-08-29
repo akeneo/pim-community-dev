@@ -1,0 +1,11 @@
+parameters:
+    pim_notification.update.data_collector.class: Pim\Bundle\NotificationBundle\Update\DataCollector
+
+services:
+    pim_notification.update.data_collector:
+        class: %pim_notification.update.data_collector.class%
+        arguments:
+            - '@pim_notification.manager.notification'
+            - '@pim_user.context.user'
+        tags:
+            - { name: twig.extension }

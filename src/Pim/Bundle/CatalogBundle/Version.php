@@ -15,5 +15,8 @@ class Version
     const VERSION = '1.4.0-BETA2';
 
     /** @staticvar string */
+    const EDITION = 'CE';
+
+    /** @staticvar string */
     const VERSION_CODENAME = '';
 }
