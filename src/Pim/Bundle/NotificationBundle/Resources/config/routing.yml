@@ -19,3 +19,7 @@ pim_notification_notification_remove:
     requirements:
         id: \d+
         _method: DELETE
+
+pim_notification_version_collect_data:
+    path: /version/collect_data
+    defaults: { _controller: pim_notification.controller.version:collectDataAction, _format: json }
