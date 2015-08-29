@@ -1,6 +1,7 @@
 pim_dashboard:
     title: Dashboard
     version: Version
+    last_patch_available: Last patch available
 
     link.label:
         product:   Manage Products

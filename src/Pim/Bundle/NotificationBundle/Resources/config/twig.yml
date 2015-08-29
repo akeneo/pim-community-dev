@@ -1,5 +1,6 @@
 parameters:
     pim_notification.twig.notification_extension.class: Pim\Bundle\NotificationBundle\Twig\NotificationExtension
+    pim_notification.twig.update_extension.class:       Pim\Bundle\NotificationBundle\Twig\UpdateExtension
 
 services:
     pim_notification.twig.notification_extension:
@@ -7,5 +8,12 @@ services:
         arguments:
             - '@pim_notification.manager.notification'
             - '@pim_user.context.user'
+        tags:
+            - { name: twig.extension }
+
+    pim_notification.twig.update_extension:
+        class: %pim_notification.twig.update_extension.class%
+        arguments:
+            - '@oro_config.global'
         tags:
             - { name: twig.extension }
