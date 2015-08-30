@@ -1,12 +1,13 @@
 CHANGELOG
 =========
 
-0.4.x
------
+0.4.3 (2015-08-30)
+------------------
 
 ### Bug fixes
 
 - PIM-4678: Remove execution detail in mail notifications
+- Remove execution detail in mail notifications
 
 ### Improvements
 
