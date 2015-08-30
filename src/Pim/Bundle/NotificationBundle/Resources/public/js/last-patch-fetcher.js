@@ -21,6 +21,7 @@ define(
                                 var err = textStatus + ", " + error;
                                 console.log( "Request Failed: " + err );
                             });
+                            // TODO: how to properly handle 404 and CORS?
                     })
                     // TODO: how to properly handle this?
                     .fail(function( jqxhr, textStatus, error ) {

@@ -1,0 +1,15 @@
+{% if last_patch_is_enabled() %}
+    <strong>{{ 'pim_dashboard.last_patch_available'|trans }}:</strong><span class="last-patch-available"></span>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/last-patch-fetcher'],
+            function ($, Fetcher) {
+                $(function() {
+                    Fetcher.fetch();
+                    // TODO fetch only the version, store it in session storage and re-use it
+                });
+            }
+        );
+    </script>
+{% endif %}
