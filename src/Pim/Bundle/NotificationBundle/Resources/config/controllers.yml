@@ -13,5 +13,4 @@ services:
     pim_notification.controller.update:
         class: %pim_notification.controller.update.class%
         arguments:
-            - '%pim_notification_update_server_url%'
-            - '@pim_notification.update.chained_data_collector'
+            - '@pim_notification.update.update_url_generator'

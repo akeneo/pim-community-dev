@@ -3,16 +3,14 @@
 namespace spec\Pim\Bundle\NotificationBundle\Update;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class VersionDataCollectorSpec extends ObjectBehavior
 {
-    function let()
+    function let(VersionProviderInterface $versionProvider)
     {
-        $this->beConstructedWith('doctrine/orm');
+        $this->beConstructedWith($versionProvider, 'doctrine/orm');
     }
 
     function it_is_initializable()
@@ -21,8 +19,16 @@ class VersionDataCollectorSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\NotificationBundle\Update\DataCollectorInterface');
     }
 
-    function it_collects_pim_version_edition_and_storage_driver()
+    function it_collects_pim_version_edition_and_storage_driver($versionProvider)
     {
-        $this->collect()->shouldHaveCount(3);
+        $versionProvider->getPatch()->willReturn('1.4.0');
+        $versionProvider->getEdition()->willReturn('CE');
+        $this->collect()->shouldReturn(
+            [
+                'pim_edition'        => 'CE',
+                'pim_version'        => '1.4.0',
+                'pim_storage_driver' => 'doctrine/orm'
+            ]
+        );
     }
 }

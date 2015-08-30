@@ -4,8 +4,10 @@ parameters:
     pim_notification.update.token_storage_data_collector.class:    Pim\Bundle\NotificationBundle\Update\TokenStorageDataCollector
     pim_notification.update.operating_system_data_collector.class: Pim\Bundle\NotificationBundle\Update\OperatingSystemDataCollector
     pim_notification.update.version_data_collector.class:          Pim\Bundle\NotificationBundle\Update\VersionDataCollector
+    pim_notification.update.update_url_generator.class:            Pim\Bundle\NotificationBundle\Update\UpdateUrlGenerator
 
 services:
+    # data collectors
     pim_notification.update.chained_data_collector:
         class: %pim_notification.update.chained_data_collector.class%
 
@@ -31,6 +33,15 @@ services:
     pim_notification.update.version_data_collector:
         class: %pim_notification.update.version_data_collector.class%
         arguments:
+            - '@pim_catalog.version_provider'
             - '%pim_catalog_product_storage_driver%'
         tags:
             - { name: pim_notification.update.data_collector }
+
+    # url generator
+    pim_notification.update.update_url_generator:
+        class: %pim_notification.update.update_url_generator.class%
+        arguments:
+            - '@pim_notification.update.chained_data_collector'
+            - '@pim_catalog.version_provider'
+            - '%pim_notification_update_server_url%'

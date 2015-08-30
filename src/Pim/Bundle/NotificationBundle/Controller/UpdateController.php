@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\NotificationBundle\Controller;
 
-use Pim\Bundle\NotificationBundle\Update\DataCollectorInterface;
+use Pim\Bundle\NotificationBundle\Update\UpdateUrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Pim\Bundle\CatalogBundle\Version;
 
 /**
  * New version controller
@@ -16,37 +15,27 @@ use Pim\Bundle\CatalogBundle\Version;
  */
 class UpdateController
 {
-    /** @var $updateServerUrl */
-    protected $updateServerUrl;
+    /** @var UpdateUrlGeneratorInterface */
+    protected $urlGenerator;
 
     /**
-     * @param string                $updateServerUrl
+     * @param UpdateUrlGeneratorInterface $urlGenerator
      */
-    public function __construct($updateServerUrl, DataCollectorInterface $collector)
+    public function __construct(UpdateUrlGeneratorInterface $urlGenerator)
     {
-        $this->updateServerUrl = $updateServerUrl;
-        $this->collector       = $collector;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
-     * Collects data required to fetch new version
+     * Provides url to call to fetch new versions
      *
      * @param Request $request
      *
      * @return JsonResponse
      */
-    public function collectDataAction(Request $request)
+    public function generateUrlAction(Request $request)
     {
-        $data = $this->collector->collect();
-
-        $minorVersion = Version::getMinor();
-        $minorVersionKey = sprintf('%s-%s', Version::EDITION, $minorVersion);
-        $queryParams = http_build_query($data);
-        $updateUrl = sprintf('%s/%s?%s', $this->updateServerUrl, $minorVersionKey, $queryParams);
-
-        $response = [
-            'update_url' => $updateUrl
-        ];
+        $response = ['update_url' => $this->urlGenerator->generateAvailablePatchsUrl()];
 
         return new JsonResponse($response);
     }
