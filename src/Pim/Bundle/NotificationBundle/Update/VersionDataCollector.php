@@ -1,7 +1,8 @@
 <?php
 
 namespace Pim\Bundle\NotificationBundle\Update;
-use Pim\Bundle\CatalogBundle\Version;
+
+use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 
 /**
  * Class OperatingSystemDataCollector
@@ -12,13 +13,20 @@ use Pim\Bundle\CatalogBundle\Version;
  */
 class VersionDataCollector implements DataCollectorInterface
 {
+    /** @var VersionProviderInterface */
+    protected $versionProvider;
+
     /** @var string */
     protected $catalogStorage;
 
-    /** @param string $catalogStorage */
-    public function __construct($catalogStorage)
+    /**
+     * @param VersionProviderInterface $versionProvider
+     * @param string                   $catalogStorage
+     */
+    public function __construct(VersionProviderInterface $versionProvider, $catalogStorage)
     {
-        $this->catalogStorage = $catalogStorage;
+        $this->versionProvider = $versionProvider;
+        $this->catalogStorage  = $catalogStorage;
     }
 
     /**
@@ -27,8 +35,8 @@ class VersionDataCollector implements DataCollectorInterface
     public function collect()
     {
         return [
-            'pim_edition' => Version::EDITION,
-            'pim_version' => Version::VERSION,
+            'pim_edition'        => $this->versionProvider->getEdition(),
+            'pim_version'        => $this->versionProvider->getPatch(),
             'pim_storage_driver' => $this->catalogStorage
         ];
     }
