@@ -16,7 +16,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.4.x-dev",
+        "akeneo/pim-community-dev": "dev-PIM-4345-versions-update",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "phpspec/php-diff": "1.0.2"
