@@ -1,4 +1,4 @@
-# 0.4.x-dev
+# 0.4.0 (2015-08-30)
  - fix deprecated use of Yaml:parse() to allow Symfony upgrade
 
 # 0.2.4 (2014-11-07)
