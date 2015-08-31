@@ -2,7 +2,6 @@ parameters:
     pim_enrich.event_listener.user_context.class:               Pim\Bundle\EnrichBundle\EventListener\UserContextListener
     pim_enrich.event_listener.request.class:                    Pim\Bundle\EnrichBundle\EventListener\RequestListener
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
-    pim_enrich.event_listener.kernel_exception.class:           Pim\Bundle\EnrichBundle\EventListener\KernelExceptionListener
 
 services:
     # User context listener
@@ -27,10 +26,3 @@ services:
             - '@translator'
         tags:
             - { name: kernel.event_subscriber }
-
-    pim_enrich.event_listener.kernel_exception:
-        class: %pim_enrich.event_listener.kernel_exception.class%
-        arguments:
-            - '@templating'
-        tags:
-            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }

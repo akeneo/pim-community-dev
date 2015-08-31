@@ -53,8 +53,8 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator'],
-                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator) {
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error'],
+                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator, Error) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
                                         ProductManager.get('{{ productId }}')
@@ -70,12 +70,8 @@
                                                         form.setElement('#product-edit-form').render();
                                                     });
                                             }).fail(function(response, textStatus, errorThrown) {
-                                                switch (response.status) {
-                                                    case 400:
-                                                    case 403:
-                                                        Dialog.alert(_.__('pim_enrich.alert.not_allowed'));
-                                                        break;
-                                                }
+                                                var errorView = new Error(response.responseJSON.message, response.status);
+                                                errorView.setElement('#product-edit-form').render();
                                             });
                                     })
                                 });
