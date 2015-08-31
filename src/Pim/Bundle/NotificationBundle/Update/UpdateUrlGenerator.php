@@ -38,7 +38,7 @@ class UpdateUrlGenerator implements UpdateUrlGeneratorInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function generateAvailablePatchsUrl()
     {
