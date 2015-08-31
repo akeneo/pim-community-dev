@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Pim\Bundle\NotificationBundle\Update;
 
 /**
- * Class DataCollectorInterface
+ * Interface DataCollectorInterface
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

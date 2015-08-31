@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Pim\Bundle\NotificationBundle\Update;
 
 /**

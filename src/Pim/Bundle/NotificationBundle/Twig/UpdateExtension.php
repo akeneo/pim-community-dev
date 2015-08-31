@@ -17,8 +17,6 @@ class UpdateExtension extends \Twig_Extension
     protected $configManager;
 
     /**
-     * Constructor
-     *
      * @param ConfigManager $configManager
      */
     public function __construct(ConfigManager $configManager)

@@ -5,7 +5,7 @@ namespace Pim\Bundle\NotificationBundle\Update;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 
 /**
- * Class OperatingSystemDataCollector
+ * Class VersionDataCollector
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
