@@ -7,10 +7,9 @@
             function ($, Fetcher) {
                 $(function() {
                     var updateServerUrl = "{{ get_update_server_url() }}";
-                    Fetcher.fetch(updateServerUrl).then(function (patchData) {
-                        $('.last-patch-available:first').append(patchData.last_patch.name);
+                    Fetcher.fetch(updateServerUrl).then(function (patch) {
+                        $('.last-patch-available:first').text(patch);
                     });
-                    // TODO fetch only the version, store it in session storage and re-use it
                 });
             }
         );
