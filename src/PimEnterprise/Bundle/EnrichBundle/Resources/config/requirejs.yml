@@ -10,6 +10,7 @@ config:
                     options:
                         urls:
                             list: pimee_security_permissions_rest
+
     map:
         '*':
             pim/product-manager: pimee/product-manager
