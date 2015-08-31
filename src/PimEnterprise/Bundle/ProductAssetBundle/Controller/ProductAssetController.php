@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 use Akeneo\Component\FileStorage\FileFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageHeightException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
@@ -643,6 +644,7 @@ class ProductAssetController extends Controller
 
         if ($items->hasItemInState(ProcessedItem::STATE_ERROR)) {
             foreach ($items->getItemsInState(ProcessedItem::STATE_ERROR) as $item) {
+                $flashParameters = ['%channel%' => $item->getItem()->getChannel()->getCode()];
                 switch (true) {
                     case $item->getException() instanceof InvalidOptionsTransformationException:
                         $flash = 'pimee_product_asset.enrich_variation.flash.transformation.invalid_options';
@@ -656,11 +658,16 @@ class ProductAssetController extends Controller
                     case $item->getException() instanceof GenericTransformationException:
                         $flash = 'pimee_product_asset.enrich_variation.flash.transformation.not_applicable';
                         break;
+                    case $item->getException() instanceof NonRegisteredTransformationException:
+                        $flash = 'pimee_product_asset.enrich_variation.flash.transformation.non_registered';
+                        $flashParameters['%transformation%'] = $item->getException()->getTransformation();
+                        $flashParameters['%mimeType%'] = $item->getException()->getMimeType();
+                        break;
                     default:
-                        $flash = 'pimee_product_asset.enrich_variation.transformation.variation.error';
+                        $flash = 'pimee_product_asset.enrich_variation.flash.transformation.error';
                         break;
                 }
-                $this->addFlashMessage('error', $flash, ['%channel%' => $item->getItem()->getChannel()->getCode()]);
+                $this->addFlashMessage('error', $flash, $flashParameters);
             }
         } elseif ($items->hasItemInState(ProcessedItem::STATE_SUCCESS)) {
             $this->addFlashMessage('success', 'pimee_product_asset.enrich_variation.flash.transformation.success');

@@ -72,6 +72,8 @@ class TransformationRegistrySpec extends ObjectBehavior
 
         $this->shouldThrow(
             new NonRegisteredTransformationException(
+                'resize',
+                'image/png',
                 'No "resize" transformation registered for the mime type "image/png".'
             )
         )->duringGet('resize', 'image/png');

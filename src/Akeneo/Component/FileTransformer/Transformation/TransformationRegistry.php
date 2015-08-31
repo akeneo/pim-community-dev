@@ -78,6 +78,8 @@ class TransformationRegistry
         }
 
         throw new NonRegisteredTransformationException(
+            $name,
+            $mimeType,
             sprintf('No "%s" transformation registered for the mime type "%s".', $name, $mimeType)
         );
     }
