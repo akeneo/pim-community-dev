@@ -1,11 +1,11 @@
 parameters:
-    pim_notification.twig.update_extension.class: Pim\Bundle\AnalyticsBundle\Twig\UpdateExtension
+    pim_analytics.twig.update_extension.class: Pim\Bundle\AnalyticsBundle\Twig\UpdateExtension
 
 services:
-    pim_notification.twig.update_extension:
-        class: %pim_notification.twig.update_extension.class%
+    pim_analytics.twig.update_extension:
+        class: %pim_analytics.twig.update_extension.class%
         arguments:
             - '@oro_config.global'
-            - '@pim_notification.update.update_url_generator'
+            - '@pim_analytics.url_generator.last_patch'
         tags:
             - { name: twig.extension }

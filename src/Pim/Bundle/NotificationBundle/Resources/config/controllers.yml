@@ -1,6 +1,5 @@
 parameters:
     pim_notification.controller.notification.class: Pim\Bundle\NotificationBundle\Controller\NotificationController
-    pim_notification.controller.update.class:       Pim\Bundle\NotificationBundle\Controller\UpdateController
 
 services:
     pim_notification.controller.notification:
@@ -9,8 +8,3 @@ services:
             - '@templating'
             - '@pim_notification.manager.notification'
             - '@pim_user.context.user'
-
-    pim_notification.controller.update:
-        class: %pim_notification.controller.update.class%
-        arguments:
-            - '@pim_notification.update.update_url_generator'

@@ -39,4 +39,4 @@ parameters:
 
     security.exception_listener.class: Pim\Bundle\UserBundle\Security\FirewallExceptionListener
 
-    pim_notification_update_server_url: http://update.local
+    pim_analytics_update_server_url: http://update.local

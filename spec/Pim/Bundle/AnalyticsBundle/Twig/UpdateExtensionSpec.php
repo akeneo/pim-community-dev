@@ -4,12 +4,12 @@ namespace spec\Pim\Bundle\AnalyticsBundle\Twig;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\AnalyticsBundle\UrlGenerator\UpdateUrlGeneratorInterface;
+use Pim\Bundle\AnalyticsBundle\UrlGenerator\UrlGeneratorInterface;
 use Prophecy\Argument;
 
 class UpdateExtensionSpec extends ObjectBehavior
 {
-    function let(ConfigManager $configManager, UpdateUrlGeneratorInterface $urlGenerator)
+    function let(ConfigManager $configManager, UrlGeneratorInterface $urlGenerator)
     {
         $this->beConstructedWith($configManager, $urlGenerator);
     }
@@ -28,7 +28,7 @@ class UpdateExtensionSpec extends ObjectBehavior
 
     function it_provides_last_patch_url_should_be_fetched($urlGenerator)
     {
-        $urlGenerator->generateAvailablePatchsUrl()->willReturn('http://test/CE-1.4');
+        $urlGenerator->generateUrl()->willReturn('http://test/CE-1.4');
 
         $this->getLastPatchUrl()->shouldReturn('http://test/CE-1.4');
     }
