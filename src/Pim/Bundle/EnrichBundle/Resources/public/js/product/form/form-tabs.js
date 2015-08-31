@@ -40,10 +40,10 @@ define(
              */
             configure: function () {
                 this.onExtensions('tab:register',  this.registerTab.bind(this));
-                this.listenTo(mediator, 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
 
                 window.addEventListener('resize', this.resize.bind(this));
-                this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

@@ -18,7 +18,7 @@ define([
                     this.listenTo(mediator, event, this.checkStructureVersion);
                 }.bind(this));
 
-                this.listenTo(mediator, 'pim_enrich:form:cache:clear', this.clearCache);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:cache:clear', this.clearCache);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

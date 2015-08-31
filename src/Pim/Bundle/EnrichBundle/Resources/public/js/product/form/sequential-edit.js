@@ -157,7 +157,7 @@ define(
                 }.bind(this));
             },
             followLink: function (event) {
-                mediator.trigger('pim_enrich:form:state:confirm', {
+                this.getRoot().trigger('pim_enrich:form:state:confirm', {
                     action: function () {
                         this.goToProduct(event.currentTarget.dataset.id);
                     }.bind(this)

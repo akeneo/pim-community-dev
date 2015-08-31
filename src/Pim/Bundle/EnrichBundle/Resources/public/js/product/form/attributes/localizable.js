@@ -17,7 +17,7 @@ define(
     function ($, _, BaseForm, FetcherRegistry, mediator) {
         return BaseForm.extend({
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

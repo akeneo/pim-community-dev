@@ -19,7 +19,7 @@ define(
             tagName: 'span',
             template: _.template(formTemplate),
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

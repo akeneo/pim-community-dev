@@ -24,7 +24,7 @@ define(
             className: 'product-family',
             template: _.template(template),
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
