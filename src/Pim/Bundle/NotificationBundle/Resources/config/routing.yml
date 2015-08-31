@@ -19,7 +19,3 @@ pim_notification_notification_remove:
     requirements:
         id: \d+
         _method: DELETE
-
-pim_notification_update_generate_url:
-    path: /update/generate_url
-    defaults: { _controller: pim_notification.controller.update:generateUrlAction, _format: json }

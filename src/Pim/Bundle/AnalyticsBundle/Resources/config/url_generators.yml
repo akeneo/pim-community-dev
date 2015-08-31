@@ -1,0 +1,10 @@
+parameters:
+    pim_notification.update.update_url_generator.class: Pim\Bundle\AnalyticsBundle\UrlGenerator\UpdateUrlGenerator
+
+services:
+    pim_notification.update.update_url_generator:
+        class: %pim_notification.update.update_url_generator.class%
+        arguments:
+            - '@pim_notification.update.chained_data_collector'
+            - '@pim_catalog.version_provider'
+            - '%pim_notification_update_server_url%'

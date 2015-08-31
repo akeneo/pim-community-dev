@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle\DependencyInjection;
+namespace Pim\Bundle\AnalyticsBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -8,27 +8,26 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Pim notification bundle extension
+ * Pim analytics bundle extension
  *
- * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimNotificationExtension extends Extension
+class PimAnalyticsExtension extends Extension
 {
     /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+        $container->prependExtensionConfig('pim_notification', $config);
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ .'/../Resources/config'));
-        $loader->load('controllers.yml');
-        $loader->load('emails.yml');
-        $loader->load('entities.yml');
-        $loader->load('event_subscribers.yml');
-        $loader->load('factories.yml');
-        $loader->load('managers.yml');
-        $loader->load('repositories.yml');
+        $loader->load('data_collectors.yml');
         $loader->load('twig.yml');
+        $loader->load('url_generators.yml');
     }
 }

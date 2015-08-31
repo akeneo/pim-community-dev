@@ -1,0 +1,37 @@
+parameters:
+    pim_notification.update.chained_data_collector.class:          Akeneo\Component\Analytics\ChainedDataCollector
+    pim_notification.update.request_data_collector.class:          Pim\Bundle\AnalyticsBundle\DataCollector\RequestDataCollector
+    pim_notification.update.token_storage_data_collector.class:    Pim\Bundle\AnalyticsBundle\DataCollector\TokenStorageDataCollector
+    pim_notification.update.operating_system_data_collector.class: Pim\Bundle\AnalyticsBundle\DataCollector\OperatingSystemDataCollector
+    pim_notification.update.version_data_collector.class:          Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector
+
+services:
+    pim_notification.update.chained_data_collector:
+        class: %pim_notification.update.chained_data_collector.class%
+
+    pim_notification.update.request_data_collector:
+        class: %pim_notification.update.request_data_collector.class%
+        arguments:
+            - '@request_stack'
+        tags:
+            - { name: pim_notification.update.data_collector }
+
+    pim_notification.update.token_storage_data_collector:
+        class: %pim_notification.update.token_storage_data_collector.class%
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: pim_notification.update.data_collector }
+
+    pim_notification.update.operating_system_data_collector:
+        class: %pim_notification.update.operating_system_data_collector.class%
+        tags:
+            - { name: pim_notification.update.data_collector }
+
+    pim_notification.update.version_data_collector:
+        class: %pim_notification.update.version_data_collector.class%
+        arguments:
+            - '@pim_catalog.version_provider'
+            - '%pim_catalog_product_storage_driver%'
+        tags:
+            - { name: pim_notification.update.data_collector }
