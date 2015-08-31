@@ -25,6 +25,8 @@ Pim\Bundle\CatalogBundle\Model\Association:
         owner:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
             inversedBy: associations
+            cascade:
+                - detach
             joinColumns:
                 owner_id:
                     referencedColumnName: id
@@ -33,6 +35,8 @@ Pim\Bundle\CatalogBundle\Model\Association:
     manyToMany:
         groups:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            cascade:
+                - detach
             joinTable:
                 name: pim_catalog_association_group
                 joinColumns:
@@ -45,6 +49,8 @@ Pim\Bundle\CatalogBundle\Model\Association:
                         onDelete: CASCADE
         products:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            cascade:
+                - detach
             joinTable:
                 name: pim_catalog_association_product
                 joinColumns:

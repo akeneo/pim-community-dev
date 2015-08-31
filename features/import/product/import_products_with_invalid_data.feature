@@ -357,3 +357,26 @@ Feature: Execute a job
     And there should be 1 products
     And the product "renault-kangoo" should have the following value:
       | publicPrice | 20000.00 EUR |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4810
+  Scenario: Correctly detach association reference when transformation fails (PIM-4810)
+    Given the following products:
+      | sku     |
+      | SKU-001 |
+      | SKU-002 |
+    And the following associations for the product "SKU-002":
+      | type         | product |
+      | SUBSTITUTION | SKU-001 |
+    And the following CSV file to import:
+      """
+      sku;SUBSTITUTION-products
+      SKU-001;
+      SKU-002;SKU-001,unknown
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "The \"Product\" with code \"unknown\" is unknown"
