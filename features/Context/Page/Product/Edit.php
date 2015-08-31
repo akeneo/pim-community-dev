@@ -8,6 +8,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Form;
 use Context\Page\Category\CategoryView;
+use Pim\Component\Classification\Model\Category;
 
 /**
  * Product edit page
@@ -1355,17 +1356,58 @@ class Edit extends Form
     /**
      * @param string $category
      *
-     * @return CategoryView
+     * @return Edit
      */
     public function selectTree($category)
     {
+        if (null !== $treeSelect = $this->findById('tree_select')) {
+            $treeSelect->selectOption($category);
+
+            return $this;
+        }
+
         $link = $this->getElement('Category pane')->find('css', sprintf('#trees-list li a:contains("%s")', $category));
-        if (!$link) {
+
+        if (null === $link) {
             throw new \InvalidArgumentException(sprintf('Tree "%s" not found', $category));
         }
         $link->click();
 
         return $this;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @throws \Exception
+     */
+    public function clickCategoryFilterLink($category)
+    {
+        $node = $this
+            ->getCategoryTree()
+            ->find('css', sprintf('#node_%s a', $category->getId()));
+
+        if (null === $node) {
+            throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
+        }
+
+        $node->click();
+    }
+
+    /**
+     * Filter by unclassified products
+     */
+    public function clickUnclassifiedCategoryFilterLink()
+    {
+        $node = $this
+            ->getCategoryTree()
+            ->find('css', '#node_-1 a');
+
+        if (null === $node) {
+            throw new \Exception(sprintf('Could not find unclassified category filter.'));
+        }
+
+        $node->click();
     }
 
     /**
@@ -1392,12 +1434,12 @@ class Edit extends Form
      */
     public function findCategoryInTree($category)
     {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        if (!$elt) {
+        $leaf = $this->getCategoryTree()->find('css', sprintf('li a:contains("%s")', $category));
+        if (null === $leaf) {
             throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
         }
 
-        return $elt;
+        return $leaf;
     }
 
     /**
@@ -1586,5 +1628,18 @@ class Edit extends Form
         }
 
         return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    public function getCategoryTree()
+    {
+        $modal = $this->find('css', '.modal');
+        if (null !== $modal && $modal->isVisible() && null !== $tree = $modal->find('css', '#tree')) {
+            return $tree;
+        }
+
+        return $this->getElement('Category tree');
     }
 }

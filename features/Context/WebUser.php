@@ -1627,6 +1627,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $status
+     *
+     * @When /^I (en|dis)able the inclusion of sub-categories$/
+     */
+    public function iSwitchTheSubCategoriesInclusion($status)
+    {
+        $switch = $this->spin(function () {
+            return $this->getCurrentPage()->findById('nested_switch_input');
+        }, 5);
+
+        $on = 'en' === $status;
+        if ($switch->isChecked() !== $on) {
+            $switch->getParent()->find('css', 'label')->click();
+        }
+        $this->wait();
+    }
+
+    /**
      * @param Product $product
      *
      * @Given /^(product "([^"]*)") should be disabled$/
