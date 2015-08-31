@@ -18,13 +18,11 @@ class AssetNormalizerSpec extends ObjectBehavior
             'code'        => 'code',
             'localized'   => 0,
             'description' => 'my description',
-            'enabled'     => true,
             'end_of_use'  => '2010-10-10',
         ];
 
         $asset->getCode()->willReturn('code');
         $asset->getDescription()->willReturn('my description');
-        $asset->isEnabled()->willReturn(true);
         $asset->getEndOfUseAt()->willReturn(new \Datetime('2010-10-10'));
         $asset->isLocalizable()->willReturn(false);
 
