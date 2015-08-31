@@ -111,15 +111,15 @@ class Index extends Grid
      */
     public function clickCategoryFilterLink($category)
     {
-        $elt = $this
+        $node = $this
             ->getElement('Category tree')
             ->find('css', sprintf('#node_%s a', $category->getId()));
 
-        if (!$elt) {
+        if (null === $node) {
             throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
         }
 
-        $elt->click();
+        $node->click();
     }
 
     /**
@@ -127,15 +127,15 @@ class Index extends Grid
      */
     public function clickUnclassifiedCategoryFilterLink()
     {
-        $elt = $this
+        $node = $this
             ->getElement('Category tree')
-            ->find('css', sprintf('#node_-1 a'));
+            ->find('css', '#node_-1 a');
 
-        if (!$elt) {
+        if (null === $node) {
             throw new \Exception(sprintf('Could not find unclassified category filter.'));
         }
 
-        $elt->click();
+        $node->click();
     }
 
     /**
