@@ -5,6 +5,10 @@ pimee_locale:
     resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_locale.yml'
     prefix: /configuration/locale
 
+pimee_channel_transformation:
+    resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_channel_transformation.yml'
+    prefix: /channel_transformation
+
 pimee_rule_relation:
     resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_rule_relation.yml'
     prefix: /rest/rule_relation/

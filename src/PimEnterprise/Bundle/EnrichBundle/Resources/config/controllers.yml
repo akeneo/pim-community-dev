@@ -5,6 +5,7 @@ parameters:
     pim_enrich.controller.mass_edit_action.class: PimEnterprise\Bundle\EnrichBundle\Controller\MassEditActionController
     pim_enrich.controller.locale.class:           PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
     pimee_enrich.controller.rule_relation.class:  PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
+    pimee_enrich.controller.channel_transformation.class: PimEnterprise\Bundle\EnrichBundle\Controller\ChannelTransformationController
 
 services:
     # overriden to add security checks and use a smarter product saver which update draft or working copy
@@ -90,3 +91,8 @@ services:
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
             - ['catalogStorage', 'assetStorage']
+
+    pimee_enrich.controller.channel_transformation:
+        class: %pimee_enrich.controller.channel_transformation.class%
+        arguments:
+            - '@pimee_product_asset.repository.channel_configuration'
