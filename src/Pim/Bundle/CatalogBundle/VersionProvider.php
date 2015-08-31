@@ -41,7 +41,7 @@ class VersionProvider implements VersionProviderInterface
     public function getMajor()
     {
         $matches = [];
-        preg_match('/^(?P<major>\d)/', $this->version, $matches);
+        preg_match('/^(?P<major>\d+)/', $this->version, $matches);
 
         return $matches['major'];
     }
@@ -52,7 +52,7 @@ class VersionProvider implements VersionProviderInterface
     public function getMinor()
     {
         $matches = [];
-        preg_match('/^(?P<minor>\d.\d)/', $this->version, $matches);
+        preg_match('/^(?P<minor>\d+.\d+)/', $this->version, $matches);
 
         return $matches['minor'];
     }
@@ -63,7 +63,7 @@ class VersionProvider implements VersionProviderInterface
     public function getPatch()
     {
         $matches = [];
-        preg_match('/^(?P<patch>\d.\d.\d)/', $this->version, $matches);
+        preg_match('/^(?P<patch>\d+.\d+.\d+)/', $this->version, $matches);
 
         return $matches['patch'];
     }
@@ -74,7 +74,7 @@ class VersionProvider implements VersionProviderInterface
     public function getStability()
     {
         $matches = [];
-        preg_match('/^\d.\d.\d-(?P<stability>\w+)\d$/', $this->version, $matches);
+        preg_match('/-(?P<stability>\w+)\d+$/', $this->version, $matches);
 
         return (isset($matches['stability'])) ? $matches['stability'] : 'stable';
     }
