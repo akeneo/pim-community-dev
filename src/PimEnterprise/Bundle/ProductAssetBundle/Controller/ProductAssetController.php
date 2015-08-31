@@ -216,32 +216,16 @@ class ProductAssetController extends Controller
             throw new AccessDeniedException();
         }
 
-        $references   = $productAsset->getReferences();
-
+        $references  = $productAsset->getReferences();
         $attachments = [];
         foreach ($references as $refKey => $reference) {
             $attachments[$refKey]['reference'] = $reference;
-
-            foreach ($reference->getVariations() as $variation) {
-                $metadata = null;
-                if (null !== $variation->getFile()) {
-                    $metadata = $this->metadataRepository->findOneBy(
-                        [
-                            'file' => $variation->getFile()->getId()
-                        ]
-                    );
-                }
-
-                $attachments[$refKey]['variations'][] = [
-                    'entity'   => $variation,
-                    'metadata' => $metadata
-                ];
-            }
         }
 
         return [
             'asset'       => $productAsset,
-            'attachments' => $attachments
+            'attachments' => $attachments,
+            'metadata'    => $this->getAssetMetadata($productAsset)
         ];
     }
 
@@ -408,15 +392,10 @@ class ProductAssetController extends Controller
             $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
         }
 
-        $metadata = null;
-        if (null !== $productAsset) {
-            $metadata = $this->getAssetMetadata($productAsset);
-        }
-
         return [
             'asset'         => $productAsset,
             'form'          => $assetForm->createView(),
-            'metadata'      => $metadata,
+            'metadata'      => $this->getAssetMetadata($productAsset),
             'currentLocale' => $locale,
         ];
     }

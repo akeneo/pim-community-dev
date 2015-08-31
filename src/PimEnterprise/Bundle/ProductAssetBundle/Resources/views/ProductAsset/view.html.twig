@@ -56,9 +56,7 @@
                         <label class="control-label">{{'pimee_product_asset.enrich_asset.view.tag'|trans}}</label>
                         <div class="controls">
                             <div class="value-field">
-                                {% for tag in asset.tags %}
-                                    {{ tag }}{% if not loop.last %}, {% endif %}
-                                {% endfor %}
+                               {{ asset.tags|join(', ') }}
                             </div>
                             <div class="icons-container"></div>
                         </div>
@@ -77,107 +75,9 @@
 
                 {# VARIATIONS PANEL #}
                 <div class="tab-pane active" id="pimee_product_asset-tabs-variations">
-
                     {% for attachment in attachments %}
-
-                        <div class="row-fluid variations">
-
-                            <h3>
-                                {% if attachment.reference.locale %}
-                                    {{ attachment.reference.locale.code|flag }}
-                                {% endif %}
-                            </h3>
-
-                            <ul>
-                                <li>
-                                    <div class="row-fluid reference">
-
-                                        <h4>{{'pimee_product_asset.enrich_asset.view.reference'|trans}}</h4>
-
-                                        <div class="row-fluid">
-
-                                            <figure class="thumbnail">
-                                                <img src="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.key|url_encode, 'filter': 'thumbnail' }) }}">
-                                            </figure>
-
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>{{'pimee_product_asset.enrich_asset.view.filename'|trans}}</th>
-                                                        <th>{{'pimee_product_asset.enrich_asset.view.actions'|trans}}</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>{{ attachment.reference.file.originalFilename }}</td>
-                                                        <td>
-                                                            <a class="btn btn-info btn-mini no-hash" download="{{ attachment.reference.file.originalFilename }}" href="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.key|url_encode }) }}">
-                                                                {{'pimee_product_asset.enrich_asset.view.download'|trans}}
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-
-                                    </div>
-                                </li>
-
-                                {% for variation in attachment.variations %}
-                                    {% if variation.entity.channel %}
-                                        <li>
-                                            <div class="row-fluid variation">
-
-                                                <h4>{{ variation.entity.channel.label }}</h4>
-
-                                                <div class="row-fluid">
-                                                    {% if variation.entity.file %}
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>{{'pimee_product_asset.enrich_asset.view.filename'|trans}}</th>
-                                                                {% if 'image' in variation.entity.file.mimeType %}
-                                                                    <th>{{'pimee_product_asset.enrich_asset.view.width'|trans}}</th>
-                                                                    <th>{{'pimee_product_asset.enrich_asset.view.height'|trans}}</th>
-                                                                    <th>{{'pimee_product_asset.enrich_asset.view.resolution'|trans}}</th>
-                                                                {% endif %}
-                                                                <th>{{'pimee_product_asset.enrich_asset.view.filesize'|trans}}</th>
-                                                                <th>{{'pimee_product_asset.enrich_asset.view.filetype'|trans}}</th>
-                                                                <th>{{'pimee_product_asset.enrich_asset.view.actions'|trans}}</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>{{ variation.entity.file.originalFilename }}</td>
-                                                                {% if 'image' in variation.entity.file.mimeType %}
-                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifSizeWidth ? variation.metadata.exifSizeWidth ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}{% endif %}</td>
-                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifSizeHeight ? variation.metadata.exifSizeHeight ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}{% endif %}</td>
-                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifResolution ? variation.metadata.exifResolution : 'pimee_product_asset.notAvailable.label'|trans }}{% endif %}</td>
-                                                                {% endif %}
-                                                                <td>{{ variation.entity.file.size|number_format(0, '.', ' ') }} ko</td>
-                                                                <td>{{ variation.entity.file.mimeType }}</td>
-                                                                <td>
-                                                                    <a class="btn btn-info btn-mini no-hash" download="{{ variation.entity.file.originalFilename }}" href="{{ path('pim_enrich_media_show', { 'filename': variation.entity.file.key|url_encode }) }}">
-                                                                        {{'pimee_product_asset.enrich_asset.view.download'|trans}}
-                                                                    </a>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                    {% else %}
-                                                        No variation file for the channel {{ variation.entity.channel.label }}.
-                                                    {% endif %}
-                                                </div>
-
-                                            </div>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-
-                        </div>
+                        {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_view.html.twig' with {'referenceModel': attachment.reference}%}
                     {% endfor %}
-
                 </div>
             </div>
 

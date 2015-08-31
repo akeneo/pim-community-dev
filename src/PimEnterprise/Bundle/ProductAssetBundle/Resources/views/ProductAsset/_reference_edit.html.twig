@@ -1,0 +1,49 @@
+<div class="row-fluid variations">
+    <h3>
+        {% if currentLocale is not null %}
+            {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
+                'locales':           asset.locales,
+                'currentLocaleCode': currentLocale.code,
+                'routeName':         'pimee_product_asset_edit',
+                'routeParams':       { 'id': asset.id },
+                'localeParamName':   'locale'
+            } only %}
+        {% endif %}
+    </h3>
+
+    <ul>
+        <li>
+            <div class="row-fluid reference">
+                <h4>{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</h4>
+
+                <div class="row-fluid">
+                    {% if referenceModel.file %}
+                        {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
+                            {% block reference_buttons %}
+
+                                <button class="btn icons-holder-text delete"
+                                        data-href="{{ path('pimee_product_asset_reference_delete', {'id': referenceModel.id}) }}" >
+                                    <i class="icon-trash"></i>
+                                    {{ 'btn.delete'|trans|capitalize }}
+                                </button>
+
+                                <button class="btn icons-holder-text reset-variations"
+                                        data-href="{{ path('pimee_product_asset_variations_reset', {'id': referenceModel.id}) }}" >
+                                    <i class="icon-repeat"></i>
+                                    {{ 'pimee_product_asset.enrich_asset.button.reset_variations'|trans }}
+                                </button>
+                            {% endblock %}
+                        {% endembed %}
+                    {% else %}
+                        {{ pamMacros.renderUploadZone(reference.file, 'span12') }}
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+
+        {% for variation in reference.variations %}
+            {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_edit.html.twig' with {'variationModel': variation.vars.data} %}
+        {% endfor %}
+
+    </ul>
+</div>

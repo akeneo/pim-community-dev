@@ -1,0 +1,28 @@
+<figure class="thumbnail">
+    {% include '@PimEnterpriseProductAsset/Property/thumbnail.html.twig' with {
+        'path': referenceModel.file.key,
+        'filter': 'thumbnail'
+    } only %}
+</figure>
+<table class="table">
+    <thead>
+        <tr>
+            <th>{{ 'pimee_product_asset.enrich_asset.view.filename'|trans }}</th>
+            <th>{{ 'pimee_product_asset.enrich_asset.view.actions'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ referenceModel.file.originalFilename }}</td>
+            <td>
+                {% block reference_buttons %}{% endblock %}
+                {% if referenceModel.file %}
+                    <a class="btn icons-holder-text no-hash btn-download" title="{{ 'btn.download'|trans }}"
+                       href="{{ path('pim_enrich_media_download', {'filename': referenceModel.file.key|url_encode}) }}">
+                        <i class="icon-download-alt"></i> {{ 'btn.download'|trans|capitalize }}
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>

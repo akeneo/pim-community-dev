@@ -2,7 +2,7 @@
     {% for reference in form.references %}
         {% set referenceModel = reference.vars.data %}
         {% if referenceModel.locale == currentLocale %}
-            {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference.html.twig' %}
+            {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_edit.html.twig' %}
         {% endif %}
     {% endfor %}
 </div>

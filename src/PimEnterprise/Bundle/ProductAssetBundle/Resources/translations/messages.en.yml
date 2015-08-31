@@ -39,6 +39,8 @@ pimee_product_asset:
             actions: Actions
             download: Download
             tag: Tags
+            no_reference: No reference file has been uploaded yet.
+            no_variation: No variation file has been generated yet.
         flash:
             update:
                 success: Asset has been updated.

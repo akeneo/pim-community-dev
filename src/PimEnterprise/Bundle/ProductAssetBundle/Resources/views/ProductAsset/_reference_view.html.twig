@@ -1,0 +1,28 @@
+<div class="row-fluid variations">
+    <h3>
+        {% if referenceModel.locale %}
+            {{ referenceModel.locale.code|flag }}
+        {% endif %}
+    </h3>
+
+    <ul>
+        <li>
+            <div class="row-fluid reference">
+                <h4>{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</h4>
+
+                <div class="row-fluid">
+                    {% if referenceModel.file %}
+                        {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
+                    {% else %}
+                        {{ 'pimee_product_asset.enrich_asset.view.no_reference'|trans }}
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+
+        {% for variation in referenceModel.variations %}
+            {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_view.html.twig' with {'variationModel': variation} %}
+        {% endfor %}
+
+    </ul>
+</div>
