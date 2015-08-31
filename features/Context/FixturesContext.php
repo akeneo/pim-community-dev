@@ -3,6 +3,7 @@
 namespace Context;
 
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
@@ -1574,6 +1575,33 @@ class FixturesContext extends RawMinkContext
     public function theProductUpdatedDateShouldNotBeCloseTo(ProductInterface $product, $identifier, $expected)
     {
         assertGreaterThan(60, abs(strtotime($expected) - $product->getUpdated()->getTimestamp()));
+    }
+
+    /**
+     * @Given /^the following associations for the (product "([^"]+)"):$/
+     */
+    public function theFollowingAssociationsForTheProduct(ProductInterface $owner, $id, TableNode $values)
+    {
+        $rows = $values->getHash();
+
+        foreach ($rows as $row) {
+
+            $association = $owner->getAssociationForTypeCode($row['type']);
+
+            if (null === $association) {
+                $associationType = $this->getContainer()
+                    ->get('pim_catalog.repository.association_type')
+                    ->findOneBy(['code' => $row['type']]);
+
+                $association = new Association();
+                $association->setAssociationType($associationType);
+                $owner->addAssociation($association);
+            }
+
+            $association->addProduct($this->getProduct($row['product']));
+        }
+
+        $this->getProductSaver()->save($owner, ['recalculate' => false]);
     }
 
     /**

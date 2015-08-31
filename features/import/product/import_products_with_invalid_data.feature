@@ -304,3 +304,26 @@ Feature: Execute a job
     Then I should see "PRODUCT IMPORT Currency FCFA does not exist."
     And I should see "FAILED"
     And there should be 0 product
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4810
+  Scenario: Correctly detach association reference when transformation fails (PIM-4810)
+    Given the following products:
+      | sku     |
+      | SKU-001 |
+      | SKU-002 |
+    And the following associations for the product "SKU-002":
+      | type         | product |
+      | SUBSTITUTION | SKU-001 |
+    And the following CSV file to import:
+      """
+      sku;SUBSTITUTION-products
+      SKU-001;
+      SKU-002;SKU-001,unknown
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "The \"Product\" with code \"unknown\" is unknown"
