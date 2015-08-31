@@ -25,6 +25,21 @@ Feature: Mass uploads assets
     Then I should see "Success" status for asset "akeneo.jpg"
     Then I should see "Success" status for asset "akeneo2.jpg"
 
+  Scenario: Validate assets file names
+    And I am on the asset mass upload page
+    And I select the assets to upload:
+      | name        |
+      | akeneo.jpg  |
+      | akeneo-fr_FR.jpg |
+      | logo_akeneo-fr_FR.jpg |
+      | chicagoskyline-de.jpg |
+      | akeneo (copy).jpg |
+    Then I should see "Added" status for asset "akeneo.jpg"
+    Then I should see "Added" status for asset "akeneo-fr_FR.jpg"
+    Then I should see "Error" status for asset "logo_akeneo-fr_FR.jpg"
+    Then I should see "Error" status for asset "chicagoskyline-de.jpg"
+    Then I should see "Error" status for asset "akeneo (copy).jpg"
+
   Scenario: Cannot add the same file two times
     And I am on the asset mass upload page
     And I select the assets to upload:

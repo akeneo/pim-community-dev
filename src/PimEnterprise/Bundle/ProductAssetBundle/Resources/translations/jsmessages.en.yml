@@ -40,6 +40,7 @@ pimee_product_asset:
             list: Cannot read already uploaded files
             upload: An error occured while uploading
             schedule: An error occured while scheduling upload processing
+            filename: Invalid file name for asset
             code: Invalid code format for asset
             locale: An asset exists but is not localizable
             exists: A file with the same name is already scheduled for upload

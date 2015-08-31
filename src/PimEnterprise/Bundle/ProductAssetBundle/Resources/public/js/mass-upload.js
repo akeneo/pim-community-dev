@@ -78,11 +78,17 @@ define(
                         return;
                     }
                     $.get(
-                        Routing.generate('pimee_product_asset_rest_verify_upload', {filename: file.name})
+                        Routing.generate('pimee_product_asset_rest_verify_upload', {
+                            filename: encodeURIComponent(file.name)
+                        })
                     ).fail(function (response) {
                             file.status = Dropzone.ERROR;
+                            var message = 'pimee_product_asset.mass_upload.error.filename';
+                            if (response.responseJSON) {
+                                message = response.responseJSON.error;
+                            }
                             file.previewElement.querySelector('.filename .error.text-danger')
-                                .textContent = _.__(response.responseJSON.error);
+                                .textContent = _.__(message);
                         }).complete(function () {
                             this.setStatus(file);
                             file.previewElement.querySelector('.dz-type').textContent = file.type;
@@ -95,7 +101,9 @@ define(
                     }
                     if (Dropzone.SUCCESS === file.status) {
                         return $.ajax({
-                            url: Routing.generate('pimee_product_asset_mass_upload_rest_delete', {filename: file.name}),
+                            url: Routing.generate('pimee_product_asset_mass_upload_rest_delete', {
+                                filename: encodeURIComponent(file.name)
+                            }),
                             type: 'DELETE'
                         }).done(function () {
                             messenger.notificationFlashMessage(
