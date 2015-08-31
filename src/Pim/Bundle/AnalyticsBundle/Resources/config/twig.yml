@@ -6,6 +6,6 @@ services:
         class: %pim_analytics.twig.update_extension.class%
         arguments:
             - '@oro_config.global'
-            - '@pim_analytics.url_generator.last_patch'
+            - '%pim_analytics_update_server_url%'
         tags:
             - { name: twig.extension }

@@ -3,11 +3,13 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'pim/last-patch-fetcher'],
+            ['jquery', 'pim/patch-fetcher'],
             function ($, Fetcher) {
                 $(function() {
-                    var url = "{{ get_last_patch_url() }}";
-                    Fetcher.fetch(url);
+                    var updateServerUrl = "{{ get_update_server_url() }}";
+                    Fetcher.fetch(updateServerUrl).then(function (patchData) {
+                        $('.last-patch-available:first').append(patchData.last_patch.name);
+                    });
                     // TODO fetch only the version, store it in session storage and re-use it
                 });
             }

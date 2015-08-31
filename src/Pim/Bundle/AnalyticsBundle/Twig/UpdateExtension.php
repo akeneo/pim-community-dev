@@ -3,7 +3,6 @@
 namespace Pim\Bundle\AnalyticsBundle\Twig;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Pim\Bundle\AnalyticsBundle\UrlGenerator\UrlGeneratorInterface;
 
 /**
  * Twig extension to detect if update notification is enabled and to provide the url to fetch the last patch
@@ -17,17 +16,17 @@ class UpdateExtension extends \Twig_Extension
     /** @var ConfigManager */
     protected $configManager;
 
-    /** @var UrlGeneratorInterface */
-    protected $urlGenerator;
+    /** @var string */
+    protected $updateServerUrl;
 
     /**
-     * @param ConfigManager               $configManager
-     * @param UrlGeneratorInterface $urlGenerator
+     * @param ConfigManager $configManager
+     * @param string        $updateServerUrl
      */
-    public function __construct(ConfigManager $configManager, UrlGeneratorInterface $urlGenerator)
+    public function __construct(ConfigManager $configManager, $updateServerUrl)
     {
-        $this->configManager = $configManager;
-        $this->urlGenerator  = $urlGenerator;
+        $this->configManager   = $configManager;
+        $this->updateServerUrl = $updateServerUrl;
     }
 
     /**
@@ -37,7 +36,7 @@ class UpdateExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('is_last_patch_enabled', [$this, 'isLastPatchEnabled']),
-            new \Twig_SimpleFunction('get_last_patch_url', [$this, 'getLastPatchUrl']),
+            new \Twig_SimpleFunction('get_update_server_url', [$this, 'getUpdateServerUrl']),
         ];
     }
 
@@ -54,9 +53,9 @@ class UpdateExtension extends \Twig_Extension
     /**
      * @return string
      */
-    public function getLastPatchUrl()
+    public function getUpdateServerUrl()
     {
-        return $this->urlGenerator->generateUrl();
+        return $this->updateServerUrl;
     }
 
     /**
@@ -64,6 +63,6 @@ class UpdateExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'pim_notification_update_extension';
+        return 'pim_analytics_update_extension';
     }
 }
