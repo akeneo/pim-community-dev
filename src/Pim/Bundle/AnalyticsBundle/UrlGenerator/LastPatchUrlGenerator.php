@@ -3,7 +3,6 @@
 namespace Pim\Bundle\AnalyticsBundle\UrlGenerator;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use Pim\Bundle\AnalyticsBundle\UrlGenerator\UpdateUrlGeneratorInterface;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
 
 /**
@@ -13,7 +12,7 @@ use Pim\Bundle\CatalogBundle\VersionProviderInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateUrlGenerator implements UpdateUrlGeneratorInterface
+class LastPatchUrlGenerator implements UrlGeneratorInterface
 {
     /** @var DataCollectorInterface */
     protected $dataCollector;
@@ -42,7 +41,7 @@ class UpdateUrlGenerator implements UpdateUrlGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateAvailablePatchsUrl()
+    public function generateUrl()
     {
         $data            = $this->dataCollector->collect();
         $minorVersionKey = sprintf('%s-%s', $this->versionProvider->getEdition(), $this->versionProvider->getMinor());

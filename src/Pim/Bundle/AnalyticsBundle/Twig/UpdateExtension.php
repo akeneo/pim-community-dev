@@ -3,10 +3,10 @@
 namespace Pim\Bundle\AnalyticsBundle\Twig;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Pim\Bundle\AnalyticsBundle\UrlGenerator\UpdateUrlGeneratorInterface;
+use Pim\Bundle\AnalyticsBundle\UrlGenerator\UrlGeneratorInterface;
 
 /**
- * Twig extension to detect if update notification is enabled
+ * Twig extension to detect if update notification is enabled and to provide the url to fetch the last patch
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -17,14 +17,14 @@ class UpdateExtension extends \Twig_Extension
     /** @var ConfigManager */
     protected $configManager;
 
-    /** @var UpdateUrlGeneratorInterface */
+    /** @var UrlGeneratorInterface */
     protected $urlGenerator;
 
     /**
      * @param ConfigManager               $configManager
-     * @param UpdateUrlGeneratorInterface $urlGenerator
+     * @param UrlGeneratorInterface $urlGenerator
      */
-    public function __construct(ConfigManager $configManager, UpdateUrlGeneratorInterface $urlGenerator)
+    public function __construct(ConfigManager $configManager, UrlGeneratorInterface $urlGenerator)
     {
         $this->configManager = $configManager;
         $this->urlGenerator  = $urlGenerator;
@@ -56,7 +56,7 @@ class UpdateExtension extends \Twig_Extension
      */
     public function getLastPatchUrl()
     {
-        return $this->urlGenerator->generateAvailablePatchsUrl();
+        return $this->urlGenerator->generateUrl();
     }
 
     /**

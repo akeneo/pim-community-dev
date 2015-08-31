@@ -16,10 +16,10 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterDataCollectorPass implements CompilerPassInterface
 {
     /** @staticvar string The registry service id */
-    const REGISTRY_ID = 'pim_notification.update.chained_data_collector';
+    const REGISTRY_ID = 'pim_analytics.data_collector.chained';
 
     /** @staticvar string */
-    const COLLECTOR_TAG = 'pim_notification.update.data_collector';
+    const COLLECTOR_TAG = 'pim_analytics.data_collector';
 
     /**
      * {@inheritdoc}
