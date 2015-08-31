@@ -379,9 +379,11 @@ class Edit extends Form
             return $this->findCompoundField($fieldContainer, $currency);
         }
 
-        $fieldContainer = $this->findFieldContainer($label);
-        $subContainer   = $fieldContainer->find('css', $copy ? '.copy-container .form-field' : '.form-field');
-        $field          = $this->spin(function () use ($subContainer) {
+        $subContainer = $this->spin(function () use ($label, $copy) {
+            return $this->findFieldContainer($label)->find('css', $copy ? '.copy-container .form-field' : '.form-field');
+        });
+
+        $field = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.field-input input, .field-input textarea');
         }, 10);
 
