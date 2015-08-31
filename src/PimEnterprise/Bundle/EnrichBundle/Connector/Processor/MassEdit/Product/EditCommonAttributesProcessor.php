@@ -40,6 +40,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      * @param UserManager                          $userManager
      * @param TokenStorageInterface                $tokenStorage
+     * @param AuthorizationCheckerInterface        $authorizationChecker
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
