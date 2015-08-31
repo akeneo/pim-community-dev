@@ -557,7 +557,6 @@ class Edit extends Form
         }
 
         $field->setValue($value);
-        $this->getSession()->executeScript('$(\'.field-input input[type="text"]\').trigger(\'change\');');
     }
 
     /**
@@ -580,8 +579,6 @@ class Edit extends Form
 
             return ($field->getValue() === $value || $field->getHtml() === $value);
         });
-
-        $this->getSession()->executeScript('$(\'.field-input textarea\').trigger(\'change\');');
     }
 
     /**
@@ -623,10 +620,6 @@ class Edit extends Form
 
             $emptyLink->click();
 
-            $this->getSession()->executeScript(
-                '$(\'.field-input input[type="hidden"].select-field\').trigger(\'change\');'
-            );
-
             return;
         }
 
@@ -642,10 +635,6 @@ class Edit extends Form
         });
 
         $item->click();
-
-        $this->getSession()->executeScript(
-            '$(\'.field-input input[type="hidden"].select-field\').trigger(\'change\');'
-        );
 
         return;
     }
@@ -709,10 +698,6 @@ class Edit extends Form
                 );
             }
         }
-
-        $this->getSession()->executeScript(
-            '$(\'.field-input input.select-field\').trigger(\'change\');'
-        );
     }
 
     /**
@@ -818,10 +803,6 @@ class Edit extends Form
 
         $field = $this->findCompoundField($fieldContainer, $currency);
         $field->setValue($amount);
-
-        $this->getSession()->executeScript(
-            '$(\'.field-input input[type="text"]\').trigger(\'change\');'
-        );
     }
 
     /**

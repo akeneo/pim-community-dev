@@ -325,7 +325,6 @@ class Form extends Base
         });
 
         $field->attachFile($path);
-        $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');
     }
 
     /**
@@ -473,8 +472,6 @@ class Form extends Base
             });
 
             $field->setValue($value);
-            $this->getSession()
-                ->executeScript('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');');
         }
     }
 
