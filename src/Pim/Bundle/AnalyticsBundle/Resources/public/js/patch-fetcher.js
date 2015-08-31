@@ -24,7 +24,12 @@ define(
                             + '-' + minorVersion
                             + '.json';
 
-                        return $.getJSON(lastPatchUrl, collectedData).then(function (patchData) {
+                        return $.ajax({
+                            dataType: "json",
+                            url: lastPatchUrl,
+                            data: collectedData,
+                            timeout: 10000
+                        }).then(function (patchData) {
                             var patch = patchData.last_patch.name;
                             var cleanedPatch = patch.replace(/^v/g, '');
                             sessionStorage.setItem(lastPatchKey, cleanedPatch);
