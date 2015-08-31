@@ -129,7 +129,7 @@ class FilesUpdater implements FilesUpdaterInterface
         if (null !== $variation->getFile() && null !== $uploadedFile = $variation->getFile()->getUploadedFile()) {
             $file = $this->rawFileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
             $variation->setSourceFile($file);
-            $variation->setFile(null);
+            $variation->setFile($file);
             $variation->setLocked(true);
         }
         // TODO required because of sf form collections
