@@ -10,6 +10,7 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Form\Type\UserType as BaseUserType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -42,6 +43,19 @@ class UserType extends BaseUserType
             [
                 'label'    => 'user.asset_delay_reminder',
                 'required' => true,
+            ]
+        );
+
+        $builder->add(
+            'defaultAssetTree',
+            'entity',
+            [
+                'class'         => 'PimEnterprise\\Component\\ProductAsset\\Model\\Category',
+                'property'      => 'label',
+                'select2'       => true,
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->getTreesQB();
+                }
             ]
         );
     }

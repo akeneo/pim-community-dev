@@ -7,3 +7,6 @@ PimEnterprise\Bundle\UserBundle\Entity\User:
             type: integer
             options:
                 default: 5
+    manyToOne:
+        defaultAssetTree:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
