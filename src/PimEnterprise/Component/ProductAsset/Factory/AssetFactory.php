@@ -55,6 +55,7 @@ class AssetFactory
     public function create($isLocalized = false)
     {
         $asset = new $this->assetClass();
+
         if ($isLocalized) {
             foreach ($this->localeRepository->getActivatedLocales() as $locale) {
                 $reference = $this->referenceFactory->create($locale);

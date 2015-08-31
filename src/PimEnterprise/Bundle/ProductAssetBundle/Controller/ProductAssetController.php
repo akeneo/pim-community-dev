@@ -625,6 +625,16 @@ class ProductAssetController extends Controller
     }
 
     /**
+     * Assets mass upload page
+     *
+     * @return Response
+     */
+    public function massUploadAction()
+    {
+        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:mass-upload.html.twig');
+    }
+
+    /**
      * @param AssetEvent $event
      */
     protected function handleGenerationEventResult(AssetEvent $event)

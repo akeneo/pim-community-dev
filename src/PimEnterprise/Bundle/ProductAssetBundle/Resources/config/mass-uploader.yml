@@ -1,0 +1,37 @@
+parameters:
+    pimee_product_asset.upload_context.class:        PimEnterprise\Component\ProductAsset\Upload\UploadContext
+    pimee_product_asset.upload_checker.class:        PimEnterprise\Component\ProductAsset\Upload\UploadChecker
+    pimee_product_asset.upload_scheduler.class:      PimEnterprise\Component\ProductAsset\Upload\Scheduler
+    pimee_product_asset.mass_upload_processor.class: PimEnterprise\Component\ProductAsset\Upload\MassUploadProcessor
+    pimee_product_asset.mass_upload.tasklet.class:   PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet
+
+services:
+    pimee_product_asset.upload_checker:
+        class: %pimee_product_asset.upload_checker.class%
+        arguments:
+            - '@pimee_product_asset.repository.asset'
+
+    pimee_product_asset.upload_scheduler:
+        class: %pimee_product_asset.upload_scheduler.class%
+        arguments:
+            - '@pimee_product_asset.upload_checker'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+
+    pimee_product_asset.mass_upload_processor:
+        class: %pimee_product_asset.mass_upload_processor.class%
+        arguments:
+            - '@pimee_product_asset.upload_checker'
+            - '@pimee_product_asset.upload_scheduler'
+            - '@pimee_product_asset.factory.asset'
+            - '@pimee_product_asset.repository.asset'
+            - '@pimee_product_asset.saver.asset'
+            - '@pimee_product_asset.updater.files'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@pim_catalog.repository.locale'
+
+    pimee_product_asset.mass_upload.tasklet:
+        class: %pimee_product_asset.mass_upload.tasklet.class%
+        arguments:
+            - '@pimee_product_asset.mass_upload_processor'
+            - '@pim_notification.manager.notification'
+            - '%tmp_storage_dir%'

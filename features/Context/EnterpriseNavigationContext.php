@@ -18,6 +18,7 @@ class EnterpriseNavigationContext extends BaseNavigationContext
         'proposals'         => 'Proposal index',
         'assets'            => 'Asset index',
         'asset edit'        => 'Asset edit',
+        'asset mass upload' => 'Asset massUpload',
         'assets categories' => 'Asset Category tree index',
     ];
 
@@ -39,7 +40,7 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     }
 
     /**
-     * @param string $asset
+     * @param string $assetCode
      *
      * @Given /^I should be on the "([^"]+)" asset edit page$/
      */

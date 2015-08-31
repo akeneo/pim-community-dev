@@ -30,10 +30,10 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
     protected $statesCounter = [];
 
     /**
-     * @param mixed      $item
-     * @param string     $state
-     * @param string     $reason
-     * @param \Exception $e
+     * @param mixed           $item
+     * @param string          $state
+     * @param string|null     $reason
+     * @param \Exception|null $e
      */
     public function addItem($item, $state, $reason = null, \Exception $e = null)
     {

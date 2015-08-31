@@ -113,6 +113,18 @@ pimee_product_asset:
         label: not available
     asset:
         title: Asset
+    mass_upload:
+        menu: Upload assets
+        new: A new asset will be created
+        add_files: add files
+        start: Start upload
+        cancel: Cancel upload
+        schedule: schedule
+        executed: Mass upload executed
+        error:
+            upload: An error occured while uploading
+            code: Invalid code format for asset
+            locale: An asset exists but is not localizable
 
     category:
         menu: Asset categories
@@ -127,3 +139,11 @@ pimee_product_asset:
 
 btn.create.asset: Create an asset
 btn.drag_or_upload: Drag and drop a file or click here
+
+job_execution.summary:
+    asset_file_processed: Asset file processed
+    pimee_product_asset.mass_upload.new: Asset created from file
+    pimee_product_asset.mass_upload.updated: Asset updated
+
+assets_mass_upload.steps:
+    asset_mass_upload.title: Assets mass upload

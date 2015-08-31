@@ -96,4 +96,13 @@ interface AssetRepositoryInterface extends
      * @return AssetInterface[]
      */
     public function findExpiringAssets(\DateTime $now, $delay = 5);
+
+    /**
+     * Retrieve an asset by its code
+     *
+     * @param string $assetCode
+     *
+     * @return AssetInterface|null
+     */
+    public function findOneByCode($assetCode);
 }

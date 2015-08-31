@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Behat\Context\Step;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Asset\Edit;
@@ -19,6 +20,8 @@ use Symfony\Component\DependencyInjection\Container;
  */
 class EnterpriseAssetContext extends RawMinkContext
 {
+    use SpinCapableTrait;
+
     /**
      * @Then /^I delete the reference file$/
      * @Then /^I delete the (\S+) variation file$/
@@ -139,8 +142,7 @@ class EnterpriseAssetContext extends RawMinkContext
         if (!empty($wait)) {
             $iconContainer = $code->getParent()->find('css', '.icons-container');
             $this->getMainContext()->spin(function () use ($iconContainer) {
-                $tooltip = $iconContainer->find('css', 'i.validation-tooltip');
-                return $tooltip ? true : false;
+                return (bool) $iconContainer->find('css', 'i.validation-tooltip');
             });
         }
     }
@@ -182,7 +184,7 @@ class EnterpriseAssetContext extends RawMinkContext
     {
         if ($this->getMinkParameter('files_path')) {
             $fullPath = rtrim(realpath($this->getMinkParameter('files_path')),
-                    DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
+                    DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
             if (is_file($fullPath)) {
                 $file = $fullPath;
             }
@@ -232,6 +234,112 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^I select the assets to upload:$/
+     */
+    public function iSelectAssetsToUpload(TableNode $table)
+    {
+        $fullPath = '';
+
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR)
+                . DIRECTORY_SEPARATOR;
+        }
+
+        foreach ($table->getHash() as $data) {
+            $this->getMainContext()->executeScript(
+                "document.querySelector('.dz-hidden-input').style.visibility = 'visible';
+                document.querySelector('.dz-hidden-input').style.height = '10px';
+                document.querySelector('.dz-hidden-input').style.width = '10px';
+                document.querySelector('.dz-hidden-input').style.display = 'block';"
+            );
+            $uploadContainer = $this->getCurrentPage()->find('css', '.dz-hidden-input');
+
+            $file = $fullPath . $data['name'];
+            if (is_file($file)) {
+                $uploadContainer->attachFile($file);
+            }
+        }
+    }
+
+    /**
+     * @Then /^I should see "([^"]+)" status for asset "([^"]+)"$/
+     *
+     * @param string $text
+     * @param string $asset
+     *
+     * @throws ElementNotFoundException
+     */
+    public function iShouldSeeStatusForAssetUpload($text, $asset)
+    {
+        $this->spin(function () use ($text, $asset) {
+            $assetElements = $this->getCurrentPage()
+                ->findAll('css', sprintf('td:contains("%s")', $asset));
+
+            $found = null;
+
+            if (!is_array($assetElements)) {
+                $assetElements = [$assetElements];
+            }
+
+            foreach ($assetElements as $assetElement) {
+                $row   = $assetElement->getParent();
+                $found = $row->find('css', sprintf('td.status:contains("%s")', $text));
+                if ($found) {
+                    break;
+                }
+            }
+
+            return $found;
+        }, 10, sprintf('Unable to find %s for asset %s', $text, $asset));
+    }
+
+    /**
+     * @When /^I (start|schedule|cancel) assets mass upload$/
+     */
+    public function iDoAssetMassUploadAction($action)
+    {
+        $actionButton = null;
+        $currentPage  = $this->getCurrentPage();
+
+        if ('start' === $action) {
+            $actionButton = $this->spin(function () use ($currentPage) {
+                return $currentPage->find('css', '.btn.start');
+            }, 5, sprintf('Unable to find the %s buton for mass upload', $action));
+        }
+        if ('schedule' === $action) {
+            $actionButton = $this->spin(function () use ($currentPage) {
+                return $currentPage->find('css', '.btn.schedule');
+            }, 5, sprintf('Unable to find the %s buton for mass upload', $action));
+        }
+        if ('cancel' === $action) {
+            $actionButton = $this->spin(function () use ($currentPage) {
+                return $currentPage->find('css', '.btn.cancel');
+            }, 5, sprintf('Unable to find the %s buton for mass upload', $action));
+        }
+        $actionButton->click();
+        $this->getMainContext()->wait();
+    }
+
+    /**
+     * @When /^I (delete) asset upload$/
+     */
+    public function iDoAssetUploadAction($action)
+    {
+        $actionButton = null;
+        $currentPage  = $this->getCurrentPage();
+
+        if ('delete' === $action) {
+            $actionButton = $this->spin(function () use ($currentPage) {
+                return $currentPage->find('css', '.btn.delete');
+            }, 5, sprintf('Unable to find the %s buton for upload', $action));
+        }
+        $actionButton->click();
+        $this->getMainContext()->wait();
+    }
+
+    /**
      * @param string $assetCode
      * @param string $categoryCodes
      *
@@ -250,11 +358,22 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
+     * @Given /^the asset temporary file storage has been cleared$/
+     */
+    public function clearAssetTmpFileStorage()
+    {
+        $fileSystem = $this->getMainContext()->getContainer()->get('oneup_flysystem.tmp_storage_filesystem');
+        foreach ($fileSystem->listFiles('', true) as $file) {
+            $fileSystem->delete($file['path']);
+        }
+    }
+
+    /**
      * @return EnterpriseFixturesContext
      */
     protected function getFixturesContext()
     {
-        return $this->getMainContext()->getSubcontext('fixtures');
+        return $this->getMainContext()->getParameter('mailer.transport');
     }
 
     /**
@@ -264,6 +383,7 @@ class EnterpriseAssetContext extends RawMinkContext
     {
         /** @var Container $container */
         $container = $this->getMainContext()->getContainer();
+
         return $container->get('pimee_product_asset.updater.files');
     }
 
@@ -274,6 +394,7 @@ class EnterpriseAssetContext extends RawMinkContext
     {
         /** @var Container $container */
         $container = $this->getMainContext()->getContainer();
+
         return $container->get('pimee_product_asset.saver.variation');
     }
 }

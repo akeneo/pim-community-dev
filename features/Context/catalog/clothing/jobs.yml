@@ -270,3 +270,8 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    apply_assets_mass_upload:
+        connector: Akeneo CSV Connector
+        alias:     apply_assets_mass_upload
+        label:     Mass approve product drafts
+        type:      mass_upload

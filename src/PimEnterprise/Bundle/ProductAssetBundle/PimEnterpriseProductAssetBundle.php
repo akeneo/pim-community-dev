@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle;
 
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\ProcessMassUploadCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFileCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFilesFromReferenceCommand;
@@ -63,5 +64,6 @@ class PimEnterpriseProductAssetBundle extends Bundle
         $application->add(new GenerateVariationFileCommand());
         $application->add(new GenerateVariationFilesFromReferenceCommand());
         $application->add(new SendAlertNotificationsCommand());
+        $application->add(new ProcessMassUploadCommand());
     }
 }

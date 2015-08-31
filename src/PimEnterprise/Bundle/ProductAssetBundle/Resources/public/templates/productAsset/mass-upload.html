@@ -1,0 +1,29 @@
+<div class="navigation clearfix navbar-extra">
+    <div class="navbar-buttons pull-right">
+        <button class="btn btn-publish schedule hide"><%= _.__('pimee_product_asset.mass_upload.btn.schedule') %></button>
+        <button class="btn fileinput-button"><%= _.__('pimee_product_asset.mass_upload.btn.add_files') %></button>
+        <button class="btn btn-primary start" type="submit"><%=
+            _.__('pimee_product_asset.mass_upload.btn.start') %>
+        </button>
+        <button class="btn cancel" type="reset"><%= _.__('pimee_product_asset.mass_upload.btn.cancel') %></button>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="grid-container">
+        <table class="grid table table-striped files">
+            <thead>
+            <tr>
+                <th class="preview"><%= _.__('pimee_product_asset.mass_upload.grid.medias') %></th>
+                <th class="filename"><%= _.__('pimee_product_asset.mass_upload.grid.filename') %></th>
+                <th class="filetype"><%= _.__('pimee_product_asset.mass_upload.grid.filetype') %></th>
+                <th class="status"><%= _.__('pimee_product_asset.mass_upload.grid.status') %></th>
+                <th class="dz-progress-wrapper"><%= _.__('pimee_product_asset.mass_upload.grid.progress') %></th>
+                <th class="action-cell"><%= _.__('pimee_product_asset.mass_upload.grid.actions') %></th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
