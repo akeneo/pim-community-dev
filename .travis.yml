@@ -28,14 +28,14 @@ before_script:
     - sudo sed -i -e "s,/var/www,$(pwd)/web,g" /etc/apache2/sites-available/default
     - sudo /etc/init.d/apache2 restart
 
-    - php app/check.php
-
     - composer self-update --no-interaction
     - ant prepare
     - sh -c 'if [ "$STORAGE" == "mongo" ]; then ant require-mongo; fi;'
     - sh -c 'if [ "$STORAGE" == "mongo" ]; then ant activate-mongo; fi;'
     - ant vendors
     - ant install-all-behat
+
+    - php app/check.php
 
     # Initialize xvfb + selenium
     - "sh -e /etc/init.d/xvfb start"
