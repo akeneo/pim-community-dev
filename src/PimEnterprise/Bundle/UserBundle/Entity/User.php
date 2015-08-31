@@ -26,7 +26,7 @@ class User extends BaseUser implements UserInterface
     protected $assetDelayReminder = 5;
 
      /** @var CategoryInterface */
-    protected $defaultAssetTree = 5;
+    protected $defaultAssetTree;
 
     /**
      * {@inheritdoc}

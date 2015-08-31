@@ -708,7 +708,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getAccessManager($type)
     {
         if (in_array($type, ['product category'])) {
-            return $this->getContainer()->get(sprintf('pimee_security.manager.category_access');
+            return $this->getContainer()->get('pimee_security.manager.category_access');
         }
 
         if (in_array($type, ['asset category'])) {

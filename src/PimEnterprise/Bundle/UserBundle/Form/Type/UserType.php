@@ -11,8 +11,13 @@
 namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
+use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
 use Pim\Bundle\UserBundle\Form\Type\UserType as BaseUserType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Overridden user form to add field
@@ -21,6 +26,30 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class UserType extends BaseUserType
 {
+    /** @var string */
+    protected $class;
+
+    /**
+     * @param TokenStorageInterface     $tokenStorage
+     * @param Request                   $request
+     * @param UserPreferencesSubscriber $subscriber
+     * @param RoleRepository            $roleRepository
+     * @param GroupRepository           $groupRepository
+     * @param string                    $class
+     */
+    public function __construct(
+        TokenStorageInterface $tokenStorage,
+        Request $request,
+        UserPreferencesSubscriber $subscriber,
+        RoleRepository $roleRepository,
+        GroupRepository $groupRepository,
+        $class
+    ) {
+        parent::__construct($tokenStorage, $request, $subscriber, $roleRepository, $groupRepository);
+
+        $this->class = $class;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -50,7 +79,7 @@ class UserType extends BaseUserType
             'defaultAssetTree',
             'entity',
             [
-                'class'         => 'PimEnterprise\\Component\\ProductAsset\\Model\\Category',
+                'class'         => $this->class,
                 'property'      => 'label',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {

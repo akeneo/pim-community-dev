@@ -1,7 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\InstallerBundle\DataFixtures\ORM;
 
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadUserData as BaseLoadUserData;
 
 /**
@@ -29,7 +39,7 @@ class LoadUserData extends BaseLoadUserData
      *
      * @param string $categoryCode
      *
-     * @return \PimEnterprise\Component\ProductAsset\Model\CategoryInterface
+     * @return CategoryInterface
      */
     protected function getAssetTree($categoryCode)
     {

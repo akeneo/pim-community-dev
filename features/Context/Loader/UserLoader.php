@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Context\Loader;
 
 use Doctrine\Common\Persistence\ObjectManager;
@@ -16,9 +25,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class UserLoader extends LoadUserData
 {
-    /**
-     * @var string Path of the fixtures file
-     */
+    /** @var string Path of the fixtures file */
     protected $filePath;
 
     /**
@@ -70,8 +77,8 @@ class UserLoader extends LoadUserData
         $lastName  = isset($data['last_name']) ? $data['last_name'] : 'Doe';
         $email     = isset($data['email']) ? $data['email'] : $username . '@example.com';
         $apiKey    = isset($data['api_key']) ? $data['api_key'] : $username . '_api_key';
-        $roles     = isset($data['roles']) ? $data['roles'] : array('ROLE_ADMINISTRATOR');
-        $groups    = isset($data['groups']) ? $data['groups'] : array('all');
+        $roles     = isset($data['roles']) ? $data['roles'] : ['ROLE_ADMINISTRATOR'];
+        $groups    = isset($data['groups']) ? $data['groups'] : ['all'];
 
         $user = $this->getUserManager()->createUser();
 

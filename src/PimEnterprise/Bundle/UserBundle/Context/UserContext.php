@@ -38,7 +38,7 @@ class UserContext extends BaseUserContext
     protected $categoryAccessRepo;
 
     /** @var string */
-    protected $tree;
+    protected $treeOptionKey;
 
     /**
      * @param TokenStorageInterface         $tokenStorage
@@ -50,7 +50,7 @@ class UserContext extends BaseUserContext
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param CategoryAccessRepository      $categoryAccessRepo
      * @param string                        $defaultLocale
-     * @param string                        $tree
+     * @param string                        $treeOptionKey
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -62,7 +62,7 @@ class UserContext extends BaseUserContext
         AuthorizationCheckerInterface $authorizationChecker,
         CategoryAccessRepository $categoryAccessRepo,
         $defaultLocale,
-        $tree
+        $treeOptionKey
     ) {
         parent::__construct(
             $tokenStorage,
@@ -76,7 +76,7 @@ class UserContext extends BaseUserContext
 
         $this->authorizationChecker = $authorizationChecker;
         $this->categoryAccessRepo   = $categoryAccessRepo;
-        $this->tree                 = $tree;
+        $this->treeOptionKey        = $treeOptionKey;
     }
 
     /**
@@ -136,7 +136,7 @@ class UserContext extends BaseUserContext
      */
     public function getAccessibleUserTree()
     {
-        $defaultTree = $this->getUserOption($this->tree);
+        $defaultTree = $this->getUserOption($this->treeOptionKey);
         if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $defaultTree)) {
             return $defaultTree;
         }

@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\UserBundle\Entity;
 
 use Pim\Bundle\UserBundle\Entity\UserInterface as BaseUserInterface;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 /**
  * Interface UserInterface
@@ -29,6 +30,20 @@ interface UserInterface extends BaseUserInterface
      * Set delay
      *
      * @param int $assetDelayReminder
+     *
+     * @return UserInterface
      */
     public function setAssetDelayReminder($assetDelayReminder);
+
+    /**
+     * @return CategoryInterface
+     */
+    public function getDefaultAssetTree();
+
+    /**
+     * @param CategoryInterface $defaultAssetTree
+     *
+     * @return UserInterface
+     */
+    public function setDefaultAssetTree(CategoryInterface $defaultAssetTree);
 }
