@@ -30,12 +30,7 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
 
-        SettingsBuilder::append(
-            $rootNode,
-            array(
-                'version_update' => array('value' => true),
-            )
-        );
+        SettingsBuilder::append($rootNode, ['version_update' => ['value' => true]]);
 
         return $treeBuilder;
     }

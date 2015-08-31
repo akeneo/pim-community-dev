@@ -1,8 +1,9 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle;
 
 /**
- * Class VersionProvider
+ * Interface VersionProviderInterface
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

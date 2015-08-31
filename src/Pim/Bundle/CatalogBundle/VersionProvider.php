@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Pim\Bundle\CatalogBundle;
 
 /**
@@ -29,7 +28,7 @@ class VersionProvider implements VersionProviderInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getEdition()
     {
@@ -37,7 +36,7 @@ class VersionProvider implements VersionProviderInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getMajor()
     {
@@ -48,7 +47,7 @@ class VersionProvider implements VersionProviderInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getMinor()
     {
@@ -59,7 +58,7 @@ class VersionProvider implements VersionProviderInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getPatch()
     {
@@ -70,7 +69,7 @@ class VersionProvider implements VersionProviderInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getStability()
     {

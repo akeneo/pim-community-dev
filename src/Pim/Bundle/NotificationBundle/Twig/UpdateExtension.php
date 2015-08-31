@@ -17,8 +17,6 @@ class UpdateExtension extends \Twig_Extension
     protected $configManager;
 
     /**
-     * Constructor
-     *
      * @param ConfigManager $configManager
      */
     public function __construct(ConfigManager $configManager)
@@ -32,7 +30,7 @@ class UpdateExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('last_patch_is_enabled', [$this, 'lastPatchIsEnabled'])
+            new \Twig_SimpleFunction('is_last_patch_enabled', [$this, 'isLastPatchEnabled'])
         ];
     }
 
@@ -41,7 +39,7 @@ class UpdateExtension extends \Twig_Extension
      *
      * @return bool
      */
-    public function lastPatchIsEnabled()
+    public function isLastPatchEnabled()
     {
         return $this->configManager->get('pim_notification.version_update');
     }

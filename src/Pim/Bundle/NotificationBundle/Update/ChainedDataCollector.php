@@ -15,7 +15,7 @@ class ChainedDataCollector implements DataCollectorInterface, DataCollectorRegis
     protected $collectors = [];
 
     /**
-     * @param DataCollectorInterface $collector
+     * {@inheritdoc}
      */
     public function register(DataCollectorInterface $collector)
     {
@@ -23,7 +23,7 @@ class ChainedDataCollector implements DataCollectorInterface, DataCollectorRegis
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function collect()
     {

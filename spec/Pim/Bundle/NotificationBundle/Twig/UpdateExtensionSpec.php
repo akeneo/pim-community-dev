@@ -22,7 +22,7 @@ class UpdateExtensionSpec extends ObjectBehavior
     {
         $configManager->get('pim_notification.version_update')->willReturn(true);
 
-        $this->lastPatchIsEnabled()->shouldReturn(true);
+        $this->isLastPatchEnabled()->shouldReturn(true);
     }
 
     function it_has_a_name()
