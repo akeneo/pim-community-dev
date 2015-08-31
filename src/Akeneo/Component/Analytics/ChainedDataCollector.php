@@ -1,6 +1,7 @@
 <?php
 
 namespace Akeneo\Component\Analytics;
+
 use Akeneo\Component\Analytics\DataCollectorInterface;
 use Akeneo\Component\Analytics\DataCollectorRegistryInterface;
 

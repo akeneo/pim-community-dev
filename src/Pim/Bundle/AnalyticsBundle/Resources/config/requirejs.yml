@@ -1,3 +1,4 @@
 config:
     paths:
-        pim/last-patch-fetcher: pimanalytics/js/last-patch-fetcher
+        pim/data-collector: pimanalytics/js/data-collector
+        pim/patch-fetcher:  pimanalytics/js/patch-fetcher
