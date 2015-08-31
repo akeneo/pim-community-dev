@@ -28,7 +28,7 @@ Feature: Display proposal widget
     When I am on the dashboard page
     Then I should see "Proposals to review"
     When I wait for widgets to load
-    Then I should see the following proposals:
+    Then I should see the following proposals on the widget:
       | product   | author     |
       | my-jacket | Mary Smith |
 
@@ -54,7 +54,7 @@ Feature: Display proposal widget
     And I go to the dashboard page
     Then I should see "Proposals to review"
     When I wait for widgets to load
-    Then I should see the following proposals:
+    Then I should see the following proposals on the widget:
       | product      | author     |
       | my-tee-shirt | Mary Smith |
 

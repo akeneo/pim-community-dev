@@ -57,7 +57,7 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
 
         $value->getData()->willReturn($red);
-        $this->present($value, ['value' => 'red'])->shouldReturn('diff between two reference data');
+        $this->present($value, ['data' => 'red'])->shouldReturn('diff between two reference data');
     }
 }
 

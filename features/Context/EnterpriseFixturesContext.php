@@ -565,13 +565,13 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @Given /^I should see the following proposals:$/
+     * @Given /^I should see the following proposals on the widget:$/
      *
      * @param TableNode $table
      *
      * @throws \Exception
      */
-    public function iShouldSeeTheFollowingProposals(TableNode $table)
+    public function iShouldSeeTheFollowingProposalsOnTheWidget(TableNode $table)
     {
         $expectedProposals = $table->getHash();
         $actualProposals = $this->getSession()->getPage()->findAll('css', '#proposal-widget tbody tr');

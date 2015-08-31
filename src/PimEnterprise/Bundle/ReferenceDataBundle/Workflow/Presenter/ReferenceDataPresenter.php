@@ -41,6 +41,6 @@ class ReferenceDataPresenter extends AbstractReferenceDataPresenter
     {
         $repository = $this->repositoryResolver->resolve($this->referenceDataName);
 
-        return (string) $repository->findOneBy(['code' => $change['value']]);
+        return (string) $repository->findOneBy(['code' => $change['data']]);
     }
 }

@@ -3,6 +3,8 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 
 /**
@@ -61,6 +63,54 @@ class EnterpriseFeatureContext extends FeatureContext
         }
 
         throw $this->createExpectationException(sprintf('Field "%s" should be marked as modified by draft', $label));
+    }
+
+    /**
+     * Expects table as :
+     * | product_label | author | "Lace color" base | "Lace color" changed | status               |
+     * | my-hoody      | mary   |                   | Black                | Waiting for approval |
+     * or
+     * | product label | author | "Lace color" insert | status               |
+     * | my-hoody      | mary   | Black               | Waiting for approval |
+     *
+     * There are three types of changes displayed in proposals :
+     *     "base" is the replaced data
+     *     "changed" is the new data
+     *     "insert" is an inserted data (there was no attribute before for example)
+     *
+     * @Given /^I should see the following proposals:$/
+     *
+     * @param TableNode $table
+     */
+    public function iShouldSeeTheFollowingProposals(TableNode $table)
+    {
+        foreach ($table->getHash() as $row) {
+            $expectedGenericValues = [];
+            $expectedChanges = [];
+            foreach ($row as $key => $value) {
+                switch (strtolower($key)) {
+                    case 'product_label':
+                    case 'product label':
+                        $expectedGenericValues['product label'] = $value;
+                        break;
+                    case 'author':
+                        $expectedGenericValues['author'] = $value;
+                        break;
+                    case 'status':
+                        $expectedGenericValues['status'] = $value;
+                        break;
+                    default:
+                        $expectedChanges[] = $this->getExpectedChanges($key, $value);
+                        break;
+                }
+            }
+
+            $proposalRow     = $this->getProposalByProductLabel($expectedGenericValues['product label']);
+            $actualAttrParts = $this->getAttributePartFromProposalRow($proposalRow);
+
+            $this->assertProposalGenericValues($expectedGenericValues);
+            $this->assertProposalChanges($actualAttrParts, $expectedChanges);
+        }
     }
 
     /**
@@ -490,6 +540,152 @@ class EnterpriseFeatureContext extends FeatureContext
         });
 
         $removeButton->click();
+    }
+
+    /**
+     * @param array $expectedGenericValues All values that are not in changes and indexed by their column name
+     *
+     * @throws ExpectationException
+     */
+    protected function assertProposalGenericValues(array $expectedGenericValues)
+    {
+        $page = $this->getSubcontext('navigation')->getCurrentPage();
+        foreach ($expectedGenericValues as $column => $value) {
+            $actualValue = $page->getColumnValue($column, $expectedGenericValues['product label']);
+            if ($actualValue !== $value) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see %s "%s" but got "%s".', $column, $value, $actualValue)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param array $actualAttrParts see getActualAttributePart()
+     * @param array $expectedChanges see getExpectingChanges()
+     *
+     * @throws ExpectationException
+     */
+    protected function assertProposalChanges(array $actualAttrParts, array $expectedChanges)
+    {
+        foreach ($expectedChanges as $expectedAttrChange) {
+            $actualAttrDiff = $actualAttrParts[$expectedAttrChange['attribute']];
+            if (null === $actualAttrDiff) {
+                throw $this->createExpectationException(sprintf('Expecting to see field "%s" in changes.', $expectedAttrChange['attribute']));
+            }
+
+            $actualDiff = $actualAttrDiff->findAll('css', sprintf('.diff .%s', $expectedAttrChange['type']));
+            if (null === $actualDiff) {
+                throw $this->createExpectationException(sprintf('Expecting to see "%s" type in changes.', $expectedAttrChange['type']));
+            }
+
+            foreach ($actualDiff as $diff) {
+                $diffKey = array_search($diff->getText(), $expectedAttrChange['values']);
+                if (false === $diffKey) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Changes "%s" was not expected for attribute "%s".',
+                            $diff->getText(),
+                            $expectedAttrChange['attribute']
+                        )
+                    );
+                }
+                unset($expectedAttrChange['values'][$diffKey]);
+            }
+
+            if (!empty($expectedAttrChange['values'])) {
+                $missingValues = implode(', ', $expectedAttrChange['values']);
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting to see "%s" in %s for attribute "%s".',
+                        $missingValues,
+                        $expectedAttrChange['type'],
+                        $expectedAttrChange['attribute']
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Gets the attribute label and changes part from a proposal datagrid row
+     *
+     * @param NodeElement $proposalRow
+     *
+     * @throws ExpectationException
+     *
+     * @return NodeElement[]
+     */
+    protected function getAttributePartFromProposalRow(NodeElement $proposalRow)
+    {
+        $details        = $proposalRow->find('css', 'div.details');
+        $attrLabel      = null;
+        $attributesPart = [];
+        foreach ($details->findAll('css', 'dd, dt') as $child) {
+            if (null !== $attrLabel) {
+                $attributesPart[$attrLabel] = $child;
+                $attrLabel = null;
+                continue;
+            }
+            if (null === $child->find('css', 'ul.diff')) {
+                $attrLabel = $child->getText();
+            }
+        }
+
+        return $attributesPart;
+    }
+
+    /**
+     * Gets the proposal row from the proposals grid in terms of product label
+     *
+     * @param string $productLabel
+     *
+     * @throws ExpectationException
+     *
+     * @return NodeElement
+     */
+    protected function getProposalByProductLabel($productLabel)
+    {
+        try {
+            $page = $this->getSubcontext('navigation')->getCurrentPage();
+            $row  = $page->getRow($productLabel);
+            if (null === $row) {
+                throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $productLabel));
+            }
+        } catch (ElementNotFoundException $e) {
+            throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $productLabel));
+        }
+
+        return $row;
+    }
+
+    /**
+     * Gets expecting proposal changes from header and value
+     * Return [
+     *     'attribute' => (string) attribute label,
+     *     'type'      => (string should be 'base'|'changed'|'insert') changes type,
+     *     'values'    => (array) each value contained in $rawValues and separated by ;,
+     * ]
+     *
+     * @param string $header
+     * @param string $rawValues
+     *
+     * @return array
+     */
+    protected function getExpectedChanges($header, $rawValues)
+    {
+        $expectedAttributeLabel = [];
+        preg_match('/^"([a-zA-Z0-9_ ]+)"/', $header, $expectedAttributeLabel);
+
+        $expectedChangesType = trim(strrchr($header, ' '));
+        $expectedValues      = explode(';', $rawValues);
+        $expectedValues      = array_map('trim', $expectedValues);
+
+        return [
+            'attribute' => $expectedAttributeLabel[1],
+            'type'      => $expectedChangesType,
+            'values'    => $expectedValues,
+        ];
     }
 
     protected function getAttributeIcon($iconSelector, $attributeLabel)
