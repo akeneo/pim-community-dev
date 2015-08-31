@@ -43,6 +43,12 @@
                                             <i class="icon-repeat"></i>
                                             {{ 'pimee_product_asset.enrich_asset.button.reset_variations'|trans }}
                                         </button>
+                                        {% if referenceModel.file %}
+                                            <a class="btn icons-holder-text no-hash btn-download" title="{{ 'btn.download'|trans }}"
+                                               href="{{ path('pim_enrich_media_download', {'filename': referenceModel.file.key|url_encode}) }}">
+                                                <i class="icon-download-alt"></i> {{ 'btn.download'|trans }}
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             </tbody>
