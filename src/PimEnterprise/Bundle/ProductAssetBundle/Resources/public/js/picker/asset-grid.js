@@ -101,6 +101,7 @@ define(
                     }
                 };
 
+                /* jshint nonew: false */
                 new CategoryFilter(urlParams, 'asset-grid', 'pimee_asset_categorytree');
 
                 $.get(Routing.generate('pim_datagrid_load', urlParams)).done(function (response) {
