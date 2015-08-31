@@ -95,12 +95,12 @@ pimee_product_asset_mass_upload_rest_list:
     defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:listAction, _format: json }
     methods: [GET]
 
-pimee_product_asset_upload:
+pimee_product_asset_rest_upload:
     path: /upload
     defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:uploadAction, _format: json }
     methods: [POST]
 
-pimee_product_asset_delete:
+pimee_product_asset_mass_upload_rest_delete:
     path: /rest/upload/delete/{filename}
     defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:deleteUploadedFileAction, _format: json }
     methods: [DELETE]

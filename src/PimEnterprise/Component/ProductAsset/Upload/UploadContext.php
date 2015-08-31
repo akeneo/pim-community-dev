@@ -34,18 +34,16 @@ class UploadContext
 
     /**
      * @param string $uploadDirectory The application temporary upload directory root
+     * @param string $username
      */
-    public function __construct($uploadDirectory)
+    public function __construct($uploadDirectory, $username)
     {
         $this->uploadDirectory    = $uploadDirectory . DIRECTORY_SEPARATOR . static::DIR_UPLOAD_TMP;
         $this->scheduledDirectory = $uploadDirectory . DIRECTORY_SEPARATOR . static::DIR_UPLOAD_SCHEDULED;
-    }
 
-    /**
-     * @param string $username
-     */
-    public function setUsername($username)
-    {
+        if (empty($username)) {
+            throw new \RuntimeException('Username must be set to initialize the upload context');
+        }
         $this->username = $username;
     }
 
@@ -54,10 +52,6 @@ class UploadContext
      */
     public function getTemporaryUploadDirectory()
     {
-        if (is_null($this->username)) {
-            throw new \RuntimeException('Username must be set to initialize the upload context');
-        }
-
         return $this->uploadDirectory . DIRECTORY_SEPARATOR . $this->username;
     }
 
@@ -66,10 +60,6 @@ class UploadContext
      */
     public function getTemporaryScheduleDirectory()
     {
-        if (is_null($this->username)) {
-            throw new \RuntimeException('Username must be set to initialize the upload context');
-        }
-
         return $this->scheduledDirectory . DIRECTORY_SEPARATOR . $this->username;
     }
 }

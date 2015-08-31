@@ -51,8 +51,7 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
         $sourceDir = $input->getOption('dir');
         $processor = $this->getMassUploadProcessor();
 
-        $context = $this->getUploadContext();
-        $context->setUsername($sourceDir);
+        $context = new UploadContext($this->getTmpStorageDir(), $sourceDir);
 
         $processedList = $processor->applyMassUpload($context);
 
@@ -96,10 +95,10 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return UploadContext
+     * @return string
      */
-    protected function getUploadContext()
+    protected function getTmpStorageDir()
     {
-        return $this->getContainer()->get('pimee_product_asset.upload_context');
+        return $this->getContainer()->getParameter('tmp_storage_dir');
     }
 }

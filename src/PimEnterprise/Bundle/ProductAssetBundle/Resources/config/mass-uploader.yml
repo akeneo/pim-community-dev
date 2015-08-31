@@ -6,11 +6,6 @@ parameters:
     pimee_product_asset.mass_upload.tasklet.class:   PimEnterprise\Bundle\ProductAssetBundle\MassUpload\MassUploadTasklet
 
 services:
-    pimee_product_asset.upload_context:
-        class: %pimee_product_asset.upload_context.class%
-        arguments:
-            - '%tmp_storage_dir%'
-
     pimee_product_asset.upload_checker:
         class: %pimee_product_asset.upload_checker.class%
         arguments:
@@ -38,5 +33,5 @@ services:
         class: %pimee_product_asset.mass_upload.tasklet.class%
         arguments:
             - '@pimee_product_asset.mass_upload_processor'
-            - '@pimee_product_asset.upload_context'
             - '@pim_notification.manager.notification'
+            - '%tmp_storage_dir%'

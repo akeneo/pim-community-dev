@@ -45,7 +45,9 @@ class UploadChecker implements UploadCheckerInterface
             throw new InvalidCodeException();
         }
 
-        $this->checkWithExistingAsset($parsedName['code'], $parsedName['locale']);
+        if (!$this->validateWithExistingAssets($parsedName['code'], $parsedName['locale'])) {
+            throw new InvalidLocaleException();
+        }
 
         $uploadPath = $tmpUploadDir . DIRECTORY_SEPARATOR . $filename;
         if (file_exists($uploadPath)) {
@@ -69,17 +71,17 @@ class UploadChecker implements UploadCheckerInterface
         ];
 
         $patternCodePart   = '[a-zA-Z0-9_]+';
-        $patternLocalePart = '[a-z]{2}_[A-Z]{2}';
+        $patternLocalePart = '[a-z]{2}(?:-[A-Za-z]{2,3})?_ [A-Z]{2}';
 
         $pattern = sprintf('/^
-            (%s)        #asset code
-            (?:-(%s))?  #locale code (optionnal)
-            \.[^.]+     #file extension
+            (?P<code>%s)          #asset code
+            (?:-(?P<locale>%s))?  #locale code (optionnal)
+            \.[^.]+               #file extension
             $/x', $patternCodePart, $patternLocalePart);
 
         if (preg_match($pattern, $filename, $matches)) {
-            $parsed['code']   = $matches[1];
-            $parsed['locale'] = isset($matches[2]) ? $matches[2] : null;
+            $parsed['code']   = $matches['code'];
+            $parsed['locale'] = isset($matches['locale']) ? $matches['locale'] : null;
         }
 
         return $parsed;
@@ -93,14 +95,14 @@ class UploadChecker implements UploadCheckerInterface
      *
      * @throws InvalidLocaleException
      *
-     * @return null
+     * @return bool
      */
-    protected function checkWithExistingAsset($assetCode, $localeCode = null)
+    protected function validateWithExistingAssets($assetCode, $localeCode = null)
     {
         $asset = $this->assetRepository->findOneByCode($assetCode);
 
         if (null === $asset) {
-            return null;
+            return true;
         }
 
         $assetLocales = $asset->getLocales();
@@ -108,9 +110,9 @@ class UploadChecker implements UploadCheckerInterface
         if ((empty($assetLocales) && null === $localeCode) ||
             (in_array($localeCode, array_keys($assetLocales)))
         ) {
-            return null;
+            return true;
         }
 
-        throw new InvalidLocaleException();
+        return false;
     }
 }

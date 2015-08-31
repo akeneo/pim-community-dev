@@ -35,25 +35,25 @@ class MassUploadTasklet implements TaskletInterface
     /** @var MassUploadProcessor */
     protected $massUploadProcessor;
 
-    /** @var UploadContext */
-    protected $uploadContext;
+    /** @var string */
+    protected $tmpStorageDir;
 
     /** @var NotificationManager */
     protected $notificationManager;
 
     /**
      * @param MassUploadProcessor $massUploadProcessor
-     * @param UploadContext       $uploadContext
      * @param NotificationManager $notificationManager
+     * @param string              $tmpStorageDir
      */
     public function __construct(
         MassUploadProcessor $massUploadProcessor,
-        UploadContext $uploadContext,
-        NotificationManager $notificationManager
+        NotificationManager $notificationManager,
+        $tmpStorageDir
     ) {
         $this->massUploadProcessor = $massUploadProcessor;
-        $this->uploadContext       = $uploadContext;
         $this->notificationManager = $notificationManager;
+        $this->tmpStorageDir       = $tmpStorageDir;
     }
 
     /**
@@ -72,11 +72,11 @@ class MassUploadTasklet implements TaskletInterface
     public function execute(array $configuration)
     {
         $jobExecution = $this->stepExecution->getJobExecution();
-        $username     = $jobExecution->getUser();
 
-        $this->uploadContext->setUsername($username);
+        $username      = $jobExecution->getUser();
+        $uploadContext = new UploadContext($this->tmpStorageDir, $username);
 
-        $processedList = $this->massUploadProcessor->applyMassUpload($this->uploadContext);
+        $processedList = $this->massUploadProcessor->applyMassUpload($uploadContext);
 
         foreach ($processedList as $item) {
             $file = $item->getItem();

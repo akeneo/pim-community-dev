@@ -121,8 +121,8 @@ class Scheduler implements SchedulerInterface
             $comparedInfos       = $this->uploadChecker->parseFilename($filename);
             $comparedIsLocalized = null !== $comparedInfos['locale'];
 
-            if ($checkedFilenameInfos['code'] === $comparedInfos['code']
-                && $checkedIsLocalized !== $comparedIsLocalized
+            if ($checkedFilenameInfos['code'] === $comparedInfos['code'] &&
+                $checkedIsLocalized !== $comparedIsLocalized
             ) {
                 return false;
             }

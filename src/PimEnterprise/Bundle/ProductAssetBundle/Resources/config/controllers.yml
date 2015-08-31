@@ -37,12 +37,12 @@ services:
         class: %pimee_product_asset.controller.rest.mass_upload.class%
         arguments:
             - '@pimee_product_asset.repository.asset'
-            - '@pimee_product_asset.upload_context'
             - '@pimee_product_asset.upload_checker'
             - '@pimee_product_asset.upload_scheduler'
             - '@security.token_storage'
             - '@pim_connector.launcher.simple_job_launcher'
             - '@pim_import_export.repository.job_instance'
+            - '%tmp_storage_dir%'
 
     pimee_product_asset.controller.category_tree:
         scope: request

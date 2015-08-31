@@ -35,9 +35,6 @@ class MassUploadController
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
-    /** @var UploadContext */
-    protected $uploadContext;
-
     /** @var UploadCheckerInterface */
     protected $uploadChecker;
 
@@ -53,34 +50,34 @@ class MassUploadController
     /** @var JobInstanceRepository */
     protected $jobInstanceRepository;
 
+    /** @var string */
+    protected $tmpStorageDir;
+
     /**
      * @param AssetRepositoryInterface $assetRepository
-     * @param UploadContext            $uploadContext
      * @param UploadCheckerInterface   $uploadChecker
      * @param SchedulerInterface       $scheduler
      * @param TokenStorageInterface    $tokenStorage
      * @param JobLauncherInterface     $jobLauncher
      * @param JobInstanceRepository    $jobInstanceRepository
+     * @param string                   $tmpStorageDir
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
-        UploadContext $uploadContext,
         UploadCheckerInterface $uploadChecker,
         SchedulerInterface $scheduler,
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
-        JobInstanceRepository $jobInstanceRepository
+        JobInstanceRepository $jobInstanceRepository,
+        $tmpStorageDir
     ) {
         $this->assetRepository       = $assetRepository;
-        $this->uploadContext         = $uploadContext;
         $this->uploadChecker         = $uploadChecker;
         $this->scheduler             = $scheduler;
         $this->tokenStorage          = $tokenStorage;
         $this->jobLauncher           = $jobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
-
-        $username = $this->tokenStorage->getToken()->getUsername();
-        $this->uploadContext->setUsername($username);
+        $this->tmpStorageDir         = $tmpStorageDir;
     }
 
     /**
@@ -92,13 +89,14 @@ class MassUploadController
      */
     public function verifyAction($filename)
     {
-        $response = new JsonResponse();
+        $response      = new JsonResponse();
+        $uploadContext = $this->getUploadContext();
 
         try {
             $this->uploadChecker
                 ->validateSchedule($this->cleanFilename($filename),
-                    $this->uploadContext->getTemporaryUploadDirectory(),
-                    $this->uploadContext->getTemporaryScheduleDirectory()
+                    $uploadContext->getTemporaryUploadDirectory(),
+                    $uploadContext->getTemporaryScheduleDirectory()
                 );
         } catch (UploadException $e) {
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);
@@ -127,7 +125,7 @@ class MassUploadController
             $file = $files->getIterator()->current();
 
             $filename  = $file->getClientOriginalName();
-            $targetDir = $this->uploadContext->getTemporaryUploadDirectory();
+            $targetDir = $this->getUploadContext()->getTemporaryUploadDirectory();
 
             $uploaded = $file->move($targetDir, $filename);
         }
@@ -149,7 +147,7 @@ class MassUploadController
      */
     public function deleteUploadedFileAction($filename)
     {
-        $filepath = $this->uploadContext->getTemporaryUploadDirectory()
+        $filepath = $this->getUploadContext()->getTemporaryUploadDirectory()
             . DIRECTORY_SEPARATOR . $this->cleanFilename($filename);
 
         if (is_file($filepath)) {
@@ -166,7 +164,8 @@ class MassUploadController
      */
     public function listAction()
     {
-        $temporaryUploadDirectory = $this->uploadContext->getTemporaryUploadDirectory();
+        $uploadContext            = $this->getUploadContext();
+        $temporaryUploadDirectory = $uploadContext->getTemporaryUploadDirectory();
         $files                    = [];
 
         if (is_dir($temporaryUploadDirectory)) {
@@ -175,7 +174,7 @@ class MassUploadController
             $mimeTypeGuesser = MimeTypeGuesser::getInstance();
 
             foreach ($storedFiles as $file) {
-                $filepath = $this->uploadContext->getTemporaryUploadDirectory() . DIRECTORY_SEPARATOR . $file;
+                $filepath = $uploadContext->getTemporaryUploadDirectory() . DIRECTORY_SEPARATOR . $file;
                 $mimeType = $mimeTypeGuesser->guess($filepath);
                 $files[]  = [
                     'name' => $file,
@@ -195,12 +194,26 @@ class MassUploadController
      */
     public function scheduleAction()
     {
-        $result      = $this->scheduler->schedule($this->uploadContext);
+        $result      = $this->scheduler->schedule($this->getUploadContext());
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('apply_assets_mass_upload');
 
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), '{}');
 
         return new JsonResponse(['result' => $result]);
+    }
+
+    /**
+     * @return UploadContext
+     */
+    protected function getUploadContext()
+    {
+        if (null === $this->tokenStorage->getToken()) {
+            throw new \RuntimeException('Mass upload needs an authenticated user');
+        }
+
+        $username = $this->tokenStorage->getToken()->getUsername();
+
+        return new UploadContext($this->tmpStorageDir, $username);
     }
 
     /**
@@ -212,8 +225,6 @@ class MassUploadController
      */
     protected function cleanFilename($filename)
     {
-        $clean = basename(trim($filename));
-
-        return $clean;
+        return basename(trim($filename));
     }
 }

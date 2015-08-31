@@ -142,9 +142,7 @@ class EnterpriseAssetContext extends RawMinkContext
         if (!empty($wait)) {
             $iconContainer = $code->getParent()->find('css', '.icons-container');
             $this->getMainContext()->spin(function () use ($iconContainer) {
-                $tooltip = $iconContainer->find('css', 'i.validation-tooltip');
-
-                return $tooltip ? true : false;
+                return (bool) $iconContainer->find('css', 'i.validation-tooltip');
             });
         }
     }
@@ -266,14 +264,14 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
-     * @Then /^I should see "([^"]+)" for asset "([^"]+)"$/
+     * @Then /^I should see "([^"]+)" status for asset "([^"]+)"$/
      *
      * @param string $text
      * @param string $asset
      *
      * @throws ElementNotFoundException
      */
-    public function iShouldSeeForAssetUpload($text, $asset)
+    public function iShouldSeeStatusForAssetUpload($text, $asset)
     {
         $this->spin(function () use ($text, $asset) {
             $assetElements = $this->getCurrentPage()
@@ -287,7 +285,7 @@ class EnterpriseAssetContext extends RawMinkContext
 
             foreach ($assetElements as $assetElement) {
                 $row   = $assetElement->getParent();
-                $found = $row->find('css', sprintf('td:contains("%s")', $text));
+                $found = $row->find('css', sprintf('td.status:contains("%s")', $text));
                 if ($found) {
                     break;
                 }
@@ -298,22 +296,44 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
-     * @When /^I (start|schedule) assets mass upload$/
+     * @When /^I (start|schedule|cancel) assets mass upload$/
      */
-    public function iStartAssetMassUpload($action)
+    public function iDoAssetMassUploadAction($action)
     {
         $actionButton = null;
+        $currentPage  = $this->getCurrentPage();
 
         if ('start' === $action) {
-            $actionButton = $this->getCurrentPage()->find('css', '.btn:contains("start")');
+            $actionButton = $this->spin(function () use ($currentPage) {
+                return $currentPage->find('css', '.btn.start');
+            }, 5, sprintf('Unable to find the %s buton for mass upload', $action));
         }
         if ('schedule' === $action) {
-            $actionButton = $this->getCurrentPage()->find('css', '.btn:contains("schedule")');
+            $actionButton = $this->spin(function () use ($currentPage) {
+                return $currentPage->find('css', '.btn.schedule');
+            }, 5, sprintf('Unable to find the %s buton for mass upload', $action));
         }
-        if (!$actionButton) {
-            throw new ElementNotFoundException($this->getSession(),
-                sprintf('Unable to find the %s buton for mass upload', $action)
-            );
+        if ('cancel' === $action) {
+            $actionButton = $this->spin(function () use ($currentPage) {
+                return $currentPage->find('css', '.btn.cancel');
+            }, 5, sprintf('Unable to find the %s buton for mass upload', $action));
+        }
+        $actionButton->click();
+        $this->getMainContext()->wait();
+    }
+
+    /**
+     * @When /^I (delete) asset upload$/
+     */
+    public function iDoAssetUploadAction($action)
+    {
+        $actionButton = null;
+        $currentPage  = $this->getCurrentPage();
+
+        if ('delete' === $action) {
+            $actionButton = $this->spin(function () use ($currentPage) {
+                return $currentPage->find('css', '.btn.delete');
+            }, 5, sprintf('Unable to find the %s buton for upload', $action));
         }
         $actionButton->click();
         $this->getMainContext()->wait();
@@ -338,7 +358,7 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
-     * @When /^I clear the asset temporary file storage$/
+     * @Given /^the asset temporary file storage has been cleared$/
      */
     public function clearAssetTmpFileStorage()
     {

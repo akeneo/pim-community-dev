@@ -13,8 +13,9 @@ class UploadContextSpec extends ObjectBehavior
     function let()
     {
         $this->uploadDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'pim_spec';
+        $username              = 'foobar';
 
-        $this->beConstructedWith($this->uploadDirectory);
+        $this->beConstructedWith($this->uploadDirectory, $username);
     }
 
     function it_is_initializable()
@@ -22,19 +23,17 @@ class UploadContextSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Upload\UploadContext');
     }
 
-    function it_must_be_initailized_with_username()
+    function it_must_be_initialized_with_username()
     {
-        $this->shouldThrow('RuntimeException')
-            ->during('getTemporaryUploadDirectory');
+        $this->shouldThrow('\RuntimeException')
+            ->during('__construct', ['uploadDirectory', null]);
 
-        $this->shouldThrow('RuntimeException')
-            ->during('getTemporaryScheduleDirectory');
+        $this->shouldThrow('\RuntimeException')
+            ->during('__construct', ['uploadDirectory', '']);
     }
 
     function it_gets_upload_directories()
     {
-        $this->setUsername('foobar');
-
         $this->getTemporaryUploadDirectory()
             ->shouldReturn($this->uploadDirectory
                 . DIRECTORY_SEPARATOR . UploadContext::DIR_UPLOAD_TMP

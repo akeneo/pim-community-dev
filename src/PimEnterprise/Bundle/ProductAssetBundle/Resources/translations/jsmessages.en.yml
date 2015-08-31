@@ -25,14 +25,17 @@ pimee_product_asset:
                 message: Are you sure you want to reset all the variations ?
     mass_upload:
         menu: Upload assets
-        new: A new asset will be created
-        scheduled: Files scheduled for asset processing
-        canceled: Upload successfully canceled
-        add_files: Add files
-        cancel: Cancel upload
-        delete: Delete
-        schedule: Schedule
-        start: Start upload
+        btn:
+            add_files: Add files
+            cancel: Cancel upload
+            delete: Delete
+            schedule: Schedule
+            start: Start upload
+        success:
+            new: A new asset will be created
+            scheduled: Files scheduled for asset processing
+            canceled: Upload successfully canceled
+            deleted: Uploaded file successfully deleted
         error:
             list: Cannot read already uploaded files
             upload: An error occured while uploading
@@ -51,8 +54,13 @@ pimee_product_asset:
         action:
             cancel: Cancel
             delete: Delete
+        status:
+            added: Added
+            uploading: Uploading
+            error: Error
+            success: Success
 pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        mass_upload: Mass upload
+    widget:
+        last_operations:
+            job_type:
+                mass_upload: Mass upload

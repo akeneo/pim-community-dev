@@ -103,8 +103,8 @@ class MassUploadProcessor
 
         foreach ($scheduledFiles as $file) {
             try {
-                $asset = $this->applyScheduledUpload($file);
-                $reason = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
+                $asset          = $this->applyScheduledUpload($file);
+                $reason         = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
                 $assetsToSave[] = $asset;
                 $processedFiles->addItem($file, ProcessedItem::STATE_SUCCESS, $reason);
             } catch (\Exception $e) {
@@ -138,12 +138,10 @@ class MassUploadProcessor
 
         $file = $this->rawFileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
 
-        $locale = null;
-        if ($isLocalized) {
-            $locale = $this->localeRepository->findOneBy(['code' => $assetInfo['locale']]);
-        }
+        $locale = $isLocalized ? $this->localeRepository->findOneBy(['code' => $assetInfo['locale']]) : null;
 
-        if (null !== $reference = $asset->getReference($locale)) {
+        $reference = $asset->getReference($locale);
+        if (null !== $reference) {
             $reference->setFile($file);
         }
 
