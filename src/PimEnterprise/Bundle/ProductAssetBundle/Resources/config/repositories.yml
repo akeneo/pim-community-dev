@@ -65,7 +65,7 @@ services:
 
     pimee_product_asset.repository.asset_category:
         class:  %pimee_product_asset.repository.asset_category.class%
-        parent: pim_classifiation.repository.item_category
+        parent: pim_classification.repository.abstract_item_category
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pimee_product_asset.model.asset.class%
