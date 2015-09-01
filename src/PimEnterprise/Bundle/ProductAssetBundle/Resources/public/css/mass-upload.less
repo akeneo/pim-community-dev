@@ -1,0 +1,70 @@
+@color-status-success: #008000;
+@color-status-error: #a10000;
+@color-progress-bar: green linear-gradient(to bottom, #67B373, #68FF80);
+
+.mass-upload-wrapper {
+  th.preview {
+    width: 80px;
+  }
+
+  th.filetype {
+    width: 10%;
+  }
+
+  th.status {
+    width: 10%;
+  }
+
+  th.dz-progress-wrapper {
+    width: 20%;
+  }
+
+  .file-row {
+    td.preview {
+      width: 80px;
+      height: 80px;
+    }
+
+    .progress.success .bar {
+      background: @color-progress-bar;
+    }
+
+    /* Hide the delete button initially */
+    .delete {
+      display: none;
+      padding: 0 12px;
+    }
+
+    p.dz-status {
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: smaller;
+      padding: 3px;
+    }
+
+    p.dz-status.added,
+    p.dz-status.success {
+      color: white;
+      background-color: @color-status-success;
+    }
+
+    p.dz-status.error {
+      color: white;
+      background-color: @color-status-error;
+    }
+
+    .text-danger {
+      color: @color-status-error;
+    }
+
+    /* Hide the start and cancel buttons and show the delete button */
+    &.dz-success .cancel {
+      display: none;
+    }
+
+    &.dz-success .delete {
+      display: block;
+    }
+  }
+}
