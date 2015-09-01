@@ -3,10 +3,6 @@ config:
         # Forwarded events from mediator
         pim/product-edit-form:
             forwarded-events:
-                - 'pim_enrich:form:field:extension:add':           'pim_enrich:form:field:extension:add'
-                - 'pim_enrich:form:entity:pre_save':               'pim_enrich:form:entity:pre_save'
-                - 'pim_enrich:form:entity:bad_request':            'pim_enrich:form:entity:bad_request'
-                - 'pim_enrich:form:entity:update_state':           'pim_enrich:form:entity:update_state'
                 - 'pim_enrich:form:proposal:post_approve:success': 'pim_enrich:form:proposal:post_approve:success'
                 - 'pim_enrich:form:proposal:post_approve:error':   'pim_enrich:form:proposal:post_approve:error'
                 - 'pim_enrich:form:proposal:post_reject:success':  'pim_enrich:form:proposal:post_reject:success'

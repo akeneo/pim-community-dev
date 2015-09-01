@@ -4,10 +4,13 @@ define(
     [
         'underscore',
         'pim/form',
-        'oro/mediator',
         'text!pimee/template/product/meta/draft-status'
     ],
-    function (_, BaseForm, mediator, formTemplate) {
+    function (
+        _,
+        BaseForm,
+        formTemplate
+    ) {
         var FormView = BaseForm.extend({
             tagName: 'span',
             className: 'draft-status',

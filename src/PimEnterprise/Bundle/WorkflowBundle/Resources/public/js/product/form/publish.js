@@ -4,7 +4,6 @@ define(
     [
         'jquery',
         'underscore',
-        'oro/mediator',
         'pim/form',
         'text!pimee/template/product/publish',
         'oro/navigation',
@@ -17,7 +16,6 @@ define(
     function (
         $,
         _,
-        mediator,
         BaseForm,
         template,
         Navigation,

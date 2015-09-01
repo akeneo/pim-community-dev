@@ -7,10 +7,9 @@ define(
         'backbone',
         'pim/form',
         'pimee/rule-manager',
-        'oro/mediator',
         'text!pimee/template/product/tab/attribute/smart-attribute'
     ],
-    function ($, _, Backbone, BaseForm, RuleManager, mediator, smartAttributeTemplate) {
+    function ($, _, Backbone, BaseForm, RuleManager, smartAttributeTemplate) {
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {

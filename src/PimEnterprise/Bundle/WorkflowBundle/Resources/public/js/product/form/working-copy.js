@@ -9,7 +9,6 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'oro/mediator',
         'pim/form',
         'pim/attribute-manager',
         'text!pimee/template/product/tab/attribute/modified-by-draft'
@@ -18,7 +17,6 @@ define(
         $,
         _,
         Backbone,
-        mediator,
         BaseForm,
         AttributeManager,
         modifiedByDraftTemplate
@@ -59,7 +57,7 @@ define(
 
                 if (this.isValueChanged(field)) {
                     var $element = $(this.modifiedByDraftTemplate());
-                    $element.on('click', this.showWorkingCopy);
+                    $element.on('click', this.showWorkingCopy.bind(this));
 
                     field.addElement('label', 'modified_by_draft', $element);
                 }

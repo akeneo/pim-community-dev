@@ -10,18 +10,18 @@ define(
     [
         'module',
         'jquery',
+        'underscore',
         'backbone',
         'pim/product-edit-form',
-        'pim/form',
-        'oro/mediator'
+        'pim/form'
     ],
     function (
         module,
         $,
+        _,
         Backbone,
         EditForm,
-        BaseForm,
-        mediator
+        BaseForm
     ) {
         return EditForm.extend({
             /**

@@ -8,13 +8,11 @@ define(
     [
         'jquery',
         'underscore',
-        'oro/mediator',
         'pim/product-edit-form/attributes/copy'
     ],
     function (
         $,
         _,
-        mediator,
         Copy
     ) {
         return Copy.extend({
