@@ -22,7 +22,6 @@ services:
             - '@event_dispatcher'
             - '@pimee_security.repository.category_access'
             - '@security.authorization_checker'
-            - '@pimee_product_asset.repository.category'
 
     pim_catalog.manager.product_category:
         class: %pim_catalog.manager.product_category.class%

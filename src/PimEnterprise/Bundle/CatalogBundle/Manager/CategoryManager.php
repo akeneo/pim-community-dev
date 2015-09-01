@@ -39,36 +39,30 @@ class CategoryManager extends BaseCategoryManager
     /* @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
-    /** @var CategoryRepositoryInterface */
-    protected $assetCategoryRepo;
-
     /**
      * Constructor
      *
      * @param ObjectManager                 $om
-     * @param CategoryRepositoryInterface   $productCategoryRepo
+     * @param CategoryRepositoryInterface   $categoryRepository
      * @param CategoryFactory               $categoryFactory
      * @param string                        $categoryClass
      * @param EventDispatcherInterface      $eventDispatcher
      * @param CategoryAccessRepository      $categoryAccessRepo
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param CategoryRepositoryInterface   $assetCategoryRepo
      */
     public function __construct(
         ObjectManager $om,
-        CategoryRepositoryInterface $productCategoryRepo,
+        CategoryRepositoryInterface $categoryRepository,
         CategoryFactory $categoryFactory,
         $categoryClass,
         EventDispatcherInterface $eventDispatcher,
         CategoryAccessRepository $categoryAccessRepo,
-        AuthorizationCheckerInterface $authorizationChecker,
-        CategoryRepositoryInterface $assetCategoryRepo
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
-        parent::__construct($om, $productCategoryRepo, $categoryFactory, $categoryClass);
+        parent::__construct($om, $categoryRepository, $categoryFactory, $categoryClass);
 
         $this->categoryAccessRepo   = $categoryAccessRepo;
         $this->authorizationChecker = $authorizationChecker;
-        $this->assetCategoryRepo    = $assetCategoryRepo;
     }
 
     /**
@@ -79,23 +73,16 @@ class CategoryManager extends BaseCategoryManager
      *
      * @return array
      */
-    public function getAccessibleTrees(
-        UserInterface $user,
-        $accessLevel = Attributes::VIEW_ITEMS,
-        $relatedEntity = 'product'
-    ) {
+    public function getAccessibleTrees(UserInterface $user, $accessLevel = Attributes::VIEW_ITEMS)
+    {
         $trees = [];
 
-        if ('product' === $relatedEntity) {
-            $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
+        $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
 
-            foreach ($this->productCategoryRepo->getTrees() as $tree) {
-                if (in_array($tree->getId(), $grantedCategoryIds)) {
-                    $trees[] = $tree;
-                }
+        foreach ($this->categoryRepository->getTrees() as $tree) {
+            if (in_array($tree->getId(), $grantedCategoryIds)) {
+                $trees[] = $tree;
             }
-        } elseif ('asset' === $relatedEntity) {
-            $trees = $this->assetCategoryRepo->getTrees();
         }
 
         return $trees;
