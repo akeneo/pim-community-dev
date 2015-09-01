@@ -100,13 +100,13 @@ function echo_style($style, $message)
 {
     // ANSI color codes
     $styles = array(
-        'reset'   => "\033[0m",
-        'red'     => "\033[31m",
-        'green'   => "\033[32m",
-        'yellow'  => "\033[33m",
-        'error'   => "\033[37;41m",
+        'reset' => "\033[0m",
+        'red' => "\033[31m",
+        'green' => "\033[32m",
+        'yellow' => "\033[33m",
+        'error' => "\033[37;41m",
         'success' => "\033[37;42m",
-        'title'   => "\033[34m",
+        'title' => "\033[34m",
     );
     $supports = has_color_support();
 
