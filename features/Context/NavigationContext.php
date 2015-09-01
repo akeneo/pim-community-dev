@@ -31,29 +31,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 {
     use SpinCapableTrait;
 
-    /**
-     * @var string|null
-     */
-    public $currentPage = null;
+    /** @var string|null */
+    public $currentPage;
 
-    /**
-     * @var string
-     */
-    protected $username = null;
+    /** @var string */
+    protected $username;
 
-    /**
-     * @var string
-     */
-    protected $password = null;
+    /** @var string */
+    protected $password;
 
-    /**
-     * @var PageFactory
-     */
-    protected $pageFactory = null;
+    /** @var PageFactory */
+    protected $pageFactory;
 
-    /**
-     * @var array
-     */
+    /** @var string */
+    protected $baseUrl;
+
+    /** @var array */
     protected $pageMapping = [
         'association types'        => 'AssociationType index',
         'attributes'               => 'Attribute index',
@@ -83,6 +76,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'search'                   => 'Search index',
         'job tracker'              => 'JobTracker index',
     ];
+
+    /**
+     * @param string $baseUrl
+     */
+    public function __construct($baseUrl)
+    {
+        $this->baseUrl = $baseUrl;
+    }
 
     /**
      * @param PageFactory $pageFactory
@@ -154,6 +155,20 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
         $this->openPage($page);
+    }
+
+    /**
+     * @param string $page
+     * @param string $referer
+     *
+     * @Given /^I am on the relative path ([^"]+) from ([^"]+)$/
+     */
+    public function iAmOnTheRelativePath($path, $referer)
+    {
+        $basePath = parse_url($this->baseUrl)['path'];
+        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referer, $basePath, $path);
+
+        $this->getSession()->visit($uri);
     }
 
     /**
