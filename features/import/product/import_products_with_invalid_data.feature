@@ -379,4 +379,4 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "skipped 1"
-    And I should see "The \"Product\" with code \"unknown\" is unknown"
+    And I should see "Attribute or field \"associations\" expects existing product identifier as data, \"unknown\" given"
