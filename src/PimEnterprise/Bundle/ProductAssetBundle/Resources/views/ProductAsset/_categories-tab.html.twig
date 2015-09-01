@@ -51,7 +51,6 @@
                     {% set selectedTree = firstTree['tree'].id %}
                 {% endif %}
             {% endif %}
-            {% set selectedTree = 1 %}
             <div id="trees" data-id="{{ asset.id }}" data-datalocale="{{ currentLocale }}" data-selected-tree="{{ selectedTree }}">
                 {% for tree in trees %}
                     <div class="tree root-unselectable" data-tree-id="{{ tree['tree'].id }}">

@@ -29,6 +29,8 @@ class Edit extends Form
             $this->elements,
             [
                 'Locales dropdown' => ['css' => '#locale-switcher'],
+                'Category pane'    => ['css' => '#pimee_product_asset-tabs-categories'],
+                'Category tree'    => ['css' => '#trees'],
             ]
         );
     }
@@ -202,7 +204,7 @@ class Edit extends Form
     {
         $allVariationsContainer = $this->findAll('css', 'div.variation');
 
-        if (!$allVariationsContainer) {
+        if (null === $allVariationsContainer) {
             throw new ElementNotFoundException($this->getSession(), 'variation containers');
         }
 
@@ -214,5 +216,53 @@ class Edit extends Form
         }
 
         throw new ElementNotFoundException($this->getSession(), sprintf('variation %s container', $channel));
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return Edit
+     */
+    public function selectTree($category)
+    {
+        $link = $this->getElement('Category pane')->find('css', sprintf('#trees-list li a:contains("%s")', $category));
+        if (null === $link) {
+            throw new \InvalidArgumentException(sprintf('Tree "%s" not found', $category));
+        }
+        $link->click();
+
+        return $this;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return Edit
+     */
+    public function expandCategory($category)
+    {
+        $category = $this->findCategoryInTree($category)->getParent();
+        if ($category->hasClass('jstree-closed')) {
+            $category->getParent()->find('css', 'ins')->click();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return NodeElement
+     */
+    public function findCategoryInTree($category)
+    {
+        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
+        if (null === $elt) {
+            throw new \InvalidArgumentException(sprintf('Unable to find asset category "%s" in the tree', $category));
+        }
+
+        return $elt;
     }
 }
