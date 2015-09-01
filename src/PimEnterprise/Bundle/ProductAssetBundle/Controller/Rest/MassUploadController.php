@@ -12,8 +12,6 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Pim\Bundle\EnrichBundle\File\DefaultImageProviderInterface;
-use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
@@ -22,7 +20,6 @@ use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -56,22 +53,14 @@ class MassUploadController
     /** @var string */
     protected $tmpStorageDir;
 
-    /** @var FileTypeGuesserInterface */
-    protected $fileTypeGuesser;
-
-    /** @var DefaultImageProviderInterface */
-    protected $defaultImageProvider;
-
     /**
-     * @param AssetRepositoryInterface      $assetRepository
-     * @param UploadCheckerInterface        $uploadChecker
-     * @param SchedulerInterface            $scheduler
-     * @param TokenStorageInterface         $tokenStorage
-     * @param JobLauncherInterface          $jobLauncher
-     * @param JobInstanceRepository         $jobInstanceRepository
-     * @param FileTypeGuesserInterface      $fileTypeGuesser
-     * @param DefaultImageProviderInterface $defaultImageProvider
-     * @param string                        $tmpStorageDir
+     * @param AssetRepositoryInterface $assetRepository
+     * @param UploadCheckerInterface   $uploadChecker
+     * @param SchedulerInterface       $scheduler
+     * @param TokenStorageInterface    $tokenStorage
+     * @param JobLauncherInterface     $jobLauncher
+     * @param JobInstanceRepository    $jobInstanceRepository
+     * @param string                   $tmpStorageDir
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -80,8 +69,6 @@ class MassUploadController
         TokenStorageInterface $tokenStorage,
         JobLauncherInterface $jobLauncher,
         JobInstanceRepository $jobInstanceRepository,
-        FileTypeGuesserInterface $fileTypeGuesser,
-        DefaultImageProviderInterface $defaultImageProvider,
         $tmpStorageDir
     ) {
         $this->assetRepository       = $assetRepository;
@@ -90,8 +77,6 @@ class MassUploadController
         $this->tokenStorage          = $tokenStorage;
         $this->jobLauncher           = $jobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->fileTypeGuesser       = $fileTypeGuesser;
-        $this->defaultImageProvider  = $defaultImageProvider;
         $this->tmpStorageDir         = $tmpStorageDir;
     }
 
@@ -215,21 +200,6 @@ class MassUploadController
         $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), '{}');
 
         return new JsonResponse(['result' => $result]);
-    }
-
-    /**
-     * Get the default thumbnail from a mime type
-     *
-     * @param string $mimeType
-     *
-     * @return JsonResponse
-     */
-    public function defaultThumbnailAction($mimeType)
-    {
-        $fileType = $this->fileTypeGuesser->guess($mimeType);
-        $imageUrl = $this->defaultImageProvider->getImageUrl($fileType, 'thumbnail');
-
-        return new RedirectResponse($imageUrl, 301);
     }
 
     /**

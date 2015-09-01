@@ -95,13 +95,6 @@ pimee_product_asset_mass_upload_rest_list:
     defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:listAction, _format: json }
     methods: [GET]
 
-pimee_product_asset_mass_upload_rest_default_thumbnail:
-    path: /rest/mass-upload/default-thumbnail/{mimeType}
-    defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:defaultThumbnailAction, _format: json }
-    methods: [GET]
-    requirements:
-        mimeType: "[a-z-]+/[a-z0-9.-]+"
-
 pimee_product_asset_rest_upload:
     path: /upload
     defaults: { _controller: pimee_product_asset.controller.rest.mass_upload:uploadAction, _format: json }

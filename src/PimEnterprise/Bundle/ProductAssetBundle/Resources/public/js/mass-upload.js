@@ -95,14 +95,13 @@ define(
                             file.previewElement.querySelector('.dz-type').textContent = file.type;
                         }.bind(this));
 
-                    if ((!file.type.match(/image.*/)) || (file.size > myDropzone.options.maxThumbnailFilesize)) {
-                        // This is not an image, or imae is too big o generate a thumbnail
-                        myDropzone.emit('thumbnail',
+                    if ((0 !== file.type.indexOf('image')) || (file.size > myDropzone.options.maxThumbnailFilesize)) {
+                        // This is not an image, or image is too big to generate a thumbnail
+                        myDropzone.emit(
+                            'thumbnail',
                             file,
-                            Routing.generate('pimee_product_asset_mass_upload_rest_default_thumbnail', {
-                                    mimeType: file.type
-                                }
-                            ));
+                            Routing.generate('pim_enrich_default_thumbnail', {mimeType: file.type})
+                        );
                     }
                 }.bind(this));
 
