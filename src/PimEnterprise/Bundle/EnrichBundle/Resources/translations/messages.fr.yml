@@ -107,12 +107,44 @@ pimee_enrich:
   category:
     tab:
       permission.title: Autorisations 
+  channel:
+    tab:
+      asset_transformation.title: Transformations de la ressource
   acl.product_ownership.title: Propriété
   attributes:
     empty: aucun
   groups:
     label: Groupes propriétaires
     empty: aucun
+  asset_transformation:
+    title:
+      transformation: Transformation
+      options: Options
+    colorspace:
+      title: Espace colorimétrique
+      options:
+        colorspace: 'espace colorimétrique %value%'
+    resize:
+      title: Redimensionner
+      options:
+        width: '%value%px de largeur'
+        height: '%value%px de hauteur'
+    resolution:
+      title: Résolution 
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: "Mise à l'échelle"
+      options:
+        width: '%value%px de largeur'
+        height: '%value%px de hauteur'
+        ratio: 'ratio %value%%'
+    thumbnail:
+      title: Miniature
+      options:
+        width: '%value%px de largeur'
+        height: '%value%px de hauteur'
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Ajouter la valeur du produit avec permission
 edit_common_attributes_with_permission: Édition des attributs communs avec permission
 job_execution.summary:
