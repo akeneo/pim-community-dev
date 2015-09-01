@@ -1,7 +1,7 @@
 parameters:
-    pim_classifiation.repository.item_category.class: Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\ItemCategoryRepository
+    pim_classification.repository.abstract_item_category.class: Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository
 
 services:
-    pim_classifiation.repository.item_category:
-        class:    %pim_classifiation.repository.item_category.class%
+    pim_classification.repository.abstract_item_category:
+        class:    %pim_classification.repository.abstract_item_category.class%
         abstract: true
