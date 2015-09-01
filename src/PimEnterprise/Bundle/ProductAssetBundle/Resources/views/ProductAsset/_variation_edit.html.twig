@@ -1,0 +1,27 @@
+<li>
+    <div class="row-fluid variation">
+
+        <h4>{{ variationModel.channel.label }}</h4>
+
+        <div class="row-fluid">
+            {% if variationModel.file %}
+                {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_core.html.twig' %}
+                    {% block variation_buttons %}
+                        <button class="btn icons-holder-text delete"
+                                data-href="{{ path('pimee_product_asset_variation_delete', {'id': variationModel.id}) }}">
+                            <i class="icon-trash"></i>
+                            {{ 'btn.delete'|trans|capitalize }}
+                        </button>
+                    {% endblock %}
+                {% endembed %}
+            {% else %}
+                {% if not referenceModel.file is null %}
+                    {{ pamMacros.renderUploadZone(variation.file, 'span6') }}
+                    {{ pamMacros.renderGenerateFromReferenceZone(variationModel.id) }}
+                {% else %}
+                    {{ pamMacros.renderUploadZone(variation.file, 'span12') }}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</li>

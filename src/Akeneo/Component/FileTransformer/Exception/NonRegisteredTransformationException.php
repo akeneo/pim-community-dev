@@ -18,4 +18,40 @@ namespace Akeneo\Component\FileTransformer\Exception;
  */
 class NonRegisteredTransformationException extends \Exception
 {
+    /** @var string */
+    protected $transformation;
+
+    /** @var string */
+    protected $mimeType;
+
+    /**
+     * @param string     $transformation
+     * @param string     $mimeType
+     * @param string     $message
+     * @param int        $code
+     * @param \Exception $previous
+     */
+    public function __construct($transformation, $mimeType, $message = '', $code = 0, \Exception $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
+
+        $this->transformation = $transformation;
+        $this->mimeType = $mimeType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransformation()
+    {
+        return $this->transformation;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMimeType()
+    {
+        return $this->mimeType;
+    }
 }

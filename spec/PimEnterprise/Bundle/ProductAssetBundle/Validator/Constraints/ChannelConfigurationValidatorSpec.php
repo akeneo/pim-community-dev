@@ -72,7 +72,7 @@ class ChannelConfigurationValidatorSpec extends ObjectBehavior
         $channelConfiguration->getConfiguration()->willReturn($erroneousConfiguration);
 
         $registry->get('unexistingTransfo', 'image/jpeg')
-            ->willThrow(new NonRegisteredTransformationException('errorMsg'));
+            ->willThrow(new NonRegisteredTransformationException('transformation', 'mimeType', 'errorMsg'));
 
         $context->buildViolation(
             $constraint->unknownTransformation,

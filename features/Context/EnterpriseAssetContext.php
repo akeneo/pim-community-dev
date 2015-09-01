@@ -230,7 +230,7 @@ class EnterpriseAssetContext extends RawMinkContext
         $variation = $reference->getVariation($channel);
 
         $this->getAssetFileUpdater()->deleteVariationFile($variation);
-        $this->getVariationsaver()->save($variation, ['schedule' => true]);
+        $this->getVariationSaver()->save($variation, ['schedule' => true]);
     }
 
     /**
@@ -373,7 +373,7 @@ class EnterpriseAssetContext extends RawMinkContext
      */
     protected function getFixturesContext()
     {
-        return $this->getMainContext()->getParameter('mailer.transport');
+        return $this->getMainContext()->getSubcontext('fixtures');
     }
 
     /**
@@ -381,7 +381,6 @@ class EnterpriseAssetContext extends RawMinkContext
      */
     protected function getAssetFileUpdater()
     {
-        /** @var Container $container */
         $container = $this->getMainContext()->getContainer();
 
         return $container->get('pimee_product_asset.updater.files');
@@ -390,9 +389,8 @@ class EnterpriseAssetContext extends RawMinkContext
     /**
      * @return AssetVariationSaver
      */
-    protected function getVariationsaver()
+    protected function getVariationSaver()
     {
-        /** @var Container $container */
         $container = $this->getMainContext()->getContainer();
 
         return $container->get('pimee_product_asset.saver.variation');

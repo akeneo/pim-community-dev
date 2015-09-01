@@ -38,6 +38,9 @@ pimee_product_asset:
             filetype: File type
             actions: Actions
             download: Download
+            tag: Tags
+            no_reference: No reference file has been uploaded yet.
+            no_variation: No variation file has been generated yet.
         flash:
             update:
                 success: Asset has been updated.
@@ -59,6 +62,7 @@ pimee_product_asset:
                 image_width_error: Impossible to generate the variation %channel% because the uploaded image has a width smaller than the one required by the transformation.
                 image_height_error: Impossible to generate the variation %channel% because the uploaded image has a height smaller than the one required by the transformation.
                 not_applicable: Impossible to generate the variation %channel%.
+                non_registered: No %transformation% transformation registered for the mime type %mimeType%. Impossible to generate the variation %channel%.
                 error: Impossible to generate the variation %channel%.
                 success: Variation files have been generated successfully.
             update:
@@ -93,7 +97,7 @@ pimee_product_asset:
     tags:
         label: Tags
     tabs:
-        global-settings.title: Global settings
+        properties.title: Properties
         variations.title: Variations
     validation:
         code:
@@ -107,6 +111,7 @@ pimee_product_asset:
         csv_asset_category_import.title: Asset category import in csv
         csv_asset_configuration_import.title: Asset channel configuration import in csv
         csv_asset_category_export.title: Asset category export in csv
+        csv_channel_configuration_import.title: Asset channel configuration import in csv
     steps:
         channel_configuration.processor.title: Process channel configurations
     notAvailable:
