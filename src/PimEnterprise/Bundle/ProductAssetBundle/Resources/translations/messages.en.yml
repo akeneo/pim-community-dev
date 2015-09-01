@@ -99,6 +99,7 @@ pimee_product_asset:
     tabs:
         properties.title: Properties
         variations.title: Variations
+        categories.title: Categories
     validation:
         code:
             not_empty: Code is required. It can not be empty.

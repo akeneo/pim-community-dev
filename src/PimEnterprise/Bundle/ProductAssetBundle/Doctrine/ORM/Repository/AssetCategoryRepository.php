@@ -11,7 +11,10 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
+use Doctrine\DBAL\Types\Type;
 use Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\ItemCategoryRepository;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
 
 /**
@@ -21,4 +24,36 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInter
  */
 class AssetCategoryRepository extends ItemCategoryRepository implements AssetCategoryRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemCountByGrantedTree(AssetInterface $asset, UserInterface $user)
+    {
+        $config = $this->getMappingConfig($asset);
+
+        $sql = sprintf(
+            'SELECT COUNT(DISTINCT category_item.category_id) AS item_count, tree.id AS tree_id ' .
+            'FROM %s tree ' .
+            'JOIN %s category ON category.root = tree.id ' .
+            'LEFT JOIN %s category_item ON category_item.category_id = category.id ' .
+            'AND category_item.%s= :itemId ' .
+            'INNER JOIN pimee_security_asset_category_access a ON a.category_id = category.id ' .
+            'AND a.view_items = 1 AND a.user_group_id IN (:user_group_id) ' .
+            'GROUP BY tree.id',
+            $config['categoryTable'], $config['categoryTable'], $config['categoryAssocTable'], $config['relation']);
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->bindValue('itemId', $asset->getId());
+
+        $groups = [];
+        foreach ($user->getGroups()->toArray() as $group) {
+            $groups[] = $group->getId();
+        }
+        $stmt->bindValue('user_group_id', $groups, Type::SIMPLE_ARRAY);
+
+        $stmt->execute();
+        $assets = $stmt->fetchAll();
+
+        return $this->buildItemCountByTree($assets, $config['categoryClass']);
+    }
 }

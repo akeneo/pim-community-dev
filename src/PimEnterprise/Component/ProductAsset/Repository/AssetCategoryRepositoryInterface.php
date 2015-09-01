@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\Repository;
 
-use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
  * Asset category repository interface
@@ -21,4 +21,13 @@ use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
  */
 interface AssetCategoryRepositoryInterface
 {
+    /**
+     * Get item count by granted tree
+     *
+     * @param AssetInterface $asset
+     * @param UserInterface  $user
+     *
+     * @return array
+     */
+    public function getItemCountByGrantedTree(AssetInterface $asset, UserInterface $user);
 }

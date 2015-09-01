@@ -36,6 +36,7 @@ use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
+use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
@@ -114,24 +115,28 @@ class ProductAssetController extends Controller
     /** @var FileController */
     protected $fileController;
 
+    /** @var AssetCategoryRepositoryInterface */
+    protected $assetCategoryRepo;
+
     /**
-     * @param AssetRepositoryInterface        $assetRepository
-     * @param ReferenceRepositoryInterface    $referenceRepository
-     * @param VariationRepositoryInterface    $variationRepository
-     * @param FileMetadataRepositoryInterface $metadataRepository
-     * @param LocaleRepositoryInterface       $localeRepository
-     * @param ChannelRepositoryInterface      $channelRepository
-     * @param VariationFileGeneratorInterface $variationFileGenerator
-     * @param FilesUpdaterInterface           $assetFilesUpdater
-     * @param SaverInterface                  $assetSaver
-     * @param SaverInterface                  $referenceSaver
-     * @param SaverInterface                  $variationSaver
-     * @param RemoverInterface                $assetRemover
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param AssetFactory                    $assetFactory
-     * @param FileFactoryInterface            $fileFactory
-     * @param UserContext                     $userContext
-     * @param FileController                  $fileController
+     * @param AssetRepositoryInterface         $assetRepository
+     * @param ReferenceRepositoryInterface     $referenceRepository
+     * @param VariationRepositoryInterface     $variationRepository
+     * @param FileMetadataRepositoryInterface  $metadataRepository
+     * @param LocaleRepositoryInterface        $localeRepository
+     * @param ChannelRepositoryInterface       $channelRepository
+     * @param VariationFileGeneratorInterface  $variationFileGenerator
+     * @param FilesUpdaterInterface            $assetFilesUpdater
+     * @param SaverInterface                   $assetSaver
+     * @param SaverInterface                   $referenceSaver
+     * @param SaverInterface                   $variationSaver
+     * @param RemoverInterface                 $assetRemover
+     * @param EventDispatcherInterface         $eventDispatcher
+     * @param AssetFactory                     $assetFactory
+     * @param FileFactoryInterface             $fileFactory
+     * @param UserContext                      $userContext
+     * @param FileController                   $fileController
+     * @param AssetCategoryRepositoryInterface $assetCategoryRepo
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -150,7 +155,8 @@ class ProductAssetController extends Controller
         AssetFactory $assetFactory,
         FileFactoryInterface $fileFactory,
         UserContext $userContext,
-        FileController $fileController
+        FileController $fileController,
+        AssetCategoryRepositoryInterface $assetCategoryRepo
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -169,6 +175,7 @@ class ProductAssetController extends Controller
         $this->fileFactory            = $fileFactory;
         $this->userContext            = $userContext;
         $this->fileController         = $fileController;
+        $this->assetCategoryRepo      = $assetCategoryRepo;
     }
 
     /**
@@ -392,11 +399,14 @@ class ProductAssetController extends Controller
             $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
         }
 
+        $trees = $this->assetCategoryRepo->getItemCountByGrantedTree($productAsset, $this->userContext->getUser());
+
         return [
             'asset'         => $productAsset,
             'form'          => $assetForm->createView(),
             'metadata'      => $this->getAssetMetadata($productAsset),
             'currentLocale' => $locale,
+            'trees'         => $trees,
         ];
     }
 
