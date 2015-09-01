@@ -151,7 +151,7 @@ class UserContext extends BaseUserContext
      *
      * @return int[]
      */
-    protected function getGrantedCategories()
+    public function getGrantedCategories()
     {
         $user = $this->getUser();
 
