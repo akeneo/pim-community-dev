@@ -42,9 +42,9 @@ define(
                 json_data: {
                     ajax: {
                         url: function (node) {
-                            var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
 
-                            if ((!node || (node === -1)) && treeHasProduct) {
+                            if ((!node || (node === -1)) && treeHasItem) {
                                 // First load of the tree: get the checked categories
                                 var selected = this.parseHiddenCategories();
                                 return Routing.generate(
@@ -71,12 +71,12 @@ define(
                         }.bind(this),
                         data: function (node) {
                             var data           = {};
-                            var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
 
                             if (node && node !== -1 && node.attr) {
                                 data.id = node.attr('id').replace('node_', '');
                             } else {
-                                if (!treeHasProduct) {
+                                if (!treeHasItem) {
                                     data.id = currentTree;
                                 }
                                 data.include_parent = 'true';
