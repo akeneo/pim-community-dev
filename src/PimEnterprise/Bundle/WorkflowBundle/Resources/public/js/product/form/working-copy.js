@@ -53,9 +53,10 @@ define(
              * @returns {Object}
              */
             addFieldExtension: function (event) {
-                var field = event.field;
+                var field   = event.field;
+                var isOwner = this.getFormData().meta.is_owner;
 
-                if (this.isValueChanged(field)) {
+                if (this.isValueChanged(field) && !isOwner) {
                     var $element = $(this.modifiedByDraftTemplate());
                     $element.on('click', this.showWorkingCopy.bind(this));
 
