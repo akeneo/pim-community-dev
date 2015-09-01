@@ -27,25 +27,25 @@ class CategoryManager
     protected $categoryClass;
 
     /** @var CategoryRepositoryInterface */
-    protected $productCategoryRepo;
+    protected $categoryRepository;
 
     /** @var CategoryFactory */
     protected $categoryFactory;
 
     /**
      * @param ObjectManager               $om
-     * @param CategoryRepositoryInterface $productCategoryRepo
+     * @param CategoryRepositoryInterface $categoryRepository
      * @param CategoryFactory             $categoryFactory
      * @param string                      $categoryClass
      */
     public function __construct(
         ObjectManager $om,
-        CategoryRepositoryInterface $productCategoryRepo,
+        CategoryRepositoryInterface $categoryRepository,
         CategoryFactory $categoryFactory,
         $categoryClass
     ) {
         $this->om                  = $om;
-        $this->productCategoryRepo = $productCategoryRepo;
+        $this->categoryRepository  = $categoryRepository;
         $this->categoryFactory     = $categoryFactory;
         $this->categoryClass       = $categoryClass;
     }
@@ -97,7 +97,7 @@ class CategoryManager
      */
     public function getEntityRepository()
     {
-        return $this->productCategoryRepo;
+        return $this->categoryRepository;
     }
 
     /**
@@ -119,7 +119,7 @@ class CategoryManager
      */
     public function getTrees()
     {
-        return $this->productCategoryRepo->getTrees();
+        return $this->categoryRepository->getTrees();
     }
 
     /**
