@@ -1,0 +1,4 @@
+user:
+  email:
+    notifications: Notifications par email
+  asset_delay_reminder: "Rappel de la date d'utilisation limite des ressources (en jours)"
