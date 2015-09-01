@@ -7,3 +7,6 @@ pimee_dashboard:
       product: Produit
       review: Relire
       empty: Aucun brouillon de produit à relire
+  version:
+    community_edition: CE
+    enterprise_edition: EE

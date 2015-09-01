@@ -4,8 +4,16 @@ pimee_product_asset:
       index: Enrichir les ressources
       create: Créer une ressource
       remove: Supprimer une ressource
+    category:
+      create: Créer une catégorie de ressources
+      edit: Editer une catégorie de ressources
+      list: Liste des catégories de ressources
+      remove: Supprimer une catégorie de ressources
+      manage: Gérer les autorisations de category de ressources
+      history: "Afficher l'historique des catégories de ressources"
   acl_group:
     asset: Ressources du produit
+    category: Catégories de ressources
   enrich_asset:
     button:
       upload: Télécharger
@@ -30,6 +38,9 @@ pimee_product_asset:
       filetype: Type de fichier
       actions: Actions
       download: Téléchargement
+      tag: Mots clés
+      no_reference: "Aucun fichier de référence n'a encore été téléchargé."
+      no_variation: "Aucun fichier de variation n'a été généré pour le moment."
     flash:
       update:
         success: Ressource a été mise à jour.
@@ -51,6 +62,7 @@ pimee_product_asset:
         image_width_error: "Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une largeur inférieure à celle requise par la transformation."
         image_height_error: "Impossible de générer la variation pour le canal %channel% car l'image téléchargée a une hauteur inférieure à celle requise par la transformation."
         not_applicable: 'Impossible de générer la variation pour le canal %channel%.'
+        non_registered: 'Aucune transformation %transformation% enregistrée pour le mime type %mimeType%. Impossible de générer la variation pour le canal %channel%.'
         error: 'Impossible de générer la variation pour le canal %channel%.'
         success: Les fichiers de variation ont été générés avec succès.
       update:
@@ -99,11 +111,40 @@ pimee_product_asset:
     csv_asset_category_import.title: Import des catégories de ressources en csv
     csv_asset_configuration_import.title: Import des configurations des transformations pour les canaux en csv
     csv_asset_category_export.title: Export des catégories de ressources en csv
+    csv_channel_configuration_import.title: Import en Csv des configurations des transformations pour les canaux
   steps:
     channel_configuration.processor.title: Traiter les configurations des canaux
   notAvailable:
     label: pas disponible
   asset:
     title: Ressource
+  mass_upload:
+    menu: Télécharger les ressources
+    new: Une nouvelle ressource sera créée
+    add_files: ajouter des fichiers
+    start: Démarrer le téléchargement
+    cancel: Annuler le téléchargement
+    schedule: programmation
+    executed: Téléchargement massif exécuté
+    error:
+      upload: "Une erreur s'est produite lors du téléchargement"
+      code: Format de code non valide pour la ressource
+      locale: "Une ressource existe mais n'est pas localisable"
+  category:
+    menu: Catégories de ressources
+    permissions:
+      view.label: Permettre de voir les ressources
+      view.help: Permet de voir les ressources classées dans cette catégorie
+      edit.label: "Permettre d'éditer les ressources"
+      edit.help: "Permet d'éditer les ressources classées dans cette catégorie (implique la permission de voir)"
+      no_access_to_products: "Vous n'avez accès à aucune ressource dans aucune arborescence, contactez votre administrateur pour résoudre le problème"
+      apply_on_children.label: Appliquer les changements aux sous-catégories
+      apply_on_children.help: Appliquer les changements de permissions à toutes les sous-catégories, les permissions existantes sur les sous-catégories sont conservées
 btn.create.asset: Créer une ressource
 btn.drag_or_upload: Glisser-déposer un fichier ou cliquer ici
+job_execution.summary:
+  asset_file_processed: Fichier de ressource traité
+  pimee_product_asset.mass_upload.new: Ressource créée depuis le fichier
+  pimee_product_asset.mass_upload.updated: Ressource mise à jour
+assets_mass_upload.steps:
+  asset_mass_upload.title: Téléchargement massif de ressources

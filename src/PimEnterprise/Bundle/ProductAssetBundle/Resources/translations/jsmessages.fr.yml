@@ -22,3 +22,45 @@ pimee_product_asset:
       reset:
         title: Réinitialisation les variations
         message: Êtes-vous sûr de que vouloir réinitialiser toutes les variations ?
+  mass_upload:
+    menu: Télécharger les ressources
+    btn:
+      add_files: Ajouter des fichiers
+      cancel: Annuler le téléchargement
+      delete: Supprimer
+      schedule: Programmer
+      start: Démarrer le téléchargement
+    success:
+      new: Une nouvelle ressource sera créée
+      scheduled: Fichiers programmés pour le traitement des ressources
+      canceled: Téléchargement annulé avec succès
+      deleted: Le fichier téléchargé a été supprimé
+    error:
+      list: Impossible de lire les fichiers déjà téléchargés
+      upload: "Une erreur s'est produite lors du téléchargement"
+      schedule: "Une erreur s'est produite lors de la programmation du traitement des téléchargements"
+      filename: Nom de fichier incorrect pour la ressource
+      code: Format de code non valide pour la ressource
+      locale: "Une ressource existe mais n'est pas localisable"
+      exists: Un fichier portant le même nom est déjà programmé pour le téléchargement
+      conflicts: Conflit de noms de fichiers
+    grid:
+      medias: medias
+      filename: nom du fichier
+      filetype: type de fichier
+      status: statut
+      progress: progression
+      actions: actions
+    action:
+      cancel: Annuler
+      delete: Supprimer
+    status:
+      added: Ajouté
+      uploading: Transfert en cours
+      error: Erreur
+      success: Succès
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Téléchargement massif
