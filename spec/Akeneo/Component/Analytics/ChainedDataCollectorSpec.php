@@ -11,7 +11,7 @@ class ChainedDataCollectorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('Akeneo\Component\Analytics\ChainedDataCollector');
-        $this->shouldHaveType('Akeneo\Component\Analytics\DataCollectorRegistryInterface');
+        $this->shouldHaveType('Akeneo\Component\Analytics\ChainedDataCollectorInterface');
         $this->shouldHaveType('Akeneo\Component\Analytics\DataCollectorInterface');
     }
 
@@ -27,8 +27,8 @@ class ChainedDataCollectorSpec extends ObjectBehavior
         $collectorOne->collect()->willReturn(['data_one' => 'one']);
         $collectorTwo->collect()->willReturn(['data_two' => 'two', 'data_three' => 'three']);
 
-        $this->register($collectorOne);
-        $this->register($collectorTwo);
+        $this->addCollector($collectorOne);
+        $this->addCollector($collectorTwo);
         $this->collect()->shouldReturn(['data_one' => 'one', 'data_two' => 'two', 'data_three' => 'three']);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Akeneo\Component\Analytics;
 
+use Akeneo\Component\Analytics\ChainedDataCollectorInterface;
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use Akeneo\Component\Analytics\DataCollectorRegistryInterface;
 
 /**
  * Aggregate data collected by registered collectors
@@ -12,7 +12,7 @@ use Akeneo\Component\Analytics\DataCollectorRegistryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChainedDataCollector implements DataCollectorInterface, DataCollectorRegistryInterface
+class ChainedDataCollector implements ChainedDataCollectorInterface
 {
     /** @var DataCollectorInterface[] */
     protected $collectors = [];
@@ -20,7 +20,7 @@ class ChainedDataCollector implements DataCollectorInterface, DataCollectorRegis
     /**
      * {@inheritdoc}
      */
-    public function register(DataCollectorInterface $collector)
+    public function addCollector(DataCollectorInterface $collector)
     {
         $this->collectors[] = $collector;
     }

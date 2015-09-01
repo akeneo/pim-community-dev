@@ -34,7 +34,7 @@ class RegisterDataCollectorPass implements CompilerPassInterface
         $services = $container->findTaggedServiceIds(static::COLLECTOR_TAG);
         foreach (array_keys($services) as $serviceId) {
             $registryDefinition->addMethodCall(
-                'register',
+                'addCollector',
                 [
                     new Reference($serviceId)
                 ]
