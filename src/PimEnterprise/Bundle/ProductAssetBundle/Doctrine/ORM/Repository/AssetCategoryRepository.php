@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Doctrine\DBAL\Types\Type;
-use Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\ItemCategoryRepository;
+use Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository;
 use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
@@ -22,7 +22,7 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInter
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class AssetCategoryRepository extends ItemCategoryRepository implements AssetCategoryRepositoryInterface
+class AssetCategoryRepository extends AbstractItemCategoryRepository implements AssetCategoryRepositoryInterface
 {
     /**
      * {@inheritdoc}
