@@ -1098,9 +1098,6 @@ input[type="color"],
   line-height: 20px;
   color: #555555;
   vertical-align: middle;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
 }
 
 input,
@@ -1131,13 +1128,16 @@ input[type="color"],
 .uneditable-input {
   background-color: #ffffff;
   border: 1px solid #cccccc;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.04);
   -webkit-transition: border linear 0.2s, box-shadow linear 0.2s;
      -moz-transition: border linear 0.2s, box-shadow linear 0.2s;
        -o-transition: border linear 0.2s, box-shadow linear 0.2s;
           transition: border linear 0.2s, box-shadow linear 0.2s;
+  background-clip: padding-box;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  height: 32px;
 }
 
 textarea:focus,
@@ -1286,23 +1286,23 @@ textarea::-webkit-input-placeholder {
 }
 
 .input-small {
-  width: 90px;
+  width: 100px;
 }
 
 .input-medium {
-  width: 150px;
+  width: 200px;
 }
 
 .input-large {
-  width: 210px;
+  width: 300px;
 }
 
 .input-xlarge {
-  width: 270px;
+  width: 400px;
 }
 
 .input-xxlarge {
-  width: 530px;
+  width: 600px;
 }
 
 input[class*="span"],
@@ -5946,7 +5946,7 @@ a.badge:focus {
 }
 
 .accordion-inner {
-  padding: 9px 15px;
+  padding: 15px;
   border-top: 1px solid #e5e5e5;
 }
 
