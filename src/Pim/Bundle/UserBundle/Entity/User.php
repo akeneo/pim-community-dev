@@ -792,6 +792,19 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
+    public function getGroupsIds()
+    {
+        $ids = [];
+        foreach ($this->groups as $group) {
+            $ids[] = $group->getId();
+        }
+
+        return $ids;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getImagePath()
     {
         if ($this->image) {
