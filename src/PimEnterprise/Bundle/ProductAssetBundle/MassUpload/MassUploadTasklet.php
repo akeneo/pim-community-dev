@@ -115,8 +115,8 @@ class MassUploadTasklet implements TaskletInterface
             'success',
             [
                 'route'         => 'pim_enrich_job_tracker_show',
-                'routeParams'   => ['id' => $jobExecution->getId()],
-                'messageParams' => ['%label%' => $jobExecution->getJobInstance()->getLabel()],
+                'routeParams'   => ['id'         => $jobExecution->getId()],
+                'messageParams' => ['%label%'    => $jobExecution->getJobInstance()->getLabel()],
                 'context'       => ['actionType' => 'mass_upload']
             ]
         );
