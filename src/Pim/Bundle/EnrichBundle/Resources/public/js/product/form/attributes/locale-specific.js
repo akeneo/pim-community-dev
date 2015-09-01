@@ -47,10 +47,13 @@ define(
              * @param {Object} field
              */
             updateFieldElements: function (field) {
+                var message = _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
+                var element = '<span class="unavailable">' + message + '</span>';
+
                 field.addElement(
                     'field-input',
                     'input_placeholder',
-                    _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable')
+                    element
                 );
             }
         });

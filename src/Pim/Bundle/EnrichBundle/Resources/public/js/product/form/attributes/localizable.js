@@ -65,13 +65,16 @@ define(
              * @param {Object} field
              */
             updateFieldElements: function (context, field) {
+                var message = _.__('pim_enrich.entity.product.localizable.channel_locale_unavailable', {
+                    channel: context.scope,
+                    locale: context.locale
+                });
+                var element = '<span class="unavailable">' + message + '</span>';
+
                 field.addElement(
                     'field-input',
                     'input_placeholder',
-                    _.__('pim_enrich.entity.product.localizable.channel_locale_unavailable', {
-                        channel: context.scope,
-                        locale: context.locale
-                    })
+                    element
                 );
             }
         });
