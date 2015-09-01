@@ -109,7 +109,7 @@ datagrid:
             edit:
                 type:      tab-redirect
                 label:     pimee_product_asset.enrich_asset.grid.edit
-                tab:       pim_product_asset_global-settings
+                tab:       pim_product_asset_properties
                 icon:      edit
                 link:      edit_link
                 rowAction: true

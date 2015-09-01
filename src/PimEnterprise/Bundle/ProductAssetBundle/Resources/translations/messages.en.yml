@@ -97,7 +97,7 @@ pimee_product_asset:
     tags:
         label: Tags
     tabs:
-        global-settings.title: Global settings
+        properties.title: Properties
         variations.title: Variations
     validation:
         code:

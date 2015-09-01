@@ -85,7 +85,7 @@ pimee_product_asset:
   tags:
     label: Mots clés
   tabs:
-    global-settings.title: Paramètres généraux
+    properties.title: Propriétés
     variations.title: Variations
   validation:
     code:

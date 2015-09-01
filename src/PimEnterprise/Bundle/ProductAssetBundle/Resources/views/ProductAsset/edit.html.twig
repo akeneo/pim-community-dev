@@ -48,12 +48,12 @@
 
     <div class="form-horizontal product-edit product-view asset">
         <div class="layout-content">
-            {% set form_tabs = ['pimee_product_asset.tabs.variations', 'pimee_product_asset.tabs.global-settings'] %}
+            {% set form_tabs = ['pimee_product_asset.tabs.variations', 'pimee_product_asset.tabs.properties'] %}
             {{ elements.form_navbar(form_tabs) }}
 
             <div class="row-fluid tab-content">
                 {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variations-tab.html.twig' %}
-                {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_global-settings-tab.html.twig' %}
+                {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_properties-tab.html.twig' %}
             </div>
 
         </div>
