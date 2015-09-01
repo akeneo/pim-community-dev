@@ -801,6 +801,18 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $not
+     * @param string $choices
+     * @param string $label
+     *
+     * @Then /^I should(?P<not> not)? see the choices? (?P<choices>.+) in (?P<label>.+)$/
+     */
+    public function iShouldSeeTheChoicesInField($not, $choices, $label)
+    {
+        $this->getCurrentPage()->checkFieldChoices($label, $this->listToArray($choices), !$not);
+    }
+
+    /**
      * @param string $label
      *
      * @Then /^the field ([^"]*) should be read only$/

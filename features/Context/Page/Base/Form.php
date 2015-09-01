@@ -6,6 +6,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\ExpectationException;
 
 /**
  * Basic form page
@@ -475,6 +476,59 @@ class Form extends Base
             $field->setValue($value);
             $this->getSession()
                 ->executeScript('$(\'.modal-body .control-label:contains("%s") input\').trigger(\'change\');');
+        }
+    }
+
+    /**
+     * Check if a select field contains (or not) the specified choices
+     *
+     * @param string $label
+     * @param array  $choices
+     * @param bool   $isExpected
+     *
+     * @throws ExpectationException
+     */
+    public function checkFieldChoices($label, array $choices, $isExpected = true)
+    {
+        $field = $this->spin(function () use ($label) {
+            return $this->findField($label);
+        });
+
+        // TODO: Improve this part to make it work with regular selects if necessary
+        $field->find('css', 'input[type="text"]')->click();
+        $select2Drop   = $this->findById('select2-drop');
+        $selectChoices = $this->spin(function () use ($select2Drop) {
+            $choices = [];
+            $select2Choices = $select2Drop->findAll('css', '.select2-result');
+            if (!empty($select2Choices)) {
+                foreach ($select2Choices as $select2Choice) {
+                    $choices[] = trim($select2Choice->getText(), '[]');
+                }
+
+                return $choices;
+            }
+        }, 10);
+
+        if ($isExpected) {
+            foreach ($choices as $choice) {
+                if (!in_array($choice, $selectChoices)) {
+                    throw new ExpectationException(sprintf(
+                        'Expecting to find choice "%s" in field "%s"',
+                        $choice,
+                        $label
+                    ), $this->getSession());
+                }
+            }
+        } else {
+            foreach ($choices as $choice) {
+                if (in_array($choice, $selectChoices)) {
+                    throw new ExpectationException(sprintf(
+                        'Choice "%s" should not be in available for field "%s"',
+                        $choice,
+                        $label
+                    ), $this->getSession());
+                }
+            }
         }
     }
 
