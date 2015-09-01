@@ -70,7 +70,7 @@ class UploadChecker implements UploadCheckerInterface
             'locale' => null,
         ];
 
-        $patternCodePart   = '[a-zA-Z0-9_]+';
+        $patternCodePart   = '[a-zA-Z0-9]+';
         $patternLocalePart = '[a-z]{2}(?:-[A-Za-z]{2,3})?_ [A-Z]{2}';
 
         $pattern = sprintf('/^
