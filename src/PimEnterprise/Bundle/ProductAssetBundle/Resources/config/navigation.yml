@@ -35,7 +35,6 @@ oro_menu_config:
                         pim_asset_categorytree: ~
 
 oro_titles:
-    pimee_product_asset_view: pimee_product_asset.page_tab.title.view
     pimee_product_asset_edit: pimee_product_asset.page_tab.title.edit
     pimee_product_asset_index: pimee_product_asset.menu
     pimee_product_asset_mass_upload: pimee_product_asset.mass_upload.menu

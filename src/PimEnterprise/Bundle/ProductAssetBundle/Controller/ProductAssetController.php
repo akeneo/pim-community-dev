@@ -217,40 +217,6 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * View an asset
-     *
-     * @Template
-     * @AclAncestor("pimee_product_asset_index")
-     *
-     * @param int|string $id
-     *
-     * @throws AccessDeniedException()
-     *
-     * @return array
-     */
-    public function viewAction($id)
-    {
-        $productAsset = $this->findProductAssetOr404($id);
-
-        $isViewAssetGranted = $this->isGranted(Attributes::VIEW, $productAsset);
-        if (!$isViewAssetGranted) {
-            throw new AccessDeniedException();
-        }
-
-        $references  = $productAsset->getReferences();
-        $attachments = [];
-        foreach ($references as $refKey => $reference) {
-            $attachments[$refKey]['reference'] = $reference;
-        }
-
-        return [
-            'asset'       => $productAsset,
-            'attachments' => $attachments,
-            'metadata'    => $this->getAssetMetadata($productAsset)
-        ];
-    }
-
-    /**
      * Create an asset
      *
      * @Template
@@ -351,77 +317,6 @@ class ProductAssetController extends Controller
         }
 
         return new JsonResponse();
-    }
-
-    /**
-     * Edit an asset
-     *
-     * @AclAncestor("pimee_product_asset_index")
-     * @Template()
-     *
-     * @param Request    $request
-     * @param int|string $id
-     *
-     * @throws AccessDeniedException
-     *
-     * @return Response
-     */
-    public function editAction(Request $request, $id)
-    {
-        $productAsset = $this->findProductAssetOr404($id);
-        if (!$this->isGranted(Attributes::EDIT, $productAsset)) {
-            if ($this->isGranted(Attributes::VIEW, $productAsset)) {
-                $parameters = $this->viewAction($id);
-
-                return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', $parameters);
-            }
-
-            throw new AccessDeniedException();
-        }
-
-        $assetLocales = $productAsset->getLocales();
-
-        if (null !== $request->get('locale')) {
-            $locale = $assetLocales[$request->get('locale')];
-        } elseif (!empty($assetLocales)) {
-            $locale = reset($assetLocales);
-        } else {
-            $locale = null;
-        }
-
-        $assetForm = $this->createForm('pimee_product_asset', $productAsset);
-        $assetForm->handleRequest($request);
-
-        if ($assetForm->isValid()) {
-            try {
-                $this->assetFilesUpdater->updateAssetFiles($productAsset);
-                $this->assetSaver->save($productAsset, ['schedule' => true]);
-                $event = $this->eventDispatcher->dispatch(
-                    AssetEvent::POST_UPLOAD_FILES,
-                    new AssetEvent($productAsset)
-                );
-                $this->handleGenerationEventResult($event);
-                $this->addFlashMessage('success', 'pimee_product_asset.enrich_asset.flash.update.success');
-            } catch (\Exception $e) {
-                $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
-            }
-
-            return $this->redirectAfterEdit($request, ['id' => $id]);
-        } elseif ($assetForm->isSubmitted()) {
-            $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
-            // TODO find a better way
-            $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
-        }
-
-        $trees = $this->assetCategoryRepo->getItemCountByGrantedTree($productAsset, $this->userContext->getUser());
-
-        return [
-            'asset'         => $productAsset,
-            'form'          => $assetForm->createView(),
-            'metadata'      => $this->getAssetMetadata($productAsset),
-            'currentLocale' => $locale,
-            'trees'         => $trees,
-        ];
     }
 
     /**
@@ -597,6 +492,30 @@ class ProductAssetController extends Controller
     }
 
     /**
+     * Dispatch to asset view or asset edit when a user click on an asset grid row
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @throws AccessDeniedException
+     *
+     * @return RedirectResponse
+     */
+    public function editAction(Request $request, $id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+        if ($this->isGranted(Attributes::EDIT, $productAsset)) {
+            return $this->edit($request, $id);
+        }
+
+        if ($this->isGranted(Attributes::VIEW, $productAsset)) {
+            return $this->view($id);
+        }
+
+        throw new AccessDeniedException();
+    }
+
+    /**
      * List categories associated with the provided asset and descending from the category
      * defined by the parent parameter.
      *
@@ -614,8 +533,7 @@ class ProductAssetController extends Controller
      */
     public function listCategoriesAction(Request $request, $id, $categoryId)
     {
-        $asset      = $this->findProductAssetOr404($id);
-        $parent     = $this->categoryRepository->find($categoryId);
+        $parent = $this->categoryRepository->find($categoryId);
         if (null === $parent) {
             throw $this->createNotFoundException(sprintf('Category %d not found', $categoryId));
         }
@@ -624,7 +542,7 @@ class ProductAssetController extends Controller
         $categories = null;
         if (null !== $selectedCategoryIds) {
             $categories = $this->categoryManager->getCategoriesByIds($selectedCategoryIds);
-        } elseif (null !== $asset) {
+        } elseif (null !== $asset = $this->findProductAssetOr404($id)) {
             $categories = $asset->getCategories();
         }
 
@@ -718,33 +636,92 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * Dispatch to asset view or asset edit when a user click on an asset grid row
+     * Edit an asset
      *
-     * @AclAncestor("pimee_product_asset_index")
-     *
-     * @param Request $request
-     * @param int     $id
+     * @param Request    $request
+     * @param int|string $id
      *
      * @throws AccessDeniedException
      *
-     * @return RedirectResponse
+     * @return Response
      */
-    public function dispatchAction(Request $request, $id)
+    protected function edit(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
-        if ($this->isGranted(Attributes::EDIT, $productAsset)) {
-            $edit = $this->editAction($request, $id);
+        $assetLocales = $productAsset->getLocales();
 
-            return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', $edit);
+        if (null !== $request->get('locale')) {
+            $locale = $assetLocales[$request->get('locale')];
+        } elseif (!empty($assetLocales)) {
+            $locale = reset($assetLocales);
+        } else {
+            $locale = null;
         }
 
-        if ($this->isGranted(Attributes::VIEW, $productAsset)) {
-            $view = $this->viewAction($id);
+        $assetForm = $this->createForm('pimee_product_asset', $productAsset);
+        $assetForm->handleRequest($request);
 
-            return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', $view);
+        if ($assetForm->isValid()) {
+            try {
+                $this->assetFilesUpdater->updateAssetFiles($productAsset);
+                $this->assetSaver->save($productAsset, ['schedule' => true]);
+                $event = $this->eventDispatcher->dispatch(
+                    AssetEvent::POST_UPLOAD_FILES,
+                    new AssetEvent($productAsset)
+                );
+                $this->handleGenerationEventResult($event);
+                $this->addFlashMessage('success', 'pimee_product_asset.enrich_asset.flash.update.success');
+            } catch (\Exception $e) {
+                $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
+            }
+
+            return $this->redirectAfterEdit($request, ['id' => $id]);
+        } elseif ($assetForm->isSubmitted()) {
+            $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
+            // TODO find a better way
+            $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
         }
 
-        throw new AccessDeniedException();
+        $trees = $this->assetCategoryRepo->getItemCountByGrantedTree($productAsset, $this->userContext->getUser());
+
+        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', [
+            'asset'         => $productAsset,
+            'form'          => $assetForm->createView(),
+            'metadata'      => $this->getAssetMetadata($productAsset),
+            'currentLocale' => $locale,
+            'trees'         => $trees,
+        ]);
+    }
+
+    /**
+     * View an asset
+     *
+     * @param int|string $id
+     *
+     * @throws AccessDeniedException()
+     *
+     * @return array
+     */
+    protected function view($id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+
+        $isViewAssetGranted = $this->isGranted(Attributes::VIEW, $productAsset);
+        if (!$isViewAssetGranted) {
+            throw new AccessDeniedException();
+        }
+
+        $references  = $productAsset->getReferences();
+        $attachments = [];
+        foreach ($references as $refKey => $reference) {
+            $attachments[$refKey]['reference'] = $reference;
+        }
+
+        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', [
+            'asset'       => $productAsset,
+            'attachments' => $attachments,
+            'metadata'    => $this->getAssetMetadata($productAsset)
+        ]);
     }
 
     /**

@@ -2,12 +2,6 @@ pimee_product_asset_index:
     path: /
     defaults: { _controller: pimee_product_asset.controller.product_asset:indexAction }
 
-pimee_product_asset_view:
-    path: /{id}/view
-    defaults: { _controller: pimee_product_asset.controller.product_asset:viewAction }
-    requirements:
-        id: '[0-9]+'
-
 pimee_product_asset_create:
     path: /create
     defaults: { _controller: pimee_product_asset.controller.product_asset:createAction }
@@ -17,12 +11,6 @@ pimee_product_asset_next_code:
     defaults: { _controller: pimee_product_asset.controller.product_asset:getNextAvailableCodeAction }
     requirements:
         code: '^[a-zA-Z0-9_]+$'
-
-pimee_product_asset_edit:
-    path: /{id}/edit
-    defaults: { _controller: pimee_product_asset.controller.product_asset:editAction }
-    requirements:
-        id: '[0-9]+'
 
 pimee_product_asset_remove:
     path: /{id}/remove
@@ -66,12 +54,11 @@ pimee_product_asset_rest_index:
     defaults: { _controller: pimee_product_asset.controller.rest.product_asset:indexAction, _format: json }
     methods: [GET]
 
-pimee_product_asset_dispatch:
-    path: /{id}/dispatch
-    defaults: { _controller: pimee_product_asset.controller.product_asset:dispatchAction }
+pimee_product_asset_edit:
+    path: /{id}/edit
+    defaults: { _controller: pimee_product_asset.controller.product_asset:editAction }
     requirements:
         id: '[0-9a-f]+'
-    methods: [GET]
 
 pimee_product_asset_rest_verify_upload:
     path: /rest/upload/verify/{filename}

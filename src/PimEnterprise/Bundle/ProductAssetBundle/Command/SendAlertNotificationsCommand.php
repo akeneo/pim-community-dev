@@ -88,7 +88,7 @@ class SendAlertNotificationsCommand extends ContainerAwareCommand
                 ->findExpiringAssets(new \DateTime(), $user->getAssetDelayReminder());
 
             foreach ($assets as &$asset) {
-                $uri = $this->getRouter()->generate('pimee_product_asset_view', ['id' => $asset['id']]);
+                $uri = $this->getRouter()->generate('pimee_product_asset_edit', ['id' => $asset['id']]);
                 $asset['url'] = $uri;
             }
 
