@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Component\Classification\Factory\CategoryFactory;
+use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
@@ -240,7 +240,7 @@ class CategoryManager
     {
         return $this
             ->getEntityRepository()
-            ->findOneBy(array('code' => $code));
+            ->findOneBy(['code' => $code]);
     }
 
     /**
