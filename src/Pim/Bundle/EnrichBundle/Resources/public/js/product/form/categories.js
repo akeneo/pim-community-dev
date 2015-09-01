@@ -65,7 +65,10 @@ define(
                         })
                     );
 
-                    this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input');
+                    this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input', {
+                        list_categories: 'pim_enrich_product_listcategories',
+                        children:        'pim_enrich_categorytree_children'
+                    });
                     this.delegateEvents();
                     this.state.set('currentTree', _.first(trees).code);
                     this.initCategoryCount(trees);

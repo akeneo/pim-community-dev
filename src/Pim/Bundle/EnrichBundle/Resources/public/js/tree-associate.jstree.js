@@ -3,7 +3,7 @@ define(
     function ($, _, Routing, mediator) {
         'use strict';
 
-        return function (elementId, hiddenCategoryId) {
+        return function (elementId, hiddenCategoryId, routes) {
             var $el = $(elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
                 return;
@@ -48,7 +48,7 @@ define(
                                 // First load of the tree: get the checked categories
                                 var selected = this.parseHiddenCategories();
                                 return Routing.generate(
-                                    'pim_enrich_product_listcategories',
+                                    routes.list_categories,
                                     {
                                         id: id,
                                         categoryId: currentTree,
@@ -61,7 +61,7 @@ define(
                             }
 
                             return Routing.generate(
-                                'pim_enrich_categorytree_children',
+                                routes.children,
                                 {
                                     _format: 'json',
                                     dataLocale: dataLocale,
