@@ -7,3 +7,6 @@ pimee_dashboard:
             product: Product
             review:  Review
             empty:   No product drafts to review
+    version:
+        community_edition: CE
+        enterprise_edition: EE

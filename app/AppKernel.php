@@ -112,6 +112,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\EntityBundle\PimEntityBundle(),
 
             // PIM bundles
+            new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),

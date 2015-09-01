@@ -39,3 +39,5 @@ parameters:
     # mongodb_database: akeneo_pim
 
     doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema
+
+    pim_analytics_update_server_url: https://updates.akeneo.com
