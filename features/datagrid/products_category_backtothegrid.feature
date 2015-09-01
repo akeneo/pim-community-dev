@@ -48,3 +48,9 @@ Feature: Product category back to the grid
   Scenario: Successfully display the no results found message
     Given I filter by "SKU" with value "novalues"
     Then I should see "No results found. Try to change your search criteria."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4538
+  Scenario: Successfully sidebarize tree from indirect url
+    Given I am on the relative path enrich/product/ from spread/export
+    And I wait 30 seconds
+    Then I should see an ".sidebarized" element
