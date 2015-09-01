@@ -598,4 +598,17 @@ class ProductRepository extends EntityRepository implements
 
         return $count;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $count = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
+    }
 }

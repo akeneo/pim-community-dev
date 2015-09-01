@@ -139,4 +139,19 @@ DQL;
     {
         return ['code'];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAllActivated()
+    {
+        $countQb = $this->createQueryBuilder('l');
+        $count = $countQb
+            ->select('COUNT(l.id)')
+            ->where($countQb->expr()->eq('l.activated', true))
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
+    }
 }

@@ -216,4 +216,17 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     {
         return array('code');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $count = $this->createQueryBuilder('f')
+            ->select('COUNT(f.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
+    }
 }

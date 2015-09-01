@@ -57,4 +57,11 @@ interface LocaleRepositoryInterface extends IdentifiableObjectRepositoryInterfac
      * @return array the list of deleted locales
      */
     public function getDeletedLocalesForChannel(ChannelInterface $channel);
+
+    /**
+     * Return the number of activated locales
+     *
+     * @return int
+     */
+    public function countAllActivated();
 }

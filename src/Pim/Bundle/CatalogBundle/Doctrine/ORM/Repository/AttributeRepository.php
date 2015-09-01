@@ -455,4 +455,17 @@ class AttributeRepository extends EntityRepository implements
             return array_map('current', $qb->getQuery()->getScalarResult());
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $count = $this->createQueryBuilder('a')
+            ->select('COUNT(a.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
+    }
 }

@@ -1,4 +1,6 @@
 # PIM
+pim_analytics:
+    resource: "@PimAnalyticsBundle/Resources/config/routing.yml"
 
 pim_datagrid:
     resource: "@PimDataGridBundle/Resources/config/routing.yml"

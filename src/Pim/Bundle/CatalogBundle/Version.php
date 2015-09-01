@@ -16,4 +16,7 @@ class Version
 
     /** @staticvar string */
     const VERSION_CODENAME = '';
+
+    /** @staticvar string */
+    const EDITION = 'CE';
 }
