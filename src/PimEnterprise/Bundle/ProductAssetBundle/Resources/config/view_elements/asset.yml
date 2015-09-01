@@ -1,0 +1,31 @@
+parameters:
+    pimee_product_asset.view_element.asset.tab.variations.template: 'PimEnterpriseProductAssetBundle:ProductAsset:_variations-tab.html.twig'
+    pimee_product_asset.view_element.asset.tab.properties.template: 'PimEnterpriseProductAssetBundle:ProductAsset:_properties-tab.html.twig'
+    pimee_product_asset.view_element.asset.tab.categories.template: 'PimEnterpriseProductAssetBundle:ProductAsset:_categories-tab.html.twig'
+
+services:
+    pimee_product_asset.view_element.asset.tab.variations:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_product_asset.tabs.variations'
+            - %pimee_product_asset.view_element.asset.tab.variations.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pimee_product_asset.asset.form_tab, position: 10 }
+
+    pimee_product_asset.view_element.asset.tab.properties:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_product_asset.tabs.properties'
+            - %pimee_product_asset.view_element.asset.tab.properties.template%
+        tags:
+            - { name: pim_enrich.view_element, type: pimee_product_asset.asset.form_tab, position: 20 }
+
+    pimee_product_asset.view_element.asset.tab.category:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pimee_product_asset.tabs.categories'
+            - %pimee_product_asset.view_element.asset.tab.categories.template%
+        calls:
+            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pimee_product_asset_categories_view'}] ]
+        tags:
+            - { name: pim_enrich.view_element, type: pimee_product_asset.asset.form_tab, position: 30 }

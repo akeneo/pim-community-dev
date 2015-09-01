@@ -600,6 +600,8 @@ class ProductAssetController extends Controller
      * List categories associated with the provided asset and descending from the category
      * defined by the parent parameter.
      *
+     * @AclAncestor("pimee_product_asset_categories_view")
+     *
      * @Template("PimEnterpriseProductAssetBundle:ProductAsset:list-categories.json.twig")
      *
      * @param Request $request    The request object
@@ -612,7 +614,6 @@ class ProductAssetController extends Controller
      */
     public function listCategoriesAction(Request $request, $id, $categoryId)
     {
-        // TODO      * @AclAncestor("pim_enrich_product_categories_view")
         $asset      = $this->findProductAssetOr404($id);
         $parent     = $this->categoryRepository->find($categoryId);
         if (null === $parent) {
