@@ -3,32 +3,15 @@
 
 {% set title = 'published products'|trans %}
 
-{% block head_script %}
-    {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'jquery.sidebarize'],
-            function ($) {
-                'use strict';
-                $(function() {
-                    var sidebarize = function () {
-                        if (2 === $('.has-sidebar').children().length) {
-                            $('.has-sidebar').sidebarize();
-
-                            return;
-                        }
-
-                        window.setTimeout(sidebarize, 200);
-                    };
-
-                    sidebarize();
-                });
-            }
-        );
-    </script>
-{% endblock %}
-
 {% block content %}
+    <script type="text/javascript">
+        require(['jquery', 'jquery.sidebarize'], function ($) {
+            'use strict';
+            $(function() {
+                $('.has-sidebar').sidebarize();
+            });
+        });
+    </script>
 
     {% set subtitle %}
         {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
