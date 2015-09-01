@@ -39,7 +39,7 @@
         <delete dir="${basedir}/app/build/logs"/>
         <delete dir="${basedir}/app/build/pdepend"/>
 
-        <delete file="${basedir}/composer.phar" />
+        <delete file="composer" />
         <delete file="${basedir}/app/config/parameters.yml" />
         <delete file="${basedir}/app/config/parameters_test.yml" />
         <delete dir="${basedir}/app/cache" />
@@ -239,7 +239,7 @@
             <arg value="php -i | grep extension_dir | cut -d ' ' -f3"/>
         </exec>
 
-        <exec executable="${basedir}/composer.phar" failonerror="true">
+        <exec executable="composer" failonerror="true">
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="henrikbjorn/phpspec-code-coverage" />
@@ -252,7 +252,7 @@
         -->
         <exec executable="php" failonerror="true">
             <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
-            <arg value="${basedir}/composer.phar" />
+            <arg value="composer" />
             <arg value="install" />
             <arg value="--no-progress" />
             <arg value="--no-interaction" />
@@ -358,13 +358,13 @@
     </target>
 
     <target name="require-mongo" description="Require the mongo bundle">
-        <exec executable="${basedir}/composer.phar" failonerror="true">
+        <exec executable="composer" failonerror="true">
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm-bundle" />
             <arg value="v3.0.0-BETA6@dev" />
         </exec>
-        <exec executable="${basedir}/composer.phar" failonerror="true">
+        <exec executable="composer" failonerror="true">
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm" />
@@ -373,7 +373,7 @@
     </target>
 
     <target name="vendors" description="Install vendors">
-        <exec executable="${basedir}/composer.phar" failonerror="true">
+        <exec executable="composer" failonerror="true">
             <arg value="install" />
             <arg value="--no-progress" />
             <arg value="--no-interaction" />
@@ -388,7 +388,7 @@
     </target>
 
     <target name="vendors-no-scripts" description="Install vendors">
-        <exec executable="${basedir}/composer.phar" failonerror="true">
+        <exec executable="composer" failonerror="true">
             <arg value="install" />
             <arg value="--no-progress" />
             <arg value="--no-interaction" />

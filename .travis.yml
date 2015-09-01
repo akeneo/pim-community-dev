@@ -4,9 +4,11 @@ php:
     - "5.5"
     - "5.6"
     - "hhvm"
+env:
+    - STORAGE=orm
+    - STORAGE=mongo
 
-# Allow to use container infrastructure
-sudo: false
+sudo: true
 
 matrix:
     allow_failures:
@@ -18,21 +20,37 @@ cache:
 
 before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - composer self-update --no-interaction
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm v1.0.0-beta12@dev; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm-bundle v3.0.0-BETA6@dev; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer update --prefer-dist --no-interaction; else composer update --prefer-dist --no-interaction --no-scripts; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then ./app/console oro:requirejs:generate-config; fi;'
     - npm install -g grunt-cli
     - npm install
     - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
+    - sudo apt-get update > /dev/null
+    - sudo apt-get install -y --force-yes apache2 libapache2-mod-php5 php5-curl php5-mysql php5-intl
+    - sudo sed -i -e "s,/var/www,$(pwd)/web,g" /etc/apache2/sites-available/default
+    - sudo /etc/init.d/apache2 restart
+
+    - composer self-update --no-interaction
+    - ant prepare
+    - sh -c 'if [ "$STORAGE" == "mongo" ]; then ant require-mongo; fi;'
+    - sh -c 'if [ "$STORAGE" == "mongo" ]; then ant activate-mongo; fi;'
+    - ant vendors
+    - ant install-all-behat
+
+    - php app/check.php
+
+    # Initialize xvfb + selenium
+    - "sh -e /etc/init.d/xvfb start"
+    - "export DISPLAY=:99.0"
+    - "wget http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar"
+    - "java -jar selenium-server-standalone-2.31.0.jar > /dev/null &"
+    - sleep 5
 
 script:
-    - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
-    - ./phpspec-fix
+    - php bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
+    - php bin/behat
+    - php phpspec-fix
     - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then grunt travis; else grunt codestyle; fi;'
+    - grunt travis
 
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo
+
