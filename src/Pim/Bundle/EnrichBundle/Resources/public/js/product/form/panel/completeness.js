@@ -35,8 +35,8 @@ define(
                     label: _.__('pim_enrich.form.product.panel.completeness.title')
                 });
 
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.update);
-                this.listenTo(mediator, 'pim_enrich:form:change-family:after', this.onChangeFamily);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

@@ -58,11 +58,11 @@ define(
                 });
 
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
-                this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.render);
-                this.listenTo(mediator, 'pim_enrich:form:change-family:after', this.render);
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.render);
-                this.listenTo(mediator, 'pim_enrich:form:add-attribute:after', this.render);
-                this.listenTo(mediator, 'pim_enrich:form:show_attribute', this.showAttribute);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
 
                 FieldManager.clearFields();
 
@@ -183,7 +183,7 @@ define(
 
                     this.setData(product);
 
-                    mediator.trigger('pim_enrich:form:add-attribute:after');
+                    this.getRoot().trigger('pim_enrich:form:add-attribute:after');
                 }.bind(this));
             },
             removeAttribute: function (event) {
@@ -217,7 +217,7 @@ define(
 
                                 this.setData(product);
 
-                                mediator.trigger('pim_enrich:form:remove-attribute:after');
+                                this.getRoot().trigger('pim_enrich:form:remove-attribute:after');
 
                                 this.render();
                             }.bind(this)).fail(function () {
@@ -249,7 +249,7 @@ define(
             showAttribute: function (event) {
                 AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
                     .then(function (attributeGroups) {
-                        mediator.trigger('pim_enrich:form:form-tabs:change', this.code);
+                        this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
 
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,

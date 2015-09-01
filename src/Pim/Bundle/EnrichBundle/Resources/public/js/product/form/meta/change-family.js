@@ -16,11 +16,10 @@ define(
         'pim/product-manager',
         'text!pim/template/product/meta/change-family-modal',
         'pim/user-context',
-        'oro/mediator',
         'backbone/bootstrap-modal',
         'jquery.select2'
     ],
-    function (_, Backbone, BaseForm, FetcherRegistry, ProductManager, modalTemplate, UserContext, mediator) {
+    function (_, Backbone, BaseForm, FetcherRegistry, ProductManager, modalTemplate, UserContext) {
         var FormView = BaseForm.extend({
             tagName: 'i',
             className: 'icon-pencil change-family',
@@ -50,11 +49,11 @@ define(
 
                         this.getFormModel().set('family', selectedFamily);
                         ProductManager.generateMissing(this.getFormData()).then(function (product) {
-                            mediator.trigger('pim_enrich:form:change-family:before');
+                            this.getRoot().trigger('pim_enrich:form:change-family:before');
 
                             this.setData(product);
 
-                            mediator.trigger('pim_enrich:form:change-family:after');
+                            this.getRoot().trigger('pim_enrich:form:change-family:after');
                             familyModal.close();
                         }.bind(this));
                     }.bind(this));

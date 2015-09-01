@@ -44,8 +44,8 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.onValidationError);
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.onValidationError);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
