@@ -14,4 +14,10 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface UserRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
+    /**
+     * Return the number of existing users
+     *
+     * @return int
+     */
+    public function countAll();
 }

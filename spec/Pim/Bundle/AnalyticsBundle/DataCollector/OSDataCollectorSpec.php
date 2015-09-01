@@ -8,11 +8,11 @@ use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class OperatingSystemDataCollectorSpec extends ObjectBehavior
+class OSDataCollectorSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DataCollector\OperatingSystemDataCollector');
+        $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DataCollector\OSDataCollector');
         $this->shouldHaveType('Akeneo\Component\Analytics\DataCollectorInterface');
     }
 

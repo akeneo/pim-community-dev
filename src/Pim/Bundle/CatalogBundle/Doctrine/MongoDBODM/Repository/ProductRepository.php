@@ -724,4 +724,15 @@ class ProductRepository extends DocumentRepository implements
 
         return $count;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('p')->hydrate(false);
+        $count = $qb->getQuery()->execute()->count();
+
+        return $count;
+    }
 }

@@ -72,4 +72,11 @@ interface FamilyRepositoryInterface extends
      * @return array
      */
     public function findByIds(array $familyIds);
+
+    /**
+     * Return the number of existing families
+     *
+     * @return int
+     */
+    public function countAll();
 }
