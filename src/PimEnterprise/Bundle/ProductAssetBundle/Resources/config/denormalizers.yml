@@ -1,0 +1,8 @@
+services:
+    pimee_product_asset.denormalizer.pim_assets_collection:
+        class: %pim_serializer.denormalizer.reference_data_collection.class%
+        arguments:
+            - ['pim_assets_collection']
+            - '@pim_serialize.denormalizer.reference_data'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
