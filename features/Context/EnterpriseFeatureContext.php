@@ -23,7 +23,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('webUser', new EnterpriseWebUser($parameters['window_width'], $parameters['window_height']));
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new EnterpriseDataGridContext());
-        $this->useContext('navigation', new EnterpriseNavigationContext());
+        $this->useContext('navigation', new EnterpriseNavigationContext($parameters['base_url']));
         $this->useContext('transformations', new EnterpriseTransformationContext());
         $this->useContext('assertions', new EnterpriseAssertionContext());
         $this->useContext('technical', new TechnicalContext());
