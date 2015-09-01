@@ -7,3 +7,11 @@ pim_enrich_media_download:
     path: /download/{filename}
     defaults: { _controller: pim_enrich.controller.file:downloadAction, filter: null }
     methods: [GET]
+
+pim_enrich_default_thumbnail:
+    path: /default-thumbnail/{mimeType}
+    defaults: { _controller: pim_enrich.controller.file:defaultThumbnailAction, filter: thumbnail }
+    methods: [GET]
+    requirements:
+        mimeType: "[a-z-]+/[a-z0-9.-]+"
+

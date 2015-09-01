@@ -125,6 +125,20 @@ class FileController extends Controller
     }
 
     /**
+     * Get the default thumbnail from a mime type
+     *
+     * @param string $mimeType
+     *
+     * @return RedirectResponse
+     */
+    public function defaultThumbnailAction($mimeType)
+    {
+        $fileType = $this->fileTypeGuesser->guess($mimeType);
+
+        return $this->renderDefaultImage($fileType, 'thumbnail');
+    }
+
+    /**
      * @param string $fileType
      * @param string $filter
      *
