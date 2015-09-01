@@ -13,10 +13,9 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/product/form-tabs',
-        'oro/mediator'
+        'text!pim/template/product/form-tabs'
     ],
-    function ($, _, Backbone, BaseForm, template, mediator) {
+    function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'tabbable tabs-top',

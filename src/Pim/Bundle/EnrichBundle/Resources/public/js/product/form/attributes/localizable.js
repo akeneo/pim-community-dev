@@ -11,10 +11,9 @@ define(
         'jquery',
         'underscore',
         'pim/form',
-        'pim/fetcher-registry',
-        'oro/mediator'
+        'pim/fetcher-registry'
     ],
-    function ($, _, BaseForm, FetcherRegistry, mediator) {
+    function ($, _, BaseForm, FetcherRegistry) {
         return BaseForm.extend({
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);

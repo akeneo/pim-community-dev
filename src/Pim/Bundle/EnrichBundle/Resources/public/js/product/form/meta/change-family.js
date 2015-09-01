@@ -16,11 +16,10 @@ define(
         'pim/product-manager',
         'text!pim/template/product/meta/change-family-modal',
         'pim/user-context',
-        'oro/mediator',
         'backbone/bootstrap-modal',
         'jquery.select2'
     ],
-    function (_, Backbone, BaseForm, FetcherRegistry, ProductManager, modalTemplate, UserContext, mediator) {
+    function (_, Backbone, BaseForm, FetcherRegistry, ProductManager, modalTemplate, UserContext) {
         var FormView = BaseForm.extend({
             tagName: 'i',
             className: 'icon-pencil change-family',
