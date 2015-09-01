@@ -35,12 +35,14 @@
                                 <tr>
                                     <td>{{ referenceModel.file.originalFilename }}</td>
                                     <td>
-                                        <button class="btn delete"
-                                           data-href="{{ path('pimee_product_asset_reference_delete', {'id': referenceModel.id}) }}"
-                                                >{{ 'btn.delete'|trans }}</button>
-                                        <button class="btn reset-variations"
-                                           data-href="{{ path('pimee_product_asset_variations_reset', {'id': referenceModel.id}) }}"
-                                                >{{ 'pimee_product_asset.enrich_asset.button.reset_variations'|trans }}</button>
+                                        <button class="btn icons-holder-text delete" data-href="{{ path('pimee_product_asset_reference_delete', {'id': referenceModel.id}) }}" >
+                                            <i class="icon-trash"></i>
+                                            {{ 'btn.delete'|trans }}
+                                        </button>
+                                        <button class="btn icons-holder-text reset-variations" data-href="{{ path('pimee_product_asset_variations_reset', {'id': referenceModel.id}) }}" >
+                                            <i class="icon-repeat"></i>
+                                            {{ 'pimee_product_asset.enrich_asset.button.reset_variations'|trans }}
+                                        </button>
                                     </td>
                                 </tr>
                             </tbody>
