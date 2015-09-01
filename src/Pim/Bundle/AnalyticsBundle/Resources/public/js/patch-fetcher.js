@@ -19,10 +19,10 @@ define(
                     return DataCollector.collect('pim_analytics_data_collect').then(function (collectedData) {
                         var version = collectedData.pim_version;
                         var minorVersion = _.first(version.match(/^\d+.\d+/g));
-                        var lastPatchUrl = updateServerUrl + "/" + collectedData.pim_edition + "-" + minorVersion + ".json";
+                        var lastPatchUrl = updateServerUrl + '/' + collectedData.pim_edition + '-' + minorVersion + '.json';
 
                         return $.ajax({
-                            dataType: "json",
+                            dataType: 'json',
                             url: lastPatchUrl,
                             data: collectedData,
                             timeout: 10000
