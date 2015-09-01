@@ -77,6 +77,7 @@ define(
 
                         return;
                     }
+
                     $.get(
                         Routing.generate('pimee_product_asset_rest_verify_upload', {
                             filename: encodeURIComponent(file.name)
@@ -93,6 +94,16 @@ define(
                             this.setStatus(file);
                             file.previewElement.querySelector('.dz-type').textContent = file.type;
                         }.bind(this));
+
+                    if ((!file.type.match(/image.*/)) || (file.size > myDropzone.options.maxThumbnailFilesize)) {
+                        // This is not an image, or imae is too big o generate a thumbnail
+                        myDropzone.emit('thumbnail',
+                            file,
+                            Routing.generate('pimee_product_asset_mass_upload_rest_default_thumbnail', {
+                                    mimeType: file.type
+                                }
+                            ));
+                    }
                 }.bind(this));
 
                 myDropzone.on('removedfile', function (file) {

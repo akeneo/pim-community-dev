@@ -42,6 +42,8 @@ services:
             - '@security.token_storage'
             - '@pim_connector.launcher.simple_job_launcher'
             - '@pim_import_export.repository.job_instance'
+            - '@pim_enrich.guesser.file_type'
+            - '@pim_enrich.provider.default_image'
             - '%tmp_storage_dir%'
 
     pimee_product_asset.controller.category_tree:
