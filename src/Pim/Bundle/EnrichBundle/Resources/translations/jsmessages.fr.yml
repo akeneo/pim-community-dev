@@ -68,6 +68,8 @@ alert:
   attribute_option:
     error_occured_during_submission: "Une erreur s'est produite lors de l'envoi d'un formulaire sur le serveur"
     save_before_edit_other: Veuillez enregistrer vos modifications sur les autres lignes avant de modifier celle-ci
+  session_storage:
+    not_available: Votre navigateur Internet ne semble pas être compatible avec sessionStorage. Contactez votre administrateur
 confirm:
   attribute_option:
     cancel_edition_on_new_option_text: Attention, vous allez perdre les données non sauvegardées. Êtes-vous sûr de vouloir annuler les modifications sur cette nouvelle option ?
@@ -98,14 +100,152 @@ pim_enrich:
     delete:
       confirm.content: "Êtes-vous sûr de que vouloir supprimer  {{ itemName }} ? Il n'est pas possible d'annuler cette action"
       confirm.title: 'Supprimer {{ itemName }}'
+  navigation:
+    link:
+      back_to_grid: Retour à la grille
   entity:
     product:
+      title: produit
+      btn:
+        enable: Activer
+        enabled: Activé
+        disable: Desactiver
+        disabled: Désactivé
+        download_pdf: PDF
+        compare_translate: Comparer / traduire
+        delete: Supprimer
+        save: Enregistrer
+        save_and_back: Enregistrer et revenir à la grille
+      history:
+        version: Version
+        author: Auteur
+        logged_at: Connecté le
+        more: Plus
+        less: Moins
+        from: De
+        modified: Modifié
+        property: Propriété
+        old_values: Anciennes valeurs
+        new_values: Nouvelles valeurs
+        actions: Actions
+      info:
+        deletion_successful: Les produits ont bien été supprimés.
+        deletion_failed: "Le produit n'a pas pu être supprimé."
+        update_successful: Le produit a bien été mis à jour.
+        update_failed: "Le produit n'a pas pu être mis à jour."
+        field_not_ready:
+          The product cannot be saved right now. The following fields are not ready:
+            - champs
+        already_in_upload: 'Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et "{{ scope }}"'
+      error:
+        upload: "Une erreur s'est produite lors du transfert du fichier."
+      meta:
+        created: Créé
+        created_by: par
+        updated_by: par
+        updated: Dernière mise à jour
+        family:
+          title: Famille
+          none: Aucun
+        groups:
+          title: Groupes
+          modal:
+            title: 'Groupe {{ group }}'
+            view_group: Afficher le groupe
+            group_label: Libellé
+            more_products: '{{ count }} produits supplémentaires...'
+            close: Fermer
+      copy:
+        select: Sélectionner
+        all: Tous
+        all_visible: Tous les visibles
+        none: Aucun
       variant_group:
+        updated_by: Mis à jour par un groupe de variantes
         switch:
           "yes": true
           "no": false
+      optional_attribute:
+        remove: Supprimer cet attribut
+      locale_specific_attribute:
+        unavailable: "Ce champ est spécifique à certaines locales, celle-ci n'en fait pas partie"
+      localizable:
+        channel_locale_unavailable: "Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'"
+      media:
+        upload: Glisser et déposer pour télécharger ou cliquer ici
+    attribute_option:
+      code: Code
+      label: Libellé
+  confirmation:
+    leave: Êtes-vous sûr de vouloir quitter cette page?
+    discard_changes: 'Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.'
+    delete_item: "Supprimer l'élément."
+    delete:
+      product_attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
+  info:
+    not_applicable: Inconnu
+    entity:
+      updated: "Des modifications n'ont pas encore été sauvegardées."
+  error:
+    upload: "Une erreur s'est produite pendant le chargement du fichier"
+  alert:
+    not_allowed: "Vous n'êtes pas autorisé à accéder à cette page"
+    error_occured: "Une erreur s'est produite lors du chargement de la page"
   form:
     product:
+      tab:
+        associations:
+          title: Associations
+          info:
+            none_exist: "Aucun type d'association n'existe."
+            show_products: Afficher les produits
+            show_groups: Afficher les groupes
+            number_of_associations: '{{ productCount }} produits et {{ groupCount }} groupes'
+        attributes:
+          title: Attributs
+          btn:
+            add: Ajouter
+            add_attributes: Ajouter des attributs
+          info:
+            search_attributes: Rechercher
+            no_available_attributes: "Il n'y a plus d'attributs disponibles"
+        categories:
+          title: Catégories
+      panel:
+        completeness:
+          title: Complétude
+          info:
+            no_family: Aucune famille de défini. Merci de définir une famille pour calculer la complétude de ce produit.
+            no_completeness: "Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille."
+        history:
+          title: Historique
       switch:
         "no": false
         "yes": true
+      sequential_edit:
+        info:
+          products: Produits
+          previous: 'Retourner à {{ product }} sans enregistrer les modifications.'
+          next: 'Passer à {{ product }} sans enregistrer les modifications.'
+        btn:
+          save_and_next: Enregistrer et passer au suivant
+          save_and_finish: Enregistrer et terminer
+      change_family:
+        modal:
+          title: Changer la famille du produit
+          merge_attributes: Les attributs existants seront fusionnés avec ceux de la nouvelle famille.
+          keep_attributes: Aucun attribut ne sera supprimé.
+          change_family_to: Changer la famille pour
+          empty_selection: Choisir une famille
+      flash:
+        attribute_deletion_error: "Une erreur s'est produite lors de la suppression de l'attribut"
+    attribute_option:
+      flash:
+        option_created: "L'option d'attribut a été créée avec succès."
+        error_creating_option: "Une erreur s'est produite en essayant de créer l'option d'attribut."
+      add_option_modal:
+        title: "Ajouter une option d'attribut"
+        confirm: Ajouter
+        cancel: Annuler
+pim_enrich.error:
+  exception.title: "Oups! Une erreur {{ status_code }} s'est produite..."
