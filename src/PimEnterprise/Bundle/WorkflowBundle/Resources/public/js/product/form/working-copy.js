@@ -30,8 +30,8 @@ define(
              * @inheritdoc
              */
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
-                this.listenTo(mediator, 'pim_enrich:form:field:can_be_copied', this.canBeCopied);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:can_be_copied', this.canBeCopied);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -114,7 +114,7 @@ define(
              * Trigger an event to open the working copy panel
              */
             showWorkingCopy: function () {
-                mediator.trigger('pim_enrich:form:draft:show_working_copy');
+                this.getRoot().trigger('pim_enrich:form:draft:show_working_copy');
             },
 
             /**

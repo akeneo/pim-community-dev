@@ -48,7 +48,7 @@ define(
             configure: function () {
                 this.routes = module.config().routes;
 
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -97,7 +97,7 @@ define(
              * Callback triggered on "send for approval" button click
              */
             onSubmitDraft: function () {
-                mediator.trigger('pim_enrich:form:state:confirm', {
+                this.getRoot().trigger('pim_enrich:form:state:confirm', {
                     message: this.confirmationMessage,
                     title: this.confirmationTitle,
                     action: this.submitDraft.bind(this)
@@ -118,7 +118,7 @@ define(
                 .then(function (product) {
                     this.setData(product);
 
-                    mediator.trigger('pim_enrich:form:entity:post_fetch', product);
+                    this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
 
                     messenger.notificationFlashMessage(
                         'success',

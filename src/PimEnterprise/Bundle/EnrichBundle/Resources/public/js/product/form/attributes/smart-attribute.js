@@ -14,7 +14,7 @@ define(
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments),
