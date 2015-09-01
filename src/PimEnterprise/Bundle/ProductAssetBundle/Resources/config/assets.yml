@@ -1,3 +1,4 @@
 css:
     assets:
         - bundles/pimenterpriseproductasset/css/asset.less
+        - bundles/pimenterpriseproductasset/css/mass-upload.less
