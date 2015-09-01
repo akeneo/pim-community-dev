@@ -17,6 +17,8 @@ use PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use Prophecy\Argument;
 use SplFileInfo;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class MassUploadProcessorSpec extends ObjectBehavior
 {
@@ -28,7 +30,9 @@ class MassUploadProcessorSpec extends ObjectBehavior
         AssetSaver $assetSaver,
         FilesUpdaterInterface $filesUpdater,
         RawFileStorerInterface $rawFileStorer,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        EventDispatcherInterface $eventDispatcher,
+        TranslatorInterface $translator
     ) {
         $this->beConstructedWith($uploadChecker,
             $scheduler,
@@ -37,7 +41,10 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $assetSaver,
             $filesUpdater,
             $rawFileStorer,
-            $localeRepository);
+            $localeRepository,
+            $eventDispatcher,
+            $translator
+        );
     }
 
     function it_can_be_initialized()

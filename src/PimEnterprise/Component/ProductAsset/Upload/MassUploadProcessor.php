@@ -12,8 +12,14 @@
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageHeightException;
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\ImageWidthException;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -21,6 +27,8 @@ use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Process mass uploaded files
@@ -44,7 +52,7 @@ class MassUploadProcessor
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
-    /** @var BulkSaverInterface */
+    /** @var SaverInterface */
     protected $assetSaver;
 
     /** @var FilesUpdaterInterface */
@@ -56,25 +64,35 @@ class MassUploadProcessor
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * @param UploadCheckerInterface    $uploadChecker
      * @param SchedulerInterface        $scheduler
      * @param AssetFactory              $assetFactory
      * @param AssetRepositoryInterface  $assetRepository
-     * @param BulkSaverInterface        $assetSaver
+     * @param SaverInterface            $assetSaver
      * @param FilesUpdaterInterface     $filesUpdater
      * @param RawFileStorerInterface    $rawFileStorer
      * @param LocaleRepositoryInterface $localeRepository
+     * @param EventDispatcherInterface  $eventDispatcher
+     * @param TranslatorInterface       $translator
      */
     public function __construct(
         UploadCheckerInterface $uploadChecker,
         SchedulerInterface $scheduler,
         AssetFactory $assetFactory,
         AssetRepositoryInterface $assetRepository,
-        BulkSaverInterface $assetSaver,
+        SaverInterface $assetSaver,
         FilesUpdaterInterface $filesUpdater,
         RawFileStorerInterface $rawFileStorer,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        EventDispatcherInterface $eventDispatcher,
+        TranslatorInterface $translator
     ) {
         $this->uploadChecker    = $uploadChecker;
         $this->scheduler        = $scheduler;
@@ -84,6 +102,8 @@ class MassUploadProcessor
         $this->filesUpdater     = $filesUpdater;
         $this->rawFileStorer    = $rawFileStorer;
         $this->localeRepository = $localeRepository;
+        $this->eventDispatcher  = $eventDispatcher;
+        $this->translator       = $translator;
     }
 
     /**
@@ -99,20 +119,30 @@ class MassUploadProcessor
 
         $scheduledFiles = $this->scheduler->getScheduledFiles($uploadContext);
 
-        $assetsToSave = [];
-
         foreach ($scheduledFiles as $file) {
             try {
-                $asset          = $this->applyScheduledUpload($file);
-                $reason         = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
-                $assetsToSave[] = $asset;
-                $processedFiles->addItem($file, ProcessedItem::STATE_SUCCESS, $reason);
+                $asset  = $this->applyScheduledUpload($file);
+                $reason = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
+
+                $this->filesUpdater->resetAllVariationsFiles($asset->getReference(), true);
+                $this->assetSaver->save($asset, ['flush' => true, 'schedule' => true]);
+
+                $event = $this->eventDispatcher->dispatch(
+                    AssetEvent::POST_UPLOAD_FILES,
+                    new AssetEvent($asset)
+                );
+
+                $errors = $this->retrieveGenerationEventErrors($event);
+
+                if (count($errors) > 0) {
+                    $processedFiles->addItem($file, ProcessedItem::STATE_SKIPPED, implode(PHP_EOL, $errors));
+                } else {
+                    $processedFiles->addItem($file, ProcessedItem::STATE_SUCCESS, $reason);
+                }
             } catch (\Exception $e) {
-                $processedFiles->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage());
+                $processedFiles->addItem($file, ProcessedItem::STATE_ERROR, $e->getMessage(), $e);
             }
         }
-
-        $this->assetSaver->saveAll($assetsToSave, ['flush' => true, 'schedule' => true]);
 
         return $processedFiles;
     }
@@ -148,5 +178,48 @@ class MassUploadProcessor
         $this->filesUpdater->updateAssetFiles($asset);
 
         return $asset;
+    }
+
+    /**
+     * @param AssetEvent $event
+     *
+     * @return string[]
+     */
+    protected function retrieveGenerationEventErrors(AssetEvent $event)
+    {
+        $errors = [];
+        $items  = $event->getProcessedList();
+
+        foreach ($items->getItemsInState(ProcessedItem::STATE_ERROR) as $item) {
+            $parameters = ['%channel%' => $item->getItem()->getChannel()->getCode()];
+            switch (true) {
+                case $item->getException() instanceof InvalidOptionsTransformationException:
+                    $template = 'pimee_product_asset.enrich_variation.flash.transformation.invalid_options';
+                    break;
+                case $item->getException() instanceof ImageWidthException:
+                    $template = 'pimee_product_asset.enrich_variation.flash.transformation.image_width_error';
+                    break;
+                case $item->getException() instanceof ImageHeightException:
+                    $template = 'pimee_product_asset.enrich_variation.flash.transformation.image_height_error';
+                    break;
+                case $item->getException() instanceof GenericTransformationException:
+                    $template = 'pimee_product_asset.enrich_variation.flash.transformation.not_applicable';
+                    break;
+                case $item->getException() instanceof NonRegisteredTransformationException:
+                    $template                       = 'pimee_product_asset.enrich_variation.flash.transformation.non_registered';
+                    $parameters['%transformation%'] = $item->getException()->getTransformation();
+                    $parameters['%mimeType%']       = $item->getException()->getMimeType();
+                    break;
+                default:
+                    $template = 'pimee_product_asset.enrich_variation.flash.transformation.error';
+                    break;
+            }
+            $errors[] = $this->translator->trans(
+                $template,
+                $parameters
+            );
+        }
+
+        return $errors;
     }
 }

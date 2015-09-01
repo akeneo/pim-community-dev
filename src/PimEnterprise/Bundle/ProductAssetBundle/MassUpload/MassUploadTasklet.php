@@ -93,7 +93,7 @@ class MassUploadTasklet implements TaskletInterface
             switch ($item->getState()) {
                 case ProcessedItem::STATE_ERROR:
                     $this->stepExecution->incrementSummaryInfo('error');
-                    $this->stepExecution->addError($item->getReason());
+                    $this->stepExecution->addError($item->getException()->getMessage());
                     break;
                 case ProcessedItem::STATE_SKIPPED:
                     $this->stepExecution->incrementSummaryInfo('skipped');
