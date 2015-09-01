@@ -4,6 +4,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
 use Doctrine\MongoDB\Collection;
 use Doctrine\MongoDB\Cursor;
+use Doctrine\MongoDB\CursorInterface;
+use Doctrine\MongoDB\Query\Query;
+use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\UnitOfWork;
@@ -45,5 +48,16 @@ class ProductRepositorySpec extends ObjectBehavior
         ])->willReturn($cursor);
 
         $this->getAvailableAttributeIdsToExport(['55db20922a114eb9078b5130'])->shouldReturn(['fooz', 'baz']);
+    }
+
+    function it_count_all_products(DocumentManager $dm, Builder $builder, Query $query, CursorInterface $cursor)
+    {
+        $dm->createQueryBuilder('foobar')->willReturn($builder);
+        $builder->hydrate(false)->willReturn($builder);
+        $builder->getQuery()->willReturn($query);
+        $query->execute()->willReturn($cursor);
+        $cursor->count()->shouldBeCalled();
+
+        $this->countAll();
     }
 }
