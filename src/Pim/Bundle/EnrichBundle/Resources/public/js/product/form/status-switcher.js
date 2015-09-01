@@ -41,6 +41,7 @@ define(
             updateStatus: function (event) {
                 var newStatus = event.currentTarget.dataset.status === 'enable';
                 this.getFormModel().set('enabled', newStatus);
+                this.getRoot().trigger('pim_enrich:form:entity:update_state');
                 this.render();
             }
         });
