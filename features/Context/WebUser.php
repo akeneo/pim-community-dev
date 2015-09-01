@@ -1364,22 +1364,22 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Then /^removing the following permissions? should hide the following history:$/
+     * @Then /^removing the following permissions? should hide the following section:$/
      *
      * @return Then[]
      */
-    public function removingPermissionsShouldHideTheHistory(TableNode $table)
+    public function removingPermissionsShouldHideTheSection(TableNode $table)
     {
         $steps = [];
 
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then('I should see "History"');
+            $steps[] = new Step\Then(sprintf('I should see "%s"', $data['section']));
             $steps[] = new Step\Then('I am on the "Administrator" role page');
             $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
             $steps[] = new Step\Then('I save the role');
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then('I should not see "History"');
+            $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['section']));
         }
         $steps[] = new Step\Then('I reset the "Administrator" rights');
 
