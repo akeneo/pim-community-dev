@@ -1,15 +1,24 @@
 {% if is_last_patch_enabled() %}
-    <strong>{{ 'pim_dashboard.last_patch_available'|trans }}:</strong><span class="last-patch-available"></span>
+    <div class="last-version"><span>{{ 'pim_analytics.new_patch_available'|trans }}:</span><span></span></div>
 
     <script type="text/javascript">
         require(
             ['jquery', 'pim/patch-fetcher'],
             function ($, Fetcher) {
                 $(function() {
-                    var updateServerUrl = "{{ get_update_server_url() }}";
-                    Fetcher.fetch(updateServerUrl).then(function (patch) {
-                        $('.last-patch-available:first').text(patch);
-                    });
+                    try {
+                        var updateServerUrl = '{{ get_update_server_url() }}';
+                        Fetcher.fetch(updateServerUrl).then(function (patch) {
+                            var currentVersion = $('.current-version span:last').text();
+                            if (patch !== null && patch !== currentVersion) {
+                                $('.last-version span:last').text(patch);
+                            } else {
+                                $('.last-version').remove();
+                            }
+                        });
+                    } catch (err) {
+                        $('.last-version').remove();
+                    }
                 });
             }
         );

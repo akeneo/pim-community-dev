@@ -9,7 +9,7 @@ define(
              */
             fetch: function (updateServerUrl) {
                 var storageEnabled = typeof Storage !== 'undefined' && sessionStorage;
-                var lastPatchKey = 'last-available-patch';
+                var lastPatchKey = 'last-patch-available';
                 if (storageEnabled && null !== sessionStorage.getItem(lastPatchKey)) {
                     var deferred = $.Deferred();
                     deferred.resolve(sessionStorage.getItem(lastPatchKey));
