@@ -1,5 +1,14 @@
 config:
     config:
+        # Forwarded events from mediator
+        pim/product-edit-form:
+            forwarded-events:
+                - 'pim_enrich:form:proposal:post_approve:success': 'pim_enrich:form:proposal:post_approve:success'
+                - 'pim_enrich:form:proposal:post_approve:error':   'pim_enrich:form:proposal:post_approve:error'
+                - 'pim_enrich:form:proposal:post_reject:success':  'pim_enrich:form:proposal:post_reject:success'
+        pimee/product-view-form:
+            forwarded-events:
+                - 'pim_enrich:form:field:extension:add':           'pim_enrich:form:field:extension:add'
         pimee/product-edit-form/send-for-approval:
             routes:
                 ready: pimee_workflow_product_draft_ready

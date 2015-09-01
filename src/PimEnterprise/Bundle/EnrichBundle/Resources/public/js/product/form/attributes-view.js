@@ -12,7 +12,6 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'oro/mediator',
         'routing',
         'pim/form',
         'pim/field-manager',
@@ -28,7 +27,6 @@ define(
         $,
         _,
         Backbone,
-        mediator,
         Routing,
         BaseForm,
         FieldManager,
@@ -51,10 +49,10 @@ define(
                 });
 
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
-                this.listenTo(mediator, 'pim_enrich:form:show_attribute', this.showAttribute);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
 
                 window.addEventListener('resize', this.resize.bind(this));
-                this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
                 FieldManager.clearFields();
 
                 this.onExtensions('attribute-group:change', this.render.bind(this));
@@ -154,7 +152,7 @@ define(
             showAttribute: function (event) {
                 AttributeGroupManager.getAttributeGroupsForProduct(this.getFormData())
                     .done(function (attributeGroups) {
-                        mediator.trigger('pim_enrich:form:form-tabs:change', this.code);
+                        this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
 
                         var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
                             attributeGroups,

@@ -8,18 +8,20 @@
  */
 define(
     [
+        'module',
         'jquery',
+        'underscore',
         'backbone',
         'pim/product-edit-form',
-        'pim/form',
-        'oro/mediator'
+        'pim/form'
     ],
     function (
+        module,
         $,
+        _,
         Backbone,
         EditForm,
-        BaseForm,
-        mediator
+        BaseForm
     ) {
         return EditForm.extend({
             /**
@@ -28,7 +30,11 @@ define(
             configure: function () {
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+                if (_.has(module.config(), 'forwarded-events')) {
+                    this.forwardMediatorEvents(module.config()['forwarded-events']);
+                }
+
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

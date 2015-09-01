@@ -7,14 +7,13 @@ define(
         'backbone',
         'pim/form',
         'pimee/rule-manager',
-        'oro/mediator',
         'text!pimee/template/product/tab/attribute/smart-attribute'
     ],
-    function ($, _, Backbone, BaseForm, RuleManager, mediator, smartAttributeTemplate) {
+    function ($, _, Backbone, BaseForm, RuleManager, smartAttributeTemplate) {
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments),

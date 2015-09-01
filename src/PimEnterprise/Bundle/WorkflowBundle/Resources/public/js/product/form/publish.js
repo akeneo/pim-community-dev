@@ -4,7 +4,6 @@ define(
     [
         'jquery',
         'underscore',
-        'oro/mediator',
         'pim/form',
         'text!pimee/template/product/publish',
         'oro/navigation',
@@ -17,7 +16,6 @@ define(
     function (
         $,
         _,
-        mediator,
         BaseForm,
         template,
         Navigation,
@@ -35,7 +33,7 @@ define(
                 'click .unpublish-product': 'unpublish'
             },
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -95,8 +93,8 @@ define(
 
                             this.setData(product);
 
-                            mediator.trigger('pim_enrich:form:entity:post_fetch', product);
-                            mediator.trigger('pim_enrich:form:entity:post_publish', product);
+                            this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
+                            this.getRoot().trigger('pim_enrich:form:entity:post_publish', product);
                         }.bind(this));
                     }.bind(this))
                     .fail(function () {

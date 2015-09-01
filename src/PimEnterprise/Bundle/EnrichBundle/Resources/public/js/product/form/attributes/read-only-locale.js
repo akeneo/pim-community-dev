@@ -7,13 +7,12 @@ define(
         'backbone',
         'pim/form',
         'pim/field-manager',
-        'pim/fetcher-registry',
-        'oro/mediator'
+        'pim/fetcher-registry'
     ],
-    function ($, _, Backbone, BaseForm, FieldManager, FetcherRegistry, mediator) {
+    function ($, _, Backbone, BaseForm, FieldManager, FetcherRegistry) {
         return BaseForm.extend({
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

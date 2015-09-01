@@ -8,13 +8,11 @@ define(
     [
         'jquery',
         'underscore',
-        'oro/mediator',
         'pim/product-edit-form/attributes/copy'
     ],
     function (
         $,
         _,
-        mediator,
         Copy
     ) {
         return Copy.extend({
@@ -26,7 +24,7 @@ define(
              */
             configure: function () {
                 this.currentSource = _.first(this.sources);
-                this.listenTo(mediator, 'pim_enrich:form:draft:show_working_copy', this.showWorkingCopy);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:draft:show_working_copy', this.showWorkingCopy);
 
                 this.onExtensions('pim_enrich:form:source_switcher:render:before', this.onSourceSwitcherRender);
                 this.onExtensions('pim_enrich:form:source_switcher:source_change', this.onSourceChange);
@@ -117,7 +115,7 @@ define(
                     scope: this.scope
                 };
 
-                mediator.trigger('pim_enrich:form:field:can_be_copied', params);
+                this.getRoot().trigger('pim_enrich:form:field:can_be_copied', params);
 
                 return params.canBeCopied;
             },

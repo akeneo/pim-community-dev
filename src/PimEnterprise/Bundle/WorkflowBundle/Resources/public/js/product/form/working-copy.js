@@ -9,7 +9,6 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'oro/mediator',
         'pim/form',
         'pim/attribute-manager',
         'text!pimee/template/product/tab/attribute/modified-by-draft'
@@ -18,7 +17,6 @@ define(
         $,
         _,
         Backbone,
-        mediator,
         BaseForm,
         AttributeManager,
         modifiedByDraftTemplate
@@ -30,8 +28,8 @@ define(
              * @inheritdoc
              */
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
-                this.listenTo(mediator, 'pim_enrich:form:field:can_be_copied', this.canBeCopied);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:can_be_copied', this.canBeCopied);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -59,7 +57,7 @@ define(
 
                 if (this.isValueChanged(field)) {
                     var $element = $(this.modifiedByDraftTemplate());
-                    $element.on('click', this.showWorkingCopy);
+                    $element.on('click', this.showWorkingCopy.bind(this));
 
                     field.addElement('label', 'modified_by_draft', $element);
                 }
@@ -114,7 +112,7 @@ define(
              * Trigger an event to open the working copy panel
              */
             showWorkingCopy: function () {
-                mediator.trigger('pim_enrich:form:draft:show_working_copy');
+                this.getRoot().trigger('pim_enrich:form:draft:show_working_copy');
             },
 
             /**

@@ -10,7 +10,6 @@ define(
         'jquery',
         'underscore',
         'routing',
-        'oro/mediator',
         'oro/messenger',
         'oro/datagrid-builder',
         'pim/form',
@@ -22,7 +21,6 @@ define(
         $,
         _,
         Routing,
-        mediator,
         messenger,
         datagridBuilder,
         BaseForm,
@@ -40,9 +38,10 @@ define(
              * @return {Promise}
              */
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:proposal:post_approve:success', this.onPostApproveSuccess);
-                this.listenTo(mediator, 'pim_enrich:form:proposal:post_approve:error', this.onPostApproveError);
-                this.listenTo(mediator, 'pim_enrich:form:proposal:post_reject:success', this.onPostRejectSuccess);
+                var root = this.getRoot();
+                this.listenTo(root, 'pim_enrich:form:proposal:post_approve:success', this.onPostApproveSuccess);
+                this.listenTo(root, 'pim_enrich:form:proposal:post_approve:error', this.onPostApproveError);
+                this.listenTo(root, 'pim_enrich:form:proposal:post_reject:success', this.onPostRejectSuccess);
 
                 this.trigger('tab:register', {
                     code: this.code,
@@ -69,7 +68,7 @@ define(
                 ProductManager.generateMissing(product)
                     .then(function (product) {
                         this.setData(product);
-                        mediator.trigger('pim_enrich:form:entity:post_fetch', product);
+                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
 
                         messenger.notificationFlashMessage(
                             'success',
