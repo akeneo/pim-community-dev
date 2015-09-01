@@ -44,12 +44,7 @@ class AssetCategoryRepository extends ItemCategoryRepository implements AssetCat
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->bindValue('itemId', $asset->getId());
-
-        $groups = [];
-        foreach ($user->getGroups()->toArray() as $group) {
-            $groups[] = $group->getId();
-        }
-        $stmt->bindValue('user_group_id', $groups, Type::SIMPLE_ARRAY);
+        $stmt->bindValue('user_group_id', $user->getGroupsIds(), Type::SIMPLE_ARRAY);
 
         $stmt->execute();
         $assets = $stmt->fetchAll();
