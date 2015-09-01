@@ -5,7 +5,10 @@
             function ($, TreeAssociate) {
                 'use strict';
                 $(function () {
-                    new TreeAssociate('#trees', '#{{ form.categories.vars.id }}');
+                    new TreeAssociate('#trees', '#{{ form.categories.vars.id }}', {
+                        list_categories: 'pimee_product_asset_listcategories',
+                        children:        'pimee_asset_categorytree_children'
+                    });
                 });
             }
         );
