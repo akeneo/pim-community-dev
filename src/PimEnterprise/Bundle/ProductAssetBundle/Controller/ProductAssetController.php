@@ -26,6 +26,8 @@ use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
@@ -118,6 +120,12 @@ class ProductAssetController extends Controller
     /** @var AssetCategoryRepositoryInterface */
     protected $assetCategoryRepo;
 
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
+    /** @var CategoryManager */
+    protected $categoryManager;
+
     /**
      * @param AssetRepositoryInterface         $assetRepository
      * @param ReferenceRepositoryInterface     $referenceRepository
@@ -137,6 +145,8 @@ class ProductAssetController extends Controller
      * @param UserContext                      $userContext
      * @param FileController                   $fileController
      * @param AssetCategoryRepositoryInterface $assetCategoryRepo
+     * @param CategoryRepositoryInterface      $categoryRepository
+     * @param CategoryManager                  $categoryManager
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -156,7 +166,9 @@ class ProductAssetController extends Controller
         FileFactoryInterface $fileFactory,
         UserContext $userContext,
         FileController $fileController,
-        AssetCategoryRepositoryInterface $assetCategoryRepo
+        AssetCategoryRepositoryInterface $assetCategoryRepo,
+        CategoryRepositoryInterface $categoryRepository,
+        CategoryManager $categoryManager
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -176,6 +188,8 @@ class ProductAssetController extends Controller
         $this->userContext            = $userContext;
         $this->fileController         = $fileController;
         $this->assetCategoryRepo      = $assetCategoryRepo;
+        $this->categoryRepository     = $categoryRepository;
+        $this->categoryManager        = $categoryManager;
     }
 
     /**
@@ -580,6 +594,45 @@ class ProductAssetController extends Controller
         }
 
         return $this->redirectAfterEdit($request, $parameters);
+    }
+
+    /**
+     * List categories associated with the provided asset and descending from the category
+     * defined by the parent parameter.
+     *
+     * @Template("PimEnterpriseProductAssetBundle:ProductAsset:list-categories.json.twig")
+     *
+     * @param Request $request    The request object
+     * @param int     $id         Asset id
+     * @param int     $categoryId The parent category id
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return array
+     */
+    public function listCategoriesAction(Request $request, $id, $categoryId)
+    {
+        // TODO      * @AclAncestor("pim_enrich_product_categories_view")
+        $asset      = $this->findProductAssetOr404($id);
+        $parent     = $this->categoryRepository->find($categoryId);
+        if (null === $parent) {
+            throw $this->createNotFoundException(sprintf('Category %d not found', $categoryId));
+        }
+
+        $selectedCategoryIds = $request->get('selected', null);
+        $categories = null;
+        if (null !== $selectedCategoryIds) {
+            $categories = $this->categoryManager->getCategoriesByIds($selectedCategoryIds);
+        } elseif (null !== $asset) {
+            $categories = $asset->getCategories();
+        }
+
+        $trees = $this->categoryManager->getGrantedFilledTree($parent, $categories);
+
+        return [
+            'trees'      => $trees,
+            'categories' => $categories
+        ];
     }
 
     /**

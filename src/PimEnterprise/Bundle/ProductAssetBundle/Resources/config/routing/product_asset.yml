@@ -106,3 +106,11 @@ pimee_product_asset_mass_upload_rest_delete:
     methods: [DELETE]
     requirements:
         filename: '[\w._-]+'
+
+pimee_product_asset_listcategories:
+    path: /list-categories/asset/{id}/parent/{categoryId}.{_format}
+    defaults: { _controller: pimee_product_asset.controller.product_asset:listCategoriesAction }
+    requirements:
+        id: '[0-9a-f]+'
+        categoryId: \d+
+        _format: json
