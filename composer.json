@@ -19,6 +19,7 @@
         "akeneo/pim-community-dev": "1.4.x-dev",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
+        "sensio/generator-bundle": "2.3.5",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
@@ -38,7 +39,6 @@
         "phpspec/phpspec": "2.1.*",
         "phpunit/phpunit": "3.7.*",
         "sensiolabs/behat-page-object-extension": "1.0.1",
-        "sensio/generator-bundle": "2.3.5",
         "squizlabs/php_codesniffer": "1.*"
     },
     "suggest": {
