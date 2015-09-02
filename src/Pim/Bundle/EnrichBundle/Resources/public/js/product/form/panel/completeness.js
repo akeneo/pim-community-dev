@@ -92,7 +92,7 @@ define(
              * @param Event event
              */
             showAttribute: function (event) {
-                mediator.trigger(
+                this.getRoot().trigger(
                     'pim_enrich:form:show_attribute',
                     {
                         attribute: event.currentTarget.dataset.attribute,

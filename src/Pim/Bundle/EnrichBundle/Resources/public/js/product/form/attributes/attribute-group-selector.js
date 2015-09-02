@@ -72,7 +72,7 @@ define(
                             }.bind(this));
 
                             if (0 < valuesErrors.length) {
-                                mediator.trigger(
+                                this.getRoot().trigger(
                                     'pim_enrich:form:show_attribute',
                                     {attribute: _.first(_.keys(valuesErrors))}
                                 );
