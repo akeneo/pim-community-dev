@@ -64,9 +64,6 @@ class OptionsPresenter extends AbstractProductValuePresenter
 
         $result = [];
         $options = $this->repository->findBy(['code' => $change['data']]);
-        if (null === $options) {
-            return $result;
-        }
 
         foreach ($options as $option) {
             $result[] = (string) $option;
