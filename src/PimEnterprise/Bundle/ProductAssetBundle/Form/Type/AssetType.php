@@ -34,6 +34,7 @@ class AssetType extends AbstractType
     /**
      * @param string $entityClass
      * @param string $tagClass
+     * @param string $categoryClass
      */
     public function __construct($entityClass, $tagClass, $categoryClass)
     {
