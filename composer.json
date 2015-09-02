@@ -54,6 +54,7 @@
         "oro/platform": "0.10.0",
         "sensio/distribution-bundle": "~4.0",
         "sensio/framework-extra-bundle": "~3.0,>=3.0.2",
+        "sensio/generator-bundle": "2.3.5",
         "symfony/assetic-bundle": "2.3.1",
         "symfony/icu": "1.1.0",
         "symfony/monolog-bundle": "~2.4",
@@ -62,7 +63,6 @@
         "twig/extensions": "1.2.0"
     },
     "require-dev": {
-        "sensio/generator-bundle": "2.3.5",
         "phpunit/phpunit": "3.7.*",
         "squizlabs/php_codesniffer": "2.*",
         "pdepend/pdepend": "2.1.*",
