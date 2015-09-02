@@ -1,2 +1,2 @@
 parameters:
-    pim_classification.updater.category.class: Akeneo\Component\Classification\Updater\CategoryUpdater
+    akeneo_classification.updater.category.class: Akeneo\Component\Classification\Updater\CategoryUpdater

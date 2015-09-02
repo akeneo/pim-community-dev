@@ -1,2 +1,2 @@
 parameters:
-    pim_classification.factory.category.class: Akeneo\Component\Classification\Factory\CategoryFactory
+    akeneo_classification.factory.category.class: Akeneo\Component\Classification\Factory\CategoryFactory

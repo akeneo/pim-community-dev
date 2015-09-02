@@ -1,7 +1,7 @@
 parameters:
-    pim_classification.repository.abstract_item_category.class: Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository
+    akeneo_classification.repository.abstract_item_category.class: Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository
 
 services:
-    pim_classification.repository.abstract_item_category:
-        class:    %pim_classification.repository.abstract_item_category.class%
+    akeneo_classification.repository.abstract_item_category:
+        class:    %akeneo_classification.repository.abstract_item_category.class%
         abstract: true

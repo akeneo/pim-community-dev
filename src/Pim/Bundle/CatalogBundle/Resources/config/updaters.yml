@@ -108,7 +108,7 @@ services:
             - '@?pim_reference_data.registry'
 
     pim_catalog.updater.category:
-        class: %pim_classification.updater.category.class%
+        class: %akeneo_classification.updater.category.class%
         arguments:
             - '@pim_catalog.repository.category'
 
