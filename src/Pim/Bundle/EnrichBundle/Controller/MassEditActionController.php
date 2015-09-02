@@ -254,10 +254,11 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getItemName($gridName)
     {
-        if (false === strpos($gridName, '-grid')) {
+        $gridPattern = '-grid';
+        if (false === strpos($gridName, $gridPattern)) {
             $itemsName = 'item';
         } else {
-            $itemsName = str_replace('-grid', '', $gridName);
+            $itemsName = str_replace($gridPattern, '', $gridName);
             $itemsName = str_replace('-', '_', $itemsName);
         }
 
