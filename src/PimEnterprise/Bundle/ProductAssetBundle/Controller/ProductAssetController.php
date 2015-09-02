@@ -535,7 +535,7 @@ class ProductAssetController extends Controller
     {
         $parent = $this->categoryRepository->find($categoryId);
         if (null === $parent) {
-            throw $this->createNotFoundException(sprintf('Category %d not found', $categoryId));
+            throw new NotFoundHttpException(sprintf('Category %d not found', $categoryId));
         }
 
         $selectedCategoryIds = $request->get('selected');
@@ -810,7 +810,7 @@ class ProductAssetController extends Controller
         $productAsset = $this->assetRepository->find($id);
 
         if (null === $productAsset) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Product asset with id "%s" cannot be found.', (string) $id)
             );
         }
@@ -832,7 +832,7 @@ class ProductAssetController extends Controller
         $productAsset = $this->assetRepository->findOneByIdentifier($code);
 
         if (null === $productAsset) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Product asset with code "%s" cannot be found.', $code)
             );
         }
@@ -854,7 +854,7 @@ class ProductAssetController extends Controller
         $reference = $this->referenceRepository->find($id);
 
         if (null === $reference) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Asset reference with id "%s" could not be found.', (string) $id)
             );
         }
@@ -876,7 +876,7 @@ class ProductAssetController extends Controller
         $variation = $this->variationRepository->find($id);
 
         if (null === $variation) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Asset variation with id "%s" could not be found.', (string) $id)
             );
         }
