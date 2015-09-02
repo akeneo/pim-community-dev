@@ -10,7 +10,7 @@
         <p class="dz-type" data-dz-type></p>
     </td>
     <td class="status">
-        <p class="dz-status"></p>
+        <div class="dz-status"></div>
     </td>
     <td class="dz-progress-wrapper">
         <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
@@ -19,7 +19,13 @@
         </div>
     </td>
     <td class="action-cell">
-        <button data-dz-remove class="btn btn-warning cancel"><%= _.__('pimee_product_asset.mass_upload.action.cancel') %></button>
-        <button data-dz-remove class="btn btn-danger delete"><%= _.__('pimee_product_asset.mass_upload.action.delete') %></button>
+        <button data-dz-remove class="btn btn-warning cancel icons-holder-text">
+            <i class="icon-remove"></i>
+            <%= _.__('pimee_product_asset.mass_upload.action.cancel') %>
+        </button>
+        <button data-dz-remove class="btn btn-danger delete icons-holder-text">
+            <i class="icon-trash"></i>
+            <%= _.__('pimee_product_asset.mass_upload.action.delete') %>
+        </button>
     </td>
 </tr>
