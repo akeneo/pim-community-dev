@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -33,7 +33,7 @@ class ImagePresenterSpec extends ObjectBehavior
     function it_presents_old_and_new_images_side_by_side(
         $generator,
         ProductValueInterface $value,
-        FileInterface $media
+        FileInfoInterface $media
     ) {
         $value->getMedia()->willReturn($media);
         $media->getKey()->willReturn('key/of/the/media.jpg');
@@ -76,7 +76,7 @@ class ImagePresenterSpec extends ObjectBehavior
     function it_presents_only_old_image_if_no_new_one_is_provided(
         $generator,
         ProductValueInterface $value,
-        FileInterface $media
+        FileInfoInterface $media
     ) {
         $value->getMedia()->willReturn($media);
         $media->getKey()->willReturn('key/of/the/media.jpg');

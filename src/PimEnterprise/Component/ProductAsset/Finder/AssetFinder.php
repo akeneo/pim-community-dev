@@ -66,7 +66,7 @@ class AssetFinder implements AssetFinderInterface
 
         if (null !== $asset) {
             foreach ($asset->getVariations() as $variation) {
-                if (null === $variation->getFile() && null !== $variation->getSourceFile()) {
+                if (null === $variation->getFileInfo() && null !== $variation->getSourceFileInfo()) {
                     $missingVariations[] = $variation;
                 }
             }

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 /**
@@ -30,11 +30,11 @@ class Variation implements VariationInterface
     /** @var ChannelInterface */
     protected $channel;
 
-    /** @var FileInterface */
-    protected $file;
+    /** @var FileInfoInterface */
+    protected $fileInfo;
 
-    /** @var FileInterface */
-    protected $sourceFile;
+    /** @var FileInfoInterface */
+    protected $sourceFileInfo;
 
     /** @var bool */
     protected $locked;
@@ -119,17 +119,17 @@ class Variation implements VariationInterface
     /**
      * {@inheritdoc}
      */
-    public function getFile()
+    public function getFileInfo()
     {
-        return $this->file;
+        return $this->fileInfo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setFile(FileInterface $file = null)
+    public function setFileInfo(FileInfoInterface $fileInfo = null)
     {
-        $this->file = $file;
+        $this->fileInfo = $fileInfo;
 
         return $this;
     }
@@ -137,17 +137,17 @@ class Variation implements VariationInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceFile()
+    public function getSourceFileInfo()
     {
-        return $this->sourceFile;
+        return $this->sourceFileInfo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setSourceFile(FileInterface $file = null)
+    public function setSourceFileInfo(FileInfoInterface $fileInfo = null)
     {
-        $this->sourceFile = $file;
+        $this->sourceFileInfo = $fileInfo;
 
         return $this;
     }
@@ -185,7 +185,7 @@ class Variation implements VariationInterface
         $localeOk = (null === $this->getReference()->getLocale()
             || $localeCode === $this->getReference()->getLocale()->getCode());
 
-        $fileOk = null !== $this->getFile();
+        $fileOk = null !== $this->getFileInfo();
 
         return $channelOk && $localeOk && $fileOk;
     }

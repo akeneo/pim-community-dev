@@ -1,4 +1,4 @@
 PimEnterprise\Component\ProductAsset\Model\Variation:
     properties:
-        file:
+        fileInfo:
             - Valid: ~

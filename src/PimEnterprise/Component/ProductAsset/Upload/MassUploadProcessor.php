@@ -172,7 +172,7 @@ class MassUploadProcessor
 
         $reference = $asset->getReference($locale);
         if (null !== $reference) {
-            $reference->setFile($file);
+            $reference->setFileInfo($file);
         }
 
         $this->filesUpdater->updateAssetFiles($asset);

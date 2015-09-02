@@ -67,9 +67,9 @@ class FilesUpdater implements FilesUpdaterInterface
     {
         $reference = $variation->getReference();
 
-        if (null !== $reference->getFile()) {
-            $variation->setFile(null);
-            $variation->setSourceFile($reference->getFile());
+        if (null !== $reference->getFileInfo()) {
+            $variation->setFileInfo(null);
+            $variation->setSourceFileInfo($reference->getFileInfo());
             $variation->setLocked(false);
         }
     }
@@ -79,7 +79,7 @@ class FilesUpdater implements FilesUpdaterInterface
      */
     public function deleteReferenceFile(ReferenceInterface $reference)
     {
-        $reference->setFile(null);
+        $reference->setFileInfo(null);
     }
 
     /**
@@ -87,8 +87,8 @@ class FilesUpdater implements FilesUpdaterInterface
      */
     public function deleteVariationFile(VariationInterface $variation)
     {
-        $variation->setFile(null);
-        $variation->setSourceFile(null);
+        $variation->setFileInfo(null);
+        $variation->setSourceFileInfo(null);
         $variation->setLocked(true);
     }
 
@@ -98,19 +98,19 @@ class FilesUpdater implements FilesUpdaterInterface
     public function resetAllUploadedFiles(AssetInterface $asset)
     {
         foreach ($asset->getReferences() as $reference) {
-            $referenceFile = $reference->getFile();
+            $referenceFile = $reference->getFileInfo();
             if (null !== $referenceFile) {
                 if (null === $referenceFile->getId()) {
-                    $reference->setFile(null);
+                    $reference->setFileInfo(null);
                 } else {
                     $referenceFile->setUploadedFile(null);
                 }
             }
             foreach ($reference->getVariations() as $variation) {
-                $variationFile = $variation->getFile();
+                $variationFile = $variation->getFileInfo();
                 if (null !== $variationFile) {
                     if (null === $variationFile->getId()) {
-                        $variation->setFile(null);
+                        $variation->setFileInfo(null);
                     } else {
                         $variationFile->setUploadedFile(null);
                     }
@@ -126,18 +126,18 @@ class FilesUpdater implements FilesUpdaterInterface
      */
     protected function updateVariationFile(VariationInterface $variation)
     {
-        if (null !== $variation->getFile() && null !== $uploadedFile = $variation->getFile()->getUploadedFile()) {
+        if (null !== $variation->getFileInfo() && null !== $uploadedFile = $variation->getFileInfo()->getUploadedFile()) {
             $file = $this->rawFileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
-            $variation->setSourceFile($file);
-            $variation->setFile($file);
+            $variation->setSourceFileInfo($file);
+            $variation->setFileInfo($file);
             $variation->setLocked(true);
         }
         // TODO required because of sf form collections
-        if (null !== $variation->getFile() && null === $variation->getFile()->getId()) {
-            $variation->setFile(null);
+        if (null !== $variation->getFileInfo() && null === $variation->getFileInfo()->getId()) {
+            $variation->setFileInfo(null);
         }
-        if (null !== $variation->getSourceFile() && null === $variation->getSourceFile()->getId()) {
-            $variation->setSourceFile(null);
+        if (null !== $variation->getSourceFileInfo() && null === $variation->getSourceFileInfo()->getId()) {
+            $variation->setSourceFileInfo(null);
         }
     }
 
@@ -148,14 +148,14 @@ class FilesUpdater implements FilesUpdaterInterface
      */
     protected function updateReferenceFile(ReferenceInterface $reference)
     {
-        if (null !== $reference->getFile() && null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
+        if (null !== $reference->getFileInfo() && null !== $uploadedFile = $reference->getFileInfo()->getUploadedFile()) {
             $file = $this->rawFileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
-            $reference->setFile($file);
+            $reference->setFileInfo($file);
             $this->resetAllVariationsFiles($reference);
         }
         // TODO required because of sf form collections
-        if (null !== $reference->getFile() && null === $reference->getFile()->getId()) {
-            $reference->setFile(null);
+        if (null !== $reference->getFileInfo() && null === $reference->getFileInfo()->getId()) {
+            $reference->setFileInfo(null);
         }
     }
 }

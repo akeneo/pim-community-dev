@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\FileStorage\FileFactoryInterface;
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
@@ -251,7 +251,7 @@ class ProductAssetController extends Controller
                         FileStorage::ASSET_STORAGE_ALIAS
                     );
                     $file->setUploadedFile($uploadedFile);
-                    $reference->setFile($file);
+                    $reference->setFileInfo($file);
                     $this->assetFilesUpdater->updateAssetFiles($asset);
                     $this->assetSaver->save($asset);
                     $event = $this->eventDispatcher->dispatch(
@@ -738,11 +738,11 @@ class ProductAssetController extends Controller
         $metadata = [];
 
         foreach ($productAsset->getReferences() as $reference) {
-            $referenceFileMeta = $reference->getFile() ? $this->getFileMetadata($reference->getFile()) : null;
+            $referenceFileMeta = $reference->getFileInfo() ? $this->getFileMetadata($reference->getFileInfo()) : null;
             $metadata['references'][$reference->getId()] = $referenceFileMeta;
 
             foreach ($reference->getVariations() as $variation) {
-                $variationFileMeta = $variation->getFile() ? $this->getFileMetadata($variation->getFile()) : null;
+                $variationFileMeta = $variation->getFileInfo() ? $this->getFileMetadata($variation->getFileInfo()) : null;
                 $metadata['variations'][$variation->getId()] = $variationFileMeta;
             }
         }
@@ -751,13 +751,13 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * @param FileInterface $file
+     * @param FileInfoInterface $fileInfo
      *
      * @return FileMetadataInterface
      */
-    protected function getFileMetadata(FileInterface $file)
+    protected function getFileMetadata(FileInfoInterface $fileInfo)
     {
-        $metadata = $this->metadataRepository->findOneBy(['file' => $file->getId()]);
+        $metadata = $this->metadataRepository->findOneBy(['file' => $fileInfo->getId()]);
 
         return $metadata;
     }

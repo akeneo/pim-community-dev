@@ -1,6 +1,6 @@
 PimEnterprise\Component\ProductAsset\Model\Reference:
     properties:
-        file:
+        fileInfo:
             - Valid: ~
         variations:
             - Valid: ~

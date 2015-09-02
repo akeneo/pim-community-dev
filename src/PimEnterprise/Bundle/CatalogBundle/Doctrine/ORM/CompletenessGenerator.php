@@ -120,7 +120,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
 
             GROUP BY value_id, locale_id, channel_id
 
-            HAVING COUNT(v.file_id) > 0';
+            HAVING COUNT(v.file_info_id) > 0';
 
         $selectSql = $this->applyTableNames($selectSql);
         $selectSql = $this->applyCriteria($selectSql, $criteria);

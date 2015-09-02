@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Flat;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -55,10 +55,10 @@ class AssetNormalizerSpec extends ObjectBehavior
         VariationInterface $variation2,
         ReferenceInterface $reference1,
         ReferenceInterface $reference2,
-        FileInterface $file1,
-        FileInterface $file2,
-        FileInterface $file3,
-        FileInterface $file4,
+        FileInfoInterface $file1,
+        FileInfoInterface $file2,
+        FileInfoInterface $file3,
+        FileInfoInterface $file4,
         ArrayCollection $references
     ) {
         $normalizedValues = [
@@ -87,14 +87,14 @@ class AssetNormalizerSpec extends ObjectBehavior
         $asset->getTagCodes()->willReturn('tag1,tag2,tag3');
         $asset->getCategoryCodes()->willReturn('cat1,cat2,cat3');
         $asset->getVariations()->willReturn([$variation1, $variation2]);
-        $variation1->getFile()->willReturn($file1);
-        $variation2->getFile()->willReturn($file2);
+        $variation1->getFileInfo()->willReturn($file1);
+        $variation2->getFileInfo()->willReturn($file2);
         $file1->getKey()->willReturn('variation_1');
         $file2->getKey()->willReturn('variation_2');
         $asset->getReferences()->willReturn($references);
         $references->toArray()->willReturn([$reference1, $reference2]);
-        $reference1->getFile()->willReturn($file3);
-        $reference2->getFile()->willReturn($file4);
+        $reference1->getFileInfo()->willReturn($file3);
+        $reference2->getFileInfo()->willReturn($file4);
         $file3->getKey()->willReturn('reference_1');
         $file4->getKey()->willReturn('reference_2');
 

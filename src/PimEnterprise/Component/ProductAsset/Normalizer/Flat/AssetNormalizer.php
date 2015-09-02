@@ -50,11 +50,11 @@ class AssetNormalizer implements NormalizerInterface
 
         if (array_key_exists('versioning', $context)) {
             $normalizedData['references'] = array_filter(array_map(function ($reference) {
-                return null !== $reference->getFile() ? $reference->getFile()->getKey() : null;
+                return null !== $reference->getFileInfo() ? $reference->getFileInfo()->getKey() : null;
             }, $asset->getReferences()->toArray()));
 
             $normalizedData['variations'] = array_filter(array_map(function ($variation) {
-                return null !== $variation->getFile() ? $variation->getFile()->getKey() : null;
+                return null !== $variation->getFileInfo() ? $variation->getFileInfo()->getKey() : null;
             }, $asset->getVariations()));
         }
 

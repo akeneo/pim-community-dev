@@ -76,14 +76,14 @@ class AssetFinderSpec extends ObjectBehavior
         VariationInterface $variation2,
         VariationInterface $variation3
     ) {
-        $variation1->getFile()->willReturn(null);
-        $variation1->getSourceFile()->willReturn('not null');
+        $variation1->getFileInfo()->willReturn(null);
+        $variation1->getSourceFileInfo()->willReturn('not null');
 
-        $variation2->getFile()->willReturn(null);
-        $variation2->getSourceFile()->willReturn(null);
+        $variation2->getFileInfo()->willReturn(null);
+        $variation2->getSourceFileInfo()->willReturn(null);
 
-        $variation3->getFile()->willReturn(null);
-        $variation3->getSourceFile()->willReturn('not null');
+        $variation3->getFileInfo()->willReturn(null);
+        $variation3->getSourceFileInfo()->willReturn('not null');
 
         $missingVariations = [
             $variation1,
@@ -98,11 +98,11 @@ class AssetFinderSpec extends ObjectBehavior
         VariationInterface $variation1,
         VariationInterface $variation2
     ) {
-        $variation1->getFile()->willReturn(null);
-        $variation1->getSourceFile()->willReturn('not null');
+        $variation1->getFileInfo()->willReturn(null);
+        $variation1->getSourceFileInfo()->willReturn('not null');
 
-        $variation2->getFile()->willReturn(null);
-        $variation2->getSourceFile()->willReturn(null);
+        $variation2->getFileInfo()->willReturn(null);
+        $variation2->getSourceFileInfo()->willReturn(null);
 
         $missingVariations = [
             $variation1,

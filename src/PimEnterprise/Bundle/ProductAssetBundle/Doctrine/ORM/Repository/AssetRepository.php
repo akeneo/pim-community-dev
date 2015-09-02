@@ -246,7 +246,7 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
 
             GROUP BY a.id, locale_id, channel_id
 
-            HAVING COUNT(v.file_id) > 0';
+            HAVING COUNT(v.file_info_id) > 0';
 
         $dbalConnection = $this->_em->getConnection();
 

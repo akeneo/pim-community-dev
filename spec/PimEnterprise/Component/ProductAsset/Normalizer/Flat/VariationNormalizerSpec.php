@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Flat;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -23,8 +23,8 @@ class VariationNormalizerSpec extends ObjectBehavior
         LocaleInterface $locale,
         ChannelInterface $channel,
         ReferenceInterface $reference,
-        FileInterface $referenceFile,
-        FileInterface $variationFile
+        FileInfoInterface $referenceFile,
+        FileInfoInterface $variationFile
     ) {
         $normalizedValues = [
             'asset'          => 'paint',

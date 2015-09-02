@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\FileTransformer\FileTransformerInterface;
@@ -107,7 +107,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $locale             = $variation->getReference()->getLocale();
         $channel            = $variation->getChannel();
         $rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
-        $sourceFile         = $this->retrieveSourceFile($variation);
+        $sourceFile         = $this->retrieveSourceFileInfo($variation);
         $outputFilename     = $this->buildVariationOutputFilename($sourceFile, $channel, $locale);
 
         $storageFilesystem  = $this->mountManager->getFilesystem($this->filesystemAlias);
@@ -120,10 +120,10 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $variationMetadata = $this->extractMetadata($variationFileInfo);
         $variationFile     = $this->rawFileStorer->store($variationFileInfo, $this->filesystemAlias);
 
-        $variationMetadata->setFile($variationFile);
+        $variationMetadata->setFileInfo($variationFile);
         $this->metadataSaver->save($variationMetadata);
 
-        $variation->setFile($variationFile);
+        $variation->setFileInfo($variationFile);
         $this->variationSaver->save($variation);
 
         $this->deleteFile($sourceFileInfo);
@@ -152,34 +152,34 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     }
 
     /**
-     * Retrieve the source file of the variation and checks it's really present on the STORAGE virtual filesystem
+     * Retrieve the source file info of the variation and checks it's really present on the STORAGE virtual filesystem
      *
      * @param VariationInterface $variation
      *
      * @throws \LogicException
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      *
      */
-    protected function retrieveSourceFile(VariationInterface $variation)
+    protected function retrieveSourceFileInfo(VariationInterface $variation)
     {
-        if (null === $sourceFile = $variation->getSourceFile()) {
+        if (null === $sourceFileInfo = $variation->getSourceFileInfo()) {
             throw new \LogicException(sprintf('The variation "%s" has no source file.', $variation->getId()));
         }
 
         $storageFilesystem = $this->mountManager->getFilesystem($this->filesystemAlias);
 
-        if (!$storageFilesystem->has($sourceFile->getKey())) {
+        if (!$storageFilesystem->has($sourceFileInfo->getKey())) {
             throw new \LogicException(
                 sprintf(
                     'The source file "%s" is not present on the filesystem "%s".',
-                    $sourceFile->getKey(),
+                    $sourceFileInfo->getKey(),
                     $this->filesystemAlias
                 )
             );
         }
 
-        return $sourceFile;
+        return $sourceFileInfo;
     }
 
     /**
@@ -187,25 +187,25 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      *      this_is_my_source_file-en_US-ecommerce.txt or
      *      this_is_my_source_file-ecommerce.txt
      *
-     * @param FileInterface    $sourceFile
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
+     * @param FileInfoInterface $sourceFileInfo
+     * @param ChannelInterface  $channel
+     * @param LocaleInterface   $locale
      *
      * @return string
      */
     protected function buildVariationOutputFilename(
-        FileInterface $sourceFile,
+        FileInfoInterface $sourceFileInfo,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
-        $extensionPattern = sprintf('/\.%s$/', $sourceFile->getExtension());
-        $outputFileName   = preg_replace($extensionPattern, '', $sourceFile->getOriginalFilename());
+        $extensionPattern = sprintf('/\.%s$/', $sourceFileInfo->getExtension());
+        $outputFileName   = preg_replace($extensionPattern, '', $sourceFileInfo->getOriginalFilename());
 
         if (null !== $locale) {
             $outputFileName = sprintf('%s-%s', $outputFileName, $locale->getCode());
         }
 
-        return sprintf('%s-%s.%s', $outputFileName, $channel->getCode(), $sourceFile->getExtension());
+        return sprintf('%s-%s.%s', $outputFileName, $channel->getCode(), $sourceFileInfo->getExtension());
     }
 
     /**

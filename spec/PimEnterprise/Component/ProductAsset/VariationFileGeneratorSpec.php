@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\FileTransformer\FileTransformerInterface;
@@ -14,7 +14,6 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -39,7 +38,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         ChannelInterface $ecommerce,
         ReferenceInterface $reference,
         VariationInterface $variation,
-        FileInterface $sourceFile,
+        FileInfoInterface $sourceFileInfo,
         VariationInterface $variation,
         Filesystem $filesystem,
         LocaleInterface $en_US
@@ -51,11 +50,11 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $variation->getReference()->willReturn($reference);
         $variation->getChannel()->willReturn($ecommerce);
         $variation->getId()->willReturn(16);
-        $variation->getSourceFile()->willReturn($sourceFile);
-        $sourceFile->getKey()->willReturn('path/to/my_original_file.txt');
-        $sourceFile->getExtension()->willReturn('txt');
-        $sourceFile->getOriginalFilename()->willReturn('my_original_file.txt');
-        $sourceFile->getStorage()->willReturn(self::STORAGE_FS);
+        $variation->getSourceFileInfo()->willReturn($sourceFileInfo);
+        $sourceFileInfo->getKey()->willReturn('path/to/my_original_file.txt');
+        $sourceFileInfo->getExtension()->willReturn('txt');
+        $sourceFileInfo->getOriginalFilename()->willReturn('my_original_file.txt');
+        $sourceFileInfo->getStorage()->willReturn(self::STORAGE_FS);
         $mountManager->getFilesystem(self::STORAGE_FS)->willReturn($filesystem);
         $filesystem->has('path/to/my_original_file.txt')->willReturn(true);
 
@@ -84,7 +83,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataBuilderRegistry,
         \SplFileInfo $inputFileInfo,
         \SplFileInfo $variationFileInfo,
-        FileInterface $variationFile,
+        FileInfoInterface $variationFile,
         FileMetadataInterface $fileMetadata,
         MetadataBuilderInterface $metadataBuilder
     ) {
@@ -105,16 +104,15 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
         $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
 
-        $fileMetadata->setFile($variationFile)->shouldBeCalled();
+        $fileMetadata->setFileInfo($variationFile)->shouldBeCalled();
         $metadataSaver->save($fileMetadata)->shouldBeCalled();
         $variationSaver->save($variation)->shouldBeCalled();
-        $variation->setFile($variationFile)->shouldBeCalled();
+        $variation->setFileInfo($variationFile)->shouldBeCalled();
 
         $this->generate($variation);
     }
 
     function it_throws_an_exception_if_the_channel_variation_configuration_can_not_be_retrieved(
-        AssetInterface $asset,
         VariationInterface $variation,
         ChannelInterface $channel,
         $channelConfigurationRepository
@@ -129,19 +127,17 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         )->during('generate', [$variation]);
     }
 
-    function it_throws_an_exception_if_the_variation_has_no_source_file($reference, $variation)
+    function it_throws_an_exception_if_the_variation_has_no_source_file($variation)
     {
-        $variation->getSourceFile()->willReturn(null);
+        $variation->getSourceFileInfo()->willReturn(null);
 
         $this->shouldThrow(
             new \LogicException('The variation "16" has no source file.')
         )->during('generate', [$variation]);
     }
 
-    function it_throws_an_exception_if_the_source_file_is_not_on_the_filesystem(
-        $variation,
-        $filesystem
-    ) {
+    function it_throws_an_exception_if_the_source_file_is_not_on_the_filesystem($variation, $filesystem)
+    {
         $filesystem->has('path/to/my_original_file.txt')->willReturn(false);
 
         $this->shouldThrow(
