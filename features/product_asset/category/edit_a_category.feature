@@ -40,3 +40,25 @@ Feature: Edit an asset category
     When I fill in the following information:
       | English (United States) | My images |
     Then I should see "There are unsaved changes."
+
+  @javascript
+  Scenario: Stay on the asset category when I save it and keep category tree open (without oro nav)
+    Given I edit the "situ" asset category
+    When I fill in the following information:
+      | English (United States) | Situ |
+    And I save the category
+    Then I should be on the asset category "situ" edit page
+    And I should see "Situ"
+    And I should see "Prioritised images"
+
+  @javascript
+  Scenario: Stay on the asset category when I save it and keep category tree open (with oro nav)
+    Given I am on the assets categories page
+    And I expand the "Images" category
+    And I click on the "In situ pictures" category
+    When I fill in the following information:
+      | English (United States) | Situ |
+    And I save the category
+    Then I should be on the asset category "situ" edit page
+    And I should see "Situ"
+    And I should see "Prioritised images"
