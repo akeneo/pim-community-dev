@@ -12,11 +12,13 @@ use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 /**
  * Item category repository
  *
- * @author Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class ItemCategoryRepository implements ItemCategoryRepositoryInterface, CategoryFilterableRepositoryInterface
+abstract class AbstractItemCategoryRepository implements
+    ItemCategoryRepositoryInterface,
+    CategoryFilterableRepositoryInterface
 {
     /** @var string */
     protected $entityName;
@@ -39,36 +41,24 @@ abstract class ItemCategoryRepository implements ItemCategoryRepositoryInterface
      */
     public function getItemCountByTree($item)
     {
-        $itemMetadata = $this->em->getClassMetadata(ClassUtils::getClass($item));
+        $config = $this->getMappingConfig($item);
 
-        $categoryAssoc = $itemMetadata->getAssociationMapping('categories');
-        $categoryClass = $categoryAssoc['targetEntity'];
-        $categoryTable = $this->em->getClassMetadata($categoryClass)->getTableName();
-        $categoryAssocTable = $categoryAssoc['joinTable']['name'];
-        $relation = key($categoryAssoc['relationToSourceKeyColumns']);
-
-        $sql = "SELECT tree.id AS tree_id, COUNT(category_item.$relation) AS item_count " .
-               "FROM $categoryTable tree " .
-               "JOIN $categoryTable category ON category.root = tree.id " .
-               "LEFT JOIN $categoryAssocTable category_item ON category_item.category_id = category.id " .
-               "AND category_item.$relation = :itemId " .
-               "GROUP BY tree.id";
+        $sql = sprintf(
+            'SELECT COUNT(DISTINCT category_item.category_id) AS item_count, tree.id AS tree_id ' .
+            'FROM %s tree ' .
+            'JOIN %s category ON category.root = tree.id ' .
+            'LEFT JOIN %s category_item ON category_item.category_id = category.id ' .
+            'AND category_item.%s= :itemId ' .
+            'GROUP BY tree.id',
+            $config['categoryTable'], $config['categoryTable'], $config['categoryAssocTable'], $config['relation']);
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->bindValue('itemId', $item->getId());
 
         $stmt->execute();
-        $itemCounts = $stmt->fetchAll();
+        $items = $stmt->fetchAll();
 
-        $trees = [];
-        foreach ($itemCounts as $itemCount) {
-            $trees[] = [
-                'itemCount' => $itemCount['item_count'],
-                'tree'      => $this->em->getRepository($categoryClass)->find($itemCount['tree_id']),
-            ];
-        }
-
-        return $trees;
+        return $this->buildItemCountByTree($items, $config['categoryClass']);
     }
 
     /**
@@ -173,5 +163,48 @@ abstract class ItemCategoryRepository implements ItemCategoryRepositoryInterface
             )
         );
         $qb->setParameter($filterCatIds, $categoryIds);
+    }
+
+    /**
+     * Build array of item with item count by category and category entity
+     *
+     * @param array  $itemCounts
+     * @param string $categoryClass
+     *
+     * @return array
+     */
+    protected function buildItemCountByTree(array $itemCounts = [], $categoryClass)
+    {
+        $trees = [];
+        foreach ($itemCounts as $itemCount) {
+            $trees[] = [
+                'itemCount' => $itemCount['item_count'],
+                'tree'      => $this->em->getRepository($categoryClass)->find($itemCount['tree_id']),
+            ];
+        }
+
+        return $trees;
+    }
+
+    /**
+     * Get mapping information to build SQL query
+     *
+     * @param $item
+     *
+     * @return array
+     */
+    protected function getMappingConfig($item)
+    {
+        $itemMetadata = $this->em->getClassMetadata(ClassUtils::getClass($item));
+
+        $categoryAssoc = $itemMetadata->getAssociationMapping('categories');
+        $categoryClass = $categoryAssoc['targetEntity'];
+
+        return [
+            'categoryClass'      => $categoryAssoc['targetEntity'],
+            'categoryTable'      => $this->em->getClassMetadata($categoryClass)->getTableName(),
+            'categoryAssocTable' => $categoryAssoc['joinTable']['name'],
+            'relation'           => key($categoryAssoc['relationToSourceKeyColumns']),
+        ];
     }
 }

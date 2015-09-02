@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Component\Classification\Factory\CategoryFactory;
+use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
@@ -27,25 +27,25 @@ class CategoryManager
     protected $categoryClass;
 
     /** @var CategoryRepositoryInterface */
-    protected $productCategoryRepo;
+    protected $categoryRepository;
 
     /** @var CategoryFactory */
     protected $categoryFactory;
 
     /**
      * @param ObjectManager               $om
-     * @param CategoryRepositoryInterface $productCategoryRepo
+     * @param CategoryRepositoryInterface $categoryRepository
      * @param CategoryFactory             $categoryFactory
      * @param string                      $categoryClass
      */
     public function __construct(
         ObjectManager $om,
-        CategoryRepositoryInterface $productCategoryRepo,
+        CategoryRepositoryInterface $categoryRepository,
         CategoryFactory $categoryFactory,
         $categoryClass
     ) {
         $this->om                  = $om;
-        $this->productCategoryRepo = $productCategoryRepo;
+        $this->categoryRepository  = $categoryRepository;
         $this->categoryFactory     = $categoryFactory;
         $this->categoryClass       = $categoryClass;
     }
@@ -97,7 +97,7 @@ class CategoryManager
      */
     public function getEntityRepository()
     {
-        return $this->productCategoryRepo;
+        return $this->categoryRepository;
     }
 
     /**
@@ -119,7 +119,7 @@ class CategoryManager
      */
     public function getTrees()
     {
-        return $this->productCategoryRepo->getTrees();
+        return $this->categoryRepository->getTrees();
     }
 
     /**
@@ -240,7 +240,7 @@ class CategoryManager
     {
         return $this
             ->getEntityRepository()
-            ->findOneBy(array('code' => $code));
+            ->findOneBy(['code' => $code]);
     }
 
     /**

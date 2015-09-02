@@ -370,6 +370,13 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function removeGroup(Group $group);
 
     /**
+     * Get groups ids
+     *
+     * @return array
+     */
+    public function getGroupsIds();
+
+    /**
      * @return string|null
      */
     public function getImagePath();
