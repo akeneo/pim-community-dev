@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Asset\Edit;
+use Context\Spin\SpinCapableTrait;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetVariationSaver;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
