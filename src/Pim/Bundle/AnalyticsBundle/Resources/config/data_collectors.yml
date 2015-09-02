@@ -34,6 +34,7 @@ services:
         arguments:
             - '@pim_catalog.version_provider'
             - '%pim_catalog_product_storage_driver%'
+            - '%kernel.environment%'
         tags:
             - { name: pim_analytics.data_collector }
 
