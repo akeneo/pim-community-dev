@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\InstallerBundle\Command;
 
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,16 +40,25 @@ class CleanCategoryAccessesCommand extends ContainerAwareCommand
     {
         $output->writeln('Removing the group "ALL" from categories\' permissions...');
         $groupAll = $this->getUserGroupRepository()->getDefaultUserGroup();
-        $this->getCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
+        $this->getProductCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
+        $this->getAssetCategoryAccessRepository()->revokeAccessToGroups([$groupAll]);
         $output->writeln('<info>done !</info>');
     }
 
     /**
-     * @return \PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository
+     * @return CategoryAccessRepository
      */
-    protected function getCategoryAccessRepository()
+    protected function getProductCategoryAccessRepository()
     {
         return $this->getContainer()->get('pimee_security.repository.category_access');
+    }
+
+    /**
+     * @return CategoryAccessRepository
+     */
+    protected function getAssetCategoryAccessRepository()
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.asset_category_access');
     }
 
     /**
