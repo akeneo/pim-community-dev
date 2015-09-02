@@ -16,6 +16,7 @@ Feature: Assign assets to a product
     Given I am on the "shirt" product page
     And I add available attributes Front view
     And I start to manage assets for "Front view"
+    And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And I change the page size to 100
     And I check the row "paint"
     And I check the row "machine"
