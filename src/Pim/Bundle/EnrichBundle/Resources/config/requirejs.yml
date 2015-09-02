@@ -14,10 +14,11 @@ config:
         # Forwarded events from mediator
         pim/product-edit-form:
             forwarded-events:
-                - 'pim_enrich:form:field:extension:add': 'pim_enrich:form:field:extension:add'
-                - 'pim_enrich:form:entity:pre_save':     'pim_enrich:form:entity:pre_save'
-                - 'pim_enrich:form:entity:bad_request':  'pim_enrich:form:entity:bad_request'
-                - 'pim_enrich:form:entity:update_state': 'pim_enrich:form:entity:update_state'
+                'pim_enrich:form:field:extension:add': 'pim_enrich:form:field:extension:add'
+                'pim_enrich:form:entity:pre_save':     'pim_enrich:form:entity:pre_save'
+                'pim_enrich:form:entity:bad_request':  'pim_enrich:form:entity:bad_request'
+                'pim_enrich:form:entity:update_state': 'pim_enrich:form:entity:update_state'
+                'pim_enrich:form:entity:post_fetch':   'pim_enrich:form:entity:post_fetch'
         pim/product-edit-form/cache-invalidator:
             events:
                 - 'pim_enrich:form:entity:post_fetch'
