@@ -152,3 +152,5 @@ job_execution.summary:
 
 assets_mass_upload.steps:
     asset_mass_upload.title: Assets mass upload
+
+mass_upload: Mass Upload Assets
