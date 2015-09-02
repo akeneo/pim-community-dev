@@ -2,7 +2,6 @@ parameters:
     pim_enrich.controller.category_tree.class:    PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController
     pim_enrich.controller.product.class:          PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.sequential_edit.class:  PimEnterprise\Bundle\EnrichBundle\Controller\SequentialEditController
-    pim_enrich.controller.mass_edit_action.class: PimEnterprise\Bundle\EnrichBundle\Controller\MassEditActionController
     pim_enrich.controller.locale.class:           PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
     pimee_enrich.controller.rule_relation.class:  PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
     pimee_enrich.controller.channel_transformation.class: PimEnterprise\Bundle\EnrichBundle\Controller\ChannelTransformationController
