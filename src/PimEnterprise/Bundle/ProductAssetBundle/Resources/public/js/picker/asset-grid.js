@@ -96,6 +96,7 @@ define(
                     params: {
                         dataLocale: this.getLocale(),
                         _filter: {
+                            category: { value: { categoryId: -2 }}, // -2 = all categories
                             scope: { value: this.getScope() }
                         }
                     }
