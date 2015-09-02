@@ -2,13 +2,13 @@
 
 namespace Context\Page\Product;
 
+use Akeneo\Component\Classification\Model\Category;
 use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Form;
 use Context\Page\Category\CategoryView;
-use Akeneo\Component\Classification\Model\Category;
 
 /**
  * Product edit page

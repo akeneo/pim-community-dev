@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
-use Akeneo\Component\Classification\CategoryAwareInterface;
 
 /**
  * Product interface

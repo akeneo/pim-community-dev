@@ -2,12 +2,12 @@
 
 namespace Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
 use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Item category repository

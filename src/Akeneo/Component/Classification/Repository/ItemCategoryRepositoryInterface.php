@@ -2,8 +2,8 @@
 
 namespace Akeneo\Component\Classification\Repository;
 
-use Doctrine\ORM\QueryBuilder;
 use Akeneo\Component\Classification\Model\CategoryInterface;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Item category repository interface

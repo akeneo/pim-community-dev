@@ -2,13 +2,13 @@
 
 namespace Akeneo\Bundle\ClassificationBundle\Doctrine\Mongo\Repository;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
-use Akeneo\Component\Classification\Model\CategoryInterface;
-use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
  * Item category repository

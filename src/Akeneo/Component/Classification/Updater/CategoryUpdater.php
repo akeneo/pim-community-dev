@@ -2,11 +2,11 @@
 
 namespace Akeneo\Component\Classification\Updater;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Akeneo\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 

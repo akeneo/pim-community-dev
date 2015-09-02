@@ -2,8 +2,8 @@
 
 namespace Akeneo\Component\Classification;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Akeneo\Component\Classification\Model\TagInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Implementing this interface allows to be aware of tags
