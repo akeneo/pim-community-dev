@@ -3,7 +3,7 @@
 namespace spec\Akeneo\Component\FileStorage\RawFile;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Component\FileStorage\FileFactoryInterface;
+use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
@@ -18,7 +18,7 @@ class RawFileStorerSpec extends ObjectBehavior
     function let(
         MountManager $mountManager,
         SaverInterface $saver,
-        FileFactoryInterface $factory
+        FileInfoFactoryInterface $factory
     ) {
         $this->beConstructedWith($mountManager, $saver, $factory);
     }

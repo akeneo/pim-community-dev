@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class FileFactorySpec extends ObjectBehavior
+class FileInfoFactorySpec extends ObjectBehavior
 {
     function let(PathGeneratorInterface $pathGenerator)
     {
@@ -30,7 +30,7 @@ class FileFactorySpec extends ObjectBehavior
 
     function it_creates_a_file_from_an_uploaded_file($pathGenerator)
     {
-        $rawFile = new UploadedFile(__FILE__, 'FileFactorySpec.php', 'text/x-php', filesize(__FILE__));
+        $rawFile = new UploadedFile(__FILE__, 'FileInfoFactorySpec.php', 'text/x-php', filesize(__FILE__));
 
         $pathGenerator->generate($rawFile)->willReturn([
             'uuid'      => '12345',
@@ -48,7 +48,7 @@ class FileFactorySpec extends ObjectBehavior
             'beValidFile' => function ($subject) {
                 return
                     $subject->getKey() === '1/2/3/4/12345_my_file.php' &&
-                    $subject->getOriginalFilename() === 'FileFactorySpec.php' &&
+                    $subject->getOriginalFilename() === 'FileInfoFactorySpec.php' &&
                     $subject->getMimeType() === 'text/x-php' &&
                     $subject->getSize() === filesize(__FILE__) &&
                     $subject->getExtension() === 'php' &&

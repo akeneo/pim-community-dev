@@ -4,7 +4,7 @@ namespace Akeneo\Component\FileStorage\RawFile;
 
 use Akeneo\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Component\FileStorage\FileFactoryInterface;
+use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
@@ -28,18 +28,18 @@ class RawFileStorer implements RawFileStorerInterface
     /** @var MountManager */
     protected $mountManager;
 
-    /** @var FileFactoryInterface */
+    /** @var FileInfoFactoryInterface */
     protected $factory;
 
     /**
-     * @param MountManager           $mountManager
-     * @param SaverInterface         $saver
-     * @param FileFactoryInterface   $factory
+     * @param MountManager             $mountManager
+     * @param SaverInterface           $saver
+     * @param FileInfoFactoryInterface $factory
      */
     public function __construct(
         MountManager $mountManager,
         SaverInterface $saver,
-        FileFactoryInterface $factory
+        FileInfoFactoryInterface $factory
     ) {
         $this->mountManager = $mountManager;
         $this->saver        = $saver;
