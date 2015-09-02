@@ -366,7 +366,7 @@ attributes:
         properties:
             reference_data_name: assets
         group: media
-        useableAsGridFilter: false
+        useableAsGridFilter: true
         sortOrder:           50
     gallery:
         labels:

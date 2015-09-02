@@ -80,7 +80,7 @@ class UserContextSpec extends ObjectBehavior
         $this->getAccessibleUserTree()->shouldReturn($thirdTree);
     }
 
-    function it_throws_an_exception_if_default_tree_is_accessible(
+    function it_throws_an_exception_if_default_tree_is_not_accessible(
         $user,
         $authorizationChecker,
         $categoryRepository,
