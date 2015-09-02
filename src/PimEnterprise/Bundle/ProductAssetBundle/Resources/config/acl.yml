@@ -13,6 +13,11 @@ pimee_product_asset_remove:
     label: pimee_product_asset.acl.asset.remove
     group_name: pimee_product_asset.acl_group.asset
 
+pimee_product_asset_categories_view:
+    type: action
+    label: pimee_product_asset.acl.asset.categories_view
+    group_name: pimee_product_asset.acl_group.asset
+
 # Asset category
 pimee_product_asset_category_list:
     type: action

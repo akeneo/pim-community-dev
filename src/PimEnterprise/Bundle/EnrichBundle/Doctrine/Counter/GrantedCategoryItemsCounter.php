@@ -89,38 +89,6 @@ class GrantedCategoryItemsCounter extends CategoryItemsCounter
     }
 
     /**
-     * Count only item with a full accessible path
-     *
-     * @param CategoryAwareInterface $item
-     *
-     * @return array with format [treeId => itemCount]
-     */
-    protected function getItemCountWithFullGrantedPath(CategoryAwareInterface $item)
-    {
-        $categories = $item->getCategories();
-        $treesCount = [];
-        foreach ($categories as $category) {
-            $path = $this->categoryRepository->getPath($category);
-            $fullPathGranted = true;
-            foreach ($path as $pathItem) {
-                if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $pathItem)) {
-                    $fullPathGranted = false;
-                    break;
-                }
-            }
-            if ($fullPathGranted) {
-                $treeId = $category->getRoot();
-                if (!isset($treesCount[$treeId])) {
-                    $treesCount[$treeId] = 0;
-                }
-                $treesCount[$treeId]++;
-            }
-        }
-
-        return $treesCount;
-    }
-
-    /**
      * Build a new query builder based on children QB to let only granted children
      *
      * @param QueryBuilder $childrenQb

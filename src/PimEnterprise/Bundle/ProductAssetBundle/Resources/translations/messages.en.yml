@@ -4,6 +4,7 @@ pimee_product_asset:
             index: Enrich asset
             create: Create an asset
             remove: Remove asset
+            categories_view: Consult the categories of an asset
         category:
             create:  Create an asset category
             edit:    Edit an asset category
@@ -99,6 +100,7 @@ pimee_product_asset:
     tabs:
         properties.title: Properties
         variations.title: Variations
+        categories.title: Categories
     validation:
         code:
             not_empty: Code is required. It can not be empty.

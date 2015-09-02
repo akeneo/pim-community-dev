@@ -1,3 +1,6 @@
+@import '../../pimui/css/less/mixins';
+@import '../../pimui/css/less/variables';
+
 @color-new-purple-dark: #5F2385;
 @color-new-purple-medium: #9452BA;
 @color-new-purple-light: #F2EBF8;
@@ -181,6 +184,42 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+#pimee_product_asset-tabs-categories {
+  .tabs-left > .sidebar > .nav-tabs a {
+    padding: 8px 15px 8px 15px;
+
+    .green {
+      color: @fern-green;
+    }
+  }
+
+  .tabs-left {
+    .display-flex();
+
+    & > .sidebar > .nav-tabs {
+      margin: 0;
+
+      li.header {
+        height: 44px;
+        border-left: 1px solid #ddd;
+        border-right: none;
+        background: @color-new-grey;
+      }
+    }
+
+    & > .tab-content {
+      .flex();
+      padding: 0;
+
+      h3 {
+        background-color: @color-new-grey;
+        margin-top: auto;
+        padding: 0;
       }
     }
   }

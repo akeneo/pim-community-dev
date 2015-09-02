@@ -117,6 +117,6 @@ datagrid:
             id: ~
             edit_link:
                 type: url
-                route: pimee_product_asset_dispatch
+                route: pimee_product_asset_edit
                 params:
                     - id

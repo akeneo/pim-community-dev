@@ -26,6 +26,8 @@ use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Controller\FileController;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
@@ -36,6 +38,7 @@ use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
+use PimEnterprise\Component\ProductAsset\Repository\AssetCategoryRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
@@ -114,24 +117,36 @@ class ProductAssetController extends Controller
     /** @var FileController */
     protected $fileController;
 
+    /** @var AssetCategoryRepositoryInterface */
+    protected $assetCategoryRepo;
+
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
+    /** @var CategoryManager */
+    protected $categoryManager;
+
     /**
-     * @param AssetRepositoryInterface        $assetRepository
-     * @param ReferenceRepositoryInterface    $referenceRepository
-     * @param VariationRepositoryInterface    $variationRepository
-     * @param FileMetadataRepositoryInterface $metadataRepository
-     * @param LocaleRepositoryInterface       $localeRepository
-     * @param ChannelRepositoryInterface      $channelRepository
-     * @param VariationFileGeneratorInterface $variationFileGenerator
-     * @param FilesUpdaterInterface           $assetFilesUpdater
-     * @param SaverInterface                  $assetSaver
-     * @param SaverInterface                  $referenceSaver
-     * @param SaverInterface                  $variationSaver
-     * @param RemoverInterface                $assetRemover
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param AssetFactory                    $assetFactory
-     * @param FileFactoryInterface            $fileFactory
-     * @param UserContext                     $userContext
-     * @param FileController                  $fileController
+     * @param AssetRepositoryInterface         $assetRepository
+     * @param ReferenceRepositoryInterface     $referenceRepository
+     * @param VariationRepositoryInterface     $variationRepository
+     * @param FileMetadataRepositoryInterface  $metadataRepository
+     * @param LocaleRepositoryInterface        $localeRepository
+     * @param ChannelRepositoryInterface       $channelRepository
+     * @param VariationFileGeneratorInterface  $variationFileGenerator
+     * @param FilesUpdaterInterface            $assetFilesUpdater
+     * @param SaverInterface                   $assetSaver
+     * @param SaverInterface                   $referenceSaver
+     * @param SaverInterface                   $variationSaver
+     * @param RemoverInterface                 $assetRemover
+     * @param EventDispatcherInterface         $eventDispatcher
+     * @param AssetFactory                     $assetFactory
+     * @param FileFactoryInterface             $fileFactory
+     * @param UserContext                      $userContext
+     * @param FileController                   $fileController
+     * @param AssetCategoryRepositoryInterface $assetCategoryRepo
+     * @param CategoryRepositoryInterface      $categoryRepository
+     * @param CategoryManager                  $categoryManager
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -150,7 +165,10 @@ class ProductAssetController extends Controller
         AssetFactory $assetFactory,
         FileFactoryInterface $fileFactory,
         UserContext $userContext,
-        FileController $fileController
+        FileController $fileController,
+        AssetCategoryRepositoryInterface $assetCategoryRepo,
+        CategoryRepositoryInterface $categoryRepository,
+        CategoryManager $categoryManager
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -169,6 +187,9 @@ class ProductAssetController extends Controller
         $this->fileFactory            = $fileFactory;
         $this->userContext            = $userContext;
         $this->fileController         = $fileController;
+        $this->assetCategoryRepo      = $assetCategoryRepo;
+        $this->categoryRepository     = $categoryRepository;
+        $this->categoryManager        = $categoryManager;
     }
 
     /**
@@ -192,40 +213,6 @@ class ProductAssetController extends Controller
         return [
             'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
-        ];
-    }
-
-    /**
-     * View an asset
-     *
-     * @Template
-     * @AclAncestor("pimee_product_asset_index")
-     *
-     * @param int|string $id
-     *
-     * @throws AccessDeniedException()
-     *
-     * @return array
-     */
-    public function viewAction($id)
-    {
-        $productAsset = $this->findProductAssetOr404($id);
-
-        $isViewAssetGranted = $this->isGranted(Attributes::VIEW, $productAsset);
-        if (!$isViewAssetGranted) {
-            throw new AccessDeniedException();
-        }
-
-        $references  = $productAsset->getReferences();
-        $attachments = [];
-        foreach ($references as $refKey => $reference) {
-            $attachments[$refKey]['reference'] = $reference;
-        }
-
-        return [
-            'asset'       => $productAsset,
-            'attachments' => $attachments,
-            'metadata'    => $this->getAssetMetadata($productAsset)
         ];
     }
 
@@ -330,74 +317,6 @@ class ProductAssetController extends Controller
         }
 
         return new JsonResponse();
-    }
-
-    /**
-     * Edit an asset
-     *
-     * @AclAncestor("pimee_product_asset_index")
-     * @Template()
-     *
-     * @param Request    $request
-     * @param int|string $id
-     *
-     * @throws AccessDeniedException
-     *
-     * @return Response
-     */
-    public function editAction(Request $request, $id)
-    {
-        $productAsset = $this->findProductAssetOr404($id);
-        if (!$this->isGranted(Attributes::EDIT, $productAsset)) {
-            if ($this->isGranted(Attributes::VIEW, $productAsset)) {
-                $parameters = $this->viewAction($id);
-
-                return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', $parameters);
-            }
-
-            throw new AccessDeniedException();
-        }
-
-        $assetLocales = $productAsset->getLocales();
-
-        if (null !== $request->get('locale')) {
-            $locale = $assetLocales[$request->get('locale')];
-        } elseif (!empty($assetLocales)) {
-            $locale = reset($assetLocales);
-        } else {
-            $locale = null;
-        }
-
-        $assetForm = $this->createForm('pimee_product_asset', $productAsset);
-        $assetForm->handleRequest($request);
-
-        if ($assetForm->isValid()) {
-            try {
-                $this->assetFilesUpdater->updateAssetFiles($productAsset);
-                $this->assetSaver->save($productAsset, ['schedule' => true]);
-                $event = $this->eventDispatcher->dispatch(
-                    AssetEvent::POST_UPLOAD_FILES,
-                    new AssetEvent($productAsset)
-                );
-                $this->handleGenerationEventResult($event);
-                $this->addFlashMessage('success', 'pimee_product_asset.enrich_asset.flash.update.success');
-            } catch (\Exception $e) {
-                $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
-            }
-
-            return $this->redirectAfterEdit($request, ['id' => $id]);
-        } elseif ($assetForm->isSubmitted()) {
-            $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
-            // TODO find a better way
-            $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
-        }
-
-        return [
-            'asset'         => $productAsset,
-            'form'          => $assetForm->createView(),
-            'metadata'      => $this->getAssetMetadata($productAsset),
-            'currentLocale' => $locale,
-        ];
     }
 
     /**
@@ -573,6 +492,69 @@ class ProductAssetController extends Controller
     }
 
     /**
+     * Dispatch to asset view or asset edit when a user click on an asset grid row
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @throws AccessDeniedException
+     *
+     * @return RedirectResponse
+     */
+    public function editAction(Request $request, $id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+        if ($this->isGranted(Attributes::EDIT, $productAsset)) {
+            return $this->edit($request, $id);
+        }
+
+        if ($this->isGranted(Attributes::VIEW, $productAsset)) {
+            return $this->view($id);
+        }
+
+        throw new AccessDeniedException();
+    }
+
+    /**
+     * List categories associated with the provided asset and descending from the category
+     * defined by the parent parameter.
+     *
+     * @AclAncestor("pimee_product_asset_categories_view")
+     *
+     * @Template("PimEnterpriseProductAssetBundle:ProductAsset:list-categories.json.twig")
+     *
+     * @param Request $request    The request object
+     * @param int     $id         Asset id
+     * @param int     $categoryId The parent category id
+     *
+     * @throws NotFoundHttpException
+     *
+     * @return array
+     */
+    public function listCategoriesAction(Request $request, $id, $categoryId)
+    {
+        $parent = $this->categoryRepository->find($categoryId);
+        if (null === $parent) {
+            throw new NotFoundHttpException(sprintf('Category %d not found', $categoryId));
+        }
+
+        $selectedCategoryIds = $request->get('selected');
+        $categories = null;
+        if (null !== $selectedCategoryIds) {
+            $categories = $this->categoryRepository->getCategoriesByIds($selectedCategoryIds);
+        } elseif (null !== $asset = $this->findProductAssetOr404($id)) {
+            $categories = $asset->getCategories();
+        }
+
+        $trees = $this->categoryManager->getGrantedFilledTree($parent, $categories);
+
+        return [
+            'trees'      => $trees,
+            'categories' => $categories
+        ];
+    }
+
+    /**
      * Action to render the asset thumbnail depending on a channel (and a locale if the asset is localizable).
      *
      * @see PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext()
@@ -654,33 +636,92 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * Dispatch to asset view or asset edit when a user click on an asset grid row
+     * Edit an asset
      *
-     * @AclAncestor("pimee_product_asset_index")
-     *
-     * @param Request $request
-     * @param int     $id
+     * @param Request    $request
+     * @param int|string $id
      *
      * @throws AccessDeniedException
      *
-     * @return RedirectResponse
+     * @return Response
      */
-    public function dispatchAction(Request $request, $id)
+    protected function edit(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
-        if ($this->isGranted(Attributes::EDIT, $productAsset)) {
-            $edit = $this->editAction($request, $id);
+        $assetLocales = $productAsset->getLocales();
 
-            return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', $edit);
+        if (null !== $request->get('locale')) {
+            $locale = $assetLocales[$request->get('locale')];
+        } elseif (!empty($assetLocales)) {
+            $locale = reset($assetLocales);
+        } else {
+            $locale = null;
         }
 
-        if ($this->isGranted(Attributes::VIEW, $productAsset)) {
-            $view = $this->viewAction($id);
+        $assetForm = $this->createForm('pimee_product_asset', $productAsset);
+        $assetForm->handleRequest($request);
 
-            return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', $view);
+        if ($assetForm->isValid()) {
+            try {
+                $this->assetFilesUpdater->updateAssetFiles($productAsset);
+                $this->assetSaver->save($productAsset, ['schedule' => true]);
+                $event = $this->eventDispatcher->dispatch(
+                    AssetEvent::POST_UPLOAD_FILES,
+                    new AssetEvent($productAsset)
+                );
+                $this->handleGenerationEventResult($event);
+                $this->addFlashMessage('success', 'pimee_product_asset.enrich_asset.flash.update.success');
+            } catch (\Exception $e) {
+                $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
+            }
+
+            return $this->redirectAfterEdit($request, ['id' => $id]);
+        } elseif ($assetForm->isSubmitted()) {
+            $this->addFlashMessage('error', 'pimee_product_asset.enrich_asset.flash.update.error');
+            // TODO find a better way
+            $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
         }
 
-        throw new AccessDeniedException();
+        $trees = $this->assetCategoryRepo->getItemCountByGrantedTree($productAsset, $this->userContext->getUser());
+
+        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', [
+            'asset'         => $productAsset,
+            'form'          => $assetForm->createView(),
+            'metadata'      => $this->getAssetMetadata($productAsset),
+            'currentLocale' => $locale,
+            'trees'         => $trees,
+        ]);
+    }
+
+    /**
+     * View an asset
+     *
+     * @param int|string $id
+     *
+     * @throws AccessDeniedException()
+     *
+     * @return array
+     */
+    protected function view($id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+
+        $isViewAssetGranted = $this->isGranted(Attributes::VIEW, $productAsset);
+        if (!$isViewAssetGranted) {
+            throw new AccessDeniedException();
+        }
+
+        $references  = $productAsset->getReferences();
+        $attachments = [];
+        foreach ($references as $refKey => $reference) {
+            $attachments[$refKey]['reference'] = $reference;
+        }
+
+        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:view.html.twig', [
+            'asset'       => $productAsset,
+            'attachments' => $attachments,
+            'metadata'    => $this->getAssetMetadata($productAsset)
+        ]);
     }
 
     /**
@@ -769,7 +810,7 @@ class ProductAssetController extends Controller
         $productAsset = $this->assetRepository->find($id);
 
         if (null === $productAsset) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Product asset with id "%s" cannot be found.', (string) $id)
             );
         }
@@ -791,7 +832,7 @@ class ProductAssetController extends Controller
         $productAsset = $this->assetRepository->findOneByIdentifier($code);
 
         if (null === $productAsset) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Product asset with code "%s" cannot be found.', $code)
             );
         }
@@ -813,7 +854,7 @@ class ProductAssetController extends Controller
         $reference = $this->referenceRepository->find($id);
 
         if (null === $reference) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Asset reference with id "%s" could not be found.', (string) $id)
             );
         }
@@ -835,7 +876,7 @@ class ProductAssetController extends Controller
         $variation = $this->variationRepository->find($id);
 
         if (null === $variation) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Asset variation with id "%s" could not be found.', (string) $id)
             );
         }

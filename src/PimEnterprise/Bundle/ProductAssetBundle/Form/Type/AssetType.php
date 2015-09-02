@@ -28,14 +28,19 @@ class AssetType extends AbstractType
     /** @var string */
     protected $entityClass;
 
+    /** @var string */
+    protected $categoryClass;
+
     /**
      * @param string $entityClass
      * @param string $tagClass
+     * @param string $categoryClass
      */
-    public function __construct($entityClass, $tagClass)
+    public function __construct($entityClass, $tagClass, $categoryClass)
     {
-        $this->entityClass = $entityClass;
-        $this->tagClass = $tagClass;
+        $this->entityClass   = $entityClass;
+        $this->tagClass      = $tagClass;
+        $this->categoryClass = $categoryClass;
     }
 
     /**
@@ -56,6 +61,14 @@ class AssetType extends AbstractType
         );
         $builder->add('endOfUseAt', 'oro_date', ['required' => false]);
         $builder->add('references', 'collection', ['type' => 'pimee_product_asset_reference']);
+        $builder->add('categories', 'oro_entity_identifier',
+            [
+                'class'    => $this->categoryClass,
+                'required' => true,
+                'mapped'   => true,
+                'multiple' => true,
+            ]
+        );
     }
 
     /**

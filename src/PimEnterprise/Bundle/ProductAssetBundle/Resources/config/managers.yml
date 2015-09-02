@@ -6,3 +6,14 @@ services:
             - %pimee_security.entity.asset_category_access.class%
             - %pimee_product_asset.model.category.class%
             - %pim_user.entity.group.class%
+
+    pimee_product_asset.manager.category:
+        class: %pim_catalog.manager.category.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pimee_product_asset.repository.category'
+            - '@pimee_product_asset.factory.category'
+            - %pimee_product_asset.model.category.class%
+            - '@event_dispatcher'
+            - '@pimee_product_asset.repository.asset_category_access'
+            - '@security.authorization_checker'
