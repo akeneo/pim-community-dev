@@ -1,0 +1,10 @@
+parameters:
+    pimee_product_asset.workflow.presenter.assets_collection.class: PimEnterprise\Bundle\ProductAssetBundle\Workflow\Presenter\AssetsCollectionPresenter
+
+services:
+    pimee_product_asset.workflow.presenter.assets_collection:
+        class: %pimee_product_asset.workflow.presenter.assets_collection.class%
+        arguments:
+            - '@pimee_product_asset.repository.asset'
+        tags:
+            - { name: pimee_workflow.presenter }

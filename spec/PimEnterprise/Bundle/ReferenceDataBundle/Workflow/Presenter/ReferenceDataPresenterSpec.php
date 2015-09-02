@@ -5,18 +5,15 @@ namespace spec\PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class ReferenceDataPresenterSpec extends ObjectBehavior
 {
-    function let(
-        AttributeRepositoryInterface $attributeRepository,
-        ReferenceDataRepositoryResolver $repositoryResolver
-    ) {
-        $this->beConstructedWith($attributeRepository, $repositoryResolver);
+    function let(ReferenceDataRepositoryResolver $repositoryResolver)
+    {
+        $this->beConstructedWith($repositoryResolver);
     }
 
     function it_is_a_presenter()
@@ -35,7 +32,6 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
     }
 
     function it_presents_reference_data_change_using_the_injected_renderer(
-        $attributeRepository,
         $repositoryResolver,
         ObjectRepository $repository,
         ConfigurationInterface $configuration,
@@ -51,7 +47,6 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         $configuration->getClass()->willReturn('Acme\Bundle\AppBundle\Entity\Color');
         $repositoryResolver->resolve(null)->willReturn($repository);
         $repository->findOneBy(['code' => 'red'])->willReturn($blue);
-        $attributeRepository->findOneBy(['code' => 'red'])->willReturn($red);
 
         $renderer->renderDiff('[Red]', 'Blue')->willReturn('diff between two reference data');
         $this->setRenderer($renderer);
