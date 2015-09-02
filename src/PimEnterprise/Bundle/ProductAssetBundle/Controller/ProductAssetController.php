@@ -319,11 +319,13 @@ class ProductAssetController extends Controller
         return new JsonResponse();
     }
 
+
+
     /**
      * Remove an asset
      *
-     * @param Request    $request
-     * @param string|int $id
+     * @param Request $request
+     * @param int     $id
      *
      * @return Response|RedirectResponse
      */
@@ -346,8 +348,8 @@ class ProductAssetController extends Controller
     /**
      * Delete a reference file and redirect
      *
-     * @param Request    $request
-     * @param int|string $id
+     * @param Request $request
+     * @param int     $id
      *
      * @return RedirectResponse
      */
@@ -380,8 +382,8 @@ class ProductAssetController extends Controller
     /**
      * Delete a variation file and redirect
      *
-     * @param Request    $request
-     * @param int|string $id
+     * @param Request $request
+     * @param int     $id
      *
      * @return RedirectResponse
      */
@@ -415,8 +417,8 @@ class ProductAssetController extends Controller
     /**
      * Reset a variation file with the reference and redirect
      *
-     * @param Request    $request
-     * @param int|string $id
+     * @param Request $request
+     * @param int     $id
      *
      * @return RedirectResponse
      */
@@ -455,8 +457,8 @@ class ProductAssetController extends Controller
     /**
      * Reset all variation files with the reference file and redirect
      *
-     * @param Request    $request
-     * @param int|string $id
+     * @param Request $request
+     * @param int     $id
      *
      * @return RedirectResponse
      */
@@ -801,7 +803,7 @@ class ProductAssetController extends Controller
     /**
      * Find an Asset by its id or return a 404 response
      *
-     * @param int|string $id
+     * @param int $id
      *
      * @throws NotFoundHttpException
      *
@@ -845,7 +847,7 @@ class ProductAssetController extends Controller
     /**
      * Find a reference by its id or return a 404 response
      *
-     * @param int|string $id
+     * @param int $id
      *
      * @throws NotFoundHttpException
      *
@@ -867,7 +869,7 @@ class ProductAssetController extends Controller
     /**
      * Find a variation by its id or return a 404 response
      *
-     * @param int|string $id
+     * @param int $id
      *
      * @throws NotFoundHttpException
      *

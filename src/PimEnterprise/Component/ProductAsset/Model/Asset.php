@@ -16,13 +16,14 @@ use Akeneo\Component\Classification\Model\TagInterface as BaseTagInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Product asset
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class Asset implements AssetInterface
+class Asset implements AssetInterface, VersionableInterface
 {
     /** @var int */
     protected $id;

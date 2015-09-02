@@ -1,0 +1,13 @@
+parameters:
+    pimee_product_asset.versioning.update_guesser.variation.class: PimEnterprise\Bundle\ProductAssetBundle\Versioning\UpdateGuesser\VariationUpdateGuesser
+    pimee_product_asset.versioning.update_guesser.reference.class: PimEnterprise\Bundle\ProductAssetBundle\Versioning\UpdateGuesser\ReferenceUpdateGuesser
+
+services:
+    pimee_product_asset.versioning.update_guesser.variation:
+        class: %pimee_product_asset.versioning.update_guesser.variation.class%
+        tags:
+            - { name: pim_versioning.update_guesser }
+    pimee_product_asset.versioning.update_guesser.reference:
+        class: %pimee_product_asset.versioning.update_guesser.reference.class%
+        tags:
+            - { name: pim_versioning.update_guesser }

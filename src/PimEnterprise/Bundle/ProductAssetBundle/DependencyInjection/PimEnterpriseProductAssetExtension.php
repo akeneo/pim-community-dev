@@ -71,6 +71,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('view_elements/asset.yml');
         $loader->load('view_elements/category.yml');
+        $loader->load('versioning/guessers.yml');
         $loader->load('voters.yml');
         $loader->load('writers.yml');
         $loader->load('workflow/presenters.yml');
