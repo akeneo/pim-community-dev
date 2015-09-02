@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Group;
 use Akeneo\Component\Classification\Model\CategoryInterface;
+use Oro\Bundle\UserBundle\Entity\Group;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 
 /**

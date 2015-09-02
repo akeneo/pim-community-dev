@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
-use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Akeneo\Component\Classification\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

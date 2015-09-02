@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
+use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Component\Classification\Model\TagInterface as BaseTagInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
-use Akeneo\Component\Classification\Model\TagInterface as BaseTagInterface;
 
 /**
  * Product asset

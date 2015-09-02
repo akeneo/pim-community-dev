@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
+use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
-use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 
 /**
  * Category interface

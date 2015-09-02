@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
