@@ -91,6 +91,9 @@ job_profile_accesses:
     csv_asset_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
+    csv_asset_variation_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
     apply_assets_mass_upload:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
