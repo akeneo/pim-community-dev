@@ -1,14 +1,14 @@
 @javascript
 Feature: Export asset variations
   In order to be able to access and modify asset data outside PIM
-  As a product manager
+  As an asset manager
   I need to be able to import and export asset variations
 
   Scenario: Successfully export asset variation
     Given a "clothing" catalog configuration
     And the following job "clothing_asset_variation_export" configuration:
       | filePath | %tmp%/asset_export/asset_variation_export.csv |
-    And I am logged in as "Julia"
+    And I am logged in as "Pamela"
     And I am on the "clothing_asset_variation_export" export job page
     When I launch the export job
     And I wait for the "clothing_asset_variation_export" job to finish
