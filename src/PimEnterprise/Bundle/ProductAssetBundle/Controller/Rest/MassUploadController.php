@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
@@ -81,7 +82,9 @@ class MassUploadController
     }
 
     /**
-     * @param $filename
+     * @AclAncestor("pimee_product_asset_mass_upload")
+     *
+     * @param string $filename
      *
      * @throws \Exception
      *
@@ -109,6 +112,8 @@ class MassUploadController
     }
 
     /**
+     * @AclAncestor("pimee_product_asset_mass_upload")
+     *
      * @param Request $request
      *
      * @throws \Exception
@@ -141,6 +146,8 @@ class MassUploadController
     }
 
     /**
+     * @AclAncestor("pimee_product_asset_mass_upload")
+     *
      * @param $filename
      *
      * @return JsonResponse
@@ -158,6 +165,8 @@ class MassUploadController
     }
 
     /**
+     * @AclAncestor("pimee_product_asset_mass_upload")
+     *
      * @throws \Exception
      *
      * @return JsonResponse
@@ -188,6 +197,8 @@ class MassUploadController
     }
 
     /**
+     * @AclAncestor("pimee_product_asset_mass_upload")
+     *
      * @throws \Exception
      *
      * @return JsonResponse

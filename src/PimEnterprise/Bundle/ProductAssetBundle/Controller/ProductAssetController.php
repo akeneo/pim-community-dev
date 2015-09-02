@@ -589,6 +589,8 @@ class ProductAssetController extends Controller
     /**
      * Assets mass upload page
      *
+     * @AclAncestor("pimee_product_asset_mass_upload")
+     *
      * @return Response
      */
     public function massUploadAction()

@@ -18,7 +18,7 @@ oro_menu_config:
         pim_asset_mass_upload:
             label: pimee_product_asset.mass_upload.menu
             route: pimee_product_asset_mass_upload
-            aclResourceId: pimee_product_asset_index
+            aclResourceId: pimee_product_asset_mass_upload
             extras:
                 routes: ['/^pimee_product_asset_mass_upload$/']
                 position: 10
