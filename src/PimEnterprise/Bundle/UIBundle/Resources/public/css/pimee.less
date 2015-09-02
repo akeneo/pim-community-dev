@@ -276,6 +276,7 @@
       .flex(1);
       .display-flex();
       .flex-direction(column);
+      position: relative;
       padding: 0 !important; // needed to override padding-bottom added by jquery.jstree.nested_switch.js
       border: solid 1px #ccc;
       border-right: none;
@@ -287,12 +288,11 @@
         #tree_toolbar {
           border-top: none;
         }
-      }
 
-      #nested-switch {
-        .flex(0);
-        position: static;
-        border-bottom: none;
+        #nested-switch {
+          .flex(0);
+          border-bottom: none;
+        }
       }
     }
 
