@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ClassificationBundle\Doctrine\Mongo\Repository;
+namespace Akeneo\Bundle\ClassificationBundle\Doctrine\Mongo\Repository;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;

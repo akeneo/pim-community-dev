@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;

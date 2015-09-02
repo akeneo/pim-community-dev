@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
+namespace Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;

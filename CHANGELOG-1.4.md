@@ -198,7 +198,7 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\MassEditOperatorInterface`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
-- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CategoryRepository` → `Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository`
+- Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CategoryRepository` → `Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository`
 - Move `Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface` → `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
 - Remove Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface replaced by Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface
 - Remove Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface

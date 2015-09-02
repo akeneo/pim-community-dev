@@ -1,5 +1,5 @@
 parameters:
-    pim_classification.repository.abstract_item_category.class: Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository
+    pim_classification.repository.abstract_item_category.class: Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\AbstractItemCategoryRepository
 
 services:
     pim_classification.repository.abstract_item_category:

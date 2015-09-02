@@ -8,7 +8,7 @@ use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
-use Pim\Bundle\ClassificationBundle\Doctrine\Mongo\Repository\AbstractItemCategoryRepository;
+use Akeneo\Bundle\ClassificationBundle\Doctrine\Mongo\Repository\AbstractItemCategoryRepository;
 
 /**
  * Product category repository
