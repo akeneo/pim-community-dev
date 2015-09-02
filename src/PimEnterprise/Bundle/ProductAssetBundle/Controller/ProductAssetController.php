@@ -538,10 +538,10 @@ class ProductAssetController extends Controller
             throw $this->createNotFoundException(sprintf('Category %d not found', $categoryId));
         }
 
-        $selectedCategoryIds = $request->get('selected', null);
+        $selectedCategoryIds = $request->get('selected');
         $categories = null;
         if (null !== $selectedCategoryIds) {
-            $categories = $this->categoryManager->getCategoriesByIds($selectedCategoryIds);
+            $categories = $this->categoryRepository->getCategoriesByIds($selectedCategoryIds);
         } elseif (null !== $asset = $this->findProductAssetOr404($id)) {
             $categories = $asset->getCategories();
         }
