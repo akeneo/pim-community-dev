@@ -1,6 +1,7 @@
 parameters:
     pim_product_asset.normalizer.structured.asset.class: PimEnterprise\Component\ProductAsset\Normalizer\Structured\AssetNormalizer
     pim_product_asset.normalizer.flat.asset.class:       PimEnterprise\Component\ProductAsset\Normalizer\Flat\AssetNormalizer
+    pim_product_asset.normalizer.flat.variation.class:   PimEnterprise\Component\ProductAsset\Normalizer\Flat\VariationNormalizer
 
 services:
     pim_product_asset.normalizer.structured.asset:
@@ -12,5 +13,10 @@ services:
         class: %pim_product_asset.normalizer.flat.asset.class%
         arguments:
             - '@pim_product_asset.normalizer.structured.asset'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_product_asset.normalizer.flat.variation:
+        class: %pim_product_asset.normalizer.flat.variation.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }

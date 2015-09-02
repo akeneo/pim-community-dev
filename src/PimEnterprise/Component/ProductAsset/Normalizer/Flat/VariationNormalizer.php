@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class AssetVariationNormalizer implements NormalizerInterface
+class VariationNormalizer implements NormalizerInterface
 {
     /** @var array */
     protected $supportedFormats = ['csv', 'flat'];
@@ -39,7 +39,7 @@ class AssetVariationNormalizer implements NormalizerInterface
             $normalizedVariation['reference_file'] = '';
         }
 
-        if (null !== $variation->getFile() && null !== $variation->getFile()) {
+        if (null !== $variation->getFile()) {
             $normalizedVariation['variation_file'] = $variation->getFile()->getKey();
         } else {
             $normalizedVariation['variation_file'] = '';
