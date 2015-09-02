@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class AssetVariationProcessor extends Processor
+class VariationProcessor extends Processor
 {
     /** @var NormalizerInterface */
     protected $variationNormalizer;
