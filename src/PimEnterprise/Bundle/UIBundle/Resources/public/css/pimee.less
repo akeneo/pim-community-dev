@@ -139,6 +139,7 @@
 
   }
 }
+
 .btn-group.btn-dropdown {
   .btn.dropdown-publish {
     background-color: #5992c7;
@@ -236,6 +237,16 @@
   }
 }
 
+.akeneo-asset-collection-field.view {
+  .asset-gallery {
+    background-color: #eee;
+
+    header {
+      display: none;
+    }
+  }
+}
+
 .asset-thumbnail {
   width: 160px;
   height: 110px;
@@ -243,49 +254,9 @@
   background-position: center center;
 }
 
-.asset-basket {
-  width: 400px;
-
-  ul {
-    margin: 10px 0;
-    padding: 0;
-
-    li {
-      list-style: none;
-      .display-flex();
-      .flex-direction(row);
-      padding: 10px;
-      border: 1px solid #ccc;
-
-      &:not(:nth-last-child(2)) {
-        border-bottom: none;
-      }
-
-      .asset-thumbnail {
-        width: 60px;
-        height: 60px;
-        background-size: auto 100%;
-      }
-
-      .asset-description {
-        .flex(1);
-        font-size: 11px;
-        margin-left: 10px;
-      }
-
-      &.empty-basket {
-        border: 1px dashed #ccc;
-        height: 100px;
-        line-height: 80px;
-        text-align: center;
-        display: block;
-        color: #ccc;
-        font-size: 16;
-      }
-    }
-  }
-}
-
+/**
+ * Assets picker
+ */
 .modal-asset {
   width: 90%;
   height: 90%;
@@ -298,15 +269,100 @@
     max-height: none;
     .display-flex();
     .flex-direction(row);
+    padding-bottom: 0;
+    overflow: hidden;
+
+    .categories-container {
+      .flex(1);
+      .display-flex();
+      .flex-direction(column);
+      padding: 0 !important; // needed to override padding-bottom added by jquery.jstree.nested_switch.js
+      border: solid 1px #ccc;
+      border-right: none;
+      border-bottom: none;
+
+      #tree {
+        .flex(1);
+
+        #tree_toolbar {
+          border-top: none;
+        }
+      }
+
+      #nested-switch {
+        .flex(0);
+        position: static;
+        border-bottom: none;
+      }
+    }
+
+    .separator {
+      width: 8px;
+      border: solid 1px #ddd;
+    }
 
     .asset-grid {
-      .flex(1);
+      .flex(3);
+      overflow-y: auto;
     }
-  }
-}
 
-.akeneo-asset-collection-field.view {
-  .asset-gallery header {
-    display: none;
+    .basket {
+      .flex(1);
+      .display-flex();
+
+      .asset-basket {
+        .flex(1);
+        .display-flex();
+        .flex-direction(column);
+
+        header {
+          .flex(0);
+        }
+
+        .basket-inner {
+          .flex(1);
+          overflow-y: auto;
+
+          ul {
+            margin: 10px 0;
+            padding: 0;
+
+            li {
+              list-style: none;
+              .display-flex();
+              .flex-direction(row);
+              padding: 10px;
+              border: 1px solid #ccc;
+
+              &:not(:nth-last-child(2)) {
+                border-bottom: none;
+              }
+
+              .asset-thumbnail {
+                width: 60px;
+                height: 60px;
+                background-size: auto 100%;
+              }
+
+              .asset-description {
+                .flex(1);
+                font-size: 11px;
+                margin-left: 10px;
+              }
+
+              &.empty-basket {
+                border: 1px dashed #ccc;
+                height: 100px;
+                line-height: 80px;
+                text-align: center;
+                display: block;
+                color: #ccc;
+                font-size: 16;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

@@ -153,7 +153,7 @@ class EnterpriseWebUser extends BaseWebUser
                 sprintf('$(\'.select2-search-field .select2-input\').val(\'%s\').trigger(\'paste\');', $tag)
             );
 
-            $item = $this->getMainContext()->spin(function () use ($search, $tag) {
+            $item = $this->spin(function () use ($search, $tag) {
                 return $search->find(
                     'css',
                     sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $tag)
@@ -233,7 +233,7 @@ class EnterpriseWebUser extends BaseWebUser
             $removeLink = $tag->find('css', '.select2-search-choice-close');
             $removeLink->click();
 
-            $this->getMainContext()->spin(function () use ($removeLink) {
+            $this->spin(function () use ($removeLink) {
                 try {
                     $removeLink->getText();
                 } catch (\Exception $e) {
