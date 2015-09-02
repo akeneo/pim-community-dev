@@ -9,6 +9,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Context\Spin\SpinCapableTrait;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
