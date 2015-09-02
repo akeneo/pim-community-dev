@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Component\Connector\Writer\File\FileExporterPathGeneratorInterface;
 
 /**
@@ -93,6 +93,6 @@ class FileNormalizer extends AbstractProductValueDataNormalizer
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof FileInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof FileInfoInterface && in_array($format, $this->supportedFormats);
     }
 }

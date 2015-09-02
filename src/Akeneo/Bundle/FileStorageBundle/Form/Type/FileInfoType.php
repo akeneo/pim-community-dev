@@ -7,13 +7,13 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Form type linked to Files.
+ * Form type linked to FileInfo.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FileType extends AbstractType
+class FileInfoType extends AbstractType
 {
     /** @var string */
     protected $dataClass;
@@ -51,6 +51,6 @@ class FileType extends AbstractType
      */
     public function getName()
     {
-        return 'akeneo_file_storage_file';
+        return 'akeneo_file_storage_file_info';
     }
 }

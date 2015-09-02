@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -21,19 +21,19 @@ class FileDenormalizerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\FileDenormalizer');
     }
 
-    function it_denormalizes_by_retreving_an_existing_file($repository, FileInterface $file)
+    function it_denormalizes_by_retreving_an_existing_file($repository, FileInfoInterface $fileInfo)
     {
-        $repository->findOneByIdentifier('1/2/3/123_file.txt')->willReturn($file);
+        $repository->findOneByIdentifier('1/2/3/123_file.txt')->willReturn($fileInfo);
 
-        $this->denormalize('1/2/3/123_file.txt', 'File')->shouldReturn($file);
+        $this->denormalize('1/2/3/123_file.txt', 'File')->shouldReturn($fileInfo);
     }
 
-    function it_denormalizes_by_storing_a_new_file($storer, FileInterface $file)
+    function it_denormalizes_by_storing_a_new_file($storer, FileInfoInterface $fileInfo)
     {
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
 
-        $storer->store(Argument::any(), FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($file);
-        $this->denormalize($pathname, 'File')->shouldReturn($file);
+        $storer->store(Argument::any(), FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileInfo);
+        $this->denormalize($pathname, 'File')->shouldReturn($fileInfo);
 
         unlink($pathname);
     }

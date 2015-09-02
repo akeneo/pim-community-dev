@@ -13,7 +13,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Move a raw file to the storage destination filesystem
- * transforms it as a \Akeneo\Component\FileStorage\Model\FileInterface
+ * transforms it as a \Akeneo\Component\FileStorage\Model\FileInfoInterface
  * and save it to the database.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>

@@ -4,11 +4,11 @@ namespace Akeneo\Component\FileStorage\RawFile;
 
 use Akeneo\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * Move a raw file to the storage destination filesystem
- * transforms it as a \Akeneo\Component\FileStorage\Model\FileInterface
+ * transforms it as a \Akeneo\Component\FileStorage\Model\FileInfoInterface
  * and save it to the database.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
@@ -19,7 +19,7 @@ interface RawFileStorerInterface
 {
     /**
      * Move a raw file to the storage destination filesystem
-     * transforms it as a \Akeneo\Component\FileStorage\Model\FileInterface
+     * transforms it as a \Akeneo\Component\FileStorage\Model\FileInfoInterface
      * and save it to the database.
      *
      * @param \SplFileInfo $rawFile       file to store
@@ -30,7 +30,7 @@ interface RawFileStorerInterface
      * @throws FileRemovalException
      * @throws \Exception
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      */
     public function store(\SplFileInfo $rawFile, $destFsAlias, $deleteRawFile = false);
 }

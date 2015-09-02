@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * File factory, create a \Akeneo\Component\FileStorage\Model\FileInterface.
+ * File factory, create a \Akeneo\Component\FileStorage\Model\FileInfoInterface.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

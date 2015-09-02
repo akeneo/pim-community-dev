@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use League\Flysystem\FilesystemInterface;
@@ -68,10 +68,10 @@ class MediaAttributeCopierSpec extends ObjectBehavior
 
     function it_copies_when_a_product_value_has_the_values_and_the_media(
         $attrValidatorHelper,
-        FileInterface $fromMedia,
-        FileInterface $toMedia,
+        FileInfoInterface $fromMedia,
+        FileInfoInterface $toMedia,
         \SplFileInfo $rawFile,
-        FileInterface $file,
+        FileInfoInterface $fileInfo,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product,
@@ -102,12 +102,12 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
 
         $rawFileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
-        $rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($file);
+        $rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($fileInfo);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 
-        $toProductValue->setMedia($file)->shouldBeCalled();
+        $toProductValue->setMedia($fileInfo)->shouldBeCalled();
 
         $this->copyAttributeData(
             $product,
@@ -156,10 +156,10 @@ class MediaAttributeCopierSpec extends ObjectBehavior
     function it_copies_when_a_product_value_has_a_media_but_not_the_target_value(
         $builder,
         $attrValidatorHelper,
-        FileInterface $fromMedia,
-        FileInterface $toMedia,
+        FileInfoInterface $fromMedia,
+        FileInfoInterface $toMedia,
         \SplFileInfo $rawFile,
-        FileInterface $file,
+        FileInfoInterface $fileInfo,
         ProductMediaInterface $fromMedia,
         ProductMediaInterface $toMedia,
         AttributeInterface $fromAttribute,
@@ -191,7 +191,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS)->willReturn($fileSystem);
 
         $rawFileFetcher->fetch($fileSystem, 'key')->willReturn($rawFile);
-        $rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($file);
+        $rawFileStorer->store($rawFile, FileStorage::CATALOG_STORAGE_ALIAS, false)->willReturn($fileInfo);
 
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn(null);
@@ -199,7 +199,7 @@ class MediaAttributeCopierSpec extends ObjectBehavior
         $builder->addProductValue($product, $toAttribute, $toLocale, $toScope)->willReturn($toProductValue);
         $toProductValue->getMedia()->willReturn($toMedia);
 
-        $toProductValue->setMedia($file)->shouldBeCalled();
+        $toProductValue->setMedia($fileInfo)->shouldBeCalled();
 
         $this->copyAttributeData(
             $product,

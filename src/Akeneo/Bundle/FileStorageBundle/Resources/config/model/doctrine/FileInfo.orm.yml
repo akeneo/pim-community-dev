@@ -1,6 +1,6 @@
-Akeneo\Component\FileStorage\Model\File:
+Akeneo\Component\FileStorage\Model\FileInfo:
     type: entity
-    table: akeneo_file_storage_file
+    table: akeneo_file_storage_file_info
     fields:
         id:
             type: integer

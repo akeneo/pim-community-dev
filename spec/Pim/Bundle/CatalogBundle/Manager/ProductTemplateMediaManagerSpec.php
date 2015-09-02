@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -29,10 +29,10 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $normalizer,
         ProductTemplateInterface $template,
         ProductValueInterface $imageValue,
-        FileInterface $imageMedia,
+        FileInfoInterface $imageMedia,
         ProductValueInterface $fileValue,
-        FileInterface $fileMedia,
-        FileInterface $fileMediaUploaded
+        FileInfoInterface $fileInfoMedia,
+        FileInfoInterface $fileInfoMediaUploaded
     ) {
         $pathname = tempnam(sys_get_temp_dir(), 'spec');
         $uploadedFile = new UploadedFile($pathname, 'uploaded file.txt');
@@ -45,11 +45,11 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         $imageMedia->isRemoved()->willReturn(true);
         $imageValue->setMedia(null)->shouldBeCalled();
 
-        $fileValue->getMedia()->willReturn($fileMedia);
-        $fileMedia->isRemoved()->willReturn(false);
-        $fileMedia->getUploadedFile()->willReturn($uploadedFile);
-        $fileStorer->store($uploadedFile, FileStorage::CATALOG_STORAGE_ALIAS, true)->willReturn($fileMediaUploaded);
-        $fileValue->setMedia($fileMediaUploaded)->shouldBeCalled();
+        $fileValue->getMedia()->willReturn($fileInfoMedia);
+        $fileInfoMedia->isRemoved()->willReturn(false);
+        $fileInfoMedia->getUploadedFile()->willReturn($uploadedFile);
+        $fileStorer->store($uploadedFile, FileStorage::CATALOG_STORAGE_ALIAS, true)->willReturn($fileInfoMediaUploaded);
+        $fileValue->setMedia($fileInfoMediaUploaded)->shouldBeCalled();
 
         $this->handleProductTemplateMedia($template);
     }
@@ -60,7 +60,7 @@ class ProductTemplateMediaManagerSpec extends ObjectBehavior
         ProductTemplateInterface $textTemplate,
         ProductValueInterface $imageValue,
         ProductValueInterface $textValue,
-        FileInterface $imageMedia
+        FileInfoInterface $imageMedia
     ) {
         $normalizer->normalize(Argument::cetera())->willReturn([]);
 

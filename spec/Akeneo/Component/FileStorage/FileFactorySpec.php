@@ -11,7 +11,7 @@ class FileFactorySpec extends ObjectBehavior
 {
     function let(PathGeneratorInterface $pathGenerator)
     {
-        $this->beConstructedWith($pathGenerator, '\Akeneo\Component\FileStorage\Model\File');
+        $this->beConstructedWith($pathGenerator, '\Akeneo\Component\FileStorage\Model\FileInfo');
     }
 
     function it_creates_a_file_from_a_raw_file($pathGenerator)

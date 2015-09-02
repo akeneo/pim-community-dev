@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -29,7 +29,7 @@ class FileValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof FileInterface && (null !== $value->getId() || null !== $value->getUploadedFile())) {
+        if ($value instanceof FileInfoInterface && (null !== $value->getId() || null !== $value->getUploadedFile())) {
             $this->validateFileSize($value, $constraint);
             $this->validateFileExtension($value, $constraint);
         }
@@ -38,15 +38,15 @@ class FileValidator extends ConstraintValidator
     /**
      * Validate if extension is allowed.
      *
-     * @param FileInterface $file       The file that should be validated
-     * @param Constraint    $constraint The constraint for the validation
+     * @param FileInfoInterface $fileInfo   The file that should be validated
+     * @param Constraint        $constraint The constraint for the validation
      */
-    protected function validateFileExtension(FileInterface $file, Constraint $constraint)
+    protected function validateFileExtension(FileInfoInterface $fileInfo, Constraint $constraint)
     {
         if (!empty($constraint->allowedExtensions)) {
-            $extension = null !== $file->getUploadedFile() ?
-                $file->getUploadedFile()->getClientOriginalExtension() :
-                $file->getExtension();
+            $extension = null !== $fileInfo->getUploadedFile() ?
+                $fileInfo->getUploadedFile()->getClientOriginalExtension() :
+                $fileInfo->getExtension();
 
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->buildViolation(
@@ -60,21 +60,21 @@ class FileValidator extends ConstraintValidator
     /**
      * Validate if file size is allowed.
      *
-     * @param FileInterface $file
-     * @param Constraint    $constraint
+     * @param FileInfoInterface $fileInfo
+     * @param Constraint        $constraint
      */
-    protected function validateFileSize(FileInterface $file, Constraint $constraint)
+    protected function validateFileSize(FileInfoInterface $fileInfo, Constraint $constraint)
     {
         // comes from Symfony\Component\Validator\Constraints\FileValidator
         if ($constraint->maxSize) {
             $limitInBytes = $constraint->maxSize;
 
-            if ($file->getSize() > $limitInBytes) {
-                $factorizeSizes = $this->factorizeSizes($file->getSize(), $limitInBytes, $constraint->binaryFormat);
+            if ($fileInfo->getSize() > $limitInBytes) {
+                $factorizeSizes = $this->factorizeSizes($fileInfo->getSize(), $limitInBytes, $constraint->binaryFormat);
                 list($sizeAsString, $limitAsString, $suffix) = $factorizeSizes;
 
                 $this->context->buildViolation($constraint->maxSizeMessage)
-                    ->setParameter('{{ file }}', $this->formatValue($file->getOriginalFilename()))
+                    ->setParameter('{{ file }}', $this->formatValue($fileInfo->getOriginalFilename()))
                     ->setParameter('{{ size }}', $sizeAsString)
                     ->setParameter('{{ limit }}', $limitAsString)
                     ->setParameter('{{ suffix }}', $suffix)
