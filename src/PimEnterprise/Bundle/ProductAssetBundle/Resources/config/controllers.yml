@@ -21,7 +21,7 @@ services:
             - '@pimee_product_asset.remover.asset'
             - '@event_dispatcher'
             - '@pimee_product_asset.factory.asset'
-            - '@akeneo_file_storage.file_storage.file_factory'
+            - '@akeneo_file_storage.file_storage.file_info_factory'
             - '@pimee_product_asset.context.user'
             - '@pim_enrich.controller.file'
             - '@pimee_product_asset.repository.asset_category'

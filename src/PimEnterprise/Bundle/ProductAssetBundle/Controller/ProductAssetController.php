@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\FileStorage\FileFactoryInterface;
+use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
@@ -108,8 +108,8 @@ class ProductAssetController extends Controller
     /** @var AssetFactory */
     protected $assetFactory;
 
-    /** @var FileFactoryInterface */
-    protected $fileFactory;
+    /** @var FileInfoFactoryInterface */
+    protected $fileInfoFactory;
 
     /** @var UserContext */
     protected $userContext;
@@ -141,7 +141,7 @@ class ProductAssetController extends Controller
      * @param RemoverInterface                 $assetRemover
      * @param EventDispatcherInterface         $eventDispatcher
      * @param AssetFactory                     $assetFactory
-     * @param FileFactoryInterface             $fileFactory
+     * @param FileInfoFactoryInterface         $fileInfoFactory
      * @param UserContext                      $userContext
      * @param FileController                   $fileController
      * @param AssetCategoryRepositoryInterface $assetCategoryRepo
@@ -163,7 +163,7 @@ class ProductAssetController extends Controller
         RemoverInterface $assetRemover,
         EventDispatcherInterface $eventDispatcher,
         AssetFactory $assetFactory,
-        FileFactoryInterface $fileFactory,
+        FileInfoFactoryInterface $fileInfoFactory,
         UserContext $userContext,
         FileController $fileController,
         AssetCategoryRepositoryInterface $assetCategoryRepo,
@@ -184,7 +184,7 @@ class ProductAssetController extends Controller
         $this->assetRemover           = $assetRemover;
         $this->eventDispatcher        = $eventDispatcher;
         $this->assetFactory           = $assetFactory;
-        $this->fileFactory            = $fileFactory;
+        $this->fileInfoFactory        = $fileInfoFactory;
         $this->userContext            = $userContext;
         $this->fileController         = $fileController;
         $this->assetCategoryRepo      = $assetCategoryRepo;
@@ -245,7 +245,7 @@ class ProductAssetController extends Controller
             try {
                 if (!$isLocalized && null !== $uploadedFile) {
                     $reference = $asset->getReference();
-                    $file = $this->fileFactory->createFromRawFile(
+                    $file = $this->fileInfoFactory->createFromRawFile(
                         $uploadedFile,
                         ['path' => '', 'file_name' => '', 'guid' => ''],
                         FileStorage::ASSET_STORAGE_ALIAS
