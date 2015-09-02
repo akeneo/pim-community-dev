@@ -2169,6 +2169,39 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $locale
+     * @param string $channel
+     *
+     * @Then /^I click on the missing "([^"]*)" value for "([^"]*)" locale and "([^"]*)" channel/
+     */
+    public function iClickOnTheMissingValueForLocaleAndChannel($attribute, $locale, $channel)
+    {
+        $cell = $this->getCurrentPage()->findCompletenessCell($channel, $locale);
+
+        $link = $this->spin(function () use ($attribute, $cell) {
+            return $cell->find('css', sprintf(".missing-attributes [data-attribute='%s']", $attribute));
+        }, 20, sprintf("Can't find missing '%s' value link for %s/%s", $attribute, $locale, $channel));
+
+        $link->click();
+    }
+
+    /**
+     * @param string $group
+     *
+     * @Then /^I should be on the "([^"]*)" attribute group$/
+     */
+    public function iShouldBeOnTheAttributeGroup($group)
+    {
+        $groupNode = $this->getCurrentPage()->getAttributeGroupTab($group);
+
+        assertTrue(
+            $groupNode->hasClass('active'),
+            sprintf('Expected to be on attribute group "%s"', $group)
+        );
+    }
+
+    /**
      * @param string $email
      *
      * @Given /^an email to "([^"]*)" should have been sent$/

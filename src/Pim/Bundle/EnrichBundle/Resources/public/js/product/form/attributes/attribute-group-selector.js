@@ -71,8 +71,8 @@ define(
                                 this.addToBadge(attributeGroup, 'invalid');
                             }.bind(this));
 
-                            if (0 < valuesErrors.length) {
-                                mediator.trigger(
+                            if (!_.isEmpty(valuesErrors)) {
+                                this.getRoot().trigger(
                                     'pim_enrich:form:show_attribute',
                                     {attribute: _.first(_.keys(valuesErrors))}
                                 );

@@ -1580,7 +1580,7 @@ class Edit extends Form
      *
      * @return NodeElement
      */
-    protected function findCompletenessCell($channelCode, $localeCode)
+    public function findCompletenessCell($channelCode, $localeCode)
     {
         $completenessTable = $this->findCompletenessContent();
 
@@ -1601,6 +1601,26 @@ class Edit extends Form
         }
 
         return $cell->getParent();
+    }
+
+    /**
+     * Find an attribute group in the nav
+     *
+     * @param string $attributeGroupCode
+     *
+     * @throws \Exception
+     *
+     * @return NodeElement
+     */
+    public function getAttributeGroupTab($group)
+    {
+        $groups = $this->getElement('Form Groups');
+
+        $groupNode = $this->spin(function () use ($groups, $group) {
+            return $groups->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
+        }, 20, sprintf("Can't find attribute group '%s'", $group));
+
+        return $groupNode->getParent()->getParent();
     }
 
     /**
