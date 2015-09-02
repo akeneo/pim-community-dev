@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\AbstractProductValuePresenter;
 
@@ -22,9 +21,6 @@ use PimEnterprise\Bundle\WorkflowBundle\Presenter\AbstractProductValuePresenter;
  */
 abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresenter
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var ReferenceDataRepositoryResolver */
     protected $repositoryResolver;
 
@@ -32,14 +28,10 @@ abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresen
     protected $referenceDataName;
 
     /**
-     * @param AttributeRepositoryInterface    $attributeRepository
      * @param ReferenceDataRepositoryResolver $repositoryResolver
      */
-    public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        ReferenceDataRepositoryResolver $repositoryResolver
-    ) {
-        $this->attributeRepository = $attributeRepository;
+    public function __construct(ReferenceDataRepositoryResolver $repositoryResolver)
+    {
         $this->repositoryResolver  = $repositoryResolver;
     }
 
