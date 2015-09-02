@@ -254,16 +254,12 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getItemName($gridName)
     {
-        switch ($gridName) {
-            case 'product-grid':
-                $itemsName = 'product';
-                break;
-            case 'family-grid':
-                $itemsName = 'family';
-                break;
-            default:
-                $itemsName = 'item';
-                break;
+        $gridPattern = '-grid';
+        if (false === strpos($gridName, $gridPattern)) {
+            $itemsName = 'item';
+        } else {
+            $itemsName = str_replace($gridPattern, '', $gridName);
+            $itemsName = str_replace('-', '_', $itemsName);
         }
 
         return $itemsName;
