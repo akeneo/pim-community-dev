@@ -1,6 +1,7 @@
 parameters:
-    pimee_product_asset.reader.orm.category.class: PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetCategoryReader
-    pimee_product_asset.reader.orm.asset.class: PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetReader
+    pimee_product_asset.reader.orm.category.class:  PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetCategoryReader
+    pimee_product_asset.reader.orm.asset.class:     PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetReader
+    pimee_product_asset.reader.orm.variation.class: PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\VariationReader
 
 services:
     pimee_product_asset.reader.orm.category:
@@ -12,3 +13,8 @@ services:
         class: %pimee_product_asset.reader.orm.asset.class%
         arguments:
             - '@pimee_product_asset.repository.asset'
+
+    pimee_product_asset.reader.orm.variation:
+        class: %pimee_product_asset.reader.orm.variation.class%
+        arguments:
+            - '@pimee_product_asset.repository.variation'
