@@ -14,10 +14,9 @@ define(
         'pim/form',
         'text!pim/template/product/panel/completeness',
         'pim/fetcher-registry',
-        'pim/i18n',
-        'oro/mediator'
+        'pim/i18n'
     ],
-    function ($, _, BaseForm, template, FetcherRegistry, i18n, mediator) {
+    function ($, _, BaseForm, template, FetcherRegistry, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
