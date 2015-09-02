@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Component\Classification\Factory;
+namespace Akeneo\Component\Classification\Factory;
 
-use Pim\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

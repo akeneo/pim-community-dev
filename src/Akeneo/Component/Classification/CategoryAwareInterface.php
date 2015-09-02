@@ -1,10 +1,9 @@
 <?php
 
-// TODO-4251: Pim\Component\Classification to Akeneo\Component\Classification, once the feat-pam branch merged
-namespace Pim\Component\Classification;
+namespace Akeneo\Component\Classification;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 
 /**
  * Implementing this interface allows to be aware of categories

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Doctrine\Counter;
 
-use Pim\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 
 /**
  * Count items in a category

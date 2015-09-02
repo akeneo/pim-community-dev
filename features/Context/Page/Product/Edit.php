@@ -8,7 +8,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Form;
 use Context\Page\Category\CategoryView;
-use Pim\Component\Classification\Model\Category;
+use Akeneo\Component\Classification\Model\Category;
 
 /**
  * Product edit page

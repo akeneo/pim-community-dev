@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\TranslationNormalizer;
 use Prophecy\Argument;
 

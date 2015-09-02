@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Updater;
+namespace spec\Akeneo\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
-use Pim\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Prophecy\Argument;
 
 class CategoryUpdaterSpec extends ObjectBehavior
@@ -17,7 +17,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Classification\Updater\CategoryUpdater');
+        $this->shouldHaveType('Akeneo\Component\Classification\Updater\CategoryUpdater');
     }
 
     function it_is_a_updater()

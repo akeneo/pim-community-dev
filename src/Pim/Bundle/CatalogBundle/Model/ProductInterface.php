@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
-use Pim\Component\Classification\CategoryAwareInterface;
+use Akeneo\Component\Classification\CategoryAwareInterface;
 
 /**
  * Product interface

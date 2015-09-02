@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Classification\Model;
+namespace Akeneo\Component\Classification\Model;
 
 use Doctrine\Common\Collections\Collection;
 

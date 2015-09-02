@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\SearchableRepository;
-use Pim\Component\Classification\Repository\TagRepositoryInterface;
+use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 
 /**
  * Tag repository

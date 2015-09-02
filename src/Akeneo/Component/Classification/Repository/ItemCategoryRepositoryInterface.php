@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Component\Classification\Repository;
+namespace Akeneo\Component\Classification\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 
 /**
  * Item category repository interface

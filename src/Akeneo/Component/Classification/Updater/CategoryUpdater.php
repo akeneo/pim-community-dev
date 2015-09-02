@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Component\Classification\Updater;
+namespace Akeneo\Component\Classification\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -42,7 +42,7 @@ class CategoryUpdater implements ObjectUpdaterInterface
         if (!$category instanceof CategoryInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Component\Classification\Model\CategoryInterface", "%s" provided.',
+                    'Expects a "Akeneo\Component\Classification\Model\CategoryInterface", "%s" provided.',
                     ClassUtils::getClass($category)
                 )
             );

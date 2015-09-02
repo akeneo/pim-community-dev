@@ -6,9 +6,9 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
-use Pim\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 
 /**
  * Item category repository

@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Component\Classification\Model\Category as BaseCategory;
+use Akeneo\Component\Classification\Model\Category as BaseCategory;
 
 /**
  * Category class allowing to organize a flexible product class into trees

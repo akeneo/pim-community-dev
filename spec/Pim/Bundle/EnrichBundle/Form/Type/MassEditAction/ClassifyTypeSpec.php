@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

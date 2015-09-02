@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Factory;
+namespace spec\Akeneo\Component\Classification\Factory;
 
 use PhpSpec\ObjectBehavior;
 

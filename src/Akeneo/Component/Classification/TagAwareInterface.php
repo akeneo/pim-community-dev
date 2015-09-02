@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Component\Classification;
+namespace Akeneo\Component\Classification;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Classification\Model\TagInterface;
+use Akeneo\Component\Classification\Model\TagInterface;
 
 /**
  * Implementing this interface allows to be aware of tags

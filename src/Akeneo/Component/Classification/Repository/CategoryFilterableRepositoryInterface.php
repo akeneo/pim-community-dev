@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Classification\Repository;
+namespace Akeneo\Component\Classification\Repository;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>

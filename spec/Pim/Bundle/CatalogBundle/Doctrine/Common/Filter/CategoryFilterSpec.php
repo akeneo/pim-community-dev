@@ -6,8 +6,8 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
 {

@@ -6,8 +6,8 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryFilterableRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Product category filter

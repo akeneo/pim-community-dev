@@ -6,8 +6,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Component\Classification\Factory\CategoryFactory;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Factory\CategoryFactory;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {

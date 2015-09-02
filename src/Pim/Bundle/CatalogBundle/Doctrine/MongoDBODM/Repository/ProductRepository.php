@@ -22,7 +22,7 @@ use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Product repository
