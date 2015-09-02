@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Component\Classification\Model\Category as BaseCategory;
+use Akeneo\Component\Classification\Model\Category as BaseCategory;
 
 /**
  * Category for assets

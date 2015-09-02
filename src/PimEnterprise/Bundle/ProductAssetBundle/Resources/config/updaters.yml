@@ -39,6 +39,6 @@ services:
             - '@pimee_product_asset.repository.category'
 
     pimee_product_asset.updater.category:
-        class: %pim_classification.updater.category.class%
+        class: %akeneo_classification.updater.category.class%
         arguments:
             - '@pimee_product_asset.repository.category'

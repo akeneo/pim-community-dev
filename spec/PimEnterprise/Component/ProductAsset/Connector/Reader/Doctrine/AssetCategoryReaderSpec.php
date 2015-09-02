@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 class AssetCategoryReaderSpec extends ObjectBehavior

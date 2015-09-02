@@ -14,8 +14,8 @@ namespace PimEnterprise\Component\ProductAsset\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
-use Pim\Component\Classification\Model\TagInterface as BaseTagInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
+use Akeneo\Component\Classification\Model\TagInterface as BaseTagInterface;
 
 /**
  * Product asset

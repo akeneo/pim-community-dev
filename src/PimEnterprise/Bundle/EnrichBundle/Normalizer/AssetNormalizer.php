@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

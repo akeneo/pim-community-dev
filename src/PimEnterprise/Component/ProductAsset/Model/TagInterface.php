@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Pim\Component\Classification\Model\TagInterface as BaseTagInterface;
+use Akeneo\Component\Classification\Model\TagInterface as BaseTagInterface;
 
 /**
  * Tag interface for assets

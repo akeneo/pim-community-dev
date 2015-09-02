@@ -13,10 +13,10 @@ namespace PimEnterprise\Bundle\EnrichBundle\Doctrine\Counter;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounter;
-use Pim\Component\Classification\CategoryAwareInterface;
-use Pim\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Akeneo\Component\Classification\CategoryAwareInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

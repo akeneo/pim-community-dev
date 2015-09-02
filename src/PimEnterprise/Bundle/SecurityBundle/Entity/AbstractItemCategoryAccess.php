@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 
 /**

@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
