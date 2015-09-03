@@ -41,6 +41,7 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('data_sources.yml');
         $loader->load('datagrid/attribute_types.yml');
+        $loader->load('datagrid/hydrators.yml');
         $loader->load('datagrid/filters.yml');
         $loader->load('datagrid/formatters.yml');
         $loader->load('datagrid/selectors.yml');
