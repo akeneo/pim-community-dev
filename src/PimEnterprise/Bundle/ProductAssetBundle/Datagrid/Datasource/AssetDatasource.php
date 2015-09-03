@@ -39,7 +39,7 @@ class AssetDatasource extends Datasource
     public function getResults()
     {
         $options = [
-            'locale_code' => $this->getConfiguration('locale_code'),
+            'dataLocale' => $this->getConfiguration('locale_code'),
         ];
 
         if (method_exists($this->qb, 'setParameters')) {

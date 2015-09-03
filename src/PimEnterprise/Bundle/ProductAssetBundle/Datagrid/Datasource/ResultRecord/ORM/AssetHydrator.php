@@ -26,12 +26,9 @@ class AssetHydrator implements HydratorInterface
      */
     public function hydrate($qb, array $options = [])
     {
-        $localeCode = $options['locale_code'];
-
         $records = [];
         foreach ($qb->getQuery()->execute() as $record) {
-            $record->setDataLocale($localeCode);
-            $records[] = new ResultRecord($record);
+            $records[] = new ResultRecord($record, $options);
         }
 
         return $records;
