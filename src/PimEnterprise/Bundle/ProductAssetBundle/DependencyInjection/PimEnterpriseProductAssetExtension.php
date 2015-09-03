@@ -50,7 +50,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('filters.yml');
         $loader->load('finders.yml');
-        $loader->load('formatters.yml');
         $loader->load('forms.yml');
         $loader->load('managers.yml');
         $loader->load('mass-uploader.yml');
@@ -63,7 +62,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
-        $loader->load('selectors.yml');
         $loader->load('services.yml');
         $loader->load('steps.yml');
         $loader->load('subscribers.yml');
