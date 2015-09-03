@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Akeneo\Component\Classification\Factory\CategoryFactory;
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Component\Classification\Factory\CategoryFactory;
-use Pim\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Category manager

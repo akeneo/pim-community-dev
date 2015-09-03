@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
-use Pim\Component\Classification\Model\CategoryInterface;
 
 /**
  * Twig extension to render category from twig templates

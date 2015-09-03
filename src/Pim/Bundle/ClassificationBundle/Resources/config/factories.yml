@@ -1,2 +1,0 @@
-parameters:
-    pim_classification.factory.category.class: Pim\Component\Classification\Factory\CategoryFactory

@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
-use Pim\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
