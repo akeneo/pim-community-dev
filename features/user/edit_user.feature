@@ -17,7 +17,7 @@ Feature: Edit a user
     Then I should see "User saved"
     And I should see "John Smith"
 
-  @javascript @skip @info unskip with PIM-4736
+  @javascript
   Scenario: Successfully edit and apply user preferences
     When I edit the "Peter" user
     And I visit the "Additional" tab
