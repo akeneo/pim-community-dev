@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Comparator\Attribute;
 
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 
 /**
@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
  */
 class FileComparator implements ComparatorInterface
 {
-    /** @var  FileRepositoryInterface */
+    /** @var  FileInfoRepositoryInterface */
     protected $repository;
 
     /** @var array */
@@ -22,9 +22,9 @@ class FileComparator implements ComparatorInterface
 
     /**
      * @param array                   $types
-     * @param FileRepositoryInterface $repository
+     * @param FileInfoRepositoryInterface $repository
      */
-    public function __construct(array $types, FileRepositoryInterface $repository)
+    public function __construct(array $types, FileInfoRepositoryInterface $repository)
     {
         $this->types      = $types;
         $this->repository = $repository;

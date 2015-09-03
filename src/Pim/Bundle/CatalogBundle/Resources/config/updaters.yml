@@ -272,7 +272,7 @@ services:
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@akeneo_file_storage.repository.file'
+            - '@akeneo_file_storage.repository.file_info'
             - ['pim_catalog_file', 'pim_catalog_image']
             - %upload_dir%
         tags:

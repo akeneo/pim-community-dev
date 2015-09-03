@@ -3,13 +3,13 @@
 namespace spec\Pim\Component\Catalog\Comparator\Attribute;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class FileComparatorSpec extends ObjectBehavior
 {
-    function let(FileRepositoryInterface $repository)
+    function let(FileInfoRepositoryInterface $repository)
     {
         $this->beConstructedWith(['pim_catalog_file', 'pim_catalog_file'], $repository);
     }

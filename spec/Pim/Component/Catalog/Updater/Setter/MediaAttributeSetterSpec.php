@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater\Setter;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
@@ -20,7 +20,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
         ProductBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
         FileStorerInterface $storer,
-        FileRepositoryInterface $repository
+        FileInfoRepositoryInterface $repository
     ) {
         $this->beConstructedWith(
             $builder,

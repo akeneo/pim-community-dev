@@ -3,13 +3,13 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class FileDenormalizerSpec extends ObjectBehavior
 {
-    function let(FileRepositoryInterface $repository)
+    function let(FileInfoRepositoryInterface $repository)
     {
         $this->beConstructedWith(['pim_catalog_image', 'pim_catalog_file'], $repository);
     }

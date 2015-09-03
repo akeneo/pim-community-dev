@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Setter;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -25,21 +25,21 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     /** @var FileStorerInterface */
     protected $storer;
 
-    /** @var FileRepositoryInterface */
+    /** @var FileInfoRepositoryInterface */
     protected $repository;
 
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param FileStorerInterface   $storer
-     * @param FileRepositoryInterface  $repository
+     * @param FileInfoRepositoryInterface  $repository
      * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
         FileStorerInterface $storer,
-        FileRepositoryInterface $repository,
+        FileInfoRepositoryInterface $repository,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
