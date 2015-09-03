@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
+use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetSaver;

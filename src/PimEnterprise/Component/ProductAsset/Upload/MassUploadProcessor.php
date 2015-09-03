@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;

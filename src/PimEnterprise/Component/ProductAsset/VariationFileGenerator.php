@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
+use Akeneo\Component\FileStorage\File\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
