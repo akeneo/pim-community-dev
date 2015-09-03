@@ -1,15 +1,6 @@
 @import '../../pimui/css/less/mixins';
 @import '../../pimui/css/less/variables';
 
-@color-new-purple-dark: #5F2385;
-@color-new-purple-medium: #9452BA;
-@color-new-purple-light: #F2EBF8;
-
-// Product edit form
-@color-form-label: #4A4A4A;
-@color-form-info: #9B9B9B;
-@color-form-input: #4A4A4A;
-
 .variation(@color) {
   padding: 15px;
   width: 80%;
@@ -225,7 +216,7 @@
   }
 }
 
-#locale-switcher {
+.asset-variations-pane .locale-switcher {
   margin-left: 10px;
 
   span.dropdown-toggle {
@@ -241,8 +232,8 @@
       height: 24px;
       line-height: 24px;
       border-radius: 2px;
-      border: #a1a9b7 solid 1px;
-      color: #a1a9b7;
+      border: @akeneo-grey solid 1px;
+      color: @akeneo-grey;
       background-color: transparent;
     }
   }
@@ -260,4 +251,112 @@
   }
 
   .asset-uploader();
+}
+
+.mass-upload-wrapper {
+  th {
+    text-transform: uppercase;
+  }
+
+  th.preview {
+    width: 80px;
+  }
+
+  th.filetype {
+    width: 10%;
+  }
+
+  th.status {
+    width: 10%;
+  }
+
+  th.dz-progress-wrapper {
+    width: 20%;
+  }
+
+  .file-row {
+    td {
+      vertical-align: middle;
+    }
+
+    td.preview {
+      width: 80px;
+      height: 80px;
+    }
+
+    .action-cell {
+      button {
+        height: 28px;
+        line-height: 28px;
+        padding: 0 10px 0 38px;
+
+        i {
+          height: 28px;
+          width: 28px;
+          line-height: 28px;
+        }
+      }
+    }
+
+    .progress {
+      margin-bottom: 0;
+      box-shadow: none;
+      border-radius: 2px;
+      height: 28px;
+      background-image: none;
+      background-color: lighten(@akeneo-grey, 20%);
+
+      .bar {
+        box-shadow: none;
+        background-color: @casablanca-yellow;
+      }
+
+      &.progress-striped .bar {
+        background-color: @casablanca-yellow;
+      }
+    }
+
+    .progress.success .bar {
+      background-color: @fern-green;
+      background-image: none;
+    }
+
+    /* Hide the delete button initially */
+    .delete {
+      display: none;
+    }
+
+    div.dz-status {
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 11px;
+      padding: 3px;
+      border-radius: 2px;
+
+      &.added, &.success {
+        color: @fern-green;
+        background-color: lighten(@fern-green, 40%);
+        border: 1px solid @fern-green;
+      }
+
+      &.error {
+        color: white;
+        background-color: @chesnut-red;
+      }
+    }
+
+    .text-danger {
+      color: @chesnut-red;
+    }
+
+    /* Hide the start and cancel buttons and show the delete button */
+    &.dz-success .cancel {
+      display: none;
+    }
+
+    &.dz-success .delete {
+      display: block;
+    }
+  }
 }

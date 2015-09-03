@@ -1,4 +1,4 @@
-<table>
+<table class="grid table-hover table table-bordered table-condensed grid-asset-transformations">
     <thead>
         <tr>
             <th>{{ 'pimee_enrich.asset_transformation.title.transformation'|trans }}</th>
@@ -12,10 +12,10 @@
                 <td>{{ transformationType|trans }}</td>
                 <td>
                     {% for optionKey, optionValue in options %}
-                        <div>
+                        <span>
                             {% set optionType = 'pimee_enrich.asset_transformation.' ~ transformation ~ '.options.' ~ optionKey %}
-                            {{ optionType|trans({'%value%': optionValue}) }}<br>
-                        </div>
+                            {{ optionType|trans({'%value%': optionValue}) }}
+                        </span>
                     {% endfor %}
                 </td>
             </tr>

@@ -1,11 +1,21 @@
 <div class="navigation clearfix navbar-extra">
     <div class="navbar-buttons pull-right">
-        <button class="btn btn-publish schedule hide"><%= _.__('pimee_product_asset.mass_upload.btn.schedule') %></button>
-        <button class="btn fileinput-button"><%= _.__('pimee_product_asset.mass_upload.btn.add_files') %></button>
-        <button class="btn btn-primary start" type="submit"><%=
-            _.__('pimee_product_asset.mass_upload.btn.start') %>
+        <button class="btn cancel icons-holder-text" type="reset">
+            <i class="icon-remove"></i>
+            <%= _.__('pimee_product_asset.mass_upload.btn.cancel') %>
         </button>
-        <button class="btn cancel" type="reset"><%= _.__('pimee_product_asset.mass_upload.btn.cancel') %></button>
+        <button class="btn fileinput-button icons-holder-text">
+            <i class="icon-plus"></i>
+            <%= _.__('pimee_product_asset.mass_upload.btn.add_files') %>
+        </button>
+        <button class="btn btn-publish schedule hide icons-holder-text">
+            <i class="icon-calendar"></i>
+            <%= _.__('pimee_product_asset.mass_upload.btn.schedule') %>
+        </button>
+        <button class="btn btn-primary start icons-holder-text" type="submit">
+            <i class="icon-ok"></i>
+            <%= _.__('pimee_product_asset.mass_upload.btn.start') %>
+        </button>
     </div>
 </div>
 
