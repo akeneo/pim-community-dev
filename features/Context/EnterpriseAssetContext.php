@@ -97,7 +97,7 @@ class EnterpriseAssetContext extends RawMinkContext
     }
 
     /**
-     * @Given /^I upload the reference file (\S+)$/
+     * @Given /^I upload the reference file ([^"]+)$/
      *
      * @param $file
      */

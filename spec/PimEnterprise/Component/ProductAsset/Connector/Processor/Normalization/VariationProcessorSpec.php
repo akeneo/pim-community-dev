@@ -8,7 +8,7 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class AssetVariationProcessorSpec extends ObjectBehavior
+class VariationProcessorSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
