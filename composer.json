@@ -18,7 +18,7 @@
     "require": {
         "php": ">=5.4.4",
         "a2lix/translation-form-bundle": "1.2",
-        "akeneo/batch-bundle": "0.3.*",
+        "akeneo/batch-bundle": "dev-PIM-4859-fix-composer-03",
         "akeneo/measure-bundle": "0.2.*",
         "apy/jsfv-bundle": "2.0.1",
         "ass/xmlsecurity": "1.0.0",
