@@ -10,7 +10,7 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
-class AssetVariationNormalizerSpec extends ObjectBehavior
+class VariationNormalizerSpec extends ObjectBehavior
 {
     function it_is_a_normalizer()
     {
