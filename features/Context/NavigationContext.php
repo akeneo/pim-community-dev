@@ -612,6 +612,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @Given /^I should be on the attributes page$/
+     */
+    public function iShouldBeOnTheAttributesPage()
+    {
+        $this->assertAddress($this->getPage('Attribute index')->getUrl());
+    }
+
+    /**
+     * @Given /^I should be on the categories page$/
+     */
+    public function iShouldBeOnTheCategoriesPage()
+    {
+        $this->assertAddress($this->getPage('Category index')->getUrl());
+    }
+
+    /**
      * @param Category $category
      *
      * @Then /^I should be on the (category "([^"]*)") edit page$/

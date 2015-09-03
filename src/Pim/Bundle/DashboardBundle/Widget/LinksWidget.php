@@ -40,7 +40,7 @@ class LinksWidget implements WidgetInterface
                     'icon'  => 'barcode',
                 ),
                 array(
-                    'route' => 'pim_enrich_family_create',
+                    'route' => 'pim_enrich_family_index',
                     'label' => 'pim_dashboard.link.label.family',
                     'icon'  => 'folder-open-alt',
                 ),
