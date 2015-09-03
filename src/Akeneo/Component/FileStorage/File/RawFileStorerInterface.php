@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\FileStorage\RawFile;
+namespace Akeneo\Component\FileStorage\File;
 
 use Akeneo\Component\FileStorage\Exception\FileRemovalException;
 use Akeneo\Component\FileStorage\Exception\FileTransferException;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Akeneo\Component\FileStorage\RawFile;
+namespace spec\Akeneo\Component\FileStorage\File;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\Adapter\Local;

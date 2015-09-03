@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\File\RawFileFetcherInterface;
 use League\Flysystem\MountManager;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;

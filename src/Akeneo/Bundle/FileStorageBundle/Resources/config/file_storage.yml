@@ -1,6 +1,6 @@
 parameters:
-    akeneo_file_storage.file_storage.raw_file.storer.class:   Akeneo\Component\FileStorage\RawFile\RawFileStorer
-    akeneo_file_storage.file_storage.raw_file.fetcher.class:  Akeneo\Component\FileStorage\RawFile\RawFileFetcher
+    akeneo_file_storage.file_storage.raw_file.storer.class:   Akeneo\Component\FileStorage\File\RawFileStorer
+    akeneo_file_storage.file_storage.raw_file.fetcher.class:  Akeneo\Component\FileStorage\File\RawFileFetcher
     akeneo_file_storage.file_storage.file_info_factory.class: Akeneo\Component\FileStorage\FileInfoFactory
     akeneo_file_storage.file_storage.path_generator.class:    Akeneo\Component\FileStorage\PathGenerator
 

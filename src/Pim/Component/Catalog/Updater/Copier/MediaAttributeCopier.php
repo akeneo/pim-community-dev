@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
 use League\Flysystem\MountManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;

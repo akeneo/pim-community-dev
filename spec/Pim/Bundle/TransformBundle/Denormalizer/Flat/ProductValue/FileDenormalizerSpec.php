@@ -2,8 +2,8 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
+use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\FileStorage;

@@ -83,7 +83,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fileStorer = $this
-            ->getMockBuilder('Akeneo\Component\FileStorage\RawFile\RawFileStorer')
+            ->getMockBuilder('Akeneo\Component\FileStorage\File\RawFileStorer')
             ->disableOriginalConstructor()
             ->setMethods(['store'])
             ->getMock()

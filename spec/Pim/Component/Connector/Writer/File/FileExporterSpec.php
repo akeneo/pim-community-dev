@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\File\RawFileFetcherInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;

@@ -2,9 +2,9 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Copier;
 
+use Akeneo\Component\FileStorage\File\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
