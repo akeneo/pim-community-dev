@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\UserBundle\Entity\User as BaseUser;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
 
 /**
  * Enterprise override of the Community user
@@ -23,6 +24,9 @@ class User extends BaseUser implements UserInterface
 {
     /** @var int The delay in days to send an email before the expiration of an asset */
     protected $assetDelayReminder = 5;
+
+     /** @var CategoryInterface */
+    protected $defaultAssetTree;
 
     /**
      * {@inheritdoc}
@@ -38,6 +42,24 @@ class User extends BaseUser implements UserInterface
     public function setAssetDelayReminder($assetDelayReminder)
     {
         $this->assetDelayReminder = (int) $assetDelayReminder;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultAssetTree()
+    {
+        return $this->defaultAssetTree;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultAssetTree(CategoryInterface $defaultAssetTree)
+    {
+        $this->defaultAssetTree = $defaultAssetTree;
 
         return $this;
     }

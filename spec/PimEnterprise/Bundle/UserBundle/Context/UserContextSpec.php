@@ -47,18 +47,18 @@ class UserContextSpec extends ObjectBehavior
             $choicesBuilder,
             $authorizationChecker,
             $categoryAccessRepo,
-            'en_US'
+            'en_US',
+            'defaultTree'
         );
     }
 
-//     PIM-4736; uncommented when story will be done
-//    function it_gets_the_default_tree_if_accessible($user, $authorizationChecker, CategoryInterface $secondTree)
-//    {
-//        $user->getDefaultTree()->willReturn($secondTree);
-//        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $secondTree)->willReturn(true);
-//
-//        $this->getAccessibleUserTree()->shouldReturn($secondTree);
-//    }
+    function it_gets_the_default_tree_if_accessible($user, $authorizationChecker, CategoryInterface $secondTree)
+    {
+        $user->getDefaultTree()->willReturn($secondTree);
+        $authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $secondTree)->willReturn(true);
+
+        $this->getAccessibleUserTree()->shouldReturn($secondTree);
+    }
 
     function it_gets_the_first_accessible_tree_if_the_default_user_tree_is_not_accessible(
         $user,

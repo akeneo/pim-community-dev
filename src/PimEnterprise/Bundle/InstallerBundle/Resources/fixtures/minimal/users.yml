@@ -8,6 +8,7 @@ users:
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
+        default_asset_tree: asset_main_catalog
         roles:
             - ROLE_ADMINISTRATOR
         groups:

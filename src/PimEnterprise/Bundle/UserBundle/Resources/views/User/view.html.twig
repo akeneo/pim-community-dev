@@ -1,0 +1,110 @@
+{% extends '@PimUser/User/view.html.twig' %}
+
+{% macro api_data_block(user) %}
+<div class="horizontal">
+    <label>{{ user.api ? user.api.apiKey : 'N/A' }}</label>
+    {% if resource_granted('pim_user_user_edit') %}
+        <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
+           data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
+            {{ 'Generate key'|trans }}
+        </a>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% block content_data %}
+  <div>
+    {% set id = 'user-profile' %}
+
+    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: ''|trans})] %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': 'Basic Information'|trans,
+                    'data': [
+                        UI.attibuteRow('User name'|trans, entity.username),
+                        entity.namePrefix ? UI.attibuteRow('Name prefix'|trans, entity.namePrefix),
+                        UI.attibuteRow('First name'|trans, entity.firstName|default('N/A')),
+                        entity.middleName ? UI.attibuteRow('Middle name'|trans, entity.middleName),
+                        UI.attibuteRow('Last name'|trans, entity.lastName|default('N/A')),
+                        entity.nameSuffix ? UI.attibuteRow('Name suffix'|trans, entity.nameSuffix),
+                        UI.attibuteRow('Birthday'|trans, entity.birthday ? entity.birthday|oro_format_date : 'N/A'),
+                        UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
+                    ]
+                },
+                {
+                    'title': 'Contact Information'|trans,
+                    'data': dataSubBlocks
+                }
+            ]
+        }
+    ]
+    %}
+
+    {#
+      EntityExtend fields START
+    #}
+
+    {% set filters = [] %}
+    {% for filter in entity.productGridFilters %}
+      {% set filters = filters|merge([filter_label(filter)]) %}
+    {% endfor %}
+
+    {% set additional = [
+        {
+            'title': 'Additional Information'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
+                        UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
+                        UI.attibuteRow('Default tree'|trans, entity.defaultTree),
+                        UI.attibuteRow('Default asset tree'|trans, entity.defaultAssetTree),
+                        UI.attibuteRow('user.product_grid_filters'|trans, filters|join(', ')),
+                    ]
+                },
+                {
+                    'title': '',
+                    'data': [
+                        UI.attibuteRow('User salt'|trans, entity.salt)
+                    ]
+                }
+            ]
+        }
+    ]
+    %}
+
+    {% set dataBlocks = dataBlocks|merge(additional) %}
+
+    {#
+      EntityExtend fields END
+    #}
+
+    {%- set additional_data -%}
+        {% placeholder oro_user_view_additional_data %}
+    {%- endset -%}
+
+    {% if additional_data is not empty %}
+        {% set dataBlocks = dataBlocks|merge(
+            [{
+                'title': 'Additional data'|trans,
+                'subblocks': [
+                    {
+                        'title': '',
+                        'data': [additional_data]
+                    }
+                ]
+            }]
+        ) %}
+    {% endif %}
+
+    {% set data = { 'dataBlocks': dataBlocks } %}
+      {{ UI.scrollData(id, data) }}
+  </div>
+{% endblock content_data %}

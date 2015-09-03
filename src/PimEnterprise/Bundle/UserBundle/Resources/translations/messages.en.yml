@@ -2,3 +2,4 @@ user:
     email:
         notifications: Email notifications
     asset_delay_reminder: Asset delay reminder (in days)
+Default asset tree: Default asset tree

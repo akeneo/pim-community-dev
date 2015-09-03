@@ -37,6 +37,9 @@ class UserContext extends BaseUserContext
     /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
 
+    /** @var string */
+    protected $treeOptionKey;
+
     /**
      * @param TokenStorageInterface         $tokenStorage
      * @param LocaleRepositoryInterface     $localeRepository
@@ -47,6 +50,7 @@ class UserContext extends BaseUserContext
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param CategoryAccessRepository      $categoryAccessRepo
      * @param string                        $defaultLocale
+     * @param string                        $treeOptionKey
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -57,7 +61,8 @@ class UserContext extends BaseUserContext
         ChoicesBuilderInterface $choicesBuilder,
         AuthorizationCheckerInterface $authorizationChecker,
         CategoryAccessRepository $categoryAccessRepo,
-        $defaultLocale
+        $defaultLocale,
+        $treeOptionKey
     ) {
         parent::__construct(
             $tokenStorage,
@@ -71,6 +76,7 @@ class UserContext extends BaseUserContext
 
         $this->authorizationChecker = $authorizationChecker;
         $this->categoryAccessRepo   = $categoryAccessRepo;
+        $this->treeOptionKey        = $treeOptionKey;
     }
 
     /**
@@ -130,11 +136,10 @@ class UserContext extends BaseUserContext
      */
     public function getAccessibleUserTree()
     {
-        // TODO: uncomment with PIM-4736
-        // $defaultTree = $this->getUserOption('defaultTree');
-        // if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $defaultTree)) {
-        //     return $defaultTree;
-        // }
+        $defaultTree = $this->getUserOption($this->treeOptionKey);
+        if ($defaultTree && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $defaultTree)) {
+            return $defaultTree;
+        }
 
         $grantedCategoryIds = $this->getGrantedCategories();
         $grantedTrees = $this->categoryRepository->getGrantedTrees($grantedCategoryIds);

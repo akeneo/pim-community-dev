@@ -10,7 +10,7 @@ users:
         catalogLocale:    en_US
         catalogScope:     tablet
         defaultTree:      2014_collection
-        defaultAssetTree: prioritized_images
+        defaultAssetTree: asset_main_catalog
         last_name:        Stark
         roles:            [ ROLE_CATALOG_MANAGER ]
         groups:           [ Manager ]
@@ -18,13 +18,13 @@ users:
         catalogLocale:    en_US
         catalogScope:     mobile
         defaultTree:      2014_collection
-        defaultAssetTree: unpacked
+        defaultAssetTree: asset_main_catalog
         last_name:        Williams
         roles:            [ ROLE_ADMINISTRATOR ]
         groups:           [ IT support ]
     Mary:
         catalogLocale:    en_US
-        catalogScope:     mobile
+        catalogScope:     tablet
         defaultTree:      summer_collection
         defaultAssetTree: asset_main_catalog
         last_name:        Smith

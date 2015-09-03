@@ -11,3 +11,4 @@ services:
             - '@security.authorization_checker'
             - '@pimee_product_asset.repository.asset_category_access'
             - %locale%
+            - 'defaultAssetTree'
