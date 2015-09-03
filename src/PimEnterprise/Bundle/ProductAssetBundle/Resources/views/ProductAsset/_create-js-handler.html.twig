@@ -90,11 +90,8 @@
                     });
 
                     fileInput.change(function (event) {
-                        var codeVal = codeInput.val();
-                        if ('' === codeVal) {
-                            var fileInput = event.currentTarget;
-                            codeInput.val(sanitizeFileName(fileInput.value));
-                        }
+                        var fileInput = event.currentTarget;
+                        codeInput.val(sanitizeFileName(fileInput.value));
                     });
                     saveBtn.click(function(event){
                         checkNextCode(event, dialog, codeInput);
