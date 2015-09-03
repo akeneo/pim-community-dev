@@ -54,7 +54,7 @@ Feature: Edit product assets variations
   Scenario: Successfully reset variations files
     Given I am on the "bridge" asset page
     And I visit the "Variations" tab
-    And I upload the reference file akene.jpg
+    And I upload the reference file akeneo (copy).jpg
     And I save the asset
     Given I reset variations files
     And I confirm the action
