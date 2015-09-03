@@ -20,6 +20,7 @@ pimee_product_asset:
         button:
             upload: Upload
             delete: Delete
+            download: Download
             generate_from_reference: Generate from reference
             reset_variations: Reset variations
         confirmation.remove: Are you sure you want to remove asset "%asset%" ?

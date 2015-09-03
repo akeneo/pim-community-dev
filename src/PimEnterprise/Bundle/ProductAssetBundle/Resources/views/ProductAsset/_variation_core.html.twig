@@ -25,10 +25,11 @@
         <td>
             {% block variation_buttons %}{% endblock %}
             {% if variationModel.file %}
-                <a class="btn icons-holder-text no-hash btn-download" title="{{ 'btn.download'|trans }}"
-                   href="{{ path('pim_enrich_media_download', {'filename': variationModel.file.key|url_encode}) }}">
-                    <i class="icon-download-alt"></i> {{ 'btn.download'|trans|capitalize }}
-                </a>
+                <a class="btn icons-holder-text no-hash btn-download"
+                   title="{{ 'pimee_product_asset.enrich_asset.button.download'|trans }}"
+                   href="{{ path('pim_enrich_media_download', {'filename': variationModel.file.key|url_encode}) }}"
+                ><i class="icon-download-alt"></i>{{
+                    'pimee_product_asset.enrich_asset.button.download'|trans|capitalize }}</a>
             {% endif %}
         </td>
     </tr>
