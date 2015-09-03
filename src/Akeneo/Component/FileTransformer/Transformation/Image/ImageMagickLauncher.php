@@ -50,8 +50,8 @@ class ImageMagickLauncher
             '%s %s %s %s',
             $this->getConvertBinaryPath(),
             $command,
-            $pathName,
-            $pathName
+            escapeshellarg($pathName),
+            escapeshellarg($pathName)
         );
 
         exec($cmd, $output, $status);
