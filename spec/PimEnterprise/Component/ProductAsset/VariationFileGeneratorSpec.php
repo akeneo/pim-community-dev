@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset;
 
-use Akeneo\Component\FileStorage\File\RawFileFetcherInterface;
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileFetcherInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -31,8 +31,8 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         SaverInterface $metadataSaver,
         SaverInterface $variationSaver,
         FileTransformerInterface $fileTransformer,
-        RawFileStorerInterface $rawFileStorer,
-        RawFileFetcherInterface $rawFileFetcher,
+        FileStorerInterface $fileStorer,
+        FileFetcherInterface $fileFetcher,
         MetadataBuilderRegistry $metadataBuilderRegistry,
         ChannelVariationsConfigurationInterface $channelConfiguration,
         ChannelInterface $ecommerce,
@@ -64,19 +64,19 @@ class VariationFileGeneratorSpec extends ObjectBehavior
             $metadataSaver,
             $variationSaver,
             $fileTransformer,
-            $rawFileStorer,
-            $rawFileFetcher,
+            $fileStorer,
+            $fileFetcher,
             $metadataBuilderRegistry,
             self::STORAGE_FS
         );
     }
 
     function it_generates_the_variation(
-        $rawFileFetcher,
+        $fileFetcher,
         $filesystem,
         $channelConfiguration,
         $fileTransformer,
-        $rawFileStorer,
+        $fileStorer,
         $metadataSaver,
         $variation,
         $variationSaver,
@@ -95,14 +95,14 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
         $channelConfiguration->getConfiguration()->willReturn(['t1', 't2']);
 
-        $rawFileFetcher->fetch($filesystem, 'path/to/my_original_file.txt')->willReturn($inputFileInfo);
+        $fileFetcher->fetch($filesystem, 'path/to/my_original_file.txt')->willReturn($inputFileInfo);
         $fileTransformer->transform(
             $inputFileInfo,
             ['t1', 't2'],
             'my_original_file--ecommerce.txt'
         )->willReturn($variationFileInfo);
         $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
-        $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
+        $fileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
 
         $fileMetadata->setFileInfo($variationFile)->shouldBeCalled();
         $metadataSaver->save($fileMetadata)->shouldBeCalled();

@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
@@ -49,7 +49,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         CatalogContext $catalogContext,
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        RawFileStorerInterface $rawFileStorer,
+        FileStorerInterface $fileStorer,
         ProductMassActionManager $massActionManager,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
@@ -59,7 +59,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
             $catalogContext,
             $attributeRepository,
             $normalizer,
-            $rawFileStorer,
+            $fileStorer,
             $massActionManager
         );
 

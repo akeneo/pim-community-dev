@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
-use Akeneo\Component\FileStorage\File\RawFileFetcherInterface;
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileFetcherInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -54,11 +54,11 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /** @var FileTransformerInterface */
     protected $fileTransformer;
 
-    /** @var RawFileFetcherInterface */
-    protected $rawFileFetcher;
+    /** @var FileFetcherInterface */
+    protected $fileFetcher;
 
-    /** @var RawFileStorerInterface */
-    protected $rawFileStorer;
+    /** @var FileStorerInterface */
+    protected $fileStorer;
 
     /** @var MetadataBuilderRegistry */
     protected $metadaBuilderRegistry;
@@ -72,8 +72,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @param SaverInterface                          $metadataSaver
      * @param SaverInterface                          $variationSaver
      * @param FileTransformerInterface                $fileTransformer
-     * @param RawFileStorerInterface                  $rawFileStorer
-     * @param RawFileFetcherInterface                 $rawFileFetcher
+     * @param FileStorerInterface                     $fileStorer
+     * @param FileFetcherInterface                    $fileFetcher
      * @param MetadataBuilderRegistry                 $metadaBuilderRegistry
      * @param string                                  $filesystemAlias
      */
@@ -83,8 +83,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         SaverInterface $metadataSaver,
         SaverInterface $variationSaver,
         FileTransformerInterface $fileTransformer,
-        RawFileStorerInterface $rawFileStorer,
-        RawFileFetcherInterface $rawFileFetcher,
+        FileStorerInterface $fileStorer,
+        FileFetcherInterface $fileFetcher,
         MetadataBuilderRegistry $metadaBuilderRegistry,
         $filesystemAlias
     ) {
@@ -93,8 +93,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $this->mountManager            = $mountManager;
         $this->metadataSaver           = $metadataSaver;
         $this->variationSaver          = $variationSaver;
-        $this->rawFileStorer           = $rawFileStorer;
-        $this->rawFileFetcher          = $rawFileFetcher;
+        $this->fileStorer              = $fileStorer;
+        $this->fileFetcher             = $fileFetcher;
         $this->metadaBuilderRegistry   = $metadaBuilderRegistry;
         $this->filesystemAlias         = $filesystemAlias;
     }
@@ -111,14 +111,14 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $outputFilename     = $this->buildVariationOutputFilename($sourceFile, $channel, $locale);
 
         $storageFilesystem  = $this->mountManager->getFilesystem($this->filesystemAlias);
-        $sourceFileInfo     = $this->rawFileFetcher->fetch($storageFilesystem, $sourceFile->getKey());
+        $sourceFileInfo     = $this->fileFetcher->fetch($storageFilesystem, $sourceFile->getKey());
         $variationFileInfo  = $this->fileTransformer->transform(
             $sourceFileInfo,
             $rawTransformations,
             $outputFilename
         );
         $variationMetadata = $this->extractMetadata($variationFileInfo);
-        $variationFile     = $this->rawFileStorer->store($variationFileInfo, $this->filesystemAlias);
+        $variationFile     = $this->fileStorer->store($variationFileInfo, $this->filesystemAlias);
 
         $variationMetadata->setFileInfo($variationFile);
         $this->metadataSaver->save($variationMetadata);

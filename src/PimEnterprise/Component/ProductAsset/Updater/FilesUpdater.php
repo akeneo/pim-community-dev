@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Updater;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -22,15 +22,15 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
  */
 class FilesUpdater implements FilesUpdaterInterface
 {
-    /** @var RawFileStorerInterface */
-    protected $rawFileStorer;
+    /** @var FileStorerInterface */
+    protected $fileStorer;
 
     /**
-     * @param RawFileStorerInterface $rawFileStorer
+     * @param FileStorerInterface $fileStorer
      */
-    public function __construct(RawFileStorerInterface $rawFileStorer)
+    public function __construct(FileStorerInterface $fileStorer)
     {
-        $this->rawFileStorer = $rawFileStorer;
+        $this->fileStorer = $fileStorer;
     }
 
     /**
@@ -127,7 +127,7 @@ class FilesUpdater implements FilesUpdaterInterface
     protected function updateVariationFile(VariationInterface $variation)
     {
         if (null !== $variation->getFileInfo() && null !== $uploadedFile = $variation->getFileInfo()->getUploadedFile()) {
-            $file = $this->rawFileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
+            $file = $this->fileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
             $variation->setSourceFileInfo($file);
             $variation->setFileInfo($file);
             $variation->setLocked(true);
@@ -149,7 +149,7 @@ class FilesUpdater implements FilesUpdaterInterface
     protected function updateReferenceFile(ReferenceInterface $reference)
     {
         if (null !== $reference->getFileInfo() && null !== $uploadedFile = $reference->getFileInfo()->getUploadedFile()) {
-            $file = $this->rawFileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
+            $file = $this->fileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
             $reference->setFileInfo($file);
             $this->resetAllVariationsFiles($reference);
         }

@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Updater;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -11,9 +11,9 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 class FilesUpdaterSpec extends ObjectBehavior
 {
     function let(
-        RawFileStorerInterface $rawFileStorer
+        FileStorerInterface $fileStorer
     ) {
-        $this->beConstructedWith($rawFileStorer);
+        $this->beConstructedWith($fileStorer);
     }
 
     function it_can_be_initialized()

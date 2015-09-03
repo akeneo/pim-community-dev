@@ -40,7 +40,7 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_catalog.manager.product_mass_action'
             - '@security.authorization_checker'
         tags:

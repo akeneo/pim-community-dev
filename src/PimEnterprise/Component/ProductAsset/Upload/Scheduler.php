@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -26,19 +26,19 @@ class Scheduler implements SchedulerInterface
     /** @var UploadCheckerInterface */
     protected $uploadChecker;
 
-    /** @var RawFileStorerInterface */
-    protected $rawFileStorer;
+    /** @var FileStorerInterface */
+    protected $fileStorer;
 
     /**
      * @param UploadCheckerInterface $uploadChecker
-     * @param RawFileStorerInterface $rawFileStorer
+     * @param FileStorerInterface    $fileStorer
      */
     public function __construct(
         UploadCheckerInterface $uploadChecker,
-        RawFileStorerInterface $rawFileStorer
+        FileStorerInterface $fileStorer
     ) {
         $this->uploadChecker = $uploadChecker;
-        $this->rawFileStorer = $rawFileStorer;
+        $this->fileStorer = $fileStorer;
     }
 
     /**

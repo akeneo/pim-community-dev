@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Updater;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -22,9 +22,9 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 interface FilesUpdaterInterface
 {
     /**
-     * @param RawFileStorerInterface $rawFileStorer
+     * @param FileStorerInterface $fileStorer
      */
-    public function __construct(RawFileStorerInterface $rawFileStorer);
+    public function __construct(FileStorerInterface $fileStorer);
 
     /**
      * @param AssetInterface $asset

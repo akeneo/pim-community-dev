@@ -13,8 +13,8 @@ services:
             - '@pimee_product_asset.saver.file_metadata'
             - '@pimee_product_asset.saver.variation'
             - '@akeneo_file_transformer.file_transformer'
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
-            - '@akeneo_file_storage.file_storage.raw_file.fetcher'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.file_storage.file.file_fetcher'
             - '@pimee_product_asset.registry.metadata_builder'
             - 'assetStorage'
 

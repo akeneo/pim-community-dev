@@ -15,7 +15,7 @@ services:
         class: %pimee_product_asset.upload_scheduler.class%
         arguments:
             - '@pimee_product_asset.upload_checker'
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pimee_product_asset.mass_upload_processor:
         class: %pimee_product_asset.mass_upload_processor.class%
@@ -26,7 +26,7 @@ services:
             - '@pimee_product_asset.repository.asset'
             - '@pimee_product_asset.saver.asset'
             - '@pimee_product_asset.updater.files'
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_catalog.repository.locale'
             - '@event_dispatcher'
             - '@translator'

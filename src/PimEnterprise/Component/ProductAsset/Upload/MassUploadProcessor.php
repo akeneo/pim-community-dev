@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
@@ -58,8 +58,8 @@ class MassUploadProcessor
     /** @var FilesUpdaterInterface */
     protected $filesUpdater;
 
-    /** @var RawFileStorerInterface */
-    protected $rawFileStorer;
+    /** @var FileStorerInterface */
+    protected $fileStorer;
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
@@ -77,7 +77,7 @@ class MassUploadProcessor
      * @param AssetRepositoryInterface  $assetRepository
      * @param SaverInterface            $assetSaver
      * @param FilesUpdaterInterface     $filesUpdater
-     * @param RawFileStorerInterface    $rawFileStorer
+     * @param FileStorerInterface       $fileStorer
      * @param LocaleRepositoryInterface $localeRepository
      * @param EventDispatcherInterface  $eventDispatcher
      * @param TranslatorInterface       $translator
@@ -89,7 +89,7 @@ class MassUploadProcessor
         AssetRepositoryInterface $assetRepository,
         SaverInterface $assetSaver,
         FilesUpdaterInterface $filesUpdater,
-        RawFileStorerInterface $rawFileStorer,
+        FileStorerInterface $fileStorer,
         LocaleRepositoryInterface $localeRepository,
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator
@@ -100,7 +100,7 @@ class MassUploadProcessor
         $this->assetRepository  = $assetRepository;
         $this->assetSaver       = $assetSaver;
         $this->filesUpdater     = $filesUpdater;
-        $this->rawFileStorer    = $rawFileStorer;
+        $this->fileStorer       = $fileStorer;
         $this->localeRepository = $localeRepository;
         $this->eventDispatcher  = $eventDispatcher;
         $this->translator       = $translator;
@@ -166,7 +166,7 @@ class MassUploadProcessor
             $asset->setCode($assetInfo['code']);
         }
 
-        $file = $this->rawFileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
+        $file = $this->fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
 
         $locale = $isLocalized ? $this->localeRepository->findOneBy(['code' => $assetInfo['locale']]) : null;
 

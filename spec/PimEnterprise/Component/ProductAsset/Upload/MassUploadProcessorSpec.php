@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
@@ -29,7 +29,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         AssetRepositoryInterface $assetRepository,
         AssetSaver $assetSaver,
         FilesUpdaterInterface $filesUpdater,
-        RawFileStorerInterface $rawFileStorer,
+        FileStorerInterface $fileStorer,
         LocaleRepositoryInterface $localeRepository,
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator
@@ -40,7 +40,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $assetRepository,
             $assetSaver,
             $filesUpdater,
-            $rawFileStorer,
+            $fileStorer,
             $localeRepository,
             $eventDispatcher,
             $translator
@@ -61,7 +61,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetFactory,
         $assetRepository,
         $filesUpdater,
-        $rawFileStorer,
+        $fileStorer,
         $localeRepository
     ) {
         $this->initializeApplyScheduledUpload($file,
@@ -69,7 +69,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $asset,
             $reference,
             $filesUpdater,
-            $rawFileStorer
+            $fileStorer
         );
 
         $assetInfos = [
@@ -108,7 +108,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetFactory,
         $assetRepository,
         $filesUpdater,
-        $rawFileStorer,
+        $fileStorer,
         $localeRepository
     ) {
         $this->initializeApplyScheduledUpload($file,
@@ -116,7 +116,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $asset,
             $reference,
             $filesUpdater,
-            $rawFileStorer
+            $fileStorer
         );
 
         $assetInfos = [
@@ -155,7 +155,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         $assetFactory,
         $assetRepository,
         $filesUpdater,
-        $rawFileStorer,
+        $fileStorer,
         $localeRepository
     ) {
         $this->initializeApplyScheduledUpload($file,
@@ -163,7 +163,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $asset,
             $reference,
             $filesUpdater,
-            $rawFileStorer
+            $fileStorer
         );
 
         $assetInfos = [
@@ -196,11 +196,11 @@ class MassUploadProcessorSpec extends ObjectBehavior
         AssetInterface $asset,
         ReferenceInterface $reference,
         $filesUpdater,
-        $rawFileStorer
+        $fileStorer
     ) {
         $file->getFilename()->willReturn('foobar.jpg');
 
-        $rawFileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true)
+        $fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true)
             ->willReturn($fileInfo);
 
         $asset->getReference(Argument::any())
