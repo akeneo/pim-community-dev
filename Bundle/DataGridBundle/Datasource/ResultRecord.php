@@ -4,15 +4,17 @@ namespace Oro\Bundle\DataGridBundle\Datasource;
 
 class ResultRecord implements ResultRecordInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $valueContainers = [];
+
+    /** @var array */
+    private $options = [];
 
     /**
      * @param mixed $data
+     * @param array $options
      */
-    public function __construct($data)
+    public function __construct($data, array $options = [])
     {
         if (is_array($data)) {
             $arrayData = [];
@@ -28,6 +30,7 @@ class ResultRecord implements ResultRecordInterface
             }
         } elseif (is_object($data)) {
             $this->valueContainers[] = $data;
+            $this->options = $options;
         }
     }
 
@@ -59,6 +62,10 @@ class ResultRecord implements ResultRecordInterface
 
                 if (isset($data->{$fieldName})) {
                     return $data->{$fieldName};
+                }
+
+                if (isset($this->options[$name])) {
+                    return $this->options[$name];
                 }
             }
         }
