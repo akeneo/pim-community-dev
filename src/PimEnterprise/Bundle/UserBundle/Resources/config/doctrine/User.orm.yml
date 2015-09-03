@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\UserBundle\Entity\User:
     type: entity
     table: oro_user
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         assetDelayReminder:
             type: integer

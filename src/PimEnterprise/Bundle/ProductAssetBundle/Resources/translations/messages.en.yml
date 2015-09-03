@@ -5,6 +5,7 @@ pimee_product_asset:
             create: Create an asset
             remove: Remove asset
             categories_view: Consult the categories of an asset
+            mass_upload: Mass-upload assets
         category:
             create:  Create an asset category
             edit:    Edit an asset category

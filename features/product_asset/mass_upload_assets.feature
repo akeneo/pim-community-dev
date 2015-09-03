@@ -113,5 +113,5 @@ Feature: Mass uploads assets
       | type    | message                                        |
       | success | Mass upload executed |
     When I am on the job tracker page
-    Then I should see "mass_upload"
+    Then I should see "Mass Upload Assets"
     And I should see "COMPLETED"
