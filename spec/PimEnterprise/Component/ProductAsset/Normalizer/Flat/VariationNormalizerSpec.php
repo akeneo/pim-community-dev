@@ -41,9 +41,9 @@ class VariationNormalizerSpec extends ObjectBehavior
         $variation->getChannel()->willReturn($channel);
         $channel->getCode()->willReturn('ecommerce');
         $variation->getReference()->willReturn($reference);
-        $reference->getFile()->willReturn($referenceFile);
+        $reference->getFileInfo()->willReturn($referenceFile);
         $referenceFile->getKey()->willReturn('e/f/9/0/d15fe8_photo.jpg');
-        $variation->getFile()->willReturn($variationFile);
+        $variation->getFileInfo()->willReturn($variationFile);
         $variationFile->getKey()->willReturn('b/9/f/f/f4210_photo_mobile.jpg');
 
         $this->normalize($variation)->shouldReturn($normalizedValues);

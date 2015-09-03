@@ -11,7 +11,7 @@
                 <h4>{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</h4>
 
                 <div class="row-fluid">
-                    {% if referenceModel.file %}
+                    {% if referenceModel.fileInfo %}
                         {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
                     {% else %}
                         {{ 'pimee_product_asset.enrich_asset.view.no_reference'|trans }}

@@ -38,7 +38,7 @@ class VariationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'akeneo_file_storage_file', ['required' => false]);
+        $builder->add('fileInfo', 'akeneo_file_storage_file_info', ['required' => false]);
     }
 
     /**

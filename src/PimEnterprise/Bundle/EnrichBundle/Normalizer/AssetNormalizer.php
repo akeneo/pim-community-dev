@@ -73,7 +73,7 @@ class AssetNormalizer implements NormalizerInterface
         foreach ($references as $reference) {
             $normalizedReferences[] = [
                 'locale' => (null !== $reference->getLocale()) ? $reference->getLocale()->getCode() : null,
-                'file'   => (null !== $reference->getFile()) ? $reference->getFile()->getKey() : null
+                'file'   => (null !== $reference->getFileInfo()) ? $reference->getFileInfo()->getKey() : null
             ];
         }
 

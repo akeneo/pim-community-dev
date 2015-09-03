@@ -4,7 +4,7 @@
         <h4>{{ variationModel.channel.label }}</h4>
 
         <div class="row-fluid">
-            {% if variationModel.file %}
+            {% if variationModel.fileInfo %}
                 {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_core.html.twig' %}
                     {% block variation_buttons %}
                         <button class="btn icons-holder-text delete"
@@ -15,11 +15,11 @@
                     {% endblock %}
                 {% endembed %}
             {% else %}
-                {% if not referenceModel.file is null %}
-                    {{ pamMacros.renderUploadZone(variation.file, 'span6') }}
+                {% if not referenceModel.fileInfo is null %}
+                    {{ pamMacros.renderUploadZone(variation.fileInfo, 'span6') }}
                     {{ pamMacros.renderGenerateFromReferenceZone(variationModel.id) }}
                 {% else %}
-                    {{ pamMacros.renderUploadZone(variation.file, 'span12') }}
+                    {{ pamMacros.renderUploadZone(variation.fileInfo, 'span12') }}
                 {% endif %}
             {% endif %}
         </div>

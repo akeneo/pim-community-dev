@@ -4,7 +4,7 @@
         <h4>{{ variationModel.channel.label }}</h4>
 
         <div class="row-fluid">
-            {% if variationModel.file %}
+            {% if variationModel.fileInfo %}
                 {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_core.html.twig' %}
             {% else %}
                 {{ 'pimee_product_asset.enrich_asset.view.no_variation'|trans }}

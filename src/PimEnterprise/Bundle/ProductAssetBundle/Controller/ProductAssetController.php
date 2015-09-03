@@ -757,7 +757,7 @@ class ProductAssetController extends Controller
      */
     protected function getFileMetadata(FileInfoInterface $fileInfo)
     {
-        $metadata = $this->metadataRepository->findOneBy(['file' => $fileInfo->getId()]);
+        $metadata = $this->metadataRepository->findOneBy(['fileInfo' => $fileInfo->getId()]);
 
         return $metadata;
     }

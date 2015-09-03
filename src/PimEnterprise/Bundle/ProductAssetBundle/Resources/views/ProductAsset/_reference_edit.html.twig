@@ -17,7 +17,7 @@
                 <h4>{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</h4>
 
                 <div class="row-fluid">
-                    {% if referenceModel.file %}
+                    {% if referenceModel.fileInfo %}
                         {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
                             {% block reference_buttons %}
 
@@ -35,7 +35,7 @@
                             {% endblock %}
                         {% endembed %}
                     {% else %}
-                        {{ pamMacros.renderUploadZone(reference.file, 'span12') }}
+                        {{ pamMacros.renderUploadZone(reference.fileInfo, 'span12') }}
                     {% endif %}
                 </div>
             </div>
