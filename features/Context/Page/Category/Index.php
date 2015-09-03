@@ -14,5 +14,5 @@ class Index extends CategoryView
     /**
      * @var string
      */
-    protected $path = '/enrich/category-tree/';
+    protected $path = '/enrich/product-category-tree/';
 }
