@@ -28,6 +28,8 @@ services:
             - '@pimee_product_asset.updater.files'
             - '@akeneo_file_storage.file_storage.raw_file.storer'
             - '@pim_catalog.repository.locale'
+            - '@event_dispatcher'
+            - '@translator'
 
     pimee_product_asset.mass_upload.tasklet:
         class: %pimee_product_asset.mass_upload.tasklet.class%
