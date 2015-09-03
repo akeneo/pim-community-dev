@@ -1,4 +1,4 @@
-# 1.3.23 (2015-08-31)
+# 1.3.24 (2015-09-03)
 
 ## Bug fixes
 - PIM-4612: Error on Quick Export (MongoDB)
