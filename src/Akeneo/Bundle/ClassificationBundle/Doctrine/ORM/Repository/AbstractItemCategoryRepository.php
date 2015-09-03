@@ -129,7 +129,6 @@ abstract class AbstractItemCategoryRepository implements
         if ($include) {
             $qb->leftJoin($rootAlias.'.categories', $alias);
             $qb->andWhere($qb->expr()->in($alias.'.id', ':' . $filterCatIds));
-            $qb->groupBy($rootAlias.'.id');
         } else {
             $rootAliasIn = uniqid($rootAlias);
             $rootEntity = current($qb->getRootEntities());
@@ -141,7 +140,6 @@ abstract class AbstractItemCategoryRepository implements
                 ->where($qbIn->expr()->in($alias . '.id', ':' . $filterCatIds));
 
             $qb->andWhere($qb->expr()->notIn($rootAlias . '.id', $qbIn->getDQL()));
-            $qb->groupBy($rootAlias.'.id');
         }
         $qb->setParameter($filterCatIds, $categoryIds);
     }
