@@ -31,3 +31,15 @@ Feature: Choose and order product grids columns
     When I've removed the "name" attribute
     And I am on the products page
     Then I should see the columns Sku and Family
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4861
+  Scenario: Successfully display extra columns content like the name when filter on categories
+    Given the following products:
+      | sku     | name-en_US | categories        |
+      | sandal1 | sandal one | summer_collection |
+      | sandal2 | sandal two | summer_collection |
+    And I display the columns sku, family and name
+    Then I should see the columns Sku, Family and Name
+    Then I should be able to use the following filters:
+      | filter   | value             | result                 |
+      | category | summer_collection | sandal one, sandal two |
