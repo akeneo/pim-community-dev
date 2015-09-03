@@ -84,3 +84,13 @@ connector:
                     class: "%pim_connector.step.tasklet.class%"
                     services:
                         tasklet: pimee_product_asset.mass_upload.tasklet
+        csv_asset_variation_export:
+            title: pimee_product_asset.jobs.csv_asset_reference_export.title
+            type:  export
+            steps:
+                export:
+                    title: pimee_product_asset.jobs.csv_asset_reference_export.title
+                    services:
+                        reader:    pimee_product_asset.reader.orm.variation
+                        processor: pimee_product_asset.processor.normalization.variation.flat
+                        writer:    pim_base_connector.writer.file

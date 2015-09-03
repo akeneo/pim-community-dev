@@ -310,6 +310,16 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/asset.csv
+    csv_asset_variation_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_asset_variation_export
+        label:     Demo asset variation export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/asset_variation.csv
     apply_assets_mass_upload:
         connector: Akeneo CSV Connector
         alias:     apply_assets_mass_upload

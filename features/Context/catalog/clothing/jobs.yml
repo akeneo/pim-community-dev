@@ -248,6 +248,15 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    clothing_asset_variation_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_asset_variation_export
+        label:     Clothing asset export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
     clothing_asset_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_asset_category_import
