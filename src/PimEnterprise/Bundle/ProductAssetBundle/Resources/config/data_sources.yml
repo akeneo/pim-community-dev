@@ -1,11 +1,11 @@
 parameters:
-    pimee_datagrid.datasource.asset.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
+    pimee_product_asset.datasource.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Datasource\AssetDatasource
 
 services:
-    pimee_datagrid.datasource.asset:
+    pimee_product_asset.datasource.asset:
         class: %pimee_datagrid.datasource.asset.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_datagrid.datasource.result_record.hydrator.default'
+            - '@pimee_product_asset.datasource.result_record.hydrator.asset'
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_asset }
