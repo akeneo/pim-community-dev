@@ -6,7 +6,7 @@
 {% import '@PimEnterpriseProductAsset/ProductAsset/macros.html.twig' as pamMacros %}
 
 {{ form_start(form, {
-    'action': path('pimee_product_asset_create'),
+    'action': path('pimee_product_asset_create', {dataLocale: app.request.get('dataLocale')}),
     'class': 'container-fluid',
     'attr': {
         'data-title': 'pimee_product_asset.popin.create.title'|trans,
