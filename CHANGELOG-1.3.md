@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.24 (2015-09-03)
 
 ## Bug fixes
 - PIM-4845: Family menu access denied from the shortcut dashboard entry
