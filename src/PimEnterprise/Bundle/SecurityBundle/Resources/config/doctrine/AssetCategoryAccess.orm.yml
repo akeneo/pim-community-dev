@@ -26,7 +26,7 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AssetCategoryAccess:
                 default: false
     manyToOne:
         category:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\Category
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
             joinColumns:
                 category_id:
                     referencedColumnName: id
