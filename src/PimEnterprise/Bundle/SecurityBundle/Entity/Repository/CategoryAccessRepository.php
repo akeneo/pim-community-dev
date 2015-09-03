@@ -12,13 +12,13 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Pim\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**

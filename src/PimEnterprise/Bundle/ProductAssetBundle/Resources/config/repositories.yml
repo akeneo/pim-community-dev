@@ -5,8 +5,8 @@ parameters:
     pimee_product_asset.repository.reference.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ReferenceRepository
     pimee_product_asset.repository.variation.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\VariationRepository
     pimee_product_asset.repository.asset_category.class:        PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryRepository
-    pimee_product_asset.repository.category.class:              Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
-    pimee_product_asset.repository.tag.class:                   Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\TagRepository
+    pimee_product_asset.repository.category.class:              Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
+    pimee_product_asset.repository.tag.class:                   Akeneo\Bundle\ClassificationBundle\Doctrine\ORM\Repository\TagRepository
 
 services:
     pimee_product_asset.repository.channel_configuration:
@@ -65,7 +65,7 @@ services:
 
     pimee_product_asset.repository.asset_category:
         class:  %pimee_product_asset.repository.asset_category.class%
-        parent: pim_classification.repository.abstract_item_category
+        parent: akeneo_classification.repository.abstract_item_category
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pimee_product_asset.model.asset.class%

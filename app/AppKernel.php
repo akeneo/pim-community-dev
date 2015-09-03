@@ -133,7 +133,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
             new PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle(),
             new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
-            new Pim\Bundle\ClassificationBundle\PimClassificationBundle(),
+            new Akeneo\Bundle\ClassificationBundle\AkeneoClassificationBundle(),
         ];
     }
 

@@ -18,7 +18,7 @@ class CategoryVoterSpec extends ObjectBehavior
 
     function let(CategoryAccessManager $accessManager, TokenInterface $token)
     {
-        $this->beConstructedWith($accessManager, 'Pim\Component\Classification\Model\CategoryInterface');
+        $this->beConstructedWith($accessManager, 'Akeneo\Component\Classification\Model\CategoryInterface');
     }
 
     function it_returns_abstain_access_if_non_attribute_group_entity($token)
