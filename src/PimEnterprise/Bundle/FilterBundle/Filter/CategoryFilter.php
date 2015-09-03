@@ -15,7 +15,6 @@ use Akeneo\Component\Classification\Model\CategoryInterface;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\FilterBundle\Filter\CategoryFilter as BaseCategoryFilter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
@@ -111,12 +110,6 @@ class CategoryFilter extends BaseCategoryFilter
      */
     protected function getAllChildrenIds(CategoryInterface $category)
     {
-        if ($category instanceof Category) { // TODO: Remove this first if in PIM-4292
-            if (false === $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
-                return [];
-            }
-        }
-
         $childrenIds = parent::getAllChildrenIds($category);
 
         $user = $this->tokenStorage->getToken()->getUser();
