@@ -48,6 +48,16 @@ class AssetNormalizer implements NormalizerInterface
         $normalizedData['tags']       = $asset->getTagCodes();
         $normalizedData['categories'] = $asset->getCategoryCodes();
 
+        if (array_key_exists('versioning', $context)) {
+            $normalizedData['references'] = array_filter(array_map(function ($reference) {
+                return null !== $reference->getFile() ? $reference->getFile()->getKey() : null;
+            }, $asset->getReferences()->toArray()));
+
+            $normalizedData['variations'] = array_filter(array_map(function ($variation) {
+                return null !== $variation->getFile() ? $variation->getFile()->getKey() : null;
+            }, $asset->getVariations()));
+        }
+
         return $normalizedData;
     }
 
