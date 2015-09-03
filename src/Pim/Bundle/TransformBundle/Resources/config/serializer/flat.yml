@@ -268,7 +268,7 @@ services:
         arguments:
             - ['pim_catalog_image', 'pim_catalog_file']
             - '@akeneo_file_storage.repository.file'
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

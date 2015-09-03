@@ -134,7 +134,7 @@ services:
     pim_catalog.manager.product_template_media:
         class: %pim_catalog.manager.product_template_media.class%
         arguments:
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@pim_serializer'
 
     pim_catalog.applier.product_template:

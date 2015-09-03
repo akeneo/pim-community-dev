@@ -133,7 +133,7 @@ services:
         class: %pim_transform.transformer.property.media.class%
         public: false
         arguments:
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
         tags:
             - name: pim_transform.transformer.attribute
               backend_type: media

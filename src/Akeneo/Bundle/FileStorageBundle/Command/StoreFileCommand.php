@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\FileStorageBundle\Command;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -50,7 +50,7 @@ class StoreFileCommand extends ContainerAwareCommand
         }
 
         $rawFile = new \SplFileInfo($filePath);
-        $storer = $this->getRawFileStorer();
+        $storer = $this->getFileStorer();
         $file = $storer->store($rawFile, $storageFsAlias);
 
         $output->writeln(
@@ -66,11 +66,11 @@ class StoreFileCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return RawFileStorerInterface
+     * @return FileStorerInterface
      */
-    protected function getRawFileStorer()
+    protected function getFileStorer()
     {
-        return $this->getContainer()->get('akeneo_file_storage.file_storage.raw_file.storer');
+        return $this->getContainer()->get('akeneo_file_storage.file_storage.file.file_storer');
     }
 
     /**

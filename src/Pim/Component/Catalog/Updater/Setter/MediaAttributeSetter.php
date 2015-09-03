@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class MediaAttributeSetter extends AbstractAttributeSetter
 {
-    /** @var RawFileStorerInterface */
+    /** @var FileStorerInterface */
     protected $storer;
 
     /** @var FileRepositoryInterface */
@@ -31,14 +31,14 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param RawFileStorerInterface   $storer
+     * @param FileStorerInterface   $storer
      * @param FileRepositoryInterface  $repository
      * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        RawFileStorerInterface $storer,
+        FileStorerInterface $storer,
         FileRepositoryInterface $repository,
         array $supportedTypes
     ) {

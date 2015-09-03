@@ -9,7 +9,7 @@ use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class RawFileFetcherSpec extends ObjectBehavior
+class FileFetcherSpec extends ObjectBehavior
 {
     function let(Filesystem $tmpFilesystem)
     {

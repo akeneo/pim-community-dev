@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\FileStorage\File\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use League\Flysystem\MountManager;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -16,7 +16,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class FileExporter implements FileExporterInterface
 {
-    /** @var RawFileFetcherInterface */
+    /** @var FileFetcherInterface */
     protected $fileFetcher;
 
     /** @var MountManager */
@@ -27,9 +27,9 @@ class FileExporter implements FileExporterInterface
 
     /**
      * @param MountManager            $mountManager
-     * @param RawFileFetcherInterface $fileFetcher
+     * @param FileFetcherInterface $fileFetcher
      */
-    public function __construct(MountManager $mountManager, RawFileFetcherInterface $fileFetcher)
+    public function __construct(MountManager $mountManager, FileFetcherInterface $fileFetcher)
     {
         $this->mountManager = $mountManager;
         $this->fileFetcher  = $fileFetcher;

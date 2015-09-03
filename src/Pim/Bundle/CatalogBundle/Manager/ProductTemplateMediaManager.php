@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\FileStorage;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -19,14 +19,14 @@ class ProductTemplateMediaManager
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var RawFileStorerInterface */
+    /** @var FileStorerInterface */
     protected $fileStorer;
 
     /**
-     * @param RawFileStorerInterface $fileStorer
+     * @param FileStorerInterface $fileStorer
      * @param NormalizerInterface    $normalizer
      */
-    public function __construct(RawFileStorerInterface $fileStorer, NormalizerInterface $normalizer)
+    public function __construct(FileStorerInterface $fileStorer, NormalizerInterface $normalizer)
     {
         $this->fileStorer = $fileStorer;
         $this->normalizer = $normalizer;

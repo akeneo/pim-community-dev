@@ -1,19 +1,19 @@
 parameters:
-    akeneo_file_storage.file_storage.raw_file.storer.class:   Akeneo\Component\FileStorage\File\RawFileStorer
-    akeneo_file_storage.file_storage.raw_file.fetcher.class:  Akeneo\Component\FileStorage\File\RawFileFetcher
+    akeneo_file_storage.file_storage.file.file_storer.class:  Akeneo\Component\FileStorage\File\FileStorer
+    akeneo_file_storage.file_storage.file.file_fetcher.class: Akeneo\Component\FileStorage\File\FileFetcher
     akeneo_file_storage.file_storage.file_info_factory.class: Akeneo\Component\FileStorage\FileInfoFactory
     akeneo_file_storage.file_storage.path_generator.class:    Akeneo\Component\FileStorage\PathGenerator
 
 services:
-    akeneo_file_storage.file_storage.raw_file.storer:
-        class: %akeneo_file_storage.file_storage.raw_file.storer.class%
+    akeneo_file_storage.file_storage.file.file_storer:
+        class: %akeneo_file_storage.file_storage.file.file_storer.class%
         arguments:
             - '@oneup_flysystem.mount_manager'
             - '@akeneo_file_storage.saver.file'
             - '@akeneo_file_storage.file_storage.file_info_factory'
 
-    akeneo_file_storage.file_storage.raw_file.fetcher:
-        class: %akeneo_file_storage.file_storage.raw_file.fetcher.class%
+    akeneo_file_storage.file_storage.file.file_fetcher:
+        class: %akeneo_file_storage.file_storage.file.file_fetcher.class%
         arguments:
             - '@oneup_flysystem.tmp_storage_filesystem'
 

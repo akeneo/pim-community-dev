@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use PhpSpec\ObjectBehavior;
@@ -19,7 +19,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
     function let(
         ProductBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
-        RawFileStorerInterface $storer,
+        FileStorerInterface $storer,
         FileRepositoryInterface $repository
     ) {
         $this->beConstructedWith(

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\FileStorage\File\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\File\FileFetcherInterface;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
@@ -12,7 +12,7 @@ use Prophecy\Exception\Prediction\FailedPredictionException;
 
 class FileExporterSpec extends ObjectBehavior
 {
-    function let(MountManager $mountManager, RawFileFetcherInterface $fileFetcher)
+    function let(MountManager $mountManager, FileFetcherInterface $fileFetcher)
     {
         $this->beConstructedWith($mountManager, $fileFetcher);
     }

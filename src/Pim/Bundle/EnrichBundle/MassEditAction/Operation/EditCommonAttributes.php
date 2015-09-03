@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
@@ -52,8 +52,8 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var RawFileStorerInterface */
-    protected $rawFileStorer;
+    /** @var FileStorerInterface */
+    protected $fileStorer;
 
     /** @var ProductMassActionManager */
     protected $massActionManager;
@@ -64,7 +64,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param CatalogContext               $catalogContext
      * @param AttributeRepositoryInterface $attributeRepository
      * @param NormalizerInterface          $normalizer
-     * @param RawFileStorerInterface       $rawFileStorer
+     * @param FileStorerInterface       $fileStorer
      * @param ProductMassActionManager     $massActionManager
      */
     public function __construct(
@@ -73,7 +73,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         CatalogContext $catalogContext,
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        RawFileStorerInterface $rawFileStorer,
+        FileStorerInterface $fileStorer,
         ProductMassActionManager $massActionManager
     ) {
         $this->productBuilder      = $productBuilder;
@@ -83,7 +83,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->values              = new ArrayCollection();
         $this->normalizer          = $normalizer;
         $this->attributeRepository = $attributeRepository;
-        $this->rawFileStorer       = $rawFileStorer;
+        $this->fileStorer       = $fileStorer;
         $this->massActionManager   = $massActionManager;
     }
 
@@ -201,7 +201,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
             $media = $productValue->getMedia();
 
             if (null !== $media && null !== $media->getUploadedFile()) {
-                $file = $this->rawFileStorer->store($media->getUploadedFile(), FileStorage::CATALOG_STORAGE_ALIAS, true);
+                $file = $this->fileStorer->store($media->getUploadedFile(), FileStorage::CATALOG_STORAGE_ALIAS, true);
                 $productValue->setMedia($file);
             }
         }

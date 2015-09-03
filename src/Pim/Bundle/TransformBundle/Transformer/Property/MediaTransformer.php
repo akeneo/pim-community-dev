@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Component\Catalog\FileStorage;
@@ -19,13 +19,13 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInterface
 {
-    /** @var RawFileStorerInterface */
+    /** @var FileStorerInterface */
     protected $storer;
 
     /**
-     * @param RawFileStorerInterface $storer
+     * @param FileStorerInterface $storer
      */
-    public function __construct(RawFileStorerInterface $storer)
+    public function __construct(FileStorerInterface $storer)
     {
         $this->storer = $storer;
     }

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductTemplateMediaManagerSpec extends ObjectBehavior
 {
-    function let(RawFileStorerInterface $fileStorer, NormalizerInterface $normalizer)
+    function let(FileStorerInterface $fileStorer, NormalizerInterface $normalizer)
     {
         $this->beConstructedWith($fileStorer, $normalizer);
     }

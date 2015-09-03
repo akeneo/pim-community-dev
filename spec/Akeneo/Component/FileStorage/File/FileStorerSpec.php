@@ -13,7 +13,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Exception\Prediction\FailedPredictionException;
 
-class RawFileStorerSpec extends ObjectBehavior
+class FileStorerSpec extends ObjectBehavior
 {
     function let(
         MountManager $mountManager,

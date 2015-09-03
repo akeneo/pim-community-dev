@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
-use Akeneo\Component\FileStorage\File\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 use Pim\Component\Catalog\FileStorage;
 
@@ -15,7 +15,7 @@ use Pim\Component\Catalog\FileStorage;
  */
 class FileDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var RawFileStorerInterface */
+    /** @var FileStorerInterface */
     protected $storer;
 
     /** @var FileRepositoryInterface */
@@ -24,12 +24,12 @@ class FileDenormalizer extends AbstractValueDenormalizer
     /**
      * @param array                   $supportedTypes
      * @param FileRepositoryInterface $repository
-     * @param RawFileStorerInterface  $storer
+     * @param FileStorerInterface  $storer
      */
     public function __construct(
         array $supportedTypes,
         FileRepositoryInterface $repository,
-        RawFileStorerInterface $storer
+        FileStorerInterface $storer
     ) {
         parent::__construct($supportedTypes);
 
