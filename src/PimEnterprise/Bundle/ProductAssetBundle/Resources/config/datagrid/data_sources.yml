@@ -3,7 +3,7 @@ parameters:
 
 services:
     pimee_product_asset.datasource.asset:
-        class: %pimee_datagrid.datasource.asset.class%
+        class: %pimee_product_asset.datasource.asset.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pimee_product_asset.datasource.result_record.hydrator.asset'
