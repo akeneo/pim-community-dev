@@ -174,7 +174,10 @@
 {% macro updated(formId) %}
 {% spaceless %}
     <div id="entity-updated" class="pull-right">
-        <span class="label label-warning">{{ 'info.updated'|trans }}</span>
+        <span class="label label-warning">
+            <i class="icon icon-circle"></i>
+            {{ 'info.updated'|trans }}
+        </span>
     </div>
     <script type="text/javascript">
         require(
