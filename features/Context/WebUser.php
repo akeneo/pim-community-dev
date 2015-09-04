@@ -392,6 +392,16 @@ class WebUser extends RawMinkContext
     /**
      * @param string $locale
      *
+     * @When /^the locale "([^"]*)" should be selected$/
+     */
+    public function theLocaleShouldBeSelected($locale)
+    {
+        $this->getCurrentPage()->hasSelectedLocale($locale);
+    }
+
+    /**
+     * @param string $locale
+     *
      * @When /^I switch the locale to "([^"]*)"$/
      */
     public function iSwitchTheLocaleTo($locale)
