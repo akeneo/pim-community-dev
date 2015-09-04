@@ -16,11 +16,12 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.4.x-dev",
+        "akeneo/pim-community-dev": "dev-PIM-4838",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "sensio/generator-bundle": "2.3.5",
-        "phpspec/php-diff": "1.0.2"
+        "phpspec/php-diff": "1.0.2",
+        "oro/platform": "dev-PIM-4838"
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "1.1.*",
