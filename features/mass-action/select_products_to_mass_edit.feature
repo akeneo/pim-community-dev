@@ -37,16 +37,16 @@ Feature: When I mass edit I should be able to see how many items will be edited
   Scenario: Successfully count the number of mass-edited items when click on all products
     Given I select all products
     When I press mass-edit button
-    Then I should see "Mass Edit (19 products)"
+    Then I should see the text "Mass Edit (19 products)"
 
   Scenario: Successfully count the number of mass-edited items when click on all visible products
     Given I select all visible products
     When I press mass-edit button
-    Then I should see "Mass Edit (10 products)"
+    Then I should see the text "Mass Edit (10 products)"
 
   Scenario: Successfully count the number of mass-edited items by select them one by one
     Given I mass-edit products boot, shoe_1, shoe_14
-    Then I should see "Mass Edit (3 products)"
+    Then I should see the text "Mass Edit (3 products)"
 
   Scenario: Successfully count the number of mass-edited items when using filters and select all action
     Given the following product values:
@@ -63,4 +63,4 @@ Feature: When I mass edit I should be able to see how many items will be edited
     And I filter by "Description" with value "A beautiful description"
     And I select all products
     When I press mass-edit button
-    Then I should see "Mass Edit (2 products)"
+    Then I should see the text "Mass Edit (2 products)"
