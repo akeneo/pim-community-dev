@@ -35,7 +35,6 @@ services:
             - 'pimee_enrich.product.tab.proposal'
             - %pimee_enrich.view_element.product.tab.proposal.template%
         calls:
-            - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.acl', {acl: 'pim_enrich_associations_view'}] ]
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.voter', {'attribute': 'PimEnterprise\Bundle\SecurityBundle\Attributes::OWN', 'object': '[product]' }] ]
         tags:
             - { name: pim_enrich.view_element, type: pim_product_edit.form_tab, position: 115 }
