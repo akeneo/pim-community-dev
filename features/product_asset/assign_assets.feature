@@ -70,7 +70,7 @@ Feature: Assign assets to a product
     Then the "[front_view]" asset gallery item "paint" should contain the thumbnail for channel "mobile"
     Then the "[front_view]" asset gallery item "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "de_DE"
 
-  @skip Unskip when Firefox will be updated on CI workers
+  @skip @info Unskip when Firefox will be updated on CI workers
   Scenario: Successfully filter product assets by category in asset picker
     Given I am on the "shirt" product page
     And I add available attributes Front view
