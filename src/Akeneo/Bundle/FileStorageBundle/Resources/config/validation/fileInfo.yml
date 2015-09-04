@@ -1,4 +1,4 @@
-Akeneo\Component\FileStorage\Model\File:
+Akeneo\Component\FileStorage\Model\FileInfo:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: key
     properties:

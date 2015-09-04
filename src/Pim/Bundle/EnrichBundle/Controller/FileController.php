@@ -2,13 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\MountManager;
 use Liip\ImagineBundle\Controller\ImagineController;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Liip\ImagineBundle\Model\Binary;
 use Pim\Bundle\EnrichBundle\File\DefaultImageProviderInterface;
 use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
 use Pim\Bundle\EnrichBundle\File\FileTypes;
@@ -32,7 +29,7 @@ class FileController extends Controller
     /** @var MountManager */
     protected $mountManager;
 
-    /** @var FileRepositoryInterface */
+    /** @var FileInfoRepositoryInterface */
     protected $fileRepository;
 
     /** @var FileTypeGuesserInterface */
@@ -47,7 +44,7 @@ class FileController extends Controller
     /**
      * @param ImagineController             $imagineController
      * @param MountManager                  $mountManager
-     * @param FileRepositoryInterface       $fileRepository
+     * @param FileInfoRepositoryInterface   $fileRepository
      * @param FileTypeGuesserInterface      $fileTypeGuesser
      * @param DefaultImageProviderInterface $defaultImageProvider
      * @param array                         $filesystemAliases
@@ -55,7 +52,7 @@ class FileController extends Controller
     public function __construct(
         ImagineController $imagineController,
         MountManager $mountManager,
-        FileRepositoryInterface $fileRepository,
+        FileInfoRepositoryInterface $fileRepository,
         FileTypeGuesserInterface $fileTypeGuesser,
         DefaultImageProviderInterface $defaultImageProvider,
         array $filesystemAliases

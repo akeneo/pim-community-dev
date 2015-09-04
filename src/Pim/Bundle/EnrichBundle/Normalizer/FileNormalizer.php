@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -33,6 +33,6 @@ class FileNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof FileInterface && in_array($format, $this->supportedFormats);
+        return $data instanceof FileInfoInterface && in_array($format, $this->supportedFormats);
     }
 }

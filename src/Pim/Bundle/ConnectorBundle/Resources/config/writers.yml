@@ -73,7 +73,7 @@ services:
         class: %pim_connector.writer.file.file_exporter.class%
         arguments:
             - '@oneup_flysystem.mount_manager'
-            - '@akeneo_file_storage.file_storage.raw_file.fetcher'
+            - '@akeneo_file_storage.file_storage.file.file_fetcher'
 
     pim_connector.writer.file.media_exporter_path_generator:
         class: %pim_connector.writer.file.media_exporter_path_generator.class%

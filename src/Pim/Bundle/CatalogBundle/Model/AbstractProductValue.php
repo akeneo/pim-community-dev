@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
@@ -116,7 +116,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store upload values
      *
-     * @var FileInterface
+     * @var FileInfoInterface
      */
     protected $media;
 
@@ -522,7 +522,7 @@ abstract class AbstractProductValue implements ProductValueInterface
         }
 
         if ($data instanceof Collection) {
-            $items = array();
+            $items = [];
             foreach ($data as $item) {
                 $value = (string) $item;
                 if (!empty($value)) {
@@ -549,7 +549,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * {@inheritdoc}
      */
-    public function setMedia(FileInterface $media = null)
+    public function setMedia(FileInfoInterface $media = null)
     {
         $this->media = $media;
 

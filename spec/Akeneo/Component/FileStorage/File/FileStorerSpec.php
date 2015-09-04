@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\Component\FileStorage\RawFile;
+namespace spec\Akeneo\Component\FileStorage\File;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
-use Akeneo\Component\FileStorage\FileFactoryInterface;
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\Filesystem;
@@ -13,12 +13,12 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Prophecy\Exception\Prediction\FailedPredictionException;
 
-class RawFileStorerSpec extends ObjectBehavior
+class FileStorerSpec extends ObjectBehavior
 {
     function let(
         MountManager $mountManager,
         SaverInterface $saver,
-        FileFactoryInterface $factory
+        FileInfoFactoryInterface $factory
     ) {
         $this->beConstructedWith($mountManager, $saver, $factory);
     }
@@ -29,7 +29,7 @@ class RawFileStorerSpec extends ObjectBehavior
         $saver,
         \SplFileInfo $rawFile,
         Filesystem $fs,
-        FileInterface $file
+        FileInfoInterface $fileInfo
     ) {
         $localPathname = __DIR__ . DIRECTORY_SEPARATOR . 'my file.php';
         touch($localPathname);
@@ -37,11 +37,11 @@ class RawFileStorerSpec extends ObjectBehavior
         $fs->has(Argument::any())->willReturn(false);
 
         $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($file);
+        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
 
         $fs->writeStream(Argument::any(), Argument::any())->shouldBeCalled();
 
-        $saver->save($file)->shouldBeCalled();
+        $saver->save($fileInfo)->shouldBeCalled();
         $this->store($rawFile, 'destination');
 
         if (!file_exists($localPathname)) {
@@ -57,7 +57,7 @@ class RawFileStorerSpec extends ObjectBehavior
         $saver,
         \SplFileInfo $rawFile,
         Filesystem $fs,
-        FileInterface $file
+        FileInfoInterface $fileInfo
     ) {
         $localPathname = __DIR__ . DIRECTORY_SEPARATOR . 'my file.php';
         touch($localPathname);
@@ -65,11 +65,11 @@ class RawFileStorerSpec extends ObjectBehavior
         $fs->has(Argument::any())->willReturn(false);
 
         $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($file);
+        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
 
         $fs->writeStream(Argument::any(), Argument::any())->shouldBeCalled();
 
-        $saver->save($file)->shouldBeCalled();
+        $saver->save($fileInfo)->shouldBeCalled();
         $this->store($rawFile, 'destination', true);
 
         if (file_exists($localPathname)) {
@@ -83,11 +83,11 @@ class RawFileStorerSpec extends ObjectBehavior
         $saver,
         \SplFileInfo $rawFile,
         Filesystem $fs,
-        FileInterface $file
+        FileInfoInterface $fileInfo
     ) {
         $rawFile->getPathname()->willReturn(__FILE__);
         $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($file);
+        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
         $fs->writeStream(Argument::any(), Argument::any())->willReturn(false);
 
         $saver->save(Argument::any())->shouldNotBeCalled();
@@ -104,14 +104,14 @@ class RawFileStorerSpec extends ObjectBehavior
         $factory,
         \SplFileInfo $rawFile,
         Filesystem $fs,
-        FileInterface $file
+        FileInfoInterface $fileInfo
     ) {
         $rawFile->getPathname()->willReturn(__FILE__);
         $fs->has(Argument::any())->willReturn(true);
         $fs->writeStream(Argument::any(), Argument::any())->willThrow(new FileExistsException('The file exists.'));
         $mountManager->getFilesystem('destination')->willReturn($fs);
-        $factory->createFromRawFile($rawFile, 'destination')->willReturn($file);
-        $file->getKey()->willReturn('key-file');
+        $factory->createFromRawFile($rawFile, 'destination')->willReturn($fileInfo);
+        $fileInfo->getKey()->willReturn('key-file');
 
         $this->shouldThrow(
             new FileTransferException(

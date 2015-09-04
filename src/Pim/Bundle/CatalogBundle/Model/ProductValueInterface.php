@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -60,7 +60,7 @@ interface ProductValueInterface
     /**
      * Get media
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      */
     public function getMedia();
 
@@ -197,11 +197,11 @@ interface ProductValueInterface
     /**
      * Set media
      *
-     * @param FileInterface $media
+     * @param FileInfoInterface $media
      *
      * @return ProductValue
      */
-    public function setMedia(FileInterface $media = null);
+    public function setMedia(FileInfoInterface $media = null);
 
     /**
      * Get prices

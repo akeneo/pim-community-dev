@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
 use Prophecy\Argument;
@@ -24,51 +24,51 @@ class FileValidatorSpec extends ObjectBehavior
     function it_validates_extensions(
         $context,
         File $constraint,
-        FileInterface $file
+        FileInfoInterface $fileInfo
     ) {
         $constraint->allowedExtensions = ['gif', 'jpg'];
-        $file->getId()->willReturn(12);
-        $file->getUploadedFile()->willReturn(null);
-        $file->getExtension()->willReturn('jpg');
-        $file->getSize()->willReturn(100);
+        $fileInfo->getId()->willReturn(12);
+        $fileInfo->getUploadedFile()->willReturn(null);
+        $fileInfo->getExtension()->willReturn('jpg');
+        $fileInfo->getSize()->willReturn(100);
 
         $context
             ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->validate($file, $constraint);
+        $this->validate($fileInfo, $constraint);
     }
 
     function it_validates_size(
         $context,
         File $constraint,
-        FileInterface $file
+        FileInfoInterface $fileInfo
     ) {
         $constraint->maxSize = '1M';
 
-        $file->getId()->willReturn(12);
-        $file->getUploadedFile()->willReturn(null);
-        $file->getExtension()->willReturn('jpg');
-        $file->getSize()->willReturn(500);
+        $fileInfo->getId()->willReturn(12);
+        $fileInfo->getUploadedFile()->willReturn(null);
+        $fileInfo->getExtension()->willReturn('jpg');
+        $fileInfo->getSize()->willReturn(500);
 
         $context
             ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->validate($file, $constraint);
+        $this->validate($fileInfo, $constraint);
     }
 
     function it_does_not_validate_extensions(
         $context,
         File $constraint,
-        FileInterface $file,
+        FileInfoInterface $fileInfo,
         ConstraintViolationBuilderInterface $violation
     ) {
         $constraint->allowedExtensions = ['pdf', 'docx'];
-        $file->getId()->willReturn(12);
-        $file->getUploadedFile()->willReturn(null);
-        $file->getExtension()->willReturn('jpg');
-        $file->getSize()->willReturn(100);
+        $fileInfo->getId()->willReturn(12);
+        $fileInfo->getUploadedFile()->willReturn(null);
+        $fileInfo->getExtension()->willReturn('jpg');
+        $fileInfo->getSize()->willReturn(100);
 
         $context
             ->buildViolation(
@@ -78,21 +78,21 @@ class FileValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($violation);
 
-        $this->validate($file, $constraint);
+        $this->validate($fileInfo, $constraint);
     }
 
     function it_does_not_validate_size(
         $context,
         File $constraint,
-        FileInterface $file,
+        FileInfoInterface $fileInfo,
         ConstraintViolationBuilderInterface $violation
     ) {
         $constraint->maxSize = '1M';
-        $file->getId()->willReturn(12);
-        $file->getUploadedFile()->willReturn(null);
-        $file->getExtension()->willReturn('jpg');
-        $file->getSize()->willReturn(1075200);
-        $file->getOriginalFilename()->willReturn('my file.jpg');
+        $fileInfo->getId()->willReturn(12);
+        $fileInfo->getUploadedFile()->willReturn(null);
+        $fileInfo->getExtension()->willReturn('jpg');
+        $fileInfo->getSize()->willReturn(1075200);
+        $fileInfo->getOriginalFilename()->willReturn('my file.jpg');
 
         $context
             ->buildViolation($constraint->maxSizeMessage)
@@ -105,19 +105,19 @@ class FileValidatorSpec extends ObjectBehavior
         $violation->setCode(Argument::any())->shouldBeCalled()->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
-        $this->validate($file, $constraint);
+        $this->validate($fileInfo, $constraint);
     }
 
     function it_validates_new_instance_of_files(
         $context,
         File $constraint,
-        FileInterface $file
+        FileInfoInterface $fileInfo
     ) {
         $constraint->allowedExtensions = ['gif', 'jpg'];
         $constraint->maxSize = '2M';
 
-        $file->getId()->willReturn(null);
-        $file->getUploadedFile()->willReturn(null);
+        $fileInfo->getId()->willReturn(null);
+        $fileInfo->getUploadedFile()->willReturn(null);
 
         $context
             ->buildViolation(Argument::any())
@@ -138,19 +138,19 @@ class FileValidatorSpec extends ObjectBehavior
         $this->validate(null, $constraint);
     }
 
-    function it_validates_empty_extension_and_size($context, File $constraint, FileInterface $file)
+    function it_validates_empty_extension_and_size($context, File $constraint, FileInfoInterface $fileInfo)
     {
         $constraint->allowedExtensions = [];
 
-        $file->getId()->willReturn(12);
-        $file->getUploadedFile()->willReturn(null);
-        $file->getExtension()->willReturn('jpg');
-        $file->getSize()->willReturn(100);
+        $fileInfo->getId()->willReturn(12);
+        $fileInfo->getUploadedFile()->willReturn(null);
+        $fileInfo->getExtension()->willReturn('jpg');
+        $fileInfo->getSize()->willReturn(100);
 
         $context
             ->buildViolation(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->validate($file, $constraint);
+        $this->validate($fileInfo, $constraint);
     }
 }

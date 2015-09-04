@@ -30,9 +30,9 @@
 - Media normalizers `Pim\Bundle\TransformBundle\Normalizer\Structured\MediaNormalizer`, `Pim\Bundle\TransformBundle\Normalizer\Flat\MediaNormalizer` have been removed
 - Media related classes `Pim\Component\Catalog\Comparator\Attribute\MediaComparator` and `Pim\Bundle\EnrichBundle\Controller\MediaController` have been removed
 - Class `Pim\Bundle\BaseConnectorBundle\Writer\File\ProductWriter` has been removed
-- Change constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter` to remove `Pim\Bundle\CatalogBundle\Manager\MediaManager`, `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and the upload directory parameter and to add `Akeneo\Component\FileStorage\Repository\FileRepositoryInterface`, `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface` and `League\Flysystem\MountManager`
-- Change constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeCopier` to remove `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and to add `Akeneo\Component\FileStorage\Repository\FileRepositoryInterface`, `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface` and `League\Flysystem\MountManager`
-- Change constructor of `Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer` to remove media class parameter and to add `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface`
+- Change constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter` to remove `Pim\Bundle\CatalogBundle\Manager\MediaManager`, `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and the upload directory parameter and to add `Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface`, `Akeneo\Component\FileStorage\File\FileStorerInterface` and `League\Flysystem\MountManager`
+- Change constructor of `Pim\Component\Catalog\Updater\Setter\MediaAttributeCopier` to remove `Pim\Bundle\CatalogBundle\Manager\MediaManager` and `Pim\Bundle\CatalogBundle\Factory\MediaFactory` and to add `Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface`, `Akeneo\Component\FileStorage\File\FileStorerInterface` and `League\Flysystem\MountManager`
+- Change constructor of `Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer` to remove media class parameter and to add `Akeneo\Component\FileStorage\File\FileStorerInterface`
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor` to remove the upload directory parameter and to add the media attributes types
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Writer\File\CsvProductWriter` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Pim\Component\Connector\Writer\File\FileExporterInterface`
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Writer\File\CsvVariantGroupWriter` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Pim\Component\Connector\Writer\File\FileExporterInterface`
@@ -40,9 +40,9 @@
 - Change constructor of `Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver` to remove the archive directory parameter
 - Change method `createZip` of `Pim\Bundle\BaseConnectorBundle\Filesystem\ZipFilesystemFactory` to return a `League\Flysystem\Filesystem`
 - Change method `getArchive` of `Pim\Bundle\BaseConnectorBundle\Archiver\ArchiverInterface` to return a `resource`
-- Change constructor of `Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface`
+- Change constructor of `Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\File\FileStorerInterface`
 - Remove method `generateFilenamePrefix` of `Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager`
-- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface` and to remove the upload directory parameter
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` to replace `Pim\Bundle\CatalogBundle\Manager\MediaManager` by `Akeneo\Component\FileStorage\File\FileStorerInterface` and to remove the upload directory parameter
 - Change constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`
 - Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver` to add event dispatcher `Symfony\Component\EventDispatcher\EventDispatcherInterface`

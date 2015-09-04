@@ -23,7 +23,7 @@ services:
         class: %pim_catalog.comparator.attribute.file.class%
         arguments:
             - ['pim_catalog_file', 'pim_catalog_image']
-            - '@akeneo_file_storage.repository.file'
+            - '@akeneo_file_storage.repository.file_info'
         tags:
             - { name: pim_catalog.attribute.comparator }
 

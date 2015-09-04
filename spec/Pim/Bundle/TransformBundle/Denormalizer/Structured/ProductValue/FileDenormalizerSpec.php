@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class FileDenormalizerSpec extends ObjectBehavior
 {
-    function let(FileRepositoryInterface $repository)
+    function let(FileInfoRepositoryInterface $repository)
     {
         $this->beConstructedWith(['pim_catalog_image', 'pim_catalog_file'], $repository);
     }
@@ -25,11 +25,11 @@ class FileDenormalizerSpec extends ObjectBehavior
         $this->denormalize(null, Argument::cetera())->shouldReturn(null);
     }
 
-    function it_denormalizes_an_existing_file($repository, FileInterface $file)
+    function it_denormalizes_an_existing_file($repository, FileInfoInterface $fileInfo)
     {
-        $repository->findOneByIdentifier('key/of/file.txt')->willReturn($file);
+        $repository->findOneByIdentifier('key/of/file.txt')->willReturn($fileInfo);
 
-        $this->denormalize(['filePath' => 'key/of/file.txt'], Argument::cetera())->shouldReturn($file);
+        $this->denormalize(['filePath' => 'key/of/file.txt'], Argument::cetera())->shouldReturn($fileInfo);
     }
 
     function it_supports_denormalization_of_files_and_images_from_json()

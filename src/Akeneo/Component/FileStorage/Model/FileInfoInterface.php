@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface FileInterface
+interface FileInfoInterface
 {
     /**
      * @return int
@@ -21,7 +21,7 @@ interface FileInterface
     /**
      * @param int $id
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      */
     public function setId($id);
 
@@ -35,7 +35,7 @@ interface FileInterface
     /**
      * @param string $key
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      */
     public function setKey($key);
 
@@ -47,7 +47,7 @@ interface FileInterface
     /**
      * @param string $originalFilename
      *
-     * @return FileInterface
+    * @return FileInfoInterface
      */
     public function setOriginalFilename($originalFilename);
 
@@ -59,7 +59,7 @@ interface FileInterface
     /**
      * @param string $mimeType
      *
-     * @return FileInterface
+     *@return FileInfoInterface
      */
     public function setMimeType($mimeType);
 
@@ -71,7 +71,7 @@ interface FileInterface
     /**
      * @param int $size
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      */
     public function setSize($size);
 
@@ -83,7 +83,7 @@ interface FileInterface
     /**
      * @param string $extension
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      */
     public function setExtension($extension);
 
@@ -95,7 +95,7 @@ interface FileInterface
     /**
      * @param string $hash
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      */
     public function setHash($hash);
 
@@ -107,7 +107,7 @@ interface FileInterface
     /**
      * @param string $storage
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      */
     public function setStorage($storage);
 
@@ -119,14 +119,14 @@ interface FileInterface
     /**
      * @param UploadedFile $uploadedFile
      *
-     * @return FileInterface|null
+     * @return FileInfoInterface|null
      */
     public function setUploadedFile(UploadedFile $uploadedFile = null);
 
     /**
      * @param bool $removed
      *
-     * @return FileInterface
+     * @return FileInfoInterface
      */
     public function setRemoved($removed);
 

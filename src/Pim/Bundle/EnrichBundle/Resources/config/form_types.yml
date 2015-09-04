@@ -180,7 +180,7 @@ services:
     pim_enrich.form.type.media:
         class: %pim_enrich.form.type.product_value_media.class%
         arguments:
-            - %akeneo_file_storage.model.file.class%
+            - %akeneo_file_storage.model.file_info.class%
         tags:
             - { name: form.type, alias: pim_enrich_media }
 
@@ -284,7 +284,7 @@ services:
     pim_enrich.form.type.image:
         class: %pim_enrich.form.type.image.class%
         arguments:
-            - %akeneo_file_storage.model.file.class%
+            - %akeneo_file_storage.model.file_info.class%
         tags:
             - { name: form.type, alias: pim_enrich_image }
 

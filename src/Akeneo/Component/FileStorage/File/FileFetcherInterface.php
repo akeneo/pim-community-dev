@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\FileStorage\RawFile;
+namespace Akeneo\Component\FileStorage\File;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use League\Flysystem\FilesystemInterface;
@@ -13,7 +13,7 @@ use League\Flysystem\FilesystemInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface RawFileFetcherInterface
+interface FileFetcherInterface
 {
     /**
      * @param FilesystemInterface $filesystem
