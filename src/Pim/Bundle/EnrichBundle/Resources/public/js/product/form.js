@@ -271,7 +271,7 @@ define(
              *                [ {'mediator:event:name': 'this:event:name'}, {...} ]
              */
             forwardMediatorEvents: function (events) {
-                _.map(events, function (localEvent, mediatorEvent) {
+                _.each(events, function (localEvent, mediatorEvent) {
                     this.listenTo(mediator, mediatorEvent, function (data) {
                         this.trigger(localEvent, data);
                     });
