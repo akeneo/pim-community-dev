@@ -30,7 +30,7 @@ class FileController extends Controller
     protected $mountManager;
 
     /** @var FileInfoRepositoryInterface */
-    protected $fileRepository;
+    protected $fileInfoRepository;
 
     /** @var FileTypeGuesserInterface */
     protected $fileTypeGuesser;
@@ -44,7 +44,7 @@ class FileController extends Controller
     /**
      * @param ImagineController             $imagineController
      * @param MountManager                  $mountManager
-     * @param FileInfoRepositoryInterface   $fileRepository
+     * @param FileInfoRepositoryInterface   $fileInfoRepository
      * @param FileTypeGuesserInterface      $fileTypeGuesser
      * @param DefaultImageProviderInterface $defaultImageProvider
      * @param array                         $filesystemAliases
@@ -52,14 +52,14 @@ class FileController extends Controller
     public function __construct(
         ImagineController $imagineController,
         MountManager $mountManager,
-        FileInfoRepositoryInterface $fileRepository,
+        FileInfoRepositoryInterface $fileInfoRepository,
         FileTypeGuesserInterface $fileTypeGuesser,
         DefaultImageProviderInterface $defaultImageProvider,
         array $filesystemAliases
     ) {
         $this->imagineController    = $imagineController;
         $this->mountManager         = $mountManager;
-        $this->fileRepository       = $fileRepository;
+        $this->fileInfoRepository   = $fileInfoRepository;
         $this->fileTypeGuesser      = $fileTypeGuesser;
         $this->defaultImageProvider = $defaultImageProvider;
         $this->filesystemAliases    = $filesystemAliases;
@@ -80,7 +80,7 @@ class FileController extends Controller
             return $this->renderDefaultImage(FileTypes::MISC, $filter);
         }
 
-        $file = $this->fileRepository->findOneByIdentifier($filename);
+        $file = $this->fileInfoRepository->findOneByIdentifier($filename);
         if (null !== $file) {
             if (FileTypes::IMAGE === $fileType = $this->fileTypeGuesser->guess($file->getMimeType())) {
                 try {
@@ -111,8 +111,16 @@ class FileController extends Controller
             $fs = $this->mountManager->getFilesystem($alias);
             if ($fs->has($filename)) {
                 $stream = $fs->readStream($filename);
+                $headers = [];
 
-                return new StreamedFileResponse($stream);
+                if (null !== $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename)) {
+                    $headers['Content-Disposition'] = sprintf(
+                        'attachment; filename="%s"',
+                        $fileInfo->getOriginalFilename()
+                    );
+                }
+
+                return new StreamedFileResponse($stream, 200, $headers);
             }
         }
 
