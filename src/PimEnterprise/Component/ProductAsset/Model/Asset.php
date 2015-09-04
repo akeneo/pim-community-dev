@@ -324,8 +324,7 @@ class Asset implements AssetInterface, VersionableInterface
 
     /**
      * Look for the variation corresponding to the specified channel and return its file.
-     * If the asset is localizable the search will be done in the variations of the specified locale. If no locale is
-     * specified, the first reference found will be used.
+     * If the asset is localizable the search will be done in the variations of the specified locale.
      * If the reference has no variations or variation files are not generated, return null.
      *
      * {@inheritdoc}
@@ -333,9 +332,6 @@ class Asset implements AssetInterface, VersionableInterface
     public function getFileForContext(ChannelInterface $channel, LocaleInterface $locale = null)
     {
         $reference = $this->getReference($locale);
-        if (null === $reference) {
-            $reference = $this->getReference();
-        }
 
         if (null === $reference) {
             return null;
