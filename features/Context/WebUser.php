@@ -219,6 +219,26 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $tab
+     *
+     * @Then /^I should see the tab "([^"]*)"$/
+     */
+    public function iShouldSeeTheTab($tab)
+    {
+        $visibleTabs = $this->getCurrentPage()->getTabs($tab);
+
+        foreach ($visibleTabs as $visibleTab) {
+            if ($visibleTab->getText() === $tab) {
+                return true;
+            }
+        }
+
+        throw $this->createExpectationException(
+            sprintf('Expecting to see the tab "%s" but not found', $tab)
+        );
+    }
+
+    /**
      * @param string $group
      *
      * @Given /^I visit the "([^"]*)" group$/
