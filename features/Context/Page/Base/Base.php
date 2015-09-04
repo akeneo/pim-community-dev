@@ -21,13 +21,14 @@ class Base extends Page
     use SpinCapableTrait;
 
     protected $elements = [
-        'Dialog'         => ['css' => 'div.modal'],
-        'Title'          => ['css' => '.navbar-title'],
-        'Product title'  => ['css' => '.product-title'],
-        'HeadTitle'      => ['css' => 'title'],
-        'Flash messages' => ['css' => '.flash-messages-holder'],
-        'Navigation Bar' => ['css' => 'header#oroplatform-header'],
-        'Container'      => ['css' => '#container'],
+        'Dialog'           => ['css' => 'div.modal'],
+        'Title'            => ['css' => '.navbar-title'],
+        'Product title'    => ['css' => '.product-title'],
+        'HeadTitle'        => ['css' => 'title'],
+        'Flash messages'   => ['css' => '.flash-messages-holder'],
+        'Navigation Bar'   => ['css' => 'header#oroplatform-header'],
+        'Container'        => ['css' => '#container'],
+        'Locales dropdown' => ['css' => '#locale-switcher'],
     ];
 
     /**
@@ -353,5 +354,27 @@ class Base extends Page
         }
 
         return $listItem;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function hasSelectedLocale($locale)
+    {
+        $selectedLocale = $this->getElement('Locales dropdown')->find('css', 'li.active a');
+        if (null === $selectedLocale) {
+            throw new \Exception('Could not find locales in switcher.');
+        }
+
+        $title = $selectedLocale->getAttribute('title');
+        if ($locale !== $title) {
+            throw new \Exception(sprintf('Locale is expected to be "%s", actually is "%s".', $locale, $title));
+        }
+
+        return true;
     }
 }
