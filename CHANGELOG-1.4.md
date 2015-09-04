@@ -1,5 +1,12 @@
 # 1.4.x
 
+# 1.4.0-RC1 (2015-09-04)
+
+## Technical improvements
+
+- Rename FileStorage classes and services: File (file information stored in database) => FileInfo, RawFile (physical file on the disk) => File
+- Change namespace of Classification component and bundle from Pim to Akeneo
+
 # 1.4.0-BETA3 (2015-09-02)
 
 ## BC breaks
