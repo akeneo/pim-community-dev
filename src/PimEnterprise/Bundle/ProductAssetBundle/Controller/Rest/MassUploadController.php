@@ -208,9 +208,12 @@ class MassUploadController
         $result      = $this->scheduler->schedule($this->getUploadContext());
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier('apply_assets_mass_upload');
 
-        $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), '{}');
+        $jobExecution = $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), '{}');
 
-        return new JsonResponse(['result' => $result]);
+        return new JsonResponse([
+            'result' => $result,
+            'jobId'  => $jobExecution->getId(),
+        ]);
     }
 
     /**

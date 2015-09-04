@@ -92,3 +92,5 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager]
     refuse_product_draft:
         executeJobProfile: [IT support, Manager]
+    apply_assets_mass_upload:
+        executeJobProfile: [IT support, Manager]
