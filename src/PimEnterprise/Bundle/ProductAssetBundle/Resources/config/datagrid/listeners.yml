@@ -8,3 +8,4 @@ services:
             - '@pimee_product_asset.datagrid.configuration.asset.context_configurator'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.asset-grid, method: buildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.asset-picker-grid, method: buildBefore }
