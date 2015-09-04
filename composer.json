@@ -20,7 +20,6 @@
         "doctrine/doctrine-migrations-bundle": "1.0.0",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "sensio/generator-bundle": "2.3.5",
-        "oro/platform": "dev-pim-1.4",
         "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
