@@ -16,6 +16,8 @@ use Akeneo\Component\Classification\Repository\TagRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\CategoryInterface;
+use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -26,6 +28,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class AssetUpdater implements ObjectUpdaterInterface
 {
+    const INNER_SEPARATOR = ',';
+
     /** @var TagRepositoryInterface */
     protected $tagRepository;
 
@@ -93,39 +97,69 @@ class AssetUpdater implements ObjectUpdaterInterface
     }
 
     /**
+     * It sets the tags by diff with existing tags and then remove other tags (due to doctrine UOW that does not
+     * update link between the tags and the asset).
+     *
      * @param AssetInterface $asset
-     * @param mixed          $data
+     * @param array          $data
      */
-    protected function setTags(AssetInterface $asset, $data)
+    protected function setTags(AssetInterface $asset, array $data)
     {
-        $asset->getTags()->clear();
-        foreach ($data as $tagCode) {
-            if (null === $tag = $this->tagRepository->findOneByIdentifier($tagCode)) {
-                throw new \InvalidArgumentException(sprintf('Tag with "%s" code does not exist', $tagCode));
-            }
+        $tagCodes = [];
+        $newTags  = $data;
 
-            $asset->addTag($tag);
+        if ('' !== $asset->getTagCodes()) {
+            $tagCodes = explode(static::INNER_SEPARATOR, $asset->getTagCodes());
+        }
+
+        if (!empty($tagCodes)) {
+            $newTags = array_diff($data, $tagCodes);
+        }
+
+        foreach ($newTags as $tagCode) {
+            $asset->addTag($this->getTagByCode($tagCode));
+        }
+
+        if (!empty($tagCodes)) {
+            $toRemoveTags = array_diff($tagCodes, $data);
+            $this->removeTags($asset, $toRemoveTags);
         }
     }
 
     /**
+     * It sets the categories by diff with existing tags and then remove other categories (due to doctrine UOW that
+     * does not update link between the categories and the asset).
+     *
      * @param AssetInterface $asset
-     * @param mixed          $data
+     * @param array          $data
      */
-    protected function setCategories(AssetInterface $asset, $data)
+    protected function setCategories(AssetInterface $asset, array $data)
     {
-        $asset->getCategories()->clear();
-        foreach ($data as $categoryCode) {
-            if (null === $category = $this->categoryRepository->findOneByIdentifier($categoryCode)) {
-                throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $categoryCode));
-            }
+        $categoriesCode = [];
+        $newCategories  = $data;
 
-            $asset->addCategory($category);
+        if ('' !== $asset->getCategoryCodes()) {
+            $categoriesCode = explode(static::INNER_SEPARATOR, $asset->getCategoryCodes());
+        }
+
+        if (!empty($categoriesCode)) {
+            $newCategories = array_diff($newCategories, $categoriesCode);
+        }
+
+        foreach ($newCategories as $categoryCode) {
+            $asset->addCategory($this->getCategoryByCode($categoryCode));
+        }
+
+        if (!empty($categoriesCode)) {
+            $categories = array_diff($categoriesCode, $data);
+            $this->removeCategories($asset, $categories);
         }
     }
 
     /**
      * @param string $data
+     *
+     * @throws \InvalidArgumentException
      */
     protected function validateDateFormat($data)
     {
@@ -138,6 +172,64 @@ class AssetUpdater implements ObjectUpdaterInterface
             throw new \InvalidArgumentException(
                 sprintf('Asset expects a string with the format "yyyy-mm-dd" as data, "%s" given', $data)
             );
+        }
+    }
+
+    /**
+     * @param string $tagCode
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return TagInterface
+     */
+    protected function getTagByCode($tagCode)
+    {
+        $tag = $this->tagRepository->findOneByIdentifier($tagCode);
+
+        if (null === $tag) {
+            throw new \InvalidArgumentException(sprintf('Tag with "%s" code does not exist', $tagCode));
+        }
+
+        return $tag;
+    }
+
+    /**
+     * @param string $categoryCode
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return CategoryInterface
+     */
+    protected function getCategoryByCode($categoryCode)
+    {
+        $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+
+        if (null === $category) {
+            throw new \InvalidArgumentException(sprintf('Category with "%s" code does not exist', $categoryCode));
+        }
+
+        return $category;
+    }
+
+    /**
+     * @param AssetInterface $asset
+     * @param array          $tags
+     */
+    protected function removeTags(AssetInterface $asset, array $tags)
+    {
+        foreach ($tags as $tagCode) {
+            $asset->removeTag($this->getTagByCode($tagCode));
+        }
+    }
+
+    /**
+     * @param AssetInterface $asset
+     * @param array          $categories
+     */
+    protected function removeCategories(AssetInterface $asset, array $categories)
+    {
+        foreach ($categories as $categoryCode) {
+            $asset->removeCategory($this->getCategoryByCode($categoryCode));
         }
     }
 }
