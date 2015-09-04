@@ -120,3 +120,4 @@ datagrid:
                 route: pimee_product_asset_edit
                 params:
                     - id
+                    - dataLocale

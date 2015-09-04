@@ -1,0 +1,6 @@
+parameters:
+    pimee_product_asset.datasource.result_record.hydrator.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Datasource\ResultRecord\ORM\AssetHydrator
+
+services:
+    pimee_product_asset.datasource.result_record.hydrator.asset:
+        class: %pimee_product_asset.datasource.result_record.hydrator.asset.class%

@@ -14,8 +14,8 @@
 
 {% block content %}
     {% set actionQueryParams = {id: asset.id} %}
-    {% if app.request.get('locale') %}
-        {% set actionQueryParams = actionQueryParams|merge({locale: app.request.get('locale')}) %}
+    {% if app.request.get('dataLocale') %}
+        {% set actionQueryParams = actionQueryParams|merge({dataLocale: app.request.get('dataLocale')}) %}
     {% endif %}
     {{ form_start(form, {
         'action': path('pimee_product_asset_edit', actionQueryParams),

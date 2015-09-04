@@ -48,7 +48,7 @@ Feature: Assign assets to a product
     And I upload the reference file akene.jpg
     And I save the asset
     And I visit the "Variations" tab
-    And I switch the locale to "English (United States)"
+    And I switch the locale to "Englisch (Vereinigte Staaten)"
     And I upload the reference file akene.jpg
     And I save the asset
     And I am on the "shirt" product page

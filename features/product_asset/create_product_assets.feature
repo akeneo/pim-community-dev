@@ -14,6 +14,7 @@ Feature: Create product assets
   Scenario: Create a localized asset
     Given I am logged in as "Pamela"
     And I am on the assets page
+    And I switch the locale to "French (France)"
     And I press the "Create an asset" button
     Then I should see a dialog with the following content:
       | title | Create a new asset |
@@ -24,7 +25,7 @@ Feature: Create product assets
     And I should see the reference upload zone
     And I should see the Mobile variation upload zone
     And I should see the Tablet variation upload zone
-    And I switch the locale to "French (France)"
+    And the locale "français (France)" should be selected
 
   Scenario: Create a non localized asset
     Given I am logged in as "Pamela"

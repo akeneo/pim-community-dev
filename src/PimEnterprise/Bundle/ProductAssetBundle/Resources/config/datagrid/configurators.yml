@@ -1,0 +1,9 @@
+parameters:
+    pimee_product_asset.datagrid.configuration.asset.context_configurator.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Configuration\AssetContextConfigurator
+
+services:
+    pimee_product_asset.datagrid.configuration.asset.context_configurator:
+        class: %pimee_product_asset.datagrid.configuration.asset.context_configurator.class%
+        arguments:
+            - '@pim_datagrid.datagrid.request.parameters_extractor'
+            - '@pimee_product_asset.context.user'

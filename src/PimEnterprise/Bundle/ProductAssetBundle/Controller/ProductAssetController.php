@@ -274,6 +274,10 @@ class ProductAssetController extends Controller
                 $params = [];
             }
 
+            if ($asset->isLocalizable()) {
+                $params['dataLocale'] = $this->getDataLocale()->getCode();
+            }
+
             return $this->redirect($this->generateUrl($route, $params));
         } elseif (!$form->isValid() && $form->isSubmitted()) {
             $uploadedFile = $form->get('reference_file')->get('uploadedFile');
@@ -373,7 +377,7 @@ class ProductAssetController extends Controller
         $parameters = ['id' => $asset->getId()];
 
         if (null !== $reference->getLocale()) {
-            $parameters['locale'] = $reference->getLocale()->getCode();
+            $parameters['dataLocale'] = $reference->getLocale()->getCode();
         }
 
         return $this->redirectAfterEdit($request, $parameters);
@@ -408,7 +412,7 @@ class ProductAssetController extends Controller
         $parameters = ['id' => $asset->getId()];
 
         if (null !== $reference->getLocale()) {
-            $parameters['locale'] = $reference->getLocale()->getCode();
+            $parameters['dataLocale'] = $reference->getLocale()->getCode();
         }
 
         return $this->redirectAfterEdit($request, $parameters);
@@ -448,7 +452,7 @@ class ProductAssetController extends Controller
         $parameters = ['id' => $asset->getId()];
 
         if (null !== $reference->getLocale()) {
-            $parameters['locale'] = $reference->getLocale()->getCode();
+            $parameters['dataLocale'] = $reference->getLocale()->getCode();
         }
 
         return $this->redirectAfterEdit($request, $parameters);
@@ -487,7 +491,7 @@ class ProductAssetController extends Controller
         $parameters = ['id' => $asset->getId()];
 
         if (null !== $reference->getLocale()) {
-            $parameters['locale'] = $reference->getLocale()->getCode();
+            $parameters['dataLocale'] = $reference->getLocale()->getCode();
         }
 
         return $this->redirectAfterEdit($request, $parameters);
@@ -654,8 +658,8 @@ class ProductAssetController extends Controller
         $productAsset = $this->findProductAssetOr404($id);
         $assetLocales = $productAsset->getLocales();
 
-        if (null !== $request->get('locale')) {
-            $locale = $assetLocales[$request->get('locale')];
+        if (null !== $request->get('dataLocale')) {
+            $locale = $assetLocales[$request->get('dataLocale')];
         } elseif (!empty($assetLocales)) {
             $locale = reset($assetLocales);
         } else {
@@ -790,8 +794,8 @@ class ProductAssetController extends Controller
                 $params = [];
                 break;
             default:
-                if (null !== $request->get('locale')) {
-                    $params['locale'] = $request->get('locale');
+                if (null !== $request->get('dataLocale')) {
+                    $params['dataLocale'] = $request->get('dataLocale');
                 }
                 $route = 'pimee_product_asset_edit';
                 break;
