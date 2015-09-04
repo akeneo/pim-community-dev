@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Updater;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -11,9 +11,9 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 class FilesUpdaterSpec extends ObjectBehavior
 {
     function let(
-        RawFileStorerInterface $rawFileStorer
+        FileStorerInterface $fileStorer
     ) {
-        $this->beConstructedWith($rawFileStorer);
+        $this->beConstructedWith($fileStorer);
     }
 
     function it_can_be_initialized()
@@ -26,31 +26,34 @@ class FilesUpdaterSpec extends ObjectBehavior
         $this->shouldImplement('PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface');
     }
 
-    function it_can_delete_reference_file(ReferenceInterface $reference, FileInterface $file)
+    function it_can_delete_reference_file(ReferenceInterface $reference, FileInfoInterface $fileInfo)
     {
-        $reference->getFile()->willReturn($file);
-        $reference->setFile(null)->shouldBeCalled();
+        $reference->getFileInfo()->willReturn($fileInfo);
+        $reference->setFileInfo(null)->shouldBeCalled();
 
         $this->deleteReferenceFile($reference);
     }
 
-    function it_can_reset_variation_file(VariationInterface $variation, ReferenceInterface $reference, FileInterface $file)
-    {
+    function it_can_reset_variation_file(
+        VariationInterface $variation,
+        ReferenceInterface $reference,
+        FileInfoInterface $fileInfo
+    ) {
         $variation->getReference()->willReturn($reference);
-        $reference->getFile()->willReturn($file);
+        $reference->getFileInfo()->willReturn($fileInfo);
 
-        $variation->setFile(null)->shouldBeCalled();
+        $variation->setFileInfo(null)->shouldBeCalled();
         $variation->setLocked(false)->shouldBeCalled();
-        $variation->setSourceFile($file)->shouldBeCalled();
+        $variation->setSourceFileInfo($fileInfo)->shouldBeCalled();
 
         $this->resetVariationFile($variation);
     }
 
     function it_can_delete_variation_file(VariationInterface $variation)
     {
-        $variation->setFile(null)->shouldBeCalled();
+        $variation->setFileInfo(null)->shouldBeCalled();
         $variation->setLocked(true)->shouldBeCalled();
-        $variation->setSourceFile(null)->shouldBeCalled();
+        $variation->setSourceFileInfo(null)->shouldBeCalled();
 
         $this->deleteVariationFile($variation);
     }

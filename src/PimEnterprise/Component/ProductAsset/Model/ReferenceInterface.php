@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -53,16 +53,16 @@ interface ReferenceInterface
     public function setLocale(LocaleInterface $locale);
 
     /**
-     * @return FileInterface
+     * @return FileInfoInterface
      */
-    public function getFile();
+    public function getFileInfo();
 
     /**
-     * @param FileInterface $file
+     * @param FileInfoInterface $fileInfo
      *
      * @return ReferenceInterface
      */
-    public function setFile(FileInterface $file = null);
+    public function setFileInfo(FileInfoInterface $fileInfo = null);
 
     /**
      * @return ArrayCollection|VariationInterface[]

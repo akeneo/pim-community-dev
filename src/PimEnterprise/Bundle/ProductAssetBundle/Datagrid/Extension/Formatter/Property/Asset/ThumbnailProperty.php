@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\Asset;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -58,10 +58,10 @@ class ThumbnailProperty extends TwigProperty
     /**
      * {@inheritdoc}
      */
-    protected function format($file)
+    protected function format($fileInfo)
     {
-        $path = $file instanceof FileInterface ?
-            $file->getKey() :
+        $path = $fileInfo instanceof FileInfoInterface ?
+            $fileInfo->getKey() :
             FileController::DEFAULT_IMAGE_KEY;
 
         return $this->getTemplate()->render(['path' => $path]);

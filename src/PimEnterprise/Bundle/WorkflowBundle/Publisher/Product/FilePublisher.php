@@ -11,11 +11,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product file publisher
+ *
+ * TODO: rename it to FileInfoPublisher
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -37,6 +39,6 @@ class FilePublisher implements PublisherInterface
      */
     public function supports($object)
     {
-        return $object instanceof FileInterface;
+        return $object instanceof FileInfoInterface;
     }
 }

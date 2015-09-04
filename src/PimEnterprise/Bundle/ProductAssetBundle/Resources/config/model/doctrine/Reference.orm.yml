@@ -9,10 +9,10 @@ PimEnterprise\Component\ProductAsset\Model\Reference:
             generator:
                 strategy: AUTO
     oneToOne:
-        file:
-            targetEntity: Akeneo\Component\FileStorage\Model\FileInterface
+        fileInfo:
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInfoInterface
             joinColumn:
-                name: file_id
+                name: file_info_id
                 referencedColumnName: id
     manyToOne:
         locale:

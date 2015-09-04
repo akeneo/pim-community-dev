@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -92,14 +92,14 @@ class FilePresenter implements PresenterInterface
     /**
      * Check diff between old and new file
      *
-     * @param array         $change
-     * @param FileInterface $file
+     * @param array             $change
+     * @param FileInfoInterface $fileInfo
      *
      * @return bool
      */
-    protected function isDiff(array $change, FileInterface $file = null)
+    protected function isDiff(array $change, FileInfoInterface $fileInfo = null)
     {
-        $dataHash   = null !== $file ? $file->getHash() : null;
+        $dataHash   = null !== $fileInfo ? $fileInfo->getHash() : null;
         $changeHash = isset($change['data']['hash']) ? $change['data']['hash'] : null;
 
         return $dataHash !== $changeHash;

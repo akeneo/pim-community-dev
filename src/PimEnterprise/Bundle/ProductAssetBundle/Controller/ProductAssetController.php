@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Akeneo\Component\FileStorage\FileFactoryInterface;
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\FileInfoFactoryInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformation\GenericTransformationException;
@@ -108,8 +108,8 @@ class ProductAssetController extends Controller
     /** @var AssetFactory */
     protected $assetFactory;
 
-    /** @var FileFactoryInterface */
-    protected $fileFactory;
+    /** @var FileInfoFactoryInterface */
+    protected $fileInfoFactory;
 
     /** @var UserContext */
     protected $userContext;
@@ -141,7 +141,7 @@ class ProductAssetController extends Controller
      * @param RemoverInterface                 $assetRemover
      * @param EventDispatcherInterface         $eventDispatcher
      * @param AssetFactory                     $assetFactory
-     * @param FileFactoryInterface             $fileFactory
+     * @param FileInfoFactoryInterface         $fileInfoFactory
      * @param UserContext                      $userContext
      * @param FileController                   $fileController
      * @param AssetCategoryRepositoryInterface $assetCategoryRepo
@@ -163,7 +163,7 @@ class ProductAssetController extends Controller
         RemoverInterface $assetRemover,
         EventDispatcherInterface $eventDispatcher,
         AssetFactory $assetFactory,
-        FileFactoryInterface $fileFactory,
+        FileInfoFactoryInterface $fileInfoFactory,
         UserContext $userContext,
         FileController $fileController,
         AssetCategoryRepositoryInterface $assetCategoryRepo,
@@ -184,7 +184,7 @@ class ProductAssetController extends Controller
         $this->assetRemover           = $assetRemover;
         $this->eventDispatcher        = $eventDispatcher;
         $this->assetFactory           = $assetFactory;
-        $this->fileFactory            = $fileFactory;
+        $this->fileInfoFactory        = $fileInfoFactory;
         $this->userContext            = $userContext;
         $this->fileController         = $fileController;
         $this->assetCategoryRepo      = $assetCategoryRepo;
@@ -245,13 +245,13 @@ class ProductAssetController extends Controller
             try {
                 if (!$isLocalized && null !== $uploadedFile) {
                     $reference = $asset->getReference();
-                    $file = $this->fileFactory->createFromRawFile(
+                    $file = $this->fileInfoFactory->createFromRawFile(
                         $uploadedFile,
                         ['path' => '', 'file_name' => '', 'guid' => ''],
                         FileStorage::ASSET_STORAGE_ALIAS
                     );
                     $file->setUploadedFile($uploadedFile);
-                    $reference->setFile($file);
+                    $reference->setFileInfo($file);
                     $this->assetFilesUpdater->updateAssetFiles($asset);
                     $this->assetSaver->save($asset);
                     $event = $this->eventDispatcher->dispatch(
@@ -738,11 +738,11 @@ class ProductAssetController extends Controller
         $metadata = [];
 
         foreach ($productAsset->getReferences() as $reference) {
-            $referenceFileMeta = $reference->getFile() ? $this->getFileMetadata($reference->getFile()) : null;
+            $referenceFileMeta = $reference->getFileInfo() ? $this->getFileMetadata($reference->getFileInfo()) : null;
             $metadata['references'][$reference->getId()] = $referenceFileMeta;
 
             foreach ($reference->getVariations() as $variation) {
-                $variationFileMeta = $variation->getFile() ? $this->getFileMetadata($variation->getFile()) : null;
+                $variationFileMeta = $variation->getFileInfo() ? $this->getFileMetadata($variation->getFileInfo()) : null;
                 $metadata['variations'][$variation->getId()] = $variationFileMeta;
             }
         }
@@ -751,13 +751,13 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * @param FileInterface $file
+     * @param FileInfoInterface $fileInfo
      *
      * @return FileMetadataInterface
      */
-    protected function getFileMetadata(FileInterface $file)
+    protected function getFileMetadata(FileInfoInterface $fileInfo)
     {
-        $metadata = $this->metadataRepository->findOneBy(['file' => $file->getId()]);
+        $metadata = $this->metadataRepository->findOneBy(['fileInfo' => $fileInfo->getId()]);
 
         return $metadata;
     }

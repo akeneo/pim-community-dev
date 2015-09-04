@@ -27,7 +27,7 @@ services:
     pimee_product_asset.updater.files:
         class: %pimee_product_asset.updater.files.class%
         arguments:
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
 
     pimee_product_asset.updater.tag:
         class: %pimee_product_asset.updater.tag.class%

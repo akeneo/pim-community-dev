@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Normalizer\Flat;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -23,8 +23,8 @@ class VariationNormalizerSpec extends ObjectBehavior
         LocaleInterface $locale,
         ChannelInterface $channel,
         ReferenceInterface $reference,
-        FileInterface $referenceFile,
-        FileInterface $variationFile
+        FileInfoInterface $referenceFile,
+        FileInfoInterface $variationFile
     ) {
         $normalizedValues = [
             'asset'          => 'paint',
@@ -41,9 +41,9 @@ class VariationNormalizerSpec extends ObjectBehavior
         $variation->getChannel()->willReturn($channel);
         $channel->getCode()->willReturn('ecommerce');
         $variation->getReference()->willReturn($reference);
-        $reference->getFile()->willReturn($referenceFile);
+        $reference->getFileInfo()->willReturn($referenceFile);
         $referenceFile->getKey()->willReturn('e/f/9/0/d15fe8_photo.jpg');
-        $variation->getFile()->willReturn($variationFile);
+        $variation->getFileInfo()->willReturn($variationFile);
         $variationFile->getKey()->willReturn('b/9/f/f/f4210_photo_mobile.jpg');
 
         $this->normalize($variation)->shouldReturn($normalizedValues);

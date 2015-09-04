@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -32,8 +32,8 @@ class Reference implements ReferenceInterface
     /** @var LocaleInterface */
     protected $locale;
 
-    /** @var FileInterface */
-    protected $file;
+    /** @var FileInfoInterface */
+    protected $fileInfo;
 
     /** @var ArrayCollection of VariationInterface */
     protected $variations;
@@ -91,17 +91,17 @@ class Reference implements ReferenceInterface
     /**
      * {@inheritdoc}
      */
-    public function getFile()
+    public function getFileInfo()
     {
-        return $this->file;
+        return $this->fileInfo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setFile(FileInterface $file = null)
+    public function setFileInfo(FileInfoInterface $fileInfo = null)
     {
-        $this->file = $file;
+        $this->fileInfo = $fileInfo;
 
         return $this;
     }

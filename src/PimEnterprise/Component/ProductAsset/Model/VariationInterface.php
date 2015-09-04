@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
@@ -62,28 +62,28 @@ interface VariationInterface
     public function setChannel(ChannelInterface $channel);
 
     /**
-     * @return FileInterface
+     * @return FileInfoInterface
      */
-    public function getFile();
+    public function getFileInfo();
 
     /**
-     * @param FileInterface $file
+     * @param FileInfoInterface $fileInfo
      *
      * @return VariationInterface
      */
-    public function setFile(FileInterface $file = null);
+    public function setFileInfo(FileInfoInterface $fileInfo = null);
 
     /**
-     * @return FileInterface
+     * @return FileInfoInterface
      */
-    public function getSourceFile();
+    public function getSourceFileInfo();
 
     /**
-     * @param FileInterface $file
+     * @param FileInfoInterface $fileInfo
      *
      * @return VariationInterface
      */
-    public function setSourceFile(FileInterface $file = null);
+    public function setSourceFileInfo(FileInfoInterface $fileInfo = null);
 
     /**
      * @return bool

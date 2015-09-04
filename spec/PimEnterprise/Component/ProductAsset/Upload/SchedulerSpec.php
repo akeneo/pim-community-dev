@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
@@ -14,9 +14,9 @@ class SchedulerSpec extends ObjectBehavior
 
     function let(
         UploadCheckerInterface $uploadChecker,
-        RawFileStorerInterface $rawFileStorer
+        FileStorerInterface $fileStorer
     ) {
-        $this->beConstructedWith($uploadChecker, $rawFileStorer);
+        $this->beConstructedWith($uploadChecker, $fileStorer);
 
         $this->createUploadBaseDirectory();
     }

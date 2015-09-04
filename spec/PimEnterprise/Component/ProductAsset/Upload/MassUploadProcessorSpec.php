@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\Doctrine\Common\Saver\AssetSaver;
@@ -29,7 +29,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         AssetRepositoryInterface $assetRepository,
         AssetSaver $assetSaver,
         FilesUpdaterInterface $filesUpdater,
-        RawFileStorerInterface $rawFileStorer,
+        FileStorerInterface $fileStorer,
         LocaleRepositoryInterface $localeRepository,
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator
@@ -40,7 +40,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $assetRepository,
             $assetSaver,
             $filesUpdater,
-            $rawFileStorer,
+            $fileStorer,
             $localeRepository,
             $eventDispatcher,
             $translator
@@ -54,22 +54,22 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
     function it_creates_an_asset_from_a_non_localizable_file(
         SplFileInfo $file,
-        FileInterface $rawFile,
+        FileInfoInterface $fileInfo,
         AssetInterface $asset,
         ReferenceInterface $reference,
         $uploadChecker,
         $assetFactory,
         $assetRepository,
         $filesUpdater,
-        $rawFileStorer,
+        $fileStorer,
         $localeRepository
     ) {
         $this->initializeApplyScheduledUpload($file,
-            $rawFile,
+            $fileInfo,
             $asset,
             $reference,
             $filesUpdater,
-            $rawFileStorer
+            $fileStorer
         );
 
         $assetInfos = [
@@ -101,22 +101,22 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
     function it_creates_an_asset_from_a_localizable_file(
         SplFileInfo $file,
-        FileInterface $rawFile,
+        FileInfoInterface $fileInfo,
         AssetInterface $asset,
         ReferenceInterface $reference,
         $uploadChecker,
         $assetFactory,
         $assetRepository,
         $filesUpdater,
-        $rawFileStorer,
+        $fileStorer,
         $localeRepository
     ) {
         $this->initializeApplyScheduledUpload($file,
-            $rawFile,
+            $fileInfo,
             $asset,
             $reference,
             $filesUpdater,
-            $rawFileStorer
+            $fileStorer
         );
 
         $assetInfos = [
@@ -148,22 +148,22 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
     function it_updates_an_asset_from_a_localizable_file(
         SplFileInfo $file,
-        FileInterface $rawFile,
+        FileInfoInterface $fileInfo,
         AssetInterface $asset,
         ReferenceInterface $reference,
         $uploadChecker,
         $assetFactory,
         $assetRepository,
         $filesUpdater,
-        $rawFileStorer,
+        $fileStorer,
         $localeRepository
     ) {
         $this->initializeApplyScheduledUpload($file,
-            $rawFile,
+            $fileInfo,
             $asset,
             $reference,
             $filesUpdater,
-            $rawFileStorer
+            $fileStorer
         );
 
         $assetInfos = [
@@ -192,21 +192,21 @@ class MassUploadProcessorSpec extends ObjectBehavior
 
     protected function initializeApplyScheduledUpload(
         SplFileInfo $file,
-        FileInterface $rawFile,
+        FileInfoInterface $fileInfo,
         AssetInterface $asset,
         ReferenceInterface $reference,
         $filesUpdater,
-        $rawFileStorer
+        $fileStorer
     ) {
         $file->getFilename()->willReturn('foobar.jpg');
 
-        $rawFileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true)
-            ->willReturn($rawFile);
+        $fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true)
+            ->willReturn($fileInfo);
 
         $asset->getReference(Argument::any())
             ->willReturn($reference);
 
-        $reference->setFile($rawFile)
+        $reference->setFileInfo($fileInfo)
             ->shouldBeCalled();
 
         $filesUpdater->updateAssetFiles($asset)

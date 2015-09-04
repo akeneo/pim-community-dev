@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Akeneo\Component\FileStorage\Model\File;
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * The FileMetadataInterface stores basic metadata for a file.
@@ -27,16 +27,16 @@ interface FileMetadataInterface
     public function getId();
 
     /**
-     * @return File
+     * @return FileInfoInterface
      */
-    public function getFile();
+    public function getFileInfo();
 
     /**
-     * @param FileInterface $file
+     * @param FileInfoInterface $fileInfo
      *
      * @return FileMetadataInterface
      */
-    public function setFile(FileInterface $file);
+    public function setFileInfo(FileInfoInterface $fileInfo);
 
     /**
      * @return \DateTime

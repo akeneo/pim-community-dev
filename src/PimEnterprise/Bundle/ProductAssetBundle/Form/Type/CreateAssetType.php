@@ -38,7 +38,7 @@ class CreateAssetType extends AbstractType
                 'constraints' => [ new Type(['type' => 'bool']) ],
             ]
         );
-        $builder->add('reference_file', 'akeneo_file_storage_file');
+        $builder->add('reference_file', 'akeneo_file_storage_file_info');
         $builder->add(
             'code',
             'text',

@@ -2,12 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class AssetNormalizerSpec extends ObjectBehavior

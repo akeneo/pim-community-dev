@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Classification\TagAwareInterface;
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -178,7 +178,7 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
      * @param ChannelInterface     $channel
      * @param LocaleInterface|null $locale
      *
-     * @return FileInterface|null
+     * @return FileInfoInterface|null
      */
     public function getFileForContext(ChannelInterface $channel, LocaleInterface $locale = null);
 }

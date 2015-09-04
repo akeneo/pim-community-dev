@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -33,7 +33,7 @@ class FilePresenterSpec extends ObjectBehavior
     function it_presents_files_in_a_list(
         $generator,
         ProductValueInterface $value,
-        FileInterface $media
+        FileInfoInterface $media
     ) {
         $value->getMedia()->willReturn($media);
         $media->getKey()->willReturn('key/of/the/media.pdf');
@@ -102,7 +102,7 @@ class FilePresenterSpec extends ObjectBehavior
     function it_only_presents_old_file_if_a_new_one_is_not_provided(
         $generator,
         ProductValueInterface $value,
-        FileInterface $media
+        FileInfoInterface $media
     ) {
         $value->getMedia()->willReturn($media);
         $media->getKey()->willReturn('key/of/the/media.pdf');

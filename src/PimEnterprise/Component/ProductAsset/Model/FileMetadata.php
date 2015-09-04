@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 
 /**
  * Implementation of the FileMetadataInterface
@@ -23,8 +23,8 @@ class FileMetadata implements FileMetadataInterface
     /** @var int */
     protected $id;
 
-    /** @var FileInterface */
-    protected $file;
+    /** @var FileInfoInterface */
+    protected $fileInfo;
 
     /** @var \DateTime */
     protected $modificationDatetime;
@@ -40,17 +40,17 @@ class FileMetadata implements FileMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getFile()
+    public function getFileInfo()
     {
-        return $this->file;
+        return $this->fileInfo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setFile(FileInterface $file)
+    public function setFileInfo(FileInfoInterface $fileInfo)
     {
-        $this->file = $file;
+        $this->fileInfo = $fileInfo;
 
         return $this;
     }

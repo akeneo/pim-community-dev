@@ -1,9 +1,9 @@
 <figure class="thumbnail">{% include '@PimEnterpriseProductAsset/Property/thumbnail.html.twig'
-    with {'path': variationModel.file.key, 'filter': 'thumbnail'} only %}</figure>
+    with {'path': variationModel.fileInfo.key, 'filter': 'thumbnail'} only %}</figure>
 <table class="table">
     <thead>
     <tr>
-        {% if 'image' in variationModel.file.mimeType and metadata.variations[variationModel.id] %}
+        {% if 'image' in variationModel.fileInfo.mimeType and metadata.variations[variationModel.id] %}
             <th>{{ 'pimee_product_asset.enrich_asset.view.width'|trans }}</th>
             <th>{{ 'pimee_product_asset.enrich_asset.view.height'|trans }}</th>
             <th>{{ 'pimee_product_asset.enrich_asset.view.resolution'|trans }}</th>
@@ -15,21 +15,22 @@
     </thead>
     <tbody>
     <tr>
-        {% if 'image' in variationModel.file.mimeType and metadata.variations[variationModel.id] %}
+        {% if 'image' in variationModel.fileInfo.mimeType and metadata.variations[variationModel.id] %}
             <td>{{ metadata.variations[variationModel.id].exifSizeWidth ? metadata.variations[variationModel.id].exifSizeWidth ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}</td>
             <td>{{ metadata.variations[variationModel.id].exifSizeHeight ? metadata.variations[variationModel.id].exifSizeHeight ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}</td>
             <td>{{ metadata.variations[variationModel.id].exifResolution ? metadata.variations[variationModel.id].exifResolution : 'pimee_product_asset.notAvailable.label'|trans }}</td>
         {% endif %}
-        <td>{{ variationModel.file.size|number_format(0, '.', ' ') }} ko</td>
-        <td>{{ variationModel.file.mimeType }}</td>
+        <td>{{ variationModel.fileInfo.size|number_format(0, '.', ' ') }} ko</td>
+        <td>{{ variationModel.fileInfo.mimeType }}</td>
         <td>
             {% block variation_buttons %}{% endblock %}
-            {% if variationModel.file %}
+            {% if variationModel.fileInfo %}
                 <a class="btn icons-holder-text no-hash btn-download"
                    title="{{ 'pimee_product_asset.enrich_asset.button.download'|trans }}"
-                   href="{{ path('pim_enrich_media_download', {'filename': variationModel.file.key|url_encode}) }}"
-                ><i class="icon-download-alt"></i>{{
-                    'pimee_product_asset.enrich_asset.button.download'|trans|capitalize }}</a>
+                   href="{{ path('pim_enrich_media_download', {'filename': variationModel.fileInfo.key|url_encode}) }}">
+                    <i class="icon-download-alt"></i>
+                    {{ 'pimee_product_asset.enrich_asset.button.download'|trans|capitalize }}
+                </a>
             {% endif %}
         </td>
     </tr>

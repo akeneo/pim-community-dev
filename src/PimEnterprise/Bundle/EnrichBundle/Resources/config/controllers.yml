@@ -86,7 +86,7 @@ services:
         arguments:
             - '@liip_imagine.controller'
             - '@oneup_flysystem.mount_manager'
-            - '@akeneo_file_storage.repository.file'
+            - '@akeneo_file_storage.repository.file_info'
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
             - ['catalogStorage', 'assetStorage']

@@ -33,14 +33,14 @@ class VariationNormalizer implements NormalizerInterface
         $normalizedVariation['locale']  = null !== $variation->getLocale() ? $variation->getLocale()->getCode() : '';
         $normalizedVariation['channel'] = null !== $variation->getChannel() ? $variation->getChannel()->getCode() : '';
 
-        if (null !== $variation->getReference() && null !== $variation->getReference()->getFile()) {
-            $normalizedVariation['reference_file'] = $variation->getReference()->getFile()->getKey();
+        if (null !== $variation->getReference() && null !== $variation->getReference()->getFileInfo()) {
+            $normalizedVariation['reference_file'] = $variation->getReference()->getFileInfo()->getKey();
         } else {
             $normalizedVariation['reference_file'] = '';
         }
 
-        if (null !== $variation->getFile()) {
-            $normalizedVariation['variation_file'] = $variation->getFile()->getKey();
+        if (null !== $variation->getFileInfo()) {
+            $normalizedVariation['variation_file'] = $variation->getFileInfo()->getKey();
         } else {
             $normalizedVariation['variation_file'] = '';
         }
