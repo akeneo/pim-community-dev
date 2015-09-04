@@ -44,6 +44,11 @@ pimee_product_asset_category_edit_permissions:
     label: pimee_product_asset.acl.category.manage
     group_name: pimee_product_asset.acl_group.category
 
+pimee_product_asset_picker_category_list:
+    type: action
+    label: pimee_product_asset.acl.category_asset_picker.list
+    group_name: pim_enrich.acl_group.product
+
 pimee_product_asset_mass_upload:
     type: action
     label: pimee_product_asset.acl.asset.mass_upload

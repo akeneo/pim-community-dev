@@ -103,7 +103,7 @@ define(
                 };
 
                 /* jshint nonew: false */
-                new CategoryFilter(urlParams, 'asset-grid', 'pimee_asset_categorytree');
+                new CategoryFilter(urlParams, 'asset-grid', 'pimee_asset_picker_categorytree');
 
                 $.get(Routing.generate('pim_datagrid_load', urlParams)).done(function (response) {
                     this.$('#grid-' + this.datagrid.name).data(
