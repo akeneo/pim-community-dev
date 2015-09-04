@@ -12,7 +12,6 @@ Feature: Classify an asset in the trees I have access
     Given I edit the "mugs" asset
     When I visit the "Categories" tab
     And I should see "Asset main catalog 0"
-    And I select the "Asset main catalog" tree
     And I expand the "Asset main catalog" category
     And I click on the "Sales documents" category
     And I click on the "Store documents" category
@@ -23,7 +22,6 @@ Feature: Classify an asset in the trees I have access
   Scenario: Show only granted categories
     Given I edit the "mugs" asset
     When I visit the "Categories" tab
-    And I select the "Asset main catalog" tree
     And I expand the "Asset main catalog" category
     Then I should not see "Technical documents"
     But I should see "Client documents"
