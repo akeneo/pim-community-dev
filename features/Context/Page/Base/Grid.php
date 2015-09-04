@@ -375,6 +375,29 @@ class Grid extends Index
     }
 
     /**
+     * Get an image element inside a grid cell
+     *
+     * @param string $column
+     * @param string $row
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return NodeElement
+     */
+    public function getCellImage($column, $row)
+    {
+        $cell = $this->getColumnNode($column, $row);
+        $image = $cell->find('css', 'img');
+        if (null === $image) {
+            throw new \InvalidArgumentException(
+                sprintf('Column "%s" of row "%s" contains no image.', $column, $row)
+            );
+        }
+
+        return $image;
+    }
+
+    /**
      * @param string $column
      * @param bool   $withActions
      *
