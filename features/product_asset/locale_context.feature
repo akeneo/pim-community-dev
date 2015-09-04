@@ -8,7 +8,7 @@ Feature: Keep context on product assets
     Given a "clothing" catalog configuration
     And I am logged in as "Pamela"
 
-  Scenario: Keep locale when editing an asset
+  Scenario: Keep locale when editing a localizable asset
     Given I am on the assets page
     And I switch the locale to "French (France)"
     And I click on the "chicagoskyline" row
@@ -22,6 +22,15 @@ Feature: Keep context on product assets
     Then I should be on the "chicagoskyline" asset edit page
     And the locale "English (United States)" should be selected
     When I switch the locale to "French (France)"
+    And I click back to grid
+    Then I should be on the assets page
+    Then the locale "français (France)" should be selected
+
+  Scenario: Keep locale when editing a non localizable asset
+    Given I am on the assets page
+    And I switch the locale to "French (France)"
+    And I click on the "paint" row
+    Then I should be on the "paint" asset edit page
     And I click back to grid
     Then I should be on the assets page
     Then the locale "français (France)" should be selected

@@ -658,7 +658,7 @@ class ProductAssetController extends Controller
         $productAsset = $this->findProductAssetOr404($id);
         $assetLocales = $productAsset->getLocales();
 
-        if (null !== $request->get('dataLocale')) {
+        if (null !== $request->get('dataLocale') && $productAsset->isLocalizable()) {
             $locale = $assetLocales[$request->get('dataLocale')];
         } elseif (!empty($assetLocales)) {
             $locale = reset($assetLocales);
