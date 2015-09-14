@@ -38,7 +38,7 @@ class CompletenessManager
     protected $generator;
 
     /** @var ProductValueCompleteCheckerInterface */
-    protected $productValueCompleteCkecker;
+    protected $productValueCompleteChecker;
 
     /** @var string */
     protected $class;
@@ -48,7 +48,7 @@ class CompletenessManager
      * @param ChannelRepositoryInterface           $channelRepository
      * @param LocaleRepositoryInterface            $localeRepository
      * @param CompletenessGeneratorInterface       $generator
-     * @param ProductValueCompleteCheckerInterface $productValueCompleteCkecker
+     * @param ProductValueCompleteCheckerInterface $productValueCompleteChecker
      * @param string                               $class
      */
     public function __construct(
@@ -56,14 +56,14 @@ class CompletenessManager
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
-        ProductValueCompleteCheckerInterface $productValueCompleteCkecker,
+        ProductValueCompleteCheckerInterface $productValueCompleteChecker,
         $class
     ) {
         $this->familyRepository            = $familyRepository;
         $this->channelRepository           = $channelRepository;
         $this->localeRepository            = $localeRepository;
         $this->generator                   = $generator;
-        $this->productValueCompleteCkecker = $productValueCompleteCkecker;
+        $this->productValueCompleteChecker = $productValueCompleteChecker;
         $this->class                       = $class;
     }
 
@@ -229,14 +229,18 @@ class CompletenessManager
             $valueCode    = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $missing      = false;
             $productValue = isset($productValues[$valueCode]) ? $productValues[$valueCode] : null;
-            if (null === $productValue) {
-                $missing = true;
-            } elseif ($this->productValueCompleteCkecker->supportsValue($productValue)
-                && !$this->productValueCompleteCkecker->isComplete($productValue, $channel, $locale)
-            ) {
-                $missing = true;
-            }
-            if ($missing) {
+
+            $isIncomplete = (null !== $productValue) &&
+                $this->productValueCompleteChecker->supportsValue($productValue) &&
+                !$this->productValueCompleteChecker->isComplete($productValue, $channel, $locale);
+
+            $shouldExistInLocale = !$attribute->isLocaleSpecific() ||
+                (
+                    $attribute->isLocaleSpecific() &&
+                    in_array($locale, $attribute->getLocaleSpecificCodes())
+                );
+
+            if ((null === $productValue || $isIncomplete) && $shouldExistInLocale) {
                 $completenesses[$localeCode]['channels'][$channel->getCode()]['missing'][] = $attribute;
             }
         }
