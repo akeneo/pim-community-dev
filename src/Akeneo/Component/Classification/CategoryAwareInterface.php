@@ -36,7 +36,7 @@ interface CategoryAwareInterface
     /**
      * Get a string with categories linked to the entity
      *
-     * @return string
+     * @return array
      */
     public function getCategoryCodes();
 }

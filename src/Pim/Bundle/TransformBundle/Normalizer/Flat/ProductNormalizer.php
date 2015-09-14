@@ -122,7 +122,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             ksort($normalizedValues);
             $this->results = array_merge($this->results, $normalizedValues);
         } else {
-            // TODO only used for quick export, find a way to homogeneize this part
+            // TODO only used for quick export, find a way to homogenize this part
             $values = $product->getValues();
             $context['metric_format'] = 'single_field';
 
@@ -199,19 +199,19 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      *
      * @param GroupInterface[] $groups
      */
-    protected function normalizeGroups($groups = null)
+    protected function normalizeGroups($groups = [])
     {
-        $this->results[self::FIELD_GROUPS] = $groups;
+        $this->results[self::FIELD_GROUPS] = implode(static::ITEM_SEPARATOR, $groups);
     }
 
     /**
      * Normalizes categories
      *
-     * @param string $categories
+     * @param array $categories
      */
-    protected function normalizeCategories($categories = '')
+    protected function normalizeCategories($categories = [])
     {
-        $this->results[self::FIELD_CATEGORY] = $categories;
+        $this->results[self::FIELD_CATEGORY] = implode(static::ITEM_SEPARATOR, $categories);
     }
 
     /**

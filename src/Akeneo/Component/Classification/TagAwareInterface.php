@@ -36,7 +36,7 @@ interface TagAwareInterface
     /**
      * Get a string with tags linked to the entity
      *
-     * @return string
+     * @return array
      */
     public function getTagCodes();
 }
