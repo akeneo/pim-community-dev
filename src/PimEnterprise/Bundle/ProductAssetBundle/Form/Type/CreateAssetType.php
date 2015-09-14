@@ -20,6 +20,7 @@ use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Form type for asset creation
+ *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 class CreateAssetType extends AbstractType

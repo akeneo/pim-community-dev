@@ -48,8 +48,22 @@ class AssetType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code', 'text', ['read_only' => true]);
-        $builder->add('description', 'textarea', ['required' => false]);
+        $builder->add(
+            'code',
+            'text',
+            [
+                'read_only' => true,
+                'label'     => 'pimee_product_asset.enrich_asset.view.code',
+            ]
+        );
+        $builder->add(
+            'description',
+            'textarea',
+            [
+                'required' => false,
+                'label'    => 'pimee_product_asset.enrich_asset.view.description',
+            ]
+        );
         $builder->add(
             'tags',
             'pim_ajax_asset_tag',
@@ -57,11 +71,25 @@ class AssetType extends AbstractType
                 'class'        => $this->tagClass,
                 'multiple'     => true,
                 'is_creatable' => true,
+                'label'        => 'pimee_product_asset.enrich_asset.view.tag',
             ]
         );
-        $builder->add('endOfUseAt', 'oro_date', ['required' => false]);
-        $builder->add('references', 'collection', ['type' => 'pimee_product_asset_reference']);
-        $builder->add('categories', 'oro_entity_identifier',
+        $builder->add(
+            'endOfUseAt',
+            'oro_date',
+            [
+                'required' => false,
+                'label'    => 'pimee_product_asset.enrich_asset.view.end_of_use',
+            ]
+        );
+        $builder->add(
+            'references',
+            'collection',
+            ['type' => 'pimee_product_asset_reference']
+        );
+        $builder->add(
+            'categories',
+            'oro_entity_identifier',
             [
                 'class'    => $this->categoryClass,
                 'required' => true,
