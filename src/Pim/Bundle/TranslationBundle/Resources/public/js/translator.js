@@ -1,14 +1,17 @@
 /* jshint devel:true */
 /* global define */
-define(['underscore', 'translator', 'json'],
-function (_, Translator) {
+define(['module', 'underscore', 'translator', 'json'],
+function (module, _, Translator) {
     'use strict';
 
+    var messages = module.config().messages;
     var dict = {};
     var debug = false;
     var add = Translator.add;
     var get = Translator.get;
     var fromJSON = Translator.fromJSON;
+
+    Translator.fromJSON(JSON.parse(messages));
 
     Translator.placeHolderPrefix = '{{ ';
     Translator.placeHolderSuffix = ' }}';
