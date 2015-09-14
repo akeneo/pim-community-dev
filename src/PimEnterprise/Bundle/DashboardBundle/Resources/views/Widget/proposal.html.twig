@@ -11,11 +11,12 @@
     </div>
     <script type="text/javascript">
         require(
-            ['jquery', 'pimee/dashboard/proposal-widget'],
-            function ($, ProposalWidget) {
+            ['jquery', 'pim/dashboard/widget-container', 'pimee/dashboard/proposal-widget'],
+            function ($, widgetContainer, ProposalWidget) {
                 'use strict';
                 $(function() {
-                    ProposalWidget.init({el: '#proposal-widget', alias: 'proposals'});
+                    var widget = widgetContainer.getWidget('proposal', ProposalWidget);
+                    widget.render().delayedLoad();
                 });
             }
         );

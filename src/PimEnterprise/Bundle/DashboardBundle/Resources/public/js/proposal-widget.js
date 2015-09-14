@@ -3,7 +3,7 @@ define(
     function ($, _, Routing, Navigation, AbstractWidget, moment) {
         'use strict';
 
-        var ProposalWidget = AbstractWidget.extend({
+        return AbstractWidget.extend({
             tagName: 'table',
 
             id: 'proposal-widget',
@@ -135,18 +135,5 @@ define(
                 return data;
             }
         });
-
-        var instance = null;
-
-        return {
-            init: function (options) {
-                if (!instance) {
-                    instance = new ProposalWidget(options);
-                } else if (_.has(options, 'el')) {
-                    instance.setElement(options.el);
-                }
-                instance.render().delayedLoad();
-            }
-        };
     }
 );
