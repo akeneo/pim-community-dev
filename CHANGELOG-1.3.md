@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.25 (2015-09-14)
 
 ## Technical improvements
 - PIM-4866: Added I should see the tab assertion method in behat
