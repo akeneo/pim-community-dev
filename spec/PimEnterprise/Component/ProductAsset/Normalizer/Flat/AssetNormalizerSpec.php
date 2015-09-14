@@ -42,8 +42,8 @@ class AssetNormalizerSpec extends ObjectBehavior
         $asset->getEndOfUseAt()->willReturn(new \Datetime('2010-10-10'));
         $asset->getCreatedAt()->willReturn(new \Datetime('2017-10-11'));
         $asset->getUpdatedAt()->willReturn(new \Datetime('2013-10-12'));
-        $asset->getTagCodes()->willReturn('tag1,tag2,tag3');
-        $asset->getCategoryCodes()->willReturn('cat1,cat2,cat3');
+        $asset->getTagCodes()->willReturn(['tag1', 'tag2', 'tag3']);
+        $asset->getCategoryCodes()->willReturn(['cat1', 'cat2', 'cat3']);
 
         $this->normalize($asset)->shouldReturn($result);
     }
@@ -84,8 +84,8 @@ class AssetNormalizerSpec extends ObjectBehavior
         $asset->getEndOfUseAt()->willReturn(new \Datetime('2010-10-10'));
         $asset->getCreatedAt()->willReturn(new \Datetime('2017-10-11'));
         $asset->getUpdatedAt()->willReturn(new \Datetime('2013-10-12'));
-        $asset->getTagCodes()->willReturn('tag1,tag2,tag3');
-        $asset->getCategoryCodes()->willReturn('cat1,cat2,cat3');
+        $asset->getTagCodes()->willReturn(['tag1', 'tag2', 'tag3']);
+        $asset->getCategoryCodes()->willReturn(['cat1', 'cat2', 'cat3']);
         $asset->getVariations()->willReturn([$variation1, $variation2]);
         $variation1->getFileInfo()->willReturn($file1);
         $variation2->getFileInfo()->willReturn($file2);
