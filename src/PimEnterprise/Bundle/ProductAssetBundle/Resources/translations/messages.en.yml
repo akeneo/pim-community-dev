@@ -152,6 +152,7 @@ btn.drag_or_upload: Drag and drop a file or click here
 
 job_execution.summary:
     asset_file_processed: Asset file processed
+    variations_not_generated: Variations not generated
     pimee_product_asset.mass_upload.new: Asset created from file
     pimee_product_asset.mass_upload.updated: Asset updated
 

@@ -5,6 +5,7 @@ define(
         'underscore',
         'backbone',
         'routing',
+        'oro/navigation',
         'pim/dropzonejs',
         'oro/messenger',
         'text!pimee/template/asset/mass-upload',
@@ -15,6 +16,7 @@ define(
         _,
         Backbone,
         Routing,
+        Navigation,
         Dropzone,
         messenger,
         pageTemplate,
@@ -115,10 +117,10 @@ define(
                                 filename: encodeURIComponent(file.name)
                             }),
                             type: 'DELETE'
-                        }).done(function () {
+                        }).fail(function () {
                             messenger.notificationFlashMessage(
                                 'success',
-                                _.__('pimee_product_asset.mass_upload.success.deleted')
+                                _.__('pimee_product_asset.mass_upload.error.delete')
                             );
                         });
                     }
@@ -126,7 +128,6 @@ define(
 
                 myDropzone.on('success', function (file) {
                     this.setStatus(file);
-                    this.$('.navbar-buttons .btn.schedule').removeClass('hide');
                     file.previewElement.querySelector('div.progress').className = 'progress success';
                     file.previewElement.querySelector('div.progress .bar').style.width = '100%';
                 }.bind(this));
@@ -141,7 +142,6 @@ define(
                     this.setStatus(file);
                 }.bind(this));
 
-                // Hide the total progress bar when nothing's uploading anymore
                 myDropzone.on('queuecomplete', function () {
                     if (myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length > 0) {
                         this.$('.navbar-buttons .btn.schedule').removeClass('hide');
@@ -202,21 +202,12 @@ define(
                 $.get(
                     Routing.generate('pimee_product_asset_mass_upload_rest_schedule')
                 ).done(function (response) {
-                        _.each(response.result, function (result) {
-                            var file = this.findFile(result.file);
-                            if (result.error) {
-                                file.status = Dropzone.ERROR;
-                                this.setStatus(file);
-                                file.previewElement.querySelector('.filename .error.text-danger')
-                                    .textContent = _.__(result.error);
-                            } else {
-                                this.myDropzone.removeFile(file);
-                            }
-                        }.bind(this));
+                        var jobReportUrl = Routing.generate('pim_enrich_job_tracker_show', {id: response.jobId});
                         messenger.notificationFlashMessage(
                             'success',
                             _.__('pimee_product_asset.mass_upload.success.scheduled')
                         );
+                        Navigation.getInstance().setLocation(jobReportUrl);
                     }.bind(this)).fail(function () {
                         messenger.notificationFlashMessage(
                             'error',

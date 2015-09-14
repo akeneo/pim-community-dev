@@ -103,10 +103,13 @@ Feature: Mass uploads assets
       | akeneo2.jpg  |
     And I start assets mass upload
     And I schedule assets mass upload
-    And I wait 2 seconds
-    Then I should not see "akeneo.jpg"
-    And I should not see "akeneo2.jpg"
-    And I am on the assets page
+    And I wait 5 seconds
+    Then I should be on the last "apply_assets_mass_upload" import job page
+    And I should see "Asset created from file 2"
+    When I am on the job tracker page
+    Then I should see "Mass Upload Assets"
+    And I should see "COMPLETED"
+    When I am on the assets page
     And I change the page size to 25
     Then I should see "akeneo"
     And I should see "akeneo2"
@@ -114,6 +117,3 @@ Feature: Mass uploads assets
     And I should see notification:
       | type    | message                                        |
       | success | Mass upload executed |
-    When I am on the job tracker page
-    Then I should see "Mass Upload Assets"
-    And I should see "COMPLETED"

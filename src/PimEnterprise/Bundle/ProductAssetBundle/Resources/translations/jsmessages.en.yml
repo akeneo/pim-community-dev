@@ -39,6 +39,7 @@ pimee_product_asset:
         error:
             list: Cannot read already uploaded files
             upload: An error occured while uploading
+            delete: Cannot delete file from server
             schedule: An error occured while scheduling upload processing
             filename: Invalid file name for asset
             code: Invalid code format for asset
@@ -57,6 +58,7 @@ pimee_product_asset:
             delete: Delete
         status:
             added: Added
+            queued: Queued
             uploading: Uploading
             error: Error
             success: Success

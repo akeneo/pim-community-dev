@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Context\NavigationContext as BaseNavigationContext;
 use PimEnterprise\Component\ProductAsset\Model\Category;
 
@@ -95,6 +96,19 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     public function iShouldBeOnTheAssetCategoryEditPage(Category $category)
     {
         $expectedAddress = $this->getPage('Asset Category edit')->getUrl(['id' => $category->getId()]);
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param JobInstance $job
+     *
+     * @Given /^I should be on the last ("([^"]*)" (import|export) job) page$/
+     */
+    public function iShouldBeOnTheJobExecutionPage(JobInstance $job)
+    {
+        $jobPage           = sprintf('%s show', ucfirst($job->getType()));
+        $jobExecutionId    = $job->getJobExecutions()->last()->getId();
+        $expectedAddress   = $this->getPage($jobPage)->getUrl(['id' => $jobExecutionId]);
         $this->assertAddress($expectedAddress);
     }
 }
