@@ -161,6 +161,7 @@ define(
                 }
                 instance.setShowListBtn(options.el);
                 instance.render().delayedLoad();
+                return instance;
             }
         };
     }
