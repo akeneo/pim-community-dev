@@ -516,7 +516,7 @@ abstract class AbstractProduct implements ProductInterface
         }
         sort($codes);
 
-        return implode(',', $codes);
+        return $codes;
     }
 
     /**
@@ -530,7 +530,7 @@ abstract class AbstractProduct implements ProductInterface
         }
         sort($codes);
 
-        return implode(',', $codes);
+        return $codes;
     }
 
     /**

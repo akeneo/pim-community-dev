@@ -126,9 +126,9 @@ interface ProductInterface extends
     public function getVariantGroup();
 
     /**
-     * Get a string with groups
+     * Get groups code
      *
-     * @return string
+     * @return array
      */
     public function getGroupCodes();
 
