@@ -60,6 +60,9 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $productBuilder
             ->addAttributeToProduct(Argument::type('Pim\Bundle\CatalogBundle\Model\Product'), $name)
             ->shouldBeCalled();
+        $productBuilder
+            ->addMissingProductValues(Argument::type('Pim\Bundle\CatalogBundle\Model\Product'))
+            ->shouldBeCalled();
 
         $normalizer
             ->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'json', ['entity' => 'product'])

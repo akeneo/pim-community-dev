@@ -76,3 +76,10 @@ Feature: Add attributes to a variant group
     And I confirm the deletion
     Then I am on the "caterpillar_boots" variant group page
     And I should not see available attribute Name in group "Product information"
+
+  @javascript
+  Scenario: The price attribute should be visible once added
+    Given I am on the "caterpillar_boots" variant group page
+    And I visit the "Attributes" tab
+    When I add available attributes Price
+    And I should see "EUR, USD" currencies on the Price price field

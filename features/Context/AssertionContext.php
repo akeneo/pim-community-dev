@@ -158,6 +158,32 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param string $currencies
+     * @param string $field
+     *
+     * @Then /^I should see "(.+)" currencies on the (.*) price field$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeCurrenciesOnThePriceField($currencies, $field)
+    {
+        if (null === $priceLabelField = $this->getCurrentPage()->findField($field)) {
+            throw $this->createExpectationException(sprintf('Expecting to see the price field "%s".', $field));
+        }
+        $currencies = explode(',', $currencies);
+        $currencies = array_map('trim', $currencies);
+        $priceField = $priceLabelField->getParent();
+
+        foreach ($currencies as $currency) {
+            if (null === $priceField->find('css', sprintf('.controls input[value="%s"]', $currency))) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see the currency "%s" on price field "%s".', $currency, $field)
+                );
+            }
+        }
+    }
+
+    /**
      * @param string $fields
      *
      * @Then /^I should not see the (.*) fields?$/
