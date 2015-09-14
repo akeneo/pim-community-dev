@@ -105,12 +105,8 @@ class AssetUpdater implements ObjectUpdaterInterface
      */
     protected function setTags(AssetInterface $asset, array $data)
     {
-        $tagCodes = [];
         $newTags  = $data;
-
-        if (empty($asset->getTagCodes())) {
-            $tagCodes = $asset->getTagCodes();
-        }
+        $tagCodes = $asset->getTagCodes();
 
         if (!empty($tagCodes)) {
             $newTags = array_diff($data, $tagCodes);
@@ -135,12 +131,8 @@ class AssetUpdater implements ObjectUpdaterInterface
      */
     protected function setCategories(AssetInterface $asset, array $data)
     {
-        $categoriesCode = [];
         $newCategories  = $data;
-
-        if (empty($asset->getCategoryCodes())) {
-            $categoriesCode = $asset->getCategoryCodes();
-        }
+        $categoriesCode = $asset->getCategoryCodes();
 
         if (!empty($categoriesCode)) {
             $newCategories = array_diff($newCategories, $categoriesCode);
