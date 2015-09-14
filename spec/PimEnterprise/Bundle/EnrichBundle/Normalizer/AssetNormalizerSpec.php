@@ -35,8 +35,8 @@ class AssetNormalizerSpec extends ObjectBehavior
         $asset->getDescription()->willReturn('my description');
         $asset->isEnabled()->willReturn(true);
         $asset->getEndOfUseAt()->willReturn(new \Datetime('2010-10-10'));
-        $asset->getTagCodes()->willReturn('tag1,tag2,tag3');
-        $asset->getCategoryCodes()->willReturn('cat1,cat2,cat3');
+        $asset->getTagCodes()->willReturn(['tag1', 'tag2', 'tag3']);
+        $asset->getCategoryCodes()->willReturn(['cat1', 'cat2', 'cat3']);
         $asset->getReferences()->willReturn(new ArrayCollection([]));
         $asset->getCategories()->willReturn(new ArrayCollection([]));
 

@@ -59,8 +59,8 @@ class AssetUpdaterSpec extends ObjectBehavior
         $categoryRepository->findOneByIdentifier('cat1')->willReturn($cat1);
         $categoryRepository->findOneByIdentifier('cat2')->willReturn($cat2);
 
-        $asset->getTagCodes()->willReturn('');
-        $asset->getCategoryCodes()->willReturn('');
+        $asset->getTagCodes()->willReturn([]);
+        $asset->getCategoryCodes()->willReturn([]);
         $asset->getTags()->willReturn(new ArrayCollection([]));
         $asset->getCategories()->willReturn(new ArrayCollection([]));
 
@@ -120,8 +120,8 @@ class AssetUpdaterSpec extends ObjectBehavior
         $tagRepository->findOneByIdentifier('dog')->willReturn($tag1);
         $categoryRepository->findOneByIdentifier('cat1')->willReturn(null);
 
-        $asset->getCategoryCodes()->willReturn('');
-        $asset->getTagCodes()->willReturn('');
+        $asset->getCategoryCodes()->willReturn([]);
+        $asset->getTagCodes()->willReturn([]);
         $asset->setCode('mycode')->shouldBeCalled();
         $asset->setDescription('My awesome description')->shouldBeCalled();
 
@@ -158,8 +158,8 @@ class AssetUpdaterSpec extends ObjectBehavior
     ) {
         $asset->setCode('mycode')->shouldBeCalled();
         $asset->setDescription('My awesome description')->shouldBeCalled();
-        $asset->getTagCodes()->willReturn('');
-        $asset->getCategoryCodes()->willReturn('');
+        $asset->getTagCodes()->willReturn([]);
+        $asset->getCategoryCodes()->willReturn([]);
 
         $tagRepository->findOneByIdentifier('dog')->willReturn($tag1);
         $tagRepository->findOneByIdentifier('flowers')->willReturn($tag2);

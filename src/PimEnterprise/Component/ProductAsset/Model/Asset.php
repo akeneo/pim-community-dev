@@ -413,7 +413,7 @@ class Asset implements AssetInterface, VersionableInterface
         }
         sort($tags);
 
-        return implode(',', $tags);
+        return $tags;
     }
 
     /**
@@ -457,6 +457,6 @@ class Asset implements AssetInterface, VersionableInterface
         }
         sort($codes);
 
-        return implode(',', $codes);
+        return $codes;
     }
 }

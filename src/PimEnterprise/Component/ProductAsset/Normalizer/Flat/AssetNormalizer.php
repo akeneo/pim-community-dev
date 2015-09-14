@@ -19,6 +19,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AssetNormalizer implements NormalizerInterface
 {
+    const INNER_SEPARATOR = ',';
+
     /** @var array */
     protected $supportedFormats = ['csv', 'flat'];
 
@@ -45,8 +47,8 @@ class AssetNormalizer implements NormalizerInterface
         }
 
         $normalizedData               = $this->assetNormalizer->normalize($asset, $format, $context);
-        $normalizedData['tags']       = $asset->getTagCodes();
-        $normalizedData['categories'] = $asset->getCategoryCodes();
+        $normalizedData['tags']       = implode(static::INNER_SEPARATOR, $asset->getTagCodes());
+        $normalizedData['categories'] = implode(static::INNER_SEPARATOR, $asset->getCategoryCodes());
 
         if (array_key_exists('versioning', $context)) {
             $normalizedData['references'] = array_filter(array_map(function ($reference) {

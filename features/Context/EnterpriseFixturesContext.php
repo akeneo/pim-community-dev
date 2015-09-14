@@ -1046,11 +1046,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
 
             if (array_key_exists('categories', $data)) {
-                assertEquals($data['categories'], $asset->getCategoryCodes());
+                assertEquals(implode(',', $data['categories']), $asset->getCategoryCodes());
             }
 
             if (array_key_exists('tags', $data)) {
-                assertEquals($data['tags'], $asset->getTagCodes());
+                assertEquals(implode(',', $data['tags']), $asset->getTagCodes());
             }
         }
     }

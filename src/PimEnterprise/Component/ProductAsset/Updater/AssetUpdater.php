@@ -108,8 +108,8 @@ class AssetUpdater implements ObjectUpdaterInterface
         $tagCodes = [];
         $newTags  = $data;
 
-        if ('' !== $asset->getTagCodes()) {
-            $tagCodes = explode(static::INNER_SEPARATOR, $asset->getTagCodes());
+        if (empty($asset->getTagCodes())) {
+            $tagCodes = $asset->getTagCodes();
         }
 
         if (!empty($tagCodes)) {
@@ -122,7 +122,7 @@ class AssetUpdater implements ObjectUpdaterInterface
 
         if (!empty($tagCodes)) {
             $toRemoveTags = array_diff($tagCodes, $data);
-            $this->removeTags($asset, $toRemoveTags);
+            $this->removeTagsByCodes($asset, $toRemoveTags);
         }
     }
 
@@ -138,8 +138,8 @@ class AssetUpdater implements ObjectUpdaterInterface
         $categoriesCode = [];
         $newCategories  = $data;
 
-        if ('' !== $asset->getCategoryCodes()) {
-            $categoriesCode = explode(static::INNER_SEPARATOR, $asset->getCategoryCodes());
+        if (empty($asset->getCategoryCodes())) {
+            $categoriesCode = $asset->getCategoryCodes();
         }
 
         if (!empty($categoriesCode)) {
@@ -152,7 +152,7 @@ class AssetUpdater implements ObjectUpdaterInterface
 
         if (!empty($categoriesCode)) {
             $categories = array_diff($categoriesCode, $data);
-            $this->removeCategories($asset, $categories);
+            $this->removeCategoriesByCodes($asset, $categories);
         }
     }
 
@@ -215,7 +215,7 @@ class AssetUpdater implements ObjectUpdaterInterface
      * @param AssetInterface $asset
      * @param array          $tags
      */
-    protected function removeTags(AssetInterface $asset, array $tags)
+    protected function removeTagsByCodes(AssetInterface $asset, array $tags)
     {
         foreach ($tags as $tagCode) {
             $asset->removeTag($this->getTagByCode($tagCode));
@@ -226,7 +226,7 @@ class AssetUpdater implements ObjectUpdaterInterface
      * @param AssetInterface $asset
      * @param array          $categories
      */
-    protected function removeCategories(AssetInterface $asset, array $categories)
+    protected function removeCategoriesByCodes(AssetInterface $asset, array $categories)
     {
         foreach ($categories as $categoryCode) {
             $asset->removeCategory($this->getCategoryByCode($categoryCode));
