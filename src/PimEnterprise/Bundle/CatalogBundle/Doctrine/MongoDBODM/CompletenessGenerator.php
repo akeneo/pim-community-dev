@@ -131,13 +131,10 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
         array $familyReqs
     ) {
         $expectedCompleteness = $channel->getCode() . '-' . $locale->getCode();
-
         $fields[$expectedCompleteness] = [];
-
         $fields[$expectedCompleteness]['channel'] = $channel->getId();
         $fields[$expectedCompleteness]['locale']  = $locale->getId();
         $fields[$expectedCompleteness]['reqs']    = [];
-
         $fields[$expectedCompleteness]['reqs']['attributes'] = [];
         $fields[$expectedCompleteness]['reqs']['prices']     = [];
         $fields[$expectedCompleteness]['reqs']['assets']     = [];
@@ -145,15 +142,25 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
         foreach ($familyReqs[$channel->getCode()] as $requirement) {
             $fieldName = $this->getNormalizedFieldName($requirement->getAttribute(), $channel, $locale);
 
-            if (AbstractAttributeType::BACKEND_TYPE_PRICE === $requirement->getAttribute()->getBackendType()) {
-                $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = [];
-                foreach ($channel->getCurrencies() as $currency) {
-                    $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
+
+            $attribute = $requirement->getAttribute();
+            $shouldExistInLocale = !$attribute->isLocaleSpecific() ||
+                (
+                    $attribute->isLocaleSpecific() &&
+                    in_array($locale->getCode(), $attribute->getLocaleSpecificCodes())
+                );
+
+            if ($shouldExistInLocale) {
+                if (AbstractAttributeType::BACKEND_TYPE_PRICE === $requirement->getAttribute()->getBackendType()) {
+                    $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = [];
+                    foreach ($channel->getCurrencies() as $currency) {
+                        $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
+                    }
+                } elseif ('pim_assets_collection' === $requirement->getAttribute()->getAttributeType()) {
+                    $fields[$expectedCompleteness]['reqs']['assets'][] = $fieldName;
+                } else {
+                    $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;
                 }
-            } elseif ('pim_assets_collection' === $requirement->getAttribute()->getAttributeType()) {
-                $fields[$expectedCompleteness]['reqs']['assets'][] = $fieldName;
-            } else {
-                $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;
             }
         }
 

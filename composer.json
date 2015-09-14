@@ -16,7 +16,7 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "1.4.x-dev",
+        "akeneo/pim-community-dev": "dev-PIM-4771",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "sensio/generator-bundle": "2.3.5",
