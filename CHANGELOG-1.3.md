@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.25 (2015-09-14)
 
 ## Bug fixes
 - PIM-4866: Proposal tab is wrongly removed from the menu
