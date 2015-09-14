@@ -20,7 +20,7 @@
             <td>{{ metadata.variations[variationModel.id].exifSizeHeight ? metadata.variations[variationModel.id].exifSizeHeight ~ ' px' : 'pimee_product_asset.notAvailable.label'|trans }}</td>
             <td>{{ metadata.variations[variationModel.id].exifResolution ? metadata.variations[variationModel.id].exifResolution : 'pimee_product_asset.notAvailable.label'|trans }}</td>
         {% endif %}
-        <td>{{ variationModel.fileInfo.size|number_format(0, '.', ' ') }} ko</td>
+        <td>{{ variationModel.fileInfo.size|formatBytes }}</td>
         <td>{{ variationModel.fileInfo.mimeType }}</td>
         <td>
             {% block variation_buttons %}{% endblock %}
