@@ -1,3 +1,8 @@
+# 1.0.xx
+
+## Bug fixes
+PIM-4877: Fix export CSV for products
+
 # 1.0.30 (2015-08-18)
 - Update community-edition dependency to 1.2.36 version.
 

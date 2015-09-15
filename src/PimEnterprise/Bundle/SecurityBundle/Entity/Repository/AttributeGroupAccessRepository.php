@@ -229,7 +229,8 @@ class AttributeGroupAccessRepository extends EntityRepository
             ->innerJoin('ag.attributes', 'a')
             ->groupBy('a.id');
 
-        if (null !== $filterableIds) {
+        $filterableIds = null === $filterableIds ? [] : $filterableIds;
+        if (!empty($filterableIds)) {
             $qb->andWhere(
                 $qb->expr()->in('a.id', $filterableIds)
             );
