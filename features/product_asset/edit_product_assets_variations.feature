@@ -75,5 +75,5 @@ Feature: Edit product assets variations
     And I visit the "Variations" tab
     And I upload the reference file akene.jpg
     And I save the asset
-    And I should see "35.13 KB"
-    And I should see "6.75 KB"
+    And I should see "KB"
+    And I should see "KB"
