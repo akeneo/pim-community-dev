@@ -1,24 +1,32 @@
 define(
-    [
-        'backbone'
-    ],
-    function (Backbone) {
+    [],
+    function () {
         'use strict';
 
-        var WidgetContainer = Backbone.Model.extend({
+        /**
+         * Widget container maintain a widget registry to use them on dashboard.
+         */
+        return {
+            widgetsRegistry: {},
+            /**
+             * Get or create a widget
+             *
+             * @param {Object}   options
+             * @param {Function} ClassFunction
+             *
+             * @return {Object} AbstractWidget instance
+             */
             getWidget: function (options, ClassFunction) {
-                var widget = null;
-                if (!this.has(options.alias)) {
+                var widget = this.widgetsRegistry[options.alias];
+                if (!widget) {
                     widget = new ClassFunction(options);
-                    this.set(options.alias, widget);
+                    this.widgetsRegistry[options.alias] = widget;
                 } else {
-                    widget = this.get(options.alias);
                     widget.setElement(options.el);
                 }
+
                 return widget;
             }
-        });
-
-        return new WidgetContainer();
+        };
     }
 );

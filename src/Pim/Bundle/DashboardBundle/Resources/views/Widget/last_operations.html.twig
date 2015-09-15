@@ -7,11 +7,14 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'pim/dashboard/last-operations-widget'],
-            function ($, LastOperationsWidget) {
+            ['jquery', 'pim/dashboard/widget-container', 'pim/dashboard/last-operations-widget'],
+            function ($, widgetContainer, LastOperationsWidget) {
                 'use strict';
-                $(function() {
-                    LastOperationsWidget.init({el: '#last-operations-widget', alias: 'last_operations'});
+                $(function () {
+                    var options = {el: '#last-operations-widget', alias: 'last_operations'};
+                    var widget = widgetContainer.getWidget(options, LastOperationsWidget);
+                    widget.setShowListBtn(options.el);
+                    widget.render().delayedLoad();
                 });
             }
         );
