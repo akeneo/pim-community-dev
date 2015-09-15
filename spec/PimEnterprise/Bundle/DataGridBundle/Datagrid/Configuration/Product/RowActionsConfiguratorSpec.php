@@ -104,11 +104,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
             [
-                'show' => true,
-                'edit' => false,
-                'edit_categories' => false,
-                'delete' => false,
-                'toggle_status' => false
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => true,
+                'delete' => true,
+                'toggle_status' => true
             ]
         );
     }
@@ -130,7 +130,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
                 'edit' => true,
                 'edit_categories' => false,
                 'delete' => true,
-                'toggle_status' => true
+                'toggle_status' => false
             ]
         );
     }
