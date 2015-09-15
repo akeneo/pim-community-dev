@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\TwigExtension;
 
+use Akeneo\Component\FileStorage\Formater\BytesFormater;
+
 /**
  * Convert bytes into human readable value
  *
@@ -18,6 +20,17 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\TwigExtension;
  */
 class FormatBytesTwigExtension extends \Twig_Extension
 {
+    /** @var BytesFormater */
+    protected $bytesFormater;
+
+    /**
+     * @param BytesFormater $bytesFormater
+     */
+    public function __construct(BytesFormater $bytesFormater)
+    {
+        $this->bytesFormater = $bytesFormater;
+    }
+
     /**
      * Return functions registered as twig extensions
      *
@@ -41,29 +54,7 @@ class FormatBytesTwigExtension extends \Twig_Extension
      */
     public function formatBytes($bytes, $decimals = 2, $si = false)
     {
-        $unit = $si ? 1000 : 1024;
-        $kilobyte = $unit;
-        $megabyte = $kilobyte * $unit;
-        $gigabyte = $megabyte * $unit;
-        $terabyte = $gigabyte * $unit;
-
-        if (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
-            return round($bytes / $kilobyte, $decimals) . ($si ? ' K' : ' KB');
-        }
-
-        if (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-            return round($bytes / $megabyte, $decimals) . ($si ? ' M' : ' MB');
-        }
-
-        if (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-            return round($bytes / $gigabyte, $decimals) . ($si ? ' G' : ' GB');
-        }
-
-        if ($bytes >= $terabyte) {
-            return round($bytes / $terabyte, $decimals) . ($si ? ' T' : ' TB');
-        }
-
-        return $bytes . ' B';
+        return $this->bytesFormater->formatBytes($bytes, $decimals, $si);
     }
 
     /**

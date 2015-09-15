@@ -12,5 +12,7 @@ services:
 
     pimee_produt_asset.twig_extension.format_bytes:
         class: %pimee_produt_asset.twig_extension.format_bytes.class%
+        arguments:
+            - '@akeneo_file_storage.file_storage.formater.bytes'
         tags:
             - { name: twig.extension }
