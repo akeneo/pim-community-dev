@@ -15,21 +15,21 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
- * Get variations
+ * Base reader
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class VariationReader extends AbstractConfigurableStepElement implements
+class BaseReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
-    /** @var VariationRepositoryInterface */
-    protected $variationRepository;
+    /** @var ObjectRepository */
+    protected $repository;
 
-    /** @var bool Checks if all variations are sent to the processor */
+    /** @var bool Checks if all objects are sent to the processor */
     protected $isExecuted = false;
 
     /** @var StepExecution */
@@ -39,11 +39,11 @@ class VariationReader extends AbstractConfigurableStepElement implements
     protected $results;
 
     /**
-     * @param VariationRepositoryInterface $variationRepository
+     * @param ObjectRepository $repository
      */
-    public function __construct(VariationRepositoryInterface $variationRepository)
+    public function __construct(ObjectRepository $repository)
     {
-        $this->variationRepository = $variationRepository;
+        $this->repository = $repository;
     }
 
     /**
@@ -86,6 +86,6 @@ class VariationReader extends AbstractConfigurableStepElement implements
      */
     protected function getResults()
     {
-        return new \ArrayIterator($this->variationRepository->findAll());
+        return new \ArrayIterator($this->repository->findAll());
     }
 }

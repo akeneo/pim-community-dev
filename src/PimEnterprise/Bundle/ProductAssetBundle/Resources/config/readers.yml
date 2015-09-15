@@ -1,7 +1,6 @@
 parameters:
     pimee_product_asset.reader.orm.category.class:  PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetCategoryReader
-    pimee_product_asset.reader.orm.asset.class:     PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\AssetReader
-    pimee_product_asset.reader.orm.variation.class: PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\VariationReader
+    pimee_product_asset.reader.orm.base.class:      PimEnterprise\Component\ProductAsset\Connector\Reader\Doctrine\BaseReader
 
 services:
     pimee_product_asset.reader.orm.category:
@@ -10,11 +9,16 @@ services:
             - '@pimee_product_asset.repository.category'
 
     pimee_product_asset.reader.orm.asset:
-        class: %pimee_product_asset.reader.orm.asset.class%
+        class: %pimee_product_asset.reader.orm.base.class%
         arguments:
             - '@pimee_product_asset.repository.asset'
 
     pimee_product_asset.reader.orm.variation:
-        class: %pimee_product_asset.reader.orm.variation.class%
+        class: %pimee_product_asset.reader.orm.base.class%
+        arguments:
+            - '@pimee_product_asset.repository.variation'
+
+    pimee_product_asset.reader.orm.csv_channel_configuration:
+        class: %pimee_product_asset.reader.orm.base.class%
         arguments:
             - '@pimee_product_asset.repository.variation'
