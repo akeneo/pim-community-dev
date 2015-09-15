@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Event\ChannelEvents;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -64,7 +64,7 @@ class ChannelSaver implements SaverInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(ChannelEvents::PRE_SAVE, new GenericEvent($channel));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($channel));
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($channel);
@@ -75,6 +75,6 @@ class ChannelSaver implements SaverInterface
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(ChannelEvents::POST_SAVE, new GenericEvent($channel));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($channel));
     }
 }

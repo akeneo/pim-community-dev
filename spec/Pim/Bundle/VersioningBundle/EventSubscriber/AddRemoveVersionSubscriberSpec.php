@@ -2,16 +2,10 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
+use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
-use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
-use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
-use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
@@ -37,14 +31,7 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_post_remove_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            AssociationTypeEvents::POST_REMOVE   => 'postRemove',
-            AttributeEvents::POST_REMOVE         => 'postRemove',
-            CategoryEvents::POST_REMOVE_CATEGORY => 'postRemove',
-            CategoryEvents::POST_REMOVE_TREE     => 'postRemove',
-            FamilyEvents::POST_REMOVE            => 'postRemove',
-            GroupEvents::POST_REMOVE             => 'postRemove',
-            ProductEvents::POST_REMOVE           => 'postRemove',
-            BaseEvents::POST_REMOVE              => 'postRemove',
+            StorageEvents::POST_REMOVE => 'postRemove',
         ]);
     }
 

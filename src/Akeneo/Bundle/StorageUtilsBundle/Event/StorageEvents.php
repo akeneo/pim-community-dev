@@ -3,71 +3,71 @@
 namespace Akeneo\Bundle\StorageUtilsBundle\Event;
 
 /**
- * Catalog base events
+ * Storage events.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-final class BaseEvents
+final class StorageEvents
 {
     /**
-     * This event is thrown before a generic entity gets removed.
+     * This event is thrown before an object gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
-    const PRE_REMOVE = 'pim_catalog.pre_remove.object';
+    const PRE_REMOVE = 'akeneo.storage.pre_remove';
 
     /**
-     * This event is thrown after a generic entity gets removed.
+     * This event is thrown after an object gets removed.
      *
      * The event listener receives an
      * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
      *
      * @staticvar string
      */
-    const POST_REMOVE = 'pim_catalog.post_remove.object';
+    const POST_REMOVE = 'akeneo.storage.post_remove';
 
     /**
-     * This event is thrown before a generic entity gets saved.
+     * This event is thrown before an object gets saved.
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const PRE_SAVE = 'pim_catalog.pre_save.object';
+    const PRE_SAVE = 'akeneo.storage.pre_save';
 
     /**
-     * This event is thrown after a generic entity gets saved.
+     * This event is thrown after an object gets saved.
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const POST_SAVE = 'pim_catalog.post_save.object';
+    const POST_SAVE = 'akeneo.storage.post_save';
 
     /**
-     * This event is thrown before several generic entities get saved.
+     * This event is thrown before several objects get saved.
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const PRE_SAVE_ALL = 'pim_catalog.pre_save_all.object';
+    const PRE_SAVE_ALL = 'akeneo.storage.pre_save_all';
 
     /**
-     * This event is thrown after several generic entities have been saved.
+     * This event is thrown after several objects have been saved.
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const POST_SAVE_ALL = 'pim_catalog.post_save_all.object';
+    const POST_SAVE_ALL = 'akeneo.storage.post_save_all';
 }
