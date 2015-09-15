@@ -1,10 +1,18 @@
 parameters:
-    pimee_produt_asset.twig_extension.file_exists.class: PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\RawFileExistsTwigExtension
+    pimee_produt_asset.twig_extension.file_exists.class:  PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\RawFileExistsTwigExtension
+    pimee_produt_asset.twig_extension.format_bytes.class: PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\FormatBytesTwigExtension
 
 services:
     pimee_produt_asset.twig_extension.file_exists:
         class: %pimee_produt_asset.twig_extension.file_exists.class%
         arguments:
             - %assetic.read_from%
+        tags:
+            - { name: twig.extension }
+
+    pimee_produt_asset.twig_extension.format_bytes:
+        class: %pimee_produt_asset.twig_extension.format_bytes.class%
+        arguments:
+            - '@akeneo_file_storage.file_storage.formater.bytes'
         tags:
             - { name: twig.extension }
