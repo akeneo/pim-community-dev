@@ -69,3 +69,11 @@ Feature: Edit product assets variations
     Then I should be able to generate Mobile from reference
     Given I generate Mobile variation from reference
     Then I should be able to generate Mobile from reference
+
+  Scenario: Successfully check the size of the file
+    Given I am on the "bridge" asset page
+    And I visit the "Variations" tab
+    And I upload the reference file akene.jpg
+    And I save the asset
+    And I should see "35.13 KB"
+    And I should see "6.75 KB"
