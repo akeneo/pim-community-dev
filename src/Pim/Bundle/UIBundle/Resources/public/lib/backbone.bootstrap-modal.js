@@ -34,10 +34,10 @@
     <div class="modal-footer">\
       <% if (allowCancel) { %>\
         <% if (cancelText) { %>\
-          <a href="#" class="btn cancel">{{cancelText}}</a>\
+          <a href="#" class="btn cancel icons-holder-text"><i class="icon-chevron-left"></i>{{cancelText}}</a>\
         <% } %>\
       <% } %>\
-      <a href="#" class="btn ok btn-primary">{{okText}}</a>\
+      <a href="#" class="btn btn-primary ok icons-holder-text"><i class="icon-ok"></i>{{okText}}</a>\
     </div>\
   ');
 
