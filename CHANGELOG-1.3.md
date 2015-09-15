@@ -1,9 +1,16 @@
 # 1.3.x
 
-# 1.3.22 (2015-08-25)
+# 1.3.25 (2015-09-14)
+
+## Bug fixes
+- PIM-4866: Proposal tab is wrongly removed from the menu
+
+# 1.3.24 (2015-09-03)
 
 ## Bug fixes
 - PIM-4612: Error on Quick Export (MongoDB)
+
+# 1.3.22 (2015-08-25)
 
 # 1.3.21 (2015-08-17)
 
