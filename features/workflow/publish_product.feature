@@ -125,4 +125,4 @@ Feature: Publish a product
     And I visit the "Values" tab
     When I remove the "Hot" option
     And I confirm the deletion
-    Then I should see "Impossible to remove an option that has been published in a product"
+    Then I should see "Impossible to remove attribute option linked to a published product"

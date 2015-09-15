@@ -2,7 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset\Remover;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
+use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -35,7 +35,7 @@ class AssetRemoverSpec extends ObjectBehavior
     ) {
         $optionsResolver->resolveRemoveOptions([])->willReturn(['flush' => true]);
         $eventDispatcher->dispatch(
-            BaseEvents::PRE_REMOVE,
+            StorageEvents::PRE_REMOVE,
             Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
         $eventDispatcher->dispatch(
@@ -47,7 +47,7 @@ class AssetRemoverSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            BaseEvents::POST_REMOVE,
+            StorageEvents::POST_REMOVE,
             Argument::type('Akeneo\Component\StorageUtils\Event\RemoveEvent')
         )->shouldBeCalled();
         $eventDispatcher->dispatch(

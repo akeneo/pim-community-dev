@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Event\ChannelEvents;
+use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
@@ -53,7 +53,7 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ChannelEvents::PRE_REMOVE => 'removeChannelLinkedEntities',
+            StorageEvents::PRE_REMOVE => 'removeChannelLinkedEntities',
         ];
     }
 
@@ -61,15 +61,13 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
      * @param GenericEvent $event
      *
      * @throw \InvalidArgumentException
-     *
-     * @return GenericEvent
      */
     public function removeChannelLinkedEntities(GenericEvent $event)
     {
         $channel = $event->getSubject();
 
         if (!$channel instanceof ChannelInterface) {
-            throw new \InvalidArgumentException();
+            return;
         }
 
         $variations = $this->variationRepo->findBy(['channel' => $channel->getId()]);
@@ -81,7 +79,5 @@ class RemoveChannelSubscriber implements EventSubscriberInterface
         foreach ($channelConfigs as $config) {
             $this->channelConfigRemover->remove($config);
         }
-
-        return $event;
     }
 }

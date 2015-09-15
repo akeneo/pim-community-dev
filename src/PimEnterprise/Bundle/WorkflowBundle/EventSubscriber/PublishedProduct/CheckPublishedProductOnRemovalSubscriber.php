@@ -11,8 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
-use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Event;
+use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -28,19 +35,12 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     /** @var PublishedProductRepositoryInterface */
     protected $publishedRepository;
 
-    /** @var \Entity\Repository\CategoryRepository */
-    protected $categoryRepository;
-
     /**
      * @param PublishedProductRepositoryInterface $publishedRepository
-     * @param CategoryRepositoryInterface         $categoryRepository
      */
-    public function __construct(
-        PublishedProductRepositoryInterface $publishedRepository,
-        CategoryRepositoryInterface $categoryRepository
-    ) {
+    public function __construct(PublishedProductRepositoryInterface $publishedRepository)
+    {
         $this->publishedRepository = $publishedRepository;
-        $this->categoryRepository  = $categoryRepository;
     }
 
     /**
@@ -49,31 +49,8 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     public static function getSubscribedEvents()
     {
         return [
-            Event\ProductEvents::PRE_REMOVE           => 'checkProductHasBeenPublished',
-            Event\FamilyEvents::PRE_REMOVE            => 'checkFamilyLinkedToPublishedProduct',
-            Event\AttributeEvents::PRE_REMOVE         => 'checkAttributeLinkedToPublishedProduct',
-            Event\CategoryEvents::PRE_REMOVE_CATEGORY => 'checkCategoryLinkedToPublishedProduct',
-            Event\CategoryEvents::PRE_REMOVE_TREE     => 'checkCategoryLinkedToPublishedProduct',
-            Event\AssociationTypeEvents::PRE_REMOVE   => 'checkAssociationTypeLinkedToPublishedProduct',
-            Event\GroupEvents::PRE_REMOVE             => 'checkGroupLinkedToPublishedProduct'
+            StorageEvents::PRE_REMOVE => 'preRemove',
         ];
-    }
-
-    /**
-     * Check if the product is published
-     *
-     * @param GenericEvent $event
-     *
-     * @throws PublishedProductConsistencyException
-     */
-    public function checkProductHasBeenPublished(GenericEvent $event)
-    {
-        $product   = $event->getSubject();
-        $published = $this->publishedRepository->findOneByOriginalProduct($product);
-
-        if ($published) {
-            throw new PublishedProductConsistencyException('Impossible to remove a published product');
-        }
     }
 
     /**
@@ -83,94 +60,66 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      *
      * @throws PublishedProductConsistencyException
      */
-    public function checkFamilyLinkedToPublishedProduct(GenericEvent $event)
+    public function preRemove(GenericEvent $event)
     {
-        $family = $event->getSubject();
-        $publishedCount = $this->publishedRepository->countPublishedProductsForFamily($family);
+        $subject = $event->getSubject();
 
-        if ($publishedCount > 0) {
-            throw new PublishedProductConsistencyException(
-                'Impossible to remove family linked to a published product'
+        if (!$this->isSubjectRelatedToPublished($subject)) {
+            return;
+        }
+
+        $message = 'Impossible to remove a published product';
+
+        if (!$subject instanceof ProductInterface) {
+            $classname = array_slice(explode('\\', ClassUtils::getClass($subject)), -1)[0];
+            $message = sprintf(
+                'Impossible to remove %s linked to a published product',
+                strtolower(preg_replace('/([a-z])([A-Z])/', '$1 $2', $classname, -1))
             );
         }
+
+        throw new PublishedProductConsistencyException($message);
     }
 
     /**
-     * Check if the category is linked to a published product
+     * @param mixed $subject
      *
-     * @param GenericEvent $event
-     *
-     * @throws PublishedProductConsistencyException
+     * @return bool
      */
-    public function checkCategoryLinkedToPublishedProduct(GenericEvent $event)
+    private function isSubjectRelatedToPublished($subject)
     {
-        $category = $event->getSubject();
-        $categoryIds = $this->categoryRepository->getAllChildrenIds($category);
-        $categoryIds[] = $category->getId();
-
-        $publishedCount = $this->publishedRepository->countPublishedProductsForCategoryAndChildren($categoryIds);
-
-        if ($publishedCount > 0) {
-            throw new PublishedProductConsistencyException(
-                'Impossible to remove category linked to a published product'
-            );
+        if (!is_object($subject)) {
+            return false;
         }
-    }
 
-    /**
-     * Check if the attribute is linked to a published product
-     *
-     * @param GenericEvent $event
-     *
-     * @throws PublishedProductConsistencyException
-     */
-    public function checkAttributeLinkedToPublishedProduct(GenericEvent $event)
-    {
-        $attribute = $event->getSubject();
-        $publishedCount = $this->publishedRepository->countPublishedProductsForAttribute($attribute);
-
-        if ($publishedCount > 0) {
-            throw new PublishedProductConsistencyException(
-                'Impossible to remove attribute linked to a published product'
-            );
+        if($subject instanceof FamilyInterface) {
+            return $this->publishedRepository->countPublishedProductsForFamily($subject) > 0;
         }
-    }
 
-    /**
-     * Check if the group is linked to a published product
-     *
-     * @param GenericEvent $event
-     *
-     * @throws PublishedProductConsistencyException
-     */
-    public function checkGroupLinkedToPublishedProduct(GenericEvent $event)
-    {
-        $group = $event->getSubject();
-        $publishedCount = $this->publishedRepository->countPublishedProductsForGroup($group);
-
-        if ($publishedCount > 0) {
-            throw new PublishedProductConsistencyException(
-                'Impossible to remove group linked to a published product'
-            );
+        if ($subject instanceof GroupInterface) {
+            return $this->publishedRepository->countPublishedProductsForGroup($subject) > 0;
         }
-    }
 
-    /**
-     * Check if the association type is linked to a published product
-     *
-     * @param GenericEvent $event
-     *
-     * @throws PublishedProductConsistencyException
-     */
-    public function checkAssociationTypeLinkedToPublishedProduct(GenericEvent $event)
-    {
-        $associationType = $event->getSubject();
-        $publishedCount = $this->publishedRepository->countPublishedProductsForAssociationType($associationType);
-
-        if ($publishedCount > 0) {
-            throw new PublishedProductConsistencyException(
-                'Impossible to remove association type linked to a published product'
-            );
+        if ($subject instanceof AssociationTypeInterface) {
+            return $this->publishedRepository->countPublishedProductsForAssociationType($subject) > 0;
         }
+
+        if ($subject instanceof CategoryInterface) {
+            return $this->publishedRepository->countPublishedProductsForCategory($subject) > 0;
+        }
+
+        if ($subject instanceof AttributeInterface) {
+            return $this->publishedRepository->countPublishedProductsForAttribute($subject) > 0;
+        }
+
+        if ($subject instanceof AttributeOptionInterface) {
+            return $this->publishedRepository->countPublishedProductsForAttributeOption($subject) > 0;
+        }
+
+        if ($subject instanceof ProductInterface) {
+            return null !== $this->publishedRepository->findOneByOriginalProduct($subject);
+        }
+
+        return false;
     }
 }

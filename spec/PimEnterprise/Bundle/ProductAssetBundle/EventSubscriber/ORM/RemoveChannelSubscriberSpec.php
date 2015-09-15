@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Bundle\ProductAssetBundle\EventSubscriber\ORM;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Event\ChannelEvents;
+use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
@@ -31,7 +31,7 @@ class RemoveChannelSubscriberSpec extends ObjectBehavior
     function it_returns_the_events_it_subscribed_to()
     {
         $this::getSubscribedEvents()->shouldReturn([
-            ChannelEvents::PRE_REMOVE => 'removeChannelLinkedEntities',
+            StorageEvents::PRE_REMOVE => 'removeChannelLinkedEntities',
         ]);
     }
 
@@ -58,13 +58,13 @@ class RemoveChannelSubscriberSpec extends ObjectBehavior
         $channelConfigRemover->remove($webChannelConfig)->shouldBeCalled();
         $channelConfigRemover->remove($mobChannelConfig)->shouldBeCalled();
 
-        $this->removeChannelLinkedEntities($event)->shouldReturn($event);
+        $this->removeChannelLinkedEntities($event)->shouldReturn(null);
     }
 
-    function it_throws_an_exception_if_the_channel_does_not_have_the_right_inteface(GenericEvent $event)
+    function it_does_nothing_if_the_channel_does_not_have_the_right_inteface(GenericEvent $event)
     {
         $event->getSubject()->willReturn(new \stdClass);
 
-        $this->shouldThrow('\InvalidArgumentException')->during('removeChannelLinkedEntities', [$event]);
+        $this->removeChannelLinkedEntities($event)->shouldReturn(null);
     }
 }

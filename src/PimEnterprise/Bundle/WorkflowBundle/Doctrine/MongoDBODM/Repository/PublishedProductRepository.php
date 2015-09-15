@@ -16,6 +16,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -29,7 +30,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface,
- PublishedAssociationRepositoryInterface
+    PublishedAssociationRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -220,8 +221,11 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForCategoryAndChildren($categoryIds)
+    public function countPublishedProductsForCategory(CategoryInterface $category)
     {
+        $categoryIds = $this->categoryRepository->getAllChildrenIds($category);
+        $categoryIds[] = $category->getId();
+
         $qb = $this->createQueryBuilder('pp');
         $qb->field('categoryIds')->in($categoryIds);
 
