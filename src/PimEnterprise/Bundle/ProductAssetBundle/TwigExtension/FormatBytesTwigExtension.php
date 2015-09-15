@@ -33,31 +33,37 @@ class FormatBytesTwigExtension extends \Twig_Extension
     /**
      * Format bytes into human readable value
      *
-     * @param int $bytes
-     * @param int $decimals
+     * @param int  $bytes    The file size in bytes/octets
+     * @param int  $decimals The number of decimals
+     * @param bool $si       International System of Units or not
      *
      * @return string
      */
-    public function formatBytes($bytes, $decimals = 2)
+    public function formatBytes($bytes, $decimals = 2, $si = false)
     {
-        $kilobyte = 1024;
-        $megabyte = $kilobyte * 1024;
-        $gigabyte = $megabyte * 1024;
-        $terabyte = $gigabyte * 1024;
+        $unit = $si ? 1000 : 1024;
+        $kilobyte = $unit;
+        $megabyte = $kilobyte * $unit;
+        $gigabyte = $megabyte * $unit;
+        $terabyte = $gigabyte * $unit;
 
-        if (($bytes >= 0) && ($bytes < $kilobyte)) {
-            return $bytes . ' B';
-        } elseif (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
-            return round($bytes / $kilobyte, $decimals) . ' KB';
-        } elseif (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
-            return round($bytes / $megabyte, $decimals) . ' MB';
-        } elseif (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
-            return round($bytes / $gigabyte, $decimals) . ' GB';
-        } elseif ($bytes >= $terabyte) {
-            return round($bytes / $terabyte, $decimals) . ' TB';
-        } else {
-            return $bytes . ' B';
+        if (($bytes >= $kilobyte) && ($bytes < $megabyte)) {
+            return round($bytes / $kilobyte, $decimals) . ($si ? ' K' : ' KB');
         }
+
+        if (($bytes >= $megabyte) && ($bytes < $gigabyte)) {
+            return round($bytes / $megabyte, $decimals) . ($si ? ' M' : ' MB');
+        }
+
+        if (($bytes >= $gigabyte) && ($bytes < $terabyte)) {
+            return round($bytes / $gigabyte, $decimals) . ($si ? ' G' : ' GB');
+        }
+
+        if ($bytes >= $terabyte) {
+            return round($bytes / $terabyte, $decimals) . ($si ? ' T' : ' TB');
+        }
+
+        return $bytes . ' B';
     }
 
     /**
