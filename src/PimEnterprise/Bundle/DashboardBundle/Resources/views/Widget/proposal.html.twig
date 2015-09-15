@@ -14,8 +14,9 @@
             ['jquery', 'pim/dashboard/widget-container', 'pimee/dashboard/proposal-widget'],
             function ($, widgetContainer, ProposalWidget) {
                 'use strict';
-                $(function() {
-                    var widget = widgetContainer.getWidget('proposal', ProposalWidget);
+                $(function () {
+                    var options = {el: '#proposal-widget', alias: 'proposals'}
+                    var widget = widgetContainer.getWidget(options, ProposalWidget);
                     widget.render().delayedLoad();
                 });
             }

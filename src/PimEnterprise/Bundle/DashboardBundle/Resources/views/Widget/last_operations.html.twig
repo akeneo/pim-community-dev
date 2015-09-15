@@ -11,8 +11,9 @@
                 function ($, widgetContainer, LastOperationsWidget) {
                     'use strict';
                     $(function () {
-                        var widget = widgetContainer.getWidget('last_operations', LastOperationsWidget);
-                        widget.setShowListBtn(widgetContainer.getDomSelector('last_operations'));
+                        var options = {el: '#last-operations-widget', alias: 'last_operations'};
+                        var widget = widgetContainer.getWidget(options, LastOperationsWidget);
+                        widget.setShowListBtn(options.el);
                         widget.render().delayedLoad();
                     });
                 }
