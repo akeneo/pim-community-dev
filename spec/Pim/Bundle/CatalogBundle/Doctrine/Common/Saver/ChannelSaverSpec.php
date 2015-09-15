@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\CompletenessSavingOptionsResolver;
-use Pim\Bundle\CatalogBundle\Event\ChannelEvents;
+use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Prophecy\Argument;
@@ -36,8 +36,8 @@ class ChannelSaverSpec extends ObjectBehavior
         $objectManager->persist($channel)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(ChannelEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(ChannelEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($channel);
     }
 
@@ -50,8 +50,8 @@ class ChannelSaverSpec extends ObjectBehavior
         $objectManager->persist($channel)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
 
-        $eventDispatcher->dispatch(ChannelEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(ChannelEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($channel, ['flush' => false]);
     }
 
@@ -70,8 +70,8 @@ class ChannelSaverSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
         $completenessManager->scheduleForchannel($channel)->shouldNotBeCalled($channel);
 
-        $eventDispatcher->dispatch(ChannelEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(ChannelEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($channel, ['schedule' => false]);
     }
 

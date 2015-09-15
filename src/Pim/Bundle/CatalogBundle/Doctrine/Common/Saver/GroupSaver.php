@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -94,7 +94,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(GroupEvents::PRE_SAVE, new GenericEvent($group));
+        $this->eventDispatcher->dispatch(BaseEvents::PRE_SAVE, new GenericEvent($group));
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
 
@@ -127,7 +127,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             $this->copyVariantGroupValues($group);
         }
 
-        $this->eventDispatcher->dispatch(GroupEvents::POST_SAVE, new GenericEvent($group));
+        $this->eventDispatcher->dispatch(BaseEvents::POST_SAVE, new GenericEvent($group));
     }
 
     /**
@@ -139,7 +139,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(GroupEvents::PRE_SAVE_ALL, new GenericEvent($groups));
+        $this->eventDispatcher->dispatch(BaseEvents::PRE_SAVE_ALL, new GenericEvent($groups));
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
@@ -153,7 +153,7 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(GroupEvents::POST_SAVE_ALL, new GenericEvent($groups));
+        $this->eventDispatcher->dispatch(BaseEvents::POST_SAVE_ALL, new GenericEvent($groups));
     }
 
     /**

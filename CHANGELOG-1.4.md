@@ -1,5 +1,30 @@
 # 1.4.x
 
+## BC breaks
+- Removed `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\AssociationTypeRemover`
+- Removed `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\AttributeOptionRemover`
+- Removed `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\AttributeRemover`
+- Removed `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\CategoryRemover`
+- Removed `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\FamilyRemover`
+- Removed `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\GroupRemover`
+- Removed `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ProductRemover`
+- Removed `Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents`
+- Removed `Pim\Bundle\CatalogBundle\Event\AttributeEvents`
+- Removed `Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents`
+- Removed `Pim\Bundle\CatalogBundle\Event\CategoryEvents`
+- Removed `Pim\Bundle\CatalogBundle\Event\FamilyEvents`
+- Removed `Pim\Bundle\CatalogBundle\Event\GroupEvents`
+- Removed event `pim_catalog.pre_remove.association_type` use `pim_catalog.pre_remove` instead
+- Removed event `pim_catalog.pre_remove.attribute` use `pim_catalog.pre_remove` instead
+- Removed event `pim_catalog.post_remove.attribute` use `pim_catalog.post_remove` instead
+- Removed event `pim_catalog.pre_remove.attribute_option` use `pim_catalog.pre_remove` instead
+- Removed event `pim_catalog.pre_remove.category` use `pim_catalog.pre_remove` instead
+- Removed event `pim_catalog.pre_remove.tree` use `pim_catalog.pre_remove` instead
+- Removed event `pim_catalog.pre_remove.family` use `pim_catalog.pre_remove` instead
+- Removed event `pim_catalog.pre_remove.group` use `pim_catalog.pre_remove` instead
+- Removed event `pim_catalog.pre_remove.product` use `pim_catalog.pre_remove` instead
+- Removed event `pim_catalog.post_remove.product` use `pim_catalog.post_remove` instead
+
 # 1.4.0-RC1 (2015-09-04)
 
 ## Technical improvements
