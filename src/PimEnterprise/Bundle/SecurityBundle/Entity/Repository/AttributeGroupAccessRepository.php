@@ -221,7 +221,7 @@ class AttributeGroupAccessRepository extends EntityRepository
      *
      * @return integer[]
      */
-    public function getGrantedAttributeIds(UserInterface $user, $accessLevel, array $filterableIds = null)
+    public function getGrantedAttributeIds(UserInterface $user, $accessLevel, array $filterableIds = [])
     {
         $qb = $this->getGrantedAttributeGroupQB($user, $accessLevel);
         $qb
@@ -229,7 +229,6 @@ class AttributeGroupAccessRepository extends EntityRepository
             ->innerJoin('ag.attributes', 'a')
             ->groupBy('a.id');
 
-        $filterableIds = null === $filterableIds ? [] : $filterableIds;
         if (!empty($filterableIds)) {
             $qb->andWhere(
                 $qb->expr()->in('a.id', $filterableIds)
