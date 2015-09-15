@@ -3,10 +3,10 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor as BaseProcessor;
+use Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -15,13 +15,13 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * It adds a product value but check if the user has right to mass edit the product (if he is the owner).
+ * It updates a product value but check if the user has right to mass edit the product (if he is the owner).
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddProductValueWithPermissionProcessor extends BaseProcessor
+class UpdateProductValueWithPermissionProcessor extends BaseProcessor
 {
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
@@ -33,7 +33,7 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     protected $tokenStorage;
 
     /**
-     * @param PropertyAdderInterface              $propertyAdder
+     * @param PropertySetterInterface             $propertySetter
      * @param ValidatorInterface                  $validator
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param UserManager                         $userManager
@@ -41,7 +41,7 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
      * @param TokenStorageInterface               $tokenStorage
      */
     public function __construct(
-        PropertyAdderInterface $propertyAdder,
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
@@ -49,7 +49,7 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
         TokenStorageInterface $tokenStorage
     ) {
         BaseProcessor::__construct(
-            $propertyAdder,
+            $propertySetter,
             $validator,
             $jobConfigurationRepo
         );

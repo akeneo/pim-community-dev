@@ -14,6 +14,11 @@ jobs:
         alias:     add_product_value_with_permission
         label:     Mass add products values with permission check
         type:      mass_edit
+    update_product_value_with_permission:
+        connector: Akeneo Mass Edit Connector
+        alias:     update_product_value_with_permission
+        label:     Mass update products values with permission check
+        type:      mass_edit
     publish_product:
         connector: Akeneo Mass Edit Connector
         alias:     publish_product

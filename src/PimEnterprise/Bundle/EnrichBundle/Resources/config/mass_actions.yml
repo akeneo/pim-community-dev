@@ -3,6 +3,7 @@ parameters:
     pimee_enrich.mass_edit_action.unpublish.class:                  PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Unpublish
     pim_enrich.mass_edit_action.edit_common_attributes.class:       PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
     pim_enrich.mass_edit_action.classify.class:                     PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
+    pim_enrich.mass_edit_action.change_status.class:                PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
 
     pimee_enrich.mass_edit_tasklet.publish_product.class:           PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\PublishProductTasklet
     pimee_enrich.mass_edit_tasklet.unpublish_product.class:         PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\UnpublishProductTasklet
