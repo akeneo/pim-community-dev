@@ -204,7 +204,7 @@ class YamlReader extends FileReader implements
             $this->yaml->next();
 
             if (null !== $this->stepExecution) {
-                $this->stepExecution->incrementSummaryInfo('read');
+                $this->stepExecution->incrementSummaryInfo('read_lines');
             }
 
             return $data;
