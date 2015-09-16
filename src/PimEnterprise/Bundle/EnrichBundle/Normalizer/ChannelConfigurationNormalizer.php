@@ -27,7 +27,6 @@ class ChannelConfigurationNormalizer implements NormalizerInterface
      */
     public function normalize($channelConf, $format = null, array $context = [])
     {
-        /** @var ChannelVariationsConfigurationInterface $channelConf */
         $normalizedData['channel'] = $channelConf->getChannel()->getCode();
         $normalizedData['configuration'] = $channelConf->getConfiguration();
 

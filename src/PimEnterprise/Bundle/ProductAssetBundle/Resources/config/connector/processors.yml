@@ -53,4 +53,4 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.locale'
-            - '@pimee_enrich.normalizer.flat.channel_configuration'
+            - '@pim_product_asset.normalizer.flat.variation'

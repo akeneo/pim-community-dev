@@ -103,4 +103,4 @@ connector:
                     services:
                         reader:    pimee_product_asset.reader.orm.csv_channel_configuration
                         processor: pimee_product_asset.processor.normalization.channel_configuration.flat
-                        writer:    pimee_catalog_rule.writer.yaml_file.rule_definition
+                        writer:    pim_connector.writer.file.yaml
