@@ -1,3 +1,8 @@
+# 1.3.26 (2015-09-16)
+
+## Bug fixes
+PIM-4877: Fix export CSV for products
+
 # 1.3.25 (2015-09-14)
 
 ## Bug fixes
