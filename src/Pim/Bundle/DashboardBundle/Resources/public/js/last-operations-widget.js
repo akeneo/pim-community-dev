@@ -3,7 +3,7 @@ define(
     function ($, _, Routing, Navigation, AbstractWidget, moment) {
         'use strict';
 
-        var LastOperationsWidget = AbstractWidget.extend({
+        return AbstractWidget.extend({
             tagName: 'table',
 
             id: 'last-operations-widget',
@@ -149,19 +149,5 @@ define(
                 return data;
             }
         });
-
-        var instance = null;
-
-        return {
-            init: function (options) {
-                if (!instance) {
-                    instance = new LastOperationsWidget(options);
-                } else if (_.has(options, 'el')) {
-                    instance.setElement(options.el);
-                }
-                instance.setShowListBtn(options.el);
-                instance.render().delayedLoad();
-            }
-        };
     }
 );
