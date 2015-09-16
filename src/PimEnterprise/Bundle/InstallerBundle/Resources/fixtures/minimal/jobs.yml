@@ -158,3 +158,12 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    yaml_asset_channel_configuration_export:
+        connector: Akeneo CSV Connector
+        alias:     yaml_asset_channel_configuration_export
+        label:     Demo asset channel configuration export
+        type:      export
+        configuration:
+            filePath:      /tmp/asset_channel_configurations.yml
+            uploadAllowed: true
+            multiple:      false
