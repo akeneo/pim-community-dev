@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -38,6 +37,7 @@ class ChannelConfigurationProcessor extends Processor
         NormalizerInterface $channelNormalizer
     ) {
         parent::__construct($serializer, $localeManager);
+
         $this->channelNormalizer = $channelNormalizer;
     }
 

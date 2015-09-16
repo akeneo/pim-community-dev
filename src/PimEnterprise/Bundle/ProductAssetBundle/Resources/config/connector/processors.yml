@@ -46,7 +46,7 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.locale'
-            - '@pimee_enrich.normalizer.flat.channel_configuration'
+            - '@pim_product_asset.normalizer.structured.channel_configuration'
 
     pimee_product_asset.processor.normalization.variation.flat:
         class: %pimee_product_asset.processor.normalization.variation.class%
