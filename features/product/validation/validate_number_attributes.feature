@@ -25,9 +25,6 @@ Feature: Validate number attributes of a product
       | sku | family | popularity-mobile | popularity-ecommerce | rating |
       | foo | baz    | 4                 | 4                    | 1      |
       | bar | baz    | 4                 | 4                    | 2      |
-    And the following attribute group accesses:
-      | attribute group | user group | access |
-      | general         | Redactor   | view   |
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
