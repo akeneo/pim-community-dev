@@ -106,8 +106,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
+
+            $rootDir   = dirname($this->getContainer()->getParameter('kernel.root_dir'));
+            $filePath  = $event->getLogicalParent()->getFile();
             $stepStats = [
-                'scenario_file'  => strstr($event->getLogicalParent()->getFile(), 'features/'),
+                'scenario_file'  => substr($filePath, strlen($rootDir) + 1),
                 'scenario_line'  => $event->getLogicalParent()->getLine(),
                 'scenario_label' => $event->getLogicalParent()->getTitle(),
                 'exception'      => $event->getException()->getMessage(),
