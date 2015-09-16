@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -42,7 +42,7 @@ class AttributeSaverSpec extends ObjectBehavior
             ->willReturn(['flush' => true, 'schedule' => true]);
         $eventDispatcher
             ->dispatch(
-                Argument::exact(AttributeEvents::PRE_SAVE),
+                Argument::exact(BaseEvents::PRE_SAVE),
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
@@ -50,7 +50,7 @@ class AttributeSaverSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
         $eventDispatcher
             ->dispatch(
-                Argument::exact(AttributeEvents::POST_SAVE),
+                Argument::exact(BaseEvents::POST_SAVE),
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();

@@ -22,66 +22,6 @@ final class ProductEvents
     const CREATE = 'pim_catalog.create_product';
 
     /**
-     * This event is thrown before a product is removed.
-     *
-     * The event listener receives an
-     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
-     *
-     * @staticvar string
-     */
-    const PRE_REMOVE = 'pim_catalog.pre_remove.product';
-
-    /**
-     * This event is thrown after a product has been removed.
-     *
-     * The event listener receives an
-     * Akeneo\Component\StorageUtils\Event\RemoveEvent instance.
-     *
-     * @staticvar string
-     */
-    const POST_REMOVE = 'pim_catalog.post_remove.product';
-
-    /**
-     * This event is thrown before a product is saved.
-     *
-     * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
-     *
-     * @staticvar string
-     */
-    const PRE_SAVE = 'pim_catalog.pre_save.product';
-
-    /**
-     * This event is thrown after a product has been saved.
-     *
-     * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
-     *
-     * @staticvar string
-     */
-    const POST_SAVE = 'pim_catalog.post_save.product';
-
-    /**
-     * This event is thrown before several products get saved.
-     *
-     * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
-     *
-     * @staticvar string
-     */
-    const PRE_SAVE_ALL = 'pim_catalog.pre_save_all.product';
-
-    /**
-     * This event is thrown after several products have been saved.
-     *
-     * The event listener receives an
-     * Symfony\Component\EventDispatcher\GenericEvent instance.
-     *
-     * @staticvar string
-     */
-    const POST_SAVE_ALL = 'pim_catalog.post_save_all.product';
-
-    /**
      * This event is thrown before several products get removed
      *
      * The event listener receives an

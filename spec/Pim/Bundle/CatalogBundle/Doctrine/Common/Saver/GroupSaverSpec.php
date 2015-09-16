@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -67,8 +67,8 @@ class GroupSaverSpec extends ObjectBehavior
         $objectManager->persist($group)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($group);
     }
 
@@ -99,8 +99,8 @@ class GroupSaverSpec extends ObjectBehavior
             ->saveAll([$addedProduct], ['recalculate' => false, 'schedule' => false])
             ->shouldBeCalled();
 
-        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->save($group, ['add_products' => [$addedProduct]]);
     }
@@ -132,8 +132,8 @@ class GroupSaverSpec extends ObjectBehavior
             ->saveAll([$removedProduct], ['recalculate' => false, 'schedule' => false])
             ->shouldBeCalled();
 
-        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->save($group, ['remove_products' => [$removedProduct]]);
     }
@@ -152,8 +152,8 @@ class GroupSaverSpec extends ObjectBehavior
 
         $templateMediaManager->handleProductTemplateMedia($template)->shouldBeCalled();
 
-        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->save($group);
     }
@@ -192,8 +192,8 @@ class GroupSaverSpec extends ObjectBehavior
             ->apply($template, [$product])
             ->shouldBeCalled();
 
-        $eventDispatcher->dispatch(GroupEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(GroupEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->save($group, ['copy_values_to_products' => true]);
     }
