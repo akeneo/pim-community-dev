@@ -21,9 +21,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
- * Asset import processor, allows to,
- *  - create / update asset
- *  - return the valid asset, throw exceptions to skip invalid ones
+ * Denormalize a ChannelVariationsConfiguration
  *
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
@@ -102,7 +100,7 @@ class ChannelConfigurationProcessor extends AbstractProcessor
      *
      * @param array $convertedItem
      *
-     * @return ChannelConfigurationInterface
+     * @return ChannelVariationsConfigurationInterface
      */
     protected function findOrCreateChannelConfiguration(array $convertedItem)
     {
@@ -127,8 +125,10 @@ class ChannelConfigurationProcessor extends AbstractProcessor
      * @param ChannelVariationsConfigurationInterface $channelConfiguration
      * @param array                                   $convertedItem
      */
-    protected function updateChannelConfiguration(ChannelVariationsConfigurationInterface $channelConfiguration, array $convertedItem)
-    {
+    protected function updateChannelConfiguration(
+        ChannelVariationsConfigurationInterface $channelConfiguration,
+        array $convertedItem
+    ) {
         $channelConfiguration->setConfiguration($convertedItem['configuration']);
     }
 
