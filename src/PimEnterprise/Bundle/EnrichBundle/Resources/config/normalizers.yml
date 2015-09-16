@@ -1,8 +1,9 @@
 parameters:
-    pimee_enrich.serializer.normalizer.rule_relation.class: PimEnterprise\Bundle\EnrichBundle\Normalizer\RuleRelationNormalizer
-    pimee_enrich.normalizer.structured.asset.class:         PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetNormalizer
-    pimee_enrich.normalizer.version.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer
-    pimee_enrich.normalizer.product.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer
+    pimee_enrich.serializer.normalizer.rule_relation.class:   PimEnterprise\Bundle\EnrichBundle\Normalizer\RuleRelationNormalizer
+    pimee_enrich.normalizer.structured.asset.class:           PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetNormalizer
+    pimee_enrich.normalizer.flat.channel_configuration.class: PimEnterprise\Bundle\EnrichBundle\Normalizer\ChannelConfigurationNormalizer
+    pimee_enrich.normalizer.version.class:                    PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer
+    pimee_enrich.normalizer.product.class:                    PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer
 
 services:
     pimee_enrich.serializer.normalizer.granted_family:
@@ -42,5 +43,10 @@ services:
         class: %pimee_enrich.normalizer.structured.asset.class%
         arguments:
             - '@pim_serializer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 120 }
+
+    pimee_enrich.normalizer.flat.channel_configuration:
+        class: %pimee_enrich.normalizer.flat.channel_configuration.class%
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
