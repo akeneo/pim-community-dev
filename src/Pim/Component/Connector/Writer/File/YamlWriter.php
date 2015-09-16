@@ -30,7 +30,7 @@ class YamlWriter extends FileWriter
             mkdir(dirname($path), 0777, true);
         }
 
-        $yaml = Yaml::dump($items[0], self::INLINE_ARRAY_LEVEL);
+        $yaml = Yaml::dump($items, self::INLINE_ARRAY_LEVEL);
 
         if (false === file_put_contents($path, $yaml)) {
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
