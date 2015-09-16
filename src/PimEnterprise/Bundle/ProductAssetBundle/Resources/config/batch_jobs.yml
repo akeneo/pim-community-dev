@@ -95,11 +95,11 @@ connector:
                         processor: pimee_product_asset.processor.normalization.variation.flat
                         writer:    pim_base_connector.writer.file
         yaml_asset_channel_configuration_export:
-            title: pimee_product_asset.jobs.csv_asset_configuration_export.title
+            title: pimee_product_asset.jobs.yaml_asset_configuration_export.title
             type:  export
             steps:
                 export:
-                    title: pimee_product_asset.jobs.csv_asset_configuration_export.title
+                    title: pimee_product_asset.jobs.yaml_asset_configuration_export.title
                     services:
                         reader:    pimee_product_asset.reader.orm.csv_channel_configuration
                         processor: pimee_product_asset.processor.normalization.channel_configuration.flat
