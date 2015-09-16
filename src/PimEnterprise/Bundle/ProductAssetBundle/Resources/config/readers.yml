@@ -21,4 +21,4 @@ services:
     pimee_product_asset.reader.orm.csv_channel_configuration:
         class: %pimee_product_asset.reader.orm.base.class%
         arguments:
-            - '@pimee_product_asset.repository.variation'
+            - '@pimee_product_asset.repository.channel_configuration'
