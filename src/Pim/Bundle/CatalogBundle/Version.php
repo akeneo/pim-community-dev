@@ -12,7 +12,7 @@ namespace Pim\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.3.25';
+    const VERSION = '1.3.26';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Hare Force';
