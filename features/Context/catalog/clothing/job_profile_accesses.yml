@@ -66,6 +66,9 @@ job_profile_accesses:
     clothing_asset_channel_configuration_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
+    clothing_asset_channel_configuration_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
 
     update_product_value:
         executeJobProfile: [IT support, Manager, Redactor]
