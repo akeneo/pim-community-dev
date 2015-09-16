@@ -2,6 +2,7 @@ parameters:
     pimee_product_asset.processor.denormalization.tag.class:                   PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\TagProcessor
     pimee_product_asset.processor.denormalization.asset.class:                 PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\AssetProcessor
     pimee_product_asset.processor.denormalization.channel_configuration.class: PimEnterprise\Component\ProductAsset\Connector\Processor\Denormalization\ChannelConfigurationProcessor
+    pimee_product_asset.processor.normalization.channel_configuration.class:   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\ChannelConfigurationProcessor
     pimee_product_asset.processor.normalization.asset.class:                   PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\AssetProcessor
     pimee_product_asset.processor.normalization.variation.class:               PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization\VariationProcessor
 
@@ -40,9 +41,16 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_product_asset.normalizer.flat.asset'
 
+    pimee_product_asset.processor.normalization.channel_configuration.flat:
+        class: %pimee_product_asset.processor.normalization.channel_configuration.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.manager.locale'
+            - '@pimee_enrich.normalizer.flat.channel_configuration'
+
     pimee_product_asset.processor.normalization.variation.flat:
         class: %pimee_product_asset.processor.normalization.variation.class%
         arguments:
             - '@pim_serializer'
             - '@pim_catalog.manager.locale'
-            - '@pim_product_asset.normalizer.flat.variation'
+            - '@pimee_enrich.normalizer.flat.channel_configuration'
