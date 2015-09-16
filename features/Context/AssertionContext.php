@@ -770,6 +770,16 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * Checks that avatar was not the default one
+     *
+     * @Then /^I should not see the default avatar$/
+     */
+    public function iShouldNotSeeDefaultAvatar()
+    {
+        $this->assertSession()->elementAttributeNotContains('css', '.customer-info img', 'src', 'user-info.png');
+    }
+
+    /**
      * @return Page
      */
     protected function getCurrentPage()
