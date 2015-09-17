@@ -20,24 +20,78 @@ class YamlWriter extends FileWriter
     /** @var string */
     protected $filePath = '/tmp/export_%datetime%.yml';
 
+    /** @var string */
+    protected $header;
+
     /**
      * {@inheritdoc}
      */
     public function write(array $items)
     {
+        $data = call_user_func_array('array_merge', $items);
+        if (null !== $this->header) {
+            $data = [];
+            $data[$this->header] = $items;
+        }
+
         $path = $this->getPath();
         if (!is_dir(dirname($path))) {
             mkdir(dirname($path), 0777, true);
         }
 
-        $yaml = Yaml::dump($items, self::INLINE_ARRAY_LEVEL);
+        $yaml = Yaml::dump($data, self::INLINE_ARRAY_LEVEL);
 
         if (false === file_put_contents($path, $yaml)) {
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
         }
 
-        foreach ($items as $item) {
-            $this->stepExecution->incrementSummaryInfo('write');
+        $this->incrementSummaryInfo($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        $configuration = parent::getConfigurationFields();
+        $configuration = $configuration + ['header' => ['header' => null]];
+
+        return $configuration;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHeader()
+    {
+        return $this->header;
+    }
+
+    /**
+     * @param string $header
+     *
+     * @return YamlWriter
+     */
+    public function setHeader($header)
+    {
+        $this->header = $header;
+
+        return $this;
+    }
+
+    /**
+     * @param array $data
+     */
+    protected function incrementSummaryInfo(array $data)
+    {
+        if (null !== $this->header) {
+            foreach ($data[$this->header] as $item) {
+                $this->stepExecution->incrementSummaryInfo('write');
+            }
+        } else {
+            foreach ($data as $item) {
+                $this->stepExecution->incrementSummaryInfo('write');
+            }
         }
     }
 }
