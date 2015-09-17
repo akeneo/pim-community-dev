@@ -1,4 +1,0 @@
-channel;configuration
-mobile;{"scale":{"width":200},"colorspace":{"colorspace":"gray"}}
-print;{"resize":{"width":400,"height":200}}
-ecommerce;{"scale":{"ratio":50}}
