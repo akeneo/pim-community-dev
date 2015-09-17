@@ -1,3 +1,7 @@
 <div class="tab-pane tab-property {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {% if form.vars.value.id %}
     {{ render(controller('pimee_enrich.controller.channel_transformation:viewAction', {'id': form.vars.value.id})) }}
+    {% else %}
+    <div class="no-data">{{ 'pimee_enrich.asset_transformation.not_found'|trans }}</div>
+    {% endif %}
 </div>
