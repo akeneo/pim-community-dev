@@ -235,7 +235,6 @@ class CompletenessManager
                 !$this->productValueCompleteChecker->isComplete($productValue, $channel, $locale);
 
             $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
-
             if ((null === $productValue || $isIncomplete) && $shouldExistInLocale) {
                 $completenesses[$localeCode]['channels'][$channel->getCode()]['missing'][] = $attribute;
             }
