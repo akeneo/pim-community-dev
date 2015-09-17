@@ -48,6 +48,7 @@ define(
                     label: _.__('pim_enrich.form.product.tab.attributes.title')
                 });
 
+                UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
 
