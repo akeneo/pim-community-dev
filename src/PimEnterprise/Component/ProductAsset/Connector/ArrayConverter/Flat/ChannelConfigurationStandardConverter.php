@@ -28,7 +28,7 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
      *
      * Before:
      * [
-     *      'channel'       => 'mycode',
+     *      'code'          => 'mycode',
      *      'configuration' => [],
      * ]
      *
@@ -47,7 +47,7 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validateRequiredFields($item, ['channel', 'configuration']);
+        $this->validateRequiredFields($item, ['code', 'configuration']);
         $convertedItem = [];
         foreach ($item as $field => $data) {
             $convertedItem = $this->convertField($convertedItem, $field, $data);
@@ -66,7 +66,7 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
     protected function convertField(array $convertedItem, $field, $data)
     {
         switch ($field) {
-            case 'channel':
+            case 'code':
                 $convertedItem['channel'] = (string) $data;
                 break;
             case 'configuration':
