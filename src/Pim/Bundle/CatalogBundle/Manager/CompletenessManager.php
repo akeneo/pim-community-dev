@@ -38,7 +38,7 @@ class CompletenessManager
     protected $generator;
 
     /** @var ProductValueCompleteCheckerInterface */
-    protected $productValueCompleteCkecker;
+    protected $productValueCompleteChecker;
 
     /** @var string */
     protected $class;
@@ -48,7 +48,7 @@ class CompletenessManager
      * @param ChannelRepositoryInterface           $channelRepository
      * @param LocaleRepositoryInterface            $localeRepository
      * @param CompletenessGeneratorInterface       $generator
-     * @param ProductValueCompleteCheckerInterface $productValueCompleteCkecker
+     * @param ProductValueCompleteCheckerInterface $productValueCompleteChecker
      * @param string                               $class
      */
     public function __construct(
@@ -56,14 +56,14 @@ class CompletenessManager
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CompletenessGeneratorInterface $generator,
-        ProductValueCompleteCheckerInterface $productValueCompleteCkecker,
+        ProductValueCompleteCheckerInterface $productValueCompleteChecker,
         $class
     ) {
         $this->familyRepository            = $familyRepository;
         $this->channelRepository           = $channelRepository;
         $this->localeRepository            = $localeRepository;
         $this->generator                   = $generator;
-        $this->productValueCompleteCkecker = $productValueCompleteCkecker;
+        $this->productValueCompleteChecker = $productValueCompleteChecker;
         $this->class                       = $class;
     }
 
@@ -140,10 +140,10 @@ class CompletenessManager
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
-     * @param ProductInterface                           $product
-     * @param \Pim\Bundle\CatalogBundle\Entity\Channel[] $channels
-     * @param \Pim\Bundle\CatalogBundle\Entity\Locale[]  $locales
-     * @param string                                     $localeCode
+     * @param ProductInterface                                    $product
+     * @param \Pim\Bundle\CatalogBundle\Entity\ChannelInterface[] $channels
+     * @param \Pim\Bundle\CatalogBundle\Entity\LocaleInterface[]  $locales
+     * @param string                                              $localeCode
      *
      * @return array
      */
@@ -214,7 +214,7 @@ class CompletenessManager
      * @param array                         &$completenesses
      * @param AttributeRequirementInterface $requirement
      * @param ArrayCollection               $productValues
-     * @param Locale[]                      $locales
+     * @param LocaleInterface[]             $locales
      */
     protected function addRequirementToCompleteness(
         array &$completenesses,
@@ -229,14 +229,12 @@ class CompletenessManager
             $valueCode    = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $missing      = false;
             $productValue = isset($productValues[$valueCode]) ? $productValues[$valueCode] : null;
-            if (null === $productValue) {
-                $missing = true;
-            } elseif ($this->productValueCompleteCkecker->supportsValue($productValue)
-                && !$this->productValueCompleteCkecker->isComplete($productValue, $channel, $locale)
-            ) {
-                $missing = true;
-            }
-            if ($missing) {
+            $isIncomplete = (null !== $productValue) &&
+                $this->productValueCompleteChecker->supportsValue($productValue) &&
+                !$this->productValueCompleteChecker->isComplete($productValue, $channel, $locale);
+
+            $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
+            if ((null === $productValue || $isIncomplete) && $shouldExistInLocale) {
                 $completenesses[$localeCode]['channels'][$channel->getCode()]['missing'][] = $attribute;
             }
         }

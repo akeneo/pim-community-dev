@@ -14,6 +14,7 @@ define(
             tagName: 'span',
             className: 'product-label',
             configure: function () {
+                UserContext.off('change:catalogLocale', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 

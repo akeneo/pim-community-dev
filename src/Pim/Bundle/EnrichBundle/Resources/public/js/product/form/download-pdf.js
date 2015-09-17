@@ -26,6 +26,7 @@ define(
             className: 'btn-group',
             template: _.template(template),
             configure: function () {
+                UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
