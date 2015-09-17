@@ -10,7 +10,7 @@ class ChannelConfigurationStandardConverterSpec extends ObjectBehavior
     function it_converts()
     {
         $fields = [
-            'channel'       => 'mycode',
+            'code'          => 'mycode',
             'configuration' => [
                 'ecommerce' => ['scale' => ['ratio' => 0.5]],
                 'tablet'    => ['scale' => ['ratio' => 0.25]],
@@ -37,7 +37,7 @@ class ChannelConfigurationStandardConverterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_required_fields_are_not_in_array()
     {
-        $this->shouldThrow(new \LogicException('Field "channel" is expected, provided fields are "not_a_code"'))->during(
+        $this->shouldThrow(new \LogicException('Field "code" is expected, provided fields are "not_a_code"'))->during(
             'convert',
             [['not_a_code' => '']]
         );
@@ -45,9 +45,9 @@ class ChannelConfigurationStandardConverterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_required_field_code_is_empty()
     {
-        $this->shouldThrow(new \LogicException('Field "channel" must be filled'))->during(
+        $this->shouldThrow(new \LogicException('Field "code" must be filled'))->during(
             'convert',
-            [['channel' => '']]
+            [['code' => '']]
         );
     }
 }

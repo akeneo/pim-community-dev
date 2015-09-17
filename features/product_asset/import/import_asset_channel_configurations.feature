@@ -10,7 +10,7 @@ Feature: Import asset channel configurations
     And the following yaml file to import:
     """
     asset_channel_configuration:
-        ecommerce
+        ecommerce:
             configuration:
                 scale:
                     width: 200
@@ -37,7 +37,7 @@ Feature: Import asset channel configurations
                     width: 200
                 colorspace:
                     colorspace: gray
-        mobile:
+        tablet:
             configuration:
                 scale:
                     ratio: 25
@@ -50,7 +50,7 @@ Feature: Import asset channel configurations
     Then I should see "read lines 2"
     And I should see "processed 2"
 
-  Scenario: Import asset file with missing required channel header
+  Scenario: Import asset file with wrong channel header
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
     And the following yaml file to import:
@@ -62,17 +62,13 @@ Feature: Import asset channel configurations
                     width: 200
                 colorspace:
                     colorspace: gray
-        wrong
-            configuration:
-                scale:
-                    ratio: 25
     """
     And the following job "clothing_asset_channel_configuration_import" configuration:
       | filePath | %file to import% |
     When I am on the "clothing_asset_channel_configuration_import" import job page
     And I launch the import job
     And I wait for the "clothing_asset_channel_configuration_import" job to finish
-    And I should see "Field \"channel\" is expected, provided fields are \"wrong, configuration, code\""
+    And I should see "Channel \"wrong\" does not exist"
 
   Scenario: Import and update channel configurations with unknown configured transformation
     Given the "clothing" catalog configuration
@@ -86,7 +82,7 @@ Feature: Import asset channel configurations
                     width: 200
                 colorspace:
                     colorspace: gray
-        tablet
+        tablet:
             configuration:
                 scale:
                     ratio: 25
@@ -107,13 +103,13 @@ Feature: Import asset channel configurations
     And the following yaml file to import:
     """
     asset_channel_configuration:
-        mobile
+        mobile:
             configuration:
                 scale:
                     wrongField: 200
                 colorspace:
                     colorspace: gray
-        tablet
+        tablet:
             configuration:
                 scale:
                     ratio: 25

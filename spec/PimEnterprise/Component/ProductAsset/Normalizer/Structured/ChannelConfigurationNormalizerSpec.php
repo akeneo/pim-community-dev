@@ -16,12 +16,13 @@ class ChannelConfigurationNormalizerSpec extends ObjectBehavior
     function it_should_normalize(ChannelVariationsConfigurationInterface $channelConf, ChannelInterface $channel)
     {
         $normalizedValues = [
-            'channel'       => 'channel_code',
-            'configuration' => [
-                'resize' => [
-                    'width'  => 400,
-                    'height' => 200
-                ]
+            'channel_code' => [
+                'configuration' => [
+                    'resize' => [
+                        'width'  => 400,
+                        'height' => 200,
+                    ],
+                ],
             ],
         ];
 
