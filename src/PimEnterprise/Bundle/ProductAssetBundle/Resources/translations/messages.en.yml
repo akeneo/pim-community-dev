@@ -115,9 +115,9 @@ pimee_product_asset:
         csv_tag_import.title: Tag import in csv
         csv_asset_category_import.title: Asset category import in csv
         csv_asset_configuration_import.title: Asset channel configuration import in csv
-        yaml_asset_configuration_export.title: Asset channel configuration export in Yaml
+        yml_asset_configuration_export.title: Asset channel configuration export in Yaml
         csv_asset_category_export.title: Asset category export in csv
-        csv_channel_configuration_import.title: Asset channel configuration import in csv
+        yml_asset_channel_configuration_import.title: Asset channel configuration import in csv
     steps:
         channel_configuration.processor.title: Process channel configurations
     notAvailable:
