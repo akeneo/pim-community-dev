@@ -9,11 +9,14 @@ class ChannelConfigurationStandardConverterSpec extends ObjectBehavior
 {
     function it_converts()
     {
-        $jsonConfiguration = '{"ecommerce":{"scale":{"ratio":0.5}},"tablet":{"scale":{"ratio":0.25}},"mobile":{"scale"'
-            .':{"width":200},"colorspace":{"colorspace":"gray"}},"print":{"resize":{"width":400,"height":200}}}';
         $fields = [
             'channel'       => 'mycode',
-            'configuration' => $jsonConfiguration
+            'configuration' => [
+                'ecommerce' => ['scale' => ['ratio' => 0.5]],
+                'tablet'    => ['scale' => ['ratio' => 0.25]],
+                'mobile'    => ['scale' => ['width'=> 200], 'colorspace' => ['colorspace' => 'gray']],
+                'print'     => ['resize' => ['width' => 400, 'height' => 200]],
+            ]
         ];
 
         $convertedConfiguration = [
