@@ -144,11 +144,7 @@ class CompletenessGenerator extends CommunityCompletenessGenerator implements Co
 
 
             $attribute = $requirement->getAttribute();
-            $shouldExistInLocale = !$attribute->isLocaleSpecific() ||
-                (
-                    $attribute->isLocaleSpecific() &&
-                    in_array($locale->getCode(), $attribute->getLocaleSpecificCodes())
-                );
+            $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
 
             if ($shouldExistInLocale) {
                 if (AbstractAttributeType::BACKEND_TYPE_PRICE === $requirement->getAttribute()->getBackendType()) {
