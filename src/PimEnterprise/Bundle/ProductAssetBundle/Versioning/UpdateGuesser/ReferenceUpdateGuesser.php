@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Versioning\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**
  * Reference update guesser

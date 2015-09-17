@@ -284,5 +284,4 @@ class EnterpriseWebUser extends BaseWebUser
             }
         }
     }
-
 }
