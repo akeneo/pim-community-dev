@@ -336,11 +336,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $attribute = $requirement->getAttribute();
                     $fieldName = $this->getNormalizedFieldName($attribute, $channel, $locale);
 
-                    $shouldExistInLocale = !$attribute->isLocaleSpecific() ||
-                        (
-                            $attribute->isLocaleSpecific() &&
-                            in_array($locale->getCode(), $attribute->getLocaleSpecificCodes())
-                        );
+                    $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
 
                     if ($shouldExistInLocale) {
                         if (AbstractAttributeType::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {

@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
@@ -541,6 +542,14 @@ abstract class AbstractAttribute implements AttributeInterface
         }
 
         return $codes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasLocaleSpecific(LocaleInterface $locale)
+    {
+        return in_array($locale->getCode(), $this->getLocaleSpecificCodes());
     }
 
     /**
