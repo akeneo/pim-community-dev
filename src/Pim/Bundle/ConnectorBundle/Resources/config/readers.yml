@@ -2,6 +2,7 @@ parameters:
     pim_connector.reader.dummy_item.class:       Pim\Component\Connector\Reader\DummyItemReader
     pim_connector.reader.file.csv.class:         Pim\Component\Connector\Reader\File\CsvReader
     pim_connector.reader.file.csv_product.class: Pim\Component\Connector\Reader\File\CsvProductReader
+    pim_connector.reader.doctrine.base.class:    Pim\Component\Connector\Reader\Doctrine\BaseReader
 
 services:
     # Dummy Reader
