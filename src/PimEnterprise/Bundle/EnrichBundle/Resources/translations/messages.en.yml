@@ -122,6 +122,7 @@ pimee_enrich:
         label: owner groups
         empty: none
     asset_transformation:
+        not_found: No transformation found
         title:
             transformation: Transformation
             options: Options
