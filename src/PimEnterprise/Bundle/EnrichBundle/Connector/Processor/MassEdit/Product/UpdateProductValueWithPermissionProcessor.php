@@ -66,38 +66,15 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
      */
     public function process($product)
     {
-        $this->initSecurityContext($this->stepExecution);
-        if ($this->hasRight($product)) {
-            return BaseProcessor::process($product);
-        }
-
-        return null;
-    }
-
-    /**
-     * Initialize the SecurityContext from the given $stepExecution
-     *
-     * @param StepExecution $stepExecution
-     */
-    protected function initSecurityContext(StepExecution $stepExecution)
-    {
-        $username = $stepExecution->getJobExecution()->getUser();
+        $username = $this->stepExecution->getJobExecution()->getUser();
         $user = $this->userManager->findUserByUsername($username);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
-    }
 
-    /**
-     * @param ProductInterface $product
-     *
-     * @return bool
-     */
-    protected function hasRight(ProductInterface $product)
-    {
-        $isAuthorized = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
-
-        if (!$isAuthorized) {
+        if ($this->authorizationChecker->isGranted(Attributes::OWN, $product)) {
+            return BaseProcessor::process($product);
+        } else {
             $this->stepExecution->addWarning(
                 $this->getName(),
                 'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
@@ -105,8 +82,8 @@ class UpdateProductValueWithPermissionProcessor extends BaseProcessor
                 $product
             );
             $this->stepExecution->incrementSummaryInfo('skipped_products');
-        }
 
-        return $isAuthorized;
+            return null;
+        }
     }
 }
