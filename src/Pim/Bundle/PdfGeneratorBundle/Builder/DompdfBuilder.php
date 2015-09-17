@@ -51,6 +51,7 @@ class DompdfBuilder implements PdfBuilderInterface
         // DOMPDF doesn't follow PSR convention, it uses classmap in autoload
         // and it requires some config to be used
         define('DOMPDF_ENABLE_AUTOLOAD', false);
+        define('DOMPDF_ENABLE_REMOTE', true);
         $filePath = $this->rootDir."/../vendor/dompdf/dompdf/dompdf_config.inc.php";
         if (file_exists($filePath)) {
             require_once $filePath;
