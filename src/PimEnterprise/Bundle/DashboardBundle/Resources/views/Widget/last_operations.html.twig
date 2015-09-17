@@ -1,0 +1,22 @@
+{% extends 'PimDashboardBundle:Widget:base.html.twig' %}
+
+{% set widgetTitle = 'pim_dashboard.widget.last_operations.title'|trans %}
+
+{% set widgetContent %}
+    <table id="last-operations-widget" class="table table-condensed table-light groups unspaced"></table>
+
+    <script type="text/javascript">
+        require(
+                ['jquery', 'pim/dashboard/widget-container', 'pimee/dashboard/last-operations-widget'],
+                function ($, widgetContainer, LastOperationsWidget) {
+                    'use strict';
+                    $(function () {
+                        var options = {el: '#last-operations-widget', alias: 'last_operations'};
+                        var widget = widgetContainer.getWidget(options, LastOperationsWidget);
+                        widget.setShowListBtn(options.el);
+                        widget.render().delayedLoad();
+                    });
+                }
+        );
+    </script>
+{% endset %}

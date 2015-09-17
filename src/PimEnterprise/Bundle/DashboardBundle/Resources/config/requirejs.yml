@@ -1,3 +1,4 @@
 config:
     paths:
         pimee/dashboard/proposal-widget: pimenterprisedashboard/js/proposal-widget
+        pimee/dashboard/last-operations-widget: pimenterprisedashboard/js/last-operations-widget
