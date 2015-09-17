@@ -10,7 +10,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
 {
     function let(VersionProviderInterface $versionProvider)
     {
-        $this->beConstructedWith($versionProvider, 'doctrine/orm', 'prod');
+        $this->beConstructedWith($versionProvider, 'doctrine/orm', 'prod', '2015-09-16T10:10:32+02:00');
     }
 
     function it_is_initializable()
@@ -28,7 +28,8 @@ class VersionDataCollectorSpec extends ObjectBehavior
                 'pim_edition'        => 'CE',
                 'pim_version'        => '1.4.0',
                 'pim_storage_driver' => 'doctrine/orm',
-                'pim_environment'    => 'prod'
+                'pim_environment'    => 'prod',
+                'pim_install_time'   => '2015-09-16T10:10:32+02:00'
             ]
         );
     }
