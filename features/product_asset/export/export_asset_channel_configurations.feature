@@ -16,16 +16,14 @@ Feature: Export asset channel configurations
     And I should see "written 2"
     Then exported file of "clothing_asset_channel_configuration_export" should contain:
     """
-    asset_channel_configuration:
-        -
-            channel: mobile
+    asset_channel_configurations:
+        mobile
             configuration:
                 scale:
                     width: 200
                 colorspace:
                     colorspace: gray
-        -
-            channel: mobile
+        mobile
             configuration:
                 scale:
                     ratio: 25

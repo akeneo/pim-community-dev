@@ -10,8 +10,7 @@ Feature: Import asset channel configurations
     And the following yaml file to import:
     """
     asset_channel_configuration:
-        -
-            channel: ecommerce
+        ecommerce
             configuration:
                 scale:
                     width: 200
@@ -32,15 +31,13 @@ Feature: Import asset channel configurations
     And the following yaml file to import:
     """
     asset_channel_configuration:
-        -
-            channel: mobile
+        mobile:
             configuration:
                 scale:
                     width: 200
                 colorspace:
                     colorspace: gray
-        -
-            channel: mobile
+        mobile:
             configuration:
                 scale:
                     ratio: 25
@@ -59,15 +56,13 @@ Feature: Import asset channel configurations
     And the following yaml file to import:
     """
     asset_channel_configuration:
-        -
-            wrong: mobile
+        wrong:
             configuration:
                 scale:
                     width: 200
                 colorspace:
                     colorspace: gray
-        -
-            wrong: tablet
+        wrong
             configuration:
                 scale:
                     ratio: 25
@@ -79,42 +74,19 @@ Feature: Import asset channel configurations
     And I wait for the "clothing_asset_channel_configuration_import" job to finish
     And I should see "Field \"channel\" is expected, provided fields are \"wrong, configuration, code\""
 
-  Scenario: Import asset with missing value for channel field
-    Given the "clothing" catalog configuration
-    And I am logged in as "Peter"
-    And the following yaml file to import:
-    """
-    asset_channel_configuration:
-        -
-            channel:
-            configuration:
-                scale:
-                    width: 200
-                colorspace:
-                    colorspace: gray
-    """
-    And the following job "clothing_asset_channel_configuration_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "clothing_asset_channel_configuration_import" import job page
-    And I launch the import job
-    And I wait for the "clothing_asset_channel_configuration_import" job to finish
-    Then I should see " Channel \"\" does not exists"
-
   Scenario: Import and update channel configurations with unknown configured transformation
     Given the "clothing" catalog configuration
     And I am logged in as "Peter"
     And the following yaml file to import:
     """
     asset_channel_configuration:
-        -
-            channel: mobile
+        mobile:
             configuration:
                 wrongTransformation:
                     width: 200
                 colorspace:
                     colorspace: gray
-        -
-            channel: tablet
+        tablet
             configuration:
                 scale:
                     ratio: 25
@@ -135,15 +107,13 @@ Feature: Import asset channel configurations
     And the following yaml file to import:
     """
     asset_channel_configuration:
-        -
-            channel: mobile
+        mobile
             configuration:
                 scale:
                     wrongField: 200
                 colorspace:
                     colorspace: gray
-        -
-            channel: tablet
+        tablet
             configuration:
                 scale:
                     ratio: 25

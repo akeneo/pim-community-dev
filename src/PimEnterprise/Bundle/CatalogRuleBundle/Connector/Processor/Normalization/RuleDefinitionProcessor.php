@@ -46,17 +46,14 @@ class RuleDefinitionProcessor extends Processor
      */
     public function process($item)
     {
-        $rules = [];
-        foreach ($item as $ruleDefinition) {
-            $normalizedRule = $this->ruleNormalizer->normalize($ruleDefinition);
+        $normalizedRule = $this->ruleNormalizer->normalize($item);
 
-            unset($normalizedRule['code']);
-            unset($normalizedRule['type']);
+        unset($normalizedRule['code']);
+        unset($normalizedRule['type']);
 
-            $rules[$ruleDefinition->getCode()] = $normalizedRule;
-        }
+        $rule[$item->getCode()] = $normalizedRule;
 
-        return ['rules' => $rules];
+        return $rule;
     }
 
     /**
