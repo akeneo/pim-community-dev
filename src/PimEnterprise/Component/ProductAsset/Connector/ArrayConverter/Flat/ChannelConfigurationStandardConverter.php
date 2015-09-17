@@ -29,7 +29,7 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
      * Before:
      * [
      *      'channel'       => 'mycode',
-     *      'configuration' => '{}'
+     *      'configuration' => [],
      * ]
      *
      * After:
@@ -70,15 +70,7 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
                 $convertedItem['channel'] = (string) $data;
                 break;
             case 'configuration':
-                $convertedConfiguration = json_decode($data, true);
-
-                if (null === $convertedConfiguration) {
-                    throw new ArrayConversionException(
-                        sprintf('Impossible to decode channel configuration "%s"', $data)
-                    );
-                }
-
-                $convertedItem['configuration'] = $convertedConfiguration;
+                $convertedItem['configuration'] = $data;
         }
 
         return $convertedItem;
