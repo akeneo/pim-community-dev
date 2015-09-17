@@ -13,27 +13,37 @@ namespace Pim\Bundle\EnrichBundle\File;
  */
 class FileTypeGuesser implements FileTypeGuesserInterface
 {
-    /** @staticvar array */
-    protected static $typesMapping = [
-        FileTypes::DOCUMENT => [
-            'application/msword',
-            'application/pdf',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'application/vnd.ms-excel',
-            'application/x-pdf',
-            'text/*'
-        ],
-        FileTypes::IMAGE => ['image/*'],
-        FileTypes::VIDEO => ['video/*']
-    ];
+    /** @var array */
+    protected $typesMapping;
+
+    /**
+     * @param array $extraTypesMapping optional extra types
+     */
+    public function __construct(array $extraTypesMapping = [])
+    {
+        $typesMapping = [
+            FileTypes::DOCUMENT => [
+                'application/msword',
+                'application/pdf',
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'application/vnd.ms-excel',
+                'application/x-pdf',
+                'text/*'
+            ],
+            FileTypes::IMAGE => ['image/*'],
+            FileTypes::VIDEO => ['video/*']
+        ];
+
+        $this->typesMapping = array_merge($typesMapping, $extraTypesMapping);
+    }
 
     /**
      * {@inheritdoc}
      */
     public function guess($mimeType)
     {
-        foreach (self::$typesMapping as $fileType => $mappedTypes) {
+        foreach ($this->typesMapping as $fileType => $mappedTypes) {
             foreach ($mappedTypes as $mappedType) {
                 if ($mappedType === $mimeType) {
                     return $fileType;
