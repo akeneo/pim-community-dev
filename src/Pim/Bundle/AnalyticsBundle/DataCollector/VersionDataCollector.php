@@ -23,16 +23,21 @@ class VersionDataCollector implements DataCollectorInterface
     /** @var string */
     protected $environment;
 
+    /** @var string */
+    protected $installTime;
+
     /**
      * @param VersionProviderInterface $versionProvider
      * @param string                   $catalogStorage
      * @param string                   $environment
+     * @param string                   $installTime
      */
-    public function __construct(VersionProviderInterface $versionProvider, $catalogStorage, $environment)
+    public function __construct(VersionProviderInterface $versionProvider, $catalogStorage, $environment, $installTime)
     {
         $this->versionProvider = $versionProvider;
         $this->catalogStorage  = $catalogStorage;
         $this->environment     = $environment;
+        $this->installTime     = $installTime;
     }
 
     /**
@@ -44,7 +49,8 @@ class VersionDataCollector implements DataCollectorInterface
             'pim_edition'        => $this->versionProvider->getEdition(),
             'pim_version'        => $this->versionProvider->getPatch(),
             'pim_storage_driver' => $this->catalogStorage,
-            'pim_environment'    => $this->environment
+            'pim_environment'    => $this->environment,
+            'pim_install_time'   => $this->installTime
         ];
     }
 }
