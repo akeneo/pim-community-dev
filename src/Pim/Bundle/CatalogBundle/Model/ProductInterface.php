@@ -205,14 +205,14 @@ interface ProductInterface extends
     /**
      * Get product completenesses
      *
-     * @return ArrayCollection
+     * @return Collection of CompletenessInterface
      */
     public function getCompletenesses();
 
     /**
      * Set product completenesses
      *
-     * @param ArrayCollection $completenesses
+     * @param Collection $completenesses CompletenessInterface
      *
      * @return ProductInterface
      */

@@ -229,7 +229,6 @@ class CompletenessManager
             $valueCode    = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $missing      = false;
             $productValue = isset($productValues[$valueCode]) ? $productValues[$valueCode] : null;
-
             $isIncomplete = (null !== $productValue) &&
                 $this->productValueCompleteChecker->supportsValue($productValue) &&
                 !$this->productValueCompleteChecker->isComplete($productValue, $channel, $locale);
