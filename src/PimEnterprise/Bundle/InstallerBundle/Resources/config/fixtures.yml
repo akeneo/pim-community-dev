@@ -28,8 +28,8 @@ locale_accesses:
 
 asset_channel_configurations:
     order: 110
-    csv:
-        reader:    pimee_product_asset.reader.file.csv_channel_configuration
+    yml:
+        reader:    pim_base_connector.reader.file.yaml
         processor: pimee_product_asset.processor.denormalization.channel_configuration.flat
 
 asset_categories:

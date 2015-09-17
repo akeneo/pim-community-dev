@@ -147,20 +147,17 @@ jobs:
         alias:     apply_assets_mass_upload
         label:     Process mass uploaded assets
         type:      mass_upload
-    csv_asset_channel_configuration_import:
+    yml_asset_channel_configuration_import:
         connector: Akeneo CSV Connector
-        alias:     csv_channel_configuration_import
+        alias:     yml_asset_channel_configuration_import
         label:     Demo asset channel configuration import
         type:      import
         configuration:
-            filePath:      /tmp/asset_channel_configurations.csv
             uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
-    yaml_asset_channel_configuration_export:
+            filePath:      /tmp/asset_channel_configurations.yml
+    yml_asset_channel_configuration_export:
         connector: Akeneo CSV Connector
-        alias:     yaml_asset_channel_configuration_export
+        alias:     yml_asset_channel_configuration_export
         label:     Demo asset channel configuration export
         type:      export
         configuration:

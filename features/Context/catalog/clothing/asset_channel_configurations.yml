@@ -1,0 +1,14 @@
+asset_channel_configurations:
+    -
+        channel: mobile
+        configuration:
+            scale:
+                width: 200
+            colorspace:
+                colorspace: gray
+    -
+        channel: tablet
+        configuration:
+            resize:
+                width: 400
+                height: 500

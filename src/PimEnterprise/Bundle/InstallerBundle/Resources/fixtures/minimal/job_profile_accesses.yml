@@ -42,10 +42,10 @@ job_profile_accesses:
     csv_asset_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
-    csv_asset_channel_configuration_import:
+    yml_asset_channel_configuration_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
-    yaml_asset_channel_configuration_export:
+    yml_asset_channel_configuration_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
     csv_asset_variation_export:
