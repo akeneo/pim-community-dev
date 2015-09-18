@@ -14,8 +14,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
  * - whether mongoDB is installed or not
  * - if not, if it should or not
  *
- * @author    Rémy Bétus <remy.betus@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Remy Betus <remy.betus@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class DatabaseCollector extends DataCollector
@@ -28,6 +28,9 @@ class DatabaseCollector extends DataCollector
 
     /** @var string */
     protected $storageDriver;
+
+    /** @var  array */
+    protected $data;
 
     /**
      * @param EntityManager $entityManager
@@ -46,7 +49,7 @@ class DatabaseCollector extends DataCollector
     {
         $this->data = [
             'mongodb_enabled' => $this->isMongoDbEnabled(),
-            'version' => Version::VERSION,
+            'version'         => Version::VERSION,
             'require_mongodb' => (!$this->isMongoDbEnabled()) ? $this->isMongoDbRequired() : false,
         ];
     }
