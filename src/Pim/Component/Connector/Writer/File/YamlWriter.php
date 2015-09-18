@@ -31,7 +31,7 @@ class YamlWriter extends FileWriter
         $data = call_user_func_array('array_merge', $items);
         if (null !== $this->header) {
             $data = [];
-            $data[$this->header] = $items;
+            $data[$this->header] = call_user_func_array('array_merge', $items);
         }
 
         $path = $this->getPath();
