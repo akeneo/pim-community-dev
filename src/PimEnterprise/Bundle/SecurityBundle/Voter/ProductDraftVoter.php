@@ -33,18 +33,18 @@ class ProductDraftVoter implements VoterInterface
     protected $attrGroupRepository;
 
     /** @var AttributeGroupAccessManager */
-    protected $attrGroupAccessManager;
+    protected $attrGroupAccessMgr;
 
     /**
      * @param AttributeGroupRepositoryInterface $attrGroupRepository
-     * @param AttributeGroupAccessManager       $attrGroupAccessManager
+     * @param AttributeGroupAccessManager       $attrGroupAccessMgr
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attrGroupRepository,
-        AttributeGroupAccessManager $attrGroupAccessManager
+        AttributeGroupAccessManager $attrGroupAccessMgr
     ) {
         $this->attrGroupRepository = $attrGroupRepository;
-        $this->attrGroupAccessManager = $attrGroupAccessManager;
+        $this->attrGroupAccessMgr  = $attrGroupAccessMgr;
     }
 
     /**
@@ -109,7 +109,7 @@ class ProductDraftVoter implements VoterInterface
     protected function canApprove(UserInterface $user, ProductDraftInterface $draft)
     {
         foreach ($this->getAttributeGroupsImpactedByADraft($draft) as $group) {
-            $userGranted = $this->attrGroupAccessManager->isUserGranted($user, $group, Attributes::EDIT_ATTRIBUTES);
+            $userGranted = $this->attrGroupAccessMgr->isUserGranted($user, $group, Attributes::EDIT_ATTRIBUTES);
             if (false === $userGranted) {
                 return false;
             }

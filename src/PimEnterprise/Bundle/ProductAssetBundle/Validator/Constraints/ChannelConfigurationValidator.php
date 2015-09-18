@@ -49,20 +49,20 @@ class ChannelConfigurationValidator extends ConstraintValidator
     {
         if ($channelConfiguration instanceof ChannelVariationsConfigurationInterface) {
             $configuration = $channelConfiguration->getConfiguration();
-            foreach ($configuration as $transformationKey => $transformationOptions) {
+            foreach ($configuration as $transformationCode => $options) {
                 $transformation = null;
                 try {
-                    $transformation = $this->registry->get($transformationKey, $this->mimeType);
+                    $transformation = $this->registry->get($transformationCode, $this->mimeType);
                 } catch (NonRegisteredTransformationException $e) {
-                    $this->addUnknownTransformationViolation($constraint, $transformationKey);
+                    $this->addUnknownTransformationViolation($constraint, $transformationCode);
                 }
                 if (null !== $transformation) {
                     $resolver = $transformation->getOptionsResolver();
                     try {
-                        $resolver->resolve($transformationOptions);
+                        $resolver->resolve($options);
                     } catch (InvalidOptionsTransformationException $exception) {
                         $errorMessage = $exception->getMessage();
-                        $this->addInvalidConfigurationViolation($constraint, $transformationKey, $errorMessage);
+                        $this->addInvalidConfigurationViolation($constraint, $transformationCode, $errorMessage);
                     }
                 }
             }

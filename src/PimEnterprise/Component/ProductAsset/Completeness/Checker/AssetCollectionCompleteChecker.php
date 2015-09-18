@@ -40,7 +40,8 @@ class AssetCollectionCompleteChecker implements ProductValueCompleteCheckerInter
         LocaleInterface $locale = null
     ) {
         if (!$productValue instanceof EnterpriseProductValueInterface) {
-            $message = sprintf('Product value must implement %s, %s provided',
+            $message = sprintf(
+                'Product value must implement %s, %s provided',
                 'PimEnterprise\\Bundle\\CatalogBundle\\Model\\ProductValueInterface',
                 get_class($productValue)
             );

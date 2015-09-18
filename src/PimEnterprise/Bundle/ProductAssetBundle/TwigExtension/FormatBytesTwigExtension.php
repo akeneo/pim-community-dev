@@ -46,15 +46,15 @@ class FormatBytesTwigExtension extends \Twig_Extension
     /**
      * Format bytes into human readable value
      *
-     * @param int  $bytes    The file size in bytes/octets
-     * @param int  $decimals The number of decimals
-     * @param bool $si       International System of Units or not
+     * @param int  $bytes      The file size in bytes/octets
+     * @param int  $decimals   The number of decimals
+     * @param bool $intlSystem International System of Units or not
      *
      * @return string
      */
-    public function formatBytes($bytes, $decimals = 2, $si = false)
+    public function formatBytes($bytes, $decimals = 2, $intlSystem = false)
     {
-        return $this->bytesFormater->formatBytes($bytes, $decimals, $si);
+        return $this->bytesFormater->formatBytes($bytes, $decimals, $intlSystem);
     }
 
     /**

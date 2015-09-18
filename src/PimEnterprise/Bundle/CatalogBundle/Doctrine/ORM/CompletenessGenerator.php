@@ -145,13 +145,13 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
     {
         $sql = parent::applyCriteria($sql, $criteria);
 
-        $productValueCondition = '';
+        $valueCondition = '';
 
         if (array_key_exists('productId', $criteria)) {
-            $productValueCondition = 'AND pv.entity_id = :productId';
+            $valueCondition = 'AND pv.entity_id = :productId';
         }
 
-        $sql = str_replace('%product_value_conditions%', $productValueCondition, $sql);
+        $sql = str_replace('%product_value_conditions%', $valueCondition, $sql);
 
         return $sql;
     }

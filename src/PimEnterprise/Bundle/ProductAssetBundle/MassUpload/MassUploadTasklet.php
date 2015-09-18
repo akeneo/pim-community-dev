@@ -97,7 +97,8 @@ class MassUploadTasklet implements TaskletInterface
                     break;
                 case ProcessedItem::STATE_SKIPPED:
                     $this->stepExecution->incrementSummaryInfo('variations_not_generated');
-                    $this->stepExecution->addWarning(self::TASKLET_NAME,
+                    $this->stepExecution->addWarning(
+                        self::TASKLET_NAME,
                         $item->getReason(),
                         [],
                         ['filename' => $file->getFilename()]

@@ -136,7 +136,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
-            $productDraft->setStatus($data['status'] === 'ready' ? ProductDraftInterface::READY : ProductDraftInterface::IN_PROGRESS);
+            $productDraft->setStatus(
+                $data['status'] === 'ready' ?
+                ProductDraftInterface::READY :
+                ProductDraftInterface::IN_PROGRESS
+            );
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
 
             if (isset($data['result'])) {

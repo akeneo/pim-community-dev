@@ -25,7 +25,7 @@ use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 class AssetCollectionType extends AbstractAttributeType
 {
     /** @var ConfigurationRegistryInterface */
-    protected $referenceDataRegistry;
+    protected $referenceRegistry;
 
     /**
      * @param string                         $backendType       the backend type
@@ -41,7 +41,7 @@ class AssetCollectionType extends AbstractAttributeType
     ) {
         parent::__construct($backendType, $formType, $constraintGuesser);
 
-        $this->referenceDataRegistry = $registry;
+        $this->referenceRegistry = $registry;
     }
 
     /**
@@ -49,7 +49,7 @@ class AssetCollectionType extends AbstractAttributeType
      */
     public function prepareValueFormName(ProductValueInterface $value)
     {
-        $referenceDataConf = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
+        $referenceDataConf = $this->referenceRegistry->get($value->getAttribute()->getReferenceDataName());
 
         return $referenceDataConf->getName();
     }
@@ -59,7 +59,7 @@ class AssetCollectionType extends AbstractAttributeType
      */
     public function prepareValueFormOptions(ProductValueInterface $value)
     {
-        $referenceDataConf   = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
+        $referenceDataConf   = $this->referenceRegistry->get($value->getAttribute()->getReferenceDataName());
         $options             = parent::prepareValueFormOptions($value);
         $options['class']    = $referenceDataConf->getClass();
         $options['multiple'] = true;

@@ -27,7 +27,8 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface' => 'pim_catalog.entity.product_value.class',
+            'PimEnterprise\Bundle\CatalogBundle\Model\ProductValueInterface' =>
+                'pim_catalog.entity.product_value.class',
         ];
     }
 }

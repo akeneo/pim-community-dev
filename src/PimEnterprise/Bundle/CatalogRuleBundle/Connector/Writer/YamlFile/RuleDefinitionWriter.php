@@ -43,8 +43,6 @@ class RuleDefinitionWriter extends FileWriter
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
         }
 
-        foreach ($items as $item) {
-            $this->stepExecution->incrementSummaryInfo('write');
-        }
+        $this->stepExecution->incrementSummaryInfo('write', count($items));
     }
 }
