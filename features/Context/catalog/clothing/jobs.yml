@@ -26,6 +26,8 @@ jobs:
         alias:     yml_rule_export
         label:     Clothing rule export
         type:      export
+        configuration:
+            header: rules
     clothing_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -289,7 +291,8 @@ jobs:
         configuration:
             filePath:      /tmp/asset_channel_configurations.yml
             uploadAllowed: true
-            multiple:      false
+            multiple:
+            header: asset_channel_configurations
     apply_assets_mass_upload:
         connector: Akeneo CSV Connector
         alias:     apply_assets_mass_upload

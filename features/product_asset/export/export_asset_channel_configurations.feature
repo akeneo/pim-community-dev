@@ -17,14 +17,15 @@ Feature: Export asset channel configurations
     Then exported file of "clothing_asset_channel_configuration_export" should contain:
     """
     asset_channel_configurations:
-        mobile
+        mobile:
             configuration:
                 scale:
                     width: 200
                 colorspace:
                     colorspace: gray
-        mobile
+        tablet:
             configuration:
-                scale:
-                    ratio: 25
+                resize:
+                    width: 400
+                    height: 500
     """

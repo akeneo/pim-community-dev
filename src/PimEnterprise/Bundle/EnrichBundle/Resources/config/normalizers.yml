@@ -1,8 +1,8 @@
 parameters:
-    pimee_enrich.serializer.normalizer.rule_relation.class:   PimEnterprise\Bundle\EnrichBundle\Normalizer\RuleRelationNormalizer
-    pimee_enrich.normalizer.structured.asset.class:           PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetNormalizer
-    pimee_enrich.normalizer.version.class:                    PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer
-    pimee_enrich.normalizer.product.class:                    PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer
+    pimee_enrich.serializer.normalizer.rule_relation.class: PimEnterprise\Bundle\EnrichBundle\Normalizer\RuleRelationNormalizer
+    pimee_enrich.normalizer.structured.asset.class:         PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetNormalizer
+    pimee_enrich.normalizer.version.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer
+    pimee_enrich.normalizer.product.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer
 
 services:
     pimee_enrich.serializer.normalizer.granted_family:
