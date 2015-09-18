@@ -50,7 +50,11 @@ abstract class AbstractItemCategoryRepository implements
             'LEFT JOIN %s category_item ON category_item.category_id = category.id ' .
             'AND category_item.%s= :itemId ' .
             'GROUP BY tree.id',
-            $config['categoryTable'], $config['categoryTable'], $config['categoryAssocTable'], $config['relation']);
+            $config['categoryTable'],
+            $config['categoryTable'],
+            $config['categoryAssocTable'],
+            $config['relation']
+        );
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->bindValue('itemId', $item->getId());
@@ -171,7 +175,7 @@ abstract class AbstractItemCategoryRepository implements
      *
      * @return array
      */
-    protected function buildItemCountByTree(array $itemCounts = [], $categoryClass)
+    protected function buildItemCountByTree(array $itemCounts, $categoryClass)
     {
         $trees = [];
         foreach ($itemCounts as $itemCount) {
