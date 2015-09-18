@@ -37,6 +37,7 @@ Feature: Validate number attributes of a product
     Then I should see validation tooltip "The value 111 is already set on another product for the unique attribute ref"
     And there should be 1 error in the "Other" tab
 
+  @ce
   Scenario: Validate the negative allowed constraint of number attribute
     Given I change the Sold to "-1"
     #This is to test if we focus the right attribute group on validation error

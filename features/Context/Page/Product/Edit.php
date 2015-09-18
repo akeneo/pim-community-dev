@@ -1030,6 +1030,22 @@ class Edit extends Form
     /**
      * @return NodeElement|null
      */
+    public function getStatusSwitcher()
+    {
+        try {
+            $switcher = $this->spin(function () {
+                return $this->find('css', '.status-switcher');
+            }, 5);
+        } catch (\Exception $e) {
+            $switcher = null;
+        }
+
+        return $switcher;
+    }
+
+    /**
+     * @return NodeElement|null
+     */
     public function getImagePreview()
     {
         $preview = $this->getElement('Image preview');

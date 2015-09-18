@@ -2849,4 +2849,22 @@ class WebUser extends RawMinkContext
 
         $this->iWaitForTheJobToFinish($code);
     }
+
+    /**
+     * @Then /^I should (not )?see the status-switcher button$/
+     */
+    public function iShouldSeeTheStatusSwitcherButton($not)
+    {
+        $statusSwitcher = $this->getCurrentPage()->getStatusSwitcher();
+
+        if ($not) {
+            if ($statusSwitcher && $statusSwitcher->isVisible()) {
+                throw $this->createExpectationException('Status switcher should not be visible');
+            }
+        } else {
+            if (!$statusSwitcher || !$statusSwitcher->isVisible()) {
+                throw $this->createExpectationException('Status switcher should be visible');
+            }
+        }
+    }
 }

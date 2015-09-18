@@ -8,6 +8,7 @@ Feature: Display notifications for mass edit jobs
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
 
+  @ce
   Scenario: Successfully display a notification when a mass-edit job is finished
     Given a disabled "boat" product
     And a disabled "jet-ski" product
