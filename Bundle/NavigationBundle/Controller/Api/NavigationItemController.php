@@ -2,19 +2,17 @@
 
 namespace Oro\Bundle\NavigationBundle\Controller\Api;
 
-use Symfony\Component\HttpFoundation\Response;
-
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
-use FOS\Rest\Util\Codes;
+use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 use Oro\Bundle\NavigationBundle\Entity\Repository\NavigationRepositoryInterface;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @RouteResource("navigationitems")
@@ -174,10 +172,10 @@ class NavigationItemController extends FOSRestController
     /**
      * Validate permissions on pinbar
      *
-     * @param  User $user
+     * @param  UserInterface $user
      * @return bool
      */
-    protected function validatePermissions(User $user)
+    protected function validatePermissions(UserInterface $user)
     {
         return $user->getId() == ($this->getUser() ? $this->getUser()->getId() : 0);
     }
