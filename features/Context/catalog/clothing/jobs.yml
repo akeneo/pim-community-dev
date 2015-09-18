@@ -227,7 +227,7 @@ jobs:
         label:     Mass reject product drafts
         type:      mass_edit
     clothing_asset_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias:     csv_asset_import
         label:     Demo asset import
         type:      import
@@ -238,7 +238,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     clothing_asset_category_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias:     csv_asset_category_export
         label:     Clothing asset category export
         type:      export
@@ -247,7 +247,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     clothing_asset_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias:     csv_asset_export
         label:     Clothing asset export
         type:      export
@@ -256,7 +256,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     clothing_asset_variation_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias:     csv_asset_variation_export
         label:     Clothing asset export
         type:      export
@@ -265,7 +265,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
     clothing_asset_category_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias:     csv_asset_category_import
         label:     Demo asset category import
         type:      import
@@ -276,7 +276,7 @@ jobs:
             enclosure:     '"'
             escape:        '\'
     clothing_asset_channel_configuration_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias:     yml_asset_channel_configuration_import
         label:     Demo asset channel configuration import
         type:      import
@@ -284,7 +284,7 @@ jobs:
             uploadAllowed: true
             filePath:      /tmp/asset_channel_configurations.yml
     clothing_asset_channel_configuration_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias: yml_asset_channel_configuration_export
         label: Demo asset channel configuration export
         type: export
@@ -294,7 +294,7 @@ jobs:
             multiple:
             header: asset_channel_configurations
     apply_assets_mass_upload:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias:     apply_assets_mass_upload
         label:     Mass approve product drafts
         type:      mass_upload
