@@ -1,5 +1,8 @@
 # 1.4.x
 
+## Improvements
+- PIM-4897: Added MongoDB status on SF debug toolbar
+
 ## Scalability improvements
 - PIM-5170: Fix memory leak on bulk detach
 

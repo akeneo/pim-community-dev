@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.repository.product.class:                   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository
+    pim_catalog.repository.product_value_counter.class:     Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductValueCounterRepository
     pim_catalog.repository.completeness.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\CompletenessRepository
     pim_catalog.repository.product_mass_action.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository
     pim_catalog.repository.product_category.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductCategoryRepository
@@ -202,6 +203,12 @@ services:
             - [setCategoryRepository, ['@pim_catalog.repository.category']]
         tags:
             - { name: 'pim_repository' }
+
+    pim_catalog.repository.product_value_counter:
+        class: %pim_catalog.repository.product_value_counter.class%
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.repository.product_mass_action:
         class: %pim_catalog.repository.product_mass_action.class%

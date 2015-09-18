@@ -1,21 +1,23 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Collector;
+namespace Pim\Bundle\CatalogBundle\Collector;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Version;
+use Pim\Bundle\CatalogBundle\VersionProviderInterface;
+use Pim\Component\Catalog\Repository\ProductValueCounterRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 /**
- * This class adds an entry in the Symfony2 debug toolbar to display:
+ * This class adds an entry in the Symfony debug toolbar to display:
  * - whether mongoDB is installed or not
  * - if not, if it should or not
  *
- * @author    Rémy Bétus <remy.betus@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Remy Betus <remy.betus@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class DatabaseCollector extends DataCollector
@@ -23,19 +25,30 @@ class DatabaseCollector extends DataCollector
     /** @var int the max number of product value allowed before having to switch to MongoBD */
     const MYSQL_PRODUCT_VALUE_LIMIT = 5000000;
 
-    /** @var EntityRepository */
-    protected $entityManager;
+    /** @var ProductValueCounterRepositoryInterface */
+    protected $productValueRepository;
 
     /** @var string */
     protected $storageDriver;
 
+    /** @var VersionProviderInterface */
+    protected $versionProvider;
+
+    /** @var  array */
+    protected $data;
+
     /**
-     * @param EntityManager $entityManager
-     * @param string        $storageDriver
+     * @param VersionProviderInterface               $versionProvider
+     * @param ProductValueCounterRepositoryInterface $productValueRepository
+     * @param string                                 $storageDriver
      */
-    public function __construct(EntityManager $entityManager, $storageDriver)
-    {
-        $this->entityManager = $entityManager;
+    public function __construct(
+        VersionProviderInterface $versionProvider,
+        ProductValueCounterRepositoryInterface $productValueRepository,
+        $storageDriver
+    ) {
+        $this->productValueRepository = $productValueRepository;
+        $this->versionProvider = $versionProvider;
         $this->storageDriver = $storageDriver;
     }
 
@@ -45,9 +58,13 @@ class DatabaseCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = [
-            'mongodb_enabled' => $this->isMongoDbEnabled(),
-            'version' => Version::VERSION,
-            'require_mongodb' => (!$this->isMongoDbEnabled()) ? $this->isMongoDbRequired() : false,
+            'mongodb_enabled'     => $this->isMongoDbEnabled(),
+            'product_value_count' => $this->productValueRepository->count(),
+            'require_mongodb'     => !($this->isMongoDbEnabled() || !$this->isMongoDbRequired()),
+            'version'             => [
+                'patch' => $this->versionProvider->getPatch(),
+                'minor' => $this->versionProvider->getMinor()
+            ]
         ];
     }
 
@@ -102,12 +119,15 @@ class DatabaseCollector extends DataCollector
      */
     public function isMongoDbRequired()
     {
-        $qb = $this->entityManager->createQueryBuilder();
-        $qb->select('count(product_value.id)');
-        $qb->from('PimCatalogBundle:Category', 'product_value');
-        $productValueCount = $qb->getQuery()->getSingleScalarResult();
+        return ($this->getProductValueCount() > static::MYSQL_PRODUCT_VALUE_LIMIT);
+    }
 
-        return ($productValueCount > self::MYSQL_PRODUCT_VALUE_LIMIT);
+    /**
+     * @return int
+     */
+    public function getProductValueCount()
+    {
+        return $this->data['product_value_count'];
     }
 
     /**
