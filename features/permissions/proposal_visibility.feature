@@ -14,4 +14,4 @@ Feature: Proposal tab should be visible
     And I remove rights to View the association types of a product
     And I save the role
     And I edit the "black-boots" product
-    Then I should see the tab "Proposals"
+    Then I should see the "Proposals" tab
