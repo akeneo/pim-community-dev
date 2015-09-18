@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\Exception\LinkedChannelException;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;

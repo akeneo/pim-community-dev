@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Collections\ArrayCollection;

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
