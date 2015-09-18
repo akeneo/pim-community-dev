@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Event;
+namespace Akeneo\Component\StorageUtils;
 
 /**
  * Storage events.
