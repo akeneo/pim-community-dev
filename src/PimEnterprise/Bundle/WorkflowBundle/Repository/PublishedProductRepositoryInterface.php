@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -95,11 +96,11 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Count published products for a specific category
      *
-     * @param integer[] $categoryIds
+     * @param CategoryInterface $category
      *
      * @return int
      */
-    public function countPublishedProductsForCategoryAndChildren($categoryIds);
+    public function countPublishedProductsForCategory(CategoryInterface $category);
 
     /**
      * Count published products for a specific attribute

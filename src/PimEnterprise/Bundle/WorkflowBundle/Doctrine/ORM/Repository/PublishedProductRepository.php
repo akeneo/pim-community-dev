@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
@@ -18,6 +19,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -127,8 +129,11 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForCategoryAndChildren($categoryIds)
+    public function countPublishedProductsForCategory(CategoryInterface $category)
     {
+        $categoryIds = $this->getObjectManager()->getRepository(ClassUtils::getClass($category))->getAllChildrenIds($category);
+        $categoryIds[] = $category->getId();
+
         $qb = $this->createQueryBuilder('pp');
         $qb
             ->innerJoin('pp.categories', 'c')
