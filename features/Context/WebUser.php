@@ -1713,9 +1713,13 @@ class WebUser extends RawMinkContext
      */
     public function thereShouldBeUpdate($count)
     {
-        if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
-            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
-        }
+        $this->spin(function () use ($count) {
+            if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
+                throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
+            }
+
+            return true;
+        });
     }
 
     /**
