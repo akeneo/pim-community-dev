@@ -2,7 +2,7 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
+use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
@@ -67,7 +67,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
 
         $options  = $this->optionsResolver->resolveRemoveOptions($options);
         $objectId = $object->getId();
-        $this->eventDispatcher->dispatch(BaseEvents::PRE_REMOVE, new RemoveEvent($object, $objectId));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_REMOVE, new RemoveEvent($object, $objectId, $options));
 
         $this->objectManager->remove($object);
 
@@ -75,7 +75,7 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(BaseEvents::POST_REMOVE, new RemoveEvent($object, $objectId));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_REMOVE, new RemoveEvent($object, $objectId, $options));
     }
 
     /**

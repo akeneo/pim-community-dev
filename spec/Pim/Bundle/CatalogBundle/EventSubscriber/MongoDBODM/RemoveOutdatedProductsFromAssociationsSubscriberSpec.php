@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
+use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
@@ -28,7 +29,7 @@ class RemoveOutdatedProductsFromAssociationsSubscriberSpec extends ObjectBehavio
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                ProductEvents::POST_REMOVE      => 'removeAssociatedProduct',
+                StorageEvents::POST_REMOVE      => 'removeAssociatedProduct',
                 ProductEvents::POST_MASS_REMOVE => 'removeAssociatedProducts'
             ]
         );

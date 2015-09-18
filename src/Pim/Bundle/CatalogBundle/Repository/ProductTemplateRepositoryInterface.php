@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Product template repository interface
@@ -13,4 +14,10 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface ProductTemplateRepositoryInterface extends ObjectRepository
 {
+    /**
+     * @param AttributeInterface $attribute
+     *
+     * @return array
+     */
+    public function findByAttribute(AttributeInterface $attribute);
 }

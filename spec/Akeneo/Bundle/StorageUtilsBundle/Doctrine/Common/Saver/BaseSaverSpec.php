@@ -2,7 +2,7 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
+use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -32,8 +32,8 @@ class BaseSaverSpec extends ObjectBehavior
         $objectManager->persist($type)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->save($type);
     }
@@ -52,10 +52,10 @@ class BaseSaverSpec extends ObjectBehavior
         $objectManager->persist($type2)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(BaseEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->saveAll([$type1, $type2]);
     }
@@ -69,8 +69,8 @@ class BaseSaverSpec extends ObjectBehavior
         $objectManager->persist($type)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
 
-        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($type, ['flush' => false]);
     }
 
@@ -88,10 +88,10 @@ class BaseSaverSpec extends ObjectBehavior
         $objectManager->persist($type2)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
 
-        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(BaseEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(BaseEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(BaseEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->saveAll([$type1, $type2], ['flush' => false]);
     }

@@ -40,8 +40,6 @@ Feature: Validate number attributes of a product
   @ce
   Scenario: Validate the negative allowed constraint of number attribute
     Given I change the Sold to "-1"
-    #This is to test if we focus the right attribute group on validation error
-    And I visit the "General" group
     And I save the product
     Then I should see validation tooltip "This value should be 0 or more."
     And there should be 1 error in the "Other" tab
