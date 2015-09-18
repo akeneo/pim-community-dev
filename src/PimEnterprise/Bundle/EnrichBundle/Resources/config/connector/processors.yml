@@ -1,6 +1,7 @@
 parameters:
-    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class:       PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
-    pimee_enrich.connector.processor.mass_edit.product.add_value_with_permissions.class: PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueWithPermissionProcessor
+    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class:          PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
+    pimee_enrich.connector.processor.mass_edit.product.add_value_with_permissions.class:    PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueWithPermissionProcessor
+    pimee_enrich.connector.processor.mass_edit.product.update_value_with_permissions.class: PimEnterprise\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueWithPermissionProcessor
 
 services:
     # overriden processor from CE
@@ -20,6 +21,16 @@ services:
         class: %pimee_enrich.connector.processor.mass_edit.product.add_value_with_permissions.class%
         arguments:
             - '@pim_catalog.updater.product_property_adder'
+            - '@pim_catalog.validator.product'
+            - '@pim_connector.repository.job_configuration'
+            - '@oro_user.manager'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+
+    pimee_enrich.mass_edit.update_product_value.processor:
+        class: %pimee_enrich.connector.processor.mass_edit.product.update_value_with_permissions.class%
+        arguments:
+            - '@pim_catalog.updater.product_property_setter'
             - '@pim_catalog.validator.product'
             - '@pim_connector.repository.job_configuration'
             - '@oro_user.manager'

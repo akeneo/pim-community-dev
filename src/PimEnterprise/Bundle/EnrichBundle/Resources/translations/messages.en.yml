@@ -153,6 +153,7 @@ pimee_enrich:
                 height: %value%px height
 
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Update product value with permission
 edit_common_attributes_with_permission: Edit common attributes with permission
 
 job_execution.summary:

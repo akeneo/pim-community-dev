@@ -79,18 +79,16 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         return function (ResultRecordInterface $record) {
             $product = $this->productRepository->findOneById($record->getValue('id'));
-            $locale = $this->localeRepository->findOneBy(['code' => $record->getValue('dataLocale')]);
 
             $editGranted = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
             $ownershipGranted = $editGranted ? $this->authorizationChecker->isGranted(Attributes::OWN, $product) : false;
-            $localeGranted = $this->authorizationChecker->isGranted(Attributes::EDIT_ITEMS, $locale);
 
             return [
-                'show'            => !$editGranted || !$localeGranted,
-                'edit'            => $editGranted && $localeGranted,
-                'edit_categories' => $ownershipGranted && $localeGranted,
-                'delete'          => $editGranted && $localeGranted,
-                'toggle_status'   => $editGranted && $localeGranted
+                'show'            => !$editGranted,
+                'edit'            => $editGranted,
+                'edit_categories' => $ownershipGranted,
+                'delete'          => $editGranted,
+                'toggle_status'   => $ownershipGranted
             ];
         };
     }

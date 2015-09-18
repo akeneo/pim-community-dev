@@ -96,3 +96,10 @@ extensions:
         targetZone: container
         aclResourceId: pim_enrich_associations_view
         position: 110
+
+    pim-product-edit-form-status-switcher:
+        module: pimee/product-edit-form/status-switcher
+        parent: pim-product-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_change_state
+        position: 110

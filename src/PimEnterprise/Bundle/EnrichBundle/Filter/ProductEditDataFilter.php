@@ -32,4 +32,14 @@ class ProductEditDataFilter extends BaseProductEditFilter
 
         return $hasAcl && $this->securityFacade->isGranted(Attributes::OWN, $product);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function isAllowedToUpdateStatus(ProductInterface $product)
+    {
+        $hasAcl = parent::isAllowedToUpdateStatus($product);
+
+        return $hasAcl && $this->securityFacade->isGranted(Attributes::OWN, $product);
+    }
 }
