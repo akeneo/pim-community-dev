@@ -204,7 +204,10 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', [AttributeTypes::OPTION_SIMPLE_SELECT, 'pim_reference_data_simpleselect'])
+                $qb->expr()->in(
+                    'a.attributeType',
+                    [AttributeTypes::OPTION_SIMPLE_SELECT, 'pim_reference_data_simpleselect']
+                )
             )
             ->andWhere($qb->expr()->neq('a.scopable', 1))
             ->andWhere($qb->expr()->neq('a.localizable', 1));

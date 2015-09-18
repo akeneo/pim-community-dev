@@ -408,7 +408,8 @@ MAIN_SQL;
         return array_map(
             function ($field) {
                 return sprintf('%s IS NOT NULL', $field);
-            }, $notNullFields
+            },
+            $notNullFields
         );
     }
 
