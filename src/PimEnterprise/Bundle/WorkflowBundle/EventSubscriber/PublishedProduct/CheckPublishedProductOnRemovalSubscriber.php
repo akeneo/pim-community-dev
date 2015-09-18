@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -92,7 +92,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
             return false;
         }
 
-        if($subject instanceof FamilyInterface) {
+        if ($subject instanceof FamilyInterface) {
             return $this->publishedRepository->countPublishedProductsForFamily($subject) > 0;
         }
 

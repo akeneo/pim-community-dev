@@ -15,9 +15,9 @@ use Akeneo\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Event\StorageEvents;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleBuilder;
@@ -84,8 +84,8 @@ class RuleRelationSubscriber implements EventSubscriberInterface
     {
         return [
             StorageEvents::PRE_REMOVE    => 'removeAttribute',
-            RuleEvents::POST_SAVE     => 'saveRule',
-            RuleEvents::POST_SAVE_ALL => 'saveRules'
+            RuleEvents::POST_SAVE        => 'saveRule',
+            RuleEvents::POST_SAVE_ALL    => 'saveRules'
         ];
     }
 
