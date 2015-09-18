@@ -60,8 +60,8 @@ connector:
                         reader:    pimee_product_asset.reader.orm.asset
                         processor: pimee_product_asset.processor.normalization.asset.flat
                         writer:    pim_base_connector.writer.file
-        csv_channel_configuration_import:
-            title: pimee_product_asset.jobs.csv_channel_configuration_import.title
+        yml_asset_channel_configuration_import:
+            title: pimee_product_asset.jobs.yml_asset_channel_configuration_import.title
             type:  import
             steps:
                 validation:
@@ -72,7 +72,7 @@ connector:
                 import_asset:
                     title:         pimee_product_asset.jobs.csv_asset_configuration_import.title
                     services:
-                        reader:    pimee_product_asset.reader.file.csv_channel_configuration
+                        reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_product_asset.processor.denormalization.channel_configuration.flat
                         writer:    pimee_product_asset.writer.doctrine.channel_configuration
         apply_assets_mass_upload:
@@ -85,12 +85,22 @@ connector:
                     services:
                         tasklet: pimee_product_asset.mass_upload.tasklet
         csv_asset_variation_export:
-            title: pimee_product_asset.jobs.csv_asset_reference_export.title
+            title: pimee_product_asset.jobs.csv_asset_variation_export.title
             type:  export
             steps:
                 export:
-                    title: pimee_product_asset.jobs.csv_asset_reference_export.title
+                    title: pimee_product_asset.jobs.csv_asset_variation_export.title
                     services:
                         reader:    pimee_product_asset.reader.orm.variation
                         processor: pimee_product_asset.processor.normalization.variation.flat
                         writer:    pim_base_connector.writer.file
+        yml_asset_channel_configuration_export:
+            title: pimee_product_asset.jobs.yml_asset_configuration_export.title
+            type:  export
+            steps:
+                export:
+                    title: pimee_product_asset.jobs.yml_asset_configuration_export.title
+                    services:
+                        reader:    pimee_product_asset.reader.orm.csv_channel_configuration
+                        processor: pimee_product_asset.processor.normalization.channel_configuration.flat
+                        writer:    pim_connector.writer.file.yaml

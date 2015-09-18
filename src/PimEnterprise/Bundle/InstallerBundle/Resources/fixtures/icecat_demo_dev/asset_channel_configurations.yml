@@ -1,0 +1,16 @@
+asset_channel_configurations:
+    mobile:
+        configuration:
+            scale:
+                width: 200
+            colorspace:
+                colorspace: gray
+    print:
+        configuration:
+            resize:
+                width: 400
+                height: 500
+    ecommerce:
+        configuration:
+            scale:
+                ratio: 50

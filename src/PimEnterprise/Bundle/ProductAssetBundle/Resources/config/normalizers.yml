@@ -1,7 +1,8 @@
 parameters:
-    pim_product_asset.normalizer.structured.asset.class: PimEnterprise\Component\ProductAsset\Normalizer\Structured\AssetNormalizer
-    pim_product_asset.normalizer.flat.asset.class:       PimEnterprise\Component\ProductAsset\Normalizer\Flat\AssetNormalizer
-    pim_product_asset.normalizer.flat.variation.class:   PimEnterprise\Component\ProductAsset\Normalizer\Flat\VariationNormalizer
+    pim_product_asset.normalizer.structured.asset.class:                 PimEnterprise\Component\ProductAsset\Normalizer\Structured\AssetNormalizer
+    pim_product_asset.normalizer.flat.asset.class:                       PimEnterprise\Component\ProductAsset\Normalizer\Flat\AssetNormalizer
+    pim_product_asset.normalizer.flat.variation.class:                   PimEnterprise\Component\ProductAsset\Normalizer\Flat\VariationNormalizer
+    pim_product_asset.normalizer.structured.channel_configuration.class: PimEnterprise\Component\ProductAsset\Normalizer\Structured\ChannelConfigurationNormalizer
 
 services:
     pim_product_asset.normalizer.structured.asset:
@@ -19,5 +20,10 @@ services:
 
     pim_product_asset.normalizer.flat.variation:
         class: %pim_product_asset.normalizer.flat.variation.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_product_asset.normalizer.structured.channel_configuration:
+        class: %pim_product_asset.normalizer.structured.channel_configuration.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 100 }

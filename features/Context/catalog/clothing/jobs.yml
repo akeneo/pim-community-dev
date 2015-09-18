@@ -26,6 +26,8 @@ jobs:
         alias:     yml_rule_export
         label:     Clothing rule export
         type:      export
+        configuration:
+            header: rules
     clothing_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -275,15 +277,22 @@ jobs:
             escape:        '\'
     clothing_asset_channel_configuration_import:
         connector: Akeneo CSV Connector
-        alias:     csv_channel_configuration_import
+        alias:     yml_asset_channel_configuration_import
         label:     Demo asset channel configuration import
         type:      import
         configuration:
-            filePath:      /tmp/asset_channel_configurations.csv
             uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
+            filePath:      /tmp/asset_channel_configurations.yml
+    clothing_asset_channel_configuration_export:
+        connector: Akeneo CSV Connector
+        alias: yml_asset_channel_configuration_export
+        label: Demo asset channel configuration export
+        type: export
+        configuration:
+            filePath:      /tmp/asset_channel_configurations.yml
+            uploadAllowed: true
+            multiple:
+            header: asset_channel_configurations
     apply_assets_mass_upload:
         connector: Akeneo CSV Connector
         alias:     apply_assets_mass_upload

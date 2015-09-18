@@ -99,6 +99,9 @@ job_profile_accesses:
     apply_assets_mass_upload:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
-    csv_asset_channel_configuration_import:
+    yml_asset_channel_configuration_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    yml_asset_channel_configuration_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]

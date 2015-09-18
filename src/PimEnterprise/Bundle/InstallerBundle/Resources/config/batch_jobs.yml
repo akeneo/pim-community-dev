@@ -103,13 +103,13 @@ connector:
                         processor: pimee_base_connector.processor.asset_category_access
                         writer:    pim_base_connector.writer.doctrine
 
-        fixtures_asset_channel_configurations_csv:
-            title: pimee_base_connector.jobs.fixtures_asset_channel_configurations_csv.title
+        fixtures_asset_channel_configurations_yml:
+            title: pimee_base_connector.jobs.fixtures_asset_channel_configurations_yml.title
             type:  fixtures
             steps:
                 import_asset:
-                    title:         pimee_product_asset.jobs.csv_asset_configuration_import.title
+                    title:         pimee_product_asset.jobs.yml_asset_configuration_import.title
                     services:
-                        reader:    pimee_product_asset.reader.file.csv_channel_configuration
+                        reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_product_asset.processor.denormalization.channel_configuration.flat
                         writer:    pimee_product_asset.writer.doctrine.channel_configuration

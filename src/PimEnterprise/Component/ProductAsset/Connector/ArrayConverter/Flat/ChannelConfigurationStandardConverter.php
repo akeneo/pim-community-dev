@@ -28,8 +28,8 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
      *
      * Before:
      * [
-     *      'channel'       => 'mycode',
-     *      'configuration' => '{}'
+     *      'code'          => 'mycode',
+     *      'configuration' => [],
      * ]
      *
      * After:
@@ -47,7 +47,7 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
      */
     public function convert(array $item, array $options = [])
     {
-        $this->validateRequiredFields($item, ['channel', 'configuration']);
+        $this->validateRequiredFields($item, ['code', 'configuration']);
         $convertedItem = [];
         foreach ($item as $field => $data) {
             $convertedItem = $this->convertField($convertedItem, $field, $data);
@@ -66,19 +66,11 @@ class ChannelConfigurationStandardConverter implements StandardArrayConverterInt
     protected function convertField(array $convertedItem, $field, $data)
     {
         switch ($field) {
-            case 'channel':
+            case 'code':
                 $convertedItem['channel'] = (string) $data;
                 break;
             case 'configuration':
-                $convertedConfiguration = json_decode($data, true);
-
-                if (null === $convertedConfiguration) {
-                    throw new ArrayConversionException(
-                        sprintf('Impossible to decode channel configuration "%s"', $data)
-                    );
-                }
-
-                $convertedItem['configuration'] = $convertedConfiguration;
+                $convertedItem['configuration'] = $data;
         }
 
         return $convertedItem;

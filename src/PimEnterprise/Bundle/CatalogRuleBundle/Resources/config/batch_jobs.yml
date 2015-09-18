@@ -22,4 +22,4 @@ connector:
                     services:
                         reader:    pimee_catalog_rule.reader.doctrine.rule_definition
                         processor: pimee_catalog_rule.processor.normalization.rule_definition
-                        writer:    pimee_catalog_rule.writer.yaml_file.rule_definition
+                        writer:    pim_connector.writer.file.yaml
