@@ -35,7 +35,7 @@ jobs:
             withHeader: true
             filePath:   /tmp/products-quick-export.csv
     apparel_asset_channel_configuration_import:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias:     yml_asset_channel_configuration_import
         label:     Demo asset channel configuration import
         type:      import
@@ -43,7 +43,7 @@ jobs:
             uploadAllowed: true
             filePath:      /tmp/asset_channel_configurations.yml
     apparel_asset_channel_configuration_export:
-        connector: Akeneo CSV Connector
+        connector: Akeneo Product Asset Connector
         alias: yml_asset_channel_configuration_export
         label: Demo asset channel configuration export
         type: export
