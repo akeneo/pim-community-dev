@@ -21,24 +21,33 @@ use PimEnterprise\Component\ProductAsset\Upload\Exception\UploadException;
 interface UploadCheckerInterface
 {
     /**
-     * Extract asset code and locale from filename
-     *
      * @param string $filename
      *
-     * @return string[] Asset informations : ['code' => 'foo', 'locale' => 'en_US']
+     * @return ParsedFilenameInterface
      */
-    public function parseFilename($filename);
+    public function getParsedFilename($filename);
 
     /**
-     * Validate a filename before scheduling it
+     * Validate a parsed filename
      *
-     * @param string $filename       Filename to check
-     * @param string $tmpUploadDir   Temporary directory for uploaded files
-     * @param string $tmpScheduleDir Temporary directory for scheduled files
+     * @param ParsedFilenameInterface $parsedFilename
      *
      * @throws UploadException
      *
      * @return null
      */
-    public function validateSchedule($filename, $tmpUploadDir, $tmpScheduleDir);
+    public function validateFilenameFormat(ParsedFilenameInterface $parsedFilename);
+
+    /**
+     * Validate a filename before uploading or scheduling it
+     *
+     * @param ParsedFilenameInterface $parsedFilename
+     * @param string                  $tmpUploadDir   Temporary directory for uploaded files
+     * @param string                  $tmpScheduleDir Temporary directory for scheduled files
+     *
+     * @throws UploadException
+     *
+     * @return null
+     */
+    public function validateUpload(ParsedFilenameInterface $parsedFilename, $tmpUploadDir, $tmpScheduleDir);
 }

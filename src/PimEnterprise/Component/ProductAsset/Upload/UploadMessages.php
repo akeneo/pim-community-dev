@@ -31,7 +31,7 @@ final class UploadMessages
     const ERROR_CODE = 'pimee_product_asset.mass_upload.error.code';
 
     /** @var string */
-    const ERROR_LOCALE = 'pimee_product_asset.mass_upload.error.locale';
+    const ERROR_LOCALE = 'pimee_product_asset.mass_upload.error.invalid_locale';
 
     /** @var string */
     const ERROR_EXISTS = 'pimee_product_asset.mass_upload.error.exists';

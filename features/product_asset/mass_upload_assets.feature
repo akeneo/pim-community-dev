@@ -35,12 +35,14 @@ Feature: Mass uploads assets
       | chicagoskyline-de.jpg |
       | man-wall.jpg          |
       | akeneo (copy).jpg     |
+      | akeneo-fo_FO.jpg      |
     Then I should see "Added" status for asset "akeneo.jpg"
     Then I should see "Added" status for asset "akeneo-fr_FR.jpg"
     Then I should see "Added" status for asset "logo_akeneo-fr_FR.jpg"
-    Then I should see "Error" status for asset "man-wall.jpg"
-    Then I should see "Error" status for asset "chicagoskyline-de.jpg"
+    Then I should see "Added" status for asset "man-wall.jpg"
+    Then I should see "Added" status for asset "chicagoskyline-de.jpg"
     Then I should see "Error" status for asset "akeneo (copy).jpg"
+    Then I should see "Error" status for asset "akeneo-fo_FO.jpg"
 
   Scenario: Cannot add the same file two times
     And I am on the asset mass upload page
@@ -53,17 +55,6 @@ Feature: Mass uploads assets
       | name        |
       | akeneo.jpg  |
     Then I should see "Error" status for asset "akeneo.jpg"
-
-  Scenario: Enforce asset validation before upload
-    And I am on the asset mass upload page
-    And I select the assets to upload:
-    | name              |
-    | akeneo.jpg        |
-    | akeneo-fr_FR.jpg  |
-    | bic-core-148.gif  |
-    Then I should see "Added" status for asset "akeneo.jpg"
-    Then I should see "Added" status for asset "akeneo-fr_FR.jpg"
-    Then I should see "Error" status for asset "bic-core-148.gif"
 
   Scenario: Cancel uploads
     And I am on the asset mass upload page
@@ -98,14 +89,17 @@ Feature: Mass uploads assets
   Scenario: Complete mass upload
     And I am on the asset mass upload page
     And I select the assets to upload:
-      | name        |
-      | akeneo.jpg  |
-      | akeneo2.jpg  |
+      | name                  |
+      | akeneo.jpg            |
+      | akeneo2.jpg           |
+      | logo_akeneo-fr_FR.jpg |
+      | man-wall.jpg          |
     And I start assets mass upload
     And I schedule assets mass upload
     And I wait 5 seconds
     Then I should be on the last "apply_assets_mass_upload" import job page
-    And I should see "Asset created from file 2"
+    And I should see "Asset created from file 3"
+    And I should see "Asset updated 1"
     When I am on the job tracker page
     Then I should see "Mass Upload Assets"
     And I should see "COMPLETED"
@@ -113,6 +107,8 @@ Feature: Mass uploads assets
     And I change the page size to 25
     Then I should see "akeneo"
     And I should see "akeneo2"
+    And I should see "logo_akeneo"
+    And I should see "man_wall"
     And I should have 1 new notification
     And I should see notification:
       | type    | message                                        |
