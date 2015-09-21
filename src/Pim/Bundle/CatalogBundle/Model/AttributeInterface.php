@@ -639,4 +639,9 @@ interface AttributeInterface extends
      * @param string $name
      */
     public function setReferenceDataName($name);
+
+    /**
+     * @return bool
+     */
+    public function isBackendTypeReferenceData();
 }

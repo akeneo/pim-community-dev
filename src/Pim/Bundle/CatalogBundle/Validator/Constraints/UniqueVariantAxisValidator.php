@@ -55,19 +55,19 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function validateVariantGroup(GroupInterface $variantGroup, Constraint $constraint)
     {
-        $existingCombinations = array();
+        $existingCombinations = [];
 
         $products = $variantGroup->getProducts();
         if (null === $products) {
             $products = $this->getMatchingProducts($variantGroup);
         }
         foreach ($products as $product) {
-            $values = array();
+            $values = [];
             foreach ($variantGroup->getAxisAttributes() as $attribute) {
                 $code = $attribute->getCode();
                 $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : null;
 
-                if (null === $option) {
+                if (null === $option && !$attribute->isBackendTypeReferenceData()) {
                     $this->addEmptyAxisViolation(
                         $constraint,
                         $variantGroup->getLabel(),
@@ -95,26 +95,23 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function validateProduct(ProductInterface $product, Constraint $constraint)
     {
-        if (null === $product->getGroups()) {
+        $group = $product->getVariantGroup();
+
+        if (null === $group) {
             return;
         }
 
-        foreach ($product->getGroups() as $variantGroup) {
-            if ($variantGroup->getType()->isVariant()) {
-                $criteria = $this->prepareQueryCriterias($variantGroup, $product, $constraint);
-                $matchingProducts = $this->getMatchingProducts($variantGroup, $product, $criteria);
-                if (count($matchingProducts) !== 0) {
-                    $values = array();
-                    foreach ($criteria as $item) {
-                        $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
-                    }
-                    $this->addExistingCombinationViolation(
-                        $constraint,
-                        $variantGroup->getLabel(),
-                        implode(', ', $values)
-                    );
-                }
+        $criteria = $this->prepareQueryCriterias($group, $product, $constraint);
+        $matches = $this->getMatchingProducts($group, $product, $criteria);
+
+        if (count($matches) !== 0) {
+            $values = [];
+            foreach ($criteria as $item) {
+                $data = $item['attribute']->isBackendTypeReferenceData() ? $item['referenceData']['data'] : $item['option'];
+                $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $data);
             }
+
+            $this->addExistingCombinationViolation($constraint, $group->getLabel(), implode(', ', $values));
         }
     }
 
@@ -132,23 +129,33 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         ProductInterface $product,
         Constraint $constraint
     ) {
-        $criteria = array();
+        $criteria = [];
         foreach ($variantGroup->getAxisAttributes() as $attribute) {
             $value = $product->getValue($attribute->getCode());
             // we don't add criteria when option is null, as this check is performed by HasVariantAxesValidator
-            if (null !== $value && null !== $value->getOption()) {
-                $criteria[] = [
-                    'attribute' => $attribute,
-                    'option'    => $value->getOption(),
-                ];
-            } else {
+            if (null === $value || (null === $value->getOption() && !$attribute->isBackendTypeReferenceData())) {
                 $this->addEmptyAxisViolation(
                     $constraint,
                     $variantGroup->getLabel(),
                     $product->getIdentifier()->getVarchar(),
                     $attribute->getCode()
                 );
+
+                continue;
             }
+
+            $current = ['attribute' => $attribute];
+
+            if (null !== $value->getOption()) {
+                $current['option'] = $value->getOption();
+            } elseif ($attribute->isBackendTypeReferenceData()) {
+                $current['referenceData'] = [
+                    'name' => $attribute->getReferenceDataName(),
+                    'data' => $value->getData(),
+                ];
+            }
+
+            $criteria[] = $current;
         }
 
         return $criteria;

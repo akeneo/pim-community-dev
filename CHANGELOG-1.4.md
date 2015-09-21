@@ -24,6 +24,10 @@
 - Removed event `pim_catalog.pre_remove.group` use `akeneo.storage.pre_remove` instead
 - Removed event `pim_catalog.pre_remove.product` use `akeneo.storage.pre_remove` instead
 - Removed event `pim_catalog.post_remove.product` use `akeneo.storage.post_remove` instead
+- Added function `isBackendTypeReferenceData` to the `Pim\Bundle\CatalogBundle\Model\AttributeInterface`
+
+## Bug fixes
+- PIM-4882: Cannot import products into a variant group if an axis is a reference data
 
 # 1.4.0-RC1 (2015-09-04)
 
