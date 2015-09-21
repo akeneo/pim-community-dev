@@ -26,6 +26,9 @@
 - Removed event `pim_catalog.pre_remove.product` use `akeneo.storage.pre_remove` instead
 - Removed event `pim_catalog.post_remove.product` use `akeneo.storage.post_remove` instead
 
+## Bug fixes
+- PIM-4892: No way to assign a user when edit a role
+
 # 1.4.0-RC1 (2015-09-04)
 
 ## Technical improvements
@@ -36,7 +39,7 @@
 # 1.4.0-BETA3 (2015-09-02)
 
 ## Bug fixes
-PIM-4775: When I mass-edit products I can view only, proposals are created
+- PIM-4775: When I mass-edit products I can view only, proposals are created
 
 # 1.4.0-BETA2 (2015-08-17)
 
