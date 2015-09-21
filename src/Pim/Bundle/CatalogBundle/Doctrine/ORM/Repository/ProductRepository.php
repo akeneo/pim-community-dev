@@ -176,10 +176,14 @@ class ProductRepository extends EntityRepository implements
                     'Product.values',
                     sprintf('Value_%s', $code),
                     'WITH',
-                    sprintf('Value_%s.attribute = ?%d AND Value_%s.option = ?%d', $code, ++$index, $code, ++$index)
+                    sprintf('Value_%s.attribute = ?%d', $code, $index + 1)
                 )
-                ->setParameter($index - 1, $item['attribute'])
-                ->setParameter($index, $item['option']);
+                ->setParameter($index + 1, $item['attribute']);
+
+            if (isset($item['option'])) {
+                $qb->andWhere(sprintf('Value_%s.option = ?%d', $code, $index + 2))
+                    ->setParameter($index + 2, $item['option']);;
+            }
         }
 
         return $qb->getQuery()->getResult();

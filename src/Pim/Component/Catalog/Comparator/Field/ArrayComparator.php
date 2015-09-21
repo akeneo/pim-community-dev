@@ -37,10 +37,6 @@ class ArrayComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        if (empty($originals)) {
-            return $data;
-        }
-
         sort($data);
         sort($originals);
 

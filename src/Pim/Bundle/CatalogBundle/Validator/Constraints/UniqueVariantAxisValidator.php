@@ -106,7 +106,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 if (count($matchingProducts) !== 0) {
                     $values = array();
                     foreach ($criteria as $item) {
-                        $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
+                        $values[] = sprintf('%s: %s', $item['attribute']->getCode(), isset($item['option']) ? (string) $item['option'] : '');
                     }
                     $this->addExistingCombinationViolation(
                         $constraint,
@@ -132,16 +132,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         ProductInterface $product,
         Constraint $constraint
     ) {
-        $criteria = array();
+        $criteria = [];
         foreach ($variantGroup->getAxisAttributes() as $attribute) {
             $value = $product->getValue($attribute->getCode());
             // we don't add criteria when option is null, as this check is performed by HasVariantAxesValidator
-            if (null !== $value && null !== $value->getOption()) {
-                $criteria[] = [
-                    'attribute' => $attribute,
-                    'option'    => $value->getOption(),
-                ];
-            } else {
+            if (null === $value) {
                 $this->addEmptyAxisViolation(
                     $constraint,
                     $variantGroup->getLabel(),
@@ -149,6 +144,14 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                     $attribute->getCode()
                 );
             }
+
+            $current = ['attribute' => $attribute];
+
+            if (null !== $value->getOption()) {
+                $current['option'] = $value->getOption();
+            }
+
+            $criteria[] = $current;
         }
 
         return $criteria;
