@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
@@ -33,6 +34,9 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
     /** @var AttributeInterface[] */
     protected $attributes = [];
 
@@ -53,17 +57,20 @@ class ProductEditDataFilter implements CollectionFilterInterface
      * @param ObjectFilterInterface        $objectFilter
      * @param AttributeRepositoryInterface $attributeRepository
      * @param LocaleRepositoryInterface    $localeRepository
+     * @param ChannelRepositoryInterface   $channelRepository
      */
     public function __construct(
         SecurityFacade $securityFacade,
         ObjectFilterInterface $objectFilter,
         AttributeRepositoryInterface $attributeRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository
     ) {
         $this->securityFacade      = $securityFacade;
         $this->objectFilter        = $objectFilter;
         $this->attributeRepository = $attributeRepository;
         $this->localeRepository    = $localeRepository;
+        $this->channelRepository   = $channelRepository;
     }
 
     /**
@@ -156,6 +163,13 @@ class ProductEditDataFilter implements CollectionFilterInterface
                 ;
 
                 $acceptValue = $isAuthorizedOnLocale && $isEditableOnLocale;
+            }
+
+            if ($attribute->isScopable() && $acceptValue) {
+                $channel = $this->channelRepository->findOneByIdentifier($value['scope']);
+                if (null === $channel) {
+                    $acceptValue = false;
+                }
             }
 
             if ($acceptValue) {
