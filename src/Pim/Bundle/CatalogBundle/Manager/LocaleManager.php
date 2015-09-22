@@ -79,10 +79,33 @@ class LocaleManager
     public function getActiveCodes()
     {
         return array_map(
-            function ($locale) {
+            function (LocaleInterface $locale) {
                 return $locale->getCode();
             },
             $this->getActiveLocales()
         );
+    }
+
+    /**
+     * Check if a locale is activated
+     *
+     * @param LocaleInterface[] $locales
+     * @param string            $localeCode
+     *
+     * @throws \RuntimeException
+     *
+     * @return bool
+     */
+    public function isLocaleActivated(array $locales, $localeCode)
+    {
+        $foundLocale = null;
+
+        foreach ($locales as $locale) {
+            if ($localeCode === $locale->getCode()) {
+                return $locale->isActivated();
+            }
+        }
+
+        throw new \RuntimeException(sprintf('locale code %s is unknown', $localeCode));
     }
 }
