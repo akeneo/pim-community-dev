@@ -10,7 +10,9 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
+use Pim\Bundle\DataGridBundle\Datasource\Datasource;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,22 +41,28 @@ class MassActionDispatcher
     /** @var MassActionParametersParser */
     protected $parametersParser;
 
+    /** @var HydratorInterface */
+    protected $hydrator;
+
     /**
      * @param MassActionHandlerRegistry  $handlerRegistry
      * @param ManagerInterface           $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
+     * @param HydratorInterface          $hydrator
      */
     public function __construct(
         MassActionHandlerRegistry $handlerRegistry,
         ManagerInterface $manager,
         RequestParameters $requestParams,
-        MassActionParametersParser $parametersParser
+        MassActionParametersParser $parametersParser,
+        HydratorInterface $hydrator
     ) {
         $this->handlerRegistry  = $handlerRegistry;
         $this->manager          = $manager;
         $this->requestParams    = $requestParams;
         $this->parametersParser = $parametersParser;
+        $this->hydrator         = $hydrator;
     }
 
     /**

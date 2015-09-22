@@ -19,6 +19,7 @@ services:
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
             - '@oro_datagrid.mass_action.parameters_parser'
+            - '@pim_datagrid.datasource.result_record.hydrator.object_id'
 
     # Handlers
     pim_datagrid.extension.mass_action.handler.export:
