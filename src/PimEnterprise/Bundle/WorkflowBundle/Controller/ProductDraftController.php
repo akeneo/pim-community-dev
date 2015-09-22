@@ -15,6 +15,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
@@ -73,6 +74,9 @@ class ProductDraftController extends AbstractController
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
+    /** @var OroToPimGridFilterAdapter  */
+    protected $gridFilterAdapter;
+
     /**
      * @param Request                       $request
      * @param EngineInterface               $templating
@@ -89,6 +93,7 @@ class ProductDraftController extends AbstractController
      * @param JobInstanceRepository         $jobInstanceRepository
      * @param MassActionParametersParser    $gridParameterParser
      * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param OroToPimGridFilterAdapter     $gridFilterAdapter
      */
     public function __construct(
         Request $request,
@@ -105,7 +110,8 @@ class ProductDraftController extends AbstractController
         JobLauncherInterface $simpleJobLauncher,
         JobInstanceRepository $jobInstanceRepository,
         MassActionParametersParser $gridParameterParser,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        OroToPimGridFilterAdapter $gridFilterAdapter
     ) {
         parent::__construct(
             $request,
@@ -125,6 +131,7 @@ class ProductDraftController extends AbstractController
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->gridParameterParser   = $gridParameterParser;
         $this->authorizationChecker  = $authorizationChecker;
+        $this->gridFilterAdapter     = $gridFilterAdapter;
     }
 
     /**
@@ -261,9 +268,10 @@ class ProductDraftController extends AbstractController
      */
     public function massApproveAction(Request $request)
     {
+        $request->request->add(['actionName' => 'massApprove' ]);
         $jobExecution = $this->launchMassReviewJob(
             self::MASS_APPROVE_JOB_CODE,
-            $this->parseGridParameters($request)
+            $this->gridFilterAdapter->adapt($request)
         );
 
         return $this->redirect(
@@ -283,9 +291,10 @@ class ProductDraftController extends AbstractController
      */
     public function massRefuseAction(Request $request)
     {
+        $request->request->add(['actionName' => 'massApprove' ]);
         $jobExecution = $this->launchMassReviewJob(
             self::MASS_REFUSE_JOB_CODE,
-            $this->parseGridParameters($request)
+            $this->gridFilterAdapter->adapt($request)
         );
 
         return $this->redirect(

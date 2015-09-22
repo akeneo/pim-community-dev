@@ -61,6 +61,7 @@ datagrid:
         mass_actions:
             mass_approve:
                 type: redirect
+                handler: mass_approve
                 label: pimee_workflow.product_draft.mass_review_action.approve
                 confirmation: true
                 route: pimee_workflow_product_draft_mass_approve
