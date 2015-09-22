@@ -77,7 +77,10 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         $grantedAttributes = [];
 
         foreach ($allAttributes as $attribute) {
-            $canEditAttribute = $this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup());
+            $canEditAttribute = $this->authorizationChecker->isGranted(
+                Attributes::EDIT_ATTRIBUTES,
+                $attribute->getGroup()
+            );
 
             if ($canEditAttribute) {
                 $grantedAttributes[] = $attribute;

@@ -139,10 +139,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      */
     protected function retrieveChannelTransformationsConfiguration(ChannelInterface $channel)
     {
-        if (null === $channelConfiguration = $this->configurationRepository->findOneBy(
-                ['channel' => $channel->getId()]
-            )
-        ) {
+        $channelConfiguration = $this->configurationRepository->findOneBy(['channel' => $channel->getId()]);
+        if (null === $channelConfiguration) {
             throw new \LogicException(
                 sprintf('No variations configuration exists for the channel "%s".', $channel->getCode())
             );

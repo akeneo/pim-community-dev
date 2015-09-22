@@ -206,9 +206,9 @@ class MassUploadProcessor
                     $template = 'pimee_product_asset.enrich_variation.flash.transformation.not_applicable';
                     break;
                 case $item->getException() instanceof NonRegisteredTransformationException:
-                    $template                       = 'pimee_product_asset.enrich_variation.flash.transformation.non_registered';
+                    $template = 'pimee_product_asset.enrich_variation.flash.transformation.non_registered';
                     $parameters['%transformation%'] = $item->getException()->getTransformation();
-                    $parameters['%mimeType%']       = $item->getException()->getMimeType();
+                    $parameters['%mimeType%'] = $item->getException()->getMimeType();
                     break;
                 default:
                     $template = 'pimee_product_asset.enrich_variation.flash.transformation.error';

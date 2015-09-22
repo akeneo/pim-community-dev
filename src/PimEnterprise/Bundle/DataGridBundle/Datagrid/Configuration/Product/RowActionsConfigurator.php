@@ -81,7 +81,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
             $product = $this->productRepository->findOneById($record->getValue('id'));
 
             $editGranted = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
-            $ownershipGranted = $editGranted ? $this->authorizationChecker->isGranted(Attributes::OWN, $product) : false;
+            $ownershipGranted = $editGranted && $this->authorizationChecker->isGranted(Attributes::OWN, $product);
 
             return [
                 'show'            => !$editGranted,

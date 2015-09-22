@@ -97,7 +97,8 @@ class MassUploadController
 
         try {
             $this->uploadChecker
-                ->validateSchedule($this->cleanFilename($filename),
+                ->validateSchedule(
+                    $this->cleanFilename($filename),
                     $uploadContext->getTemporaryUploadDirectory(),
                     $uploadContext->getTemporaryScheduleDirectory()
                 );

@@ -139,8 +139,9 @@ class ChannelConfigurationProcessor extends AbstractProcessor
      *
      * @return ConstraintViolationListInterface
      */
-    protected function validateChannelConfiguration(ChannelVariationsConfigurationInterface $channelConfiguration)
-    {
+    protected function validateChannelConfiguration(
+        ChannelVariationsConfigurationInterface $channelConfiguration
+    ) {
         return $this->validator->validate($channelConfiguration);
     }
 }

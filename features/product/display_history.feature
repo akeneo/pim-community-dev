@@ -16,7 +16,6 @@ Feature: Display the product history
     And I save the product
     And I press the "Publish" button
     And I confirm the publishing
-    And I edit the "sandals-001" product
     And I fill in the following information:
       | SKU | sandals-001-bis |
     And I save the product

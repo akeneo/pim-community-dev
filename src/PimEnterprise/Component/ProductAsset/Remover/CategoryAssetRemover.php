@@ -76,7 +76,9 @@ class CategoryAssetRemover implements RemoverInterface
         $options = $this->optionsResolver->resolveRemoveOptions($options);
 
         $categoryId = $category->getId();
-        $eventName = $category->isRoot() ? CategoryAssetEvents::PRE_REMOVE_TREE : CategoryAssetEvents::PRE_REMOVE_CATEGORY;
+        $eventName = $category->isRoot() ?
+            CategoryAssetEvents::PRE_REMOVE_TREE :
+            CategoryAssetEvents::PRE_REMOVE_CATEGORY;
         $this->eventDispatcher->dispatch($eventName, new RemoveEvent($category, $categoryId));
 
         $assetsToUpdate = [];
@@ -102,7 +104,9 @@ class CategoryAssetRemover implements RemoverInterface
             );
         }
 
-        $eventName = $category->isRoot() ? CategoryAssetEvents::POST_REMOVE_TREE : CategoryAssetEvents::POST_REMOVE_CATEGORY;
+        $eventName = $category->isRoot() ?
+            CategoryAssetEvents::POST_REMOVE_TREE :
+            CategoryAssetEvents::POST_REMOVE_CATEGORY;
         $this->eventDispatcher->dispatch($eventName, new RemoveEvent($category, $categoryId));
     }
 }
