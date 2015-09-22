@@ -354,9 +354,12 @@ class ProductController
                     ? $errors['values'][$attributeCode]
                     : [];
 
-                $identicalErrors = array_filter($errors['values'][$attributeCode], function ($error) use ($currentError) {
-                    return isset($error['message']) && $error['message'] === $currentError['message'];
-                });
+                $identicalErrors = array_filter(
+                    $errors['values'][$attributeCode],
+                    function ($error) use ($currentError) {
+                        return isset($error['message']) && $error['message'] === $currentError['message'];
+                    }
+                );
 
                 if (empty($identicalErrors)) {
                     $errors['values'][$attributeCode][] = $currentError;

@@ -33,7 +33,7 @@ class AssertionContext extends RawMinkContext
     {
         //Remove unecessary escaped antislashes
         $text = str_replace('\\', '', $text);
-        $this->getMainContext()->spin(function () use ($text) {
+        $this->spin(function () use ($text) {
             $this->assertSession()->pageTextContains($text);
 
             return true;
@@ -47,7 +47,7 @@ class AssertionContext extends RawMinkContext
      */
     public function assertPageNotContainsText($text)
     {
-        $this->getMainContext()->spin(function () use ($text) {
+        $this->spin(function () use ($text) {
             $this->assertSession()->pageTextNotContains($text);
 
             return true;
@@ -384,12 +384,12 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeHistoryInPanel(TableNode $table)
     {
-        $block = $this->getMainContext()->spin(function () {
+        $block = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.history-block');
         });
 
         foreach ($table->getHash() as $data) {
-            $row = $this->getMainContext()->spin(function () use ($block, $data) {
+            $row = $this->spin(function () use ($block, $data) {
                 return $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
             });
 
@@ -457,12 +457,10 @@ class AssertionContext extends RawMinkContext
                 );
             }
 
-            if (
-                !preg_match(
-                    sprintf('/^%s$/', $newValue),
-                    $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
-                )
-            ) {
+            if (!preg_match(
+                sprintf('/^%s$/', $newValue),
+                $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
+            )) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Wrong new value in row %s, expected %s, got %s',
@@ -762,7 +760,7 @@ class AssertionContext extends RawMinkContext
     {
         $this->getCurrentPage()->waitForProgressionBar();
 
-        $this->getMainContext()->spin(function () use ($text) {
+        $this->spin(function () use ($text) {
             $this->assertSession()->pageTextContains((string) $text);
 
             return true;
