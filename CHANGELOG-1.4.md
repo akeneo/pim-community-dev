@@ -1,5 +1,8 @@
 # 1.4.x
 
+## Bug fixes
+- PIM-4911: Fix product edit form string escaping
+
 # 1.4.0 (2015-09-23)
 
 ## BC breaks
