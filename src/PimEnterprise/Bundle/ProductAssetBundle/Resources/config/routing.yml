@@ -5,3 +5,7 @@ product_asset:
 asset_categorytree:
     resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/asset_categorytree.yml'
     prefix: /enrich/asset-category-tree
+
+asset_picker_categorytree:
+    resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/asset_picker_categorytree.yml'
+    prefix: /enrich/asset-picker-category-tree

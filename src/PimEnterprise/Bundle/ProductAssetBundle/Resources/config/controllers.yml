@@ -63,3 +63,20 @@ services:
             - '@security.token_storage'
         calls:
             - [ setContainer, [ @service_container ] ]
+
+    pimee_product_asset.controller.category_tree_asset_picker:
+        scope: request
+        class: %pim_enrich.controller.category_tree.class%
+        arguments:
+            - '@event_dispatcher'
+            - '@pimee_product_asset.context.user'
+            - '@pimee_product_asset.saver.category'
+            - '@pimee_product_asset.remover.category_asset'
+            - '@pimee_product_asset.factory.category'
+            - '@pimee_product_asset.repository.category'
+            - '@oro_security.security_facade'
+            - { related_entity: asset, form_type: pimee_asset_category, acl: pimee_product_asset_picker, route: pimee_asset_picker }
+            - '@pimee_product_asset.repository.asset_category_access'
+            - '@security.token_storage'
+        calls:
+            - [ setContainer, [ @service_container ] ]
