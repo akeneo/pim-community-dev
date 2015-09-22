@@ -2,11 +2,17 @@
 
 namespace spec\Pim\Bundle\PdfGeneratorBundle\Renderer;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Data\DataManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
@@ -14,10 +20,23 @@ class ProductPdfRendererSpec extends ObjectBehavior
 {
     const TEMPLATE_NAME = 'template.html.twig';
 
-    function let(EngineInterface $templating, PdfBuilderInterface $pdfBuilder)
-    {
-        $path = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
-        $this->beConstructedWith($templating, self::TEMPLATE_NAME, $pdfBuilder, $path);
+    function let(
+        EngineInterface $templating,
+        PdfBuilderInterface $pdfBuilder,
+        DataManager $dataManager,
+        CacheManager $cacheManager,
+        FilterManager $filterManager
+    ) {
+        $path = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
+        $this->beConstructedWith(
+            $templating,
+            $pdfBuilder,
+            $dataManager,
+            $cacheManager,
+            $filterManager,
+            self::TEMPLATE_NAME,
+            $path
+        );
     }
 
     function it_does_not_filter_compatible_entities(ProductInterface $blender)
@@ -38,7 +57,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
     ) {
         $blender->getAttributes()->willReturn([$color]);
 
-        $path = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
+        $path = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $color->getGroup()->willReturn($design);
         $design->getLabel()->willReturn('Design');
 
@@ -66,10 +85,19 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $templating,
         ProductInterface $blender,
         AttributeGroupInterface $media,
-        AttributeInterface $mainImage
+        AttributeInterface $mainImage,
+        ProductValueInterface $productValue,
+        FileInfoInterface $fileInfo,
+        CacheManager $cacheManager
     ) {
         $path = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $blender->getAttributes()->willReturn([$mainImage]);
+        $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($productValue);
+
+        $productValue->getMedia()->willReturn($fileInfo);
+        $fileInfo->getKey()->willReturn('fookey');
+
+        $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);
 
         $mainImage->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
