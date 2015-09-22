@@ -2,11 +2,11 @@
     <span>
         <i class="icon-warning-sign"></i>
         <% if (error.locale || error.scope) { %>
-            <span class="field-context change-context" data-locale="<%= error.locale %>" data-scope="<%= error.scope %>">
-                <% if (error.scope) { %> <span><%= error.scope %></span> <% } %>
+            <span class="field-context change-context" data-locale="<%- error.locale %>" data-scope="<%- error.scope %>">
+                <% if (error.scope) { %> <span><%- error.scope %></span> <% } %>
                 <% if (error.locale) { %> <span><%= i18n.getFlag(error.locale) %></span> <% } %>
             </span>
         <% } %>
-        <span class="error-message"><%= error.message %></span>
+        <span class="error-message"><%- error.message %></span>
     </span>
 <% }) %>

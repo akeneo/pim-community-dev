@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4882: Fix pinbar issue (bump oro/platform version)
+- PIM-4911: Fix product edit form string escaping
 
 # 1.4.0 (2015-09-23)
 
