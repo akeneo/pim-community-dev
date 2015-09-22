@@ -222,6 +222,49 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     }
 
     /**
+     * @param QueryBuilder $qb
+     * @param array        $values
+     * @param string       $inset
+     *
+     * @return mixed
+     */
+    public function applyMassActionParameters($qb, array $values, $inset)
+    {
+        if ($values) {
+            $rootAlias = $qb->getRootAlias();
+            $valueWhereCondition =
+                $inset
+                    ? $qb->expr()->in($rootAlias, $values)
+                    : $qb->expr()->notIn($rootAlias, $values);
+            $qb->andWhere($valueWhereCondition);
+        }
+
+        if (null !== $qb->getDQLPart('where')) {
+            $whereParts = $qb->getDQLPart('where')->getParts();
+            $qb->resetDQLPart('where');
+
+            foreach ($whereParts as $part) {
+                if (!is_string($part) || !strpos($part, 'entityIds')) {
+                    $qb->andWhere($part);
+                }
+            }
+        }
+
+        $qb->setParameters(
+            $qb->getParameters()->filter(
+                function ($parameter) {
+                    return $parameter->getName() !== 'entityIds';
+                }
+            )
+        );
+
+        $qb->resetDQLPart('orderBy');
+
+        // remove limit of the query
+        $qb->setMaxResults(null);
+    }
+
+    /**
      * Build field name with root alias
      *
      * @param QueryBuilder $qb
@@ -323,44 +366,5 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
         }
 
         return $data instanceof \DateTime ? $data->format('Y-m-d H:i:s') : $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyMassActionParameters($qb, $inset, $values)
-    {
-        if ($values) {
-            $rootAlias = $qb->getRootAlias();
-            $valueWhereCondition =
-                $inset
-                    ? $qb->expr()->in($rootAlias, $values)
-                    : $qb->expr()->notIn($rootAlias, $values);
-            $qb->andWhere($valueWhereCondition);
-        }
-
-        if (null !== $qb->getDQLPart('where')) {
-            $whereParts = $qb->getDQLPart('where')->getParts();
-            $qb->resetDQLPart('where');
-
-            foreach ($whereParts as $part) {
-                if (!is_string($part) || !strpos($part, 'entityIds')) {
-                    $qb->andWhere($part);
-                }
-            }
-        }
-
-        $qb->setParameters(
-            $qb->getParameters()->filter(
-                function ($parameter) {
-                    return $parameter->getName() !== 'entityIds';
-                }
-            )
-        );
-
-        $qb->resetDQLPart('orderBy');
-
-        // remove limit of the query
-        $qb->setMaxResults(null);
     }
 }

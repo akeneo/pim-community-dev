@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -110,4 +111,13 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @return string[]
      */
     public function getDistinctAuthors();
+
+    /**
+     * @param Builder $qb
+     * @param array   $values
+     * @param string  $inset
+     *
+     * @return mixed
+     */
+    public function applyMassActionParameters($qb, array $values, $inset);
 }
