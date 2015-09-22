@@ -114,10 +114,10 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
 
     /**
      * @param Builder $qb
-     * @param boolean $values
-     * @param string  $inset
+     * @param bool    $inset
+     * @param array   $values
      *
      * @return mixed
      */
-    public function applyMassActionParameters($qb, $values, $inset);
+    public function applyMassActionParameters($qb, $inset, array $values);
 }

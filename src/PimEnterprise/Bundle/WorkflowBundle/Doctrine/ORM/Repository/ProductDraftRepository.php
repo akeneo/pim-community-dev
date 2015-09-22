@@ -223,12 +223,12 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
 
     /**
      * @param QueryBuilder $qb
-     * @param boolean      $values
-     * @param string       $inset
+     * @param bool         $inset
+     * @param array        $values
      *
      * @return mixed
      */
-    public function applyMassActionParameters($qb, $values, $inset)
+    public function applyMassActionParameters($qb, $inset, array $values)
     {
         if ($values) {
             $rootAlias = $qb->getRootAlias();
