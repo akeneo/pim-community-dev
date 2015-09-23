@@ -1,5 +1,8 @@
 # 1.4.x
 
+## Bug fixes
+- PIM-4882: Fix pinbar issue (bump oro/platform version)
+
 # 1.4.0 (2015-09-23)
 
 ## BC breaks
