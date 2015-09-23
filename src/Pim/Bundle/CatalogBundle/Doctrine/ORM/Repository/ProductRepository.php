@@ -92,15 +92,11 @@ class ProductRepository extends EntityRepository implements
         $rootAlias = current($qb->getRootAliases());
         $qb
             ->andWhere(
-                $qb->expr()->eq($rootAlias.'.enabled', ':enabled')
-            )
-            ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->eq('Value.scope', ':scope'),
                     $qb->expr()->isNull('Value.scope')
                 )
             )
-            ->setParameter('enabled', true)
             ->setParameter('scope', $scope);
 
         return $qb;
