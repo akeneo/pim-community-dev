@@ -18,10 +18,6 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 
     const PRODUCT_GRID_NAME = 'product-grid';
 
-    const APPROVE_GRID_NAME = 'proposal-grid';
-
-    const PUBLISHED_PRODUCT_GRID_NAME = 'published-product-grid';
-
     /** @var MassActionDispatcher */
     protected $massActionDispatcher;
 
@@ -38,10 +34,8 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
      */
     public function adapt(Request $request)
     {
-        if (in_array($request->get('gridName'), [self::PRODUCT_GRID_NAME, self::PUBLISHED_PRODUCT_GRID_NAME])) {
+        if (in_array($request->get('gridName'), [self::PRODUCT_GRID_NAME])) {
             $filters = $this->massActionDispatcher->getRawFilters($request);
-        } elseif ($request->get('gridName') === self::APPROVE_GRID_NAME) {
-            return ['values' => $this->massActionDispatcher->dispatch($request)];
         } else {
             $items =  $this->massActionDispatcher->dispatch($request);
 
