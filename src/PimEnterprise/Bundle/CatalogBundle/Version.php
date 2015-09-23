@@ -19,10 +19,10 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.4.0-RC1';
+    const VERSION = '1.4.0';
 
     /** @staticvar string */
-    const VERSION_CODENAME = '';
+    const VERSION_CODENAME = 'Samara';
 
     /** @staticvar string */
     const EDITION = 'EE';
