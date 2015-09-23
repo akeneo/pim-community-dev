@@ -222,11 +222,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     }
 
     /**
-     * @param QueryBuilder $qb
-     * @param bool         $inset
-     * @param array        $values
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function applyMassActionParameters($qb, $inset, array $values)
     {

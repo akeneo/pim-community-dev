@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -113,9 +112,9 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
     public function getDistinctAuthors();
 
     /**
-     * @param Builder $qb
-     * @param bool    $inset
-     * @param array   $values
+     * @param mixed $qb
+     * @param bool  $inset
+     * @param array $values
      *
      * @return mixed
      */
