@@ -67,6 +67,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $skuAttribute->isLocalizable()->willReturn(false);
         $skuAttribute->isScopable()->willReturn(false);
         $skuAttribute->isLocaleSpecific()->willReturn(false);
+        $skuAttribute->isBackendTypeReferenceData()->willReturn(false);
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
 
         $familyRepository->findOneByIdentifier("tshirt")->willReturn($tshirtFamily);
