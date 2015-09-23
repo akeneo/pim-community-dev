@@ -1,5 +1,7 @@
 # 1.4.x
 
+# 1.4.0 (2015-09-23)
+
 ## BC breaks
 - Removed function `countPublishedProductsForCategoryAndChildren` from `PublishedProductRepositoryInterface` and implementations in favor of `countPublishedProductsForCategory`
 - Removed `Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\AssociationTypeRemover`
