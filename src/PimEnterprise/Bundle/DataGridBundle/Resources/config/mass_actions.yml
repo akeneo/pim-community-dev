@@ -1,5 +1,6 @@
 parameters:
     pim_datagrid.extension.mass_action.util.product_fields_builder.class: PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
+    pim_datagrid.extension.mass_action.handler.mass_approve.class:        PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler
 
 services:
     pim_datagrid.extension.mass_action.util.product_fields_builder:
@@ -23,3 +24,11 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pimee_security.repository.attribute_group_access'
             - '@security.token_storage'
+
+    pim_datagrid.extension.mass_action.handler.mass_approve:
+        class: %pim_datagrid.extension.mass_action.handler.mass_approve.class%
+        arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.object_id'
+            - '@event_dispatcher'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_approve }

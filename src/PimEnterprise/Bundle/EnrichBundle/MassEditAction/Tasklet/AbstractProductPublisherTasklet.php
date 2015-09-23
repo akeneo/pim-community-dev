@@ -45,6 +45,14 @@ abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepE
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /**
+     * @param PublishedProductManager   $manager
+     * @param PaginatorFactoryInterface $paginatorFactory
+     * @param ValidatorInterface        $validator
+     * @param ObjectDetacherInterface   $objectDetacher
+     * @param UserManager               $userManager
+     * @param TokenStorageInterface     $tokenStorage
+     */
     public function __construct(
         PublishedProductManager $manager,
         PaginatorFactoryInterface $paginatorFactory,

@@ -203,6 +203,21 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function applyMassActionParameters($qb, $inset, array $values)
+    {
+        // manage inset for selected entities
+        if ($values) {
+            $qb->field('_id');
+            $inset ? $qb->in($values) : $qb->notIn($values);
+        }
+
+        // remove limit of the query
+        $qb->limit(null);
+    }
+
+    /**
      * Creates a QB with proposals that are approvable by the user
      *
      * @param UserInterface $user

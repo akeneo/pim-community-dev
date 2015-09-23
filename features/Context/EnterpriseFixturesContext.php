@@ -141,6 +141,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 ProductDraftInterface::READY :
                 ProductDraftInterface::IN_PROGRESS
             );
+            if (isset($data['createdAt'])) {
+                $productDraft->setCreatedAt(new \DateTime($data['createdAt']));
+            }
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
 
             if (isset($data['result'])) {
