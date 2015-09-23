@@ -78,7 +78,9 @@ class ProductDraftController
     /**
      * Mark a product draft as ready
      *
-     * @param $productId
+     * @param int|string $productId
+     *
+     * @throws AccessDeniedHttpException
      *
      * @return JsonResponse
      */
@@ -134,7 +136,10 @@ class ProductDraftController
     /**
      * Reject a product draft
      *
-     * @param $id
+     * @param mixed $id
+     *
+     * @throws \LogicException
+     * @throws AccessDeniedHttpException
      *
      * @return JsonResponse
      */

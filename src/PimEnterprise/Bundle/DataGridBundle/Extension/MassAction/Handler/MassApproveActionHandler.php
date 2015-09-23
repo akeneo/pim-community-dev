@@ -33,8 +33,6 @@ class MassApproveActionHandler implements MassActionHandlerInterface
     protected $eventDispatcher;
 
     /**
-     * Constructor
-     *
      * @param HydratorInterface        $hydrator
      * @param EventDispatcherInterface $eventDispatcher
      */
