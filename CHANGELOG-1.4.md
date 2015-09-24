@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4911: Fix product edit form string escaping
+- PIM-4778: Fix asset grid thumbnails for unknown types
 
 # 1.4.0 (2015-09-23)
 
