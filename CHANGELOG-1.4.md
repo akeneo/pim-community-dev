@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.1 (2015-09-24)
 
 ## BC breaks
 - Change constructor of `Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer`.
