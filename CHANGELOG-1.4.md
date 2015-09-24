@@ -1,5 +1,10 @@
 # 1.4.x
 
+## Bug fixes
+- PIM-4882: Fix pinbar issue (bump oro/platform version)
+
+# 1.4.0 (2015-09-23)
+
 ## BC breaks
 - Change constructor of `Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer`.
   Added `Liip\ImagineBundle\Imagine\Cache\CacheManager`, `Liip\ImagineBundle\Imagine\Data\DataManager` and `Liip\ImagineBundle\Imagine\Filter\FilterManager`

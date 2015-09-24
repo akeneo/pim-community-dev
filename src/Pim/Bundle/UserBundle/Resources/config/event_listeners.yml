@@ -1,0 +1,12 @@
+parameters:
+    pim_locale.locale_listener.class: Pim\Bundle\UserBundle\EventListener\LocaleListener
+
+services:
+    pim_locale.locale_listener:
+        class: %pim_locale.locale_listener.class%
+        arguments:
+            - @oro_locale.settings
+        calls:
+            - [ setRequest, [@?request=] ]
+        tags:
+            - { name: kernel.event_subscriber }
