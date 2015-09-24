@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\UserBundle\EventListener;
 
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 /**
  * Locale Listener
@@ -16,7 +15,7 @@ use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocaleListener implements EventSubscriberInterface
+class LocalSubscriber implements EventSubscriberInterface
 {
     /** @var LocaleSettings */
     protected $localeSettings;
