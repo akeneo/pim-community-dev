@@ -1,15 +1,15 @@
 <% if (product.meta.published) { %>
-    <button class="btn btn-publish publish-product <%= (product.meta.published.version === product.meta.updated.version) ? 'disabled' : '' %>">
-        <i class="icon icon-cloud-upload"></i><%= _.__('pimee_enrich.entity.product.btn.publish_this_version') %>
+    <button class="btn btn-publish publish-product <%- (product.meta.published.version === product.meta.updated.version) ? 'disabled' : '' %>">
+        <i class="icon icon-cloud-upload"></i><%- _.__('pimee_enrich.entity.product.btn.publish_this_version') %>
     </button>
     <button class="btn dropdown-toggle dropdown-publish" data-toggle="dropdown">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu pull-right">
-        <li><a class="unpublish-product"><%= _.__('pimee_enrich.entity.product.btn.unpublish') %></a></li>
+        <li><a class="unpublish-product"><%- _.__('pimee_enrich.entity.product.btn.unpublish') %></a></li>
     </ul>
 <% } else { %>
     <button class="btn btn-publish publish-product">
-        <i class="icon icon-cloud-upload"></i><%= _.__('pimee_enrich.entity.product.btn.publish') %>
+        <i class="icon icon-cloud-upload"></i><%- _.__('pimee_enrich.entity.product.btn.publish') %>
     </button>
 <% } %>
