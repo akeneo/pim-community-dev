@@ -11,6 +11,9 @@
 
 namespace PimEnterprise\Bundle\PdfGeneratorBundle\Renderer;
 
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Data\DataManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
@@ -28,25 +31,6 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     protected $filterHelper;
 
     /**
-     * @param EngineInterface           $templating
-     * @param string                    $template
-     * @param PdfBuilderInterface       $pdfBuilder
-     * @param FilterProductValuesHelper $filterHelper
-     * @param string                    $uploadDirectory
-     */
-    public function __construct(
-        EngineInterface $templating,
-        $template,
-        PdfBuilderInterface $pdfBuilder,
-        FilterProductValuesHelper $filterHelper,
-        $uploadDirectory
-    ) {
-        parent::__construct($templating, $template, $pdfBuilder, $uploadDirectory);
-
-        $this->filterHelper = $filterHelper;
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function getAttributes(ProductInterface $product, $locale)
@@ -59,5 +43,41 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         }
 
         return $attributes;
+    }
+
+    /**
+     * @param EngineInterface           $templating
+     * @param PdfBuilderInterface       $pdfBuilder
+     * @param FilterProductValuesHelper $filterHelper
+     * @param DataManager               $dataManager
+     * @param CacheManager              $cacheManager
+     * @param FilterManager             $filterManager
+     * @param string                    $template
+     * @param string                    $uploadDirectory
+     * @param string|null               $customFont
+     */
+    public function __construct(
+        EngineInterface $templating,
+        PdfBuilderInterface $pdfBuilder,
+        FilterProductValuesHelper $filterHelper,
+        DataManager $dataManager,
+        CacheManager $cacheManager,
+        FilterManager $filterManager,
+        $template,
+        $uploadDirectory,
+        $customFont = null
+    ) {
+        parent::__construct(
+            $templating,
+            $pdfBuilder,
+            $dataManager,
+            $cacheManager,
+            $filterManager,
+            $template,
+            $uploadDirectory,
+            $customFont
+        );
+
+        $this->filterHelper = $filterHelper;
     }
 }
