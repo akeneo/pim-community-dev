@@ -1,9 +1,9 @@
 <% _.each(associationTypes, function (associationType) { %>
-     <div data-association-type="<%= associationType.code %>" class="tab-pane<% if (associationType.code === state.currentAssociationType) { %> active<% } %>">
+     <div data-association-type="<%- associationType.code %>" class="tab-pane<% if (associationType.code === state.currentAssociationType) { %> active<% } %>">
         <h3 class="tab-header unspaced">
-            <%= associationType.label[locale] || '[' + associationType.code + ']'  %>
+            <%- associationType.label[locale] || '[' + associationType.code + ']'  %>
             <span class="muted small">
-                <%= _.__(
+                <%- _.__(
                     'pim_enrich.form.product.tab.associations.info.number_of_associations',
                     { productCount: associationType.productCount, groupCount: associationType.groupCount }
                 ) %>

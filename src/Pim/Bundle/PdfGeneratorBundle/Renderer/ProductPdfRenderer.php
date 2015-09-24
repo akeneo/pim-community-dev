@@ -2,13 +2,15 @@
 
 namespace Pim\Bundle\PdfGeneratorBundle\Renderer;
 
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Data\DataManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -32,17 +34,32 @@ class ProductPdfRenderer implements RendererInterface
     /** @var PdfBuilderInterface */
     protected $pdfBuilder;
 
+    /** @var DataManager */
+    protected $dataManager;
+
+    /** @var CacheManager */
+    protected $cacheManager;
+
+    /** @var FilterManager */
+    protected $filterManager;
+
     /**
      * @param EngineInterface     $templating
-     * @param string              $template
      * @param PdfBuilderInterface $pdfBuilder
+     * @param DataManager         $dataManager
+     * @param CacheManager        $cacheManager
+     * @param FilterManager       $filterManager
+     * @param string              $template
      * @param string              $uploadDirectory
-     * @param ContainerInterface  $customFont
+     * @param string|null         $customFont
      */
     public function __construct(
         EngineInterface $templating,
-        $template,
         PdfBuilderInterface $pdfBuilder,
+        DataManager $dataManager,
+        CacheManager $cacheManager,
+        FilterManager $filterManager,
+        $template,
         $uploadDirectory,
         $customFont = null
     ) {
@@ -51,6 +68,9 @@ class ProductPdfRenderer implements RendererInterface
         $this->pdfBuilder      = $pdfBuilder;
         $this->uploadDirectory = $uploadDirectory;
         $this->customFont      = $customFont;
+        $this->dataManager     = $dataManager;
+        $this->cacheManager    = $cacheManager;
+        $this->filterManager   = $filterManager;
     }
 
     /**
@@ -66,7 +86,7 @@ class ProductPdfRenderer implements RendererInterface
             [
                 'product'           => $object,
                 'groupedAttributes' => $this->getGroupedAttributes($object, $context['locale']),
-                'imageAttributes'   => $this->getImageAttributes($object, $context['locale']),
+                'imageAttributes'   => $this->getImageAttributes($object, $context['locale'], $context['scope']),
                 'customFont'        => $this->customFont
             ]
         );
@@ -130,10 +150,11 @@ class ProductPdfRenderer implements RendererInterface
      *
      * @param ProductInterface $product
      * @param string           $locale
+     * @param string           $scope
      *
      * @return AttributeInterface[]
      */
-    protected function getImageAttributes(ProductInterface $product, $locale)
+    protected function getImageAttributes(ProductInterface $product, $locale, $scope)
     {
         $attributes = [];
 
@@ -143,7 +164,36 @@ class ProductPdfRenderer implements RendererInterface
             }
         }
 
+        $this->generateThumbnailsCache($product, $attributes, $locale, $scope);
+
         return $attributes;
+    }
+
+    /**
+     * Generate media thumbnails cache used by the PDF document
+     *
+     * @param ProductInterface     $product
+     * @param AttributeInterface[] $imageAttributes
+     * @param string               $locale
+     * @param string               $scope
+     */
+    protected function generateThumbnailsCache(ProductInterface $product, array $imageAttributes, $locale, $scope)
+    {
+        foreach ($imageAttributes as $attribute) {
+            $media = $product->getValue($attribute->getCode(), $locale, $scope)->getMedia();
+            if (null !== $media && null !== $media->getKey()) {
+                $path   = $media->getKey();
+                $filter = 'thumbnail';
+                if (!$this->cacheManager->isStored($path, $filter)) {
+                    $binary = $this->dataManager->find($filter, $path);
+                    $this->cacheManager->store(
+                        $this->filterManager->applyFilter($binary, $filter),
+                        $path,
+                        $filter
+                    );
+                }
+            }
+        }
     }
 
     /**

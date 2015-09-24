@@ -40,7 +40,7 @@ class FieldSplitter
         if ('' !== $value) {
             $tokens = explode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $value);
             array_walk($tokens, function (&$token) {
-               $token = trim($token);
+                $token = trim($token);
             });
         }
 

@@ -381,7 +381,8 @@ class Edit extends Form
         }
 
         $subContainer = $this->spin(function () use ($label, $copy) {
-            return $this->findFieldContainer($label)->find('css', $copy ? '.copy-container .form-field' : '.form-field');
+            return $this->findFieldContainer($label)
+                ->find('css', $copy ? '.copy-container .form-field' : '.form-field');
         });
 
         $field = $this->spin(function () use ($subContainer) {

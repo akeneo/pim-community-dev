@@ -7,8 +7,11 @@ services:
         class: %pim_pdf_generator.renderer.product_pdf.class%
         arguments:
             - '@templating'
-            - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'
             - '@pim_pdf_generator.builder.dompdf'
+            - '@liip_imagine.data.manager'
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'
             - %upload_dir%
             - %pim_pdf_generator_font%
         tags:

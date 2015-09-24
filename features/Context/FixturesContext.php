@@ -1844,7 +1844,12 @@ class FixturesContext extends RawMinkContext
             if (in_array($element, ['yes', 'no'])) {
                 $element    = $element === 'yes';
                 $data[$key] = $element;
-            } elseif (in_array($key, ['available_locales', 'date_min', 'date_max', 'number_min', 'number_max']) && '' === $element) {
+            } elseif (in_array(
+                $key,
+                ['available_locales', 'date_min', 'date_max', 'number_min', 'number_max']
+            ) &&
+                '' === $element
+            ) {
                 unset($data[$key]);
             }
         }
@@ -2299,7 +2304,8 @@ class FixturesContext extends RawMinkContext
             throw new \InvalidArgumentException(
                 sprintf(
                     'Object "%s" is not valid, cf following constraint violations "%s"',
-                    ClassUtils::getClass($object), implode(', ', $messages)
+                    ClassUtils::getClass($object),
+                    implode(', ', $messages)
                 )
             );
         }
