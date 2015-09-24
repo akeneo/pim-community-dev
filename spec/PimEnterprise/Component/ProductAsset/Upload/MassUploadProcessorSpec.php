@@ -13,6 +13,7 @@ use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
+use PimEnterprise\Component\ProductAsset\Upload\ParsedFilename;
 use PimEnterprise\Component\ProductAsset\Upload\SchedulerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use Prophecy\Argument;
@@ -34,7 +35,8 @@ class MassUploadProcessorSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         TranslatorInterface $translator
     ) {
-        $this->beConstructedWith($uploadChecker,
+        $this->beConstructedWith(
+            $uploadChecker,
             $scheduler,
             $assetFactory,
             $assetRepository,
@@ -57,6 +59,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         FileInfoInterface $fileInfo,
         AssetInterface $asset,
         ReferenceInterface $reference,
+        ParsedFilename $parsedFilename,
         $uploadChecker,
         $assetFactory,
         $assetRepository,
@@ -72,13 +75,14 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $fileStorer
         );
 
-        $assetInfos = [
-            'code'   => 'foobar',
-            'locale' => null
-        ];
+        $parsedFilename->getAssetCode()->willReturn('foobar');
+        $parsedFilename->getLocaleCode()->willReturn(null);
 
-        $uploadChecker->parseFilename('foobar.jpg')
-            ->willReturn($assetInfos);
+        $uploadChecker->getParsedFilename('foobar.jpg')
+            ->willReturn($parsedFilename);
+
+        $uploadChecker->validateFilenameFormat($parsedFilename)
+            ->willReturn(null);
 
         $assetRepository->findOneByIdentifier('foobar')
             ->willReturn(null);
@@ -104,6 +108,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         FileInfoInterface $fileInfo,
         AssetInterface $asset,
         ReferenceInterface $reference,
+        ParsedFilename $parsedFilename,
         $uploadChecker,
         $assetFactory,
         $assetRepository,
@@ -119,13 +124,16 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $fileStorer
         );
 
-        $assetInfos = [
-            'code'   => 'foobar',
-            'locale' => 'en_US'
-        ];
+        $file->getFilename()->willReturn('foobar-en_US.jpg');
 
-        $uploadChecker->parseFilename('foobar.jpg')
-            ->willReturn($assetInfos);
+        $parsedFilename->getAssetCode()->willReturn('foobar');
+        $parsedFilename->getLocaleCode()->willReturn('en_US');
+
+        $uploadChecker->getParsedFilename('foobar-en_US.jpg')
+            ->willReturn($parsedFilename);
+
+        $uploadChecker->validateFilenameFormat($parsedFilename)
+            ->willReturn(null);
 
         $assetRepository->findOneByIdentifier('foobar')
             ->willReturn(null);
@@ -151,6 +159,7 @@ class MassUploadProcessorSpec extends ObjectBehavior
         FileInfoInterface $fileInfo,
         AssetInterface $asset,
         ReferenceInterface $reference,
+        ParsedFilename $parsedFilename,
         $uploadChecker,
         $assetFactory,
         $assetRepository,
@@ -166,13 +175,16 @@ class MassUploadProcessorSpec extends ObjectBehavior
             $fileStorer
         );
 
-        $assetInfos = [
-            'code'   => 'foobar',
-            'locale' => 'en_US'
-        ];
+        $file->getFilename()->willReturn('foobar-en_US.jpg');
 
-        $uploadChecker->parseFilename('foobar.jpg')
-            ->willReturn($assetInfos);
+        $parsedFilename->getAssetCode()->willReturn('foobar');
+        $parsedFilename->getLocaleCode()->willReturn('en_US');
+
+        $uploadChecker->getParsedFilename('foobar-en_US.jpg')
+            ->willReturn($parsedFilename);
+
+        $uploadChecker->validateFilenameFormat($parsedFilename)
+            ->willReturn(null);
 
         $assetRepository->findOneByIdentifier('foobar')
             ->willReturn($asset);

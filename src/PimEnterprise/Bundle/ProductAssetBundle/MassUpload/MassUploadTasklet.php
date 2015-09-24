@@ -29,6 +29,9 @@ class MassUploadTasklet implements TaskletInterface
     /** @staticvar string */
     const TASKLET_NAME = 'asset_mass_upload';
 
+    /** @staticvar string */
+    const NOTIFICATION_TYPE = 'mass_upload';
+
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -118,7 +121,7 @@ class MassUploadTasklet implements TaskletInterface
                 'route'         => 'pim_enrich_job_tracker_show',
                 'routeParams'   => ['id'         => $jobExecution->getId()],
                 'messageParams' => ['%label%'    => $jobExecution->getJobInstance()->getLabel()],
-                'context'       => ['actionType' => 'mass_upload']
+                'context'       => ['actionType' => static::NOTIFICATION_TYPE]
             ]
         );
     }

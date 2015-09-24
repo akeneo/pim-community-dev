@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
 use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\ProductAsset\Upload\ParsedFilenameInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadCheckerInterface;
 use PimEnterprise\Component\ProductAsset\Upload\UploadContext;
 use Prophecy\Argument;
@@ -14,8 +15,18 @@ class SchedulerSpec extends ObjectBehavior
 
     function let(
         UploadCheckerInterface $uploadChecker,
+        ParsedFilenameInterface $fooParsed,
+        ParsedFilenameInterface $barParsed,
         FileStorerInterface $fileStorer
     ) {
+        $fooParsed->getAssetCode()->willReturn('foo');
+        $fooParsed->getLocaleCode()->willReturn(null);
+        $barParsed->getAssetCode()->willReturn('bar');
+        $barParsed->getLocaleCode()->willReturn(null);
+
+        $uploadChecker->getParsedFilename('foo.png')->willReturn($fooParsed);
+        $uploadChecker->getParsedFilename('bar.png')->willReturn($barParsed);
+
         $this->beConstructedWith($uploadChecker, $fileStorer);
 
         $this->createUploadBaseDirectory();

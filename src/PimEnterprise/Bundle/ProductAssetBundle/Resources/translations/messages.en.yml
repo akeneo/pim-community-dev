@@ -137,7 +137,8 @@ pimee_product_asset:
         error:
             upload: An error occured while uploading
             code: Invalid code format for asset
-            locale: An asset exists but is not localizable
+            localizable: An asset exists but is not localizable
+            invalid_locale: The locale is disabled or invalid
 
     category:
         menu: Asset categories
