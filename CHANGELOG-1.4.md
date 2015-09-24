@@ -1,7 +1,12 @@
 # 1.4.x
 
+## BC breaks
+- Change constructor of `Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer`.
+  Added `Liip\ImagineBundle\Imagine\Cache\CacheManager`, `Liip\ImagineBundle\Imagine\Data\DataManager` and `Liip\ImagineBundle\Imagine\Filter\FilterManager`
+
 ## Bug fixes
 - PIM-4882: Fix pinbar issue (bump oro/platform version)
+- PIM-4880: Fix PDF download for product with media 
 - PIM-4911: Fix product edit form string escaping
 
 # 1.4.0 (2015-09-23)
