@@ -39,6 +39,7 @@
 
 ## Bug fixes
 - PIM-4882: Cannot import products into a variant group if an axis is a reference data
+- PIM-4917: Fix the issue with decimal storage for prices and number and add the related number comparator
 
 # 1.4.0-RC1 (2015-09-04)
 
