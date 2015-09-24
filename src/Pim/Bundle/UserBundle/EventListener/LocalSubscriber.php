@@ -36,7 +36,6 @@ class LocalSubscriber implements EventSubscriberInterface
         if (!$request) {
             return;
         }
-
         if (!$request->attributes->get('_locale')) {
             $request->setLocale($this->localeSettings->getLanguage());
         }
