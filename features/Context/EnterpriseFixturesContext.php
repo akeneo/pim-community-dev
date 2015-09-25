@@ -136,7 +136,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
-            $productDraft->setStatus($data['status'] === 'ready' ? ProductDraftInterface::READY : ProductDraftInterface::IN_PROGRESS);
+            $productDraft->setStatus(
+                $data['status'] === 'ready' ?
+                ProductDraftInterface::READY :
+                ProductDraftInterface::IN_PROGRESS
+            );
+            if (isset($data['createdAt'])) {
+                $productDraft->setCreatedAt(new \DateTime($data['createdAt']));
+            }
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
 
             if (isset($data['result'])) {

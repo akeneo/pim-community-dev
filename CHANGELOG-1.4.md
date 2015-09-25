@@ -1,4 +1,10 @@
-# 1.4.x
+# 1.4.1 (2015-09-24)
+
+## Bug fixes
+- PIM-4911: Fix product edit form string escaping
+- PIM-4778: Fix asset grid thumbnails for unknown types
+
+# 1.4.0 (2015-09-23)
 
 ## BC breaks
 - Removed function `countPublishedProductsForCategoryAndChildren` from `PublishedProductRepositoryInterface` and implementations in favor of `countPublishedProductsForCategory`
@@ -25,6 +31,11 @@
 - Removed event `pim_catalog.pre_remove.group` use `akeneo.storage.pre_remove` instead
 - Removed event `pim_catalog.pre_remove.product` use `akeneo.storage.pre_remove` instead
 - Removed event `pim_catalog.post_remove.product` use `akeneo.storage.post_remove` instead
+- Change constructor of `Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer`.
+  Added `Liip\ImagineBundle\Imagine\Cache\CacheManager`, `Liip\ImagineBundle\Imagine\Data\DataManager` and `Liip\ImagineBundle\Imagine\Filter\FilterManager`
+
+## Bug fixes
+- PIM-4892: No way to assign a user when edit a role
 
 # 1.4.0-RC1 (2015-09-04)
 
@@ -36,7 +47,7 @@
 # 1.4.0-BETA3 (2015-09-02)
 
 ## Bug fixes
-PIM-4775: When I mass-edit products I can view only, proposals are created
+- PIM-4775: When I mass-edit products I can view only, proposals are created
 
 # 1.4.0-BETA2 (2015-08-17)
 

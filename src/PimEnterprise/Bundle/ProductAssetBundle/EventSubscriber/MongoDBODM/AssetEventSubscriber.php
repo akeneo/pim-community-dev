@@ -25,21 +25,21 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class AssetEventSubscriber implements EventSubscriberInterface
 {
     /** @var ProductCascadeRemovalRepositoryInterface  */
-    protected $cascadeRemovalRepository;
+    protected $cascadeRemovalRepo;
 
     /** @var AttributeRepositoryInterface  */
     protected $attributeRepository;
 
     /**
-     * @param ProductCascadeRemovalRepositoryInterface $cascadeRemovalRepository
+     * @param ProductCascadeRemovalRepositoryInterface $cascadeRemovalRepo
      * @param AttributeRepositoryInterface             $attributeRepository
      */
     public function __construct(
-        ProductCascadeRemovalRepositoryInterface $cascadeRemovalRepository,
+        ProductCascadeRemovalRepositoryInterface $cascadeRemovalRepo,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->cascadeRemovalRepository = $cascadeRemovalRepository;
-        $this->attributeRepository      = $attributeRepository;
+        $this->cascadeRemovalRepo  = $cascadeRemovalRepo;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -64,7 +64,7 @@ class AssetEventSubscriber implements EventSubscriberInterface
     {
         $asset = $event->getSubject();
         $attributeCodes = $this->attributeRepository->getAttributeCodesByType('pim_assets_collection');
-        $this->cascadeRemovalRepository->cascadeAssetRemoval($asset, $attributeCodes);
+        $this->cascadeRemovalRepo->cascadeAssetRemoval($asset, $attributeCodes);
 
         return $event;
     }

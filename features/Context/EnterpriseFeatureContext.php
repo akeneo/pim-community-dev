@@ -571,12 +571,16 @@ class EnterpriseFeatureContext extends FeatureContext
         foreach ($expectedChanges as $expectedAttrChange) {
             $actualAttrDiff = $actualAttrParts[$expectedAttrChange['attribute']];
             if (null === $actualAttrDiff) {
-                throw $this->createExpectationException(sprintf('Expecting to see field "%s" in changes.', $expectedAttrChange['attribute']));
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see field "%s" in changes.', $expectedAttrChange['attribute'])
+                );
             }
 
             $actualDiff = $actualAttrDiff->findAll('css', sprintf('.diff .%s', $expectedAttrChange['type']));
             if (null === $actualDiff) {
-                throw $this->createExpectationException(sprintf('Expecting to see "%s" type in changes.', $expectedAttrChange['type']));
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see "%s" type in changes.', $expectedAttrChange['type'])
+                );
             }
 
             foreach ($actualDiff as $diff) {

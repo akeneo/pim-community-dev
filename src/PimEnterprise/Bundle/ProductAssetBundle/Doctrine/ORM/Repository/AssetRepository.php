@@ -250,7 +250,8 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
 
         $dbalConnection = $this->_em->getConnection();
 
-        $stmt = $dbalConnection->executeQuery($selectSql,
+        $stmt = $dbalConnection->executeQuery(
+            $selectSql,
             [
                 $assetIds,
                 $localeId,

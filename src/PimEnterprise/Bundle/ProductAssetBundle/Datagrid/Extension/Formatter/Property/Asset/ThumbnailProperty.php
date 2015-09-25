@@ -12,6 +12,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterfa
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty;
 use Pim\Bundle\EnrichBundle\Controller\FileController;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**
  * Thumbnail property for an asset
@@ -68,17 +69,31 @@ class ThumbnailProperty extends TwigProperty
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Fetch the variation file corresponding to the current locale and channel
+     *
+     * @param ResultRecordInterface $record
+     *
+     * @return FileInfoInterface|null
      */
     protected function getRawValue(ResultRecordInterface $record)
     {
-        $locale  = $this->getCurrentLocale();
-        $channel = $this->getCurrentChannel();
-        $file    = $record->getRootEntity()->getFileForContext($channel, $locale);
+        $fileInfo = null;
+        $locale   = $this->getCurrentLocale();
+        $channel  = $this->getCurrentChannel();
+        $entity   = $record->getRootEntity();
+        if (null === $entity) {
+            return null;
+        }
 
-        return $file;
+        $fileInfo = $entity->getFileForContext($channel, $locale);
+        if (null === $fileInfo) {
+            $reference = $entity->getReference($locale);
+            if ($reference instanceof ReferenceInterface) {
+                $fileInfo = $reference->getFileInfo();
+            }
+        }
+
+        return $fileInfo;
     }
 
     /**

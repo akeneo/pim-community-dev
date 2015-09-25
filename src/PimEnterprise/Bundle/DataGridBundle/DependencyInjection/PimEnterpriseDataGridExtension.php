@@ -30,6 +30,7 @@ class PimEnterpriseDataGridExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('actions.yml');
+        $loader->load('adapters.yml');
         $loader->load('configurators.yml');
         $loader->load('controllers.yml');
         $loader->load('data_sources.yml');

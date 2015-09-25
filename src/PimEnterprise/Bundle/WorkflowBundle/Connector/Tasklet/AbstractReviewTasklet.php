@@ -57,6 +57,13 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @var AuthorizationCheckerInterface */
     protected $tokenStorage;
 
+    /**
+     * @param ProductDraftRepositoryInterface $draftRepository
+     * @param ProductDraftManager             $productDraftManager
+     * @param UserProviderInterface           $userProvider
+     * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param TokenStorageInterface           $tokenStorage
+     */
     public function __construct(
         ProductDraftRepositoryInterface $draftRepository,
         ProductDraftManager $productDraftManager,
@@ -99,7 +106,9 @@ abstract class AbstractReviewTasklet implements TaskletInterface
      * Increment skipped items counter and add a warning
      *
      * @param StepExecution $stepExecution
+     * @param string        $name
      * @param string        $reason
+     * @param array         $reasonParameters
      * @param mixed         $item
      */
     protected function skipWithWarning(StepExecution $stepExecution, $name, $reason, array $reasonParameters, $item)

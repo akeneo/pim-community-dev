@@ -44,6 +44,7 @@ pimee_product_asset:
             filename: Invalid file name for asset
             code: Invalid code format for asset
             locale: An asset exists but is not localizable
+            invalid_locale: The locale is disabled or invalid
             exists: A file with the same name is already scheduled for upload
             conflicts: File names conflict
         grid:

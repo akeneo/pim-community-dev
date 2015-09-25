@@ -110,4 +110,13 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @return string[]
      */
     public function getDistinctAuthors();
+
+    /**
+     * @param mixed $qb
+     * @param bool  $inset
+     * @param array $values
+     *
+     * @return mixed
+     */
+    public function applyMassActionParameters($qb, $inset, array $values);
 }

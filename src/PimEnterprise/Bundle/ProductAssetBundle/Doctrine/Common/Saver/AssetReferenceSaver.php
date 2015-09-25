@@ -33,21 +33,21 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
     protected $optionsResolver;
 
     /** @var CompletenessGeneratorInterface */
-    protected $completenessGenerator;
+    protected $compGenerator;
 
     /**
      * @param ObjectManager                  $objectManager
      * @param SavingOptionsResolverInterface $optionsResolver
-     * @param CompletenessGeneratorInterface $completenessGenerator
+     * @param CompletenessGeneratorInterface $compGenerator
      */
     public function __construct(
         ObjectManager $objectManager,
         SavingOptionsResolverInterface $optionsResolver,
-        CompletenessGeneratorInterface $completenessGenerator
+        CompletenessGeneratorInterface $compGenerator
     ) {
-        $this->objectManager         = $objectManager;
-        $this->optionsResolver       = $optionsResolver;
-        $this->completenessGenerator = $completenessGenerator;
+        $this->objectManager   = $objectManager;
+        $this->optionsResolver = $optionsResolver;
+        $this->compGenerator   = $compGenerator;
     }
 
     /**
@@ -72,7 +72,7 @@ class AssetReferenceSaver implements SaverInterface, BulkSaverInterface
         }
 
         if (true === $options['schedule']) {
-            $this->completenessGenerator->scheduleForAsset($reference->getAsset());
+            $this->compGenerator->scheduleForAsset($reference->getAsset());
         }
     }
 

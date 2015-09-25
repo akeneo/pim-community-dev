@@ -34,7 +34,11 @@ class Thumbnail extends AbstractTransformation
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
         ImageMagickLauncher $launcher,
-        array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
+        array $supportedMimeTypes = [
+            'image/jpeg',
+            'image/tiff',
+            'image/png'
+        ]
     ) {
         $this->optionsResolver    = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;

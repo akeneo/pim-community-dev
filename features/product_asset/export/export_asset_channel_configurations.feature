@@ -26,6 +26,6 @@ Feature: Export asset channel configurations
         tablet:
             configuration:
                 resize:
-                    width: 400
-                    height: 500
+                    width: 40
+                    height: 50
     """

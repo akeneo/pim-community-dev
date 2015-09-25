@@ -2,7 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\PdfGeneratorBundle\Renderer;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Data\DataManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -10,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
+use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
@@ -19,10 +24,22 @@ class ProductPdfRendererSpec extends ObjectBehavior
     function let(
         EngineInterface $templating,
         PdfBuilderInterface $pdfBuilder,
+        DataManager $dataManager,
+        CacheManager $cacheManager,
+        FilterManager $filterManager,
         FilterProductValuesHelper $filterHelper
     ) {
-        $uploadDirectory = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
-        $this->beConstructedWith($templating, self::TEMPLATE_NAME, $pdfBuilder, $filterHelper, $uploadDirectory);
+        $uploadDirectory = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
+        $this->beConstructedWith(
+            $templating,
+            $pdfBuilder,
+            $filterHelper,
+            $dataManager,
+            $cacheManager,
+            $filterManager,
+            self::TEMPLATE_NAME,
+            $uploadDirectory
+        );
     }
 
     function it_renders_a_product_without_images(
@@ -34,7 +51,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ProductValueInterface $blue,
         $templating
     ) {
-        $uploadDirectory = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
+        $uploadDirectory = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $filterHelper->filter([$blue], 'en_US')->willReturn([$blue]);
         $blender->getValues()->willReturn($blenderValues);
         $blenderValues->toArray()->willReturn([$blue]);
@@ -62,24 +79,36 @@ class ProductPdfRendererSpec extends ObjectBehavior
     function it_renders_a_product_with_an_image(
         $filterHelper,
         ProductInterface $blender,
-        ArrayCollection $blenderValues,
         AttributeGroupInterface $media,
         AttributeInterface $mainImage,
-        ProductValueInterface $blenderPicture,
+        ProductValueInterface $productValue,
+        ArrayCollection $blenderValues,
+        FileInfoInterface $fileInfo,
+        CacheManager $cacheManager,
         $templating
     ) {
-        $uploadDirectory = realpath(__DIR__.'/../../../../../features/Context/fixtures/');
-        $filterHelper->filter([$blenderPicture], 'en_US')->willReturn([$blenderPicture]);
+        $uploadDirectory = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
+
+        $filterHelper->filter([$productValue], 'en_US')->willReturn([$productValue]);
+
+        $blender->getAttributes()->willReturn($mainImage);
+        $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($productValue);
         $blender->getValues()->willReturn($blenderValues);
-        $blenderValues->toArray()->willReturn([$blenderPicture]);
-        $blenderPicture->getAttribute()->willReturn($mainImage);
-        $mainImage->getCode()->willReturn('main_image');
+
+        $blenderValues->toArray()->willReturn([$productValue]);
+
+        $productValue->getAttribute()->willReturn($mainImage);
+        $productValue->getMedia()->willReturn($fileInfo);
 
         $mainImage->getGroup()->willReturn($media);
-        $media->getLabel()->willReturn('Media');
-
         $mainImage->getCode()->willReturn('main_image');
         $mainImage->getAttributeType()->willReturn('pim_catalog_image');
+
+        $fileInfo->getKey()->willReturn('fookey');
+
+        $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);
+
+        $media->getLabel()->willReturn('Media');
 
         $templating->render(self::TEMPLATE_NAME, [
             'product'           => $blender,
@@ -91,6 +120,6 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'customFont'        => null
         ])->shouldBeCalled();
 
-        $this->render($blender, 'plain', ['locale' => 'en_US', 'scope' => 'ecommerce']);
+        $this->render($blender, 'pdf', ['locale' => 'en_US', 'scope' => 'ecommerce']);
     }
 }

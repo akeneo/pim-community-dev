@@ -746,7 +746,9 @@ class ProductAssetController extends Controller
             $metadata['references'][$reference->getId()] = $referenceFileMeta;
 
             foreach ($reference->getVariations() as $variation) {
-                $variationFileMeta = $variation->getFileInfo() ? $this->getFileMetadata($variation->getFileInfo()) : null;
+                $variationFileMeta = $variation->getFileInfo() ?
+                    $this->getFileMetadata($variation->getFileInfo()) :
+                    null;
                 $metadata['variations'][$variation->getId()] = $variationFileMeta;
             }
         }

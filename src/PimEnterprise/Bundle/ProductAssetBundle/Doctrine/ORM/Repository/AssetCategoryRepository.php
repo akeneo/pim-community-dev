@@ -40,7 +40,11 @@ class AssetCategoryRepository extends AbstractItemCategoryRepository implements 
             'INNER JOIN pimee_security_asset_category_access a ON a.category_id = category.id ' .
             'AND a.view_items = 1 AND a.user_group_id IN (:user_group_id) ' .
             'GROUP BY tree.id',
-            $config['categoryTable'], $config['categoryTable'], $config['categoryAssocTable'], $config['relation']);
+            $config['categoryTable'],
+            $config['categoryTable'],
+            $config['categoryAssocTable'],
+            $config['relation']
+        );
 
         $stmt = $this->em->getConnection()->prepare($sql);
         $stmt->bindValue('itemId', $asset->getId());

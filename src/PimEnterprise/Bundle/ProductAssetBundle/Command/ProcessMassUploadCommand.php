@@ -48,7 +48,7 @@ class ProcessMassUploadCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $sourceDir = $input->getOption('dir');
+        $sourceDir = $input->getOption('user');
         $processor = $this->getMassUploadProcessor();
 
         $context = new UploadContext($this->getTmpStorageDir(), $sourceDir);

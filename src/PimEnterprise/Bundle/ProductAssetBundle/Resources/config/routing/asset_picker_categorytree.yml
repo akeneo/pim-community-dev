@@ -1,0 +1,11 @@
+pimee_asset_picker_categorytree_listtree:
+    path: /list-tree.{_format}
+    defaults: { _controller: pimee_product_asset.controller.category_tree_asset_picker:listTreeAction }
+    requirements:
+        _format: json
+
+pimee_asset_picker_categorytree_children:
+    path: /children.{_format}
+    defaults: { _controller: pimee_product_asset.controller.category_tree_asset_picker:childrenAction }
+    requirements:
+        _format: json

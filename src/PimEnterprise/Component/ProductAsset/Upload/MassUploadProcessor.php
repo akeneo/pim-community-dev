@@ -124,7 +124,14 @@ class MassUploadProcessor
                 $asset  = $this->applyScheduledUpload($file);
                 $reason = null === $asset->getId() ? UploadMessages::STATUS_NEW : UploadMessages::STATUS_UPDATED;
 
-                $this->filesUpdater->resetAllVariationsFiles($asset->getReference(), true);
+                $parsedFilename = $this->uploadChecker->getParsedFilename($file->getFilename());
+                if (null !== $parsedFilename->getLocaleCode()) {
+                    $locale = $this->localeRepository->findOneBy(['code' => $parsedFilename->getLocaleCode()]);
+                } else {
+                    $locale = null;
+                }
+
+                $this->filesUpdater->resetAllVariationsFiles($asset->getReference($locale), true);
                 $this->assetSaver->save($asset, ['flush' => true, 'schedule' => true]);
 
                 $event = $this->eventDispatcher->dispatch(
@@ -156,21 +163,24 @@ class MassUploadProcessor
      */
     public function applyScheduledUpload(\SplFileInfo $file)
     {
-        $assetInfo   = $this->uploadChecker->parseFilename($file->getFilename());
-        $isLocalized = null !== $assetInfo['locale'];
+        $parsedFilename = $this->uploadChecker->getParsedFilename($file->getFilename());
+        $this->uploadChecker->validateFilenameFormat($parsedFilename);
 
-        $asset = $this->assetRepository->findOneByIdentifier($assetInfo['code']);
+        $isLocalized = null !== $parsedFilename->getLocaleCode();
+
+        $asset = $this->assetRepository->findOneByIdentifier($parsedFilename->getAssetCode());
 
         if (null === $asset) {
             $asset = $this->assetFactory->create($isLocalized);
-            $asset->setCode($assetInfo['code']);
+            $asset->setCode($parsedFilename->getAssetCode());
         }
 
         $file = $this->fileStorer->store($file, FileStorage::ASSET_STORAGE_ALIAS, true);
 
-        $locale = $isLocalized ? $this->localeRepository->findOneBy(['code' => $assetInfo['locale']]) : null;
+        $locale = $isLocalized ? $this->localeRepository->findOneBy(['code' => $parsedFilename->getLocaleCode()]) : null;
 
         $reference = $asset->getReference($locale);
+
         if (null !== $reference) {
             $reference->setFileInfo($file);
         }
@@ -206,9 +216,9 @@ class MassUploadProcessor
                     $template = 'pimee_product_asset.enrich_variation.flash.transformation.not_applicable';
                     break;
                 case $item->getException() instanceof NonRegisteredTransformationException:
-                    $template                       = 'pimee_product_asset.enrich_variation.flash.transformation.non_registered';
+                    $template = 'pimee_product_asset.enrich_variation.flash.transformation.non_registered';
                     $parameters['%transformation%'] = $item->getException()->getTransformation();
-                    $parameters['%mimeType%']       = $item->getException()->getMimeType();
+                    $parameters['%mimeType%'] = $item->getException()->getMimeType();
                     break;
                 default:
                     $template = 'pimee_product_asset.enrich_variation.flash.transformation.error';

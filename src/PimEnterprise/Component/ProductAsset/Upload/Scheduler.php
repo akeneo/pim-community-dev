@@ -110,18 +110,18 @@ class Scheduler implements SchedulerInterface
     {
         $otherFilenames = array_diff($storedFiles, [$filenameToCheck]);
 
-        $checkedFilenameInfos = $this->uploadChecker->parseFilename($filenameToCheck);
-        $checkedIsLocalized   = null !== $checkedFilenameInfos['locale'];
+        $checkedFilenameInfos = $this->uploadChecker->getParsedFilename($filenameToCheck);
+        $checkedIsLocalized   = null !== $checkedFilenameInfos->getLocaleCode();
 
         $filenamesIterator = new \ArrayIterator($otherFilenames);
 
         while ($filenamesIterator->valid()) {
             $filename = $filenamesIterator->current();
 
-            $comparedInfos       = $this->uploadChecker->parseFilename($filename);
-            $comparedIsLocalized = null !== $comparedInfos['locale'];
+            $comparedInfos       = $this->uploadChecker->getParsedFilename($filename);
+            $comparedIsLocalized = null !== $comparedInfos->getLocaleCode();
 
-            if ($checkedFilenameInfos['code'] === $comparedInfos['code'] &&
+            if ($checkedFilenameInfos->getAssetCode() === $comparedInfos->getAssetCode() &&
                 $checkedIsLocalized !== $comparedIsLocalized
             ) {
                 return false;

@@ -22,21 +22,21 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AttributeGroupNormalizer implements NormalizerInterface
 {
     /** @var NormalizerInterface */
-    protected $attributeGroupNormalizer;
+    protected $attrGroupNormalizer;
 
     /** @var AttributeGroupAccessManager */
     protected $accessManager;
 
     /**
-     * @param NormalizerInterface         $attributeGroupNormalizer
+     * @param NormalizerInterface         $attrGroupNormalizer
      * @param AttributeGroupAccessManager $accessManager
      */
     public function __construct(
-        NormalizerInterface $attributeGroupNormalizer,
+        NormalizerInterface $attrGroupNormalizer,
         AttributeGroupAccessManager $accessManager
     ) {
-        $this->attributeGroupNormalizer = $attributeGroupNormalizer;
-        $this->accessManager            = $accessManager;
+        $this->attrGroupNormalizer = $attrGroupNormalizer;
+        $this->accessManager       = $accessManager;
     }
 
     /**
@@ -44,20 +44,19 @@ class AttributeGroupNormalizer implements NormalizerInterface
      */
     public function normalize($attributeGroup, $format = null, array $context = [])
     {
-        $normalizedAttributeGroup = $this->attributeGroupNormalizer->normalize($attributeGroup, $format, $context);
-
+        $normalizedAttrGroup = $this->attrGroupNormalizer->normalize($attributeGroup, $format, $context);
         if (true === $context['versioning']) {
-            $normalizedAttributeGroup['view_permission'] = implode(
+            $normalizedAttrGroup['view_permission'] = implode(
                 array_map('strval', $this->accessManager->getViewUserGroups($attributeGroup)),
                 ','
             );
-            $normalizedAttributeGroup['edit_permission'] = implode(
+            $normalizedAttrGroup['edit_permission'] = implode(
                 array_map('strval', $this->accessManager->getEditUserGroups($attributeGroup)),
                 ','
             );
         }
 
-        return $normalizedAttributeGroup;
+        return $normalizedAttrGroup;
     }
 
     /**
@@ -65,6 +64,6 @@ class AttributeGroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $this->attributeGroupNormalizer->supportsNormalization($data, $format);
+        return $this->attrGroupNormalizer->supportsNormalization($data, $format);
     }
 }

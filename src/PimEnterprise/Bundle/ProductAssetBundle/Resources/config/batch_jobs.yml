@@ -1,5 +1,5 @@
 connector:
-    name: Akeneo CSV Connector
+    name: Akeneo Product Asset Connector
     jobs:
         csv_asset_import:
             title: pimee_product_asset.jobs.csv_asset_import.title

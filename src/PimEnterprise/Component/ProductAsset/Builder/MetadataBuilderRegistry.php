@@ -48,7 +48,9 @@ class MetadataBuilderRegistry
     public function register(MetadataBuilderInterface $builder, $alias)
     {
         if ($this->has($alias)) {
-            throw new AlreadyRegisteredMetadataBuilderException(sprintf('Metadata builder "%s" already registered.', $alias));
+            throw new AlreadyRegisteredMetadataBuilderException(
+                sprintf('Metadata builder "%s" already registered.', $alias)
+            );
         }
 
         $this->builders[$alias] = $builder;

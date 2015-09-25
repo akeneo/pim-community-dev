@@ -84,7 +84,7 @@ class EnterpriseAssetContext extends RawMinkContext
      *
      * @throws ElementNotFoundException
      */
-    public function iCanGenerateChannel($not = false, $channel)
+    public function iCanGenerateChannel($not, $channel)
     {
         try {
             $this->getCurrentPage()->findVariationGenerateZone($channel);
@@ -183,8 +183,11 @@ class EnterpriseAssetContext extends RawMinkContext
     protected function iUploadTheAssetFile($file = null, $channel = null)
     {
         if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')),
-                    DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $file;
+            $fullPath = rtrim(
+                realpath($this->getMinkParameter('files_path')),
+                DIRECTORY_SEPARATOR
+            ) . DIRECTORY_SEPARATOR . $file;
+
             if (is_file($fullPath)) {
                 $file = $fullPath;
             }

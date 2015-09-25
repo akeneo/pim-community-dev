@@ -126,7 +126,9 @@ class FilesUpdater implements FilesUpdaterInterface
      */
     protected function updateVariationFile(VariationInterface $variation)
     {
-        if (null !== $variation->getFileInfo() && null !== $uploadedFile = $variation->getFileInfo()->getUploadedFile()) {
+        if (null !== $variation->getFileInfo() &&
+            null !== $uploadedFile = $variation->getFileInfo()->getUploadedFile()
+        ) {
             $file = $this->fileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
             $variation->setSourceFileInfo($file);
             $variation->setFileInfo($file);
@@ -148,7 +150,9 @@ class FilesUpdater implements FilesUpdaterInterface
      */
     protected function updateReferenceFile(ReferenceInterface $reference)
     {
-        if (null !== $reference->getFileInfo() && null !== $uploadedFile = $reference->getFileInfo()->getUploadedFile()) {
+        if (null !== $reference->getFileInfo() &&
+            null !== $uploadedFile = $reference->getFileInfo()->getUploadedFile()
+        ) {
             $file = $this->fileStorer->store($uploadedFile, FileStorage::ASSET_STORAGE_ALIAS);
             $reference->setFileInfo($file);
             $this->resetAllVariationsFiles($reference);

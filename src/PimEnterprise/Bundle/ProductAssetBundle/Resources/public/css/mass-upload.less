@@ -1,8 +1,11 @@
-@color-status-success: #008000;
-@color-status-error: #a10000;
-@color-progress-bar: green linear-gradient(to bottom, #67B373, #68FF80);
+@import '../../pimui/css/less/mixins';
+@import '../../pimui/css/less/variables';
 
 .mass-upload-wrapper {
+  th {
+    text-transform: uppercase;
+  }
+
   th.preview {
     width: 80px;
   }
@@ -20,42 +23,79 @@
   }
 
   .file-row {
+    td {
+      vertical-align: middle;
+    }
+
     td.preview {
       width: 80px;
       height: 80px;
     }
 
+    .action-cell {
+      button {
+        height: 28px;
+        line-height: 28px;
+        padding: 0 10px 0 38px;
+
+        i {
+          height: 28px;
+          width: 28px;
+          line-height: 28px;
+        }
+      }
+    }
+
+    .progress {
+      margin-bottom: 0;
+      box-shadow: none;
+      border-radius: 2px;
+      height: 28px;
+      background-image: none;
+      background-color: lighten(@akeneo-grey, 20%);
+
+      .bar {
+        box-shadow: none;
+        background-color: @casablanca-yellow;
+      }
+
+      &.progress-striped .bar {
+        background-color: @casablanca-yellow;
+      }
+    }
+
     .progress.success .bar {
-      background: @color-progress-bar;
+      background-color: @fern-green;
+      background-image: none;
     }
 
     /* Hide the delete button initially */
     .delete {
       display: none;
-      padding: 0 12px;
     }
 
-    p.dz-status {
+    div.dz-status {
       text-align: center;
       text-transform: uppercase;
       font-weight: bold;
-      font-size: smaller;
+      font-size: 11px;
       padding: 3px;
-    }
+      border-radius: 2px;
 
-    p.dz-status.added,
-    p.dz-status.success {
-      color: white;
-      background-color: @color-status-success;
-    }
+      &.added, &.success {
+        color: @fern-green;
+        background-color: lighten(@fern-green, 40%);
+        border: 1px solid @fern-green;
+      }
 
-    p.dz-status.error {
-      color: white;
-      background-color: @color-status-error;
+      &.error {
+        color: white;
+        background-color: @chesnut-red;
+      }
     }
 
     .text-danger {
-      color: @color-status-error;
+      color: @chesnut-red;
     }
 
     /* Hide the start and cancel buttons and show the delete button */

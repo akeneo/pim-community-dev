@@ -11,10 +11,26 @@ Feature: View channel variations' configurations
   Scenario: View the channel variations' configurations
     Given the following CSV file to import:
     """
-    channel;configuration
-    tablet;{"colorspace":{"colorspace":"gray"},"resize":{"width":100,"height":300}}
-    print;{"resolution":{"resolution":72,"resolution-unit":"ppi"},"scale":{"ratio":56}}
-    ecommerce;{"thumbnail":{"width":80, "height":120}}
+    asset_channel_configurations:
+        tablet:
+            configuration:
+                colorspace:
+                    colorspace: gray
+                resize:
+                    width:  100
+                    height: 300
+        print:
+            configuration:
+                resolution:
+                    resolution: 72
+                    resolution-unit: ppi
+                scale:
+                    ratio: 56
+        ecommerce:
+            configuration:
+                thumbnail:
+                    width: 80
+                    height: 120
     """
     And the following job "apparel_asset_channel_configuration_import" configuration:
       | filePath | %file to import% |

@@ -1,5 +1,8 @@
 parameters:
-    oro_user.form.type.user.class: PimEnterprise\Bundle\UserBundle\Form\Type\UserType
+    oro_user.form.type.user.class:        PimEnterprise\Bundle\UserBundle\Form\Type\UserType
+    oro_user.form.type.role.api.class:    PimEnterprise\Bundle\UserBundle\Form\Type\RoleApiType
+    oro_user.form.type.group.class:       PimEnterprise\Bundle\UserBundle\Form\Type\GroupType
+    oro_user.form.handler.acl_role.class: PimEnterprise\Bundle\UserBundle\Form\Handler\AclRoleHandler
 
 services:
     oro_user.form.type.user:

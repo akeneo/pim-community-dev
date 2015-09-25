@@ -6,6 +6,8 @@ pimee_product_asset:
             remove: Remove asset
             categories_view: Consult the categories of an asset
             mass_upload: Mass-upload assets
+        category_asset_picker:
+            list: List asset categories in the asset picker
         category:
             create:  Create an asset category
             edit:    Edit an asset category
@@ -135,7 +137,8 @@ pimee_product_asset:
         error:
             upload: An error occured while uploading
             code: Invalid code format for asset
-            locale: An asset exists but is not localizable
+            localizable: An asset exists but is not localizable
+            invalid_locale: The locale is disabled or invalid
 
     category:
         menu: Asset categories

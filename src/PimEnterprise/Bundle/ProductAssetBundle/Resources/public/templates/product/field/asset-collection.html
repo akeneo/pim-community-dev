@@ -1,11 +1,11 @@
 <div class="asset-gallery">
     <header>
-        <button class="btn btn-primary add-asset icons-holder-text"><i class="icon-ok"></i><%= _.__('pimee_product_asset.form.product.asset.manage') %></button>
+        <button class="btn btn-primary add-asset icons-holder-text"><i class="icon-ok"></i><%- _.__('pimee_product_asset.form.product.asset.manage') %></button>
     </header>
     <ul>
         <% _.each(assets, function (asset) { %>
-            <li data-asset="<%= asset.code %>">
-                <div class="asset-thumbnail" style="background-image: url('<%= Routing.generate('pimee_product_asset_thumbnail', {
+            <li data-asset="<%- asset.code %>">
+                <div class="asset-thumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
                         code: asset.code,
                         filter: thumbnailFilter,
                         channelCode: context.scope,
@@ -14,7 +14,7 @@
                 </div>
                 <footer>
                     <% if (asset.description) { %>
-                        <%= asset.description.substring(0, 30) %><%= asset.description.length > 30 ? '...' : '' %>
+                        <%- asset.description.substring(0, 30) %><%- asset.description.length > 30 ? '...' : '' %>
                     <% } %>
                 </footer>
             </li>
