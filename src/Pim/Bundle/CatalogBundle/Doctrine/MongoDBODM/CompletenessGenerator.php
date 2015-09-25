@@ -87,19 +87,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * Is locale specific codes
-     *
-     * @param string $localeCode          locale code
-     * @param array  $localeSpecificCodes attribute spcecifics locales
-     *
-     * @return boolean
-     */
-    protected function isLocaleSpecificCodes($localeCode, array $localeSpecificCodes = [])
-    {
-        return (empty($localeSpecificCodes) || in_array($localeCode, $localeSpecificCodes));
-    }
-
-    /**
      * Generate missing completenesses for a channel if provided or a product
      * if provided. CAUTION: the product must be already flushed to the DB
      *

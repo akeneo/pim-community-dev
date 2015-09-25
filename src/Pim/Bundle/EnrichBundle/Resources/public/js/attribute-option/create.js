@@ -48,7 +48,6 @@ define(
                     modal.on('cancel', deferred.reject);
                     modal.on('ok', function () {
                         form.$('.validation-errors').remove();
-
                         $.ajax({
                             method: 'POST',
                             url: Routing.generate(

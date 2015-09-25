@@ -14,7 +14,8 @@ Pim\Bundle\CatalogBundle\Model\ProductPrice:
             generator:
                 strategy: AUTO
         data:
-            type: float
+            type: decimal
+            scale: 2
             nullable: true
         currency:
             type: string

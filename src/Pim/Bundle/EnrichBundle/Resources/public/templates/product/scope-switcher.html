@@ -1,11 +1,11 @@
 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-    <%= currentScope %>
+    <%- currentScope %>
     <span class="caret"></span>
 </a>
 <ul class="dropdown-menu">
     <% _.each(channels, function (scope) { %>
         <li>
-            <a data-scope="<%= scope.code %>"><%= scope.label %></a>
+            <a data-scope="<%- scope.code %>"><%- scope.label %></a>
         </li>
     <% }); %>
 </ul>
