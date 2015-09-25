@@ -98,7 +98,7 @@
             {% block images %}
                 {% for attribute in imageAttributes if product.getValue(attribute.code, locale, scope).media is not null
                     and product.getValue(attribute.code, locale, scope).media.key is not null %}
-                    <img src="{{ url('pim_enrich_media_show', {'filename': product.getValue(attribute.code, locale, scope).media.key|url_encode, 'filter': 'thumbnail'}) }}" />
+                    <img src="media/cache/thumbnail/{{ product.getValue(attribute.code, locale, scope).media.key }}" />
                 {% endfor %}
             {% endblock %}
         </div>

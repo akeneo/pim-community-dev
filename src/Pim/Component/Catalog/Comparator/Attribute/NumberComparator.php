@@ -5,13 +5,13 @@ namespace Pim\Component\Catalog\Comparator\Attribute;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 
 /**
- * Comparator which calculate change set for metrics
+ * Comparator which calculate change set for numbers
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricComparator implements ComparatorInterface
+class NumberComparator implements ComparatorInterface
 {
     /** @var array */
     protected $types;
@@ -37,23 +37,9 @@ class MetricComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        $default = ['locale' => null, 'scope' => null, 'data' => []];
+        $default = ['locale' => null, 'scope' => null, 'data' => null];
         $originals = array_merge($default, $originals);
 
-        if (isset($data['data']['data'])) {
-            $data['data']['data'] = (float) $data['data']['data'];
-        }
-
-        if (isset($originals['data']['data'])) {
-            $originals['data']['data'] = (float) $originals['data']['data'];
-        }
-
-        $diff = array_diff_assoc((array) $data['data'], (array) $originals['data']);
-
-        if (!empty($diff)) {
-            return $data;
-        }
-
-        return null;
+        return (float) $data['data'] !== (float) $originals['data'] ? $data : null;
     }
 }

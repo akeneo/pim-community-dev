@@ -7,6 +7,7 @@ parameters:
     pim_catalog.comparator.attribute.options.class: Pim\Component\Catalog\Comparator\Attribute\OptionsComparator
     pim_catalog.comparator.attribute.scalar.class:  Pim\Component\Catalog\Comparator\Attribute\ScalarComparator
     pim_catalog.comparator.attribute.boolean.class: Pim\Component\Catalog\Comparator\Attribute\BooleanComparator
+    pim_catalog.comparator.attribute.number.class:  Pim\Component\Catalog\Comparator\Attribute\NumberComparator
     pim_catalog.comparator.field.boolean.class:     Pim\Component\Catalog\Comparator\Field\BooleanComparator
     pim_catalog.comparator.field.scalar.class:      Pim\Component\Catalog\Comparator\Field\ScalarComparator
     pim_catalog.comparator.field.array.class:       Pim\Component\Catalog\Comparator\Field\ArrayComparator
@@ -55,6 +56,13 @@ services:
         tags:
             - { name: pim_catalog.attribute.comparator }
 
+    pim_catalog.comparator.attribute.number:
+        class: %pim_catalog.comparator.attribute.number.class%
+        arguments:
+            - ['pim_catalog_number']
+        tags:
+            - { name: pim_catalog.attribute.comparator }
+
     pim_catalog.comparator.attribute.boolean:
         class: %pim_catalog.comparator.attribute.boolean.class%
         arguments:
@@ -65,7 +73,7 @@ services:
     pim_catalog.comparator.attribute.scalar:
         class: %pim_catalog.comparator.attribute.scalar.class%
         arguments:
-            - [ 'pim_catalog_date', 'pim_catalog_identifier', 'pim_catalog_number', 'pim_catalog_text', 'pim_catalog_textarea']
+            - [ 'pim_catalog_date', 'pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea']
         tags:
             - { name: pim_catalog.attribute.comparator, priority: -128 }
 

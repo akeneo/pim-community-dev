@@ -9,7 +9,9 @@ Pim\Bundle\CatalogBundle\Model\Metric:
             generator:
                 strategy: AUTO
         data:
-            type: float
+            type: decimal
+            precision: 14
+            scale: 4
             nullable: true
         unit:
             type: string
@@ -17,7 +19,9 @@ Pim\Bundle\CatalogBundle\Model\Metric:
             nullable: true
             column: unit
         baseData:
-            type: float
+            type: decimal
+            precision: 14
+            scale: 4
             nullable: true
             column: base_data
         baseUnit:

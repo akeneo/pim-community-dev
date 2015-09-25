@@ -2,11 +2,11 @@
     <div class="sidebar">
         <ul class="nav nav-tabs" id="trees-list">
             <% _.each(trees, function (tree) { %>
-                <li data-tree="<%= tree.code %>" data-tree-id="<%= tree.id %>"<% if (tree.code === state.currentTree) { %> class="active"<% } %>>
-                    <a <% if (tree.associated) { %>class="tree-has-item"<% } %>href="javascript:void(0);" id="tree-link-<%= tree.id %>">
-                        <i class="icon-ok <%= tree.associated ? 'green' : 'gray' %>"></i>
-                        <%= tree.label %>
-                        <span class="badge" data-tree-id="<%= tree.code %>"><%= categoriesCount[tree.id] %></span>
+                <li data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>"<% if (tree.code === state.currentTree) { %> class="active"<% } %>>
+                    <a <% if (tree.associated) { %>class="tree-has-item"<% } %>href="javascript:void(0);" id="tree-link-<%- tree.id %>">
+                        <i class="icon-ok <%- tree.associated ? 'green' : 'gray' %>"></i>
+                        <%- tree.label %>
+                        <span class="badge" data-tree-id="<%- tree.code %>"><%- categoriesCount[tree.id] %></span>
                     </a>
                 </li>
             <% }); %>
@@ -14,17 +14,17 @@
     </div>
     <div class="tab-content">
         <div class="tab-pane active" id="product-categories">
-            <div id="trees" data-id="<%= product.meta.id %>" data-datalocale="<%= locale %>" data-selected-tree="<%= trees[0].id %>">
+            <div id="trees" data-id="<%- product.meta.id %>" data-datalocale="<%- locale %>" data-selected-tree="<%- trees[0].id %>">
                 <% _.each(trees, function (tree) { %>
-                    <div class="tree root-unselectable" data-tree-id="<%= tree.id %>">
+                    <div class="tree root-unselectable" data-tree-id="<%- tree.id %>">
                         <header class="tab-header">
-                            <h3><%= tree.label %></h3>
+                            <h3><%- tree.label %></h3>
                         </header>
-                        <div id="tree-<%= tree.id %>" class="buffer-small-left"></div>
+                        <div id="tree-<%- tree.id %>" class="buffer-small-left"></div>
                     </div>
                 <% }); %>
             </div>
         </div>
     </div>
 </div>
-<input type="hidden" id="hidden-tree-input" value="<%= state.selectedCategories.join(',') %>">
+<input type="hidden" id="hidden-tree-input" value="<%- state.selectedCategories.join(',') %>">

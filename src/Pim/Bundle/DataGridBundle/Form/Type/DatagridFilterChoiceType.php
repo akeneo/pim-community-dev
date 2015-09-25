@@ -50,7 +50,10 @@ class DatagridFilterChoiceType extends AbstractType
         $this->configurator->configure($configuration);
 
         $attributes = $configuration->offsetGetByPath('[filters][columns]');
-        $configs    = $configuration->offsetGetByPath(sprintf(ConfiguratorInterface::SOURCE_PATH, ConfiguratorInterface::USEABLE_ATTRIBUTES_KEY));
+        $configs    = $configuration->offsetGetByPath(sprintf(
+            ConfiguratorInterface::SOURCE_PATH,
+            ConfiguratorInterface::USEABLE_ATTRIBUTES_KEY
+        ));
         $choices    = [];
 
         foreach ($attributes as $code => $filter) {

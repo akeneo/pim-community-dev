@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 
@@ -18,13 +19,15 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         SecurityFacade $securityFacade,
         ObjectFilterInterface $objectFilter,
         AttributeRepositoryInterface $attributeRepository,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        ChannelRepositoryInterface $channelRepository
     ) {
         $this->beConstructedWith(
             $securityFacade,
             $objectFilter,
             $attributeRepository,
-            $localeRepository
+            $localeRepository,
+            $channelRepository
         );
     }
 
@@ -182,6 +185,34 @@ class ProductEditDataFilterSpec extends ObjectBehavior
                 ]
             ]
         ]);
+    }
+
+    function it_filters_scopable_attribute_if_channel_has_been_removed(
+        $objectFilter,
+        $attributeRepository,
+        $channelRepository,
+        AttributeInterface $nameAttribute,
+        ProductInterface $product
+    ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
+
+        $nameAttribute->isScopable()->willReturn(true);
+        $channelRepository->findOneByIdentifier('print')->willReturn(null);
+
+        $data = [
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => null,
+                        'scope'  => 'print',
+                        'value'  => 'My awesome product'
+                    ],
+                ],
+            ],
+        ];
+
+        $this->filterCollection($data, null, ['product' => $product])->shouldReturn(['values' => []]);
     }
 
     function it_does_not_filter_non_localizable_attributes(
