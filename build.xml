@@ -7,7 +7,7 @@
 
     <target name="build-phpspec-coverage" depends="prepare,composer,vendors"/>
 
-    <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
+    <target name="build-behat" depends="prepare,composer,require-ce,vendors,install-all-behat,behat"/>
 
     <target name="build-behat-deprecated" depends="prepare,composer,vendors,prepare-deprecated-behat,prepare,install-all-behat,behat"/>
 
@@ -265,6 +265,24 @@
         <exec executable="bash">
             <arg value="-c"/>
             <arg value="curl -sS https://getcomposer.org/installer | php"/>
+        </exec>
+    </target>
+
+    <condition property="change-ce">
+        <and>
+            <isset property="ce-branch"/>
+            <not>
+                <equals arg1="${ce-branch}" arg2=""/>
+            </not>
+        </and>
+    </condition>
+
+    <target name="require-ce" if="change-ce" description="Change required CE branch">
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="require" />
+            <arg value="--no-update" />
+            <arg value="akeneo/pim-community-dev" />
+            <arg value="${ce-branch}" />
         </exec>
     </target>
 
