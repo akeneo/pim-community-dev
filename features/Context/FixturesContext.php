@@ -6,6 +6,7 @@ use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -806,6 +807,21 @@ class FixturesContext extends RawMinkContext
         $this->validate($channel);
         $this->persist($channel);
         $this->persist($locale);
+    }
+
+    /**
+     * @param string $locale
+     * @param string $channel
+     *
+     * @Given /^I set the "([^"]*)" locales? to the "([^"]*)" channel$/
+     */
+    public function iSetTheLocaleToTheChannel($locale, $channel)
+    {
+        return [
+            new Step\Given("I am on the \"$channel\" channel page"),
+            new Step\Given("I fill in \"Locales\" with \"$locale\" on the current page"),
+            new Step\Given("I press \"Save\""),
+        ];
     }
 
     /**

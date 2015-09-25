@@ -373,6 +373,19 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * Fills in form field with specified id|name|label|value.
+     *
+     * @When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)" on the current page$/
+     * @When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)" on the current page$/
+     */
+    public function fillFieldOnCurrentPage($field, $value)
+    {
+        $field = $this->fixStepArgument($field);
+        $value = $this->fixStepArgument($value);
+        $this->getMainContext()->getSubcontext('navigation')->getCurrentPage()->fillField($field, $value);
+    }
+
+    /**
      * Execute javascript
      *
      * @param string $script
