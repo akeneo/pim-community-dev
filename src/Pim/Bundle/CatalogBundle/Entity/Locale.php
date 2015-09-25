@@ -101,7 +101,7 @@ class Locale implements LocaleInterface, VersionableInterface
      */
     public function isActivated()
     {
-        return $this->channels->count() > 0;
+        return $this->activated;
     }
 
     /**
@@ -115,9 +115,22 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
+    public function hasChannel(ChannelInterface $channel)
+    {
+        return $this->channels->contains($channel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setChannels($channels)
     {
-        $this->channels = $channels;
+        $this->channels  = new ArrayCollection();
+        $this->activated = false;
+
+        foreach ($channels as $channel) {
+            $this->addChannel($channel);
+        }
 
         return $this;
     }
