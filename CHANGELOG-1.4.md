@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-4911: Fix product edit form string escaping
 - PIM-4778: Fix asset grid thumbnails for unknown types
+- PIM-4895: Fix redirect after mass unpublish
 
 # 1.4.0 (2015-09-23)
 
