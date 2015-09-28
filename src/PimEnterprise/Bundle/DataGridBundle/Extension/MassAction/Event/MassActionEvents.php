@@ -30,4 +30,6 @@ final class MassActionEvents
      */
     const MASS_APPROVE_POST_HANDLER = 'pim_datagrid.extension.mass_action.mass_approve.post_handler';
     const MASS_APPROVE_PRE_HANDLER  = 'pim_datagrid.extension.mass_action.mass_approve.pre_handler';
+    const MASS_REFUSE_POST_HANDLER  = 'pim_datagrid.extension.mass_action.mass_refuse.post_handler';
+    const MASS_REFUSE_PRE_HANDLER   = 'pim_datagrid.extension.mass_action.mass_refuse.pre_handler';
 }

@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-4874: Fix mass refuse proposals
+
 # 1.4.1 (2015-09-24)
 
 ## Bug fixes
