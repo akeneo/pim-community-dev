@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-4887: Fixed locales active status when removed from channels
+
 # 1.4.1 (2015-09-24)
 
 ## BC breaks

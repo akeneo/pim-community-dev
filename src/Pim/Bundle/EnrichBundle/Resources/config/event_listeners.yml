@@ -2,6 +2,7 @@ parameters:
     pim_enrich.event_listener.user_context.class:               Pim\Bundle\EnrichBundle\EventListener\UserContextListener
     pim_enrich.event_listener.request.class:                    Pim\Bundle\EnrichBundle\EventListener\RequestListener
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
+    pim_enrich.event_subscriber.storage.channel_locale.class:   Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber
 
 services:
     # User context listener
@@ -24,5 +25,14 @@ services:
         class: %pim_enrich.event_subscriber.translate_flash_messages.class%
         arguments:
             - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Storage event listeners
+    pim_enrich.event_subscriber.storage.channel_locale:
+        class: %pim_enrich.event_subscriber.storage.channel_locale.class%
+        arguments:
+            - @pim_catalog.repository.locale
+            - @pim_catalog.saver.locale
         tags:
             - { name: kernel.event_subscriber }
