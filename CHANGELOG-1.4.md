@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4874: Fix mass refuse proposals
+- PIM-4924: Fix missing indexes of the product value
 
 # 1.4.1 (2015-09-24)
 

@@ -1,6 +1,19 @@
 PimEnterprise\Bundle\CatalogBundle\Model\ProductValue:
     type: entity
     table: pim_catalog_product_value
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    indexes:
+        value_idx:
+            columns:
+                - attribute_id
+                - locale_code
+                - scope_code
+        varchar_idx:
+            columns:
+                - value_string
+        integer_idx:
+            columns:
+                - value_integer
     manyToMany:
         assets:
             targetEntity: PimEnterprise\Component\ProductAsset\Model\AssetInterface
