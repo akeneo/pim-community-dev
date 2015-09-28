@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4887: Fixed locales active status when removed from channels
+- PIM-4911: Fix escaping of property with locale and scope
 
 # 1.4.1 (2015-09-24)
 
