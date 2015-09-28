@@ -95,3 +95,18 @@ services:
         class: %pimee_enrich.controller.channel_transformation.class%
         arguments:
             - '@pimee_product_asset.repository.channel_configuration'
+
+    pim_enrich.controller.mass_edit_action:
+        scope: request
+        class: %pim_enrich.controller.mass_edit_action.class%
+        parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_connector.launcher.simple_job_launcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.connectors'
+            - '@pim_enrich.mass_edit_action.operation.registry'
+            - '@pim_enrich.mass_edit_action.form_resolver'
+            - {family-grid: 'pim_enrich_family_index', published-product-grid: 'pimee_workflow_published_product_index', default: 'pim_enrich_product_index'}
+
