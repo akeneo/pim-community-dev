@@ -9,9 +9,9 @@
 
     <target name="build-behat" depends="prepare,composer,require-ce,vendors,install-all-behat,behat"/>
 
-    <target name="build-behat-deprecated" depends="prepare,composer,vendors,prepare-deprecated-behat,prepare,install-all-behat,behat"/>
+    <target name="build-behat-deprecated" depends="prepare,composer,require-ce,vendors,prepare-deprecated-behat,prepare,install-all-behat,behat"/>
 
-    <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
+    <target name="build-behat-mongo" depends="prepare,composer,require-ce,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,php-cs-fixer,phpcpd,phpdoc"/>
 
