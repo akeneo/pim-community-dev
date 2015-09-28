@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-4874: Fix mass refuse proposals
 - PIM-4924: Fix missing indexes of the product value
+- PIM-4927: Fix redirect to published products for back to grid action
 
 # 1.4.1 (2015-09-24)
 
