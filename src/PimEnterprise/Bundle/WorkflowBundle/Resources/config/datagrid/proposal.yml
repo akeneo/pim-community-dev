@@ -68,6 +68,7 @@ datagrid:
                 icon: ok
             mass_refuse:
                 type: redirect
+                handler: mass_refuse
                 label: pimee_workflow.product_draft.mass_review_action.refuse
                 confirmation: true
                 route: pimee_workflow_product_draft_mass_refuse

@@ -137,7 +137,7 @@ Feature: Approve or refuse several product drafts at once
       | wool-jacket    | ready  | user_two | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}}       |
     And I am on the proposals page
     When I select all products
-    When I uncheck the rows "Wool jacket"
+    When I unselect rows Wool jacket
     And I press the "Approve selected" button
     And I confirm the action
     Then I should not see "Sorry, page was not loaded correctly"
