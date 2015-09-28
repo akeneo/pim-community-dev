@@ -93,7 +93,10 @@ class MassEditActionController extends AbstractDoctrineController
         ConnectorRegistry $connectorRegistry,
         OperationRegistryInterface $operationRegistry,
         MassEditFormResolver $massEditFormResolver,
-        array $gridNameRouteMapping
+        array $gridNameRouteMapping = [
+            'family-grid' => 'pim_enrich_family_index',
+            'default'     => 'pim_enrich_product_index'
+        ]
     ) {
         parent::__construct(
             $request,
