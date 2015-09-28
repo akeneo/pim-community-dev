@@ -752,16 +752,17 @@ class Grid extends Index
      * Select a row
      *
      * @param string $value
+     * @param bool   $check
      *
      * @throws \InvalidArgumentException
      *
      * @return \Behat\Mink\Element\NodeElement|null
      */
-    public function selectRow($value)
+    public function selectRow($value, $check = true)
     {
         try {
             /** @var NodeElement $checkbox */
-            $checkbox = $this->spin(function () use ($value) {
+            $checkbox = $this->spin(function () use ($value, $check) {
                 $row = $this->getRow($value);
 
                 if (!$row) {
@@ -778,7 +779,11 @@ class Grid extends Index
                     );
                 }
 
-                $checkbox->check();
+                if ($check) {
+                    $checkbox->check();
+                } else {
+                    $checkbox->uncheck();
+                }
 
                 return $checkbox;
             });
