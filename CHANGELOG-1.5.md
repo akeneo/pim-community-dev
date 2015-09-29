@@ -1,0 +1,6 @@
+# 1.5.x
+
+## Bug fixes
+
+## BC breaks
+- Rename service `pimee_product_asset.extension.formatter.property.product_value.product_asset_property` to `pimee_product_asset.datagrid.extension.formatter.property.product_value.product_asset_property`
