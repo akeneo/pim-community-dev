@@ -1158,6 +1158,30 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I should (not )?be able to add a new option to "([^"]*)"$/
+     */
+    public function iShouldBeAbleToAddANewOptionTo($not, $field)
+    {
+        $link = $this->getCurrentPage()->getAddOptionLinkFor($field);
+
+        if (null === $link && !$not) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Add option link should be displayed for attribute "%s".',
+                    $field
+                )
+            );
+        } elseif (null !== $link && $not) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Add option link should not be displayed for attribute "%s".',
+                    $field
+                )
+            );
+        }
+    }
+
+    /**
      * @Then /^I should see reorder handles$/
      */
     public function iShouldSeeReorderHandles()
