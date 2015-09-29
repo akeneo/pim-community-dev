@@ -1,6 +1,7 @@
 parameters:
     pim_datagrid.extension.mass_action.util.product_fields_builder.class: PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
     pim_datagrid.extension.mass_action.handler.mass_approve.class:        PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassApproveActionHandler
+    pim_datagrid.extension.mass_action.handler.mass_refuse.class:         PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Handler\MassRefuseActionHandler
 
 services:
     pim_datagrid.extension.mass_action.util.product_fields_builder:
@@ -32,3 +33,12 @@ services:
             - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_approve }
+
+    pim_datagrid.extension.mass_action.handler.mass_refuse:
+        class: %pim_datagrid.extension.mass_action.handler.mass_refuse.class%
+        arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.object_id'
+            - '@event_dispatcher'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_refuse }
+
