@@ -7,6 +7,7 @@
 - PIM-4911: Fix escaping of property with locale and scope
 - PIM-4922: Fix media attribute preview
 - PIM-4925: Fix dashboard patch information 
+- PIM-4875: Remove add option button on select fields when disabled
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.
