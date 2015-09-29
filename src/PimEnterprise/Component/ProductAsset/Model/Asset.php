@@ -323,9 +323,9 @@ class Asset implements AssetInterface, VersionableInterface
     }
 
     /**
-     * Look for the variation corresponding to the specified channel and return its file.
+     * Look for the variation corresponding to the specified channel and return its file info.
      * If the asset is localizable the search will be done in the variations of the specified locale.
-     * If the reference has no variations or variation files are not generated, return null.
+     * If the reference has no variations (e.g. not generated yet), fallback on reference file info.
      *
      * {@inheritdoc}
      */
@@ -337,11 +337,11 @@ class Asset implements AssetInterface, VersionableInterface
             return null;
         }
 
-        if (null !== $variation = $reference->getVariation($channel)) {
-            return $variation->getFileInfo();
+        if (null === $variation = $reference->getVariation($channel)) {
+            return $reference->getFileInfo();
         }
 
-        return null;
+        return $variation->getFileInfo();
     }
 
     /**

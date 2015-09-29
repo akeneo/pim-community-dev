@@ -94,15 +94,7 @@ class ThumbnailProperty extends TwigProperty
             return null;
         }
 
-        $fileInfo = $entity->getFileForContext($channel, $locale);
-        if (null === $fileInfo) {
-            $reference = $entity->getReference($locale);
-            if ($reference instanceof ReferenceInterface) {
-                $fileInfo = $reference->getFileInfo();
-            }
-        }
-
-        return $fileInfo;
+        return $entity->getFileForContext($channel, $locale);
     }
 
     /**
