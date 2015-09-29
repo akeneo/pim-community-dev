@@ -1,8 +1,11 @@
 # 1.4.x
 
 ## Bug fixes
+- PIM-4760: Fixed error if quick export not well configured
+- PIM-4880: use generated media thumbnail cache for product PDF
 - PIM-4887: Fixed locales active status when removed from channels
 - PIM-4911: Fix escaping of property with locale and scope
+- PIM-4922: Fix media attribute preview
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.
