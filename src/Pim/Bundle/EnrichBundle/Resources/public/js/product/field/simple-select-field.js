@@ -100,7 +100,7 @@ define(
              *
              * @returns {boolean}
              */
-            userCanAddOption: function() {
+            userCanAddOption: function () {
                 return SecurityContext.isGranted('pim_enrich_attribute_edit') && this.isEditable();
             }
         });
