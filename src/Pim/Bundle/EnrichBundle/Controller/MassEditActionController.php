@@ -54,6 +54,9 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var MassEditFormResolver */
     protected $massEditFormResolver;
 
+    /** @var array */
+    protected $gridNameRouteMapping;
+
     /**
      * @param Request                    $request
      * @param EngineInterface            $templating
@@ -71,6 +74,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param ConnectorRegistry          $connectorRegistry
      * @param OperationRegistryInterface $operationRegistry
      * @param MassEditFormResolver       $massEditFormResolver
+     * @param array                      $gridNameRouteMapping
      */
     public function __construct(
         Request $request,
@@ -88,7 +92,11 @@ class MassEditActionController extends AbstractDoctrineController
         JobRepositoryInterface $jobRepository,
         ConnectorRegistry $connectorRegistry,
         OperationRegistryInterface $operationRegistry,
-        MassEditFormResolver $massEditFormResolver
+        MassEditFormResolver $massEditFormResolver,
+        array $gridNameRouteMapping = [
+            'family-grid' => 'pim_enrich_family_index',
+            'default'     => 'pim_enrich_product_index'
+        ]
     ) {
         parent::__construct(
             $request,
@@ -109,6 +117,7 @@ class MassEditActionController extends AbstractDoctrineController
         $this->connectorRegistry    = $connectorRegistry;
         $this->operationRegistry    = $operationRegistry;
         $this->massEditFormResolver = $massEditFormResolver;
+        $this->gridNameRouteMapping = $gridNameRouteMapping;
     }
 
     /**
@@ -226,11 +235,7 @@ class MassEditActionController extends AbstractDoctrineController
                 sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias)
             );
 
-            $route = 'pim_enrich_product_index';
-
-            if ('family-grid' === $gridName) {
-                $route = 'pim_enrich_family_index';
-            }
+            $route = $this->getRouteFromMapping($gridName);
 
             return $this->redirectToRoute($route);
         }
@@ -282,5 +287,21 @@ class MassEditActionController extends AbstractDoctrineController
         $params['objectsCount'] = $this->request->get('objectsCount');
 
         return $params;
+    }
+
+    /**
+     * Return the route to follow after a performed action
+     *
+     * @param string $gridName
+     *
+     * @return string
+     */
+    protected function getRouteFromMapping($gridName)
+    {
+        if (isset($this->gridNameRouteMapping[$gridName])) {
+            return $this->gridNameRouteMapping[$gridName];
+        }
+
+        return $this->gridNameRouteMapping['default'];
     }
 }

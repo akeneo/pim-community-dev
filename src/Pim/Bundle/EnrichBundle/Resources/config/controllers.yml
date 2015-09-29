@@ -185,6 +185,7 @@ services:
             - '@akeneo_batch.connectors'
             - '@pim_enrich.mass_edit_action.operation.registry'
             - '@pim_enrich.mass_edit_action.form_resolver'
+            - { family-grid: 'pim_enrich_family_index', default: 'pim_enrich_product_index' }
 
     pim_enrich.controller.group:
         scope: request

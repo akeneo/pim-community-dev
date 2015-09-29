@@ -30,7 +30,9 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             nullable: true
             column: value_integer
         decimal:
-            type: float
+            type: decimal
+            scale: 4
+            precision: 14
             nullable: true
             column: value_decimal
         boolean:

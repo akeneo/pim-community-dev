@@ -1,9 +1,9 @@
 <select multiple="multiple">
     <% _.each(groupedAttributes, function (group) { %>
-        <optgroup label="<%= group.label[locale] ? group.label[locale] : '[' + group.code + ']' %>">
+        <optgroup label="<%- group.label[locale] ? group.label[locale] : '[' + group.code + ']' %>">
             <% _.each(group.attributes, function (attribute) { %>
-                <option value="<%= attribute.code %>">
-                    <%= attribute.label[locale] ? attribute.label[locale] : '[' + attribute.code + ']' %>
+                <option value="<%- attribute.code %>">
+                    <%- attribute.label[locale] ? attribute.label[locale] : '[' + attribute.code + ']' %>
                 </option>
             <% }); %>
         </optgroup>
