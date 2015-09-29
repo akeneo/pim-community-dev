@@ -27,13 +27,13 @@ define(
             },
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
-                    templateContext.userCanAddOption = SecurityContext.isGranted('pim_enrich_attribute_edit');
+                    templateContext.userCanAddOption = this.userCanAddOption();
 
                     return templateContext;
-                });
+                }.bind(this));
             },
             createOption: function () {
-                if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
+                if (!this.userCanAddOption()) {
                     return;
                 }
 
@@ -94,6 +94,14 @@ define(
                 data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);
+            },
+            /**
+             * Return whether the user can add option to this simple select
+             *
+             * @returns {boolean}
+             */
+            userCanAddOption: function () {
+                return SecurityContext.isGranted('pim_enrich_attribute_edit') && this.isEditable();
             }
         });
     }
