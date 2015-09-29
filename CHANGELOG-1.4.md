@@ -1,3 +1,12 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-4887: Fixed locales active status when removed from channels
+- PIM-4911: Fix escaping of property with locale and scope
+
+## BC breaks
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.
+
 # 1.4.1 (2015-09-24)
 
 ## BC breaks

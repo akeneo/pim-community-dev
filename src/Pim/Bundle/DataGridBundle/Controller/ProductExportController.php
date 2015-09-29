@@ -77,8 +77,13 @@ class ProductExportController
      */
     public function indexAction()
     {
-        $jobCode          = $this->request->get('_jobCode');
-        $jobInstance      = $this->jobInstanceRepo->findOneBy(['code' => $jobCode]);
+        $jobCode     = $this->request->get('_jobCode');
+        $jobInstance = $this->jobInstanceRepo->findOneBy(['code' => $jobCode]);
+
+        if (null === $jobInstance) {
+            throw new \RuntimeException(sprintf('Jobinstance "%s" is not well configured', $jobCode));
+        }
+
         $filters          = $this->gridFilterAdapter->adapt($this->request);
         $rawConfiguration = addslashes(
             json_encode(
@@ -129,7 +134,7 @@ class ProductExportController
         }
 
         $dataSourceParams = $dataSource->getParameters();
-        $contextParams = [];
+        $contextParams    = [];
         if (is_array($dataSourceParams)) {
             $contextParams = [
                 'locale' => $dataSourceParams['dataLocale'],
