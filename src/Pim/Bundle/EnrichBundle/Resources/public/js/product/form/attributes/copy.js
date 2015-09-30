@@ -114,7 +114,7 @@ define(
                     var copyField = new CopyField(field.attribute);
 
                     copyField.setContext({locale: this.locale, scope: this.scope});
-                    copyField.setValues(sourceData[code]);
+                    copyField.setValues(_.result(sourceData, code, []));
                     copyField.setField(field);
 
                     this.copyFields[code] = copyField;
