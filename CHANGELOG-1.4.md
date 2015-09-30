@@ -6,7 +6,8 @@
 - PIM-4887: Fixed locales active status when removed from channels
 - PIM-4911: Fix escaping of property with locale and scope
 - PIM-4922: Fix media attribute preview
-- PIM-4925: Fix dashboard patch information 
+- PIM-4925: Fix dashboard patch information
+- PIM-4936: Fixes performances problems and memory leak at import time
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.
@@ -19,7 +20,7 @@
 
 ## Bug fixes
 - PIM-4882: Fix pinbar issue (bump oro/platform version)
-- PIM-4880: Fix PDF download for product with media 
+- PIM-4880: Fix PDF download for product with media
 - PIM-4911: Fix product edit form string escaping
 
 # 1.4.0 (2015-09-23)

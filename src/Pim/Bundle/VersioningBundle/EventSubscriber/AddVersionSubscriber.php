@@ -29,6 +29,9 @@ class AddVersionSubscriber implements EventSubscriber
     /** @var string[] */
     protected $versionedEntities = [];
 
+    /** @var string[] */
+    protected $versions = [];
+
     /** @var VersionManager */
     protected $versionManager;
 
@@ -124,6 +127,7 @@ class AddVersionSubscriber implements EventSubscriber
 
         if ($versionedCount) {
             $this->versionManager->getObjectManager()->flush();
+            $this->detachVersions();
         }
     }
 
@@ -139,6 +143,7 @@ class AddVersionSubscriber implements EventSubscriber
         $versions = $this->versionManager->buildVersion($versionable, $changeset);
 
         foreach ($versions as $version) {
+            $this->versions[] = $version;
             $this->computeChangeSet($version);
         }
     }
@@ -225,5 +230,19 @@ class AddVersionSubscriber implements EventSubscriber
     protected function getObjectHash($object)
     {
         return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionContext->getContextInfo()));
+    }
+
+    /**
+     * Clear versions know to this subscribler from the object manager
+     */
+    protected function detachVersions()
+    {
+        $om = $this->versionManager->getObjectManager();
+
+        foreach ($this->versions as $version) {
+            $om->detach($version);
+        }
+
+        $this->versions = [];
     }
 }
