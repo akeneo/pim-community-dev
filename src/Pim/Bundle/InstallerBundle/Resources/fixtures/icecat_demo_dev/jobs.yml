@@ -187,4 +187,4 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products-quick-export.csv
+            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv

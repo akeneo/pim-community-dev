@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Akeneo\Component\FileStorage\Exception\FileTransferException;
+use Pim\Bundle\ConnectorBundle\Writer\File\ContextableCsvWriter;
 use Pim\Component\Connector\Writer\File\FileExporterInterface;
 
 /**
@@ -12,7 +13,7 @@ use Pim\Component\Connector\Writer\File\FileExporterInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvProductWriter extends CsvWriter
+class CsvProductWriter extends ContextableCsvWriter
 {
     /** @var FileExporterInterface */
     protected $fileExporter;

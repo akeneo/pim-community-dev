@@ -74,13 +74,8 @@ class FileWriter extends AbstractConfigurableStepElement implements
      */
     public function getPath()
     {
-        if (!isset($this->resolvedFilePath)) {
-            $this->resolvedFilePath = strtr(
-                $this->filePath,
-                array(
-                    '%datetime%' => date('Y-m-d_H:i:s')
-                )
-            );
+        if (null === $this->resolvedFilePath) {
+            $this->resolvedFilePath = strtr($this->filePath, ['%datetime%' => date('Y-m-d_H:i:s')]);
         }
 
         return $this->resolvedFilePath;
