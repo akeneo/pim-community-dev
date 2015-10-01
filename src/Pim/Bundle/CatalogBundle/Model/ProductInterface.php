@@ -133,14 +133,14 @@ interface ProductInterface extends
     public function getGroupCodes();
 
     /**
-     * Get the product associations
+     * Get types of associations
      *
      * @return AssociationInterface[]|null
      */
     public function getAssociations();
 
     /**
-     * Set product associations
+     * Set types of associations
      *
      * @param AssociationInterface[] $associations
      *
@@ -149,7 +149,7 @@ interface ProductInterface extends
     public function setAssociations(array $associations = []);
 
     /**
-     * Add product association
+     * Add a type of an association
      *
      * @param AssociationInterface $association
      *
@@ -160,7 +160,7 @@ interface ProductInterface extends
     public function addAssociation(AssociationInterface $association);
 
     /**
-     * Remove product association
+     * Remove a type of an association
      *
      * @param AssociationInterface $association
      *
