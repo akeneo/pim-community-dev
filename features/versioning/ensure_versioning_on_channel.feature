@@ -1,3 +1,4 @@
+@javascript
 Feature: Ensure versioning on channel
   In order to see old version of an existing channel
   As a product manager
@@ -7,7 +8,6 @@ Feature: Ensure versioning on channel
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully version a channel
     Given I am on the "mobile" channel page
     And I visit the "History" tab
@@ -20,7 +20,7 @@ Feature: Ensure versioning on channel
     Then there should be 2 update
 
   # will be fixed in PIM-4641
-  @javascript @skip
+  @skip
   Scenario: Successfully version a channel on currency disabling
     Given I am on the "tablet" channel page
     And I visit the "History" tab
