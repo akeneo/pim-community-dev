@@ -688,6 +688,32 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @When /^I pin the current page$/
+     */
+    public function iPinTheCurrentPage()
+    {
+        $pinButton = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.minimize-button');
+        }, 10);
+
+        $pinButton->click();
+    }
+
+    /**
+     * @When /^I click on the pinned item "([^"]+)"$/
+     *
+     * @param string $label
+     */
+    public function iClickOnThePinnedItem($label)
+    {
+        $pinnedItem = $this->spin(function () use ($label) {
+            return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
+        }, 10);
+
+        $pinnedItem->click();
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *

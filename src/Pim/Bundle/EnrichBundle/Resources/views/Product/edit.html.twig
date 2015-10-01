@@ -29,13 +29,13 @@
                                         template: _.template($.trim($('#message-item-template').html()))
                                     });
                                     {% if app.session.flashbag.peekAll|length > 0 %}
-                                    $(function() {
-                                        {% for type, messages in app.session.flashbag.all %}
-                                        {% for message in messages %}
-                                        messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
-                                        {% endfor %}
-                                        {% endfor %}
-                                    });
+                                        $(function() {
+                                            {% for type, messages in app.session.flashbag.all %}
+                                                {% for message in messages %}
+                                                    messenger.notificationFlashMessage({{ type|json_encode|raw }}, {{ message|trans|json_encode|raw }});
+                                                {% endfor %}
+                                            {% endfor %}
+                                        });
                                     {% endif %}
                                 });
                     </script>
@@ -53,13 +53,21 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error'],
-                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator, Error) {
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'oro/mediator', 'pim/error', 'oro/navigation'],
+                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, mediator, Error, Navigation) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
                                         ProductManager.get('{{ productId }}')
                                             .then(function (product) {
-                                                document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
+                                                var sku      = _.escape(product.meta.label[UserContext.get('catalogLocale')]);
+                                                var newTitle = document.title.replace('%product.sku%', sku);
+
+                                                document.title  = newTitle;
+                                                var navigation  = Navigation.getInstance();
+                                                var navTitle    = navigation.getPinButtonsData('title');
+                                                navTitle.params = {'%product.sku%': sku};
+                                                navigation.setPinButtonsData('title', navTitle);
+                                                navigation.setPinButtonsData('title-rendered-short', newTitle);
 
                                                 FormBuilder.build(product.meta.form)
                                                     .then(function (form) {
