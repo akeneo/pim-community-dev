@@ -8,6 +8,7 @@
 - PIM-4922: Fix media attribute preview
 - PIM-4925: Fix dashboard patch information
 - PIM-4936: Fixes performances problems and memory leak at import time
+- PIM-4935: Fix inconsistent data on import using comparison optimisation
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.
