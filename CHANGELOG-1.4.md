@@ -22,6 +22,7 @@
 - PIM-4882: Fix pinbar issue (bump oro/platform version)
 - PIM-4880: Fix PDF download for product with media
 - PIM-4911: Fix product edit form string escaping
+- PIM-4839: Fix the random skip of the carriage returns during an import
 
 # 1.4.0 (2015-09-23)
 

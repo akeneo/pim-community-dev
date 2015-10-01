@@ -1032,6 +1032,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * We use the tag |NL| for \n in gherkin
+     *
      * @param string $lang
      * @param string $scope
      * @param string $attribute
@@ -1042,6 +1044,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
+        $value = str_replace('|NL|', "\n", $value);
         $this->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang], $scope);
 
