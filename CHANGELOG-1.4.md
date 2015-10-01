@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.2 (2015-10-01)
 
 ## Bug fixes
 - PIM-4760: Fix error if quick export not well configured
