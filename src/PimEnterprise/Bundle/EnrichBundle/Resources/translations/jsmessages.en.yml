@@ -34,7 +34,7 @@ pimee_enrich:
                 product_published: Product successfully published
                 product_not_published: Failed to publish this product
                 product_not_unpublished: Failed to unpublish this product
-                product_reverted: Product successfully reverted
+                product_reverted: Product successfully restored
             meta:
                 published: Published version
                 owner_groups: Owner groups
@@ -54,8 +54,8 @@ pimee_enrich:
                             success: The proposal has been rejected.
             confirmation:
                 revert:
-                    title: Revert confirmation
-                    content: Are you sure you want to revert the product to this version?
+                    title: Restore confirmation
+                    content: Are you sure you want to restore the product to this version?
                 publish:
                     title: Publish this product
                     content: Are you sure you want to publish this product?

@@ -20,7 +20,7 @@ extensions:
         position: 100
 
     pimee-published-product-view-back-to-grid:
-        module: pim/product-edit-form/back-to-grid
+        module: pimee/published-view-form/back-to-grid
         parent: pimee-published-product-view-form
         targetZone: buttons
         aclResourceId: pimee_workflow_published_product_index
