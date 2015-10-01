@@ -94,7 +94,7 @@ Feature: Execute a job
     And I visit the "Cross sell" group
     Then I check the rows "SKU-002"
     And I save the product
-    When the following CSV file to import:
+    And the following CSV file to import:
       """
       sku;X_SELL-products
       SKU-001;SKU-002
@@ -106,3 +106,28 @@ Feature: Execute a job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 2 products
     And I should see "skipped product (no differences) 1"
+
+  Scenario: Successfully remove associations
+    Given the following product:
+      | sku     | name-en_US |
+      | SKU-001 | sku-001    |
+      | SKU-002 | sku-002    |
+    When I edit the "SKU-001" product
+    And I visit the "Associations" tab
+    And I visit the "Cross sell" group
+    Then I check the rows "SKU-002"
+    And I save the product
+    And the following CSV file to import:
+      """
+      sku;X_SELL-products
+      SKU-001;
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    When I edit the "SKU-001" product
+    And I visit the "Associations" tab
+    And I visit the "Cross sell" group
+    Then I should see "0 products and 0 groups"

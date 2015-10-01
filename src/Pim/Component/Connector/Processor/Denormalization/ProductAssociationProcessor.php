@@ -72,13 +72,11 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         $convertedItem = $this->convertItemData($item);
-        if ($this->getConfiguration()['enabledComparison']) {
-            $convertedItem = $this->filterIdenticalData($product, $convertedItem);
-            if (empty($convertedItem)) {
-                $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
+        $convertedItem = $this->filterIdenticalData($product, $convertedItem);
+        if (empty($convertedItem)) {
+            $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
 
-                return null;
-            }
+            return null;
         }
 
         try {
