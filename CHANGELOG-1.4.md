@@ -1,10 +1,18 @@
-# 1.4.x
+# 1.4.2 (2015-10-01)
 
 ## Bug fixes
 - PIM-4874: Fix mass refuse proposals
 - PIM-4924: Fix missing indexes of the product value
 - PIM-4927: Fix redirect to published products for back to grid action
 - PIM-4914: Fixed Quick export file name
+- PIM-4760: Fix error if quick export not well configured
+- PIM-4880: Fix media not displayed in product PDF download
+- PIM-4887: Fixed locales active status when removed from channels
+- PIM-4911: Fix escaping of property with locale and scope
+- PIM-4922: Fix media attribute preview
+- PIM-4925: Fix dashboard patch information
+- PIM-4936: Fixes performances problems and memory leak at import time
+- PIM-4935: Fix inconsistent data on import using comparison optimisation
 
 # 1.4.1 (2015-09-24)
 
