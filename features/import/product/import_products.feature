@@ -37,6 +37,26 @@ Feature: Execute a job
     And the english tablet name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
+  Scenario: Successfully import a csv file of product with carriage return in product description
+    Given the following CSV file to import:
+      """
+      sku;family;groups;categories;name-en_US;description-en_US-tablet
+      SKU-001;boots;CROSS;winter_boots;Donec;"dictum magna. Ut tincidunt
+      orci quis lectus.
+
+      Nullam suscipit,
+      est
+
+      "
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 1 products
+    And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt|NL|orci quis lectus.|NL||NL|Nullam suscipit,|NL|est|NL||NL|"
+
   Scenario: Successfully ignore duplicate unique data
     Given the following CSV file to import:
       """
