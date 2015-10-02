@@ -1,6 +1,11 @@
 # 1.4.x
 
 ## Bug fixes
+- PIM-4955: Fixed regression on completeness coputation when locale are removed from a channel
+
+# 1.4.2 (2015-10-01)
+
+## Bug fixes
 - PIM-4760: Fix error if quick export not well configured
 - PIM-4880: Fix media not displayed in product PDF download
 - PIM-4887: Fixed locales active status when removed from channels
@@ -8,6 +13,8 @@
 - PIM-4922: Fix media attribute preview
 - PIM-4925: Fix dashboard patch information
 - PIM-4936: Fixes performances problems and memory leak at import time
+- PIM-4935: Fix inconsistent data on import using comparison optimisation
+- PIM-4914: Fixed Quick export file name
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.

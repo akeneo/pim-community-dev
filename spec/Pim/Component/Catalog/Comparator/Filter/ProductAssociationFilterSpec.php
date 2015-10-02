@@ -127,7 +127,8 @@ class ProductAssociationFilterSpec extends ObjectBehavior
         ProductInterface $product
     ) {
         $originalValues = $newValues = [
-            'family' => []
+            'family' => [],
+            'associations' => ['groups' => [1]],
         ];
 
         $normalizer->normalize($product, 'json', ['only_associations' => true])
