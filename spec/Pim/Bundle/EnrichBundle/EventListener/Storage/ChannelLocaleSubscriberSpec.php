@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\EventListener\Storage;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
@@ -13,9 +14,12 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class ChannelLocaleSubscriberSpec extends ObjectBehavior
 {
-    function let(LocaleRepositoryInterface $repository, BulkSaverInterface $saver)
-    {
-        $this->beConstructedWith($repository, $saver);
+    function let(
+        LocaleRepositoryInterface $repository,
+        BulkSaverInterface $saver,
+        CompletenessGeneratorInterface $completeness
+    ) {
+        $this->beConstructedWith($repository, $saver, $completeness);
     }
 
     function it_is_initializable()
@@ -60,6 +64,7 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
     function it_updates_channel(
         $repository,
         $saver,
+        $completeness,
         GenericEvent $event,
         ChannelInterface $channel,
         LocaleInterface $localeEn,
@@ -68,6 +73,7 @@ class ChannelLocaleSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($channel);
         $repository->getDeletedLocalesForChannel($channel)->willReturn([$localeEn]);
+        $completeness->scheduleForChannelAndLocale($channel, $localeEn)->shouldBeCalled();
 
         $localeFr->hasChannel($channel)->willReturn(true);
         $localeEs->hasChannel($channel)->willReturn(false);
