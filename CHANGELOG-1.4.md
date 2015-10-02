@@ -10,6 +10,7 @@
 - PIM-4936: Fixes performances problems and memory leak at import time
 - PIM-4935: Fix inconsistent data on import using comparison optimisation
 - PIM-4914: Fixed Quick export file name
+- PIM-4458: Fix name display in pinbar for product edit pages
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller`, added `$gridNameRouteMapping` as the last argument.
