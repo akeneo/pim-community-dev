@@ -13,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 class ThumbnailPropertySpec extends ObjectBehavior
 {
@@ -44,7 +43,6 @@ class ThumbnailPropertySpec extends ObjectBehavior
         LocaleInterface $localeEN,
         ChannelInterface $channelMobile,
         AssetInterface $asset,
-        ReferenceInterface $reference,
         FileInfoInterface $fileInfo,
         \Twig_TemplateInterface $template
     ) {
@@ -56,9 +54,7 @@ class ThumbnailPropertySpec extends ObjectBehavior
 
         $record->getRootEntity()->willReturn($asset);
 
-        $asset->getFileForContext($channelMobile, $localeEN)->willReturn(null);
-        $asset->getReference($localeEN)->willReturn($reference);
-        $reference->getFileInfo()->willReturn($fileInfo);
+        $asset->getFileForContext($channelMobile, $localeEN)->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('a/b/c/d/abcdmyimage.jpg');
 
         $environment->loadTemplate('my-template')->willReturn($template);

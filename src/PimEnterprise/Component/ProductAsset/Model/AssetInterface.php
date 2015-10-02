@@ -173,7 +173,7 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
     public function setUpdatedAt(\DateTime $updatedAt);
 
     /**
-     * Look for the variation corresponding to the specified channel and locale and return its file.
+     * Look for the variation corresponding to the specified channel and locale and return its file info.
      *
      * @param ChannelInterface     $channel
      * @param LocaleInterface|null $locale

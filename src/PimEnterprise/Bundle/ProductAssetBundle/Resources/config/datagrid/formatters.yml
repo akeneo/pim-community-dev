@@ -1,13 +1,14 @@
 parameters:
-    pimee_product_asset.extension.formatter.property.product_value.product_asset_property.class: Pim\Bundle\ReferenceDataBundle\Datagrid\Extension\Formatter\Property\ReferenceDataProperty
-    pimee_product_asset.datagrid.extension.formatter.property.asset.thumbnail_property.class:    PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\Asset\ThumbnailProperty
+    pimee_product_asset.extension.formatter.property.product_value.product_asset_property.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\ProductValue\AssetsCollectionProperty
+    pimee_product_asset.datagrid.extension.formatter.property.asset.thumbnail_property.class: PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\Asset\ThumbnailProperty
 
 services:
     pimee_product_asset.extension.formatter.property.product_value.product_asset_property:
         class: %pimee_product_asset.extension.formatter.property.product_value.product_asset_property.class%
         arguments:
-            - '@translator'
-            - '@pim_reference_data.registry'
+            - '@twig'
+            - '@pim_datagrid.datagrid.request.parameters_extractor'
+            - '@pim_user.context.user'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: pim_assets_collection }
 

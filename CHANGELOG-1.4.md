@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-4794: Add contextualized thumbnails support for assets collections in product grid
+
 # 1.4.2 (2015-10-01)
 
 ## Bug fixes

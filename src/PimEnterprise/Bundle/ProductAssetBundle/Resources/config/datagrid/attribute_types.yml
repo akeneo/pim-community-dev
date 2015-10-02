@@ -1,8 +1,10 @@
 parameters:
     pim_datagrid.product.attribute_type.pim_assets_collection:
         column:
-            type:     pim_assets_collection
-            selector: pim_assets_collection
+            type:          pim_assets_collection
+            frontend_type: html
+            template:      PimEnterpriseProductAssetBundle:Property:assetsCollection.html.twig
+            selector:      pim_assets_collection
         filter:
             type:     pim_assets_collection
             ftype:    ajax_choice
@@ -11,4 +13,4 @@ parameters:
                     multiple: true
                     attr:
                         empty_choice: true
-        sorter:       ~
+        sorter: ~
