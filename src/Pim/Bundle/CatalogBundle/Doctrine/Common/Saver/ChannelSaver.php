@@ -14,9 +14,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 /**
  * Channel saver, contains custom logic for channel saving
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author     Olivier Soulet <olivier.soulet@akeneo.com>
+ * @copyright  2015 Akeneo SAS (http://www.akeneo.com)
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @deprecated To be removed in 1.5 as it now is the same as BaseSaver
  */
 class ChannelSaver implements SaverInterface
 {
@@ -68,9 +69,7 @@ class ChannelSaver implements SaverInterface
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($channel);
-        if (true === $options['schedule']) {
-            $this->completenessManager->scheduleForChannel($channel);
-        }
+
         if (true === $options['flush']) {
             $this->objectManager->flush();
         }

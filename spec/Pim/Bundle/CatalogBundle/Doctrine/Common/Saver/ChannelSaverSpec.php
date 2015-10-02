@@ -55,26 +55,6 @@ class ChannelSaverSpec extends ObjectBehavior
         $this->save($channel, ['flush' => false]);
     }
 
-    function it_saves_a_channel_and_does_not_schedule(
-        $completenessManager,
-        $optionsResolver,
-        $objectManager,
-        $eventDispatcher,
-        ChannelInterface $channel
-    ) {
-        $channel->getCode()->willReturn('my_code');
-        $optionsResolver->resolveSaveOptions(['schedule' => false])
-            ->shouldBeCalled()
-            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => false]);
-        $objectManager->persist($channel)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
-        $completenessManager->scheduleForchannel($channel)->shouldNotBeCalled($channel);
-
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
-        $this->save($channel, ['schedule' => false]);
-    }
-
     function it_throws_exception_when_save_anything_else_than_a_group()
     {
         $anythingElse = new \stdClass();
