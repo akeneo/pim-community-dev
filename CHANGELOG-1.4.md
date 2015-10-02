@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-4955: Fixed regression on completeness coputation when locale are removed from a channel
+
 # 1.4.2 (2015-10-01)
 
 ## Bug fixes
