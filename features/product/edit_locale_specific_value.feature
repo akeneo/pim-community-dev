@@ -46,4 +46,4 @@ Feature: Edit a locale specific value
     And I switch the locale to "fr_FR"
     Then I should see "Sous la loi Européenne"
     And I switch the locale to "de_DE"
-    Then I should see "Nach europäischem Recht"
+    Then I should see "Nach europäischen Recht"

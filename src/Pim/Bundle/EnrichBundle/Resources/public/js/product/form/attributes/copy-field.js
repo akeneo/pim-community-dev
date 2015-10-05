@@ -57,13 +57,16 @@ define([
                 mediator.trigger('pim_enrich:form:field:extension:add', {'field': this, 'promises': []});
 
                 this.$el.html(this.template(templateContext));
-                this.field.renderCopyInput(this.getCurrentValue())
-                    .then(function (render) {
-                        this.$('.field-input').html(render);
-                        this.renderElements();
-                    }.bind(this));
 
-                this.delegateEvents();
+                if (!_.isNull(this.getCurrentValue())) {
+                    this.field.renderCopyInput(this.getCurrentValue())
+                        .then(function (render) {
+                            this.$('.field-input').html(render);
+                            this.renderElements();
+                        }.bind(this));
+
+                    this.delegateEvents();
+                }
 
                 return this;
             },
