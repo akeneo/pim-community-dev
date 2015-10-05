@@ -5,6 +5,8 @@ parameters:
     pimee_workflow.event_subscriber.product_draft.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ReplaceProductUpdatedFlashMessageSubscriber
     pimee_workflow.event_subscriber.enrich.inject_current_user_product_draft.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserProductDraftSubscriber
     pimee_workflow.event_subscriber.enrich.add_product_draft_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddProductDraftFormViewParameterSubscriber
+    pimee_workflow.event_subscriber.product_draft.approve_notification.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.refuse_notification.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber
 
 services:
     ##
@@ -40,6 +42,22 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.approve_notification:
+        class: %pimee_workflow.event_subscriber.product_draft.approve_notification.class%
+        arguments:
+            - @pim_notification.manager.notification
+            - @pim_user.context.user
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.refuse_notification:
+        class: %pimee_workflow.event_subscriber.product_draft.refuse_notification.class%
+        arguments:
+            - @pim_notification.manager.notification
+            - @pim_user.context.user
         tags:
             - { name: kernel.event_subscriber }
 
