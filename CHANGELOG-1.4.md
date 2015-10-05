@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4955: Fixed regression on completeness computation when locales are removed from a channel
+- PIM-4622: Fix CSS for product comments
 
 # 1.4.2 (2015-10-01)
 
