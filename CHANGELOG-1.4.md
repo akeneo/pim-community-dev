@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4794: Add contextualized thumbnails support for assets collections in product grid
+- PIM-4717: Use the raw filename to move the file to the temporary file folder
 
 # 1.4.2 (2015-10-01)
 
