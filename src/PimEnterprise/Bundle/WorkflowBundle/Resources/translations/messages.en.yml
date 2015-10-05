@@ -31,6 +31,8 @@ pimee_workflow:
                 not_product_owner: You don't own the product related to this proposal
                 cannot_edit_attributes: You can't edit the attributes modified by this proposal
                 invalid_draft: This proposal can't be applied due to the following error. %error%
+    proposal:
+        to_review: %author.firstname% %author.lastname% has sent a proposal to review for the product %product.label%
     published_product:
         index: Published Products
         title:  Published product
@@ -54,6 +56,7 @@ pimee_workflow:
             perform.title: Refuse proposals
     steps:
         product_draft_processor.title: Proposal processor
+pimee_workflow_product_draft_notification_new_proposal: New proposal
 btn.publish: Publish
 btn.unpublish: Unpublish
 
