@@ -764,6 +764,10 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
             $filteredUrl = $urlWithoutLocale;
         }
 
+        if (false !== $urlWithoutRedirect = strstr($filteredUrl, '?redirectTab=', true)) {
+            $filteredUrl = $urlWithoutRedirect;
+        }
+
         if (false !== $urlWithoutGrid = strstr($filteredUrl, '|g/', true)) {
             $filteredUrl = $urlWithoutGrid;
         }
