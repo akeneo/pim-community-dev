@@ -124,6 +124,7 @@ jobs:
                 - 'pdf_description'
                 - 'picture'
             enabledComparison: true
+            decimalSeparator: .
 
     fixtures_job_yml:
         order: 100
