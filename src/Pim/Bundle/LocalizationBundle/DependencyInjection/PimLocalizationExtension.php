@@ -22,6 +22,13 @@ class PimLocalizationExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
+        $decimalSeparators = [];
+        foreach ($config['decimal_separators'] as $decimalSeparator) {
+            $decimalSeparators[$decimalSeparator['value']] = $decimalSeparator['label'];
+        }
+
+        $container->setParameter('pim_localization.decimal_separators', $decimalSeparators);
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
     }
 }

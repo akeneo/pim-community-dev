@@ -20,6 +20,21 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('pim_localization');
 
+        $rootNode
+            ->children()
+                ->arrayNode('decimal_separators')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('value')->isRequired()->canNotBeEmpty()->end()
+                            ->scalarNode('label')->isRequired()->canNotBeEmpty()->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+
         return $treeBuilder;
     }
 }
