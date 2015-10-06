@@ -109,6 +109,20 @@ class Grid extends Index
     }
 
     /**
+     * Check if the grid contains a row with the specified value
+     *
+     * @param string $value
+     *
+     * @return bool
+     */
+    public function hasRow($value)
+    {
+        $value = str_replace('"', '', $value);
+
+        return null !== $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
+    }
+
+    /**
      * @param string $element
      * @param string $actionName
      *
