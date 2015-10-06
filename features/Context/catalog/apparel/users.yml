@@ -1,12 +1,14 @@
 users:
     admin:
         catalogLocale: en_US
+        uiLocale:      en_US
         catalogScope:  ecommerce
         defaultTree:   2014_collection
         roles:         [ ROLE_ADMINISTRATOR ]
         groups:        [ IT support ]
     Julia:
         catalogLocale: en_US
+        uiLocale:      en_US
         catalogScope:  tablet
         defaultTree:   2013_collection
         last_name:     Stark
@@ -14,6 +16,7 @@ users:
         groups:        [ Manager ]
     Peter:
         catalogLocale: en_US
+        uiLocale:      en_US
         catalogScope:  print
         defaultTree:   2015_collection
         last_name:     Williams
@@ -21,6 +24,7 @@ users:
         groups:        [ IT support ]
     Mary:
         catalogLocale: en_US
+        uiLocale:      en_US
         catalogScope:  ecommerce
         defaultTree:   men_2013
         last_name:     Smith
@@ -28,6 +32,7 @@ users:
         groups:        [ Redactor ]
     Sandra:
         catalogLocale: en_US
+        uiLocale:      en_US
         catalogScope:  tablet
         defaultTree:   women_2013
         last_name:     Harvey

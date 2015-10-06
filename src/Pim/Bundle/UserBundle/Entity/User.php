@@ -121,8 +121,11 @@ class User implements UserInterface
     /** @var DateTime $updatedAt */
     protected $updatedAt;
 
-    /** @var Locale */
+    /** @var LocaleInterface */
     protected $catalogLocale;
+
+    /** @var LocaleInterface */
+    protected $uiLocale;
 
     /** @var Channel */
     protected $catalogScope;
@@ -886,6 +889,24 @@ class User implements UserInterface
     public function setCatalogLocale(LocaleInterface $catalogLocale)
     {
         $this->catalogLocale = $catalogLocale;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUiLocale()
+    {
+        return $this->uiLocale;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUiLocale(LocaleInterface $uiLocale)
+    {
+        $this->uiLocale = $uiLocale;
 
         return $this;
     }
