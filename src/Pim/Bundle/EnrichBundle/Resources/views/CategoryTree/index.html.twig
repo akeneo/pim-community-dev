@@ -1,10 +1,3 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
-
-{% block head_script %}
-    {{ parent() }}
-    {% include "PimEnrichBundle:CategoryTree:_scripts.html.twig" %}
-{% endblock %}
-
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
         <div id="tree" {% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
@@ -18,11 +11,13 @@
                     <br/>
                     <br/>
                     {{ 'category.or'|trans }}
-                    <a href="{{ path(route ~ '_categorytree_create') }}">
+                    <a href="{{ path(route ~ '_categorytree_create', { parent: 0 }) }}">
                         <span class="label link-label large">{{ 'category.create new'|trans }}</span>
                     </a>
                 {% endif %}
             </div>
         </div>
     </div>
+
+    {% include "PimEnrichBundle:CategoryTree:_scripts.html.twig" %}
 {% endblock %}

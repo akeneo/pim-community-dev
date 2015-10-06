@@ -104,7 +104,7 @@ class CategoryTreeController extends Controller
      *
      * @return array
      *
-     * @Template
+     * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
      */
     public function listTreeAction(Request $request)
     {
@@ -172,9 +172,14 @@ class CategoryTreeController extends Controller
      *
      * @param Request $request
      *
+<<<<<<< HEAD
      * @throws AccessDeniedException
      *
      * @Template
+=======
+     * @Template("PimEnrichBundle:CategoryTree:children.json.twig")
+     * @AclAncestor("pim_enrich_category_list")
+>>>>>>> ee6b94b... PIM-3232 Navigation fixes
      *
      * @return array
      */

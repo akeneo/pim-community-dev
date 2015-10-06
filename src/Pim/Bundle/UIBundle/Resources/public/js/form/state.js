@@ -18,7 +18,7 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
             data: null,
 
             initialize: function () {
-                mediator.once('hash_navigation_request:start', this._onDestroyHandler, this);
+                mediator.once('route_start', this._onDestroyHandler, this);
 
                 $(window).on(this.LOAD_EVENT, _.bind(this._collectHandler, this));
                 this._collectHandler();
@@ -95,7 +95,7 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
             _onDestroyHandler: function () {
                 if (_.isNull(this.data)) {
                     // data was not collected disable listener
-                    mediator.off('hash_navigation_request:complete', this._collectHandler, this);
+                    mediator.off('route_complete', this._collectHandler, this);
                 } else {
                     this.data = null;
                 }

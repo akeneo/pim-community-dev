@@ -1,8 +1,9 @@
 {% extends 'PimEnrichBundle:AttributeGroup:index.html.twig' %}
 
-{% oro_title_set({ params: { "%group.label%": form.vars.value.label } }) %}
-
 {% block groupTab %}
+    <script type="text/javascript">
+        require('pim/page-title').set({'group.label': '{{ form.vars.value.label }}'});
+    </script>
     {% include 'PimEnrichBundle:AttributeGroup:form.html.twig' %}
 
     {% if
