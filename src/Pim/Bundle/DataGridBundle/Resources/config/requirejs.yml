@@ -59,7 +59,6 @@ config:
         oro/datagrid/grid-views/collection:     pimdatagrid/js/datagrid/grid-views/collection
         oro/datagrid/pagination-input:          pimdatagrid/js/datagrid/pagination-input
         oro/datagrid/pagination:                pimdatagrid/js/datagrid/pagination
-        oro/datagrid/router:                    pimdatagrid/js/datagrid/router
         oro/datagrid/row:                       pimdatagrid/js/datagrid/row
         oro/datagrid/toolbar:                   pimdatagrid/js/datagrid/toolbar
         oro/datagrid-builder:                   pimdatagrid/js/datagrid-builder

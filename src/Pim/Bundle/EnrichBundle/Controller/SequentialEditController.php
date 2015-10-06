@@ -75,7 +75,7 @@ class SequentialEditController
     {
         if ($this->seqEditManager->findByUser($this->userContext->getUser())) {
             return new RedirectResponse(
-                $this->router->generate(
+                $this->router->generate('oro_default') . '#' . $this->router->generate(
                     'pim_enrich_product_index',
                     ['dataLocale' => $request->get('dataLocale')]
                 )
@@ -90,7 +90,7 @@ class SequentialEditController
         $this->seqEditManager->save($sequentialEdit);
 
         return new RedirectResponse(
-            $this->router->generate(
+            $this->router->generate('oro_default') . '#' . $this->router->generate(
                 'pim_enrich_product_edit',
                 [
                     'dataLocale' => $request->get('dataLocale'),

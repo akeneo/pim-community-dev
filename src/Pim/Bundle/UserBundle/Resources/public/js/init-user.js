@@ -27,6 +27,6 @@ function ($, _, __, app, mediator, messenger) {
         /**
          * Process flash messages stored in queue or storage
          */
-        mediator.on('hash_navigation_request:complete', initFlashMessages);
+        mediator.on('route_complete', initFlashMessages);
     });
 });

@@ -124,15 +124,13 @@ class WebUser extends RawMinkContext
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
             $this->getMainContext()->executeScript(
-                sprintf("require(['oro/navigation'], function (Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
+                sprintf("require(['backbone'], function (Backbone) { Backbone.history.navigate('#%s'); } );", $url)
             );
             $this->wait();
 
             $currentUrl = $this->getSession()->getCurrentUrl();
-            $currentUrl = explode('#url=', $currentUrl);
+            $currentUrl = explode('#', $currentUrl);
             $currentUrl = end($currentUrl);
-            $currentUrl = explode('|g/', $currentUrl);
-            $currentUrl = reset($currentUrl);
 
             assertTrue(
                 $url === $currentUrl || $url . '/' === $currentUrl || $url === $currentUrl . '/',
@@ -1875,7 +1873,7 @@ class WebUser extends RawMinkContext
             // Get and print the normalized jobexecution to ease debugging
             $this->getSession()->executeScript(
                 sprintf(
-                    '$.get("/%s/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
+                    '$.get("/%s/%s_execution/%d?_format=json", function (resp) { window.executionLog = resp; });',
                     $jobInstance->getType() === 'import' ? 'collect' : 'spread',
                     $jobInstance->getType(),
                     $jobExecution->getId()

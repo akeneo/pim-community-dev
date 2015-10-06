@@ -1,11 +1,6 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
-
-{% oro_title_set({ params: { "%category.label%": form.vars.value.label } }) %}
-
-{% block head_script %}
-    {{ parent() }}
-    {% include "PimEnrichBundle:CategoryTree:_scripts.html.twig" %}
-{% endblock %}
+<script type="text/javascript">
+    require('pim/page-title').set({'category.label': '{{ form.vars.value.label }}'});
+</script>
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
@@ -15,4 +10,6 @@
             {% include 'PimEnrichBundle:CategoryTree:form.html.twig' with {'form': form} %}
         </div>
     </div>
+
+    {% include "PimEnrichBundle:CategoryTree:_scripts.html.twig" %}
 {% endblock %}
