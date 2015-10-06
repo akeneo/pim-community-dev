@@ -25,11 +25,9 @@ define(
                         FormBuilder.build(product.meta.form)
                             .then(function (form) {
                                 form.setData(product);
-
-                                mediator.trigger('pim_enrich:form:entity:post_fetch', product);
-
+                                form.trigger('pim_enrich:form:entity:post_fetch', product);
                                 form.setElement(this.$el).render();
-                            });
+                            }.bind(this));
                     }, this))
                 .fail(function (response) {
                     var errorView = new Error(response.responseJSON.message, response.status);
