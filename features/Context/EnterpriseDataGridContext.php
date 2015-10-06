@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Context\DataGridContext as BaseDataGridContext;
 
@@ -63,27 +64,47 @@ class EnterpriseDataGridContext extends BaseDataGridContext
     }
 
     /**
+     * @Then /^the cell "([^"]+)" in row "([^"]+)" should contain the thumbnail for channel "([^"]+)"(?: and locale "([^"]+)")?$/
+     *
+     * @param string      $column
+     * @param string      $code
+     * @param string      $channelCode
+     * @param string|null $localeCode
+     */
+    public function theCellShouldContainThumbnailForContext($column, $code, $channelCode, $localeCode = null)
+    {
+        $image = $this->datagrid->getCellImage($column, $code);
+        $this->checkCellThumbnail($image, $code, $channelCode, $localeCode);
+    }
+
+    /**
      * @Then /^the row "([^"]+)" should contain the thumbnail for channel "([^"]+)"(?: and locale "([^"]+)")?$/
      *
      * @param string      $code
      * @param string      $channelCode
      * @param string|null $localeCode
-     *
-     * @throws ExpectationException
      */
     public function theRowShouldContainThumbnailForContext($code, $channelCode, $localeCode = null)
     {
-        $cell  = $this->datagrid->getColumnNode('thumbnail', $code);
-        $image = $cell->find('css', 'img');
+        $image = $this->datagrid->getCellImage('thumbnail', $code);
+        $this->checkCellThumbnail($image, $code, $channelCode, $localeCode);
+    }
 
-        if (!$image) {
-            throw $this->createExpectationException(
-                sprintf('Column "thumbnail" of row "%s" contains no image.', $code)
-            );
-        }
-
+    /**
+     * Check if the specified thumbnail matches a channel and a locale
+     *
+     * @param NodeElement $image
+     * @param string      $code
+     * @param string      $channelCode
+     * @param string      $localeCode
+     *
+     * @throws ExpectationException
+     */
+    protected function checkCellThumbnail(NodeElement $image, $code, $channelCode, $localeCode)
+    {
         $thumbnailPath = $image->getAttribute('src');
-        if (false === strpos($thumbnailPath, sprintf('_%s.', $channelCode))) {
+
+        if (0 === preg_match(sprintf('`[_./]%s([_./]|$)`', $channelCode), $thumbnailPath)) {
             throw $this->createExpectationException(sprintf(
                 'Expecting thumbnail path of row "%s" to contain scope "%s", full path is "%s".',
                 $code,
@@ -92,7 +113,7 @@ class EnterpriseDataGridContext extends BaseDataGridContext
             ));
         }
 
-        if (null !== $localeCode && false === strpos($thumbnailPath, sprintf('_%s_', $localeCode))) {
+        if (null !== $localeCode && 0 === preg_match(sprintf('`[_./]%s([_./]|$)`', $localeCode), $thumbnailPath)) {
             throw $this->createExpectationException(sprintf(
                 'Expecting thumbnail path of row "%s" to contain locale code "%s", full path is "%s".',
                 $code,

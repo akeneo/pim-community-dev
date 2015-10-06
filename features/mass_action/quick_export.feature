@@ -26,7 +26,8 @@ Feature: Quick export many published products from datagrid
       | success | CSV published product quick export finished |
     Then I go on the last executed job resume of "csv_published_product_quick_export"
     And I should see "COMPLETED"
-    Then exported file of "csv_published_product_quick_export" should contain:
+    And the path of the exported file of "csv_published_product_quick_export" should be "/tmp/published_products_export_en_US_tablet.csv"
+    And exported file of "csv_published_product_quick_export" should contain:
     """
     sku;categories;color;enabled;family;groups;name-en_US;price-EUR;price-USD;size
     boots;winter_collection;black;1;boots;;"Amazing boots";20.00;25.00;40
