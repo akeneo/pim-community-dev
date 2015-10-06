@@ -18,6 +18,10 @@ Pim\Bundle\NotificationBundle\Entity\Notification:
             length: 255
         messageParams:
             type: array
+        comment:
+            type: string
+            length: 255
+            nullable: true
         created:
             type: datetime
         type:
