@@ -1,7 +1,7 @@
 /* global console */
 define(
-    ['jquery', 'oro/mediator', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
-    function ($, mediator, Navigation, LoadingMask, initSelect2) {
+    ['jquery', 'oro/mediator', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
+    function ($, mediator, LoadingMask, initSelect2) {
         'use strict';
 
         // Allow using select2 search box in jquery ui dialog

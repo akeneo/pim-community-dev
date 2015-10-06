@@ -9,9 +9,10 @@ define(
         'pim/product-manager',
         'pim/user-context',
         'pim/dialog',
-        'pim/page-title'
+        'pim/page-title',
+        'pim/error'
     ],
-    function ($, _, BaseController, FormBuilder, ProductManager, UserContext, Dialog, PageTitle) {
+    function ($, _, BaseController, FormBuilder, ProductManager, UserContext, Dialog, PageTitle, Error) {
 
         return BaseController.extend({
             id: 'product-edit-form',

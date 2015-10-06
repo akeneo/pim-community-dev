@@ -11,7 +11,7 @@
                     <br/>
                     <br/>
                     {{ 'category.or'|trans }}
-                    <a href="{{ path(route ~ '_categorytree_create', { parent: 0 }) }}">
+                    <a href="#{{ path(route ~ '_categorytree_create', { parent: 0 }) }}">
                         <span class="label link-label large">{{ 'category.create new'|trans }}</span>
                     </a>
                 {% endif %}
