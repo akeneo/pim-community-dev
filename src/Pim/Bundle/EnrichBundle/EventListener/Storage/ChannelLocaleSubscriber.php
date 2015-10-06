@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\EventListener\Storage;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
+use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
  * @author    Clement Gautier <clement.gautier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @todo      In 1.5 completeness manager become required
  */
 class ChannelLocaleSubscriber implements EventSubscriberInterface
 {
@@ -26,14 +28,22 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     /** @var BulkSaverInterface */
     protected $saver;
 
+    /** @var CompletenessGeneratorInterface */
+    protected $completeness;
+
     /**
-     * @param LocaleRepositoryInterface $repository
-     * @param BulkSaverInterface        $saver
+     * @param LocaleRepositoryInterface      $repository
+     * @param BulkSaverInterface             $saver
+     * @param CompletenessGeneratorInterface $completeness
      */
-    public function __construct(LocaleRepositoryInterface $repository, BulkSaverInterface $saver)
-    {
-        $this->repository = $repository;
-        $this->saver      = $saver;
+    public function __construct(
+        LocaleRepositoryInterface $repository,
+        BulkSaverInterface $saver,
+        CompletenessGeneratorInterface $completeness = null
+    ) {
+        $this->repository   = $repository;
+        $this->saver        = $saver;
+        $this->completeness = $completeness;
     }
 
     /**
@@ -89,6 +99,10 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
         foreach ($oldLocales as $locale) {
             $locale->removeChannel($channel);
             $updatedLocales[] = $locale;
+
+            if (null !== $this->completeness) {
+                $this->completeness->scheduleForChannelAndLocale($channel, $locale);
+            }
         }
 
         foreach ($newLocales as $locale) {

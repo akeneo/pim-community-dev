@@ -34,5 +34,6 @@ services:
         arguments:
             - @pim_catalog.repository.locale
             - @pim_catalog.saver.locale
+            - @pim_catalog.doctrine.completeness_generator
         tags:
             - { name: kernel.event_subscriber }

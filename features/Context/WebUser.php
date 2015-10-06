@@ -2294,6 +2294,47 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^the path of the exported file of "([^"]+)" should be "([^"]+)"$/
+     */
+    public function thePathOfTheExportedFileOfShouldBe($code, $path)
+    {
+        $executionPath = $this->getJobInstancePath($code);
+
+        if ($path !== $executionPath) {
+            throw $this->createExpectationException(
+                sprintf('Expected file name "%s" got "%s"', $path, $executionPath)
+            );
+        }
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getJobInstancePath($code)
+    {
+        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
+        $configuration = $this->getFixturesContext()->findEntity('JobConfiguration', [
+            'jobExecution' => $jobInstance->getJobExecutions()->first()
+        ]);
+
+        $step = $this->getMainContext()
+            ->getContainer()
+            ->get('akeneo_batch.connectors')
+            ->getJob($jobInstance)
+            ->getSteps()[0];
+
+        $context = json_decode(stripcslashes($configuration->getConfiguration()), true);
+
+        if (null !== $context) {
+            $step->setConfiguration($context);
+        }
+
+        return $step->getWriter()->getPath();
+    }
+
+    /**
      * @param string       $code
      * @param PyStringNode $csv
      *
@@ -2308,7 +2349,7 @@ class WebUser extends RawMinkContext
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
 
-        $path = $config['filePath'];
+        $path = $this->getJobInstancePath($code);
 
         if (!is_file($path)) {
             throw $this->createExpectationException(
