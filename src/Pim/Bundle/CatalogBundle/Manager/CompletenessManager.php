@@ -125,6 +125,8 @@ class CompletenessManager
      * of a channel
      *
      * @param ChannelInterface $channel
+     *
+     * @deprecated To be removed in 1.5
      */
     public function scheduleForChannel(ChannelInterface $channel)
     {

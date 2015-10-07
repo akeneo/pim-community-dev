@@ -39,7 +39,12 @@ class ProductAssociationFilter implements ProductFilterInterface
      */
     public function filter(ProductInterface $product, array $newValues)
     {
-        $originalValues = $this->getOriginalProduct($product);
+        $originalAssociations = $this->getOriginalAssociations($product);
+        $hasAssociation       = $this->hasNewAssociations($newValues);
+
+        if (!$hasAssociation && empty($originalAssociations)) {
+            return [];
+        }
 
         $result = [];
         foreach ($newValues as $code => $associations) {
@@ -49,9 +54,9 @@ class ProductAssociationFilter implements ProductFilterInterface
 
             foreach ($associations as $type => $field) {
                 foreach ($field as $key => $association) {
-                    $data = $this->compareAssociation($originalValues, $association, $type, $key);
+                    $data = $this->compareAssociation($originalAssociations, $association, $type, $key);
 
-                    if (!empty($data)) {
+                    if (null !== $data) {
                         $result[self::ASSOCIATIONS_FIELD][$type][$key] = $data;
                     }
                 }
@@ -62,21 +67,43 @@ class ProductAssociationFilter implements ProductFilterInterface
     }
 
     /**
+     * Has association(s) in new values ?
+     *
+     * @param array $convertedItem
+     *
+     * @return bool
+     */
+    protected function hasNewAssociations(array $convertedItem)
+    {
+        if (!isset($convertedItem['associations'])) {
+            return false;
+        }
+
+        foreach ($convertedItem['associations'] as $type => $association) {
+            if (!empty($association['products']) || !empty($association['groups'])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Compare product's association
      *
-     * @param array  $originalValues original associations
-     * @param array  $associations   product's associations
-     * @param string $type           type of association (PACK, SUBSTITUTION, etc)
-     * @param string $key            key of group (products or groups)
+     * @param array  $originalAssociations original associations
+     * @param array  $associations         product's associations
+     * @param string $type                 type of association (PACK, SUBSTITUTION, etc)
+     * @param string $key                  key of group (products or groups)
      *
      * @throws \LogicException
      *
      * @return array|null
      */
-    protected function compareAssociation(array $originalValues, array $associations, $type, $key)
+    protected function compareAssociation(array $originalAssociations, array $associations, $type, $key)
     {
         $comparator = $this->comparatorRegistry->getFieldComparator(self::ASSOCIATIONS_FIELD);
-        $diff = $comparator->compare($associations, $this->getOriginalAssociation($originalValues, $type, $key));
+        $diff = $comparator->compare($associations, $this->getOriginalAssociation($originalAssociations, $type, $key));
 
         if (null !== $diff) {
             return $diff;
@@ -86,25 +113,25 @@ class ProductAssociationFilter implements ProductFilterInterface
     }
 
     /**
-     * @param array  $originalValues original associations
-     * @param string $type           type of association (PACK, SUBSTITUTION, etc)
-     * @param string $key            key of group (products or groups)
+     * @param array  $originalAssociations original associations
+     * @param string $type                 type of association (PACK, SUBSTITUTION, etc)
+     * @param string $key                  key of group (products or groups)
      *
      * @return array
      */
-    protected function getOriginalAssociation(array $originalValues, $type, $key)
+    protected function getOriginalAssociation(array $originalAssociations, $type, $key)
     {
-        return !isset($originalValues[$type][$key]) ? [] : $originalValues[$type][$key];
+        return !isset($originalAssociations[$type][$key]) ? [] : $originalAssociations[$type][$key];
     }
 
     /**
-     * Normalize original product
+     * Normalize original associations
      *
      * @param ProductInterface $product
      *
      * @return array
      */
-    protected function getOriginalProduct(ProductInterface $product)
+    protected function getOriginalAssociations(ProductInterface $product)
     {
         $originalProduct = $this->normalizer->normalize($product, 'json', ['only_associations' => true]);
 

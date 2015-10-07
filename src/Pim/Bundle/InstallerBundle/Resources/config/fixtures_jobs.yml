@@ -123,7 +123,7 @@ jobs:
             mediaAttributes:
                 - 'pdf_description'
                 - 'picture'
-            enabledComparison: false
+            enabledComparison: true
 
     fixtures_job_yml:
         order: 100

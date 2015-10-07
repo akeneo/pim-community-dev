@@ -71,23 +71,24 @@ class FixturesContext extends RawMinkContext
     ];
 
     protected $entities = [
-        'Attribute'       => 'PimCatalogBundle:Attribute',
-        'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
-        'AttributeOption' => 'PimCatalogBundle:AttributeOption',
-        'Channel'         => 'PimCatalogBundle:Channel',
-        'Currency'        => 'PimCatalogBundle:Currency',
-        'Family'          => 'PimCatalogBundle:Family',
-        'Category'        => 'PimCatalogBundle:Category', // TODO: To remove
-        'ProductCategory' => 'PimCatalogBundle:Category',
-        'AssociationType' => 'PimCatalogBundle:AssociationType',
-        'JobInstance'     => 'AkeneoBatchBundle:JobInstance',
-        'User'            => 'PimUserBundle:User',
-        'Role'            => 'OroUserBundle:Role',
-        'UserGroup'       => 'OroUserBundle:Group',
-        'Locale'          => 'PimCatalogBundle:Locale',
-        'GroupType'       => 'PimCatalogBundle:GroupType',
-        'Product'         => 'Pim\Bundle\CatalogBundle\Model\Product',
-        'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
+        'Attribute'        => 'PimCatalogBundle:Attribute',
+        'AttributeGroup'   => 'PimCatalogBundle:AttributeGroup',
+        'AttributeOption'  => 'PimCatalogBundle:AttributeOption',
+        'Channel'          => 'PimCatalogBundle:Channel',
+        'Currency'         => 'PimCatalogBundle:Currency',
+        'Family'           => 'PimCatalogBundle:Family',
+        'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
+        'ProductCategory'  => 'PimCatalogBundle:Category',
+        'AssociationType'  => 'PimCatalogBundle:AssociationType',
+        'JobInstance'      => 'AkeneoBatchBundle:JobInstance',
+        'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
+        'User'             => 'PimUserBundle:User',
+        'Role'             => 'OroUserBundle:Role',
+        'UserGroup'        => 'OroUserBundle:Group',
+        'Locale'           => 'PimCatalogBundle:Locale',
+        'GroupType'        => 'PimCatalogBundle:GroupType',
+        'Product'          => 'Pim\Bundle\CatalogBundle\Model\Product',
+        'ProductGroup'     => 'Pim\Bundle\CatalogBundle\Entity\Group',
     ];
 
     protected $placeholderValues = [];
@@ -1032,6 +1033,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * We use the tag |NL| for \n in gherkin
+     *
      * @param string $lang
      * @param string $scope
      * @param string $attribute
@@ -1042,6 +1045,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
+        $value = str_replace('|NL|', "\n", $value);
         $this->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang], $scope);
 

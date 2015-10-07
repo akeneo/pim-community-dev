@@ -377,8 +377,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
         $this->csv->setFlags(
             \SplFileObject::READ_CSV   |
             \SplFileObject::READ_AHEAD |
-            \SplFileObject::SKIP_EMPTY |
-            \SplFileObject::DROP_NEW_LINE
+            \SplFileObject::SKIP_EMPTY
         );
         $this->csv->setCsvControl($this->delimiter, $this->enclosure, $this->escape);
         $this->fieldNames = $this->csv->fgetcsv();

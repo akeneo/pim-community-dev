@@ -4,7 +4,6 @@ parameters:
     pim_base_connector.writer.doctrine.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer
 
     pim_base_connector.writer.file.class: Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
-    pim_base_connector.writer.file.product.class: Pim\Bundle\BaseConnectorBundle\Writer\File\ProductWriter
 
     pim_base_connector.writer.dummy.class: Pim\Bundle\BaseConnectorBundle\Writer\DummyWriter
     pim_base_connector.writer.file.csv.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter
@@ -14,10 +13,6 @@ parameters:
 services:
     pim_base_connector.writer.file:
         class: %pim_base_connector.writer.file.class%
-
-    pim_base_connector.writer.product_file:
-        parent: pim_base_connector.writer.file
-        class: %pim_base_connector.writer.file.product.class%
 
     pim_base_connector.writer.dummy:
         class: %pim_base_connector.writer.dummy.class%
