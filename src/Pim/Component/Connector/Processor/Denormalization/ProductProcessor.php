@@ -56,6 +56,9 @@ class ProductProcessor extends AbstractProcessor
     /** @var bool */
     protected $enabledComparison = true;
 
+    /** @var string */
+    protected $decimalSeparator = '.';
+
     /** @var ProductFilterInterface */
     protected $productFilter;
 
@@ -79,12 +82,12 @@ class ProductProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->arrayConverter  = $arrayConverter;
-        $this->builder         = $builder;
-        $this->updater         = $updater;
-        $this->validator       = $validator;
-        $this->detacher        = $detacher;
-        $this->productFilter   = $productFilter;
+        $this->arrayConverter = $arrayConverter;
+        $this->builder        = $builder;
+        $this->updater        = $updater;
+        $this->validator      = $validator;
+        $this->detacher       = $detacher;
+        $this->productFilter  = $productFilter;
     }
 
     /**
@@ -242,6 +245,26 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
+     * Set the separator for decimal
+     *
+     * @param string decimalSeparator
+     */
+    public function setDecimalSeparator($decimalSeparator)
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    /**
+     * Get the delimiter for decimal
+     *
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
@@ -279,6 +302,13 @@ class ProductProcessor extends AbstractProcessor
                     'help'  => 'pim_connector.import.enabledComparison.help'
                 ]
             ],
+            'decimalSeparator' => [
+                'type'    => 'choice',
+                'options' => [
+                    'label' => 'pim_connector.import.decimalSeparator.label',
+                    'help'  => 'pim_connector.import.decimalSeparator.help'
+                ]
+            ]
         ];
     }
 
@@ -391,7 +421,8 @@ class ProductProcessor extends AbstractProcessor
         return [
             'mapping'           => $this->getMapping(),
             'default_values'    => $this->getDefaultValues(),
-            'with_associations' => false
+            'with_associations' => false,
+            'decimal_separator' => $this->decimalSeparator,
         ];
     }
 

@@ -50,7 +50,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_has_extra_configuration()
     {
-        $this->getConfigurationFields()->shouldHaveCount(5);
+        $this->getConfigurationFields()->shouldHaveCount(6);
     }
 
     function it_updates_an_existing_product(
@@ -103,9 +103,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
         $converterOptions = [
-            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true],
-            "with_associations" => false
+            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values'    => ['enabled' => true],
+            'with_associations' => false,
+            'decimal_separator' => '.'
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -199,9 +200,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
         $converterOptions = [
-            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true],
-            "with_associations" => false
+            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values'    => ['enabled' => true],
+            'with_associations' => false,
+            'decimal_separator' => '.'
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -296,9 +298,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
         $converterOptions = [
-            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true],
-            "with_associations" => false
+            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values'    => ['enabled' => true],
+            'with_associations' => false,
+            'decimal_separator' => '.'
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -395,9 +398,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
         $converterOptions = [
-            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true],
-            "with_associations" => false
+            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values' => ['enabled' => true],
+            'with_associations' => false,
+            'decimal_separator' => '.'
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -463,9 +467,10 @@ class ProductProcessorSpec extends ObjectBehavior
         ];
 
         $converterOptions = [
-            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true],
-            "with_associations" => false
+            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values' => ['enabled' => true],
+            'with_associations' => false,
+            'decimal_separator' => '.'
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -530,9 +535,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
         $converterOptions = [
-            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true],
-            "with_associations" => false
+            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values' => ['enabled' => true],
+            'with_associations' => false,
+            'decimal_separator' => '.'
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -629,9 +635,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
         $converterOptions = [
-            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true],
-            "with_associations" => false
+            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values'    => ['enabled' => true],
+            'with_associations' => false,
+            'decimal_separator' => '.'
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -732,9 +739,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
         $converterOptions = [
-            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
-            "default_values" => ["enabled" => true],
-            "with_associations" => false
+            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values' => ['enabled' => true],
+            'with_associations' => false,
+            'decimal_separator' => '.'
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
