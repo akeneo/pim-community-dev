@@ -89,9 +89,9 @@ class ProductDraftManager
      *
      * @param ProductDraftInterface $productDraft
      */
-    public function approve(ProductDraftInterface $productDraft)
+    public function approve(ProductDraftInterface $productDraft, array $context = [])
     {
-        $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, new GenericEvent($productDraft));
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, new GenericEvent($productDraft, $context));
 
         $product = $productDraft->getProduct();
         $this->applier->apply($product, $productDraft);
@@ -99,7 +99,7 @@ class ProductDraftManager
         $this->productDraftRemover->remove($productDraft, ['flush' => false]);
         $this->workingCopySaver->save($product);
 
-        $this->dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, new GenericEvent($productDraft));
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, new GenericEvent($productDraft, $context));
     }
 
     /**
@@ -107,9 +107,9 @@ class ProductDraftManager
      *
      * @param ProductDraftInterface $productDraft
      */
-    public function refuse(ProductDraftInterface $productDraft)
+    public function refuse(ProductDraftInterface $productDraft, array $context = [])
     {
-        $this->dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, new GenericEvent($productDraft));
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, new GenericEvent($productDraft, $context));
 
         if (!$productDraft->isInProgress()) {
             $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
@@ -118,7 +118,7 @@ class ProductDraftManager
             $this->productDraftRemover->remove($productDraft);
         }
 
-        $this->dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, new GenericEvent($productDraft));
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, new GenericEvent($productDraft, $context));
     }
 
     /**

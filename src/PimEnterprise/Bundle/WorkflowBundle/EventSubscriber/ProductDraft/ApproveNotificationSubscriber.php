@@ -68,6 +68,15 @@ class ApproveNotificationSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $context = [
+            'actionType'       => 'pimee_workflow_product_draft_notification_approve',
+            'showReportButton' => false,
+        ];
+
+        if ($event->hasArgument('comment')) {
+            $context['comment'] = $event->getArgument('comment');
+        }
+
         $this->notifier->notify(
             [$productDraft->getAuthor()],
             'pimee_workflow.product_draft.notification.approve',
@@ -79,10 +88,7 @@ class ApproveNotificationSubscriber implements EventSubscriberInterface
                     '%product%' => $productDraft->getProduct()->getIdentifier()->getData(),
                     '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
                 ],
-                'context'       => [
-                    'actionType'       => 'pimee_workflow_product_draft_notification_approve',
-                    'showReportButton' => false
-                ]
+                'context'       => $context
             ]
         );
     }

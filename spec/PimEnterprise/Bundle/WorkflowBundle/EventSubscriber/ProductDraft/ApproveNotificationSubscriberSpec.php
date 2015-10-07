@@ -66,6 +66,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         ProductValueInterface $identifier
     ) {
         $event->getSubject()->willReturn($draft);
+        $event->hasArgument('comment')->willReturn(false);
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
         $context->getUser()->willReturn($owner);
@@ -86,6 +87,45 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
                 'context'       => [
                     'actionType'       => 'pimee_workflow_product_draft_notification_approve',
                     'showReportButton' => false
+                ]
+            ]
+        )->shouldBeCalled();
+
+        $this->send($event);
+    }
+
+    function it_sends_on_product_draft_with_a_comment(
+        $notifier,
+        $context,
+        GenericEvent $event,
+        UserInterface $owner,
+        ProductDraftInterface $draft,
+        ProductInterface $product,
+        ProductValueInterface $identifier
+    ) {
+        $event->getSubject()->willReturn($draft);
+        $event->hasArgument('comment')->willReturn(true);
+        $event->getArgument('comment')->willReturn('Good job Mary!');
+        $owner->getFirstName()->willReturn('John');
+        $owner->getLastName()->willReturn('Doe');
+        $context->getUser()->willReturn($owner);
+        $draft->getAuthor()->willReturn('author');
+        $draft->getProduct()->willReturn($product);
+        $product->getId()->willReturn(42);
+        $product->getIdentifier()->willReturn($identifier);
+        $identifier->getData()->willReturn('tshirt');
+
+        $notifier->notify(
+            ['author'],
+            'pimee_workflow.product_draft.notification.approve',
+            'success',
+            [
+                'route'         => 'pim_enrich_product_edit',
+                'routeParams'   => ['id' => 42],
+                'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
+                'context'       => [
+                    'actionType' => 'pimee_workflow_product_draft_notification_approve',
+                    'comment'    => 'Good job Mary!',
                 ]
             ]
         )->shouldBeCalled();
