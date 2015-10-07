@@ -662,6 +662,7 @@ class AssertionContext extends RawMinkContext
             'success' => 'icon-ok',
             'warning' => 'icon-warning-sign',
             'error'   => 'icon-remove',
+            'add'     => 'icon-plus',
         ];
 
         foreach ($table->getHash() as $data) {

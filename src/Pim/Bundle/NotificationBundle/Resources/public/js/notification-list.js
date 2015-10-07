@@ -98,7 +98,14 @@ define(
             },
 
             getIcon: function (type) {
-                return 'success' === type ? 'ok' : ('warning' === type ? 'warning-sign' : 'remove');
+                var icons = {
+                    'success': 'ok',
+                    'warning': 'warning-sign',
+                    'error':   'remove',
+                    'add':     'plus'
+                };
+
+                return _.result(icons, type, 'remove');
             }
         });
 
