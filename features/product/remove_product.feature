@@ -20,15 +20,15 @@ Feature: Remove a product
 
   Scenario: Successfully delete a product from the grid
     Given I am on the products page
-    Then I should see products boots
+    Then I should see product boots
     When I click on the "Delete the product" action of the row which contains "boots"
     Then I should see "Delete confirmation"
-    And I confirm the removal
-    Then I should not see product CD player
+    When I confirm the removal
+    Then I should not see product boots
 
   Scenario: Successfully delete a product from the edit form
     Given I am on the "boots" product page
     And I press the "Delete" button
     Then I should see "Confirm deletion"
-    And I confirm the removal
+    When I confirm the removal
     Then I should not see product boots
