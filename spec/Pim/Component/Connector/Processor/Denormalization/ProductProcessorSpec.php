@@ -11,6 +11,8 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Localizer\ConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -27,7 +29,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ValidatorInterface $productValidator,
         StepExecution $stepExecution,
         ObjectDetacherInterface $productDetacher,
-        ProductFilterInterface $productFilter
+        ProductFilterInterface $productFilter,
+        LocalizedAttributeConverterInterface $localizedConverter
     ) {
         $this->beConstructedWith(
             $arrayConverter,
@@ -36,7 +39,8 @@ class ProductProcessorSpec extends ObjectBehavior
             $productUpdater,
             $productValidator,
             $productDetacher,
-            $productFilter
+            $productFilter,
+            $localizedConverter
         );
         $this->setStepExecution($stepExecution);
     }
@@ -59,6 +63,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
+        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList
     ) {
@@ -106,7 +111,6 @@ class ProductProcessorSpec extends ObjectBehavior
             'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
             'default_values'    => ['enabled' => true],
             'with_associations' => false,
-            'decimal_separator' => '.'
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
@@ -135,6 +139,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -156,6 +161,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
+        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList
     ) {
@@ -202,12 +208,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $converterOptions = [
             'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
             'default_values'    => ['enabled' => true],
-            'with_associations' => false,
-            'decimal_separator' => '.'
+            'with_associations' => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
+
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
 
         $preFilteredData = $filteredData = [
             'family' => 'Tshirt',
@@ -254,6 +261,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
+        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList
     ) {
@@ -300,12 +308,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $converterOptions = [
             'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
             'default_values'    => ['enabled' => true],
-            'with_associations' => false,
-            'decimal_separator' => '.'
+            'with_associations' => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
+
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -353,6 +362,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
+        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList
     ) {
@@ -400,12 +410,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $converterOptions = [
             'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
             'default_values' => ['enabled' => true],
-            'with_associations' => false,
-            'decimal_separator' => '.'
+            'with_associations' => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
+
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -445,10 +456,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
-    function it_skips_a_product_when_identifier_is_empty(
-        $arrayConverter,
-        $productRepository
-    ) {
+    function it_skips_a_product_when_identifier_is_empty($arrayConverter, $productRepository, $localizedConverter)
+    {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
 
         $originalData = [
@@ -469,12 +478,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $converterOptions = [
             'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
             'default_values' => ['enabled' => true],
-            'with_associations' => false,
-            'decimal_separator' => '.'
+            'with_associations' => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
+
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
 
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
@@ -491,6 +501,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productDetacher,
         $productFilter,
+        $localizedConverter,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -537,12 +548,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $converterOptions = [
             'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
             'default_values' => ['enabled' => true],
-            'with_associations' => false,
-            'decimal_separator' => '.'
+            'with_associations' => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
+
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -591,6 +603,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productDetacher,
         $productFilter,
+        $localizedConverter,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -637,12 +650,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $converterOptions = [
             'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
             'default_values'    => ['enabled' => true],
-            'with_associations' => false,
-            'decimal_separator' => '.'
+            'with_associations' => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
+
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -695,6 +709,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productBuilder,
         $productUpdater,
         $productFilter,
+        $localizedConverter,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -741,12 +756,13 @@ class ProductProcessorSpec extends ObjectBehavior
         $converterOptions = [
             'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
             'default_values' => ['enabled' => true],
-            'with_associations' => false,
-            'decimal_separator' => '.'
+            'with_associations' => false
         ];
         $arrayConverter
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
+
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -768,6 +784,194 @@ class ProductProcessorSpec extends ObjectBehavior
                     'scope' =>  'mobile',
                     'data' => 'My description'
                 ]
+            ]
+        ];
+
+        $productFilter->filter($product, $filteredData)->willReturn([]);
+
+        $productUpdater
+            ->update($product, $filteredData)->shouldNotBeCalled();
+
+        $this
+            ->process($originalData)
+            ->shouldReturn(null);
+    }
+
+    function it_updates_an_existing_product_with_localized_value(
+        $arrayConverter,
+        $productRepository,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
+        $localizedConverter,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+        $this->setDecimalSeparator(',');
+
+        $originalData = [
+            'sku'    => 'tshirt',
+            'number' => '10.00'
+        ];
+        $postConverterData = $convertedData = [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope'  =>  null,
+                    'data'   => 'tshirt'
+                ],
+            ],
+            'number' => [
+                [
+                    'locale' => null,
+                    'scope'  =>  null,
+                    'data'   => '10,45'
+                ]
+            ]
+        ];
+        $converterOptions = [
+            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values'    => ['enabled' => true],
+            'with_associations' => false,
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'number' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => '10.45'
+                ]
+            ]
+        ];
+
+        $postConverterData['number'][0]['data'] = '10.45';
+        $localizedConverter->convert($convertedData, ['decimal_separator' => ','])->willReturn($postConverterData);
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $productValidator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $this
+            ->process($originalData)
+            ->shouldReturn($product);
+    }
+
+    function it_skips_a_product_if_decimal_has_not_the_expected_format(
+        $arrayConverter,
+        $localizedConverter,
+        $productRepository,
+        ProductInterface $product
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $originalData = [
+            'sku'    => 'tshirt',
+            'number' => '10.00'
+        ];
+        $convertedData = [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope'  =>  null,
+                    'data'   => 'tshirt'
+                ],
+            ],
+            'number' => [
+                [
+                    'locale' => null,
+                    'scope'  =>  null,
+                    'data'   => '10,45'
+                ]
+            ]
+        ];
+        $converterOptions = [
+            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values'    => ['enabled' => true],
+            'with_associations' => false,
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willThrow(new \LogicException());
+
+        $this
+            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->during(
+                'process',
+                [$originalData]
+            );
+    }
+
+    function it_skips_a_product_when_there_is_nothing_to_update_with_localized_value(
+        $arrayConverter,
+        $productRepository,
+        $productBuilder,
+        $productUpdater,
+        $productFilter,
+        $localizedConverter,
+        ProductInterface $product
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $this->setDecimalSeparator(',');
+
+        $productBuilder->createProduct('tshirt', null)->willReturn($product);
+
+        $originalData = [
+            'sku' => 'tshirt',
+            'number' => '10.45',
+        ];
+        $postConvertedData = $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'number' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => '10,45'
+                ],
+            ]
+        ];
+
+        $converterOptions = [
+            'mapping' => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values' => ['enabled' => true],
+            'with_associations' => false
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $postConvertedData['number'][0]['data'] = '10.45';
+        $localizedConverter->convert($convertedData, ['decimal_separator' => ','])->willReturn($postConvertedData);
+
+        $filteredData = [
+            'number' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => '10.45'
+                ],
             ]
         ];
 
