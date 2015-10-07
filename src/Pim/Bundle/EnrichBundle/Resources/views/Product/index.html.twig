@@ -1,19 +1,7 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set title = 'products'|trans %}
-
-{% block head_script %}
-    {{ parent() }}
-    <script type="text/javascript">
-        require(['jquery', 'pim/user-context'], function ($, UserContext) {
-            'use strict';
-            UserContext.set('catalogLocale', '{{ dataLocale.code }}');
-        });
-
-        sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
-    </script>
-{% endblock %}
 
 {% block content %}
 
@@ -22,11 +10,26 @@
     {% endset %}
 
     {% set subtitle %}
-        {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
-            'locales':           locales,
-            'currentLocaleCode': dataLocale.code,
-            'routeName':         'pim_enrich_product_index'
-        } only %}
+        <div id="locale-switcher" class="btn-group sub-title">
+            <span class="product-name dropdown-toggle" data-toggle="dropdown">
+                {{ dataLocale.code|flag }}
+                <i class="icon-caret-down"></i>
+            </span>
+            <ul class="dropdown-menu">
+                {% for locale in locales %}
+                    <li class="{{ locale.code == dataLocale.code ? 'active' : '' }}">
+                        <a href="#{{ path('pim_enrich_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale_label(locale.code) }}">
+                            <span class="indicator">
+                                {% if locale.code == dataLocale.code %}
+                                    <i class="icon-circle"></i>
+                                {% endif %}
+                            </span>
+                            {{ locale.code|flag }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
         {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': 'product-grid' })) }}
     {% endset %}
 
@@ -49,6 +52,23 @@
                 {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
             </div>
         </div>
+    </div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/user-context', 'jquery.sidebarize'],
+            function ($, UserContext) {
+                'use strict';
+                UserContext.set('catalogLocale', '{{ dataLocale.code }}');
+                $(function() {
+                    $('.has-sidebar').sidebarize();
+                });
+            }
+        );
+
+        sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
+    </script>
+
     {% else %}
         <div class="row-fluid">
             <div id="product-grid">

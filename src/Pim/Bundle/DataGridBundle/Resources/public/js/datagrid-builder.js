@@ -10,7 +10,6 @@ define(function (require) {
     var mediator = require('oro/mediator');
     var PageableCollection = require('oro/pageable-collection');
     var Grid = require('oro/datagrid/grid');
-    var GridRouter = require('oro/datagrid/router');
     var GridViewsView = require('oro/datagrid/grid-views/view');
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
@@ -101,11 +100,6 @@ define(function (require) {
                 this.grid = grid;
                 this.$el.append(grid.render().$el);
 
-                if (options.routerEnabled !== false) {
-                    // register router
-                    new GridRouter({collection: collection});
-                }
-
                 // create grid view
                 options = methods.combineGridViewsOptions.call(this);
                 $(gridGridViewsSelector).append((new GridViewsView(_.extend({collection: collection}, options))).render().$el);
@@ -180,8 +174,7 @@ define(function (require) {
                     massActions: massActions,
                     toolbarOptions: metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,
-                    entityHint: metadata.options.entityHint,
-                    routerEnabled: _.isUndefined(metadata.options.routerEnabled) ? true : metadata.options.routerEnabled
+                    entityHint: metadata.options.entityHint
                 };
             },
 

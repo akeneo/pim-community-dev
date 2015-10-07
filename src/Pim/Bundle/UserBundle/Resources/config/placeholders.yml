@@ -1,9 +1,0 @@
-placeholders:
-    user_menu:
-        items:
-            menu_user:
-                order: 100
-
-items:
-   menu_user:
-        template: PimUserBundle:Menu:menuProfile.html.twig

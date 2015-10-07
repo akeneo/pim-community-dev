@@ -11,19 +11,15 @@ define(
     [
         'jquery',
         'underscore',
-        'oro/mediator',
         'pim/form',
-        'oro/navigation',
-        'routing',
+        'pim/router',
         'oro/messenger'
     ],
     function (
         $,
         _,
-        mediator,
         BaseForm,
-        Navigation,
-        Routing,
+        router,
         messenger
     ) {
         return BaseForm.extend({
@@ -49,9 +45,8 @@ define(
                             _.__('pim_enrich.entity.product.info.update_successful'),
                             {hashNavEnabled: true}
                         );
-                        var navigation = Navigation.getInstance();
-                        navigation.setLocation(Routing.generate('pim_enrich_product_index'));
-                    }.bind(this))
+                        router.redirectToRoute('pim_enrich_product_index');
+                    }, this))
                     .fail(function () {
                         messenger.notificationFlashMessage(
                             'error',

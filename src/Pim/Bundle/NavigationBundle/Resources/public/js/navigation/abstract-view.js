@@ -1,7 +1,7 @@
 /* jshint browser:true */
 /* global define */
-define(['underscore', 'backbone', 'oro/navigation', 'oro/navigation/dotmenu/view'],
-function(_, Backbone, Navigation, DotmenuView) {
+define(['underscore', 'backbone', 'oro/navigation/dotmenu/view', 'pim/router'],
+function(_, Backbone, DotmenuView, router) {
     'use strict';
 
     /**
@@ -67,14 +67,7 @@ function(_, Backbone, Navigation, DotmenuView) {
          * @return {Object}
          */
         getCurrentPageItemData: function() {
-            var url = '',
-                navigation = Navigation.getInstance();
-            if (navigation) {
-                url = navigation.getHashUrl(true, true);
-            } else {
-                url = window.location.pathname + window.location.search + window.location.hash;
-            }
-            return {url: url};
+            return { url: Backbone.history.getFragment() };
         },
 
         /**
@@ -85,12 +78,7 @@ function(_, Backbone, Navigation, DotmenuView) {
          */
         getNewItemData: function(el) {
             var itemData = this.getCurrentPageItemData();
-            if (el.data('url')) {
-                itemData['url'] = el.data('url');
-            }
-            itemData['title_rendered'] = el.data('title-rendered') ? el.data('title-rendered') : document.title;
-            itemData['title_rendered_short'] = el.data('title-rendered-short') ? el.data('title-rendered-short') : document.title;
-            itemData['title'] = el.data('title') ? JSON.stringify(el.data('title')) : '{"template": "' + document.title + '"}';
+            itemData['title'] = document.title;
             return itemData;
         },
 
