@@ -133,7 +133,7 @@ class MassUploadController
             $originalFilename = $file->getClientOriginalName();
             $parsedFilename   = $this->uploadChecker->getParsedFilename($originalFilename);
             $targetDir        = $this->getUploadContext()->getTemporaryUploadDirectory();
-            $uploaded         = $file->move($targetDir, $parsedFilename->getCleanFilename());
+            $uploaded         = $file->move($targetDir, $parsedFilename->getRawFilename());
         }
 
         if (null === $uploaded) {
