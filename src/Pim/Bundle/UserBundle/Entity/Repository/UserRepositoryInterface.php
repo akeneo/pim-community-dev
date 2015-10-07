@@ -20,4 +20,13 @@ interface UserRepositoryInterface extends IdentifiableObjectRepositoryInterface,
      * @return int
      */
     public function countAll();
+
+    /**
+     * Return users who are AT LEAST in one of the given $groupIds
+     *
+     * @param array $groupIds
+     *
+     * @return array
+     */
+    public function findByGroups($groupIds);
 }

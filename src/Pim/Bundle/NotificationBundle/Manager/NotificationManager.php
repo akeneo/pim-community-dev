@@ -36,8 +36,6 @@ class NotificationManager
     protected $userProvider;
 
     /**
-     * Construct
-     *
      * @param EntityManager           $em
      * @param EntityRepository        $repository
      * @param NotificationFactory     $notificationFactory
@@ -62,10 +60,16 @@ class NotificationManager
      * Send a user notification to given users
      *
      * @param array  $users   Users which have to be notified
-     *                        ['userName', ...] or [UserInterface, ...]
+     *                        [(string) 'userName', ...] or UserInterface[]
      * @param string $message Message which has to be sent
      * @param string $type    success (default) | warning | error
-     * @param array  $options ['route' => '', 'routeParams' => [], 'messageParams' => [], 'context => '']
+     * @param array  $options [
+     *                        'route'         => ''|null,
+     *                        'routeParams'   => [''],
+     *                        'messageParams' => [''],
+     *                        'context'       => '',
+     *                        'comment'       => ''|null,
+     *                        ]
      *
      * @return NotificationManager
      */
@@ -74,7 +78,6 @@ class NotificationManager
         $notification = $this->notificationFactory->createNotification($message, $type, $options);
 
         $userNotifications = [];
-
         foreach ($users as $user) {
             try {
                 $user = is_object($user) ? $user : $this->userProvider->loadUserByUsername($user);
