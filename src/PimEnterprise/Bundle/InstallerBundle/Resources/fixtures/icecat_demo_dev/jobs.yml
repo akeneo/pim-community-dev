@@ -253,7 +253,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products-quick-export.csv
+            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
     csv_published_product_quick_export:
         connector: Akeneo Mass Edit Connector
         alias: csv_published_product_quick_export
@@ -263,7 +263,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/published-products-quick-export.csv
+            filePath:   /tmp/published_products_export_%locale%_%scope%_%datetime%.csv
     approve_product_draft:
         connector: Akeneo CSV Connector
         alias:     approve_product_draft

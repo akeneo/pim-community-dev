@@ -33,4 +33,4 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/published-products-quick-export.csv
+            filePath:   /tmp/published_products_export_%locale%_%scope%.csv

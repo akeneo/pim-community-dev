@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\ProductAssetBundle\Datagrid\Extension\Formatter\Property\Asset;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
@@ -85,15 +94,7 @@ class ThumbnailProperty extends TwigProperty
             return null;
         }
 
-        $fileInfo = $entity->getFileForContext($channel, $locale);
-        if (null === $fileInfo) {
-            $reference = $entity->getReference($locale);
-            if ($reference instanceof ReferenceInterface) {
-                $fileInfo = $reference->getFileInfo();
-            }
-        }
-
-        return $fileInfo;
+        return $entity->getFileForContext($channel, $locale);
     }
 
     /**

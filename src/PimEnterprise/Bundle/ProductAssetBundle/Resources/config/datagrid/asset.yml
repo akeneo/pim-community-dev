@@ -107,7 +107,7 @@ datagrid:
                     type: %pimee_product_asset.filter.asset_category_filter.class%::DEFAULT_TYPE
         actions:
             edit:
-                type:      tab-redirect
+                type:      navigate
                 label:     pimee_product_asset.enrich_asset.grid.edit
                 tab:       pim_product_asset_properties
                 icon:      edit
