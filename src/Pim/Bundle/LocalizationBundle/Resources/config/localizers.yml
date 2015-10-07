@@ -1,0 +1,6 @@
+parameters:
+    pim_localization.localizer.registry.class: Pim\Component\Localization\Localizer\LocalizerRegistry
+
+services:
+    pim_localization.localizer.registry:
+        class: %pim_localization.localizer.registry.class%

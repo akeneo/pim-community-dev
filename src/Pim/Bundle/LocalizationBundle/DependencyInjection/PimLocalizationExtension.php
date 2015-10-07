@@ -30,5 +30,6 @@ class PimLocalizationExtension extends Extension
         $container->setParameter('pim_localization.decimal_separators', $decimalSeparators);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('localizers.yml');
     }
 }
