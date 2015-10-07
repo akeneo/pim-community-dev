@@ -5,6 +5,7 @@
     <div class="metas">
         <span class="title"><%= actionTypeMessage %></span>
         <span class="message"><%= message %></span>
+        <% if (comment) { %> <span class="comment"><%= comment %></span> <% } %>
     </div>
     <time><%= createdAt %></time>
     <i class="icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
