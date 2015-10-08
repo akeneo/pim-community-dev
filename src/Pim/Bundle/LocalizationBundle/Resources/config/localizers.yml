@@ -3,10 +3,17 @@ parameters:
     pim_localization.localizer.number.class:    Pim\Component\Localization\Localizer\NumberLocalizer
     pim_localization.localizer.price.class:     Pim\Component\Localization\Localizer\PriceLocalizer
     pim_localization.localizer.metric.class:    Pim\Component\Localization\Localizer\MetricLocalizer
+    pim_localization.localizer.converter.class: Pim\Component\Localization\Localizer\LocalizedAttributeConverter
 
 services:
     pim_localization.localizer.registry:
         class: %pim_localization.localizer.registry.class%
+
+    pim_localization.localizer.converter:
+        class: %pim_localization.localizer.converter.class%
+        arguments:
+            - '@pim_localization.localizer.registry'
+            - '@pim_catalog.repository.attribute'
 
     pim_localization.localizer.number:
         class: %pim_localization.localizer.number.class%
