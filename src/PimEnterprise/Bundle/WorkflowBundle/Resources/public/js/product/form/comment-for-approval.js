@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Form to comment when product is send for approval
+ * Form to comment when product is sent for approval
  *
  * @author Willy MESNAGE <willy.mesnage@akeneo.com>
  */
