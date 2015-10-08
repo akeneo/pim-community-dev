@@ -1,0 +1,104 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_row %}
+    {% spaceless %}
+        <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+            {% if label is not sameas(false) %}
+            {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+            {% endif %}
+            <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block widget_attributes %}
+    {% if errors|length > 0 %}
+        {% set attr = attr|merge({'class': attr.class is defined ? attr.class ~ ' error' : 'error'}) %}
+    {% endif %}
+    {{ parent() }}
+{% endblock widget_attributes %}
+
+{% block widget_container_attributes %}
+    {% if errors|length > 0 %}
+        {% set attr = attr|merge({'class': attr.class is defined ? attr.class ~ ' error' : 'error'}) %}
+    {% endif %}
+    {{ parent() }}
+{% endblock widget_container_attributes %}
+
+{% block form_errors %}
+    {%- spaceless -%}
+        {% if errors|length > 0 %}
+            {% if form.parent %}
+                {% set combinedError = '' %}
+                {% for error in errors %}
+                    {% set error = error.messagePluralization is null
+                        ? error.messageTemplate|trans(error.messageParameters, 'validators')
+                        : error.messageTemplate|transchoice(error.messagePluralization, error.messageParameters, 'validators') %}
+                    {% set combinedError = (combinedError != '') ? combinedError ~ '; ' ~ error : error %}
+                {% endfor %}
+                <span class="validation-failed">{{ combinedError }}</span>
+            {% else %}
+                {{ parent() }}
+            {% endif %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block date_widget %}
+    {% spaceless %}
+        {% set type = 'text' %}
+        {% if widget == 'single_text' %}
+            {{ block('form_widget_simple')|raw }}
+        {% else %}
+            <div {{ block('widget_container_attributes') }}>
+                {{ date_pattern|replace({
+                '{{ year }}':  form_widget(form.year),
+                '{{ month }}': form_widget(form.month),
+                '{{ day }}':   form_widget(form.day),
+                })|raw }}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock date_widget %}
+
+{% block choice_widget_expanded %}
+    {% spaceless %}
+        {% set attr = attr|merge({'class': attr.class is defined ? attr.class ~ ' horizontal' : 'horizontal'}) %}
+        {% set attr = attr|merge({'class': attr.class ~ ' validate-group'}) %}
+        <div {{ block('widget_container_attributes') }}>
+            {% for child in form %}
+                <div class="oro-clearfix">
+                    {{ form_widget(child) }}
+                    {{ form_label(child) }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endspaceless %}
+{% endblock choice_widget_expanded %}
+
+{% block choice_widget_options %}
+    {% spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                {% set label = choice.label|trans({}, translation_domain) %}
+                <option {{ block('choice_widget_option_attributes') }} value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{% if (configs.is_safe is defined and configs.is_safe) %}{{ label|raw }}{% else %}{{ label }}{% endif %}</option>
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock choice_widget_options %}
+
+{% block choice_widget_option_attributes %}
+{% spaceless %}
+    {% if choice.label.attr is defined and choice.label.attr|length > 0 %}
+        {% for attrname, attrvalue in choice.label.attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
+    {% endif %}
+{% endspaceless %}
+{% endblock choice_widget_option_attributes %}

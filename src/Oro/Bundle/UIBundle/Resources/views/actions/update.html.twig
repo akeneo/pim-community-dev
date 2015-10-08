@@ -1,0 +1,65 @@
+{% extends bap.layout%}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% block page_container %}
+    {% block content %}
+        <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }}
+              method="post" class="unspaced">
+            <div class="navigation clearfix navbar-extra">
+                <div class="row">
+                    <div class="pull-right">
+                        <div class="pull-right">
+                            {% block navButtons %}{% endblock navButtons %}
+
+                            <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
+                        </div>
+                    </div>
+                    <div class="span10">
+                        {% block pageHeader %}
+                            <div class="clearfix customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %}">
+                                {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
+                                    <div class="visual">
+                                        <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/img/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+                                    </div>
+                                {% endif %}
+                                <div class="pull-left">
+                                    <div class="clearfix">
+                                        {% block breadcrumbs %}
+                                            <div class="pull-left">
+                                                <div class="sub-title"><a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a></div>
+                                                <span class="separator">/</span>
+                                                {% if breadcrumbs.additional is defined %}
+                                                    {% for breadcrumb in breadcrumbs.additional %}
+                                                    <div class="sub-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
+                                                    <span class="separator">/</span>
+                                                    {% endfor %}
+                                                {% endif %}
+                                                <h1 class="user-name">{{ breadcrumbs.entityTitle }}</h1>
+                                            </div>
+                                        {% endblock breadcrumbs %}
+                                    </div>
+                                    <div class="clearfix">
+                                        <ul class="inline">
+                                            {% block stats %}
+                                                {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
+                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|oro_format_datetime : 'N/A' }}</li>
+                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
+                                                {% endif %}
+                                            {% endblock stats %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock pageHeader %}
+                    </div>
+                </div>
+            </div>
+            <div class="layout-content">
+                {% block content_data %}
+                    {{ UI.scrollData(id, data, form) }}
+                {% endblock content_data %}
+            </div>
+        </form>
+        {{ oro_form_js_validation(form) }}
+    {% endblock content %}
+{% endblock %}
