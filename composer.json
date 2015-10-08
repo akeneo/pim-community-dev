@@ -49,11 +49,6 @@
             "type": "vcs",
             "url": "https://github.com/akeneo/pim-community-dev.git",
             "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/akeneo/platform.git",
-            "branch": "master"
         }
     ],
     "scripts": {
