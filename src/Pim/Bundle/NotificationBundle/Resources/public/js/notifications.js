@@ -29,7 +29,7 @@ define(
 
             refreshTimeout: null,
 
-            refreshLocked: false,
+            refreshLocked: true, //TODO PIM-3232 remove that
 
             template: _.template(notificationTpl),
 
