@@ -11,3 +11,4 @@
   Replace `Oro\Bundle\LocaleBundle\Model\LocaleSettings` by `Symfony\Component\HttpFoundation\RequestStack`.
 - Change constructor of `Pim\Bundle\UserBundle\EventSubscriber\LocalSubscriber`.
   Rename by `Pim\Bundle\UserBundle\EventSubscriber\LocaleSubscriber` and remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage`
+- Remove PimEntityBundle

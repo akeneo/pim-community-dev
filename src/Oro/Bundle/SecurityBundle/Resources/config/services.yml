@@ -7,6 +7,7 @@ parameters:
     oro_security.acl.privilege_repository.class:               Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository
     oro_security.acl.extension_selector.class:                 Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector
     oro_security.acl.extension.entity.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension
+    oro_security.acl.entity_class_resolver.class:              Oro\Bundle\SecurityBundle\Acl\Extension\EntityClassResolver
     oro_security.acl.extension.action.class:                   Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension
     oro_security.acl.voter.class:                              Oro\Bundle\SecurityBundle\Acl\Voter\AclVoter
     oro_security.acl.provider.class:                           Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclProvider
@@ -86,7 +87,7 @@ services:
         class: %oro_security.acl.extension.entity.class%
         arguments:
             - @oro_security.acl.object_id_accessor
-            - @oro_entity.orm.entity_class_resolver
+            - @oro_security.acl.entity_class_resolver
         tags:
             - { name: oro_security.acl.extension, priority: 20 }
 
@@ -227,3 +228,8 @@ services:
             - @oro_security.security_facade
         tags:
             - { name: twig.extension }
+
+    oro_security.acl.entity_class_resolver:
+        class: %oro_security.acl.entity_class_resolver.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
