@@ -256,7 +256,8 @@ class DatabaseCommand extends ContainerAwareCommand
             }
         }
         // Oro User Bundle overriden by Pim User Bundle, but we still need the data fixtures inside OroUserBundle
-        $finder->in($basePath."/vendor/oro/platform/src/Oro/Bundle/UserBundle");
+        $oroFixturesPath = $basePath."/src/Oro/Bundle/UserBundle";
+        $finder->in($oroFixturesPath);
         $directories = $finder
             ->path('/^DataFixtures$/')
             ->directories();
