@@ -1,0 +1,7 @@
+oro_datagrid_index:
+    path:   /datagrid/{gridName}
+    defaults: { _controller: OroDataGridBundle:Grid:get }
+
+oro_datagrid_mass_action:
+    path:   /datagrid/{gridName}/massAction/{actionName}
+    defaults: { _controller: OroDataGridBundle:Grid:massAction }

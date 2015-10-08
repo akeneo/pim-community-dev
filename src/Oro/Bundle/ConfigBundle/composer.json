@@ -1,0 +1,27 @@
+{
+    "name": "oro/config-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Config Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/ConfigBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "oro/ui-bundle": "dev-master",
+        "oro/user-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Oro\\Bundle\\ConfigBundle": ""
+        }
+    },
+    "target-dir": "Oro/Bundle/ConfigBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

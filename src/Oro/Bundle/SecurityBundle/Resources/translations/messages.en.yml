@@ -1,0 +1,16 @@
+(default): Default permission on entities
+VIEW: View
+CREATE: Create
+EDIT: Edit
+DELETE: Delete
+ASSIGN: Assign
+SHARE: Share
+oro:
+    security:
+        access-level:
+            BASIC: User
+            LOCAL: Business Unit
+            DEEP: Division
+            GLOBAL: Organization
+            SYSTEM: System
+            NONE: None
