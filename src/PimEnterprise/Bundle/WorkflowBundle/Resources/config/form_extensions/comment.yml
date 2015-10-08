@@ -1,3 +1,0 @@
-extensions:
-    pimee-published-product-comment-for-approval:
-        module: pimee/product-edit-form/comment-for-approval
