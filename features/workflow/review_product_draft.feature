@@ -248,3 +248,18 @@ Feature: Review a product draft
     And I am logged in as "Mary"
     And I edit the "my-jacket" product
     Then the SKU original value for scope "mobile" and locale "en_US" should be "my-jacket"
+
+  Scenario: Successfully be notified when someone sends a proposal for approval
+    Given Mary proposed the following change to "my-jacket":
+      | field | value       |
+      | SKU   | your-jacket |
+    And I am logged in as "Julia"
+    And I am on the dashboard page
+    Then I should have 1 new notification
+    And I should see notification:
+      | type | message                                                         |
+      | add  | Mary Smith has sent a proposal to review for the product Jacket |
+    When I click on the notification "Mary Smith has sent a proposal to review for the product Jacket"
+    Then I should be on the product "my-jacket" edit page
+    And I should see the columns Author, Changes, Proposed at and Status
+    And the grid should contain 1 element

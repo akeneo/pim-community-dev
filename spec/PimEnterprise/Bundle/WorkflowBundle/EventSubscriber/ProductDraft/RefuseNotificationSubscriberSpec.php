@@ -83,7 +83,10 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
                 'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
-                'context'       => ['actionType' => 'pimee_workflow_product_draft_notification_refuse']
+                'context'       => [
+                    'actionType'       => 'pimee_workflow_product_draft_notification_refuse',
+                    'showReportButton' => false
+                ]
             ]
         )->shouldBeCalled();
 

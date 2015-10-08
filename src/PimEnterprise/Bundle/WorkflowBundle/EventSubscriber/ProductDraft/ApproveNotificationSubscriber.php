@@ -79,7 +79,10 @@ class ApproveNotificationSubscriber implements EventSubscriberInterface
                     '%product%' => $productDraft->getProduct()->getIdentifier()->getData(),
                     '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
                 ],
-                'context'       => ['actionType' => 'pimee_workflow_product_draft_notification_approve']
+                'context'       => [
+                    'actionType'       => 'pimee_workflow_product_draft_notification_approve',
+                    'showReportButton' => false
+                ]
             ]
         );
     }

@@ -83,7 +83,10 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
                 'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
-                'context'       => ['actionType' => 'pimee_workflow_product_draft_notification_approve']
+                'context'       => [
+                    'actionType'       => 'pimee_workflow_product_draft_notification_approve',
+                    'showReportButton' => false
+                ]
             ]
         )->shouldBeCalled();
 

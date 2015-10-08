@@ -79,7 +79,10 @@ class RefuseNotificationSubscriber implements EventSubscriberInterface
                     '%product%' => $productDraft->getProduct()->getIdentifier()->getData(),
                     '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
                 ],
-                'context'       => ['actionType' => 'pimee_workflow_product_draft_notification_refuse']
+                'context'       => [
+                    'actionType'       => 'pimee_workflow_product_draft_notification_refuse',
+                    'showReportButton' => false
+                ]
             ]
         );
     }
