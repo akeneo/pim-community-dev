@@ -1,0 +1,9 @@
+parameters:
+    oro_translation.form.type.translatable_entity.class: Oro\Bundle\TranslationBundle\Form\Type\TranslatableEntityType
+
+services:
+    oro_translation.form.type.translatable_entity:
+        class: %oro_translation.form.type.translatable_entity.class%
+        arguments: ["@doctrine"]
+        tags:
+            - { name: form.type, alias: translatable_entity }

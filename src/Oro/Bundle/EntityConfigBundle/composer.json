@@ -1,0 +1,28 @@
+{
+    "name": "oro/entity-config-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Entity Config Bundle",
+    "keywords": ["BAP"],
+    "homepage": "https://github.com/laboro/EntityConfigBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.3.*",
+        "oro/ui-bundle": "dev-master",
+        "oro/grid-bundle": "dev-master",
+        "oro/navigation-bundle": "dev-master",
+        "oro/form-bundle": "dev-master",
+        "oro/user-bundle": "dev-master",
+        "oro/entity-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\EntityConfigBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/EntityConfigBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
