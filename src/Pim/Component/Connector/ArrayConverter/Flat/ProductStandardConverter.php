@@ -159,11 +159,13 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     public function convert(array $item, array $options = [])
     {
         $options = $this->prepareOptions($options);
-        $mappedItem = $this->mapFields($item, $options);
-        $mappedItem = $this->defineDefaultValues($mappedItem, $options['default_values']);
+
+        $mappedItem   = $this->mapFields($item, $options);
+        $mappedItem   = $this->defineDefaultValues($mappedItem, $options['default_values']);
         $filteredItem = $this->filterFields($mappedItem, $options['with_associations']);
         $this->validateItem($filteredItem, $options['with_required_identifier']);
-        $mergedItem = $this->columnsMerger->merge($filteredItem);
+
+        $mergedItem    = $this->columnsMerger->merge($filteredItem);
         $convertedItem = $this->convertItem($mergedItem);
 
         return $convertedItem;
@@ -293,7 +295,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
-     * Method to make the array_merge_recursive more "smart" for price collections
+     * Merge the structured value inside the passed collection
      *
      * @param array $collection The collection in which we add the element
      * @param array $value      The structured value to add to the collection
@@ -302,7 +304,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     protected function mergeValueToResult(array $collection, array $value)
     {
-        return array_merge_recursive($collection, $value);
+        return array_replace_recursive($collection, $value);
     }
 
     /**
