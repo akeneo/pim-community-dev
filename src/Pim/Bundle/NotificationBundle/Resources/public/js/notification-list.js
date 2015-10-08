@@ -19,7 +19,8 @@ define(
                 type:              'success',
                 createdAt:         null,
                 actionType:        null,
-                actionTypeMessage: null
+                actionTypeMessage: null,
+                showReportButton:  true
             }
         });
 
@@ -90,7 +91,8 @@ define(
                         icon: this.getIcon(this.model.get('type')),
                         createdAt: this.model.get('createdAt'),
                         actionType: this.model.get('actionType'),
-                        actionTypeMessage: this.model.get('actionTypeMessage')
+                        actionTypeMessage: this.model.get('actionTypeMessage'),
+                        showReportButton: this.model.get('showReportButton')
                     }
                 ));
 
