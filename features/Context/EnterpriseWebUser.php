@@ -266,4 +266,15 @@ class EnterpriseWebUser extends BaseWebUser
     {
         $this->waitForMassEditJobToFinish('csv_published_product_quick_export');
     }
+
+    /**
+     * @param string $button
+     *
+     * @Given /^I press the Send for approval button$/
+     */
+    public function iPressTheSendForApprovalButton()
+    {
+        $this->iPressTheButton("Send for approval");
+        $this->iPressTheButton("Send");
+    }
 }

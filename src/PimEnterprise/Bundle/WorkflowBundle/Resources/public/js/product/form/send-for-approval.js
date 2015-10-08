@@ -15,7 +15,8 @@ define(
         'oro/messenger',
         'pim/form',
         'pim/product-manager',
-        'text!pimee/template/product/submit-draft'
+        'text!pimee/template/product/submit-draft',
+        'pim/form-builder'
     ],
     function (
         $,
@@ -26,7 +27,8 @@ define(
         messenger,
         BaseForm,
         ProductManager,
-        submitTemplate
+        submitTemplate,
+        FormBuilder
     ) {
         return BaseForm.extend({
             className: 'btn-group',
@@ -95,21 +97,47 @@ define(
              * Callback triggered on "send for approval" button click
              */
             onSubmitDraft: function () {
-                this.getRoot().trigger('pim_enrich:form:state:confirm', {
-                    message: this.confirmationMessage,
-                    title: this.confirmationTitle,
-                    action: this.submitDraft.bind(this)
-                });
+                var deferred = $.Deferred();
+
+                FormBuilder.build('pim-notification-comment').done(function (form) {
+                    var modal = new Backbone.BootstrapModal({
+                        modalOptions: {
+                            backdrop: 'static',
+                            keyboard: false
+                        },
+                        allowCancel: true,
+                        okCloses: false,
+                        title: _.__('pimee_enrich.entity.product_draft.modal.send_for_approval'),
+                        content: '',
+                        cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel'),
+                        okText: _.__('pimee_enrich.entity.product_draft.modal.confirm')
+                    });
+
+                    modal.open();
+                    form.setElement(modal.$('.modal-body')).render(
+                        {'title': _.__('pimee_enrich.entity.product_draft.modal.title')}
+                    );
+                    modal.on('cancel', deferred.reject);
+                    modal.on('ok', function () {
+                        this.getRoot().trigger('pim_enrich:form:state:confirm', {
+                            message: this.confirmationMessage,
+                            title:   this.confirmationTitle,
+                            action:  this.submitDraft.bind(this, $('.modal-body textarea').val())
+                        });
+
+                        modal.close();
+                    }.bind(this));
+                }.bind(this));
             },
 
             /**
              * Submit the current draft to backend for approval
              */
-            submitDraft: function () {
+            submitDraft: function (comment) {
                 $.post(
                     Routing.generate(
                         this.routes.ready,
-                        {productId: this.getProductId()}
+                        {productId: this.getProductId(), comment: comment}
                     )
                 )
                 .then(ProductManager.generateMissing.bind(ProductManager))

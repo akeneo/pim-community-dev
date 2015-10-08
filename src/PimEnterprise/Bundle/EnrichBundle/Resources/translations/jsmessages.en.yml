@@ -79,6 +79,11 @@ pimee_enrich:
             btn:
                 send_for_approval: Send for approval
                 sent_for_approval: Sent for approval
+            modal:
+                send_for_approval: Send for approval
+                cancel: Cancel
+                confirm: Send
+                title: Comment your proposal (optionnal)
             confirmation:
                 discard_changes: Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes?
                 discard_changes_title: Are you sure you want to send this draft?

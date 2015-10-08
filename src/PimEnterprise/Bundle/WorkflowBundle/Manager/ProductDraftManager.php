@@ -149,14 +149,18 @@ class ProductDraftManager
      * Mark a product draft as ready
      *
      * @param ProductDraftInterface $productDraft
+     * @param string                $comment
      */
-    public function markAsReady(ProductDraftInterface $productDraft)
+    public function markAsReady(ProductDraftInterface $productDraft, $comment = null)
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_READY, new GenericEvent($productDraft));
         $productDraft->setStatus(ProductDraftInterface::READY);
 
         $this->productDraftSaver->save($productDraft);
 
-        $this->dispatcher->dispatch(ProductDraftEvents::POST_READY, new GenericEvent($productDraft));
+        $this->dispatcher->dispatch(
+            ProductDraftEvents::POST_READY,
+            new GenericEvent($productDraft, ['comment' => $comment])
+        );
     }
 }
