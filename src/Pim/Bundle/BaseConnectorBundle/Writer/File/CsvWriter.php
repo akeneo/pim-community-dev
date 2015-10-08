@@ -234,7 +234,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         $uniqueKeys = array_fill_keys($uniqueKeys, '');
         $fullItems = [];
         foreach ($this->items as $item) {
-            $fullItems[] = array_merge($uniqueKeys, $item);
+            $fullItems[] = array_replace($uniqueKeys, $item);
         }
 
         return $fullItems;
