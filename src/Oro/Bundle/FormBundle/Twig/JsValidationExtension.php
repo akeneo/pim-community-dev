@@ -57,8 +57,8 @@ class JsValidationExtension extends \Twig_Extension
      * @param \Twig_Environment $environment
      * @param FormView $view
      * @param array $options
-     * @return string
      * @throws \RuntimeException
+     * @return string
      */
     public function renderFormJsValidationBlock(\Twig_Environment $environment, FormView $view, $options = array())
     {
@@ -75,8 +75,8 @@ class JsValidationExtension extends \Twig_Extension
         return $template->renderBlock(
             self::BLOCK_NAME,
             array(
-                'form' => $view,
-                'options' => $options,
+                'form'       => $view,
+                'options'    => $options,
                 'js_options' => $this->filterJsOptions($options)
             )
         );

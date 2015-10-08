@@ -2,8 +2,8 @@
 
 namespace ConfigBundle\Tests\Unit\Utils;
 
-use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 use Oro\Bundle\ConfigBundle\Config\Tree\GroupNodeDefinition;
+use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 
 class TreeUtilsTest extends \PHPUnit_Framework_TestCase
 {

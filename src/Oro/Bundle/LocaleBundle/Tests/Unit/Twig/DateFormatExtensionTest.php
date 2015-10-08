@@ -24,9 +24,9 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $expectedFunctions = array(
         'oro_datetime_formatter_list' => 'getDateTimeFormatterList',
-        'oro_date_format' => 'getDateFormat',
-        'oro_time_format' => 'getTimeFormat',
-        'oro_datetime_format' => 'getDateTimeFormat',
+        'oro_date_format'             => 'getDateFormat',
+        'oro_time_format'             => 'getTimeFormat',
+        'oro_datetime_format'         => 'getDateTimeFormat',
     );
 
     protected function setUp()

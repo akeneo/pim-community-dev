@@ -27,8 +27,8 @@ class AclAnnotationStorage implements \Serializable
      * Gets an annotation by its id
      *
      * @param  string                    $id
-     * @return AclAnnotation|null        AclAnnotation object or null if ACL annotation was not found
      * @throws \InvalidArgumentException
+     * @return AclAnnotation|null        AclAnnotation object or null if ACL annotation was not found
      */
     public function findById($id)
     {
@@ -46,8 +46,8 @@ class AclAnnotationStorage implements \Serializable
      *
      * @param  string                    $class
      * @param  string|null               $method
-     * @return AclAnnotation|null        AclAnnotation object or null if ACL annotation was not found
      * @throws \InvalidArgumentException
+     * @return AclAnnotation|null        AclAnnotation object or null if ACL annotation was not found
      */
     public function find($class, $method = null)
     {

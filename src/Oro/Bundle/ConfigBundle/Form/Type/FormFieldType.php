@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\ConfigBundle\Form\Type;
 
+use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
 
 class FormFieldType extends AbstractType
 {

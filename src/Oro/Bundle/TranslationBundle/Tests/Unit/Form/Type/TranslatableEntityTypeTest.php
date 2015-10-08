@@ -2,19 +2,18 @@
 
 namespace Oro\Bundle\TranslationBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Gedmo\Translatable\Query\TreeWalker\TranslationWalker;
-
 use Oro\Bundle\TranslationBundle\Form\Type\TranslatableEntityType;
 use Oro\Bundle\TranslationBundle\Tests\Unit\Form\Type\Stub\TestEntity;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
+use Symfony\Component\OptionsResolver\Options;
 
 class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -362,27 +361,27 @@ class TranslatableEntityTypeTest extends \PHPUnit_Framework_TestCase
                     'property' => self::TEST_PROPERTY,
                     'choices'  => null
                 ),
-                'expectedChoices' => $testChoiceEntities,
+                'expectedChoices'   => $testChoiceEntities,
                 'expectTranslation' => true,
             ),
             'query_builder' => array(
                'choiceListOptions' => array(
-                   'class'    => self::TEST_CLASS,
-                   'property' => self::TEST_PROPERTY,
-                   'choices'  => null,
+                   'class'         => self::TEST_CLASS,
+                   'property'      => self::TEST_PROPERTY,
+                   'choices'       => null,
                    'query_builder' => 'object'
                 ),
-                'expectedChoices' => $testChoiceEntities,
+                'expectedChoices'   => $testChoiceEntities,
                 'expectTranslation' => true,
             ),
             'query_builder_callback' => array(
                 'choiceListOptions' => array(
-                    'class'    => self::TEST_CLASS,
-                    'property' => self::TEST_PROPERTY,
-                    'choices'  => null,
+                    'class'         => self::TEST_CLASS,
+                    'property'      => self::TEST_PROPERTY,
+                    'choices'       => null,
                     'query_builder' => 'closure'
                 ),
-                'expectedChoices' => $testChoiceEntities,
+                'expectedChoices'   => $testChoiceEntities,
                 'expectTranslation' => true,
             ),
         );

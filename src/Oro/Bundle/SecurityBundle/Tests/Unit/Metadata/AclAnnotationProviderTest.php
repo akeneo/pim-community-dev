@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Metadata;
 
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
-use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 
 class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
 {

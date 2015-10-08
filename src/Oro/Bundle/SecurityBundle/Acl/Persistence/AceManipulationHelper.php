@@ -4,9 +4,9 @@ namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
-use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
-use Symfony\Component\Security\Acl\Model\MutableAclInterface as ACL;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface as ACL;
+use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 
 class AceManipulationHelper
 {

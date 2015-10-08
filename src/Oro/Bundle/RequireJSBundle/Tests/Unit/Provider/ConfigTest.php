@@ -80,14 +80,14 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'paths' => array(
-                    'oro/test' => 'empty:',
+                    'oro/test'       => 'empty:',
                     'require-config' => '../main-config',
-                    'require-lib' => 'ororequirejs/lib/require',
+                    'require-lib'    => 'ororequirejs/lib/require',
                 ),
-                'baseUrl' => './bundles',
-                'out' => './js/app.min.js',
+                'baseUrl'        => './bundles',
+                'out'            => './js/app.min.js',
                 'mainConfigFile' => './main-config.js',
-                'include' => array('require-config', 'require-lib', 'oro/test')
+                'include'        => array('require-config', 'require-lib', 'oro/test')
             ),
             $this->configProvider->generateBuildConfig('main-config.js')
         );
@@ -98,7 +98,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'build_path' => 'js/app.min.js',
-                'config' => array(
+                'config'     => array(
                     'paths' => array(
                         'oro/test' => 'bundles/orotest/js/test.js'
                     )

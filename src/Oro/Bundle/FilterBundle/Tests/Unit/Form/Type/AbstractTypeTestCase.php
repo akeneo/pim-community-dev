@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Form\Test\FormIntegrationTestCase;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 
 abstract class AbstractTypeTestCase extends FormIntegrationTestCase
 {

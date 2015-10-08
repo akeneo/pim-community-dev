@@ -2,13 +2,12 @@
 
 namespace Oro\Bundle\LocaleBundle\Formatter;
 
+use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
+use Oro\Bundle\LocaleBundle\Model\AddressInterface;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-
-use Oro\Bundle\LocaleBundle\Model\AddressInterface;
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
 
 class AddressFormatter
 {

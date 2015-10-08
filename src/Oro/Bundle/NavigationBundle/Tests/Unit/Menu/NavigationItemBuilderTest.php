@@ -4,7 +4,7 @@ namespace Oro\Bundle\NavigationBundle\Tests\Unit\Menu;
 
 use Oro\Bundle\NavigationBundle\Menu\NavigationItemBuilder;
 
-class NavigationItemBuilderBuilderTest extends \PHPUnit_Framework_TestCase
+class NavigationItemBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Doctrine\ORM\EntityManager

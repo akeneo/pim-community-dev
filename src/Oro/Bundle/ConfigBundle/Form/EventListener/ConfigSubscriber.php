@@ -2,12 +2,10 @@
 
 namespace Oro\Bundle\ConfigBundle\Form\EventListener;
 
+use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
 {

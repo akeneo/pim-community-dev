@@ -79,7 +79,7 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
                 self::TEMPLATE,
                 array(
                     'full_redirect' => true,
-                    'location' => self::TEST_URL
+                    'location'      => self::TEST_URL
                 )
             )
             ->will($this->returnValue(new Response()));
@@ -104,7 +104,7 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
                 self::TEMPLATE,
                 array(
                     'full_redirect' => true,
-                    'location' => self::TEST_URL
+                    'location'      => self::TEST_URL
                 )
             )
             ->will($this->returnValue(new Response()));

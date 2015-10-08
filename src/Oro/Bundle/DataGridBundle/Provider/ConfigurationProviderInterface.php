@@ -23,8 +23,8 @@ interface ConfigurationProviderInterface
      *
      * @param string $gridName The name of a datagrid
      *
-     * @return DatagridConfiguration
      * @throws \RuntimeException in case when datagrid configuration not found
+     * @return DatagridConfiguration
      */
     public function getConfiguration($gridName);
 }

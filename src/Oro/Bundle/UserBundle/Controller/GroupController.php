@@ -2,14 +2,14 @@
 
 namespace Oro\Bundle\UserBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\OroUserEvents;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Symfony\Component\HttpFoundation\Request;
 
 class GroupController extends Controller
 {
@@ -81,7 +81,7 @@ class GroupController extends Controller
 
             return $this->get('oro_ui.router')->actionRedirect(
                 array(
-                    'route' => 'oro_user_group_update',
+                    'route'      => 'oro_user_group_update',
                     'parameters' => array('id' => $entity->getId()),
                 ),
                 array(

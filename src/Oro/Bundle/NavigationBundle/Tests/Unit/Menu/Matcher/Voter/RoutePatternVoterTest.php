@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Menu\Matcher\Voter;
 
-use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\NavigationBundle\Menu\Matcher\Voter\RoutePatternVoter;
+use Symfony\Component\HttpFoundation\Request;
 
 class RoutePatternVoterTest extends \PHPUnit_Framework_TestCase
 {
@@ -55,13 +55,13 @@ class RoutePatternVoterTest extends \PHPUnit_Framework_TestCase
     public function matchingDataProvider()
     {
         return array(
-            'no request route' => array(null, array(), 'foo', array(), null),
-            'no item route' => array('foo', array(), null, array(), null),
-            'same single route' => array('foo', array(), 'foo', array(), true),
-            'different single route' => array('foo', array(), 'bar', array(), null),
-            'matching mutiple routes' => array('foo', array(), array('foo', 'baz'), array(), true),
-            'matching mutiple routes 2' => array('baz', array(), array('foo', 'baz'), array(), true),
-            'different multiple routes' => array('foo', array(), array('bar', 'baz'), array(), null),
+            'no request route'                            => array(null, array(), 'foo', array(), null),
+            'no item route'                               => array('foo', array(), null, array(), null),
+            'same single route'                           => array('foo', array(), 'foo', array(), true),
+            'different single route'                      => array('foo', array(), 'bar', array(), null),
+            'matching mutiple routes'                     => array('foo', array(), array('foo', 'baz'), array(), true),
+            'matching mutiple routes 2'                   => array('baz', array(), array('foo', 'baz'), array(), true),
+            'different multiple routes'                   => array('foo', array(), array('bar', 'baz'), array(), null),
             'same single route with different parameters' => array(
                 'foo', array('1' => 'bar'),
                 'foo', array('foo' => array('1' => 'baz')),
@@ -92,10 +92,10 @@ class RoutePatternVoterTest extends \PHPUnit_Framework_TestCase
                 'foo', array('foo' => array('1' => '2')),
                 true
             ),
-            'match regex pattern' => array('foo', array(), '/^foo$/', array(), true),
+            'match regex pattern'     => array('foo', array(), '/^foo$/', array(), true),
             'not match regex pattern' => array('foo', array(), '/bar/', array(), null),
-            'match wildcard' => array('foo', array(), 'fo*', array(), true),
-            'not match wildcard' => array('foo', array(), 'ba*', array(), null),
+            'match wildcard'          => array('foo', array(), 'fo*', array(), true),
+            'not match wildcard'      => array('foo', array(), 'ba*', array(), null),
         );
     }
 }

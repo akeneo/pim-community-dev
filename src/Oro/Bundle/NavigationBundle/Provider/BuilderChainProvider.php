@@ -2,16 +2,13 @@
 
 namespace Oro\Bundle\NavigationBundle\Provider;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
+use \Doctrine\Common\Cache\CacheProvider;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-
 use Oro\Bundle\NavigationBundle\Event\ConfigureMenuEvent;
 use Oro\Bundle\NavigationBundle\Menu\BuilderInterface;
-
-use \Doctrine\Common\Cache\CacheProvider;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BuilderChainProvider implements MenuProviderInterface
 {

@@ -19,8 +19,8 @@ class ConfigReader extends Reader
      * Get Route/Title information from bundle configs
      *
      * @param  array                                                                        $routes
-     * @return array
      * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @return array
      */
     public function getData(array $routes)
     {

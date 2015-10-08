@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\FilterBundle\Filter;
 
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 class StringFilter extends AbstractFilter
 {

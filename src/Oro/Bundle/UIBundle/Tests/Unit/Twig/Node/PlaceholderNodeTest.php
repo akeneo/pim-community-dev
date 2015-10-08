@@ -31,7 +31,7 @@ class PlaceholderNodeTest extends \PHPUnit_Framework_TestCase
                         'action' => 'some_action'
                     ),
                 ),
-                'some_template' =>array(
+                'some_template' => array(
                     array(
                         'template' => 'some_template'
                     )

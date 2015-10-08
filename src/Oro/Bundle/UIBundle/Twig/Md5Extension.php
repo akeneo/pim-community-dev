@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\UIBundle\Twig;
 
-use JMS\Serializer\Serializer;
 use JMS\Serializer\Exception\RuntimeException;
+use JMS\Serializer\Serializer;
 
 class Md5Extension extends \Twig_Extension
 {
@@ -26,7 +26,7 @@ class Md5Extension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'md5' => new \Twig_Filter_Method($this, 'md5'),
+            'md5'       => new \Twig_Filter_Method($this, 'md5'),
             'objectMd5' => new \Twig_Filter_Method($this, 'objectMd5'),
         );
     }

@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\FilterBundle\Form\Type;
 
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class DateTimeRangeType extends AbstractType
 {
@@ -47,9 +46,9 @@ class DateTimeRangeType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'field_type' => 'datetime',
+                'field_type'    => 'datetime',
                 'field_options' => array(
-                    'format' => 'yyyy-MM-dd HH:mm',
+                    'format'        => 'yyyy-MM-dd HH:mm',
                     'view_timezone' => $this->localeSettings->getTimeZone(),
                 ),
             )

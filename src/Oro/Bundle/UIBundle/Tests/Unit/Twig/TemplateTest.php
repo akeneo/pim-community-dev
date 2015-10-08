@@ -1,9 +1,9 @@
 <?php
 namespace Oro\Bundle\UIBundle\Tests\Unit\Twig;
 
-use Oro\Bundle\UIBundle\Tests\Unit\Twig\Template\TestJSON;
 use Oro\Bundle\UIBundle\Tests\Unit\Twig\Template\TestHTML;
 use Oro\Bundle\UIBundle\Tests\Unit\Twig\Template\TestJS;
+use Oro\Bundle\UIBundle\Tests\Unit\Twig\Template\TestJSON;
 
 class TemplateTest extends \PHPUnit_Framework_TestCase
 {

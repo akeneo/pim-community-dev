@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\TranslationBundle\Extractor;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
 use Symfony\Component\Translation\MessageCatalogue;
 
@@ -61,7 +61,6 @@ class PhpCodeExtractor implements ExtractorInterface
                             && strcmp($messageToCheck[0], $vendorName) === 0
                             && !$this->container->has($message)
                             && !$this->container->hasParameter($message)) {
-
                             $catalog->set($message, $this->prefix . $message);
                         }
                     }

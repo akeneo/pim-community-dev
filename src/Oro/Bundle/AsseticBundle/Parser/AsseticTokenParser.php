@@ -3,7 +3,6 @@
 namespace Oro\Bundle\AsseticBundle\Parser;
 
 use Assetic\Factory\AssetFactory;
-
 use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
 class AsseticTokenParser extends \Twig_TokenParser
@@ -45,9 +44,9 @@ class AsseticTokenParser extends \Twig_TokenParser
 
         $filters = array();
         $attributes = array(
-            'output' => $this->output,
+            'output'   => $this->output,
             'var_name' => 'asset_url',
-            'vars' => array(),
+            'vars'     => array(),
         );
 
         $stream = $this->parser->getStream();
@@ -99,7 +98,7 @@ class AsseticTokenParser extends \Twig_TokenParser
             ),
             array(
                 'un_compress' => $nameUnCompress,
-                'compress' => $nameCompress
+                'compress'    => $nameCompress
             ),
             $filters,
             $inputs,

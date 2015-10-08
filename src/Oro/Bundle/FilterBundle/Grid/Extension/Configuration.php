@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\FilterBundle\Grid\Extension;
 
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 
 class Configuration implements ConfigurationInterface
 {

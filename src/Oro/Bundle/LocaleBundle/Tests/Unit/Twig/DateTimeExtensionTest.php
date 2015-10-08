@@ -50,7 +50,7 @@ class DateTimeExtensionTest extends \PHPUnit_Framework_TestCase
         $options = array(
             'dateType' => $dateType,
             'timeType' => $timeType,
-            'locale' => $locale,
+            'locale'   => $locale,
             'timeZone' => $timeZone
         );
         $expectedResult = '12/31/13 12:00 AM';
@@ -70,7 +70,7 @@ class DateTimeExtensionTest extends \PHPUnit_Framework_TestCase
         $timeZone = 'America/Los_Angeles';
         $options = array(
             'dateType' => $dateType,
-            'locale' => $locale,
+            'locale'   => $locale,
             'timeZone' => $timeZone
         );
         $expectedResult = '12/31/13';
@@ -90,7 +90,7 @@ class DateTimeExtensionTest extends \PHPUnit_Framework_TestCase
         $timeZone = 'America/Los_Angeles';
         $options = array(
             'timeType' => $timeType,
-            'locale' => $locale,
+            'locale'   => $locale,
             'timeZone' => $timeZone
         );
         $expectedResult = '12 AM';

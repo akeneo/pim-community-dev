@@ -21,8 +21,8 @@ interface ManagerInterface
      *
      * @param string $name
      *
-     * @return DatagridConfiguration
      * @throws \RuntimeException
+     * @return DatagridConfiguration
      */
     public function getConfigurationForGrid($name);
 }

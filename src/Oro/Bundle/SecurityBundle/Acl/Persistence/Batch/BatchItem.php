@@ -3,9 +3,9 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Persistence\Batch;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity as OID;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface as ACL;
+use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 
 class BatchItem
 {

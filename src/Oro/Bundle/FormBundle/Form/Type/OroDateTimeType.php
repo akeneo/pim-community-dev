@@ -2,13 +2,12 @@
 
 namespace Oro\Bundle\FormBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OroDateTimeType extends AbstractType
 {

@@ -2,13 +2,13 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
-use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
-use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\DateTimeRangeFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\DateRangeType;
 use Oro\Bundle\FilterBundle\Form\Type\DateTimeRangeType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\DateTimeRangeFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
+use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
 
 class DateTimeRangeFilterTypeTest extends AbstractTypeTestCase
 {
@@ -79,7 +79,7 @@ class DateTimeRangeFilterTypeTest extends AbstractTypeTestCase
                 'bindData' => array(),
                 'formData' => array('type' => null, 'value' => array('start' => '', 'end' => '')),
                 'viewData' => array(
-                    'value'          => array('type' => null, 'value' => array('start' => '', 'end' => '')),
+                    'value'          => array('type'     => null, 'value' => array('start' => '', 'end' => '')),
                     'widget_options' => array('firstDay' => 1)
                 ),
                 'customOptions' => array(

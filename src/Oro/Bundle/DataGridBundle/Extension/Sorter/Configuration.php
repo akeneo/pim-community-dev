@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Sorter;
 
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 class Configuration implements ConfigurationInterface
 {

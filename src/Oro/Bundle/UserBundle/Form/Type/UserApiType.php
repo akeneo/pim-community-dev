@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\UserBundle\Form\Type;
 
+use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
+use Oro\Bundle\UserBundle\Form\EventListener\UserApiSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Oro\Bundle\UserBundle\Form\EventListener\UserApiSubscriber;
-use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
 
 class UserApiType extends UserType
 {
@@ -31,7 +30,7 @@ class UserApiType extends UserType
 
         $resolver->setDefaults(
             array(
-                'csrf_protection' => false,
+                'csrf_protection'      => false,
                 'validation_groups'    => array('ProfileAPI', 'Default'),
             )
         );

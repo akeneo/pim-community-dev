@@ -2,13 +2,13 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
-use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
-use Symfony\Component\Security\Acl\Model\AclInterface;
-use Symfony\Component\Security\Acl\Model\EntryInterface;
-use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
-use Symfony\Component\Security\Acl\Model\AuditLoggerInterface;
-use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
+use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\AuditLoggerInterface;
+use Symfony\Component\Security\Acl\Model\EntryInterface;
+use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
+use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 
 /**
  * The ACL extensions based permission granting strategy to apply to the access control list.
@@ -53,8 +53,8 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     /**
      * Gets context this strategy is working in
      *
-     * @return PermissionGrantingStrategyContextInterface
      * @throws \RuntimeException
+     * @return PermissionGrantingStrategyContextInterface
      */
     protected function getContext()
     {
@@ -159,8 +159,8 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      * @param SecurityIdentityInterface[] $sids An array of SecurityIdentityInterface implementations
      * @param boolean $administrativeMode True turns off audit logging
      *
-     * @return boolean|null true if granting access; false if denying access; null if ACE was not found.
      * @throws NoAceFoundException
+     * @return boolean|null true if granting access; false if denying access; null if ACE was not found.
      */
     protected function hasSufficientPermissions(
         AclInterface $acl,
@@ -242,8 +242,8 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
      * @param integer $requiredMask
      * @param EntryInterface $ace
      * @param AclInterface $acl
-     * @return bool
      * @throws \RuntimeException if the ACE strategy is not supported
+     * @return bool
      */
     protected function isAceApplicable($requiredMask, EntryInterface $ace, AclInterface $acl)
     {

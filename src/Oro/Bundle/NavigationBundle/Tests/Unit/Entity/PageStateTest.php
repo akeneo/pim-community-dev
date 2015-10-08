@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\NavigationBundle\Tests\Entity;
 
+use Oro\Bundle\NavigationBundle\Entity\PageState;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Oro\Bundle\NavigationBundle\Entity\PageState;
 
 class PageStateTest extends \PHPUnit_Framework_TestCase
 {

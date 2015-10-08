@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Formatter;
 
-use Oro\Bundle\LocaleBundle\Formatter\AddressFormatter;
-use Oro\Bundle\LocaleBundle\Tests\Unit\Formatter\Stubs\AddressStub;
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
+use Oro\Bundle\LocaleBundle\Formatter\AddressFormatter;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Oro\Bundle\LocaleBundle\Tests\Unit\Formatter\Stubs\AddressStub;
 
 class AddressFormatterTest extends \PHPUnit_Framework_TestCase
 {

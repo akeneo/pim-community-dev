@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\LocaleBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 class AddDateTimeFormatConverterCompilerPass implements CompilerPassInterface

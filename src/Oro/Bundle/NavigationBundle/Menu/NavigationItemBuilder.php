@@ -2,14 +2,13 @@
 
 namespace Oro\Bundle\NavigationBundle\Menu;
 
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManager;
 use Knp\Menu\ItemInterface;
-use Oro\Bundle\NavigationBundle\Menu\BuilderInterface;
-
 use Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory;
 use Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface;
 use Oro\Bundle\NavigationBundle\Entity\Repository\NavigationRepositoryInterface;
+use Oro\Bundle\NavigationBundle\Menu\BuilderInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class NavigationItemBuilder implements BuilderInterface
 {
@@ -63,8 +62,8 @@ class NavigationItemBuilder implements BuilderInterface
                     $alias . '_item_' . $item['id'],
                     array(
                         'extras' => $item,
-                        'uri' => $item['url'],
-                        'label' => $item['title']
+                        'uri'    => $item['url'],
+                        'label'  => $item['title']
                     )
                 );
             }

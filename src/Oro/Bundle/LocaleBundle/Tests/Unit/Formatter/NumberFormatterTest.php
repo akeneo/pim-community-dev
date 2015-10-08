@@ -51,39 +51,39 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'expected' => '1,234.568',
-                'value' => 1234.56789,
-                'style' => \NumberFormatter::DECIMAL,
-                'attributes' => array(),
+                'expected'       => '1,234.568',
+                'value'          => 1234.56789,
+                'style'          => \NumberFormatter::DECIMAL,
+                'attributes'     => array(),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => 'en_US'
+                'symbols'        => array(),
+                'locale'         => 'en_US'
             ),
             array(
-                'expected' => '1,234.568',
-                'value' => 1234.56789,
-                'style' => 'DECIMAL',
-                'attributes' => array(),
+                'expected'       => '1,234.568',
+                'value'          => 1234.56789,
+                'style'          => 'DECIMAL',
+                'attributes'     => array(),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => 'en_US'
+                'symbols'        => array(),
+                'locale'         => 'en_US'
             ),
             array(
-                'expected' => '1,234.57',
-                'value' => 1234.56789,
-                'style' => \NumberFormatter::DECIMAL,
+                'expected'   => '1,234.57',
+                'value'      => 1234.56789,
+                'style'      => \NumberFormatter::DECIMAL,
                 'attributes' => array(
                     'fraction_digits' => 2
                 ),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => null,
+                'symbols'        => array(),
+                'locale'         => null,
                 'settingsLocale' => 'en_US'
             ),
             array(
-                'expected' => 'MINUS 10.0000,123',
-                'value' => -100000.123,
-                'style' => \NumberFormatter::DECIMAL,
+                'expected'   => 'MINUS 10.0000,123',
+                'value'      => -100000.123,
+                'style'      => \NumberFormatter::DECIMAL,
                 'attributes' => array(
                     \NumberFormatter::GROUPING_SIZE => 4,
                 ),
@@ -91,7 +91,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                     \NumberFormatter::NEGATIVE_PREFIX => 'MINUS ',
                 ),
                 'symbols' => array(
-                    \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL => ',',
+                    \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL  => ',',
                     \NumberFormatter::GROUPING_SEPARATOR_SYMBOL => '.',
                 ),
                 'locale' => 'en_US'
@@ -140,16 +140,16 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'expected' => '1,234.568',
-                'value' => 1234.56789,
-                'attributes' => array(),
+                'expected'       => '1,234.568',
+                'value'          => 1234.56789,
+                'attributes'     => array(),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => 'en_US'
+                'symbols'        => array(),
+                'locale'         => 'en_US'
             ),
             array(
-                'expected' => '+12 345,6789000000',
-                'value' => 12345.6789,
+                'expected'   => '+12 345,6789000000',
+                'value'      => 12345.6789,
                 'attributes' => array(
                     'fraction_digits' => 10
                 ),
@@ -157,7 +157,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                     'positive_prefix' => '+',
                 ),
                 'symbols' => array(
-                    \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL => ',',
+                    \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL  => ',',
                     \NumberFormatter::GROUPING_SEPARATOR_SYMBOL => ' ',
                 ),
                 'locale' => 'en_US'
@@ -204,31 +204,31 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'expected' => '$1,234.57',
-                'value' => 1234.56789,
-                'currency' => 'USD',
-                'attributes' => array(),
+                'expected'       => '$1,234.57',
+                'value'          => 1234.56789,
+                'currency'       => 'USD',
+                'attributes'     => array(),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => 'en_US'
+                'symbols'        => array(),
+                'locale'         => 'en_US'
             ),
             array(
-                'expected' => 'руб.1,234.57',
-                'value' => 1234.56789,
-                'currency' => 'RUB',
-                'attributes' => array(),
+                'expected'       => 'руб.1,234.57',
+                'value'          => 1234.56789,
+                'currency'       => 'RUB',
+                'attributes'     => array(),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => 'en_US'
+                'symbols'        => array(),
+                'locale'         => 'en_US'
             ),
             array(
-                'expected' => '1 234,57 €',
-                'value' => 1234.56789,
-                'currency' => 'EUR',
-                'attributes' => array(),
+                'expected'       => '1 234,57 €',
+                'value'          => 1234.56789,
+                'currency'       => 'EUR',
+                'attributes'     => array(),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => 'ru_RU'
+                'symbols'        => array(),
+                'locale'         => 'ru_RU'
             ),
         );
     }
@@ -248,12 +248,12 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'expected' => '123,457%',
-                'value' => 1234.56789,
-                'attributes' => array(),
+                'expected'       => '123,457%',
+                'value'          => 1234.56789,
+                'attributes'     => array(),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => 'en_US'
+                'symbols'        => array(),
+                'locale'         => 'en_US'
             ),
         );
     }
@@ -273,12 +273,12 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'expected' => 'twenty-one',
-                'value' => 21,
-                'attributes' => array(),
+                'expected'       => 'twenty-one',
+                'value'          => 21,
+                'attributes'     => array(),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => 'en_US'
+                'symbols'        => array(),
+                'locale'         => 'en_US'
             ),
         );
     }
@@ -298,22 +298,22 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'expected' => '1:01:01',
-                'value' => 3661,
-                'attributes' => array(),
+                'expected'       => '1:01:01',
+                'value'          => 3661,
+                'attributes'     => array(),
                 'textAttributes' => array(),
-                'symbols' => array(),
-                'locale' => 'en_US'
+                'symbols'        => array(),
+                'locale'         => 'en_US'
             ),
             array(
-                'expected' => '1 hour, 1 minute, 1 second',
-                'value' => 3661,
-                'attributes' => array(),
+                'expected'       => '1 hour, 1 minute, 1 second',
+                'value'          => 3661,
+                'attributes'     => array(),
                 'textAttributes' => array(
                     \NumberFormatter::DEFAULT_RULESET => "%with-words"
                 ),
                 'symbols' => array(),
-                'locale' => 'en_US'
+                'locale'  => 'en_US'
             ),
         );
     }
@@ -474,15 +474,15 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'default locale' => array(
-                'expected' => true,
-                'currency' => 'USD',
-                'locale' => null,
+                'expected'      => true,
+                'currency'      => 'USD',
+                'locale'        => null,
                 'defaultLocale' => 'en',
             ),
             'custom locale' => array(
                 'expected' => false,
                 'currency' => 'RUR',
-                'locale' => 'ru',
+                'locale'   => 'ru',
             ),
         );
     }

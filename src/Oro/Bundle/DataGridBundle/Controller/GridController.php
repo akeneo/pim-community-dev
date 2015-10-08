@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\DataGridBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class GridController extends Controller
 {
@@ -27,8 +27,8 @@ class GridController extends Controller
      * @param string $gridName
      * @param string $actionName
      *
-     * @return Response
      * @throws \LogicException
+     * @return Response
      */
     public function massActionAction($gridName, $actionName)
     {

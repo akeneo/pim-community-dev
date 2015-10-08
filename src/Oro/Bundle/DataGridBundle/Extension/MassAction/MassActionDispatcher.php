@@ -3,18 +3,16 @@
 namespace Oro\Bundle\DataGridBundle\Extension\MassAction;
 
 use Doctrine\ORM\QueryBuilder;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
-
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResult;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
 
 class MassActionDispatcher
 {
@@ -95,8 +93,8 @@ class MassActionDispatcher
      * @param bool              $inset
      * @param array             $values
      *
-     * @return QueryBuilder
      * @throws \LogicException
+     * @return QueryBuilder
      */
     protected function getDatagridQuery(
         DatagridInterface $datagrid,
@@ -126,8 +124,8 @@ class MassActionDispatcher
      * @param string            $massActionName
      * @param DatagridInterface $datagrid
      *
-     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
      * @throws \LogicException
+     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
      */
     protected function getMassActionByName($massActionName, DatagridInterface $datagrid)
     {
@@ -174,9 +172,9 @@ class MassActionDispatcher
     /**
      * @param MassActionInterface $massAction
      *
-     * @return MassActionHandlerInterface
      * @throws \LogicException
      * @throws UnexpectedTypeException
+     * @return MassActionHandlerInterface
      */
     protected function getMassActionHandler(MassActionInterface $massAction)
     {

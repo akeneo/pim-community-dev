@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Model;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
 {
@@ -222,11 +222,11 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'configuration value' => array(
-                'expectedValue' => 'ru_RU',
+                'expectedValue'      => 'ru_RU',
                 'configurationValue' => 'ru_RU',
             ),
             'default value' => array(
-                'expectedValue' => LocaleConfiguration::DEFAULT_LOCALE,
+                'expectedValue'      => LocaleConfiguration::DEFAULT_LOCALE,
                 'configurationValue' => null,
             ),
         );
@@ -286,11 +286,11 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'configuration value' => array(
-                'expectedValue' => 'America/Los_Angeles',
+                'expectedValue'      => 'America/Los_Angeles',
                 'configurationValue' => 'America/Los_Angeles',
             ),
             'default value' => array(
-                'expectedValue' => date_default_timezone_get(),
+                'expectedValue'      => date_default_timezone_get(),
                 'configurationValue' => null,
             ),
         );
@@ -399,11 +399,11 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'configuration value' => array(
-                'expectedValue' => 'ru',
+                'expectedValue'      => 'ru',
                 'configurationValue' => 'ru',
             ),
             'default value' => array(
-                'expectedValue' => LocaleConfiguration::DEFAULT_LANGUAGE,
+                'expectedValue'      => LocaleConfiguration::DEFAULT_LANGUAGE,
                 'configurationValue' => null,
             ),
         );

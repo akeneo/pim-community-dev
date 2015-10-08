@@ -2,9 +2,9 @@
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Provider;
 
 use Knp\Menu\FactoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
 use Oro\Bundle\NavigationBundle\Menu\BuilderInterface;
+use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
 {
@@ -163,7 +163,7 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'custom alias' => array('test', 'test'),
-            'global' => array(BuilderChainProvider::COMMON_BUILDER_ALIAS, 'test')
+            'global'       => array(BuilderChainProvider::COMMON_BUILDER_ALIAS, 'test')
         );
     }
 

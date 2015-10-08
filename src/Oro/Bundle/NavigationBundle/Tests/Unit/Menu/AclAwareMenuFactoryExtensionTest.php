@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Menu;
 
+use Doctrine\Common\Cache\CacheProvider;
 use Knp\Menu\MenuFactory;
 use Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactoryExtension;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
-use Doctrine\Common\Cache\CacheProvider;
+use Symfony\Component\Routing\RouterInterface;
 
 class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -340,7 +340,6 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
         $item = $this->factory->createItem('test', $options);
         $this->assertTrue($item->getExtra('isAllowed'));
         $this->assertInstanceOf('Knp\Menu\MenuItem', $item);
-
     }
 
     /**
@@ -400,7 +399,6 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
         $item = $this->factory->createItem('test', $options);
         $this->assertTrue($item->getExtra('isAllowed'));
         $this->assertInstanceOf('Knp\Menu\MenuItem', $item);
-
     }
 
     /**
@@ -409,7 +407,7 @@ class AclAwareMenuFactoryExtensionTest extends \PHPUnit_Framework_TestCase
     public function hasInCacheDataProvider()
     {
         return array(
-            'in cache' => array(true),
+            'in cache'     => array(true),
             'not in cache' => array(false)
         );
     }

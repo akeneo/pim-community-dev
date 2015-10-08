@@ -49,7 +49,6 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
             'doctrine.orm.%s_metadata_driver',
             $enabledParameter
         );
-
     }
 
     /**

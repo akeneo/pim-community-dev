@@ -2,12 +2,11 @@
 
 namespace Oro\Bundle\UserBundle\Form\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormInterface;
-
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Changes Form->submit() behavior so that it treats not set values as if they

@@ -3,8 +3,8 @@
 namespace Oro\Bundle\NavigationBundle\Entity\Builder;
 
 use Oro\Bundle\NavigationBundle\Entity\Builder\AbstractBuilder;
-use Oro\Bundle\NavigationBundle\Entity\PinbarTab;
 use Oro\Bundle\NavigationBundle\Entity\NavigationItem;
+use Oro\Bundle\NavigationBundle\Entity\PinbarTab;
 
 class PinbarTabBuilder extends AbstractBuilder
 {

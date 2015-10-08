@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\AsseticBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -60,7 +60,6 @@ class OroAsseticExtension extends Extension
                     $css = array_merge_recursive($css, $bundleConfig['css']);
                 }
             }
-
         }
 
         $container->setParameter(
@@ -95,7 +94,7 @@ class OroAsseticExtension extends Extension
         }
 
         return array(
-            'compress' => array($compressAssets),
+            'compress'   => array($compressAssets),
             'uncompress' => array($uncompressAssets)
         );
     }

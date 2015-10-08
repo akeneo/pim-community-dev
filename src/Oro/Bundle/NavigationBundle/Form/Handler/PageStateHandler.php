@@ -2,13 +2,11 @@
 
 namespace Oro\Bundle\NavigationBundle\Form\Handler;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\NavigationBundle\Entity\PageState;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\NavigationBundle\Entity\PageState;
 
 class PageStateHandler
 {

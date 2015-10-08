@@ -43,7 +43,6 @@ class AnnotationsReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetEmptyData()
     {
-
         $this->kernelMock->expects($this->once())
             ->method('getBundles')
             ->will($this->returnValue(array()));
@@ -54,7 +53,6 @@ class AnnotationsReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetData()
     {
-
         $this->kernelMock->expects($this->once())
             ->method('getBundles')
             ->will($this->returnValue(array($this->testBundle)));

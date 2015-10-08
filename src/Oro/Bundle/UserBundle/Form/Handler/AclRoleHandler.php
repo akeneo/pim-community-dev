@@ -2,17 +2,15 @@
 namespace Oro\Bundle\UserBundle\Form\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Oro\Bundle\UserBundle\Form\Type\AclRoleType;
-use Oro\Bundle\UserBundle\Entity\Role;
-
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Form\Type\AclRoleType;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class AclRoleHandler
 {

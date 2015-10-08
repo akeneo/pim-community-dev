@@ -4,16 +4,16 @@ namespace Oro\Bundle\UserBundle\Controller;
 
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\PersistentCollection;
-use Pim\Bundle\UserBundle\Entity\User;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\UserBundle\Entity\UserApi;
-use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
+use Oro\Bundle\UserBundle\Entity\UserApi;
+use Pim\Bundle\UserBundle\Entity\User;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserController extends Controller
@@ -153,13 +153,13 @@ class UserController extends Controller
                 $closeButtonRoute = $viewRoute;
             } else {
                 $closeButtonRoute = array(
-                    'route' => 'oro_user_view',
+                    'route'      => 'oro_user_view',
                     'parameters' => array('id' => $user->getId())
                 );
             }
             return $this->get('oro_ui.router')->actionRedirect(
                 array(
-                    'route' => 'oro_user_update',
+                    'route'      => 'oro_user_update',
                     'parameters' => array('id' => $user->getId()),
                 ),
                 $closeButtonRoute
@@ -167,7 +167,7 @@ class UserController extends Controller
         }
 
         return array(
-            'form' => $this->get('oro_user.form.user')->createView(),
+            'form'      => $this->get('oro_user.form.user')->createView(),
             'editRoute' => $updateRoute
         );
     }

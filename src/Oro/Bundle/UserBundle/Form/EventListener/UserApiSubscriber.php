@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\UserBundle\Form\EventListener;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserApiSubscriber implements EventSubscriberInterface
 {

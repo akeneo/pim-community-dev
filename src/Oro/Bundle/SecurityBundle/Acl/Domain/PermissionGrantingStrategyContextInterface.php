@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
  * Provides an interface which can be implemented by AclVoter to allow

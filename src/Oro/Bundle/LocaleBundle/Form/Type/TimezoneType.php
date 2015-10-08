@@ -126,7 +126,7 @@ class TimezoneType extends AbstractType
         foreach ($listIdentifiers as $identifier) {
             $timezone = new \DateTimeZone($identifier);
             $timezones[$identifier] = array(
-                'offset' => $timezone->getOffset($now),
+                'offset'      => $timezone->getOffset($now),
                 'timezone_id' => $identifier
             );
         }

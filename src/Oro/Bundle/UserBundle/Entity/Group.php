@@ -2,12 +2,11 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
-use JMS\Serializer\Annotation\Type;
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\UserBundle\Entity\Repository\GroupRepository")
@@ -114,8 +113,8 @@ class Group
 
     /**
      * @param  Role|string $role
-     * @return boolean
      * @throws \InvalidArgumentException
+     * @return boolean
      */
     public function hasRole($role)
     {
@@ -149,8 +148,8 @@ class Group
     /**
      * Remove the Role object from collection
      * @param  Role|string $role
-     * @return Group
      * @throws \InvalidArgumentException
+     * @return Group
      */
     public function removeRole($role)
     {
@@ -173,8 +172,8 @@ class Group
     /**
      * Set new Roles collection
      * @param  array|Collection $roles
-     * @return Group
      * @throws \InvalidArgumentException
+     * @return Group
      */
     public function setRoles($roles)
     {

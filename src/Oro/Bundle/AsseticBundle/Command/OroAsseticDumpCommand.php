@@ -2,15 +2,13 @@
 
 namespace Oro\Bundle\AsseticBundle\Command;
 
+use Assetic\Asset\AssetInterface;
+use Assetic\Util\VarUtils;
+use Oro\Bundle\AsseticBundle\Factory\OroAssetManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Assetic\Asset\AssetInterface;
-use Assetic\Util\VarUtils;
-
-use Oro\Bundle\AsseticBundle\Factory\OroAssetManager;
 
 class OroAsseticDumpCommand extends ContainerAwareCommand
 {

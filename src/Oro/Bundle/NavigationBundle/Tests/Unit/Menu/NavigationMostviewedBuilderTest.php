@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Menu;
 
-use Oro\Bundle\NavigationBundle\Menu\NavigationMostviewedBuilder;
 use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
+use Oro\Bundle\NavigationBundle\Menu\NavigationMostviewedBuilder;
 
 class NavigationMostviewedBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -77,7 +77,7 @@ class NavigationMostviewedBuilderTest extends \PHPUnit_Framework_TestCase
                 $type,
                 array(
                     'maxItems' => $maxItems,
-                    'orderBy' => array(array('field' => NavigationHistoryItem::NAVIGATION_HISTORY_COLUMN_VISIT_COUNT))
+                    'orderBy'  => array(array('field' => NavigationHistoryItem::NAVIGATION_HISTORY_COLUMN_VISIT_COUNT))
                 )
             )
             ->will($this->returnValue(array()));

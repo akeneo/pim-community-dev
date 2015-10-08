@@ -2,18 +2,15 @@
 
 namespace Oro\Bundle\NavigationBundle\Controller\Api;
 
-use FOS\RestBundle\Controller\FOSRestController;
+use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
-use FOS\Rest\Util\Codes;
-
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
 use Oro\Bundle\NavigationBundle\Entity\PageState;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use Symfony\Component\Validator\Constraints\True;
 
 /**
@@ -182,7 +179,7 @@ class PagestateController extends FOSRestController implements ClassResourceInte
     protected function getState(PageState $entity = null)
     {
         return array(
-            'id' => $entity ? $entity->getId() : null,
+            'id'        => $entity ? $entity->getId() : null,
             'pagestate' => array(
                 'data'   => $entity ? $entity->getData() : '',
                 'pageId' => $entity ? $entity->getPageId() : ''

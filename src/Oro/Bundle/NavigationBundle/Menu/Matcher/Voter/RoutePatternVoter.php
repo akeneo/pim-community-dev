@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\NavigationBundle\Menu\Matcher\Voter;
 
-use Symfony\Component\HttpFoundation\Request;
-
-use Knp\Menu\Matcher\Voter\VoterInterface;
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Voter\VoterInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class RoutePatternVoter implements VoterInterface
 {

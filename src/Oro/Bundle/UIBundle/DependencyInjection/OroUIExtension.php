@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\UIBundle\DependencyInjection;
 
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -111,7 +111,6 @@ class OroUIExtension extends Extension
     {
         foreach ($configPlaceholders as $placeholderName => $configPlaceholder) {
             foreach ($configPlaceholder['items'] as $itemId => $item) {
-
                 if (is_array($item) && isset($item['remove']) && $item['remove']) {
                     unset($placeholders[$placeholderName]['items'][$itemId]);
                 } else {
@@ -121,7 +120,7 @@ class OroUIExtension extends Extension
                         $order = $item['order'];
                     }
                     if (!isset($placeholders[$placeholderName])) {
-                        $placeholders[$placeholderName] = array('items'=>array());
+                        $placeholders[$placeholderName] = array('items'=> array());
                     }
                     if (!array_key_exists($itemId, $placeholders[$placeholderName]['items'])) {
                         $placeholders[$placeholderName]['items'][$itemId] = array(
@@ -175,7 +174,6 @@ class OroUIExtension extends Extension
         }
 
         if ($aOrder == $bOrder) {
-
             return 0;
         }
 

@@ -59,7 +59,7 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $criteria = array(
             'scopedEntity' => 'user',
-            'recordId' => 1,
+            'recordId'     => 1,
         );
 
         if ($isScope) {

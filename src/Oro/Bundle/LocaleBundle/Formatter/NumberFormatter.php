@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\LocaleBundle\Formatter;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use NumberFormatter as IntlNumberFormatter;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class NumberFormatter
 {
@@ -303,8 +303,8 @@ class NumberFormatter
      * @param array $attributes
      * @param array $textAttributes
      * @param array $symbols
-     * @return IntlNumberFormatter
      * @throws \InvalidArgumentException
+     * @return IntlNumberFormatter
      */
     protected function getFormatter(
         $locale,
@@ -337,8 +337,8 @@ class NumberFormatter
      * Converts keys of attributes array to values of NumberFormatter constants
      *
      * @param array $attributes
-     * @return array
      * @throws \InvalidArgumentException
+     * @return array
      */
     protected function parseAttributes(array $attributes)
     {
@@ -353,8 +353,8 @@ class NumberFormatter
      * Pass value of NumberFormatter constant or it's string name and get value
      *
      * @param int|string $attribute
-     * @return mixed
      * @throws \InvalidArgumentException
+     * @return mixed
      */
     protected function parseConstantValue($attribute)
     {
@@ -374,8 +374,8 @@ class NumberFormatter
      * Pass style of NumberFormatter
      *
      * @param int|string|null $style
-     * @return mixed
      * @throws \InvalidArgumentException
+     * @return mixed
      */
     protected function parseStyle($style)
     {

@@ -4,8 +4,8 @@ namespace Oro\Bundle\TranslationBundle\Tests\Unit\Translation;
 
 use Oro\Bundle\TranslationBundle\Translation\Translator;
 use Symfony\Component\Translation\Loader\LoaderInterface;
-use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\MessageCatalogue;
+use Symfony\Component\Translation\MessageSelector;
 
 class TranslatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -79,9 +79,9 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
                     ),
                     'jsmessages' => array(
                         'foobarfoo' => 'foobarfoo (PT-PT)',
-                        'foobar' => 'foobar (ES)',
-                        'foo' => 'foo (FR)',
-                        'bar' => 'bar (EN)',
+                        'foobar'    => 'foobar (ES)',
+                        'foo'       => 'foo (FR)',
+                        'bar'       => 'bar (EN)',
                     ),
                 )
             ),
@@ -95,9 +95,9 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
                     ),
                     'jsmessages' => array(
                         'foobarfoo' => 'foobarfoo (PT-PT)',
-                        'foobar' => 'foobar (ES)',
-                        'foo' => 'foo (FR)',
-                        'bar' => 'bar (EN)',
+                        'foobar'    => 'foobar (ES)',
+                        'foo'       => 'foo (FR)',
+                        'bar'       => 'bar (EN)',
                     ),
                 )
             ),
@@ -111,9 +111,9 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
                     ),
                     'jsmessages' => array(
                         'foobarfoo' => 'foobarfoo (PT-PT)',
-                        'foobar' => 'foobar (ES)',
-                        'foo' => 'foo (EN)',
-                        'bar' => 'bar (EN)',
+                        'foobar'    => 'foobar (ES)',
+                        'foo'       => 'foo (EN)',
+                        'bar'       => 'bar (EN)',
                     ),
                 )
             ),
@@ -126,7 +126,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
                     ),
                     'jsmessages' => array(
                         'foobarfoo' => 'foobarfoo (PT-PT)',
-                        'foobar' => 'foobar (ES)',
+                        'foobar'    => 'foobar (ES)',
                     ),
                 )
             ),

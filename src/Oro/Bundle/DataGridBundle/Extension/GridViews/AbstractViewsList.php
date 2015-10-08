@@ -3,7 +3,6 @@
 namespace Oro\Bundle\DataGridBundle\Extension\GridViews;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Translation\TranslatorInterface;
 
 abstract class AbstractViewsList

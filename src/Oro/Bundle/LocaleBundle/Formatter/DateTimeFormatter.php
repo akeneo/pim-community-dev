@@ -130,8 +130,8 @@ class DateTimeFormatter
      * constant with this name.
      *
      * @param int|string|null $dateType A constant of \IntlDateFormatter type, a string name of type or null
-     * @return int
      * @throws \InvalidArgumentException
+     * @return int
      */
     protected function parseDateType($dateType)
     {

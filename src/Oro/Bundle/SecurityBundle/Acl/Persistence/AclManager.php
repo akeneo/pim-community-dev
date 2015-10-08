@@ -2,22 +2,22 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 
+use Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider;
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
+use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
+use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Security\Acl\Dbal\AclProvider;
-use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
-use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity as OID;
-use Symfony\Component\Security\Acl\Model\MutableAclInterface as ACL;
-use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
-use Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider;
-use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
-use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionInterface;
-use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
-use Oro\Bundle\SecurityBundle\Acl\Persistence\Batch\BatchItem;
-use Oro\Bundle\SecurityBundle\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
+use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
 use Symfony\Component\Security\Acl\Model\EntryInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface as ACL;
+use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -250,8 +250,8 @@ class AclManager extends AbstractAclManager
      *     getOid('Action:Some Action')
      *
      * @param mixed $val An domain object, object identity descriptor (id:type) or ACL annotation
-     * @return OID
      * @throws InvalidDomainObjectException
+     * @return OID
      */
     public function getOid($val)
     {
@@ -275,8 +275,8 @@ class AclManager extends AbstractAclManager
      *
      * @param SID $sid
      * @param OID[] $oids
-     * @return \SplObjectStorage
      * @throws NotAllAclsFoundException when we cannot find an ACL for all identities
+     * @return \SplObjectStorage
      */
     public function findAcls(SID $sid, array $oids)
     {
@@ -525,8 +525,8 @@ class AclManager extends AbstractAclManager
      * @param SID $sid
      * @param OID $oid
      * @param string $field
-     * @return EntryInterface[]
      * @throws \InvalidArgumentException
+     * @return EntryInterface[]
      */
     public function getFieldAces(SID $sid, OID $oid, $field)
     {
@@ -884,9 +884,9 @@ class AclManager extends AbstractAclManager
      *
      * @param OID[] $oids
      * @param SID[] $sids
-     * @return \SplObjectStorage mapping the passed object identities to ACLs
      * @throws AclNotFoundException
      * @throws NotAllAclsFoundException
+     * @return \SplObjectStorage mapping the passed object identities to ACLs
      */
     protected function doFindAcls(array $oids, array $sids)
     {
@@ -964,8 +964,8 @@ class AclManager extends AbstractAclManager
      *                              If null this method returns null if ACL does not exist.
      *                              If false this method throws AclNotFoundException if ACL does not exist.
      *                              If true  this method creates new ACL if ACL does not exist.
-     * @return ACL
      * @throws AclNotFoundException
+     * @return ACL
      */
     protected function getAcl(OID $oid, $ifNotExist = null)
     {

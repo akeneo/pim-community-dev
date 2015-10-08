@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\DateTimeType;
 class UTCDateTimeType extends DateTimeType
 {
     /** @var null| \DateTimeZone  */
-    static private $utc = null;
+    private static $utc = null;
 
     /**
      * {@inheritdoc}

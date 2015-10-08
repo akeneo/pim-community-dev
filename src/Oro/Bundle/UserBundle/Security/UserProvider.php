@@ -2,13 +2,12 @@
 
 namespace Oro\Bundle\UserBundle\Security;
 
-use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
-
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserProvider implements UserProviderInterface
 {

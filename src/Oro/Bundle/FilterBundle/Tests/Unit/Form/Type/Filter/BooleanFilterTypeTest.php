@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 
 class BooleanFilterTypeTest extends AbstractTypeTestCase
 {
@@ -80,7 +80,7 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
             ),
             'predefined value choice' => array(
                 'bindData' => array('value' => BooleanFilterType::TYPE_YES),
-                'formData' => array('type' => null, 'value' => BooleanFilterType::TYPE_YES),
+                'formData' => array('type'  => null, 'value' => BooleanFilterType::TYPE_YES),
                 'viewData' => array(
                     'value' => array('type' => null, 'value' => BooleanFilterType::TYPE_YES),
                 ),
@@ -92,7 +92,7 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
             ),
             'invalid value choice' => array(
                 'bindData' => array('value' => 'incorrect_value'),
-                'formData' => array('type' => null),
+                'formData' => array('type'  => null),
                 'viewData' => array(
                     'value' => array('type' => null, 'value' => 'incorrect_value'),
                 ),

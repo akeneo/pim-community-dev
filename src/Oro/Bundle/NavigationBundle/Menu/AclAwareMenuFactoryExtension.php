@@ -65,7 +65,6 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
      */
     public function buildItem(ItemInterface $item, array $options)
     {
-
     }
 
     /**
@@ -155,8 +154,8 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
             $options = array_merge_recursive(
                 array(
                     'extras' => array(
-                        'routes' => array($options['route']),
-                        'routesParameters' => array($options['route']=>$params),
+                        'routes'           => array($options['route']),
+                        'routesParameters' => array($options['route']=> $params),
                     )
                 ),
                 $options

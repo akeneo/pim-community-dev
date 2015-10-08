@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\FilterBundle\Filter;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 
 class BooleanFilter extends ChoiceFilter
 {

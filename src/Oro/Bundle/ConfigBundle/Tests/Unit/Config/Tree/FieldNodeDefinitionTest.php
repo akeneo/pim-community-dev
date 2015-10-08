@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config\Tree;
 
+use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-
-use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
 
 class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
 {
@@ -119,7 +118,7 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
         return array(
             'constraints empty' => array(
                 'definition' => array(
-                    'options' =>array(
+                    'options' => array(
                         'constraints' => array()
                     )
                 ),
@@ -127,7 +126,7 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
             ),
             'constraints comes as strings' => array(
                 'definition' => array(
-                    'options' =>array(
+                    'options' => array(
                         'constraints' => array(
                             array(
                                 'NotBlank' => null
@@ -139,7 +138,7 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
             ),
             'constraints comes as full class names' => array(
                 'definition' => array(
-                    'options' =>array(
+                    'options' => array(
                         'constraints' => array(
                             array(
                                 'Symfony\Component\Validator\Constraints\Length' => array(

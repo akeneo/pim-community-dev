@@ -15,11 +15,11 @@ class OroAsseticExtensionTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array('css_debug' => array(), 'css_debug_all' => true),
-                array('compress' => array(array()), 'uncompress' => array(array('first.css', 'second.css'))),
+                array('compress'  => array(array()), 'uncompress' => array(array('first.css', 'second.css'))),
             ),
             array(
                 array('css_debug' => array(), 'css_debug_all' => false),
-                array('compress' => array(array('first.css', 'second.css')), 'uncompress' => array(array())),
+                array('compress'  => array(array('first.css', 'second.css')), 'uncompress' => array(array())),
             ),
         );
     }

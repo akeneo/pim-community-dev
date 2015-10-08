@@ -16,7 +16,6 @@ class WidgetMassAction extends AbstractAction implements MassActionInterface
      */
     public function setOptions(ActionConfiguration $options)
     {
-
         if (empty($options['frontend_options'])) {
             $options['frontend_options'] = [];
         }

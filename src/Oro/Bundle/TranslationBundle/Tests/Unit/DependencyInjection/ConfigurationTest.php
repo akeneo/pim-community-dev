@@ -27,7 +27,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 array(
                     'js_translation' => array(
                         'domains' => array('jsmessages', 'validators'),
-                        'debug' => '%kernel.debug%',
+                        'debug'   => '%kernel.debug%',
                     )
                 )
             ),
@@ -36,7 +36,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 array(
                     'js_translation' => array(
                         'domains' => array('jsmessages', 'validators'),
-                        'debug' => '%kernel.debug%',
+                        'debug'   => '%kernel.debug%',
                     )
                 )
             ),
@@ -44,13 +44,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 array(
                     'js_translation' => array(
                         'domains' => array('validators'),
-                        'debug' => true,
+                        'debug'   => true,
                     )
                 ),
                 array(
                     'js_translation' => array(
                         'domains' => array('validators'),
-                        'debug' => true,
+                        'debug'   => true,
                     )
                 )
             ),

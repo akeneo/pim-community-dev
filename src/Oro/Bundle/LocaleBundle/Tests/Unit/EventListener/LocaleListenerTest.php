@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\LocaleBundle\Tests\EventListener;
 
+use Oro\Bundle\LocaleBundle\EventListener\LocaleListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-
-use Oro\Bundle\LocaleBundle\EventListener\LocaleListener;
 
 class LocaleListenerTest extends \PHPUnit_Framework_TestCase
 {
@@ -78,19 +77,19 @@ class LocaleListenerTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             'application not installed with null' => array(
-                'installed' => null,
+                'installed'   => null,
                 'isSetLocale' => false,
             ),
             'application not installed with false' => array(
-                'installed' => false,
+                'installed'   => false,
                 'isSetLocale' => false,
             ),
             'application installed with flag' => array(
-                'installed' => true,
+                'installed'   => true,
                 'isSetLocale' => true,
             ),
             'application installed with date' => array(
-                'installed' => '2012-12-12T12:12:12+02:00',
+                'installed'   => '2012-12-12T12:12:12+02:00',
                 'isSetLocale' => true,
             ),
         );

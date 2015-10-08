@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 class Acceptor
 {

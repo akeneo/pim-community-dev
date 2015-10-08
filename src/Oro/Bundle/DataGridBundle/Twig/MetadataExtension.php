@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\DataGridBundle\Twig;
 
-use Symfony\Component\Routing\RouterInterface;
-
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Symfony\Component\Routing\RouterInterface;
 
 class MetadataExtension extends \Twig_Extension
 {

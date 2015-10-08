@@ -6,7 +6,6 @@ use Assetic\Asset\AssetInterface;
 
 class OroAsseticNode extends \Twig_Node
 {
-
     /**
      * @var AssetInterface
      */

@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
-use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
 
 class FilterTypeTest extends AbstractTypeTestCase
 {
@@ -40,12 +40,12 @@ class FilterTypeTest extends AbstractTypeTestCase
         return array(
             array(
                 'defaultOptions' => array(
-                    'field_type' => 'text',
-                    'field_options' => array(),
+                    'field_type'       => 'text',
+                    'field_options'    => array(),
                     'operator_choices' => array(),
-                    'operator_type' => 'choice',
+                    'operator_type'    => 'choice',
                     'operator_options' => array(),
-                    'show_filter' => false
+                    'show_filter'      => false
                 ),
                 'requiredOptions' => array(
                     'field_type',
@@ -76,7 +76,7 @@ class FilterTypeTest extends AbstractTypeTestCase
                 ),
             ),
             'empty choice' => array(
-                'bindData' => array('type' => '1', 'value' => ''),
+                'bindData' => array('type'  => '1', 'value' => ''),
                 'formData' => array('value' => null),
                 'viewData' => array(
                     'value' => array('type' => '1', 'value' => ''),
@@ -86,7 +86,7 @@ class FilterTypeTest extends AbstractTypeTestCase
                 ),
             ),
             'invalid choice' => array(
-                'bindData' => array('type' => '-1', 'value' => ''),
+                'bindData' => array('type'  => '-1', 'value' => ''),
                 'formData' => array('value' => null),
                 'viewData' => array(
                     'value' => array('type' => '-1', 'value' => ''),
@@ -99,7 +99,7 @@ class FilterTypeTest extends AbstractTypeTestCase
             ),
             'without choice' => array(
                 'bindData' => array('value' => 'text'),
-                'formData' => array('type' => null, 'value' => 'text'),
+                'formData' => array('type'  => null, 'value' => 'text'),
                 'viewData' => array(
                     'value' => array('type' => '', 'value' => 'text'),
                 ),

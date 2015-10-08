@@ -44,12 +44,12 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFunctions()
     {
         $expectedFunctions = array(
-            'oro_locale' => array($this->localeSettings, 'getLocale'),
-            'oro_language' => array($this->localeSettings, 'getLanguage'),
-            'oro_country' => array($this->localeSettings, 'getCountry'),
-            'oro_currency' => array($this->localeSettings, 'getCurrency'),
-            'oro_timezone' => array($this->localeSettings, 'getTimeZone'),
-            'oro_timezone_offset' => array($this->extension, 'getTimeZoneOffset'),
+            'oro_locale'                            => array($this->localeSettings, 'getLocale'),
+            'oro_language'                          => array($this->localeSettings, 'getLanguage'),
+            'oro_country'                           => array($this->localeSettings, 'getCountry'),
+            'oro_currency'                          => array($this->localeSettings, 'getCurrency'),
+            'oro_timezone'                          => array($this->localeSettings, 'getTimeZone'),
+            'oro_timezone_offset'                   => array($this->extension, 'getTimeZoneOffset'),
             'oro_format_address_by_address_country' => array(
                 $this->localeSettings,
                 'isFormatAddressByAddressCountry'

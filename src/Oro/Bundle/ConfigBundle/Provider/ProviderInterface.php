@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\ConfigBundle\Provider;
 
-use Symfony\Component\Form\FormInterface;
-
 use Oro\Bundle\ConfigBundle\Config\Tree\GroupNodeDefinition;
+use Symfony\Component\Form\FormInterface;
 
 interface ProviderInterface
 {

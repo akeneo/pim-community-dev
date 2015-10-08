@@ -6,9 +6,9 @@ use Oro\Bundle\RequireJSBundle\Twig\OroRequireJSExtension;
 class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
 {
     protected $functions = array(
-        'get_requirejs_config' => '{"config": "test"}',
+        'get_requirejs_config'     => '{"config": "test"}',
         'get_requirejs_build_path' => 'oro.min.js',
-        'requirejs_build_exists' => array(),
+        'requirejs_build_exists'   => array(),
     );
 
     protected $parameters = array(

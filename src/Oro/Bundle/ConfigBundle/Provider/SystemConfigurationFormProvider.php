@@ -2,12 +2,11 @@
 
 namespace Oro\Bundle\ConfigBundle\Provider;
 
-use Symfony\Component\Form\FormFactoryInterface;
-
-use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 use Oro\Bundle\ConfigBundle\Config\Tree\FieldNodeDefinition;
 use Oro\Bundle\ConfigBundle\Config\Tree\GroupNodeDefinition;
+use Oro\Bundle\ConfigBundle\Utils\TreeUtils;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class SystemConfigurationFormProvider extends FormProvider
 {

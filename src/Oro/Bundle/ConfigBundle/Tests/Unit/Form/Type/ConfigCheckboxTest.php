@@ -2,9 +2,8 @@
 
 namespace ConfigBundle\Tests\Unit\Form\Type;
 
-use Symfony\Component\Form\Test\FormIntegrationTestCase;
-
 use Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
 class ConfigCheckboxTest extends FormIntegrationTestCase
 {
@@ -54,23 +53,23 @@ class ConfigCheckboxTest extends FormIntegrationTestCase
     {
         return array(
             'valid true' => array(
-                'source' => true,
+                'source'   => true,
                 'expected' => true,
             ),
             'valid false' => array(
-                'source' => false,
+                'source'   => false,
                 'expected' => false,
             ),
             'empty string' => array(
-                'source' => '',
+                'source'   => '',
                 'expected' => false,
             ),
             'string 0' => array(
-                'source' => '0',
+                'source'   => '0',
                 'expected' => false,
             ),
             'string 1' => array(
-                'source' => '1',
+                'source'   => '1',
                 'expected' => true,
             ),
         );

@@ -1,14 +1,13 @@
 <?php
 namespace Oro\Bundle\NavigationBundle\Event;
 
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ResponseHashnavListener
 {
-
     const HASH_NAVIGATION_HEADER = 'x-oro-hash-navigation';
 
     /**
@@ -55,7 +54,7 @@ class ResponseHashnavListener
                         'OroNavigationBundle:HashNav:redirect.html.twig',
                         array(
                             'full_redirect' => $isFullRedirect,
-                            'location' => $location,
+                            'location'      => $location,
                         )
                     )
                 );

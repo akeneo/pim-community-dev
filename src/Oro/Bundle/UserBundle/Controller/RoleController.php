@@ -2,12 +2,12 @@
 
 namespace Oro\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class RoleController extends Controller
 {
@@ -82,7 +82,7 @@ class RoleController extends Controller
 
             return $this->get('oro_ui.router')->actionRedirect(
                 array(
-                    'route' => 'oro_user_role_update',
+                    'route'      => 'oro_user_role_update',
                     'parameters' => array('id' => $entity->getId()),
                 ),
                 array(
@@ -92,7 +92,7 @@ class RoleController extends Controller
         }
 
         return array(
-            'form'     => $aclRoleHandler->createView(),
+            'form'             => $aclRoleHandler->createView(),
             'privilegesConfig' => $this->container->getParameter('oro_user.privileges'),
         );
     }

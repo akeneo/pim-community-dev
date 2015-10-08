@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RequestVoterTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testUriVoterConstruct()
     {
         $uri = 'test.uri';

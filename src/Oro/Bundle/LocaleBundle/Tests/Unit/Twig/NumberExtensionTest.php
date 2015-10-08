@@ -38,7 +38,6 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Twig_SimpleFunction', $filters[2]);
         $this->assertEquals('oro_locale_number_symbol', $filters[2]->getName());
-
     }
 
     public function testGetFilters()
@@ -67,7 +66,6 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Twig_SimpleFilter', $filters[6]);
         $this->assertEquals('oro_format_ordinal', $filters[6]->getName());
-
     }
 
     public function testGetAttribute()
@@ -141,11 +139,11 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
-            'currency' => $currency,
-            'attributes' => $attributes,
+            'currency'       => $currency,
+            'attributes'     => $attributes,
             'textAttributes' => $textAttributes,
-            'symbols' => $symbols,
-            'locale' => $locale
+            'symbols'        => $symbols,
+            'locale'         => $locale
         );
         $expectedResult = '$1,234.45';
 
@@ -164,10 +162,10 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
-            'attributes' => $attributes,
+            'attributes'     => $attributes,
             'textAttributes' => $textAttributes,
-            'symbols' => $symbols,
-            'locale' => $locale
+            'symbols'        => $symbols,
+            'locale'         => $locale
         );
         $expectedResult = '1,234.45';
 
@@ -186,10 +184,10 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
-            'attributes' => $attributes,
+            'attributes'     => $attributes,
             'textAttributes' => $textAttributes,
-            'symbols' => $symbols,
-            'locale' => $locale
+            'symbols'        => $symbols,
+            'locale'         => $locale
         );
         $expectedResult = '99%';
 
@@ -208,10 +206,10 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
-            'attributes' => $attributes,
+            'attributes'     => $attributes,
             'textAttributes' => $textAttributes,
-            'symbols' => $symbols,
-            'locale' => $locale
+            'symbols'        => $symbols,
+            'locale'         => $locale
         );
         $expectedResult = 'one';
 
@@ -230,10 +228,10 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
-            'attributes' => $attributes,
+            'attributes'     => $attributes,
             'textAttributes' => $textAttributes,
-            'symbols' => $symbols,
-            'locale' => $locale
+            'symbols'        => $symbols,
+            'locale'         => $locale
         );
         $expectedResult = '1 sec';
 
@@ -252,10 +250,10 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
-            'attributes' => $attributes,
+            'attributes'     => $attributes,
             'textAttributes' => $textAttributes,
-            'symbols' => $symbols,
-            'locale' => $locale
+            'symbols'        => $symbols,
+            'locale'         => $locale
         );
         $expectedResult = '1st';
 

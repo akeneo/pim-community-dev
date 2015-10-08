@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\Extension;
 
-use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 
 class SomeExtension extends AbstractExtension
 {

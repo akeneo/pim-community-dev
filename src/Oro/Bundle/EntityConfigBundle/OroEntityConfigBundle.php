@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\EntityConfigBundle;
 
+use Oro\Bundle\EntityConfigBundle\DependencyInjection\Compiler\ServiceLinkPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Compiler\ServiceLinkPass;
 
 class OroEntityConfigBundle extends Bundle
 {

@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\NavigationBundle\Tests\Entity;
 
+use Oro\Bundle\NavigationBundle\Entity\NavigationItem;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Oro\Bundle\NavigationBundle\Entity\NavigationItem;
 
 class NavigationItemTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,10 +14,10 @@ class NavigationItemTest extends \PHPUnit_Framework_TestCase
         $user->setEmail('some@email.com');
 
         $values = array(
-            'title' => 'Some Title',
-            'url' => 'Some Url',
+            'title'    => 'Some Title',
+            'url'      => 'Some Url',
             'position' => 'Some position',
-            'user' => $user
+            'user'     => $user
         );
 
         $item = new NavigationItem($values);

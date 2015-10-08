@@ -81,8 +81,8 @@ abstract class MaskBuilder
      * Adds a mask to the permission
      *
      * @param int|string $mask
-     * @return MaskBuilder
      * @throws \InvalidArgumentException
+     * @return MaskBuilder
      */
     public function add($mask)
     {
@@ -105,8 +105,8 @@ abstract class MaskBuilder
      * Removes a mask from the permission
      *
      * @param int|string $mask
-     * @return MaskBuilder
      * @throws \InvalidArgumentException
+     * @return MaskBuilder
      */
     public function remove($mask)
     {
@@ -151,8 +151,8 @@ abstract class MaskBuilder
      * @param int $mask
      * @param bool $brief optional; defaults to false
      *                    Determine whether the representation should be in brief of full format
-     * @return string
      * @throws \InvalidArgumentException
+     * @return string
      */
     public static function getPatternFor($mask, $brief = false)
     {

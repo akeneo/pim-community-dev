@@ -18,7 +18,7 @@ abstract class AbstractExtension extends \Twig_Extension
      * @var array
      */
     protected $defaultFunctionOptions = array(
-        'is_safe' => array('html'),
+        'is_safe'           => array('html'),
         'needs_environment' => true
     );
 

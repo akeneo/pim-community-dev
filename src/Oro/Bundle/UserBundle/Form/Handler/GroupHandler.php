@@ -2,13 +2,11 @@
 
 namespace Oro\Bundle\UserBundle\Form\Handler;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\UserBundle\Entity\Group;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Oro\Bundle\UserBundle\Entity\Group;
 
 class GroupHandler
 {
