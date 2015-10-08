@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Model;
 
-use Oro\Bundle\LocaleBundle\Tests\Unit\IcuAwareTestCase;
 use Oro\Bundle\LocaleBundle\Model\Calendar;
+use Oro\Bundle\LocaleBundle\Tests\Unit\IcuAwareTestCase;
 
 class CalendarTest extends IcuAwareTestCase
 {
@@ -44,24 +44,24 @@ class CalendarTest extends IcuAwareTestCase
     {
         return array(
             'en_US, Sunday, Default locale' => array(null, Calendar::DOW_SUNDAY, 'en_US'),
-            'en_US, Sunday' => array('en_US', Calendar::DOW_SUNDAY),
-            'fr_CA, Sunday' => array('fr_CA', Calendar::DOW_SUNDAY),
-            'he_IL, Sunday' => array('he_IL', Calendar::DOW_SUNDAY),
-            'ar_SA, Sunday' => array('ar_SA', Calendar::DOW_SUNDAY),
-            'ko_KR, Sunday' => array('ko_KR', Calendar::DOW_SUNDAY),
-            'lo_LA, Sunday' => array('lo_LA', Calendar::DOW_SUNDAY),
-            'ja_JP, Sunday' => array('ja_JP', Calendar::DOW_SUNDAY),
-            'hi_IN, Sunday' => array('hi_IN', Calendar::DOW_SUNDAY),
-            'kn_IN, Sunday' => array('kn_IN', Calendar::DOW_SUNDAY),
-            'zh_CN, Sunday' => array('zh_CN', Calendar::DOW_SUNDAY),
-            'ru_RU, Monday' => array('ru_RU', Calendar::DOW_MONDAY),
-            'en_GB, Monday' => array('en_GB', Calendar::DOW_MONDAY),
-            'sq_AL, Monday' => array('sq_AL', Calendar::DOW_MONDAY),
-            'bg_BG, Monday' => array('bg_BG', Calendar::DOW_MONDAY),
-            'vi_VN, Monday' => array('vi_VN', Calendar::DOW_MONDAY),
-            'it_IT, Monday' => array('it_IT', Calendar::DOW_MONDAY),
-            'fr_FR, Monday' => array('fr_FR', Calendar::DOW_MONDAY),
-            'eu_ES, Monday' => array('eu_ES', Calendar::DOW_MONDAY),
+            'en_US, Sunday'                 => array('en_US', Calendar::DOW_SUNDAY),
+            'fr_CA, Sunday'                 => array('fr_CA', Calendar::DOW_SUNDAY),
+            'he_IL, Sunday'                 => array('he_IL', Calendar::DOW_SUNDAY),
+            'ar_SA, Sunday'                 => array('ar_SA', Calendar::DOW_SUNDAY),
+            'ko_KR, Sunday'                 => array('ko_KR', Calendar::DOW_SUNDAY),
+            'lo_LA, Sunday'                 => array('lo_LA', Calendar::DOW_SUNDAY),
+            'ja_JP, Sunday'                 => array('ja_JP', Calendar::DOW_SUNDAY),
+            'hi_IN, Sunday'                 => array('hi_IN', Calendar::DOW_SUNDAY),
+            'kn_IN, Sunday'                 => array('kn_IN', Calendar::DOW_SUNDAY),
+            'zh_CN, Sunday'                 => array('zh_CN', Calendar::DOW_SUNDAY),
+            'ru_RU, Monday'                 => array('ru_RU', Calendar::DOW_MONDAY),
+            'en_GB, Monday'                 => array('en_GB', Calendar::DOW_MONDAY),
+            'sq_AL, Monday'                 => array('sq_AL', Calendar::DOW_MONDAY),
+            'bg_BG, Monday'                 => array('bg_BG', Calendar::DOW_MONDAY),
+            'vi_VN, Monday'                 => array('vi_VN', Calendar::DOW_MONDAY),
+            'it_IT, Monday'                 => array('it_IT', Calendar::DOW_MONDAY),
+            'fr_FR, Monday'                 => array('fr_FR', Calendar::DOW_MONDAY),
+            'eu_ES, Monday'                 => array('eu_ES', Calendar::DOW_MONDAY),
         );
     }
 

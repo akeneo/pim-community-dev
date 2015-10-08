@@ -4,7 +4,6 @@ namespace Oro\Bundle\AsseticBundle\Tests\Unit\Parser;
 
 use \Twig_Token;
 use \Twig_TokenStream;
-
 use Oro\Bundle\AsseticBundle\Parser\AsseticTokenParser;
 
 class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase

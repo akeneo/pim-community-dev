@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\FilterBundle\Filter;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 
 class NumberFilter extends AbstractFilter
 {

@@ -3,16 +3,14 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Dbal;
 
 use Doctrine\DBAL\Driver\Connection;
-use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
-use Symfony\Component\Security\Acl\Model\AclCacheInterface;
-
-use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
-
 use Symfony\Component\Security\Acl\Dbal\MutableAclProvider as BaseMutableAclProvider;
+use Symfony\Component\Security\Acl\Domain\Acl;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Model\AclCacheInterface;
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
-use Symfony\Component\Security\Acl\Domain\Acl;
 
 /**
  * This class extends the standard Symfony MutableAclProvider.
@@ -47,7 +45,6 @@ class MutableAclProvider extends BaseMutableAclProvider
     ) {
         $this->permissionStrategy = $permissionGrantingStrategy;
         parent::__construct($connection, $permissionGrantingStrategy, $options, $cache);
-
     }
 
     /**
@@ -124,8 +121,8 @@ class MutableAclProvider extends BaseMutableAclProvider
      *
      * @param SecurityIdentityInterface $sid
      * @param string $oldName
-     * @return string
      * @throws \InvalidArgumentException
+     * @return string
      */
     protected function getUpdateSecurityIdentitySql(SecurityIdentityInterface $sid, $oldName)
     {

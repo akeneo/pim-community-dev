@@ -3,7 +3,6 @@
 namespace Oro\Bundle\UserBundle\Tests\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 

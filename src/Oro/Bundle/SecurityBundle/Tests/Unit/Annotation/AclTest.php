@@ -10,12 +10,12 @@ class AclTest extends \PHPUnit_Framework_TestCase
     {
         $annotation = new Acl(
             array(
-                'id' => 'test_acl',
-                'type' => 'SomeType',
-                'class' => 'SomeClass',
-                'permission' => 'SomePermission',
-                'group_name' => 'SomeGroup',
-                'label' => 'SomeLabel',
+                'id'               => 'test_acl',
+                'type'             => 'SomeType',
+                'class'            => 'SomeClass',
+                'permission'       => 'SomePermission',
+                'group_name'       => 'SomeGroup',
+                'label'            => 'SomeLabel',
                 'ignore_class_acl' => true
             )
         );

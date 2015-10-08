@@ -3,11 +3,9 @@
 namespace Oro\Bundle\NavigationBundle\Twig;
 
 use Knp\Menu\ItemInterface;
-use Knp\Menu\Twig\Helper;
 use Knp\Menu\Provider\MenuProviderInterface;
-
+use Knp\Menu\Twig\Helper;
 use Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MenuExtension extends \Twig_Extension
@@ -63,12 +61,12 @@ class MenuExtension extends \Twig_Extension
     {
         return array(
             'oro_menu_render' => new \Twig_Function_Method($this, 'render', array('is_safe' => array('html'))),
-            'oro_menu_get' => new \Twig_Function_Method($this, 'getMenu'),
+            'oro_menu_get'    => new \Twig_Function_Method($this, 'getMenu'),
             'oro_breadcrumbs' => new \Twig_Function_Method(
                 $this,
                 'renderBreadCrumbs',
                 array(
-                    'is_safe' => array('html'),
+                    'is_safe'           => array('html'),
                     'needs_environment' => true
                 )
             )
@@ -127,7 +125,7 @@ class MenuExtension extends \Twig_Extension
 
             return $template->render(
                 array(
-                    'breadcrumbs' => $breadcrumbs,
+                    'breadcrumbs'   => $breadcrumbs,
                     'useDecorators' => $useDecorators
                 )
             );
@@ -153,10 +151,10 @@ class MenuExtension extends \Twig_Extension
      * @param array                $path
      * @param array                $options
      *
-     * @return ItemInterface
-     *
      * @throws \LogicException
      * @throws \InvalidArgumentException when the path is invalid
+     * @return ItemInterface
+     *
      */
     public function getMenu($menu, array $path = array(), array $options = array())
     {

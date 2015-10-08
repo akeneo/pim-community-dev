@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Converter;
 
-use Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry;
 use Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterInterface;
+use Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry;
 
 class DateTimeFormatConverterRegistryTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,12 +1,11 @@
 <?php
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Event;
 
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
 use Oro\Bundle\NavigationBundle\Event\ResponseHistoryListener;
 use Oro\Bundle\NavigationBundle\Provider\TitleService;
-
+use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -216,7 +215,6 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
 
     public function getTitleService()
     {
-
         $this->titleService = $this->getMock('Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface');
         $this->titleService->expects($this->once())
             ->method('getSerialized')

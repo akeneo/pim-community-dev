@@ -2,13 +2,8 @@
 
 namespace Oro\Bundle\ConfigBundle\Tests\Unit\Config;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
-
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Form\Forms;
-use Symfony\Component\Form\PreloadedExtension;
-
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 use Oro\Bundle\ConfigBundle\DependencyInjection\SystemConfiguration\ProcessorDecorator;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
@@ -16,6 +11,9 @@ use Oro\Bundle\ConfigBundle\Form\Type\FormFieldType;
 use Oro\Bundle\ConfigBundle\Form\Type\FormType;
 use Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider;
 use Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension;
+use Symfony\Component\Form\Forms;
+use Symfony\Component\Form\PreloadedExtension;
+use Symfony\Component\Yaml\Yaml;
 
 class ConfigManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -241,7 +239,7 @@ class ConfigManagerTest extends \PHPUnit_Framework_TestCase
         );
 
         $currentValue = array(
-            'value' => 20,
+            'value'                  => 20,
             'use_parent_scope_value' => false,
         );
         $object->expects($this->once())

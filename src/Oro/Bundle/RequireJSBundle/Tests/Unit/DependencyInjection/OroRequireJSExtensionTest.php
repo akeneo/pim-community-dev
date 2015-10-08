@@ -10,8 +10,8 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $expectedParameters = array(
-        'oro_require_js' => array(),
-        'oro_require_js.web_root' => '/path/to/web_root',
+        'oro_require_js'            => array(),
+        'oro_require_js.web_root'   => '/path/to/web_root',
         'oro_require_js.build_path' => 'js/app.min.js',
     );
 
@@ -20,8 +20,8 @@ class OroRequireJSExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $config = array(
         'oro_translation' => array(
-            'js_engine' => 'node',
-            'web_root' => '/path/to/web_root',
+            'js_engine'  => 'node',
+            'web_root'   => '/path/to/web_root',
             'build_path' => 'js/app.min.js',
         )
     );

@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\ConfigBundle\Form\Type;
 
+use Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
-use Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber;
 
 class FormType extends AbstractType
 {

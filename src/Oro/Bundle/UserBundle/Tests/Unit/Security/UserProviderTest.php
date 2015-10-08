@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Security;
 
-use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-
 use Oro\Bundle\UserBundle\Security\UserProvider;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 class UserProviderTest extends \PHPUnit_Framework_TestCase
 {

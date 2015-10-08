@@ -25,7 +25,7 @@ class DateExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'age' => new \Twig_Filter_Method($this, 'getAge'),
+            'age'        => new \Twig_Filter_Method($this, 'getAge'),
             'age_string' => new \Twig_Filter_Method($this, 'getAgeAsString'),
         );
     }

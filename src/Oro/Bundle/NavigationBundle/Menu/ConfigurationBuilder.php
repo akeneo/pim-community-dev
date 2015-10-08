@@ -41,7 +41,6 @@ class ConfigurationBuilder implements BuilderInterface
         if (!empty($menuConfig['items']) && !empty($menuConfig['tree'])) {
             foreach ($menuConfig['tree'] as $menuTreeName => $menuTreeElement) {
                 if ($menuTreeName == $alias) {
-
                     if (!empty($menuTreeElement['extras'])) {
                         $menu->setExtras($menuTreeElement['extras']);
                     }
@@ -69,7 +68,6 @@ class ConfigurationBuilder implements BuilderInterface
         $isAllowed = false;
         foreach ($data as $itemCode => $itemData) {
             if (!empty($itemList[$itemCode])) {
-
                 $itemOptions = $itemList[$itemCode];
 
                 if (empty($itemOptions['name'])) {

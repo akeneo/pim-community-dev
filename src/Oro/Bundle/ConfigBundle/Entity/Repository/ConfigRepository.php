@@ -3,7 +3,6 @@
 namespace Oro\Bundle\ConfigBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-
 use Oro\Bundle\ConfigBundle\Entity\Config;
 
 /**
@@ -37,8 +36,8 @@ class ConfigRepository extends EntityRepository
         $settings = array();
         foreach ($scope->getValues() as $value) {
             $settings[$value->getSection()][$value->getName()] = array(
-                'value' => $value->getValue(),
-                'scope' => $scope->getEntity() ?: 'app',
+                'value'                  => $value->getValue(),
+                'scope'                  => $scope->getEntity() ?: 'app',
                 'use_parent_scope_value' => false
             );
         }

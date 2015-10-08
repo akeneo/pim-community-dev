@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\FormBundle\Form\EventListener;
 
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class FixArrayToStringListener implements EventSubscriberInterface
 {

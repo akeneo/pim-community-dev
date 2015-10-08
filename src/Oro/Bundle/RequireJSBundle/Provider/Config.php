@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\RequireJSBundle\Provider;
 
+use Doctrine\Common\Cache\CacheProvider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
-use Doctrine\Common\Cache\CacheProvider;
 
 class Config
 {

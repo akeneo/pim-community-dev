@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\LocaleBundle\DependencyInjection;
 
+use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-
-use Oro\Bundle\ConfigBundle\DependencyInjection\SettingsBuilder;
 use Symfony\Component\Intl\Intl;
 
 /**
@@ -104,13 +103,13 @@ class Configuration implements ConfigurationInterface
         SettingsBuilder::append(
             $rootNode,
             array(
-                'locale'   => array('value' => '%locale%'),
-                'language' => array('value' => null),
-                'country'  => array('value' => null),
-                'currency' => array('value' => null),
-                'timezone' => array('value' => date_default_timezone_get()),
+                'locale'                            => array('value' => '%locale%'),
+                'language'                          => array('value' => null),
+                'country'                           => array('value' => null),
+                'currency'                          => array('value' => null),
+                'timezone'                          => array('value' => date_default_timezone_get()),
                 'format_address_by_address_country' => array('value' => true, 'type' => 'boolean'),
-                'qwerty' => array('value' => array(), 'type' => 'array'),
+                'qwerty'                            => array('value' => array(), 'type' => 'array'),
             )
         );
 

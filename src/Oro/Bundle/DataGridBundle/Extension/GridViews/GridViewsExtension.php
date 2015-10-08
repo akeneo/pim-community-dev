@@ -2,12 +2,11 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\GridViews;
 
-use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
-
-use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
+use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 
 class GridViewsExtension extends AbstractExtension
 {

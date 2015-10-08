@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 
 class NumberFilterTypeTest extends AbstractTypeTestCase
 {
@@ -49,15 +49,15 @@ class NumberFilterTypeTest extends AbstractTypeTestCase
         return array(
             array(
                 'defaultOptions' => array(
-                    'field_type' => 'number',
+                    'field_type'       => 'number',
                     'operator_choices' => array(
-                        NumberFilterType::TYPE_EQUAL => 'oro.filter.form.label_type_equal',
+                        NumberFilterType::TYPE_EQUAL         => 'oro.filter.form.label_type_equal',
                         NumberFilterType::TYPE_GREATER_EQUAL => 'oro.filter.form.label_type_greater_equal',
-                        NumberFilterType::TYPE_GREATER_THAN => 'oro.filter.form.label_type_greater_than',
-                        NumberFilterType::TYPE_LESS_EQUAL => 'oro.filter.form.label_type_less_equal',
-                        NumberFilterType::TYPE_LESS_THAN => 'oro.filter.form.label_type_less_than',
+                        NumberFilterType::TYPE_GREATER_THAN  => 'oro.filter.form.label_type_greater_than',
+                        NumberFilterType::TYPE_LESS_EQUAL    => 'oro.filter.form.label_type_less_equal',
+                        NumberFilterType::TYPE_LESS_THAN     => 'oro.filter.form.label_type_less_than',
                     ),
-                    'data_type' => NumberFilterType::DATA_INTEGER,
+                    'data_type'         => NumberFilterType::DATA_INTEGER,
                     'formatter_options' => array()
                 )
             )
@@ -94,39 +94,39 @@ class NumberFilterTypeTest extends AbstractTypeTestCase
                 'bindData' => array('type' => NumberFilterType::TYPE_EQUAL, 'value' => '12345.67890'),
                 'formData' => array('type' => NumberFilterType::TYPE_EQUAL, 'value' => 12345),
                 'viewData' => array(
-                    'value' => array('type' => NumberFilterType::TYPE_EQUAL, 'value' => '12345'),
+                    'value'             => array('type' => NumberFilterType::TYPE_EQUAL, 'value' => '12345'),
                     'formatter_options' => array(
-                        'decimals' => 0,
-                        'grouping' => false,
-                        'orderSeparator' => '',
+                        'decimals'         => 0,
+                        'grouping'         => false,
+                        'orderSeparator'   => '',
                         'decimalSeparator' => '.',
                     )
                 ),
                 'customOptions' => array(
                     'field_type' => 'integer',
-                    'data_type' => NumberFilterType::DATA_INTEGER
+                    'data_type'  => NumberFilterType::DATA_INTEGER
                 ),
             ),
             'money' => array(
                 'bindData' => array('type' => NumberFilterType::TYPE_EQUAL, 'value' => '12345.67890'),
                 'formData' => array(
-                    'type' => NumberFilterType::TYPE_EQUAL,
+                    'type'  => NumberFilterType::TYPE_EQUAL,
                     'value' => 12345.6789
                 ),
                 'viewData' => array(
-                    'value' => array('type' => NumberFilterType::TYPE_EQUAL, 'value' => '12345.68'),
+                    'value'             => array('type' => NumberFilterType::TYPE_EQUAL, 'value' => '12345.68'),
                     'formatter_options' => array(
-                        'decimals' => 4,
-                        'grouping' => true,
-                        'orderSeparator' => ' ',
+                        'decimals'         => 4,
+                        'grouping'         => true,
+                        'orderSeparator'   => ' ',
                         'decimalSeparator' => '.',
                     )
                 ),
                 'customOptions' => array(
-                    'field_type' => 'money',
-                    'data_type' => NumberFilterType::DATA_DECIMAL,
+                    'field_type'        => 'money',
+                    'data_type'         => NumberFilterType::DATA_DECIMAL,
                     'formatter_options' => array(
-                        'decimals' => 4,
+                        'decimals'       => 4,
                         'orderSeparator' => ' '
                     )
                 ),

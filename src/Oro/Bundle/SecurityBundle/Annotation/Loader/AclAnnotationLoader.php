@@ -3,8 +3,8 @@
 namespace Oro\Bundle\SecurityBundle\Annotation\Loader;
 
 use Doctrine\Common\Annotations\Reader as AnnotationReader;
-use Symfony\Component\Finder\Finder;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
+use Symfony\Component\Finder\Finder;
 
 class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderInterface
 {

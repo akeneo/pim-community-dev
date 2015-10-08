@@ -3,7 +3,6 @@
 namespace Oro\Bundle\NavigationBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 /**

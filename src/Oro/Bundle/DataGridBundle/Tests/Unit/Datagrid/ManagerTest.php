@@ -3,8 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
-use Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider;
 use Oro\Bundle\DataGridBundle\Provider\ChainConfigurationProvider;
+use Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider;
 
 class ManagerTest extends \PHPUnit_Framework_TestCase
 {

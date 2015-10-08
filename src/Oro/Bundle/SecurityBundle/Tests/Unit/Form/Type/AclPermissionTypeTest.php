@@ -43,7 +43,7 @@ class AclPermissionTypeTest extends \PHPUnit_Framework_TestCase
         $resolver->expects($this->once())->method('setDefaults')
             ->with(
                 array(
-                    'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPermission',
+                    'data_class'        => 'Oro\Bundle\SecurityBundle\Model\AclPermission',
                     'privileges_config' => array()
                 )
             );

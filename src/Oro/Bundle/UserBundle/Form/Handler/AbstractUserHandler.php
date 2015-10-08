@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\UserBundle\Form\Handler;
 
+use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 
 abstract class AbstractUserHandler
 {

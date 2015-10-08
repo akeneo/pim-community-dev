@@ -3,11 +3,11 @@
 namespace Oro\Bundle\SecurityBundle\EventListener;
 
 use Doctrine\Common\Util\ClassUtils;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class ControllerListener
 {

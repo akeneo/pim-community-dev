@@ -1,9 +1,8 @@
 <?php
 namespace Oro\Bundle\AsseticBundle\Tests\Unit\Node;
 
-use Assetic\Asset\FileAsset;
 use Assetic\Asset\AssetCollection;
-
+use Assetic\Asset\FileAsset;
 use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
 class OroAsseticNodeTest extends \PHPUnit_Framework_TestCase
@@ -24,12 +23,12 @@ class OroAsseticNodeTest extends \PHPUnit_Framework_TestCase
         $this->unCompressAsset = new AssetCollection(array($asset));
         $this->node = new OroAsseticNode(
             array(
-                'compress' => $this->compressAsset,
+                'compress'    => $this->compressAsset,
                 'un_compress' => $this->unCompressAsset
             ),
             array(
                 'un_compress' => 'uncompress_test_asset',
-                'compress' => 'compress_test_asset'
+                'compress'    => 'compress_test_asset'
             ),
             array(),
             array('uncompress' => array(array('compile1.css', 'compile2.css'))),

@@ -12,7 +12,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             'bar' => 'Bar',
         ),
         'validators' => array(
-            'int' => 'Integer',
+            'int'    => 'Integer',
             'string' => 'string',
         ),
     );
@@ -117,12 +117,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(array('jsmessages', 'validators'), 'fr'),
                 array(
-                    'locale' => 'fr',
+                    'locale'         => 'fr',
                     'defaultDomains' => array('jsmessages', 'validators'),
-                    'messages' => array(
-                        'jsmessages:foo' => 'Foo',
-                        'jsmessages:bar' => 'Bar',
-                        'validators:int' => 'Integer',
+                    'messages'       => array(
+                        'jsmessages:foo'    => 'Foo',
+                        'jsmessages:bar'    => 'Bar',
+                        'validators:int'    => 'Integer',
                         'validators:string' => 'string',
                     ),
                 ),
@@ -130,10 +130,10 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(array('validators'), 'en', true),
                 array(
-                    'locale' => 'en',
+                    'locale'         => 'en',
                     'defaultDomains' => array('validators'),
-                    'messages' => array(
-                        'validators:int' => 'Integer',
+                    'messages'       => array(
+                        'validators:int'    => 'Integer',
                         'validators:string' => 'string',
                     ),
                     'debug' => true,
@@ -142,9 +142,9 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(array(), 'ch', false),
                 array(
-                    'locale' => 'ch',
+                    'locale'         => 'ch',
                     'defaultDomains' => array(),
-                    'messages' => array(),
+                    'messages'       => array(),
                 ),
             ),
         );

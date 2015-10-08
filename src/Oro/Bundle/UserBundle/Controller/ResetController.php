@@ -1,10 +1,10 @@
 <?php
 namespace Oro\Bundle\UserBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class ResetController extends Controller
 {

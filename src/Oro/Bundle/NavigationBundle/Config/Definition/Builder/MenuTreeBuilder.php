@@ -6,7 +6,6 @@ use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 
 class MenuTreeBuilder extends NodeBuilder
 {
-
     /**
      * Constructor
      */

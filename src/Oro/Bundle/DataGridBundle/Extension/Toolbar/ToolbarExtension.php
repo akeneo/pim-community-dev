@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Toolbar;
 
-use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 
 class ToolbarExtension extends AbstractExtension
 {

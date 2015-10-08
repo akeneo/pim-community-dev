@@ -2,9 +2,9 @@
 namespace Oro\Bundle\NavigationBundle\Menu;
 
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Knp\Menu\Util\MenuManipulator;
-use Knp\Menu\Matcher\Matcher;
 use Symfony\Component\Routing\Router;
 
 class BreadcrumbManager
@@ -49,7 +49,6 @@ class BreadcrumbManager
         $currentItem = $this->getCurrentMenuItem($menu);
 
         if ($currentItem) {
-
             return $this->getBreadcrumbArray($menuName, $currentItem, $isInverse);
         }
     }
@@ -61,10 +60,10 @@ class BreadcrumbManager
      * @param array $pathName
      * @param array $options
      *
-     * @return ItemInterface
-     *
      * @throws \LogicException
      * @throws \InvalidArgumentException when the path is invalid
+     * @return ItemInterface
+     *
      */
     public function getMenu($menu, array $pathName = array(), array $options = array())
     {
@@ -201,17 +200,14 @@ class BreadcrumbManager
     protected function routeMatch($pattern, $route)
     {
         if ($pattern == $route) {
-
             return true;
         } elseif (0 === strpos($pattern, '/') && strlen($pattern) - 1 === strrpos($pattern, '/')) {
-
             return preg_match($pattern, $route);
         } elseif (false !== strpos($pattern, '*')) {
             $pattern = sprintf('/^%s$/', str_replace('*', '\w+', $pattern));
 
             return preg_match($pattern, $route);
         } else {
-
             return false;
         }
     }

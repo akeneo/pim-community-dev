@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Twig;
 
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Oro\Bundle\FilterBundle\Twig\RenderLayoutExtension;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+use Symfony\Component\Form\FormView;
 
 class RenderLayoutExtensionTest extends AbstractExtensionTestCase
 {

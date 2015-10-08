@@ -29,8 +29,8 @@ class DateTimeFormatConverterRegistry
 
     /**
      * @param string $name
-     * @return DateTimeFormatConverterInterface
      * @throws \LogicException
+     * @return DateTimeFormatConverterInterface
      */
     public function getFormatConverter($name)
     {

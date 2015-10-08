@@ -544,9 +544,9 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $privileges[] = self::getPrivilege(
             'test:Acme\Class1',
             array(
-                'VIEW' => AccessLevel::SYSTEM_LEVEL,
+                'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
-                'EDIT' => AccessLevel::NONE_LEVEL,
+                'EDIT'   => AccessLevel::NONE_LEVEL,
             )
         );
 
@@ -558,7 +558,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->setExpectationsForSetPermission(
             $sid,
             array(
-                'test:(root)' => array(),
+                'test:(root)'      => array(),
                 'test:Acme\Class1' => array('VIEW_SYSTEM', 'CREATE_BASIC'),
             )
         );
@@ -578,25 +578,25 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $privileges[] = self::getPrivilege(
             'test:(root)',
             array(
-                'VIEW' => AccessLevel::SYSTEM_LEVEL,
+                'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
-                'EDIT' => AccessLevel::NONE_LEVEL,
+                'EDIT'   => AccessLevel::NONE_LEVEL,
             )
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class1',
             array(
-                'VIEW' => AccessLevel::SYSTEM_LEVEL,
+                'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
-                'EDIT' => AccessLevel::NONE_LEVEL,
+                'EDIT'   => AccessLevel::NONE_LEVEL,
             )
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class2',
             array(
-                'VIEW' => AccessLevel::SYSTEM_LEVEL,
+                'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::SYSTEM_LEVEL,
-                'EDIT' => AccessLevel::NONE_LEVEL,
+                'EDIT'   => AccessLevel::NONE_LEVEL,
             )
         );
 
@@ -608,7 +608,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->setExpectationsForSetPermission(
             $sid,
             array(
-                'test:(root)' => array('VIEW_SYSTEM', 'CREATE_BASIC'),
+                'test:(root)'      => array('VIEW_SYSTEM', 'CREATE_BASIC'),
                 'test:Acme\Class2' => array('VIEW_SYSTEM', 'CREATE_SYSTEM'),
             )
         );
@@ -630,33 +630,33 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $privileges[] = self::getPrivilege(
             'test:(root)',
             array(
-                'VIEW' => AccessLevel::SYSTEM_LEVEL,
+                'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
-                'EDIT' => AccessLevel::NONE_LEVEL,
+                'EDIT'   => AccessLevel::NONE_LEVEL,
             )
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class1', // no changes because permissions = root
             array(
-                'VIEW' => AccessLevel::SYSTEM_LEVEL,
+                'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
-                'EDIT' => AccessLevel::NONE_LEVEL,
+                'EDIT'   => AccessLevel::NONE_LEVEL,
             )
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class2', // new
             array(
-                'VIEW' => AccessLevel::SYSTEM_LEVEL,
+                'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::SYSTEM_LEVEL,
-                'EDIT' => AccessLevel::NONE_LEVEL,
+                'EDIT'   => AccessLevel::NONE_LEVEL,
             )
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class3', // existing and should be deleted because permissions = root
             array(
-                'VIEW' => AccessLevel::SYSTEM_LEVEL,
+                'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
-                'EDIT' => AccessLevel::NONE_LEVEL,
+                'EDIT'   => AccessLevel::NONE_LEVEL,
             )
         );
 
@@ -672,7 +672,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->setExpectationsForSetPermission(
             $sid,
             array(
-                'test:(root)' => array('VIEW_SYSTEM', 'CREATE_BASIC'),
+                'test:(root)'      => array('VIEW_SYSTEM', 'CREATE_BASIC'),
                 'test:Acme\Class2' => array('VIEW_SYSTEM', 'CREATE_SYSTEM'),
             )
         );
@@ -733,8 +733,8 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param  array                    $src
-     * @return \SplObjectStorage
      * @throws NotAllAclsFoundException
+     * @return \SplObjectStorage
      */
     public static function getAcls(array $src)
     {

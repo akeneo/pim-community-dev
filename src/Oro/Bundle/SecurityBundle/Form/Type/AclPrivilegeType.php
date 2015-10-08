@@ -2,14 +2,13 @@
 
 namespace Oro\Bundle\SecurityBundle\Form\Type;
 
+use Oro\Bundle\SecurityBundle\Form\Type\AclPermissionType;
+use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeIdentityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
-use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeIdentityType;
-use Oro\Bundle\SecurityBundle\Form\Type\AclPermissionType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AclPrivilegeType extends AbstractType
 {
@@ -30,11 +29,11 @@ class AclPrivilegeType extends AbstractType
             'permissions',
             new PermissionCollectionType(),
             array(
-                'type' => new AclPermissionType(),
-                'allow_add' => true,
-                'prototype' => false,
+                'type'         => new AclPermissionType(),
+                'allow_add'    => true,
+                'prototype'    => false,
                 'allow_delete' => false,
-                'options' => array(
+                'options'      => array(
                     'privileges_config' => $options['privileges_config']
                 ),
             )
@@ -57,7 +56,7 @@ class AclPrivilegeType extends AbstractType
         $resolver->setDefaults(
             array(
                 'privileges_config' => array(),
-                'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
+                'data_class'        => 'Oro\Bundle\SecurityBundle\Model\AclPrivilege',
             )
         );
     }

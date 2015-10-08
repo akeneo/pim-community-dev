@@ -36,7 +36,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         $redirect = $this->router->actionRedirect(
             array(
-                'route' => 'test_route',
+                'route'      => 'test_route',
                 'parameters' => array('id' => 1),
             ),
             array()
@@ -62,7 +62,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $redirect = $this->router->actionRedirect(
             array(),
             array(
-                'route' => 'test_route',
+                'route'      => 'test_route',
                 'parameters' => array('id' => 1),
             )
         );

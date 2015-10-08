@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\ConfigBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Oro\Bundle\ConfigBundle\DependencyInjection\Compiler\ConfigPass;
 use Oro\Bundle\ConfigBundle\DependencyInjection\Compiler\SystemConfigurationPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class OroConfigBundle extends Bundle
 {

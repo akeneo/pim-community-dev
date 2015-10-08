@@ -2,12 +2,10 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-use Symfony\Component\Security\Core\Role\Role as BaseRole;
-
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
-
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
+use Symfony\Component\Security\Core\Role\Role as BaseRole;
 
 /**
  * Role Entity
@@ -88,8 +86,8 @@ class Role extends BaseRole
      * Set role name only for newly created role
      *
      * @param  string            $role Role name
-     * @return Role
      * @throws \RuntimeException
+     * @return Role
      */
     public function setRole($role)
     {

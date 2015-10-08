@@ -2,11 +2,11 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
+use Oro\Bundle\FilterBundle\Form\Type\DateRangeType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\AbstractTypeTestCase;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
-use Oro\Bundle\FilterBundle\Form\Type\DateRangeType;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 
 class DateRangeFilterTypeTest extends AbstractTypeTestCase
 {
@@ -59,15 +59,15 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
         return array(
             array(
                 'defaultOptions' => array(
-                    'field_type' => DateRangeType::NAME,
+                    'field_type'       => DateRangeType::NAME,
                     'operator_choices' => array(
-                        DateRangeFilterType::TYPE_BETWEEN => 'oro.filter.form.label_date_type_between',
+                        DateRangeFilterType::TYPE_BETWEEN     => 'oro.filter.form.label_date_type_between',
                         DateRangeFilterType::TYPE_NOT_BETWEEN => 'oro.filter.form.label_date_type_not_between',
-                        DateRangeFilterType::TYPE_MORE_THAN => 'oro.filter.form.label_date_type_more_than',
-                        DateRangeFilterType::TYPE_LESS_THAN => 'oro.filter.form.label_date_type_less_than',
+                        DateRangeFilterType::TYPE_MORE_THAN   => 'oro.filter.form.label_date_type_more_than',
+                        DateRangeFilterType::TYPE_LESS_THAN   => 'oro.filter.form.label_date_type_less_than',
                     ),
                     'widget_options' => array(),
-                    'type_values' => array(
+                    'type_values'    => array(
                         'between'    => DateRangeFilterType::TYPE_BETWEEN,
                         'notBetween' => DateRangeFilterType::TYPE_NOT_BETWEEN,
                         'moreThan'   => DateRangeFilterType::TYPE_MORE_THAN,
@@ -88,7 +88,7 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
                 'bindData' => array(),
                 'formData' => array('type' => null, 'value' => array('start' => '', 'end' => '')),
                 'viewData' => array(
-                    'value'          => array('type' => null, 'value' => array('start' => '', 'end' => '')),
+                    'value'          => array('type'     => null, 'value' => array('start' => '', 'end' => '')),
                     'widget_options' => array('firstDay' => 1)
                 ),
                 'customOptions' => array(

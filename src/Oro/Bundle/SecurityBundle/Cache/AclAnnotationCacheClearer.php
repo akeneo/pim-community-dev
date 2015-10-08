@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\SecurityBundle\Cache;
 
-use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider;
+use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
 
 class AclAnnotationCacheClearer implements CacheClearerInterface
 {

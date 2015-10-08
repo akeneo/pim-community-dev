@@ -44,10 +44,10 @@ class DateRangeTypeTest extends AbstractTypeTestCase
         return array(
             array(
                 'defaultOptions' => array(
-                    'field_type' => 'date',
-                    'field_options' => array(),
+                    'field_type'          => 'date',
+                    'field_options'       => array(),
                     'start_field_options' => array(),
-                    'end_field_options' => array(),
+                    'end_field_options'   => array(),
                 )
             )
         );
@@ -63,7 +63,7 @@ class DateRangeTypeTest extends AbstractTypeTestCase
                 'bindData' => array('start' => 'Jan 12, 1970', 'end' => 'Jan 12, 2013'),
                 'formData' => array(
                     'start' => $this->createDateTime('1970-01-12', 'UTC'),
-                    'end' => $this->createDateTime('2013-01-12', 'UTC'),
+                    'end'   => $this->createDateTime('2013-01-12', 'UTC'),
                 ),
                 'viewData' => array(
                     'value' => array('start' => 'Jan 12, 1970', 'end' => 'Jan 12, 2013'),
@@ -83,8 +83,8 @@ class DateRangeTypeTest extends AbstractTypeTestCase
      * @param string $dateString
      * @param string|null $timeZone
      * @param string $format
-     * @return \DateTime
      * @throws \Exception
+     * @return \DateTime
      */
     private function createDateTime(
         $dateString,

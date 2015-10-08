@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\LocaleBundle\Test\Unit\Formatter;
 
-use Oro\Bundle\LocaleBundle\Formatter\NameFormatter;
 use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
+use Oro\Bundle\LocaleBundle\Formatter\NameFormatter;
 use Oro\Bundle\LocaleBundle\Tests\Unit\Formatter\Stubs\PersonAllNamePartsStub;
 use Oro\Bundle\LocaleBundle\Tests\Unit\Formatter\Stubs\PersonFullNameStub;
 
@@ -123,39 +123,39 @@ class NameFormatterTest extends \PHPUnit_Framework_TestCase
                 'nameFormats' => array(
                     'en_US' => '%name_format%'
                 ),
-                'locale' => 'en_US',
+                'locale'         => 'en_US',
                 'expectedFormat' => '%name_format%'
             ),
             'parse_language' => array(
                 'nameFormats' => array(
                     'fr' => '%name_format%'
                 ),
-                'locale' => 'fr_CA',
+                'locale'         => 'fr_CA',
                 'expectedFormat' => '%name_format%'
             ),
             'empty_locale' => array(
                 'nameFormats' => array(
                     'en_US' => '%name_format%'
                 ),
-                'locale' => false,
+                'locale'         => false,
                 'expectedFormat' => '%name_format%',
-                'defaultLocale' => 'en_US'
+                'defaultLocale'  => 'en_US'
             ),
             'default_system_locale' => array(
                 'nameFormats' => array(
                     'en_US' => '%name_format%'
                 ),
-                'locale' => 'fr_CA',
+                'locale'         => 'fr_CA',
                 'expectedFormat' => '%name_format%',
-                'defaultLocale' => 'en_US'
+                'defaultLocale'  => 'en_US'
             ),
             'default_fallback' => array(
                 'nameFormats' => array(
                     LocaleConfiguration::DEFAULT_LOCALE => '%name_format%'
                 ),
-                'locale' => 'fr_CA',
+                'locale'         => 'fr_CA',
                 'expectedFormat' => '%name_format%',
-                'defaultLocale' => ''
+                'defaultLocale'  => ''
             ),
         );
     }

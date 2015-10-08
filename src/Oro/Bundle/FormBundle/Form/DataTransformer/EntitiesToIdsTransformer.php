@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\FormBundle\Form\DataTransformer;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Mapping\MappingException;
-
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
@@ -61,8 +60,8 @@ class EntitiesToIdsTransformer extends EntityToIdTransformer
      * Load entities by array of ids
      *
      * @param array $ids
-     * @return array
      * @throws UnexpectedTypeException if query builder callback returns invalid type
+     * @return array
      */
     protected function loadEntitiesByIds(array $ids)
     {

@@ -2,12 +2,11 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Entity;
 
-use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
-
 use Oro\Bundle\UserBundle\Entity\Role;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {

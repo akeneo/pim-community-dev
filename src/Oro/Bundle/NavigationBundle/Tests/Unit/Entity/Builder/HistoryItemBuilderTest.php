@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\NavigationBundle\Tests\Entity;
 
-use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
 use Oro\Bundle\NavigationBundle\Entity\Builder\HistoryItemBuilder;
+use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
 
 class HistoryItemBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -45,8 +45,8 @@ class HistoryItemBuilderTest extends \PHPUnit_Framework_TestCase
         $user = $this->getMock('\Pim\Bundle\UserBundle\Entity\UserInterface');
         $params = array(
             'title' => 'kldfjs;jasf',
-            'url' => 'some url',
-            'user' => $user,
+            'url'   => 'some url',
+            'user'  => $user,
         );
 
         $item = $itemBuilder->buildItem($params);

@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type;
 
-use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 use Oro\Bundle\FilterBundle\Form\Type\DateRangeType;
 use Oro\Bundle\FilterBundle\Form\Type\DateTimeRangeType;
+use Oro\Bundle\FilterBundle\Tests\Unit\Fixtures\CustomFormExtension;
 
 class DateTimeRangeTypeTest extends AbstractTypeTestCase
 {
@@ -61,9 +61,9 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
         return array(
             array(
                 'defaultOptions' => array(
-                    'field_type' => 'datetime',
+                    'field_type'    => 'datetime',
                     'field_options' => array(
-                        'format' => 'yyyy-MM-dd HH:mm',
+                        'format'        => 'yyyy-MM-dd HH:mm',
                         'view_timezone' => $this->defaultTimezone
                     )
                 )
@@ -88,7 +88,7 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
                 'bindData' => array('start' => '2012-01-01 13:00', 'end' => '2013-01-01 18:00'),
                 'formData' => array(
                     'start' => $this->createDateTime('2012-01-01 23:00', 'UTC'),
-                    'end' => $this->createDateTime('2013-01-02 04:00', 'UTC')
+                    'end'   => $this->createDateTime('2013-01-02 04:00', 'UTC')
                 ),
                 'viewData' => array(
                     'value' => array('start' => '2012-01-01 13:00', 'end' => '2013-01-01 18:00'),
@@ -108,8 +108,8 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
                 'customOptions' => array(
                     'field_options' => array(
                         'model_timezone' => 'America/Los_Angeles',
-                        'view_timezone' => 'America/New_York',
-                        'format' => "yyyy-MM-dd'T'HH:mm:ss"
+                        'view_timezone'  => 'America/New_York',
+                        'format'         => "yyyy-MM-dd'T'HH:mm:ss"
                     )
                 )
             ),
@@ -122,8 +122,8 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
      * @param string $dateString
      * @param string|null $timeZone
      * @param string $format
-     * @return \DateTime
      * @throws \Exception
+     * @return \DateTime
      */
     private function createDateTime(
         $dateString,

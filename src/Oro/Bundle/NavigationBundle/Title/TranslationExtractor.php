@@ -4,8 +4,8 @@ namespace Oro\Bundle\NavigationBundle\Title;
 
 use Oro\Bundle\NavigationBundle\Provider\TitleServiceInterface;
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\Extractor\ExtractorInterface;
+use Symfony\Component\Translation\MessageCatalogue;
 
 class TranslationExtractor implements ExtractorInterface
 {

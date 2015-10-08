@@ -1,9 +1,8 @@
 <?php
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Menu;
 
-use Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager;
-
 use Knp\Menu\MenuItem;
+use Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager;
 use Oro\Bundle\NavigationBundle\Menu\ConfigurationBuilder;
 use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
 
@@ -130,7 +129,7 @@ class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
         $params = array(
             'testItem' => false,
             'goodItem' => false,
-            'subItem' => true,
+            'subItem'  => true,
         );
 
         $this->matcher->expects($this->any())

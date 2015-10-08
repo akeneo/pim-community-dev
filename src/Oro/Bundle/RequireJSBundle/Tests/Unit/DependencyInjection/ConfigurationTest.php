@@ -29,20 +29,20 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'js_engine' => 'node',
-                    'config' => array('waitSeconds' => -3),
+                    'config'    => array('waitSeconds' => -3),
                 ),
                 '\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException'
             ),
             array(
                 array(
                     'js_engine' => 'node',
-                    'config' => array('scriptType' => ''),
+                    'config'    => array('scriptType' => ''),
                 ),
                 '\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException'
             ),
             array(
                 array(
-                    'js_engine' => 'node',
+                    'js_engine'        => 'node',
                     'building_timeout' => -3,
                 ),
                 '\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException'
@@ -50,7 +50,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'js_engine' => 'node',
-                    'build' => array('optimize' => 'test'),
+                    'build'     => array('optimize' => 'test'),
                 ),
                 '\Symfony\Component\Config\Definition\Exception\InvalidConfigurationException'
             ),
@@ -78,52 +78,52 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     'js_engine' => 'node',
-                    'config' => array(
+                    'config'    => array(
                         'waitSeconds' => 0,
                     ),
-                    'web_root' => '%kernel.root_dir%/../web',
-                    'build_path' => 'js/app.min.js',
+                    'web_root'         => '%kernel.root_dir%/../web',
+                    'build_path'       => 'js/app.min.js',
                     'building_timeout' => 60,
-                    'build' => array(
+                    'build'            => array(
                         'optimize' => 'uglify2',
-                        'paths' => array(),
+                        'paths'    => array(),
                     )
                 )
             ),
             array(
                 array(
                     'config' => array(
-                        'waitSeconds' => 0,
+                        'waitSeconds'   => 0,
                         'enforceDefine' => true,
-                        'scriptType' => 'text/javascript'
+                        'scriptType'    => 'text/javascript'
                     ),
-                    'js_engine' => 'node',
-                    'build_path' => 'js/test/app.min.js',
+                    'js_engine'        => 'node',
+                    'build_path'       => 'js/test/app.min.js',
                     'building_timeout' => 3600,
-                    'build' => array(
-                        'optimize' => 'none',
-                        'generateSourceMaps' => false,
+                    'build'            => array(
+                        'optimize'                => 'none',
+                        'generateSourceMaps'      => false,
                         'preserveLicenseComments' => true,
-                        'useSourceUrl' => false,
-                        'paths' => array(),
+                        'useSourceUrl'            => false,
+                        'paths'                   => array(),
                     )
                 ),
                 array(
                     'config' => array(
-                        'waitSeconds' => 0,
+                        'waitSeconds'   => 0,
                         'enforceDefine' => true,
-                        'scriptType' => 'text/javascript',
+                        'scriptType'    => 'text/javascript',
                     ),
-                    'js_engine' => 'node',
-                    'web_root' => '%kernel.root_dir%/../web',
-                    'build_path' => 'js/test/app.min.js',
+                    'js_engine'        => 'node',
+                    'web_root'         => '%kernel.root_dir%/../web',
+                    'build_path'       => 'js/test/app.min.js',
                     'building_timeout' => 3600,
-                    'build' => array(
-                        'optimize' => 'none',
-                        'generateSourceMaps' => false,
+                    'build'            => array(
+                        'optimize'                => 'none',
+                        'generateSourceMaps'      => false,
                         'preserveLicenseComments' => 1,
-                        'useSourceUrl' => false,
-                        'paths' => array(),
+                        'useSourceUrl'            => false,
+                        'paths'                   => array(),
                     ),
                 )
             ),

@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\FilterBundle\Tests\Unit\Form\Type\Filter;
 
-use Symfony\Component\Form\Extension\Core\View\ChoiceView;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-
 use Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
 {

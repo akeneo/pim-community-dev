@@ -17,8 +17,8 @@ class UserMenuBuilder implements BuilderInterface
         $menu->addChild(
             'Logout',
             array(
-                'route' => 'oro_user_security_logout',
-                'check_access' => false,
+                'route'          => 'oro_user_security_logout',
+                'check_access'   => false,
                 'linkAttributes' => array(
                     'class' => 'no-hash'
                 )

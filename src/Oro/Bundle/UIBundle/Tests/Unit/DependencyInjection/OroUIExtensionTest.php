@@ -2,9 +2,8 @@
 
 namespace Oro\Bundle\UIBundle\Tests\Unit\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Oro\Bundle\UIBundle\DependencyInjection\OroUIExtension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class OroUIExtensionTest extends \PHPUnit_Framework_TestCase
 {

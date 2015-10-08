@@ -2,12 +2,11 @@
 
 namespace Oro\Bundle\UserBundle\Form\EventListener;
 
+use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class ChangePasswordSubscriber extends UserSubscriber
 {
@@ -17,7 +16,7 @@ class ChangePasswordSubscriber extends UserSubscriber
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::POST_SUBMIT => 'onSubmit',
+            FormEvents::POST_SUBMIT  => 'onSubmit',
             FormEvents::PRE_SUBMIT   => 'preSubmit'
         );
     }
@@ -45,7 +44,7 @@ class ChangePasswordSubscriber extends UserSubscriber
                     null,
                     array(
                         'auto_initialize' => false,
-                        'mapped' => false,
+                        'mapped'          => false,
                     )
                 )
             );

@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Twig;
 
-use Oro\Bundle\LocaleBundle\Twig\CalendarExtension;
 use Oro\Bundle\LocaleBundle\Model\Calendar;
+use Oro\Bundle\LocaleBundle\Twig\CalendarExtension;
 
 class CalendarExtensionTest extends \PHPUnit_Framework_TestCase
 {

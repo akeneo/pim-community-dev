@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\LocaleBundle\Twig;
 
-use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 use Oro\Bundle\LocaleBundle\Formatter\AddressFormatter;
+use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 
 class AddressExtension extends \Twig_Extension
 {

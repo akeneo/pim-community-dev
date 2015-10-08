@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\NavigationBundle\Entity\Repository;
 
-use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
+use Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem;
 
 /**
  * NavigationItem Repository

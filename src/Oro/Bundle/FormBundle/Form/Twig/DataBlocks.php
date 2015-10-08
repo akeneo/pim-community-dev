@@ -2,14 +2,12 @@
 
 namespace Oro\Bundle\FormBundle\Form\Twig;
 
-use Oro\Bundle\FormBundle\Config\SubBlockConfig;
-use Symfony\Component\Form\FormView;
-
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-
 use Oro\Bundle\FormBundle\Config\BlockConfig;
 use Oro\Bundle\FormBundle\Config\FormConfig;
+use Oro\Bundle\FormBundle\Config\SubBlockConfig;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DataBlocks
 {
@@ -80,7 +78,6 @@ class DataBlocks
 
         foreach ($form->children as $name => $child) {
             if (isset($child->vars['block']) || isset($child->vars['subblock'])) {
-
                 $block = null;
                 if ($this->formConfig->hasBlock($child->vars['block'])) {
                     $block = $this->formConfig->getBlock($child->vars['block']);

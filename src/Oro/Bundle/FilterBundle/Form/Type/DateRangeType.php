@@ -4,8 +4,8 @@ namespace Oro\Bundle\FilterBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DateRangeType extends AbstractType
@@ -30,11 +30,11 @@ class DateRangeType extends AbstractType
             $options['field_type'],
             array_merge(
                 array(
-                    'required' => false,
-                    'widget' => 'single_text',
-                    'format' => 'yyyy-MM-dd',
+                    'required'       => false,
+                    'widget'         => 'single_text',
+                    'format'         => 'yyyy-MM-dd',
                     'model_timezone' => 'UTC',
-                    'view_timezone' => 'UTC',
+                    'view_timezone'  => 'UTC',
                 ),
                 $options['field_options'],
                 $options['start_field_options']
@@ -46,11 +46,11 @@ class DateRangeType extends AbstractType
             $options['field_type'],
             array_merge(
                 array(
-                    'required' => false,
-                    'widget' => 'single_text',
-                    'format' => 'yyyy-MM-dd',
+                    'required'       => false,
+                    'widget'         => 'single_text',
+                    'format'         => 'yyyy-MM-dd',
                     'model_timezone' => 'UTC',
-                    'view_timezone' => 'UTC',
+                    'view_timezone'  => 'UTC',
                 ),
                 $options['field_options'],
                 $options['end_field_options']

@@ -44,7 +44,7 @@ class AclPermissionType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPermission',
+                'data_class'        => 'Oro\Bundle\SecurityBundle\Model\AclPermission',
                 'privileges_config' => array()
             )
         );

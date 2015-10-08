@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\SecurityBundle\Annotation\Loader;
 
-use Symfony\Component\Yaml\Yaml;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\Metadata\AclAnnotationStorage;
+use Symfony\Component\Yaml\Yaml;
 
 class AclYamlConfigLoader extends AbstractLoader implements AclAnnotationLoaderInterface
 {

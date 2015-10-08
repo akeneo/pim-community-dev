@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Permission;
 
-use Symfony\Component\Security\Acl\Permission\PermissionMapInterface;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
+use Symfony\Component\Security\Acl\Permission\PermissionMapInterface;
 
 /**
  * This is permission map complements the masks which have been defined

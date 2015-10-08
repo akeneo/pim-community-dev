@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\DistributionBundle\Routing;
 
-use Symfony\Component\Routing\Loader\YamlFileLoader;
-use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\Routing\Loader\YamlFileLoader;
+use Symfony\Component\Routing\RouteCollection;
 
 class OroAutoLoader extends YamlFileLoader
 {

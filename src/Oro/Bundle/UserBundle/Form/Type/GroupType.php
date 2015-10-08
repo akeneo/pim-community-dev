@@ -2,11 +2,10 @@
 
 namespace Oro\Bundle\UserBundle\Form\Type;
 
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 
 class GroupType extends AbstractType
 {

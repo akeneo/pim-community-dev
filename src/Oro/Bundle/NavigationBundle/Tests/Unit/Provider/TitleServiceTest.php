@@ -166,11 +166,11 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($testArray, $this->titleService->getParams());
 
         $dataArray = array(
-            'titleTemplate' => 'titleTemplate',
+            'titleTemplate'      => 'titleTemplate',
             'titleShortTemplate' => 'titleShortTemplate',
-            'prefix' => 'prefix',
-            'suffix' => 'suffix',
-            'params' => array('test_params')
+            'prefix'             => 'prefix',
+            'suffix'             => 'suffix',
+            'params'             => array('test_params')
         );
         $this->titleService->setData($dataArray);
 

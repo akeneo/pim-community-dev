@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\TranslationBundle\Tests\Unit\Extractor;
 
-use Symfony\Component\Translation\MessageCatalogue;
-
 use Oro\Bundle\TranslationBundle\Extractor\PhpCodeExtractor;
 use Oro\Bundle\TranslationBundle\Tests\Unit\Fixtures\SomeClass;
+use Symfony\Component\Translation\MessageCatalogue;
 
 class PhpCodeExtractorTest extends \PHPUnit_Framework_TestCase
 {

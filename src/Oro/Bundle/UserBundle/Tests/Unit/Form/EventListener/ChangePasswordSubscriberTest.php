@@ -3,7 +3,6 @@
 namespace Oro\Bundle\UserBundle\Tests\Unit\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber;
-
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
@@ -41,7 +40,7 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
     {
         $this->assertEquals(
             array(
-                FormEvents::POST_SUBMIT => 'onSubmit',
+                FormEvents::POST_SUBMIT  => 'onSubmit',
                 FormEvents::PRE_SUBMIT   => 'preSubmit'
             ),
             $this->subscriber->getSubscribedEvents()
@@ -158,13 +157,13 @@ class ChangePasswordSubscriberTest extends FormIntegrationTestCase
         return array(
             array(true, array(
                 'currentPassword' => null,
-                'plainPassword' => array(
+                'plainPassword'   => array(
                     'first' => null
                 ),
             )),
             array(false, array(
                 'currentPassword' => '123123',
-                'plainPassword' => array(
+                'plainPassword'   => array(
                     'first' => '32321'
                 ),
             )),

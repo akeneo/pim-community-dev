@@ -23,9 +23,9 @@ class RepeatedTypeExtension extends AbstractTypeExtension
 
         $secondValue = array();
         $secondValue['Repeated'] = array(
-            'first_name' => $options['first_name'],
-            'second_name' => $options['second_name'],
-            'invalid_message' => $options['invalid_message'],
+            'first_name'                 => $options['first_name'],
+            'second_name'                => $options['second_name'],
+            'invalid_message'            => $options['invalid_message'],
             'invalid_message_parameters' => $options['invalid_message_parameters'],
         );
 

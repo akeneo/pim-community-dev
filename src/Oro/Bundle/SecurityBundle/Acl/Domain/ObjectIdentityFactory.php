@@ -3,8 +3,8 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclException;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 
@@ -57,8 +57,8 @@ class ObjectIdentityFactory
      * Underlying is class level ObjectIdentity for given object level ObjectIdentity.
      *
      * @param ObjectIdentity $oid
-     * @return ObjectIdentity
      * @throws InvalidAclException
+     * @return ObjectIdentity
      */
     public function underlying(ObjectIdentity $oid)
     {
@@ -83,8 +83,8 @@ class ObjectIdentityFactory
      *     get('Action:Some Action')
      *
      * @param mixed $val An domain object, object identity descriptor (id:type) or ACL annotation
-     * @return ObjectIdentity
      * @throws InvalidDomainObjectException
+     * @return ObjectIdentity
      */
     public function get($val)
     {

@@ -2,14 +2,13 @@
 
 namespace Oro\Bundle\LocaleBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Intl\Intl;
-
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Intl\Intl;
+use Symfony\Component\Yaml\Yaml;
 
 class OroLocaleExtension extends Extension
 {
@@ -144,10 +143,10 @@ class OroLocaleExtension extends Extension
         }
 
         return array(
-            'name_format' => $externalNameFormat,
+            'name_format'    => $externalNameFormat,
             'address_format' => $externalAddressFormat,
-            'locale_data' => $externalLocaleData,
-            'currency_data' => $externalCurrencyData,
+            'locale_data'    => $externalLocaleData,
+            'currency_data'  => $externalCurrencyData,
         );
     }
 

@@ -4,12 +4,10 @@ namespace Oro\Bundle\DataGridBundle\Extension\MassAction;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Parameter;
-
-use Symfony\Component\Translation\TranslatorInterface;
-
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\ConstantPagerIterableResult;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class DeleteMassActionHandler implements MassActionHandlerInterface
 {
@@ -140,8 +138,8 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     /**
      * @param MassActionMediatorInterface $mediator
      *
-     * @return string
      * @throws \LogicException
+     * @return string
      */
     protected function getEntityName(MassActionMediatorInterface $mediator)
     {

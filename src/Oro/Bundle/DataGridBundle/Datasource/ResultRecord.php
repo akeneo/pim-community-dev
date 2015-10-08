@@ -39,8 +39,8 @@ class ResultRecord implements ResultRecordInterface
      *
      * @param  string $name
      *
-     * @return mixed
      * @throws \LogicException When cannot get value
+     * @return mixed
      */
     public function getValue($name)
     {

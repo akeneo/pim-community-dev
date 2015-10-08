@@ -2,20 +2,18 @@
 
 namespace Oro\Bundle\UserBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
+use Oro\Bundle\UserBundle\Form\Type\EmailType;
+use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
-use Doctrine\ORM\EntityRepository;
-
-use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
-use Pim\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
-use Oro\Bundle\UserBundle\Form\Type\EmailType;
 
 class UserType extends AbstractType
 {
@@ -37,7 +35,6 @@ class UserType extends AbstractType
         TokenStorageInterface $tokenStorage,
         Request $request
     ) {
-
         $this->tokenStorage = $tokenStorage;
         if ($request->attributes->get('_route') == 'oro_user_profile_update') {
             $this->isMyProfilePage = true;
@@ -70,7 +67,7 @@ class UserType extends AbstractType
                     'label'          => 'Roles',
                     'class'          => 'OroUserBundle:Role',
                     'property'       => 'label',
-                    'query_builder' => function (EntityRepository $er) {
+                    'query_builder'  => function (EntityRepository $er) {
                         return $er->createQueryBuilder('r')
                             ->where('r.role <> :anon')
                             ->setParameter('anon', User::ROLE_ANONYMOUS);
@@ -79,7 +76,7 @@ class UserType extends AbstractType
                     'expanded'       => true,
                     'required'       => !$this->isMyProfilePage,
                     'read_only'      => $this->isMyProfilePage,
-                    'disabled'      => $this->isMyProfilePage,
+                    'disabled'       => $this->isMyProfilePage,
                 ]
             )
             ->add(

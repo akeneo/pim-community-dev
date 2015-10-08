@@ -3,7 +3,6 @@
 namespace Oro\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -35,8 +34,8 @@ class ChangePasswordType extends AbstractType
             'currentPassword',
             'password',
             array(
-                'required' => false,
-                'label' => 'Current password',
+                'required'    => false,
+                'label'       => 'Current password',
                 'constraints' => array(
                     new UserPassword()
                 ),
@@ -47,17 +46,17 @@ class ChangePasswordType extends AbstractType
             'plainPassword',
             'repeated',
             array(
-                'required' => true,
-                'type' => 'password',
+                'required'        => true,
+                'type'            => 'password',
                 'invalid_message' => 'The password fields must match.',
-                'options' => array(
+                'options'         => array(
                     'attr' => array(
                         'class' => 'password-field'
                     )
                 ),
-                'first_options'  => array('label' => 'New password'),
-                'second_options' => array('label' => 'Repeat new password'),
-                'mapped' => false,
+                'first_options'      => array('label' => 'New password'),
+                'second_options'     => array('label' => 'Repeat new password'),
+                'mapped'             => false,
                 'cascade_validation' => true,
             )
         );
@@ -78,7 +77,7 @@ class ChangePasswordType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'inherit_data' => true,
+                'inherit_data'       => true,
                 'cascade_validation' => true,
             )
         );

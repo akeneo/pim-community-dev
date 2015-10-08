@@ -3,11 +3,9 @@
 namespace Oro\Bundle\ConfigBundle\Config;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Symfony\Component\Form\FormInterface;
-
 use Oro\Bundle\ConfigBundle\Entity\Config;
 use Oro\Bundle\ConfigBundle\Entity\ConfigValue;
+use Symfony\Component\Form\FormInterface;
 
 class ConfigManager
 {
@@ -88,7 +86,7 @@ class ConfigManager
             ->getRepository('OroConfigBundle:Config')
             ->getByEntity($this->getScopedEntityName(), $this->getScopeId());
 
-        list ($updated, $removed) = $this->getChanged($newSettings);
+        list($updated, $removed) = $this->getChanged($newSettings);
 
         if (!empty($removed)) {
             $repository->removeValues($config->getId(), $removed);
@@ -187,7 +185,6 @@ class ConfigManager
             $settings[$child->getName()]['use_parent_scope_value'] =
                 !isset($settings[$child->getName()]['use_parent_scope_value']) ?
                     true : $settings[$child->getName()]['use_parent_scope_value'];
-
         }
 
         return $settings;

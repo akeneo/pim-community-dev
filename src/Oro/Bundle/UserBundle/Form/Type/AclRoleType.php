@@ -2,13 +2,11 @@
 
 namespace Oro\Bundle\UserBundle\Form\Type;
 
+use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
+use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Symfony\Component\Form\AbstractType;
-
-use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType;
-use Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType;
 
 class AclRoleType extends AbstractType
 {
@@ -35,7 +33,7 @@ class AclRoleType extends AbstractType
             'text',
             array(
                 'required' => true,
-                'label' => 'Role'
+                'label'    => 'Role'
             )
         );
 
@@ -44,12 +42,12 @@ class AclRoleType extends AbstractType
                 $fieldName,
                 new PrivilegeCollectionType(),
                 array(
-                    'type' => new AclPrivilegeType(),
-                    'allow_add' => true,
-                    'prototype' => false,
+                    'type'         => new AclPrivilegeType(),
+                    'allow_add'    => true,
+                    'prototype'    => false,
                     'allow_delete' => false,
-                    'mapped' => false,
-                    'options' => array(
+                    'mapped'       => false,
+                    'options'      => array(
                         'privileges_config' => $config,
                     )
                 )

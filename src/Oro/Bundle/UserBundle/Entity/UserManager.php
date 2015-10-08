@@ -2,16 +2,15 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface as SecurityUserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class UserManager implements UserProviderInterface
 {
@@ -198,10 +197,10 @@ class UserManager implements UserProviderInterface
      * all ACL checks.
      *
      * @param  SecurityUserInterface    $user
-     * @return SecurityUserInterface
      * @throws UnsupportedUserException if a User Instance is given which is not managed by this UserManager
      *                                  (so another Manager could try managing it)
      * @throws UsernameNotFoundException if user could not be reloaded
+     * @return SecurityUserInterface
      */
     public function refreshUser(SecurityUserInterface $user)
     {
@@ -232,8 +231,8 @@ class UserManager implements UserProviderInterface
      * all ACL checks.
      *
      * @param  string                    $username
-     * @return SecurityUserInterface
      * @throws UsernameNotFoundException if user not found
+     * @return SecurityUserInterface
      */
     public function loadUserByUsername($username)
     {

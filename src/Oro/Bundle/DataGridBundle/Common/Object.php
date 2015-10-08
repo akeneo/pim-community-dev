@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\DataGridBundle\Common;
 
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Object implements \ArrayAccess, \IteratorAggregate
 {
@@ -55,8 +55,8 @@ class Object implements \ArrayAccess, \IteratorAggregate
      * Return Object name
      * throws exception if current object is unnamed
      *
-     * @return string
      * @throws \LogicException
+     * @return string
      */
     public function getName()
     {

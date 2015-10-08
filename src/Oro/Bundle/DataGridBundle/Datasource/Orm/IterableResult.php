@@ -3,7 +3,6 @@
 namespace Oro\Bundle\DataGridBundle\Datasource\Orm;
 
 use Doctrine\ORM\Query;
-
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\ORM\Query\BufferedQueryResultIterator;
 

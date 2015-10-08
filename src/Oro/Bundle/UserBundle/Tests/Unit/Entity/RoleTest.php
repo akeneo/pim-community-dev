@@ -3,7 +3,6 @@
 namespace Oro\Bundle\UserBundle\Tests\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Oro\Bundle\UserBundle\Entity\Role;
 
 class RoleTest extends \PHPUnit_Framework_TestCase

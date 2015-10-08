@@ -2,20 +2,18 @@
 
 namespace Oro\Bundle\NavigationBundle\Provider;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityRepository;
 use JMS\Serializer\Exception\RuntimeException;
+use JMS\Serializer\Serializer;
+use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
+use Oro\Bundle\NavigationBundle\Entity\Title;
+use Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager;
+use Oro\Bundle\NavigationBundle\Title\StoredTitle;
+use Oro\Bundle\NavigationBundle\Title\TitleReader\AnnotationsReader;
+use Oro\Bundle\NavigationBundle\Title\TitleReader\ConfigReader;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\Routing\Route;
-use JMS\Serializer\Serializer;
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Oro\Bundle\NavigationBundle\Entity\Title;
-use Oro\Bundle\NavigationBundle\Title\TitleReader\ConfigReader;
-use Oro\Bundle\NavigationBundle\Title\TitleReader\AnnotationsReader;
-use Oro\Bundle\NavigationBundle\Title\StoredTitle;
-use Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager;
-use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
-
-use Doctrine\ORM\EntityRepository;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)

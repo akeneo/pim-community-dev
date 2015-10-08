@@ -4,9 +4,8 @@ namespace Oro\Bundle\UserBundle\Entity\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-
-use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Oro\Bundle\UserBundle\Entity\Group;
+use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository;
 
 class GroupManager
 {

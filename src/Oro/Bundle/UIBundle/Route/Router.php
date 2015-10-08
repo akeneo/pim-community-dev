@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\UIBundle\Route;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Routing\Router as SymfonyRouter;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class Router
@@ -36,8 +36,8 @@ class Router
      * @param array $saveAndCloseRoute array with router data for save and close button
      * @param int $status redirect status
      *
-     * @return RedirectResponse
      * @throws \LogicException
+     * @return RedirectResponse
      */
     public function actionRedirect(array $saveButtonRoute, array $saveAndCloseRoute, $status = 302)
     {

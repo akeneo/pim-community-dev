@@ -3,8 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -183,14 +183,14 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         }
 
         if ($expectedACLCheck !== null) {
-            list ($name, $result) = $expectedACLCheck;
+            list($name, $result) = $expectedACLCheck;
 
             $builder->expects($this->once())->method('isResourceGranted')->with($this->equalTo($name))
                 ->will($this->returnValue($result));
         }
 
         if ($expectedException !== null) {
-            list ($name, $message) = $expectedException;
+            list($name, $message) = $expectedException;
 
             $this->setExpectedException($name, $message);
         }

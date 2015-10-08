@@ -2,16 +2,15 @@
 
 namespace Oro\Bundle\NavigationBundle\Tests\Unit\Twig;
 
-use Oro\Bundle\NavigationBundle\Twig\MenuExtension;
-
-use Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactory;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Routing\RouterInterface;
-use Oro\Bundle\UserBundle\Acl\Manager;
 use Knp\Menu\Twig\Helper;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
+use Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactory;
 use Oro\Bundle\NavigationBundle\Menu\ConfigurationBuilder;
+use Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider;
+use Oro\Bundle\NavigationBundle\Twig\MenuExtension;
+use Oro\Bundle\UserBundle\Acl\Manager;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 class MenuExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -139,33 +138,33 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
                 ),
                 'items' => array(
                     'homepage' => array(
-                        'name' => 'Home page 2',
-                        'label' => 'Home page title',
-                        'route' => 'oro_menu_index',
-                        'translateDomain' => 'SomeBundle',
+                        'name'                => 'Home page 2',
+                        'label'               => 'Home page title',
+                        'route'               => 'oro_menu_index',
+                        'translateDomain'     => 'SomeBundle',
                         'translateParameters' => array(),
-                        'routeParameters' => array(),
-                        'extras' => array()
+                        'routeParameters'     => array(),
+                        'extras'              => array()
                     ),
                     'user_registration_register' => array(
-                        'route' => 'oro_menu_submenu',
-                        'translateDomain' => 'SomeBundle',
+                        'route'               => 'oro_menu_submenu',
+                        'translateDomain'     => 'SomeBundle',
                         'translateParameters' => array(),
-                        'routeParameters' => array(),
-                        'extras' => array()
+                        'routeParameters'     => array(),
+                        'extras'              => array()
                     ),
                     'user_user_show' => array(
-                        'translateDomain' => 'SomeBundle',
+                        'translateDomain'     => 'SomeBundle',
                         'translateParameters' => array(),
-                        'routeParameters' => array(),
-                        'extras' => array()
+                        'routeParameters'     => array(),
+                        'extras'              => array()
                     ),
                 ),
                 'tree' => array(
                     'navbar' => array(
-                        'type' => 'navbar',
+                        'type'   => 'navbar',
                         'extras' => array(
-                            'brand' => 'Oro',
+                            'brand'     => 'Oro',
                             'brandLink' => '/'
                         ),
                         'children' => array(
@@ -290,7 +289,6 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testWrongBredcrumbs()
     {
-
         $environment = $this->getMockBuilder('\Twig_Environment')
             ->disableOriginalConstructor()
             ->getMock();

@@ -2,18 +2,17 @@
 
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\ORM\Query;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
-
+use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\UnitOfWork;
 use Oro\Bundle\DataGridBundle\ORM\Query\QueryCountCalculator;
 
-class QueryCountCalculatorTest extends \PHPUnit_Framework_TestCase
+class CountCalculatorTest extends \PHPUnit_Framework_TestCase
 {
     const TEST_COUNT = 42;
 

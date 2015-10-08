@@ -3,8 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\ORM\Query;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Iterates results of Query using buffer, allows to iterate large query
@@ -133,8 +133,8 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
 
     /**
      * @param mixed $source
-     * @return Query
      * @throws \InvalidArgumentException
+     * @return Query
      */
     protected function getQueryBy($source)
     {
@@ -158,8 +158,8 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
      * Sets size of buffer that is queried from storage to iterate results
      *
      * @param int $bufferSize
-     * @return BufferedQueryResultIterator
      * @throws \InvalidArgumentException If page size is not greater than 0
+     * @return BufferedQueryResultIterator
      */
     public function setBufferSize($bufferSize)
     {
@@ -183,8 +183,8 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
 
     /**
      * @param ArrayCollection|array $parameters
-     * @return BufferedQueryResultIterator
      * @throws \InvalidArgumentException
+     * @return BufferedQueryResultIterator
      */
     public function setParameters($parameters)
     {

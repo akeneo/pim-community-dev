@@ -2,7 +2,6 @@
 namespace Oro\Bundle\AsseticBundle\Tests\Unit\Factory;
 
 use Assetic\Asset\FileAsset;
-
 use Oro\Bundle\AsseticBundle\Factory\OroAssetManager;
 
 class OroAssetManagerTest extends \PHPUnit_Framework_TestCase

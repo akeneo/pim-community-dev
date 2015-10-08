@@ -3,7 +3,6 @@
 namespace Oro\Bundle\ConfigBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation\Exclude;
 
 /**

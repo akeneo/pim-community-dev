@@ -3,8 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\ORM\Query;
 
 use Doctrine\ORM\Query;
-use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\Parameter;
+use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 
 /**
@@ -57,8 +57,8 @@ class QueryCountCalculator
     /**
      * @param Query                              $query
      * @param array                              $paramMappings
-     * @return array
      * @throws \Doctrine\ORM\Query\QueryException
+     * @return array
      */
     protected function processParameterMappings(Query $query, $paramMappings)
     {

@@ -3,18 +3,18 @@
 namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
+use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
+use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
+use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 use Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Pim\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Util\ClassUtils;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
-use Pim\Bundle\EntityBundle\ORM\EntityClassResolver;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
-use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
-use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
-use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
 
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -375,8 +375,8 @@ class EntityAclExtension extends AbstractAclExtension
      * Constructs an ObjectIdentity for the given domain object
      *
      * @param string $descriptor
-     * @return ObjectIdentity
      * @throws \InvalidArgumentException
+     * @return ObjectIdentity
      */
     protected function fromDescriptor($descriptor)
     {
@@ -399,8 +399,8 @@ class EntityAclExtension extends AbstractAclExtension
      * Constructs an ObjectIdentity for the given domain object
      *
      * @param object $domainObject
-     * @return ObjectIdentity
      * @throws InvalidDomainObjectException
+     * @return ObjectIdentity
      */
     protected function fromDomainObject($domainObject)
     {

@@ -2,7 +2,6 @@
 namespace Oro\Bundle\NavigationBundle\Title\TitleReader;
 
 use Doctrine\Common\Annotations\Reader as CommonAnnotationsReader;
-
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -119,9 +118,9 @@ class AnnotationsReader extends Reader
     /**
      * Only supports one namespaced class per file
      *
-     * @throws \RuntimeException if the class name cannot be extracted
      *
      * @param string $filename
+     * @throws \RuntimeException if the class name cannot be extracted
      *
      * @return string the fully qualified class name
      */
