@@ -23,6 +23,7 @@ config:
         pimee/product-edit-form/working-copy:              pimenterpriseworkflow/js/product/form/working-copy
         pimee/product-edit-form/original-product:          pimenterpriseworkflow/js/product/form/original-product
         pimee/product-edit-form/send-for-approval-comment: pimenterpriseworkflow/js/product/form/send-for-approval-comment
+        pimee/product-edit-form/comment-for-approval:      pimenterpriseworkflow/js/product/form/comment-for-approval
         pimee/published-view-form/back-to-grid:            pimenterpriseworkflow/js/published-product/form/back-to-grid
 
         # Templates
