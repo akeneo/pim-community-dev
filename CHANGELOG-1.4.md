@@ -3,6 +3,8 @@
 ## Bug fixes
 - PIM-4955: Fixed regression on completeness computation when locales are removed from a channel
 - PIM-4622: Fix CSS for product comments
+- PIM-4973: Fix product removal from edit form (in mongo storage)
+- PIM-4977: Revert PIM-4443 by re-allowing full numeric entity codes
 
 # 1.4.2 (2015-10-01)
 

@@ -56,7 +56,7 @@ class GroupNormalizer extends Structured\GroupNormalizer
 
         $normalizedValues = [];
         foreach ($values as $value) {
-            $normalizedValues = array_merge(
+            $normalizedValues = array_replace(
                 $normalizedValues,
                 $this->serializer->normalize($value, $format, ['entity' => 'product'] + $context)
             );

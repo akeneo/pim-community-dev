@@ -194,7 +194,7 @@ class ProductFilter implements ProductFilterInterface
      */
     protected function mergeValueToResult(array $collection, array $value)
     {
-        return array_merge_recursive($collection, $value);
+        return array_replace_recursive($collection, $value);
     }
 
     /**
