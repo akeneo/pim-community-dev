@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-4794: Add contextualized thumbnails support for assets collections in product grid
 - PIM-4717: Use the raw filename to move the file to the temporary file folder
+- PIM-4977: Revert PIM-4443 by re-allowing full numeric entity codes
 
 # 1.4.2 (2015-10-01)
 
