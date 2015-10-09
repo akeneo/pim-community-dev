@@ -99,10 +99,12 @@ class MassActionDispatcher
         }
 
         if (true === $parameters['inset']) {
-            $productIds = $parameters['values'];
-            $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $productIds]];
+            $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $parameters['values']]];
         } else {
-            $filters = $datasource->getProductQueryBuilder()->getRawFilters();
+            $filters = array_merge(
+                $datasource->getProductQueryBuilder()->getRawFilters(),
+                [['field' => 'id', 'operator' => 'NOT IN', 'value' => $parameters['values']]]
+            );
         }
 
         $datasourceParams = $datasource->getParameters();

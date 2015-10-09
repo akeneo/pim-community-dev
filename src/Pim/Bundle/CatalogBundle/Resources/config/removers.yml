@@ -22,7 +22,7 @@ services:
     pim_catalog.remover.product:
         class: %pim_catalog.remover.base.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.object_manager.product'
             - '@pim_catalog.remover.base_options_resolver'
             - '@event_dispatcher'
             - %pim_catalog.entity.product.class%
