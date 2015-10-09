@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle;
 
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFileCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFilesFromReferenceCommand;
