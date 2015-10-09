@@ -1,0 +1,9 @@
+placeholders:
+    requirejs_config_extend:
+        items:
+            translation_requirejs_config:
+                order: 100
+
+items:
+    translation_requirejs_config:
+        template: OroTranslationBundle::requirejs.config.js.twig

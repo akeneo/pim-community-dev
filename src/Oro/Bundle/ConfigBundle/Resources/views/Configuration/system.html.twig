@@ -1,0 +1,21 @@
+{% extends bap.layout %}
+{% if form %}
+    {% form_theme form with ['OroConfigBundle:Form:fields.html.twig', 'OroFormBundle:Form:fields.html.twig'] %}
+{% endif %}
+{% import 'OroConfigBundle::macros.html.twig' as configUI %}
+
+{% set pageTitle = 'Configuration' %}
+
+{% block content %}
+    {{ configUI.renderTitle(pageTitle, []) }}
+    {{ configUI.renderScrollData(data, form, activeGroup, activeSubGroup) }}
+
+    <script type="text/javascript">
+        /* jshint browser:true, devel:true */
+        /* global require */
+        require(['oro/form/state'], function (formState) {
+            'use strict';
+            new formState();
+        });
+    </script>
+{% endblock content %}
