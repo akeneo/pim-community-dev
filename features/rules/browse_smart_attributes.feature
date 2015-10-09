@@ -27,4 +27,4 @@ Feature: Browse smart attributes in the attribute grid
     Then I should be able to use the following filters:
       | filter | value | result  |
       | Smart  | yes   | name    |
-      | Smart  | no    | comment |
+      | Smart  | no    | 123, comment |
