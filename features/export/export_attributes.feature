@@ -37,6 +37,7 @@ Feature: Export attributes
     pim_reference_data_simpleselect;cap_color;Cap color;other;0;1;;;;color;1;1
     pim_reference_data_multiselect;sole_fabric;Sole fabric;other;0;1;;;;fabrics;0;0
     pim_reference_data_multiselect;lace_fabric;Lace fabric;other;0;1;;;;fabrics;1;1
+    pim_catalog_text;123;"Attribute 123";other;0;1;;;;;0;0
     """
 
   Scenario: Successfully export all label locales even if no value were set
@@ -73,6 +74,5 @@ Feature: Export attributes
     pim_reference_data_simpleselect;cap_color;"Cap color";;other;0;1;;;;color;1;1
     pim_reference_data_multiselect;sole_fabric;"Sole fabric";;other;0;1;;;;fabrics;0;0
     pim_reference_data_multiselect;lace_fabric;"Lace fabric";;other;0;1;;;;fabrics;1;1
-
-
+    pim_catalog_text;123;"Attribute 123";;other;0;1;;;;;0;0
     """

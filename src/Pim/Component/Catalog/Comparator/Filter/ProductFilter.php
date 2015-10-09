@@ -194,7 +194,15 @@ class ProductFilter implements ProductFilterInterface
      */
     protected function mergeValueToResult(array $collection, array $value)
     {
-        return array_merge_recursive($collection, $value);
+        foreach ($value as $code => $data) {
+            if (array_key_exists($code, $collection)) {
+                $collection[$code] = array_merge_recursive($collection[$code], $data);
+            } else {
+                $collection[$code] = $data;
+            }
+        }
+
+        return $collection;
     }
 
     /**

@@ -26,15 +26,7 @@ Feature: Product group creation
     When I fill in the following information in the popin:
       | Code | =( |
     And I press the "Save" button
-    Then I should see validation error "Group code may contain only letters (at least one), numbers and underscores."
-
-  Scenario: Fail to create a group with a full numeric code
-    Then I should see the Code and Type fields
-    When I fill in the following information in the popin:
-      | Code | 123345 |
-      | Type | X_SELL |
-    And I press the "Save" button
-    Then I should see validation error "Group code may contain only letters (at least one), numbers and underscores."
+    Then I should see validation error "Group code may contain only letters, numbers and underscores."
 
   Scenario: Fail to create a group with an already used code
     Given the following product group:
