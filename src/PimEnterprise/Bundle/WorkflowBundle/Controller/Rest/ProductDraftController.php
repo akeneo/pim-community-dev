@@ -78,22 +78,24 @@ class ProductDraftController
     /**
      * Mark a product draft as ready
      *
+     * @param Request    $request
      * @param int|string $productId
      *
      * @throws AccessDeniedHttpException
      *
      * @return JsonResponse
      */
-    public function readyAction($productId)
+    public function readyAction(Request $request, $productId)
     {
         $product      = $this->findProductOr404($productId);
         $productDraft = $this->findDraftForProductOr404($product);
+        $comment      = ("" === $request->get('comment')) ? null : $request->get('comment');
 
         if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
-        $this->manager->markAsReady($productDraft);
+        $this->manager->markAsReady($productDraft, $comment);
 
         return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
     }

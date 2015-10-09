@@ -71,16 +71,16 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
     public function sendNotificationToOwners(GenericEvent $event)
     {
         $productDraft = $event->getSubject();
-        $product = $productDraft->getProduct();
+        $comment      = $event->getArgument('comment');
+        $product      = $productDraft->getProduct();
 
         $ownerGroupsId = [];
-        $ownerGroups = $this->categoryAccessRepo->getGrantedUserGroupsForProduct($product, Attributes::OWN_PRODUCTS);
-
+        $ownerGroups   = $this->categoryAccessRepo->getGrantedUserGroupsForProduct($product, Attributes::OWN_PRODUCTS);
         foreach ($ownerGroups as $userGroup) {
             $ownerGroupsId[] = $userGroup['id'];
         }
 
-        $users = $this->userRepository->findByGroups($ownerGroupsId);
+        $users  = $this->userRepository->findByGroups($ownerGroupsId);
         $author = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
 
         $this->notificationManager->notify(
@@ -93,6 +93,7 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
                     'id'          => $product->getId(),
                     'redirectTab' => 'pim-product-edit-form-proposals'
                 ],
+                'comment'       => $comment,
                 'messageParams' => [
                     '%product.label%'    => $product->getLabel(),
                     '%author.firstname%' => $author->getFirstName(),

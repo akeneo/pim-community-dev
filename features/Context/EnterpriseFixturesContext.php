@@ -172,6 +172,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param TableNode $table
      * @param bool      $scopable
      * @param bool      $ready
+     * @param string    $comment
      *
      * @return Step\Given[]
      * @Given /^(\w+) proposed the following change to "([^"]*)":$/
@@ -181,7 +182,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $product,
         TableNode $table,
         $scopable = false,
-        $ready = true
+        $ready = true,
+        $comment = null
     ) {
         $steps = [
             new Step\Given(sprintf('I am logged in as "%s"', $username)),
@@ -219,10 +221,30 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $steps[] = new Step\Given('I save the product');
         if ($ready) {
             $steps[] = new Step\Given('I press the "Send for approval" button');
+
+            if (null !== $comment) {
+                $steps[] = new Step\Given(sprintf('I fill in "Comment your proposal (optionnal)" with "%s"', $comment));
+            }
+
+            $steps[] = new Step\Given('I press the "Send" button');
         }
         $steps[] = new Step\Given('I logout');
 
         return $steps;
+    }
+
+    /**
+     * @param string    $username
+     * @param string    $product
+     * @param string    $comment
+     * @param TableNode $table
+     *
+     * @return Step\Given[]
+     * @Given /^(\w+) proposed the following change to "([^"]*)" with the comment "([^"]+)":$/
+     */
+    public function someoneProposedTheFollowingChangeToWithComment($username, $product, $comment, TableNode $table)
+    {
+        return $this->someoneProposedTheFollowingChangeTo($username, $product, $table, false, true, $comment);
     }
 
     /**

@@ -263,3 +263,18 @@ Feature: Review a product draft
     Then I should be on the product "my-jacket" edit page
     And I should see the columns Author, Changes, Proposed at and Status
     And the grid should contain 1 element
+
+  Scenario: Successfully be notified when someone sends a proposal for approval with a comment
+    Given Mary proposed the following change to "my-jacket" with the comment "Please approve this fast.":
+      | field | value       |
+      | SKU   | your-jacket |
+    And I am logged in as "Julia"
+    And I am on the dashboard page
+    Then I should have 1 new notification
+    And I should see notification:
+      | type | message                                                         | comment                   |
+      | add  | Mary Smith has sent a proposal to review for the product Jacket | Please approve this fast. |
+    When I click on the notification "Mary Smith has sent a proposal to review for the product Jacket"
+    Then I should be on the product "my-jacket" edit page
+    And I should see the columns Author, Changes, Proposed at and Status
+    And the grid should contain 1 element

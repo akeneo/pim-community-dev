@@ -23,7 +23,7 @@ Feature: Send a product draft for approval
   Scenario: Successfully send my product draft for approval
     When I change the "Name" to "Baggy"
     And I save the product
-    And I press the "Send for approval" button
+    And I press the Send for approval button
     Then its status should be "Waiting for approval"
     And I should see "Sent for approval"
 
@@ -34,7 +34,7 @@ Feature: Send a product draft for approval
   Scenario: Successfully restore the product draft status when I modify it after sending it for approval
     When I change the "Name" to "Baggy"
     And I save the product
-    And I press the "Send for approval" button
+    And I press the Send for approval button
     And I change the "Name" to "Extra large baggy"
     And I save the product
     Then its status should be "In progress"
@@ -44,7 +44,7 @@ Feature: Send a product draft for approval
     And I save the product
     And I change the "Name" to "Extra large baggy"
     Then I should see the text "There are unsaved changes."
-    When I press the "Send for approval" button
+    When I press the Send for approval button
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to send this draft?                                                                    |
       | content | Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes? |
