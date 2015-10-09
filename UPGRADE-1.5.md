@@ -28,3 +28,14 @@ So, in Akeneo PIM 1.x versions, to reduce the dependencies, ease the maintenance
 
 In the v1.5, we move these bundles from our fork to our main repository to ease the cleanup and make our technical stack more understandable.
 
+## Partially fix BC breaks
+
+If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
+
+**It does not cover all possible BC breaks, as the changes of arguments of a service, consider using this script on versioned files to be able to check the changes with a `git diff` for instance.**
+
+Based on a PIM standard installation, execute the following command in your project folder:
+
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/EntityBundle\\DependencyInjection\\Compiler\\DoctrineOrmMappingsPass/StorageUtilsBundle\\DependencyInjection\\Compiler\\DoctrineOrmMappingsPass/g'
+```
