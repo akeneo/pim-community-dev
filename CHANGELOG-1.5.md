@@ -12,4 +12,6 @@
 - Change constructor of `Pim\Bundle\UserBundle\EventSubscriber\LocalSubscriber`.
   Rename by `Pim\Bundle\UserBundle\EventSubscriber\LocaleSubscriber` and remove `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage`
 - Remove OroEntityBundle
+- Remove OroEntityConfigBundle
 - Remove PimEntityBundle
+- Move DoctrineOrmMappingsPass from Oro/EntityBundle to Akeneo/StorageUtilsBundle

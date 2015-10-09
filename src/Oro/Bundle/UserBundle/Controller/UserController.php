@@ -5,8 +5,6 @@ namespace Oro\Bundle\UserBundle\Controller;
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\PersistentCollection;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
-use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
 use Oro\Bundle\UserBundle\Entity\UserApi;

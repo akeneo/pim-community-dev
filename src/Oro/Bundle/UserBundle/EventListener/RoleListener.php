@@ -3,14 +3,14 @@
 namespace Oro\Bundle\UserBundle\EventListener;
 
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclSidManager;
+use Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\UserBundle\Entity\Role;
 
 class RoleListener
 {
     /**
-     * @var ServiceLink
+     * @var \Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink
      */
     protected $aclSidManagerLink;
 
