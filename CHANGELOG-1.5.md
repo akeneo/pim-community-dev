@@ -14,3 +14,6 @@
 - Remove PimEntityBundle
 - Move DoctrineOrmMappingsPass from Oro/EntityBundle to Akeneo/StorageUtilsBundle
 - Remove OroDistributionBundle (explicitely define oro bundles routing, means oro/rounting.yml are not automaticaly loaded anymore, and remove useless twig config)
+- Change constructor of `Pim\Bundle\TranslationBundle\Twig\TranslationsExtension`. Replace `Oro\Bundle\LocaleBundle\Model\LocaleSettings` by `Symfony\Component\HttpFoundation\RequestStack`.
+- Change constructor of `Pim\Bundle\UserBundle\EventSubscriber\LocalSubscriber`.
+  Replace `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage` by `Symfony\Component\HttpFoundation\RequestStack`

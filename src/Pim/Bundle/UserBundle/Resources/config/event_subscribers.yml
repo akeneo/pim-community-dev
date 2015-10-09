@@ -1,7 +1,7 @@
 parameters:
     pim_user.event_subscriber.user_preferences.class: Pim\Bundle\UserBundle\EventSubscriber\UserPreferencesSubscriber
     pim_user.event_subscriber.group.class:            Pim\Bundle\UserBundle\EventSubscriber\GroupSubscriber
-    pim_locale.locale_listener.class:                 Pim\Bundle\UserBundle\EventListener\LocalSubscriber
+    pim_locale.locale_listener.class:                 Pim\Bundle\UserBundle\EventSubscriber\LocalSubscriber
 
 services:
     pim_user.event_subscriber.user_preferences:
@@ -19,8 +19,7 @@ services:
     pim_locale.locale_listener:
         class: %pim_locale.locale_listener.class%
         arguments:
-            - @oro_locale.settings
-        calls:
-            - [ setRequest, [@?request=] ]
+            - @request_stack
         tags:
             - { name: kernel.event_subscriber }
+            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
