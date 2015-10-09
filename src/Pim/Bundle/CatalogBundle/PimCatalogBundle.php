@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle;
 
 use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\ResolveDoctrineTargetRepositoryPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeConstraintGuessersPass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterAttributeTypePass;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterComparatorsPass;
