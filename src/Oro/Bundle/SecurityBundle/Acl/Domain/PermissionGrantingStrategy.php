@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\AuditLoggerInterface;
@@ -26,7 +26,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     protected $auditLogger;
 
     /**
-     * @var ServiceLink
+     * @var \Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink
      */
     private $contextLink;
 
@@ -43,7 +43,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     /**
      * Sets the accessor to the context data of this strategy
      *
-     * @param ServiceLink $contextLink The link to a service implementing PermissionGrantingStrategyContextInterface
+     * @param \Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink $contextLink The link to a service implementing PermissionGrantingStrategyContextInterface
      */
     public function setContext(ServiceLink $contextLink)
     {
