@@ -26,6 +26,9 @@ class Notification
     /** @var array */
     protected $messageParams = [];
 
+    /** @var string */
+    protected $comment;
+
     /** @var \DateTime */
     protected $created;
 
@@ -35,17 +38,12 @@ class Notification
     /** @var array */
     protected $context = [];
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->created = new \DateTime('now');
     }
 
     /**
-     * Get id
-     *
      * @return int
      */
     public function getId()
@@ -54,8 +52,6 @@ class Notification
     }
 
     /**
-     * Set message
-     *
      * @param string $message
      *
      * @return Notification
@@ -68,8 +64,6 @@ class Notification
     }
 
     /**
-     * Get message
-     *
      * @return string
      */
     public function getMessage()
@@ -78,8 +72,26 @@ class Notification
     }
 
     /**
-     * Set type
+     * @param string $comment
      *
+     * @return Notification
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
      * @param string $type
      *
      * @return Notification
@@ -92,8 +104,6 @@ class Notification
     }
 
     /**
-     * Get type
-     *
      * @return string
      */
     public function getType()
@@ -102,8 +112,6 @@ class Notification
     }
 
     /**
-     * Set route
-     *
      * @param string $route
      *
      * @return Notification
@@ -116,8 +124,6 @@ class Notification
     }
 
     /**
-     * Get route
-     *
      * @return string
      */
     public function getRoute()
@@ -126,8 +132,6 @@ class Notification
     }
 
     /**
-     * Set routeParams
-     *
      * @param array $routeParams
      *
      * @return Notification
@@ -140,8 +144,6 @@ class Notification
     }
 
     /**
-     * Get routeParams
-     *
      * @return array
      */
     public function getRouteParams()
@@ -150,8 +152,6 @@ class Notification
     }
 
     /**
-     * Set messageParams
-     *
      * @param array $messageParams
      *
      * @return Notification
@@ -164,8 +164,6 @@ class Notification
     }
 
     /**
-     * Get messageParams
-     *
      * @return array
      */
     public function getMessageParams()
@@ -174,8 +172,6 @@ class Notification
     }
 
     /**
-     * Get created
-     *
      * @return \DateTime
      */
     public function getCreated()
@@ -184,7 +180,7 @@ class Notification
     }
 
     /**
-     * Set context
+     * Set the context (['actionType' => 'export'] for example)
      *
      * @param array $context
      *
@@ -198,7 +194,7 @@ class Notification
     }
 
     /**
-     * Get context
+     * Get the context (['actionType' => 'export'] for example)
      *
      * @return array
      */

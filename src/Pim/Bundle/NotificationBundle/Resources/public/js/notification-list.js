@@ -20,7 +20,8 @@ define(
                 createdAt:         null,
                 actionType:        null,
                 actionTypeMessage: null,
-                showReportButton:  true
+                showReportButton:  true,
+                comment:           null
             }
         });
 
@@ -92,7 +93,8 @@ define(
                         createdAt: this.model.get('createdAt'),
                         actionType: this.model.get('actionType'),
                         actionTypeMessage: this.model.get('actionTypeMessage'),
-                        showReportButton: this.model.get('showReportButton')
+                        showReportButton: this.model.get('showReportButton'),
+                        comment: this.model.get('comment')
                     }
                 ));
 

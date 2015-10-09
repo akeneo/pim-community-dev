@@ -25,11 +25,16 @@
           min-height: 80px;
           display: flex;
           flex-direction: row;
+          flex-wrap: wrap;
           align-items: flex-start;
           opacity: 0.4;
           
           &:hover {
             background-color: darken(@color-purple_hover, 2%);
+
+            .comment {
+              background-color: darken(@color-purple_hover, 5%);
+            }
           }
 
           &.new {
@@ -127,6 +132,15 @@
             }
           }
 
+          .comment {
+            background-color: @akeneo-light;
+            color: @akeneo-dark;
+            line-height: 20px;
+            padding: 15px;
+            margin-top: 10px;
+            width: 100%;
+          }
+
           time {
             position: absolute;
             top: 18px;
@@ -193,6 +207,23 @@
       span {
         padding: 0 10px;
       }
+    }
+  }
+}
+
+.modal-body {
+  .notification-comment {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .title {
+      color: @akeneo-dark;
+    }
+
+    textarea {
+      margin: 15px;
+      width: 95%;
     }
   }
 }

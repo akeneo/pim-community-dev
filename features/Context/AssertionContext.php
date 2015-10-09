@@ -696,6 +696,30 @@ class AssertionContext extends RawMinkContext
                     )
                 );
             }
+
+            if (isset($data['comment']) && '' !== $data['comment']) {
+                $commentNode = $notification->find('css', 'div.comment');
+
+                if (!$commentNode) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting notification "%s" to have a comment.',
+                            $data['message']
+                        )
+                    );
+                }
+
+                if ($data['comment'] !== $commentNode->getText()) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting notification "%s" to have the comment "%s", got "%s"',
+                            $data['message'],
+                            $data['comment'],
+                            $commentNode->getText()
+                        )
+                    );
+                }
+            }
         }
     }
 
