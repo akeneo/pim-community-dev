@@ -1,0 +1,30 @@
+# UPGRADE FROM 1.4 to 1.5
+
+> Please perform a backup of your database before proceeding to the migration. You can use tools like  [mysqldump](http://dev.mysql.com/doc/refman/5.1/en/mysqldump.html) and [mongodump](http://docs.mongodb.org/manual/reference/program/mongodump/).
+
+> Please perform a backup of your codebase if you don't use any VCS.
+
+## Oro Platform Bundles
+
+Akeneo PIM is based on a fork of a very old beta5 version of oro/platform (2013/10).
+
+We started the development of Akeneo PIM by actively contributing to oro/platform and by upgrading the platform each week.
+
+The use of the platform drastically speed up our first stages to create Akeneo PIM, especially to manage users, security and to provide UI elements.
+
+During the end of 2013, it appeared that our first stable release ETA (2014/01) was incompatible with the stable platform ETA (2014/04).
+
+So we've created a fork to be able to stabilize, tweak and fix this version to make our application production ready.
+
+Then we strongly focused on the Akeneo PIM development to build our first stable versions.
+
+The gap between our forked version and the stable platform became bigger and bigger (the migration cost too).
+
+We had customers in production and the migration would imply a lot of impacts so we never upgraded the platform.
+
+The overall strategy was to reduce dependencies to our very old beta platform to be able at some point to migrate to a stable and recent platform.
+
+So, in Akeneo PIM 1.x versions, to reduce the dependencies, ease the maintenance and enhance performance, we dropped several old oro bundles we don't even use.
+
+In the v1.5, we move these bundles from our fork to our main repository to ease the cleanup and make our technical stack more understandable.
+
