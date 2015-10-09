@@ -13,8 +13,6 @@ use Context\Page\Base\Form;
  */
 class Edit extends Form
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $path = '/user/profile/edit';
 }

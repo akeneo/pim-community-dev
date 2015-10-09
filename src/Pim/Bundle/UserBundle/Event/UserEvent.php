@@ -3,6 +3,7 @@
 namespace Pim\Bundle\UserBundle\Event;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
+
 /**
  * User event
  *

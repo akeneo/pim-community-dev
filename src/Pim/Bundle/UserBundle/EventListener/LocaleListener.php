@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\EventSubscriber;
+namespace Pim\Bundle\UserBundle\EventListener;
 
 use Pim\Bundle\UserBundle\Event\UserEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -8,8 +8,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
  * Locale Listener
@@ -18,12 +16,13 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalSubscriber implements EventSubscriberInterface
+class LocaleListener implements EventSubscriberInterface
 {
     /** @var RequestStack */
     protected $requestStack;
+
     /**
-     * @param TokenStorageInterface $tokenStorage
+     * @param RequestStack $requestStack
      */
     public function __construct(RequestStack $requestStack)
     {
@@ -36,12 +35,11 @@ class LocalSubscriber implements EventSubscriberInterface
     public function onPostUpdate(GenericEvent $event)
     {
         $user = $event->getSubject();
-        $request = $this->requestStack->getMasterRequest();
-        $locale = $user->getUiLocale()->getLanguage();
 
-        $request->setLocale($locale);
-        $request->getSession()->set('_locale', $locale);
-        $request->attributes->set('_locale', $locale);
+        if ($user === $event->getArgument('user')) {
+            $request = $this->requestStack->getMasterRequest();
+            $request->getSession()->set('_locale', $user->getUiLocale()->getLanguage());
+        }
     }
 
     /**
@@ -55,22 +53,12 @@ class LocalSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param InteractiveLoginEvent $event
-     */
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
-    {
-        $user = $event->getAuthenticationToken()->getUser();
-
-        $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getLanguage());
-    }
-
-    /**
      * @return array
      */
     public static function getSubscribedEvents()
     {
         return [
-            UserEvent::POST_UPDATE => [['onPostUpdate', 17]],
+            UserEvent::POST_UPDATE => [['onPostUpdate']],
             KernelEvents::REQUEST  => [['onKernelRequest', 17]],
         ];
     }

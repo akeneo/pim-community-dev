@@ -8,7 +8,7 @@ use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 
-class LocalSubscriberSpec extends ObjectBehavior
+class LocaleSubscriberSpec extends ObjectBehavior
 {
     function let(LocaleSettings $localeSettings)
     {
