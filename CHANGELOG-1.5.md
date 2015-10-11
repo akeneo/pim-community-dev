@@ -11,3 +11,4 @@
 - Remove OroEntityConfigBundle
 - Remove PimEntityBundle
 - Move DoctrineOrmMappingsPass from Oro/EntityBundle to Akeneo/StorageUtilsBundle
+- Remove OroDistributionBundle (explicitely define oro bundles routing, means oro/rounting.yml are not automaticaly loaded anymore, and remove useless twig config)
