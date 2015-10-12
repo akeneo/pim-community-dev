@@ -11,8 +11,10 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Event\UserEvent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -144,6 +146,9 @@ class UserController extends Controller
             $user = $this->get('pim_user.repository.user')->find($user);
         }
         if ($this->get('oro_user.form.handler.user')->process($user)) {
+            if ($user === $this->getUser()) {
+                $this->get('translator')->setLocale($user->getUiLocale()->getCode());
+            }
             $this->get('session')->getFlashBag()->add(
                 'success',
                 $this->get('translator')->trans('oro.user.controller.user.message.saved')
@@ -157,6 +162,12 @@ class UserController extends Controller
                     'parameters' => array('id' => $user->getId())
                 );
             }
+
+            $this->get('event_dispatcher')->dispatch(
+                UserEvent::POST_UPDATE,
+                new GenericEvent($user, ['user' => $this->getUser()])
+            );
+
             return $this->get('oro_ui.router')->actionRedirect(
                 array(
                     'route'      => 'oro_user_update',
