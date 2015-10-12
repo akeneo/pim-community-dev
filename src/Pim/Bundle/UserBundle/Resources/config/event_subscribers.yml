@@ -26,5 +26,6 @@ services:
         class: %pim_locale.locale_subscriber.class%
         arguments:
             - @request_stack
+            - @translator
         tags:
             - { name: kernel.event_subscriber }

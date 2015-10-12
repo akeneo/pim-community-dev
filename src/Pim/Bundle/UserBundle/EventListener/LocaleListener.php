@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Translation\DataCollectorTranslator;
 
 /**
  * Locale Listener
@@ -21,12 +22,17 @@ class LocaleListener implements EventSubscriberInterface
     /** @var RequestStack */
     protected $requestStack;
 
+    /** @var DataCollectorTranslator */
+    protected $translator;
+
     /**
-     * @param RequestStack $requestStack
+     * @param RequestStack            $requestStack
+     * @param DataCollectorTranslator $translator
      */
-    public function __construct(RequestStack $requestStack)
+    public function __construct(RequestStack $requestStack, DataCollectorTranslator $translator)
     {
         $this->requestStack = $requestStack;
+        $this->translator   = $translator;
     }
 
     /**
@@ -39,6 +45,7 @@ class LocaleListener implements EventSubscriberInterface
         if ($user === $event->getArgument('user')) {
             $request = $this->requestStack->getMasterRequest();
             $request->getSession()->set('_locale', $user->getUiLocale()->getLanguage());
+            $this->translator->setLocale($user->getUiLocale()->getCode());
         }
     }
 
