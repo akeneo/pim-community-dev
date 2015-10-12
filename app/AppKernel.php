@@ -70,7 +70,6 @@ class AppKernel extends Kernel
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
-            new Pim\Bundle\EntityBundle\PimEntityBundle(),
 
             // PIM bundles
             new Pim\Bundle\AnalyticsBundle\PimAnalyticsBundle(),
@@ -166,9 +165,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\AsseticBundle\OroAsseticBundle(),
             new Oro\Bundle\ConfigBundle\OroConfigBundle(),
             new Oro\Bundle\DataGridBundle\OroDataGridBundle(),
-            new Oro\Bundle\DistributionBundle\OroDistributionBundle(),
-            new Oro\Bundle\EntityBundle\OroEntityBundle(),
-            new Oro\Bundle\EntityConfigBundle\OroEntityConfigBundle(),
             new Oro\Bundle\FilterBundle\OroFilterBundle(),
             new Oro\Bundle\FormBundle\OroFormBundle(),
             new Oro\Bundle\LocaleBundle\OroLocaleBundle(),

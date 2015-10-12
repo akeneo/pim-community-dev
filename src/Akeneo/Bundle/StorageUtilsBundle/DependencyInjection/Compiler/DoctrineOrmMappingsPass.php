@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Oro\Bundle\EntityBundle\DependencyInjection\Compiler;
+namespace Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler;
 
 use Symfony\Bridge\Doctrine\DependencyInjection\CompilerPass\RegisterMappingsPass;
 use Symfony\Component\DependencyInjection\Definition;
@@ -22,8 +22,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author David Buchmann <david@liip.ch>
  *
- * TODO: Remove this class from EntityBundle after updating to the next stable Doctrine revision
- * TODO: https://magecore.atlassian.net/browse/BAP-2999
+ * TODO: Remove this class after updating to Doctrine 2.5
  */
 class DoctrineOrmMappingsPass extends RegisterMappingsPass
 {

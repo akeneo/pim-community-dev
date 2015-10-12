@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EntityBundle\ORM;
+namespace Oro\Bundle\SecurityBundle\Acl\Extension;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 
