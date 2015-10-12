@@ -44,8 +44,7 @@ services:
     pimee_catalog_rule.applier.product.updater:
         class: %pimee_catalog_rule.applier.product.updater.class%
         arguments:
-            - '@pim_catalog.updater.product_property_setter'
-            - '@pim_catalog.updater.product_property_copier'
+            - '@akeneo_rule_engine.action_applier.registry'
             - '@pim_catalog.updater.product_template'
 
     pimee_catalog_rule.applier.product.validator:

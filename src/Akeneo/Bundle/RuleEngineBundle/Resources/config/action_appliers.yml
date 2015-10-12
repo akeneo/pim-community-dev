@@ -1,0 +1,6 @@
+parameters:
+    akeneo_rule_engine.action_applier.registry.class: Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistry
+
+services:
+    akeneo_rule_engine.action_applier.registry:
+        class: %akeneo_rule_engine.action_applier.registry.class%
