@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5000: Fix the products on which mass actions are applied
+
 # 1.4.3 (2015-10-09)
 
 ## Bug fixes
