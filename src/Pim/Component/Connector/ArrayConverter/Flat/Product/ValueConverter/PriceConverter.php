@@ -30,7 +30,7 @@ class PriceConverter extends AbstractValueConverter
     public function convert(array $attributeFieldInfo, $value)
     {
         if ('' !== $value) {
-            $data = $this->fieldSplitter->splitPrice($value);
+            $data = $this->fieldSplitter->splitPrices($value);
         } else {
             $data = [];
         }

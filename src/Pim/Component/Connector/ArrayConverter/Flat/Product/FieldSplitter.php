@@ -54,9 +54,9 @@ class FieldSplitter
      *
      * @param string $value Raw value
      *
-     * @return array
+     * @return array|null
      */
-    public function splitPrice($value)
+    public function splitPrices($value)
     {
         $prices = [];
         if ('' !== $value) {

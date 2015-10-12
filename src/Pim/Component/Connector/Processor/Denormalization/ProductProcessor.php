@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -58,7 +59,7 @@ class ProductProcessor extends AbstractProcessor
     protected $enabledComparison = true;
 
     /** @var string */
-    protected $decimalSeparator = '.';
+    protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
 
     /** @var ProductFilterInterface */
     protected $productFilter;
@@ -319,8 +320,6 @@ class ProductProcessor extends AbstractProcessor
      * Check and convert localized attributes to default format
      *
      * @param array $convertedItem
-     *
-     * @throws \LogicException
      *
      * @return array
      */

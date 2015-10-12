@@ -8,7 +8,7 @@ use Prophecy\Argument;
 
 class LocalizerRegistrySpec extends ObjectBehavior
 {
-    function it_is_a_localizee()
+    function it_is_a_localizer_registry()
     {
         $this->shouldImplement('Pim\Component\Localization\Localizer\LocalizerRegistryInterface');
     }

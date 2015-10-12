@@ -15,17 +15,21 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterLocalizersPass implements CompilerPassInterface
 {
+    const LOCALIZATION_LOCALIZER_REGISTRY = 'pim_localization.localizer.registry';
+
+    const LOCALIZATION_LOCALIZER = 'pim_localization.localizer';
+
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_localization.localizer.registry')) {
+        if (!$container->hasDefinition(self::LOCALIZATION_LOCALIZER_REGISTRY)) {
             return;
         }
 
-        $definition = $container->getDefinition('pim_localization.localizer.registry');
-        foreach ($container->findTaggedServiceIds('pim_localization.localizer') as $id => $localizer) {
+        $definition = $container->getDefinition(self::LOCALIZATION_LOCALIZER_REGISTRY);
+        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER) as $id => $localizer) {
             $definition->addMethodCall(
                 'addLocalizer',
                 [

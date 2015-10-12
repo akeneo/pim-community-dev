@@ -36,7 +36,7 @@ class PriceConverterSpec extends ObjectBehavior
 
         $value = '10.00';
 
-        $fieldSplitter->splitPrice($value)->willReturn(['10']);
+        $fieldSplitter->splitPrices($value)->willReturn(['10']);
         $fieldSplitter->splitUnitValue('10')->willReturn(['data' => null, 'currency' => null]);
 
         $expectedResult = ['attribute_code' => [[
