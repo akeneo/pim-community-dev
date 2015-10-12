@@ -26,7 +26,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     protected $auditLogger;
 
     /**
-     * @var \Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink
+     * @var ServiceLink
      */
     private $contextLink;
 
@@ -43,7 +43,7 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
     /**
      * Sets the accessor to the context data of this strategy
      *
-     * @param \Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink $contextLink The link to a service implementing PermissionGrantingStrategyContextInterface
+     * @param ServiceLink $contextLink The link to a service implementing PermissionGrantingStrategyContextInterface
      */
     public function setContext(ServiceLink $contextLink)
     {
