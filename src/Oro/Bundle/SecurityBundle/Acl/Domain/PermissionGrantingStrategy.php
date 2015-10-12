@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
-use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
+use Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\AuditLoggerInterface;

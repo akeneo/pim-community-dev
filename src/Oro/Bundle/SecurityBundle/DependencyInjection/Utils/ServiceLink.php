@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils;
+namespace Oro\Bundle\SecurityBundle\DependencyInjection\Utils;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
