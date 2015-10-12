@@ -248,6 +248,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @Given /^I edit my profile$/
+     */
+    public function iAmOnMyProfileEditPage()
+    {
+        $this->openPage('User profile edit');
+    }
+
+    /**
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" user group$/

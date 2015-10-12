@@ -17,8 +17,6 @@ parameters:
     oro_locale.form.type.locale.class: Oro\Bundle\LocaleBundle\Form\Type\LocaleType
     oro_locale.form.type.timezone.class: Oro\Bundle\LocaleBundle\Form\Type\TimezoneType
 
-    oro_locale.locale_listener.class: Oro\Bundle\LocaleBundle\EventListener\LocaleListener
-
     oro_locale.twig.date_format.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
     oro_locale.twig.locale.class: Oro\Bundle\LocaleBundle\Twig\LocaleExtension
     oro_locale.twig.calendar.class: Oro\Bundle\LocaleBundle\Twig\CalendarExtension
@@ -94,18 +92,6 @@ services:
             - @oro_locale.formatter.date_time
         tags:
             - { name: oro_locale.format_converter.date_time, alias: moment }
-
-    # event listeners
-    oro_locale.locale_listener:
-        class: %oro_locale.locale_listener.class%
-        arguments:
-            - @oro_locale.settings
-            - %installed%
-        calls:
-            - [ setRequest, [@?request=] ]
-        tags:
-            - { name: kernel.event_subscriber }
-
 
     # Formatters
     oro_locale.formatter.name:

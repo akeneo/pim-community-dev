@@ -102,6 +102,9 @@ class LoadUserData extends AbstractInstallerFixture
         $locale = $this->getLocale($data['catalog_locale']);
         $user->setCatalogLocale($locale);
 
+        $uiLocale = $this->getLocale($data['ui_locale']);
+        $user->setUiLocale($uiLocale);
+
         $channel = $this->getChannel($data['catalog_scope']);
         $user->setCatalogScope($channel);
 

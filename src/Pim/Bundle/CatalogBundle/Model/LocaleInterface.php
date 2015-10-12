@@ -38,6 +38,11 @@ interface LocaleInterface extends ReferableInterface
     public function setCode($code);
 
     /**
+     * @return string|null
+     */
+    public function getLanguage();
+
+    /**
      * @return bool
      */
     public function isActivated();
