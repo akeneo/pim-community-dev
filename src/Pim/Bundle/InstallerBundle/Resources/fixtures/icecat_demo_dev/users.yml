@@ -6,6 +6,7 @@ users:
         firstname: John
         lastname: Doe
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         roles:
@@ -20,6 +21,7 @@ users:
         firstname: Julia
         lastname: Stark
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         roles:
@@ -34,6 +36,7 @@ users:
         firstname: Mary
         lastname: Smith
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         roles:
@@ -48,6 +51,7 @@ users:
         firstname: Sandra
         lastname: Harvey
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         roles:
@@ -62,6 +66,7 @@ users:
         firstname: Peter
         lastname: Williams
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         roles:
