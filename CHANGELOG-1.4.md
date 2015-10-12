@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-5000: Fix the products on which mass actions are applied
+- PIM-5006: Fix the API key generation
 
 # 1.4.3 (2015-10-09)
 

@@ -2915,4 +2915,24 @@ class WebUser extends RawMinkContext
             }
         }
     }
+
+    /**
+     * Check the user API key
+     *
+     * @Then /^The API key should (not )?be (.+)$/
+     */
+    public function theApiKeyShouldBe($not, $value)
+    {
+        $apiKey = $this->getCurrentPage()->getApiKey();
+
+        if ($not) {
+            if ($apiKey === $value) {
+                throw $this->createExpectationException('API key should not be ' . $apiKey);
+            }
+        } else {
+            if ($apiKey !== $value) {
+                throw $this->createExpectationException('API key should be ' . $apiKey);
+            }
+        }
+    }
 }
