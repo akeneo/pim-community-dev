@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+PIM-4896: Fix product edit form bug when trying to copy / compare a locale specific attribute
+
 # 1.4.3 (2015-10-09)
 
 ## Bug fixes
