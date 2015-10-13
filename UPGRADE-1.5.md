@@ -55,19 +55,19 @@ src/
 │   └── Bundle
 │       ├── AsseticBundle
 │       ├── ConfigBundle
-│       ├── DataGridBundle          -> move generic classes from Pim/DataGridBundle to this namespace, move specific related to product to Pim/EnrichBundle
+│       ├── DataGridBundle          -> ?move generic classes from Pim/DataGridBundle to this namespace, move specific related to product to Pim/EnrichBundle?
 │       ├── EntityBundle            -> removed (DoctrineOrmMappingsPass has been extracted in Akeneo/StorageUtilsBundle)
 │       ├── EntityConfigBundle      -> removed (ServiceLinkPass has been extracted in Oro/SecurityBundle)
-│       ├── DistributionBundle      -> should be dropped by removing automatic routing
-│       ├── FilterBundle            -> should be merged in Oro/DataGridBundle
-│       ├── FormBundle              -> should be merged in Pim/EnrichBundle
-│       ├── LocaleBundle            -> ?could be moved/merged in a new Pim or Akeneo Bundle?
-│       ├── NavigationBundle        -> should be merged with Pim/NavigationBundle during navigation rework project
-│       ├── RequireJSBundle
+│       ├── DistributionBundle      -> removed (the automatic routing has been dropped and routes are explicitely declared in routing.yml)
+│       ├── FilterBundle            -> ?should be merged in Oro/DataGridBundle?
+│       ├── FormBundle              -> merge used parts in Pim/EnrichBundle
+│       ├── LocaleBundle            -> ?could be moved/merged in a new Akeneo/Pim Bundle?
+│       ├── NavigationBundle        -> should be merged with Pim/NavigationBundle during navigation revamp project
+│       ├── RequireJSBundle         -> ?try to use last version? do PRs to backport fixes?
 │       ├── SecurityBundle
 │       ├── TranslationBundle       -> ?could be merged to Pim/TranslationBundle?
-│       ├── UIBundle                -> should be merged to EnrichBundle
-│       └── UserBundle              -> ?what to do with Pim/UserBundle?
+│       ├── UIBundle                -> should be merged to Pim/UIBundle
+│       └── UserBundle              -> should be merged to Pim/UserBundle (only usefull classes, other should be dropped)
 └── Pim
     ├── Bundle
     │   ├── AnalyticsBundle
@@ -79,16 +79,16 @@ src/
     │   ├── DataGridBundle          -> move generic classes to Oro/DataGridBundle, move specific related to product to Pim/EnrichBundle
     │   ├── EnrichBundle            -> ?could contain all Akeneo PIM UI (except independent bundles as workflow, pam)?
     │   ├── FilterBundle            -> should be merged in Oro/DataGridBundle for generic classes and move to EnrichBundle for specific related to product
-    │   ├── ImportExportBundle      -> should be merged to EnrichBundle
+    │   ├── ImportExportBundle      -> ?should be merged to EnrichBundle?
     │   ├── InstallerBundle
     │   ├── JsFormValidationBundle
-    │   ├── NavigationBundle        -> should be merged to EnrichBundle?
+    │   ├── NavigationBundle        -> ?should be merged to EnrichBundle?
     │   ├── NotificationBundle
     │   ├── PdfGeneratorBundle
     │   ├── ReferenceDataBundle
     │   ├── TransformBundle         -> ?could re-work normalizer/denormalizer part and drop other parts?
     │   ├── TranslationBundle
-    │   ├── UIBundle                -> should be merged to EnrichBundle
+    │   ├── UIBundle                -> ?to merge to EnrichBundle or keep it for third party libraries?
     │   ├── UserBundle              -> ?what to do with Oro/UserBundle?
     │   ├── VersioningBundle
     │   └── WebServiceBundle
