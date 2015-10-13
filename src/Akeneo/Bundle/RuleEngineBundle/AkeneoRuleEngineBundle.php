@@ -11,6 +11,7 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle;
 
+use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterActionApplierPass;
 use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterRunnerPass;
 use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
@@ -43,6 +44,7 @@ class AkeneoRuleEngineBundle extends Bundle
                 )
             )
             ->addCompilerPass(new RegisterRunnerPass())
+            ->addCompilerPass(new RegisterActionApplierPass())
         ;
     }
 }
