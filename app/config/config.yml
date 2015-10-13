@@ -106,3 +106,8 @@ akeneo_storage_utils:
         -
             original: Pim\Bundle\UserBundle\Entity\User
             override: PimEnterprise\Bundle\UserBundle\Entity\User
+
+pim_localization:
+    decimal_separators:
+        - { value: '.', label: 'dot (.)' }
+        - { value: ',', label: 'comma (,)' }
