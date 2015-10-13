@@ -6,6 +6,7 @@ users:
         firstname: Peter
         lastname: Doe
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog

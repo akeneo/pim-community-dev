@@ -1,6 +1,7 @@
 users:
     admin:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     ecommerce
         defaultTree:      2014_collection
         defaultAssetTree: asset_main_catalog
@@ -8,6 +9,7 @@ users:
         groups:           [ IT support ]
     Julia:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     tablet
         defaultTree:      2013_collection
         defaultAssetTree: asset_main_catalog
@@ -16,6 +18,7 @@ users:
         groups:           [ Manager ]
     Peter:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     print
         defaultTree:      2015_collection
         defaultAssetTree: asset_main_catalog
@@ -24,6 +27,7 @@ users:
         groups:           [ IT support ]
     Mary:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     ecommerce
         defaultTree:      men_2013
         defaultAssetTree: asset_main_catalog
@@ -32,6 +36,7 @@ users:
         groups:           [ Redactor ]
     Sandra:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     tablet
         defaultTree:      women_2013
         defaultAssetTree: asset_main_catalog
@@ -40,6 +45,7 @@ users:
         groups:           [ Redactor ]
     Pamela:
         catalogLocale:    en_US
+        uiLocale:         en_US
         catalogScope:     mobile
         defaultTree:      winter_collection
         defaultAssetTree: asset_main_catalog

@@ -6,6 +6,7 @@ users:
         firstname: John
         lastname: Doe
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
@@ -21,6 +22,7 @@ users:
         firstname: Julia
         lastname: Stark
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
@@ -36,6 +38,7 @@ users:
         firstname: Mary
         lastname: Smith
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
@@ -51,6 +54,7 @@ users:
         firstname: Sandra
         lastname: Harvey
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
@@ -66,6 +70,7 @@ users:
         firstname: Peter
         lastname: Williams
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
@@ -81,6 +86,7 @@ users:
         firstname: Pamela
         lastname: Rose
         catalog_locale: en_US
+        ui_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
