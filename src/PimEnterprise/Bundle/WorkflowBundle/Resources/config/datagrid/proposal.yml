@@ -48,12 +48,12 @@ datagrid:
                     - dataLocale
         actions:
             approve:
-                type: ajax
+                type: approve-proposal
                 label: pimee_workflow.product_draft.action.approve
                 icon: ok
                 link: approve_link
             refuse:
-                type: ajax
+                type: reject-proposal
                 label: pimee_workflow.product_draft.action.refuse
                 icon: remove
                 link: refuse_link
