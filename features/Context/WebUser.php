@@ -2523,6 +2523,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $language
+     *
+     * @Given /^I select (.+) language$/
+     */
+    public function iSelectLanguage($language)
+    {
+        $this->getCurrentPage()->selectFieldOption('localization[oro_locale___language][value]', $language);
+    }
+
+    /**
      * @param string    $groupField
      * @param TableNode $fields
      *

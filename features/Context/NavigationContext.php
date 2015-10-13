@@ -256,6 +256,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @Given /^I edit the system configuration$/
+     */
+    public function iAmOnTheSystemEditPage()
+    {
+        $this->openPage('System index');
+    }
+
+    /**
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" user group$/
