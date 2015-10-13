@@ -125,8 +125,9 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
                 'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
                 'context'       => [
                     'actionType' => 'pimee_workflow_product_draft_notification_refuse',
-                    'comment'    => 'Nope Mary.',
-                ]
+                    'showReportButton' => false,
+                ],
+                'comment'    => 'Nope Mary.',
             ]
         )->shouldBeCalled();
 

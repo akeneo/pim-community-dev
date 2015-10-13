@@ -125,8 +125,9 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
                 'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
                 'context'       => [
                     'actionType' => 'pimee_workflow_product_draft_notification_approve',
-                    'comment'    => 'Good job Mary!',
-                ]
+                    'showReportButton' => false,
+                ],
+                'comment'    => 'Good job Mary!',
             ]
         )->shouldBeCalled();
 

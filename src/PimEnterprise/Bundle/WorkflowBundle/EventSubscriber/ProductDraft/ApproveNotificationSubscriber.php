@@ -68,28 +68,28 @@ class ApproveNotificationSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $context = [
-            'actionType'       => 'pimee_workflow_product_draft_notification_approve',
-            'showReportButton' => false,
+        $options = [
+            'route'         => 'pim_enrich_product_edit',
+            'routeParams'   => ['id' => $productDraft->getProduct()->getId()],
+            'messageParams' => [
+                '%product%' => $productDraft->getProduct()->getIdentifier()->getData(),
+                '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
+            ],
+            'context'       => [
+                'actionType'       => 'pimee_workflow_product_draft_notification_approve',
+                'showReportButton' => false,
+            ]
         ];
 
         if ($event->hasArgument('comment')) {
-            $context['comment'] = $event->getArgument('comment');
+            $options['comment'] = $event->getArgument('comment');
         }
 
         $this->notifier->notify(
             [$productDraft->getAuthor()],
             'pimee_workflow.product_draft.notification.approve',
             'success',
-            [
-                'route'         => 'pim_enrich_product_edit',
-                'routeParams'   => ['id' => $productDraft->getProduct()->getId()],
-                'messageParams' => [
-                    '%product%' => $productDraft->getProduct()->getIdentifier()->getData(),
-                    '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
-                ],
-                'context'       => $context
-            ]
+            $options
         );
     }
 }
