@@ -38,7 +38,7 @@ define(
              */
             _handleAjax: function (action) {
                 var modalParameters = {
-                    title: _.__('pimee_enrich.entity.product_draft.modal.accept_approval'),
+                    title: _.__('pimee_enrich.entity.product_draft.modal.accept_proposal'),
                     okText: _.__('pimee_enrich.entity.product_draft.modal.confirm'),
                     cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel')
                 };
