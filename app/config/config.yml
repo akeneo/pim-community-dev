@@ -95,3 +95,8 @@ akeneo_storage_utils:
         -
             original: Pim\Bundle\CatalogBundle\Model\ProductValue
             override: Acme\Bundle\AppBundle\Model\ProductValue
+
+pim_localization:
+    decimal_separators:
+        - { value: '.', label: 'dot (.)' }
+        - { value: ',', label: 'comma (,)' }

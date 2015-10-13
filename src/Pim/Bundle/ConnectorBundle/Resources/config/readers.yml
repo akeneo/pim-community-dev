@@ -38,3 +38,4 @@ services:
         class: %pim_connector.reader.file.csv_product.class%
         arguments:
             - '@pim_catalog.repository.attribute'
+            - %pim_localization.decimal_separators%

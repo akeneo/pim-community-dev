@@ -15,6 +15,7 @@ jobs:
             familyColumn:       family
             groupsColumn:       groups
             realTimeVersioning: true
+            decimalSeparator: .
     csv_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
