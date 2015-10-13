@@ -103,7 +103,8 @@ class ProductDraftController
     /**
      * Approve a product draft
      *
-     * @param mixed $id
+     * @param Request $request
+     * @param mixed   $id
      *
      * @throws \LogicException
      * @throws AccessDeniedHttpException
@@ -140,14 +141,15 @@ class ProductDraftController
     /**
      * Reject a product draft
      *
-     * @param mixed $id
+     * @param Request $request
+     * @param mixed   $id
      *
      * @throws \LogicException
      * @throws AccessDeniedHttpException
      *
      * @return JsonResponse
      */
-    public function rejectAction($id)
+    public function rejectAction(Request $request, $id)
     {
         $productDraft = $this->findProductDraftOr404($id);
 
@@ -159,7 +161,9 @@ class ProductDraftController
             throw new AccessDeniedHttpException();
         }
 
-        $this->manager->refuse($productDraft);
+        $this->manager->refuse($productDraft, [
+            'comment' => $request->request->get('comment')
+        ]);
 
         return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
     }
