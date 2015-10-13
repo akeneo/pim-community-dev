@@ -76,6 +76,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'dashboard'                => 'Dashboard index',
         'search'                   => 'Search index',
         'job tracker'              => 'JobTracker index',
+        'my account'               => 'User profile',
     ];
 
     /**
