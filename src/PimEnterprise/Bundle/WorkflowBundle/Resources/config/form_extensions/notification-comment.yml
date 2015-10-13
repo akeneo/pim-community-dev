@@ -1,0 +1,3 @@
+extensions:
+    pimee-workflow-notification-comment:
+        module: pimee/product-edit-form/send-for-approval-comment

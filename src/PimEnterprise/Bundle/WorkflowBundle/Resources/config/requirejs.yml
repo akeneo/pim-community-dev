@@ -12,21 +12,23 @@ config:
         pimee/product-draft-fetcher:     pimenterpriseworkflow/js/fetcher/product-draft-fetcher
 
         # Form extensions
-        pimee/product-edit-form/meta/published:          pimenterpriseworkflow/js/product/form/meta/published
-        pimee/product-edit-form/meta/draft-status:       pimenterpriseworkflow/js/product/form/meta/draft-status
-        pimee/product-edit-form/panel/history/published: pimenterpriseworkflow/js/product/form/panel/history/published
-        pimee/product-edit-form/proposals:               pimenterpriseworkflow/js/product/form/proposals
-        pimee/product-edit-form/publish:                 pimenterpriseworkflow/js/product/form/publish
-        pimee/product-edit-form/unpublish:               pimenterpriseworkflow/js/product/form/unpublish
-        pimee/product-edit-form/send-for-approval:       pimenterpriseworkflow/js/product/form/send-for-approval
-        pimee/product-edit-form/source-switcher:         pimenterpriseworkflow/js/product/form/source-switcher
-        pimee/product-edit-form/working-copy:            pimenterpriseworkflow/js/product/form/working-copy
-        pimee/product-edit-form/original-product:        pimenterpriseworkflow/js/product/form/original-product
-        pimee/published-view-form/back-to-grid:          pimenterpriseworkflow/js/published-product/form/back-to-grid
+        pimee/product-edit-form/meta/published:            pimenterpriseworkflow/js/product/form/meta/published
+        pimee/product-edit-form/meta/draft-status:         pimenterpriseworkflow/js/product/form/meta/draft-status
+        pimee/product-edit-form/panel/history/published:   pimenterpriseworkflow/js/product/form/panel/history/published
+        pimee/product-edit-form/proposals:                 pimenterpriseworkflow/js/product/form/proposals
+        pimee/product-edit-form/publish:                   pimenterpriseworkflow/js/product/form/publish
+        pimee/product-edit-form/unpublish:                 pimenterpriseworkflow/js/product/form/unpublish
+        pimee/product-edit-form/send-for-approval:         pimenterpriseworkflow/js/product/form/send-for-approval
+        pimee/product-edit-form/source-switcher:           pimenterpriseworkflow/js/product/form/source-switcher
+        pimee/product-edit-form/working-copy:              pimenterpriseworkflow/js/product/form/working-copy
+        pimee/product-edit-form/original-product:          pimenterpriseworkflow/js/product/form/original-product
+        pimee/product-edit-form/send-for-approval-comment: pimenterpriseworkflow/js/product/form/send-for-approval-comment
+        pimee/published-view-form/back-to-grid:            pimenterpriseworkflow/js/published-product/form/back-to-grid
 
         # Templates
         pimee/template/product/meta/published:                  pimenterpriseworkflow/templates/product/meta/published.html
         pimee/template/product/meta/draft-status:               pimenterpriseworkflow/templates/product/meta/draft-status.html
+        pimee/template/product/meta/notification-comment:       pimenterpriseworkflow/templates/product/meta/comment.html
         pimee/template/product/panel/history/published:         pimenterpriseworkflow/templates/product/panel/history/published.html
         pimee/template/product/tab/proposals:                   pimenterpriseworkflow/templates/product/tab/proposals.html
         pimee/template/product/publish:                         pimenterpriseworkflow/templates/product/publish.html
