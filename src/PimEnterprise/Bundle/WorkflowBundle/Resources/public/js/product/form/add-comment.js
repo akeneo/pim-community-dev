@@ -1,15 +1,18 @@
 'use strict';
 
+/**
+ * Form used to add a comment on a proposal when
+ * a product owner refuses it or accepts it.
+ */
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
-        'text!pimee/template/product/form/add-comment',
-        'pim/user-context',
-        'pim/i18n'
+        'text!pimee/template/product/form/add-comment'
     ],
-    function (_, Backbone, BaseForm, template, UserContext, i18n) {
+    function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
@@ -21,14 +24,14 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             updateModel: function () {
-                // TODO: count remaining chars
+                // TODO: count and display remaining chars
 
                 this.model.set('comment', this.$('textarea[name="comment"]').val());
             },
             render: function () {
                 this.$el.html(
                     this.template({
-                        label: 'LE LABEL'
+                        label: _.__('pimee_enrich.entity.product_draft.modal.title_comment')
                     })
                 );
 
