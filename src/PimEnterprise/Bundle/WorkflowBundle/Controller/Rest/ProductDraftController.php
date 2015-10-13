@@ -110,7 +110,7 @@ class ProductDraftController
      *
      * @return JsonResponse
      */
-    public function approveAction($id)
+    public function approveAction(Request $request, $id)
     {
         $productDraft = $this->findProductDraftOr404($id);
 
@@ -127,7 +127,9 @@ class ProductDraftController
         }
 
         try {
-            $this->manager->approve($productDraft);
+            $this->manager->approve($productDraft, [
+                'comment' => $request->request->get('comment')
+            ]);
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }

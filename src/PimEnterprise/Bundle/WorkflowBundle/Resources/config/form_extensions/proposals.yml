@@ -1,0 +1,3 @@
+extensions:
+    pimee-proposal-add-comment-form:
+        module: pimee/proposal/form/add-comment

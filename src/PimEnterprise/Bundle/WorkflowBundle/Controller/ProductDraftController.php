@@ -182,7 +182,7 @@ class ProductDraftController extends AbstractController
 
         try {
             $this->manager->approve($productDraft, [
-                'comment' => $request->request->get('comment', 'Good job Mary!')
+                'comment' => $request->request->get('comment')
             ]);
 
             $status = 'success';
