@@ -30,6 +30,7 @@ Feature: Assign assets to a product
     And I uncheck the row "paint"
     And I check the row "dog"
     And I check the row "akene"
+    And the rows "dog, akene" should be checked
     And I remove "machine" from the asset basket
     Then the asset basket should contain akene, dog
     And I confirm the asset modification
