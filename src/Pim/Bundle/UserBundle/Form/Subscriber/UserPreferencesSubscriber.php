@@ -35,9 +35,9 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData'
-        );
+        ];
     }
 
     /**
@@ -56,6 +56,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $this->updateCatalogLocale($form);
         $this->updateCatalogScope($form);
         $this->updateDefaultTree($form);
+        $this->updateUiLocale($form);
     }
 
     /**
@@ -66,14 +67,14 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $form->add(
             'catalogLocale',
             'entity',
-            array(
+            [
                 'class'         => 'PimCatalogBundle:Locale',
                 'property'      => 'code',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->getActivatedLocalesQB();
                 }
-            )
+            ]
         );
     }
 
@@ -85,11 +86,11 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $form->add(
             'catalogScope',
             'entity',
-            array(
+            [
                 'class'    => 'PimCatalogBundle:Channel',
                 'property' => 'label',
                 'select2'  => true
-            )
+            ]
         );
     }
 
@@ -101,14 +102,33 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $form->add(
             'defaultTree',
             'entity',
-            array(
+            [
                 'class'         => $this->categoryClass,
                 'property'      => 'label',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {
                     return $repository->getTreesQB();
                 }
-            )
+            ]
+        );
+    }
+
+    /**
+     * @param Form $form
+     */
+    protected function updateUiLocale(Form $form)
+    {
+        $form->add(
+            'uiLocale',
+            'entity',
+            [
+                'class'         => 'PimCatalogBundle:Locale',
+                'property'      => 'code',
+                'select2'       => true,
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->getActivatedLocalesQB();
+                }
+            ]
         );
     }
 }

@@ -7,7 +7,7 @@ pim_user:
             password.title:              Password
             business_unit.title:         Business Units
             email_synchronization.title: Email synchronization settings
-
+            interfaces.title:            Interfaces
 # user grids
 oro.user.controller:
     group.message.saved: "Group saved"

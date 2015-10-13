@@ -415,6 +415,18 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setCatalogLocale(LocaleInterface $catalogLocale);
 
     /**
+     * @return LocaleInterface
+     */
+    public function getUiLocale();
+
+    /**
+     * @param LocaleInterface $uiLocale
+     *
+     * @return UserInterface
+     */
+    public function setUiLocale(LocaleInterface $uiLocale);
+
+    /**
      * @return ChannelInterface
      */
     public function getCatalogScope();
