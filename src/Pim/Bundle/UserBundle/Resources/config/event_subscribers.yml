@@ -1,8 +1,8 @@
 parameters:
     pim_user.event_subscriber.user_preferences.class: Pim\Bundle\UserBundle\EventSubscriber\UserPreferencesSubscriber
     pim_user.event_subscriber.group.class:            Pim\Bundle\UserBundle\EventSubscriber\GroupSubscriber
-    pim_locale.locale_listener.class:                 Pim\Bundle\UserBundle\EventSubscriber\LocaleSubscriber
-    pim_locale.locale_subscriber.class:               Pim\Bundle\UserBundle\EventListener\LocaleListener
+    pim_locale.locale_subscriber.class:               Pim\Bundle\UserBundle\EventSubscriber\LocaleSubscriber
+    pim_locale.locale_listener.class:                 Pim\Bundle\UserBundle\EventListener\LocaleListener
 
 services:
     pim_user.event_subscriber.user_preferences:
@@ -17,11 +17,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_locale.locale_listener:
-        class: %pim_locale.locale_listener.class%
-        tags:
-            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
-
     pim_locale.locale_subscriber:
         class: %pim_locale.locale_subscriber.class%
         arguments:
@@ -29,3 +24,8 @@ services:
             - @translator
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_locale.locale_listener:
+        class: %pim_locale.locale_listener.class%
+        tags:
+            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }

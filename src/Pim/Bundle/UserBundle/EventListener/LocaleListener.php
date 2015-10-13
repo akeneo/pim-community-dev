@@ -2,71 +2,24 @@
 
 namespace Pim\Bundle\UserBundle\EventListener;
 
-use Pim\Bundle\UserBundle\Event\UserEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\Translation\DataCollectorTranslator;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 /**
- * Locale Listener
+ * Locale Subscriber
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocaleListener implements EventSubscriberInterface
+class LocaleListener
 {
-    /** @var RequestStack */
-    protected $requestStack;
-
-    /** @var DataCollectorTranslator */
-    protected $translator;
-
     /**
-     * @param RequestStack            $requestStack
-     * @param DataCollectorTranslator $translator
+     * @param InteractiveLoginEvent $event
      */
-    public function __construct(RequestStack $requestStack, DataCollectorTranslator $translator)
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
-        $this->requestStack = $requestStack;
-        $this->translator   = $translator;
-    }
+        $user = $event->getAuthenticationToken()->getUser();
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function onPostUpdate(GenericEvent $event)
-    {
-        $user = $event->getSubject();
-
-        if ($user === $event->getArgument('user')) {
-            $request = $this->requestStack->getMasterRequest();
-            $request->getSession()->set('_locale', $user->getUiLocale()->getLanguage());
-            $this->translator->setLocale($user->getUiLocale()->getCode());
-        }
-    }
-
-    /**
-     * @param GetResponseEvent $event
-     */
-    public function onKernelRequest(GetResponseEvent $event)
-    {
-        $request = $event->getRequest();
-
-        $request->setLocale($request->getSession()->get('_locale'));
-    }
-
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
-    {
-        return [
-            UserEvent::POST_UPDATE => [['onPostUpdate']],
-            KernelEvents::REQUEST  => [['onKernelRequest', 17]],
-        ];
+        $event->getRequest()->getSession()->set('_locale', $user->getUiLocale()->getLanguage());
     }
 }
