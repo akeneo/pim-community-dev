@@ -106,6 +106,7 @@ config:
         pim/asynctab:                       pimenrich/js/pim-async-tab
         pim/popinform:                      pimenrich/js/pim-popinform
         pim/optionform:                     pimenrich/js/pim-optionform
+        pim/form-modal:                     pimenrich/js/form/form-modal
         pim/scopable:                       pimenrich/js/pim-scopable
         pim/currencyfield:                  pimenrich/js/pim-currencyfield
         pim/tree/view:                      pimenrich/js/tree-view.jstree
