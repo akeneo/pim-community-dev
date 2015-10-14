@@ -77,7 +77,7 @@ function (_, Backbone, routing, app, Modal) {
          * @private
          */
         _processRedirect: function () {
-            document.location.href = routing.generate('oro_user_security_login');
+            document.location.href = routing.generate('pim_user_security_login');
         }
     });
     return error;

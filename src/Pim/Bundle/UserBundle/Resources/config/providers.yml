@@ -1,8 +1,0 @@
-parameters:
-  pim_user.provider.user.class: Pim\Bundle\UserBundle\Provider\UserProvider
-
-services:
-  pim_user.provider.user:
-    class: %pim_user.provider.user.class%
-    arguments:
-      - '@pim_user.repository.user'

@@ -1,6 +1,6 @@
 Pim\Bundle\UserBundle\Entity\User:
     type: entity
-    table: oro_user
+    table: pim_user
     changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
@@ -96,9 +96,9 @@ Pim\Bundle\UserBundle\Entity\User:
                 default: false
     manyToMany:
         roles:
-            targetEntity: Oro\Bundle\UserBundle\Entity\Role
+            targetEntity: Pim\Bundle\UserBundle\Entity\Role
             joinTable:
-                name: oro_user_access_role
+                name: pim_user_access_role
                 joinColumns:
                     user_id:
                         referencedColumnName: id
@@ -108,9 +108,9 @@ Pim\Bundle\UserBundle\Entity\User:
                         referencedColumnName: id
                         onDelete: CASCADE
         groups:
-            targetEntity: Oro\Bundle\UserBundle\Entity\Group
+            targetEntity: Pim\Bundle\UserBundle\Entity\Group
             joinTable:
-                name: oro_user_access_group
+                name: pim_user_access_group
                 joinColumns:
                     user_id:
                         referencedColumnName: id
@@ -145,7 +145,7 @@ Pim\Bundle\UserBundle\Entity\User:
             targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
     oneToOne:
         api:
-            targetEntity: Oro\Bundle\UserBundle\Entity\UserApi
+            targetEntity: Pim\Bundle\UserBundle\Entity\UserApi
             mappedBy: user
             orphanRemoval: true
             fetch: EXTRA_LAZY

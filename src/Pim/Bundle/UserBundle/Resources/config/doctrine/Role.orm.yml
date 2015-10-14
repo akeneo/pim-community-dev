@@ -1,0 +1,18 @@
+Pim\Bundle\UserBundle\Entity\Role:
+    type: entity
+    table: pim_access_role
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: smallint
+            id: true
+            generator:
+                strategy: AUTO
+        role:
+            type: string
+            length: 30
+            unique: true
+            nullable: false
+        label:
+            type: string
+            length: 30

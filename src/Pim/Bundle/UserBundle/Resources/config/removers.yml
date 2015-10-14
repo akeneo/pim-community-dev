@@ -1,0 +1,24 @@
+services:
+    pim_user.remover.user:
+        class: %pim_catalog.remover.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
+            - %pim_user.entity.user.class%
+
+    pim_user.remover.role:
+        class: %pim_catalog.remover.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
+            - %pim_user.entity.role.class%
+
+    pim_user.remover.group:
+        class: %pim_catalog.remover.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.remover.base_options_resolver'
+            - '@event_dispatcher'
+            - %pim_user.entity.group.class%

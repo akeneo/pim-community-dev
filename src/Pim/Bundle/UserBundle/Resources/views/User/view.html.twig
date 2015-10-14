@@ -8,7 +8,7 @@
 <div class="horizontal">
     <label>{{ user.api ? user.api.apiKey : 'N/A' }}</label>
     {% if resource_granted('pim_user_user_edit') %}
-        <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
+        <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('pim_user_apigen', { id: user.id }) }}"
            data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
             {{ 'Generate key'|trans }}
         </a>
@@ -21,13 +21,13 @@
         {{ UI.button({'path' : path(editRoute), 'iClass' : 'icon-pencil ', 'title' : 'Edit profile', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
     {% else %}
         {% if resource_granted('pim_user_user_edit') %}
-            {{ UI.button({'path' : path('oro_user_update', { id: entity.id }), 'iClass' : 'icon-pencil ', 'title' : 'Edit user', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
+            {{ UI.button({'path' : path('pim_user_update', { id: entity.id }), 'iClass' : 'icon-pencil ', 'title' : 'Edit user', 'label' : 'Edit', 'aClass' : 'edit-user'}) }}
         {% endif %}
     {% endif %}
     {% if resource_granted('pim_user_user_remove') and entity.id!=app.user.id %}
         {{ UI.deleteButton({
-            'dataUrl': path('oro_user_user_delete', {'id': entity.id}),
-            'dataRedirect': path('oro_user_index'),
+            'dataUrl': path('pim_user_user_delete', {'id': entity.id}),
+            'dataRedirect': path('pim_user_index'),
             'aCss': 'no-hash remove-button',
             'dataId': entity.id,
             'dataMessage': 'Are you sure you want to delete this user?'|trans,
@@ -41,7 +41,7 @@
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity':      entity,
-        'indexPath':   path('oro_user_index'),
+        'indexPath':   path('pim_user_index'),
         'indexLabel': 'Users'|trans,
         'entityTitle': fullname,
         'hasAvatar':   true,
@@ -168,7 +168,7 @@
     #}
 
     {%- set additional_data -%}
-        {% placeholder oro_user_view_additional_data %}
+        {% placeholder pim_user_view_additional_data %}
     {%- endset -%}
 
     {% if additional_data is not empty %}

@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container">
-    <form action="{{ path('oro_user_reset_send_email') }}" method="post" class="form-signin form-reset">
+    <form action="{{ path('pim_user_reset_send_email') }}" method="post" class="form-signin form-reset">
         <div class="title-box">
             <h1>
                 <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
@@ -25,7 +25,7 @@
                 <input type="text" name="username" required="required" placeholder="{{ 'Username or Email'|trans }}" autofocus="autofocus"/>
             </div>
             <div class="form-row">
-                <a href="{{ path('oro_user_security_login') }}" class="btn extra-btn-large btn-large">{{ 'Cancel'|trans }}</a>
+                <a href="{{ path('pim_user_security_login') }}" class="btn extra-btn-large btn-large">{{ 'Cancel'|trans }}</a>
                 <button type="submit" class="btn pull-right btn-large btn-primary">{{ 'Request'|trans }}</button>
             </div>
         </fieldset>

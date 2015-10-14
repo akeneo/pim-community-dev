@@ -5,7 +5,7 @@ services:
         class: %oro_datagrid.event_listener.base_orm_relation.class%
         arguments:
           - role_id
-          - @oro_datagrid.datagrid.request_params
+          - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.pim-role-user-grid, method: onBuildAfter }
 
@@ -13,6 +13,6 @@ services:
         class: %oro_datagrid.event_listener.base_orm_relation.class%
         arguments:
           - group_id
-          - @oro_datagrid.datagrid.request_params
+          - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.pim-group-user-grid, method: onBuildAfter }

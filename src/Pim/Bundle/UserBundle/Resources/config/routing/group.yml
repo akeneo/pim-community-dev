@@ -1,0 +1,22 @@
+pim_user_group_create:
+    path: /user/group/create
+    defaults: { _controller: PimUserBundle:Group:create }
+
+pim_user_group_update:
+    path: /user/group/update/{id}
+    defaults: { _controller: PimUserBundle:Group:update, id: 0 }
+    requirements:
+        id: \d+
+
+pim_user_group_index:
+    path: /user/group/{_format}
+    defaults: { _controller: PimUserBundle:Group:index, _format: html }
+    requirements:
+        _format: html|json
+
+pim_user_group_delete:
+    path: /user/group/delete/{id}
+    defaults: { _controller: PimUserBundle:Group:delete }
+    requirements:
+        id: \d+
+    methods: [DELETE]

@@ -1,6 +1,6 @@
 datagrid:
     pim-user-grid:
-        extended_entity_name: %oro_user.entity.class%
+        extended_entity_name: %pim_user.entity.user.class%
         options:
             entityHint: user
         source:
@@ -17,7 +17,7 @@ datagrid:
                     - u.updatedAt
                     - u.enabled
                 from:
-                    - { table: %oro_user.entity.class%, alias: u }
+                    - { table: %pim_user.entity.user.class%, alias: u }
         columns:
             username:
                 label: oro.user.grid.users.columns.username
@@ -44,17 +44,17 @@ datagrid:
             id: ~
             update_link:
                 type: url
-                route: oro_user_update
+                route: pim_user_update
                 params:
                     - id
             view_link:
                 type: url
-                route: oro_user_view
+                route: pim_user_view
                 params:
                     - id
             delete_link:
                 type: url
-                route: oro_user_user_delete
+                route: pim_user_user_delete
                 params:
                     - id
         sorters:

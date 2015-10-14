@@ -173,7 +173,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
             new Oro\Bundle\SecurityBundle\OroSecurityBundle(),
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
-            new Oro\Bundle\UserBundle\OroUserBundle(),
         ];
     }
 }

@@ -5,7 +5,6 @@ namespace Oro\Bundle\NavigationBundle\Tests\Unit\Menu;
 use Knp\Menu\MenuItem;
 use Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactory;
 use Oro\Bundle\NavigationBundle\Menu\ConfigurationBuilder;
-use Oro\Bundle\UserBundle\Acl\Manager;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\RouterInterface;
 

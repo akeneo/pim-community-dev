@@ -3,7 +3,8 @@
 namespace Pim\Bundle\UserBundle\Entity\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Oro\Bundle\UserBundle\Entity\Repository\RoleRepository as BaseRoleRepository;
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\UserBundle\Entity\User;
 
 /**
@@ -12,11 +13,8 @@ use Pim\Bundle\UserBundle\Entity\User;
  * @author    Julien Janvier <julien.janvier@gmail.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @deprecated will be moved to Pim\Bundle\UserBundle\Doctrine\ORM\Repository in 1.4
  */
-class RoleRepository extends BaseRoleRepository implements
-    IdentifiableObjectRepositoryInterface
+class RoleRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -44,5 +42,22 @@ class RoleRepository extends BaseRoleRepository implements
     public function getIdentifierProperties()
     {
         return ['label'];
+    }
+
+    /**
+     * Get user query builder
+     *
+     * @param Role $role
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getUserQueryBuilder(Role $role)
+    {
+        return $this->_em->createQueryBuilder()
+            ->select('u')
+            ->from('PimUserBundle:User', 'u')
+            ->join('u.roles', 'role')
+            ->where('role = :role')
+            ->setParameter('role', $role);
     }
 }

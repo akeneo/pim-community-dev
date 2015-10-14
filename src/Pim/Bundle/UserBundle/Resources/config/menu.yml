@@ -1,0 +1,8 @@
+parameters:
+    pim_user.menu.user.class: Pim\Bundle\UserBundle\Menu\UserMenuBuilder
+
+services:
+    pim_user.menu.user:
+        class: %pim_user.menu.user.class%
+        tags:
+            - { name: oro_menu.builder, alias: usermenu }

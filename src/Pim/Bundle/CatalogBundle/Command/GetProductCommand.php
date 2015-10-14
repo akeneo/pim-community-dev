@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -101,8 +102,7 @@ class GetProductCommand extends ContainerAwareCommand
      */
     protected function createToken(OutputInterface $output, $username)
     {
-        $userManager = $this->getContainer()->get('oro_user.manager');
-        $user = $userManager->findUserByUsername($username);
+        $user = $this->getContainer()->get('pim_user.repository.user')->findOneByIdentifier($username);
 
         if (null === $user) {
             $output->writeln(sprintf('<error>Username "%s" is unknown<error>', $username));

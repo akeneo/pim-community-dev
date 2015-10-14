@@ -10,10 +10,10 @@ datagrid:
                     - g.id
                     - g.name
                 from:
-                    - { table: OroUserBundle:Group, alias: g }
+                    - { table: PimUserBundle:Group, alias: g }
                 where:
                     and:
-                        - g.name <> '%oro_user.entity.class%::GROUP_DEFAULT'
+                        - g.name <> '%pim_user.entity.user.class%::GROUP_DEFAULT'
         columns:
             name:
                 label: oro.user.grid.groups.columns.name
@@ -22,13 +22,13 @@ datagrid:
             id: ~
             update_link:
                 type: url
-                route: oro_user_group_update
+                route: pim_user_group_update
                 params:
                     - id
 
             delete_link:
                 type: url
-                route: oro_user_group_delete
+                route: pim_user_group_delete
                 params:
                     - id
 

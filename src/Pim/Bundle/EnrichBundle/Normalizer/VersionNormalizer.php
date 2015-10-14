@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Oro\Bundle\UserBundle\Entity\UserManager;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -16,8 +16,8 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class VersionNormalizer implements NormalizerInterface
 {
-    /** @var UserManager */
-    protected $userManager;
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $repository;
 
     /** @var TranslatorInterface */
     protected $translator;
@@ -29,13 +29,13 @@ class VersionNormalizer implements NormalizerInterface
     protected $authorCache = [];
 
     /**
-     * @param UserManager         $userManager
-     * @param TranslatorInterface $translator
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param TranslatorInterface                   $translator
      */
-    public function __construct(UserManager $userManager, TranslatorInterface $translator)
+    public function __construct(IdentifiableObjectRepositoryInterface $repository, TranslatorInterface $translator)
     {
-        $this->userManager = $userManager;
-        $this->translator  = $translator;
+        $this->repository = $repository;
+        $this->translator = $translator;
     }
 
     /**
@@ -72,7 +72,7 @@ class VersionNormalizer implements NormalizerInterface
     protected function normalizeAuthor($author)
     {
         if (!isset($this->authorCache[$author])) {
-            $user = $this->userManager->findUserByUsername($author);
+            $user = $this->repository->findOneByIdentifier($author);
 
             if (null === $user) {
                 $userName = sprintf('%s - %s', $author, $this->translator->trans('Removed user'));

@@ -7,7 +7,7 @@ use Doctrine\DBAL\Schema\Schema;
 
 /**
  * Class Version20151005132540
- * This migration adds a column ui_locale_id for the oro_user table. Because the column will not be null,
+ * This migration adds a column ui_locale_id for the pim_user table. Because the column will not be null,
  * the default value is generated in this order:
  * - if PIM config has a full locale (fr_FR, en_US), set it,
  * - if PIM config has locale (fr, en), we check if a full locale is available (fr_FR, en_US), and set it,

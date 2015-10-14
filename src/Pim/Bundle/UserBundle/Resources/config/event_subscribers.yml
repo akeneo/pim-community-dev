@@ -1,31 +1,101 @@
 parameters:
-    pim_user.event_subscriber.user_preferences.class: Pim\Bundle\UserBundle\EventSubscriber\UserPreferencesSubscriber
-    pim_user.event_subscriber.group.class:            Pim\Bundle\UserBundle\EventSubscriber\GroupSubscriber
-    pim_locale.locale_subscriber.class:               Pim\Bundle\UserBundle\EventSubscriber\LocaleSubscriber
-    pim_locale.locale_listener.class:                 Pim\Bundle\UserBundle\EventListener\LocaleListener
+    pim_user.event_subscriber.kernel.set_request_locale_from_session.class: Pim\Bundle\UserBundle\EventSubscriber\Kernel\SetRequestLocaleFromSessionSubscriber
+
+    pim_user.event_subscriber.doctrine.uploaded_image.class:   Pim\Bundle\UserBundle\EventSubscriber\Doctrine\UploadedImageSubscriber
+    pim_user.event_subscriber.doctrine.user_preferences.class: Pim\Bundle\UserBundle\EventSubscriber\Doctrine\UserPreferencesSubscriber
+    pim_user.event_subscriber.doctrine.role.class:             Pim\Bundle\UserBundle\EventSubscriber\Doctrine\RoleSubscriber
+
+    pim_user.event_subscriber.security.login.class:                  Pim\Bundle\UserBundle\EventSubscriber\Security\LoginSubscriber
+    pim_user.event_subscriber.security.change_locale_on_login.class: Pim\Bundle\UserBundle\EventSubscriber\Security\ChangeLocaleOnLoginSubscriber
+
+    pim_user.event_subscriber.storage.group.class:                            Pim\Bundle\UserBundle\EventSubscriber\Storage\GroupSubscriber
+    pim_user.event_subscriber.storage.add_default_group_to_user.class:        Pim\Bundle\UserBundle\EventSubscriber\Storage\AddDefaultGroupToUserSubscriber
+    pim_user.event_subscriber.storage.remove_acl_role_sid.class:              Pim\Bundle\UserBundle\EventSubscriber\Storage\RemoveAclRoleSidSubscriber
+    pim_user.event_subscriber.storage.set_password_from_plain_password.class: Pim\Bundle\UserBundle\EventSubscriber\Storage\SetPasswordFromPlainPasswordSubscriber
+    pim_user.event_subscriber.storage.change_locale_on_user_update.class:     Pim\Bundle\UserBundle\EventSubscriber\Storage\ChangeLocaleOnUserUpdateSubscriber
 
 services:
-    pim_user.event_subscriber.user_preferences:
-        class: %pim_user.event_subscriber.user_preferences.class%
+
+    # Doctrine events
+
+    pim_user.event_subscriber.doctrine.uploaded_image:
+        class: %pim_user.event_subscriber.doctrine.uploaded_image.class%
+        arguments:
+            - %kernel.root_dir%
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_user.event_subscriber.doctrine.role:
+        class: %pim_user.event_subscriber.doctrine.role.class%
+        arguments:
+            - '@oro_security.link.sid_manager'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_user.event_subscriber.doctrine.user_preferences:
+        class: %pim_user.event_subscriber.doctrine.user_preferences.class%
         calls:
             - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
 
-    pim_user.event_subscriber.group:
-        class: %pim_user.event_subscriber.group.class%
-        tags:
-            - { name: kernel.event_subscriber }
+    # Kernel events
 
-    pim_locale.locale_subscriber:
-        class: %pim_locale.locale_subscriber.class%
+    pim_user.event_subscriber.kernel.locale:
+        class: %pim_user.event_subscriber.kernel.set_request_locale_from_session.class%
         arguments:
-            - @request_stack
-            - @translator
+            - '@request_stack'
+            - '@translator'
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_locale.locale_listener:
-        class: %pim_locale.locale_listener.class%
+    # Security events
+
+    pim_user.event_subscriber.security.login:
+        class: %pim_user.event_subscriber.security.login.class%
+        arguments:
+            - '@pim_user.saver.user'
         tags:
-            - { name: kernel.event_listener, event: security.interactive_login, method: onSecurityInteractiveLogin }
+            - { name: kernel.event_subscriber }
+
+    pim_user.event_subscriber.security.change_locale_on_login:
+        class: %pim_user.event_subscriber.security.change_locale_on_login.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    # Storage
+
+    pim_user.event_subscriber.storage.group:
+        class: %pim_user.event_subscriber.storage.group.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_user.event_subscriber.storage.add_default_group_to_user:
+        class: %pim_user.event_subscriber.storage.add_default_group_to_user.class%
+        arguments:
+            - '@pim_user.repository.group'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_user.event_subscriber.storage.remove_acl_role_sid:
+        class: %pim_user.event_subscriber.storage.remove_acl_role_sid.class%
+        arguments:
+            - '@oro_security.acl.sid_manager'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_user.event_subscriber.storage.set_password_from_plain_password:
+        class: %pim_user.event_subscriber.storage.set_password_from_plain_password.class%
+        arguments:
+            - '@security.encoder_factory.generic'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_user.event_subscriber.storage.change_locale_on_user_update:
+        class: %pim_user.event_subscriber.storage.change_locale_on_user_update.class%
+        arguments:
+            - '@pim_user.context.user'
+            - '@request_stack'
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }

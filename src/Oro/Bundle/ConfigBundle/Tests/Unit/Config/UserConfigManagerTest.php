@@ -28,7 +28,7 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $settings = [
-        'oro_user' => [
+        'pim_user' => [
             'level'    => [
                 'value' => 20,
                 'type'  => 'scalar',
@@ -42,8 +42,8 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
         $this->object = new UserConfigManager($this->om, $this->settings);
 
         $this->tokenStorage = $this->getMock('Symfony\Component\Security\Core\TokenStorageInterface');
-        $this->group1       = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
-        $this->group2       = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
+        $this->group1       = $this->getMock('Pim\Bundle\UserBundle\Entity\Group');
+        $this->group2       = $this->getMock('Pim\Bundle\UserBundle\Entity\Group');
 
         $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $user  = new User();

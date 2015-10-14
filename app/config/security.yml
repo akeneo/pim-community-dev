@@ -8,9 +8,9 @@ security:
     providers:
         chain_provider:
             chain:
-                providers:                  [oro_user]
-        oro_user:
-            id:                             oro_user.security.provider
+                providers:                  [pim_user]
+        pim_user:
+            id:                             pim_user.security.user_provider
 
     encoders:
         Pim\Bundle\UserBundle\Entity\User: sha512
@@ -53,10 +53,10 @@ security:
             provider:                       chain_provider
             form_login:
                 csrf_provider:              form.csrf_provider
-                check_path:                 oro_user_security_check
-                login_path:                 oro_user_security_login
+                check_path:                 pim_user_security_check
+                login_path:                 pim_user_security_login
             logout:
-                path:                       oro_user_security_logout
+                path:                       pim_user_security_logout
             remember_me:
                 key:                        %secret%
                 name:                       BAPRM
