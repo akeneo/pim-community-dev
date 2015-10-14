@@ -918,17 +918,16 @@ class ProductProcessorSpec extends ObjectBehavior
     function it_skips_a_product_when_there_is_nothing_to_update_with_localized_value(
         $arrayConverter,
         $productRepository,
-        $productBuilder,
         $productUpdater,
         $productFilter,
         $localizedConverter,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
         $this->setDecimalSeparator(',');
 
-        $productBuilder->createProduct('tshirt', null)->willReturn($product);
+        $product->getId()->willReturn(1);
 
         $originalData = [
             'sku' => 'tshirt',
@@ -990,6 +989,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
+        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList
     ) {
@@ -1024,6 +1024,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $filteredData = [
             'family' => 'Tshirt',
         ];
+
+        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
 
         $productFilter->filter($product, $filteredData)->shouldNotBeCalled();
 
