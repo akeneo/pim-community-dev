@@ -30,22 +30,17 @@ class ContentDenormalizer implements DenormalizerInterface, ChainedDenormalizerA
     /** @var string */
     protected $conditionClass;
 
-    /** @var array */
-    protected $actionClasses;
-
     /**
      * @param string $ruleClass
      */
     /**
      * @param string $ruleClass
      * @param string $conditionClass
-     * @param array  $actionClasses, the key of the items if the type of action
      */
-    public function __construct($ruleClass, $conditionClass, array $actionClasses)
+    public function __construct($ruleClass, $conditionClass)
     {
-        $this->ruleClass = $ruleClass;
+        $this->ruleClass      = $ruleClass;
         $this->conditionClass = $conditionClass;
-        $this->actionClasses = $actionClasses;
     }
 
     /**
@@ -73,21 +68,23 @@ class ContentDenormalizer implements DenormalizerInterface, ChainedDenormalizerA
                 throw new \LogicException(
                     sprintf('Rule content "%s" has an action with no type.', json_encode($ruleContent))
                 );
-            } elseif (!isset($this->actionClasses[$action['type']])) {
-                throw new \LogicException(
-                    sprintf(
-                        'Rule content "%s" has an unknown type of action "%s".',
-                        json_encode($ruleContent),
-                        $action['type']
-                    )
-                );
             } else {
-                $actions[] = $this->chainedDenormalizer->denormalize(
-                    $action,
-                    $this->actionClasses[$action['type']],
-                    $format,
-                    $context
-                );
+                try {
+                    $actions[] = $this->chainedDenormalizer->denormalize(
+                        $action,
+                        $action['type'],
+                        $format,
+                        $context
+                    );
+                } catch (\LogicException $e) {
+                    throw new \LogicException(
+                        sprintf(
+                            'Rule content "%s" has an unknown type of action "%s".',
+                            json_encode($ruleContent),
+                            $action['type']
+                        )
+                    );
+                }
             }
         }
 

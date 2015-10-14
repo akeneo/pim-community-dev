@@ -12,7 +12,7 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition:
                 message: The key "field" is missing or empty.
            - Length:
                 max: 255
-           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingFilterField: ~
         operator:
             - NotBlank:
                 message: The key "operator" is missing or empty.

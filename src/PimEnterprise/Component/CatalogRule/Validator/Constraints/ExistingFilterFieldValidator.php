@@ -9,20 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
+namespace PimEnterprise\Component\CatalogRule\Validator\Constraints;
 
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Validates that a field exists or not.
+ * Validates that a field can be filtered or not.
  *
- * @deprecated will be removed in 1.6 please use ExistingFilterFieldValidator, ExistingAddFieldValidator,
- *             ExistingSetFieldValidator or ExistingCopierFieldValidator
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Julien Sanchez <julien@akeneo.com>
  */
-class ExistingFieldValidator extends ConstraintValidator
+class ExistingFilterFieldValidator extends ConstraintValidator
 {
     /** @var FilterRegistryInterface */
     protected $registry;

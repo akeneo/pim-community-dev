@@ -26,22 +26,22 @@ class CopyValueActionDenormalizerSpec extends ObjectBehavior
     {
         $data['type'] = ProductCopyValueActionInterface::ACTION_TYPE;
 
-        $this->denormalize($data, 'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction')
+        $this->denormalize($data, 'copy_value')
             ->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction');
     }
 
     function it_supports_denormalization()
     {
         $data['type'] = ProductCopyValueActionInterface::ACTION_TYPE;
-        $type = '\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction';
+        $type = 'copy_value';
 
         $this->supportsDenormalization($data, $type)->shouldReturn(true);
     }
 
     function it_does_not_support_denormalization_for_invalid_data()
     {
-        $data['type'] = ProductCopyValueActionInterface::ACTION_TYPE;
-        $type = '\PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCondition';
+        $data['type'] = 'another_action_type';
+        $type = 'copy_value';
 
         $this->supportsDenormalization($data, $type)->shouldReturn(false);
     }

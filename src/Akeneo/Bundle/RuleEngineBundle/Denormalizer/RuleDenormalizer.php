@@ -22,7 +22,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwareInterface
 {
     /** @var DenormalizerInterface */
-    protected $chainedDernomalizer;
+    protected $chainedDenormalizer;
 
     /** @var string */
     protected $ruleClass;
@@ -67,7 +67,7 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
         $rawContent = ['conditions' => $data['conditions'], 'actions' => $data['actions']];
         $rule->setContent($rawContent);
 
-        $content = $this->chainedDernomalizer->denormalize($rawContent, $class, 'rule_content', $context);
+        $content = $this->chainedDenormalizer->denormalize($rawContent, $class, 'rule_content', $context);
 
         foreach ($content['conditions'] as $condition) {
             $rule->addCondition($condition);
@@ -92,7 +92,7 @@ class RuleDenormalizer implements DenormalizerInterface, ChainedDenormalizerAwar
      */
     public function setChainedDenormalizer(DenormalizerInterface $denormalizer)
     {
-        $this->chainedDernomalizer = $denormalizer;
+        $this->chainedDenormalizer = $denormalizer;
     }
 
     /**

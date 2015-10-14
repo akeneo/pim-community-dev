@@ -8,4 +8,6 @@ services:
         arguments:
             - '@pimee_catalog_rule.repository.rule_relation'
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.category'
             - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.category.class%

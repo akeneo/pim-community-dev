@@ -46,7 +46,6 @@ class SetValueActionDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === $this->setValueActionClass && isset($data['type'])
-               && ProductSetValueActionInterface::ACTION_TYPE === $data['type'];
+        return isset($data['type']) && ProductSetValueActionInterface::ACTION_TYPE === $data['type'];
     }
 }
