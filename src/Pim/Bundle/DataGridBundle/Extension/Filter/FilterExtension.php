@@ -119,7 +119,7 @@ class FilterExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         $filtersState    = $data->offsetGetByPath('[state][filters]', []);
-        $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
+        $filtersConfig   = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
         $filtersMetaData = [];
 
         $filters = $this->getFiltersToApply($config);
@@ -128,7 +128,7 @@ class FilterExtension extends AbstractExtension
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
 
-            if ($value !== false) {
+            if (false !== $value) {
                 $form = $filter->getForm();
                 if (!$form->isSubmitted()) {
                     $form->submit($value);
