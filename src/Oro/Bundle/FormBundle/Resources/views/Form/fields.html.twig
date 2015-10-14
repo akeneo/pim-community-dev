@@ -1,14 +1,5 @@
 {% extends 'OroUIBundle:Form:fields.html.twig' %}
 
-{% block percent_widget %}
-    {% set type = type|default('text') %}
-    <div class="input-append">
-        {% set type = type|default('text') %}
-        <input class="input-addon" type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
-        <span class="add-on">%</span>
-    </div>
-{% endblock %}
-
 {% block form_label %}
     {% spaceless %}
         {% if not compound %}
