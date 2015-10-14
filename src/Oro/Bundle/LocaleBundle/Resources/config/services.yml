@@ -65,6 +65,8 @@ services:
 
     oro_locale.form.type.locale:
         class: %oro_locale.form.type.locale.class%
+        arguments:
+            - @pim_localization.provider.ui_locale
         tags:
             - { name: form.type, alias: "oro_locale" }
 
