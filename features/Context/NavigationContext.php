@@ -256,6 +256,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @Given /^I am on my profile page$/
+     */
+    public function iAmOnMyProfilePage()
+    {
+        $this->openPage('User profile show');
+    }
+
+    /**
      * @Given /^I edit the system configuration$/
      */
     public function iAmOnTheSystemEditPage()
