@@ -26,8 +26,13 @@ class PimLocalizationExtension extends Extension
         foreach ($config['decimal_separators'] as $decimalSeparator) {
             $decimalSeparators[$decimalSeparator['value']] = $decimalSeparator['label'];
         }
-
         $container->setParameter('pim_localization.decimal_separators', $decimalSeparators);
+
+        $formatDates = [];
+        foreach ($config['format_dates'] as $formatDate) {
+            $formatDates[$formatDate['value']] = $formatDate['label'];
+        }
+        $container->setParameter('pim_localization.format_dates', $formatDates);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('localizers.yml');
