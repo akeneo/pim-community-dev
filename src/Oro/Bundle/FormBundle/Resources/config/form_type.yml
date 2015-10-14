@@ -1,7 +1,6 @@
 parameters:
     oro_form.type.date.class:                                    Oro\Bundle\FormBundle\Form\Type\OroDateType
     oro_form.type.entity_identifier.class:                       Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
-    oro_form.type.jqueryselect2_hidden.class:                    Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
 
     oro_form.extension.data_block.class:                         Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
     oro_form.extension.client_validation.class:                  Oro\Bundle\FormBundle\Form\Extension\ClientValidationExtension
@@ -57,7 +56,6 @@ services:
         class: %oro_form.extension.js_validation.constraints_provider.class%
         arguments:
             - @validator.mapping.class_metadata_factory
-
 
     oro_form.extension.js_validation.repeated:
         class: %oro_form.extension.js_validation.repeated.class%
