@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LocaleBundle\Form\Type;
+namespace Pim\Bundle\LocalizationBundle\Form\Type;
 
 use Pim\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\Form\AbstractType;
@@ -41,6 +41,6 @@ class LocaleType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_locale';
+        return 'pim_locale';
     }
 }

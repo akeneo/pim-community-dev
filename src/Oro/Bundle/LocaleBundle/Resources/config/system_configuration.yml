@@ -9,7 +9,7 @@ oro_system_configuration:
 
     fields:
         oro_locale.locale:
-            type: oro_locale
+            type: pim_locale
             priority: 70
             options:
                 label: 'Locale'
@@ -37,7 +37,7 @@ oro_system_configuration:
                 required: true
 
         oro_locale.language:
-            type: oro_locale
+            type: pim_locale
             priority: 40
             options:
                 label: 'Language'
