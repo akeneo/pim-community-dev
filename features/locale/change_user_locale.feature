@@ -23,3 +23,9 @@ Feature: Change user locale
      | Ui locale | fr_FR |
     And I save the user
     Then I should see "Collect"
+
+  Scenario: Should only see translated locales
+    Given I edit my profile
+    And I visit the "Interfaces" tab
+    Then I should see English locale option
+    And I should not see Breton locale option

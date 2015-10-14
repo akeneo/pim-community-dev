@@ -2525,11 +2525,48 @@ class WebUser extends RawMinkContext
     /**
      * @param string $language
      *
-     * @Given /^I select (.+) language$/
+     * @Given /^I select (.+) (?:language|locale)$/
      */
     public function iSelectLanguage($language)
     {
         $this->getCurrentPage()->selectFieldOption('localization[oro_locale___language][value]', $language);
+    }
+
+    /**
+     * @param string|null $not
+     * @param string      $locale
+     *
+     * @Then /^I should (not )?see (.+) locale option$/
+     *
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function iShouldSeeLocaleOption($not, $locale)
+    {
+        $selectNames = ['localization[oro_locale___language][value]', 'oro_user_user_form[uiLocale]'];
+        $field = null;
+        foreach ($selectNames as $selectName) {
+            $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
+        }
+        if (null === $field) {
+            throw new \Exception(sprintf('Could not find field with name %s', json_encode($selectNames)));
+        }
+
+        $options = $field->findAll('css', 'option');
+
+        foreach ($options as $option) {
+            $text = $option->getHtml();
+            if ($text === $locale) {
+                if ($not) {
+                    throw new \Exception(sprintf('Should not see %s locale', $locale));
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
