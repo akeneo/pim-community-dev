@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormView;
 
 class JsValidationExtension extends \Twig_Extension
 {
-    const DEFAULT_TEMPLATE = 'OroFormBundle:Form:fields.html.twig';
+    const DEFAULT_TEMPLATE = 'PimUIBundle:Form:pim-fields.html.twig';
     const BLOCK_NAME = 'oro_form_js_validation';
 
     /**

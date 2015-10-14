@@ -4,6 +4,11 @@ namespace Oro\Bundle\FormBundle\Twig;
 
 use Oro\Bundle\FormBundle\Form\Twig\DataBlocks;
 
+/**
+ * Class FormExtension
+ *
+ * TODO: only used for system/conf
+ */
 class FormExtension extends \Twig_Extension
 {
     public function getFunctions()
