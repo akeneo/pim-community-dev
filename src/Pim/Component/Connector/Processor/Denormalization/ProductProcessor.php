@@ -104,7 +104,7 @@ class ProductProcessor extends AbstractProcessor
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
 
-        if ($this->enabledComparison) {
+        if ($this->enabledComparison && null !== $product->getId()) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
             if (empty($filteredItem)) {
