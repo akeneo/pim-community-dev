@@ -1,0 +1,86 @@
+oro_system_configuration:
+    groups:
+        localization:
+            title: 'Localization'
+            icon:  'icon-flag'
+
+        locale_settings:
+            title: 'Localization options'
+
+    fields:
+        oro_locale.locale:
+            type: oro_locale
+            priority: 70
+            options:
+                label: 'Locale'
+                tooltip: oro.locale.form.tooltip.locale
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        oro_locale.country:
+            type: oro_locale_country
+            priority: 60
+            options:
+                label: 'Location'
+                tooltip: oro.locale.form.tooltip.location
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        oro_locale.format_address_by_address_country:
+            type: oro_config_checkbox
+            priority: 50
+            options:
+                label: 'Format address by address country'
+                tooltip: oro.locale.form.tooltip.format_address_by_address_country
+                required: true
+
+        oro_locale.language:
+            type: oro_locale
+            priority: 40
+            options:
+                label: 'Language'
+                tooltip: oro.locale.form.tooltip.language
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        oro_locale.timezone:
+            type: oro_locale_timezone
+            priority: 30
+            options:
+                label: 'Timezone'
+                tooltip: oro.locale.form.tooltip.timezone
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        oro_locale.currency:
+            type: oro_currency
+            priority: 20
+            options:
+                label: 'Currency'
+                tooltip: oro.locale.form.tooltip.currency
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            localization:
+                                priority: 254
+                                children:
+                                    locale_settings:
+                                        priority: 100
+                                        children:
+                                            - oro_locale.locale
+                                            - oro_locale.country
+                                            - oro_locale.format_address_by_address_country
+                                            - oro_locale.language
+                                            - oro_locale.timezone
+                                            - oro_locale.currency

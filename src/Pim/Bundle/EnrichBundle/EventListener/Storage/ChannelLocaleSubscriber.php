@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
  * @author    Clement Gautier <clement.gautier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- * @todo      In 1.5 completeness manager become required
  */
 class ChannelLocaleSubscriber implements EventSubscriberInterface
 {
@@ -39,7 +38,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
     public function __construct(
         LocaleRepositoryInterface $repository,
         BulkSaverInterface $saver,
-        CompletenessGeneratorInterface $completeness = null
+        CompletenessGeneratorInterface $completeness
     ) {
         $this->repository   = $repository;
         $this->saver        = $saver;
@@ -68,7 +67,7 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $locales = $channel->getLocales();
+        $locales        = $channel->getLocales();
         $updatedLocales = [];
 
         foreach ($locales as $locale) {
@@ -92,17 +91,14 @@ class ChannelLocaleSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $oldLocales = $this->repository->getDeletedLocalesForChannel($channel);
-        $newLocales = $channel->getLocales();
+        $oldLocales     = $this->repository->getDeletedLocalesForChannel($channel);
+        $newLocales     = $channel->getLocales();
         $updatedLocales = [];
 
         foreach ($oldLocales as $locale) {
             $locale->removeChannel($channel);
             $updatedLocales[] = $locale;
-
-            if (null !== $this->completeness) {
-                $this->completeness->scheduleForChannelAndLocale($channel, $locale);
-            }
+            $this->completeness->scheduleForChannelAndLocale($channel, $locale);
         }
 
         foreach ($newLocales as $locale) {

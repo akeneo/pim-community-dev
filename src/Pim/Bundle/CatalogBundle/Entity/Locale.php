@@ -99,6 +99,14 @@ class Locale implements LocaleInterface, VersionableInterface
     /**
      * {@inheritdoc}
      */
+    public function getLanguage()
+    {
+        return (null === $this->code) ? null : substr($this->code, 0, 2);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isActivated()
     {
         return $this->activated;

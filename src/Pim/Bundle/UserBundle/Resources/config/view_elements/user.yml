@@ -3,6 +3,7 @@ parameters:
     pim_user.view_element.user.tab.additional.template:     'PimUserBundle:User:Tab/additional.html.twig'
     pim_user.view_element.user.tab.group_and_role.template: 'PimUserBundle:User:Tab/group_and_role.html.twig'
     pim_user.view_element.user.tab.password.template:       'PimUserBundle:User:Tab/password.html.twig'
+    pim_user.view_element.user.tab.interfaces.template:     'PimUserBundle:User:Tab/interfaces.html.twig'
 
 services:
     pim_user.view_element.user.tab.general:
@@ -40,3 +41,11 @@ services:
             - [ addVisibilityChecker, ['@pim_enrich.view_element.visibility_checker.non_empty_property', {property: '[form].children[change_password]'}] ]
         tags:
             - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 120 }
+
+    pim_user.view_element.user.tab.interfaces:
+        parent: pim_enrich.view_element.base
+        arguments:
+            - 'pim_user.user.tab.interfaces'
+            - %pim_user.view_element.user.tab.interfaces.template%
+        tags:
+            - { name: pim_enrich.view_element, type: oro_user_user_form.form_tab, position: 130 }

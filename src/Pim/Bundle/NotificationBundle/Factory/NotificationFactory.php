@@ -29,7 +29,13 @@ class NotificationFactory
      *
      * @param string $message
      * @param string $type
-     * @param array  $options
+     * @param array  $options [
+     *                        'route'         => ''|null,
+     *                        'routeParams'   => [''],
+     *                        'messageParams' => [''],
+     *                        'context'       => '',
+     *                        'comment'       => ''|null,
+     *                        ]
      *
      * @return Notification
      */
@@ -37,19 +43,19 @@ class NotificationFactory
     {
         $defaults = [
             'messageParams' => [],
+            'comment'       => null,
             'route'         => null,
             'routeParams'   => [],
-            'context'       => []
+            'context'       => [],
         ];
-
         $options = $options + $defaults;
-
-        $entity = new $this->className();
+        $entity  = new $this->className();
 
         $entity
             ->setMessage($message)
             ->setType($type)
             ->setMessageParams($options['messageParams'])
+            ->setComment($options['comment'])
             ->setRoute($options['route'])
             ->setRouteParams($options['routeParams'])
             ->setContext($options['context']);

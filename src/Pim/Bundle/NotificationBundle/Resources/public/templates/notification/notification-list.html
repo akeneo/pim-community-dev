@@ -6,7 +6,10 @@
         <span class="title"><%= actionTypeMessage %></span>
         <span class="message"><%= message %></span>
     </div>
+    <% if (comment) { %> <div class="comment"><%= comment %></div> <% } %>
     <time><%= createdAt %></time>
     <i class="icon-<%= viewed ? 'trash' : 'eye-close' %> action"></i>
+    <% if (showReportButton) { %>
     <button class="btn icons-holder-text"><i class="icon-file-text-alt"></i>Report</button>
+    <% } %>
 </a>

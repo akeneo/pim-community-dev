@@ -1,0 +1,3 @@
+extensions:
+    pim-notification-comment:
+        module: pim/form/comment

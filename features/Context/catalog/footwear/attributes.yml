@@ -340,3 +340,22 @@ attributes:
         useableAsGridFilter: true
         group: other
         maxCharacters: 255
+    rate_sale:
+        labels:
+            en_US: Rate of sale
+            fr_FR: Taux de vente
+        type:  pim_catalog_number
+        group: marketing
+        useableAsGridFilter: true
+        sortOrder:           1
+        decimalsAllowed:     true
+    weight:
+        labels:
+            en_US: Weight
+            fr_FR: Poids
+        type:  pim_catalog_metric
+        group: info
+        metricFamily:      Weight
+        defaultMetricUnit: GRAM
+        negativeAllowed:   false
+        decimalsAllowed:   true

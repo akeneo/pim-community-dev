@@ -1,0 +1,4 @@
+Pim\Component\Connector\Reader\File\CsvProductReader:
+    properties:
+        decimalSeparator:
+            - NotBlank: ~

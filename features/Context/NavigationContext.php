@@ -249,6 +249,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @Given /^I edit my profile$/
+     */
+    public function iAmOnMyProfileEditPage()
+    {
+        $this->openPage('User profile edit');
+    }
+
+    /**
+     * @Given /^I edit the system configuration$/
+     */
+    public function iAmOnTheSystemEditPage()
+    {
+        $this->openPage('System index');
+    }
+
+    /**
      * @param string $identifier
      *
      * @Given /^I edit the "([^"]*)" user group$/
@@ -789,6 +805,10 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
         if (false !== $urlWithoutLocale = strstr($filteredUrl, '?dataLocale=', true)) {
             $filteredUrl = $urlWithoutLocale;
+        }
+
+        if (false !== $urlWithoutRedirect = strstr($filteredUrl, '?redirectTab=', true)) {
+            $filteredUrl = $urlWithoutRedirect;
         }
 
         if (false !== $urlWithoutGrid = strstr($filteredUrl, '|g/', true)) {

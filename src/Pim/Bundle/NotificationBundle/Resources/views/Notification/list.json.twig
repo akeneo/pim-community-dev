@@ -9,6 +9,8 @@
         createdAt: item.notification.created|date("Y-m-d H:i:s"),
         actionType: item.notification.context.actionType ? item.notification.context.actionType : null,
         actionTypeMessage: item.notification.context.actionType ? item.notification.context.actionType|trans : null,
+        showReportButton: item.notification.context.showReportButton is defined ? item.notification.context.showReportButton : true,
+        comment: item.notification.comment ? item.notification.comment : null
     }]) %}
 {% endfor %}
 {% set data = { notifications: notifications, unreadCount: notification_count() } %}

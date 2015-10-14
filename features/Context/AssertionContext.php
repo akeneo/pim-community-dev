@@ -604,6 +604,46 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @When /^I open the notification panel$/
+     */
+    public function iOpenTheNotificationPanel()
+    {
+        $notificationWidget = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '#header-notification-widget');
+        });
+
+        if ($notificationWidget->hasClass('open')) {
+            return;
+        }
+
+        $notificationWidget->find('css', '.dropdown-toggle')->click();
+
+        // Wait for the footer of the notification panel dropdown to be loaded
+        $this->spin(function () {
+            $footer  = $this->getCurrentPage()->find('css', '#header-notification-widget ul.dropdown-menu > p');
+            $content = trim($footer->getText());
+
+            return !empty($content);
+        });
+    }
+
+    /**
+     * @When /^I click on the notification "([^"]+)"$/
+     */
+    public function iClickOnTheNotification($message)
+    {
+        $this->iOpenTheNotificationPanel();
+        $page = $this->getCurrentPage();
+        $selector = sprintf('#header-notification-widget .dropdown-menu li>a:contains("%s")', $message);
+
+        $link = $this->spin(function () use ($page, $selector) {
+            return $page->find('css', $selector);
+        });
+
+        $link->click();
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^I should see notifications?:$/
@@ -612,18 +652,21 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeNotifications(TableNode $table)
     {
-        $element = $this->getCurrentPage()->find('css', '#header-notification-widget');
-        $element->find('css', '.dropdown-toggle')->click();
-        $this->getMainContext()->wait();
+        $this->iOpenTheNotificationPanel();
+
+        $notificationWidget = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '#header-notification-widget');
+        });
 
         $icons = [
             'success' => 'icon-ok',
             'warning' => 'icon-warning-sign',
             'error'   => 'icon-remove',
+            'add'     => 'icon-plus',
         ];
 
         foreach ($table->getHash() as $data) {
-            $notification = $element->find('css', sprintf('.dropdown-menu li>a:contains("%s")', $data['message']));
+            $notification = $notificationWidget->find('css', sprintf('.dropdown-menu li>a:contains("%s")', $data['message']));
 
             if (!$notification) {
                 throw $this->createExpectationException(
@@ -652,6 +695,30 @@ class AssertionContext extends RawMinkContext
                         $data['type']
                     )
                 );
+            }
+
+            if (isset($data['comment']) && '' !== $data['comment']) {
+                $commentNode = $notification->find('css', 'div.comment');
+
+                if (!$commentNode) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting notification "%s" to have a comment.',
+                            $data['message']
+                        )
+                    );
+                }
+
+                if ($data['comment'] !== $commentNode->getText()) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting notification "%s" to have the comment "%s", got "%s"',
+                            $data['message'],
+                            $data['comment'],
+                            $commentNode->getText()
+                        )
+                    );
+                }
             }
         }
     }

@@ -1543,6 +1543,21 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $username
+     * @param string $locale
+     *
+     * @return bool
+     *
+     * @Then /^the user "([^"]+)" should have "([^"]+)" locale$/
+     */
+    public function checkUserUiLocale($username, $locale)
+    {
+        $user = $this->getUser($username);
+        $this->refresh($user);
+        assertEquals($user->getUiLocale()->getLanguage(), $locale);
+    }
+
+    /**
+     * @param string $username
      */
     public function setUsername($username)
     {

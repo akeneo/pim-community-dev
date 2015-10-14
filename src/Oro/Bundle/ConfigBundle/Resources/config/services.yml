@@ -1,0 +1,69 @@
+parameters:
+    oro_config.global.class:                                                     Oro\Bundle\ConfigBundle\Config\ConfigManager
+    oro_config.user.class:                                                       Oro\Bundle\ConfigBundle\Config\UserConfigManager
+    oro_config.twig_extension.class:                                             Oro\Bundle\ConfigBundle\Twig\ConfigExtension
+    oro_config.provider.system_configuration.form_provider.class:                Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider
+
+    oro_config.form.config_subscriber.class:                                     Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber
+    oro_config.form.handler.config.class:                                        Oro\Bundle\ConfigBundle\Form\Handler\ConfigHandler
+
+    oro_config.type.form.class:                                                  Oro\Bundle\ConfigBundle\Form\Type\FormType
+    oro_config.type.form_field.class:                                            Oro\Bundle\ConfigBundle\Form\Type\FormFieldType
+    oro_config.type.config_checkbox.class:                                       Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+
+services:
+    oro_config.user:
+        class:                        %oro_config.user.class%
+        arguments:                    ["@doctrine.orm.entity_manager"]
+        calls:
+             - [setSecurity, ["@security.token_storage"]]
+        tags:
+            -  { name: oro_config.manager }
+
+    oro_config.global:
+        class:                        %oro_config.global.class%
+        arguments:                    ["@doctrine.orm.entity_manager"]
+        tags:
+            -  { name: oro_config.manager }
+
+    oro_config.twig.config_extension:
+        class:                        %oro_config.twig_extension.class%
+        arguments:                    ["@oro_config.global"]
+        tags:
+            - { name: twig.extension }
+
+    oro_config.provider.system_configuration.form_provider:
+        class:                        %oro_config.provider.system_configuration.form_provider.class%
+        arguments:
+            - []
+            - @form.factory
+            - @oro_security.security_facade
+        tags:
+            -  { name: oro_config.configuration_form_provider }
+
+    oro_config.form.config_subscriber:
+        class: %oro_config.form.config_subscriber.class%
+        arguments:
+          - @oro_config.user
+
+    oro_config.type.form:
+        class:                        %oro_config.type.form.class%
+        arguments:
+            - @oro_config.form.config_subscriber
+        tags:
+            - { name: form.type, alias: oro_config_form_type }
+
+    oro_config.type.form_field:
+        class:                        %oro_config.type.form_field.class%
+        tags:
+            - { name: form.type, alias: oro_config_form_field_type }
+
+    oro_config.type.config_checkbox:
+        class:                        %oro_config.type.config_checkbox.class%
+        tags:
+            - { name: form.type, alias: oro_config_checkbox }
+
+    oro_config.form.handler.config:
+        class: %oro_config.form.handler.config.class%
+        arguments:
+            - @oro_config.global

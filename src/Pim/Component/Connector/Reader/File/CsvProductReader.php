@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Reader\File;
 
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
 
 /**
  * Product csv reader
@@ -19,15 +20,23 @@ class CsvProductReader extends CsvReader
     /** @var string[] Media attribute codes */
     protected $mediaAttributes;
 
+    /** @var string */
+    protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
+
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var array */
+    protected $decimalSeparators;
+
     /**
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param array                        $decimalSeparators
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(AttributeRepositoryInterface $attributeRepository, array $decimalSeparators)
     {
         $this->attributeRepository = $attributeRepository;
+        $this->decimalSeparators   = $decimalSeparators;
     }
 
     /**
@@ -59,6 +68,26 @@ class CsvProductReader extends CsvReader
     }
 
     /**
+     * Set the separator for decimal
+     *
+     * @param string $decimalSeparator
+     */
+    public function setDecimalSeparator($decimalSeparator)
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    /**
+     * Get the separator for decimal
+     *
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
@@ -68,6 +97,15 @@ class CsvProductReader extends CsvReader
             [
                 'mediaAttributes' => [
                     'system' => true
+                ],
+                'decimalSeparator' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices' => $this->decimalSeparators,
+                        'select2' => true,
+                        'label'   => 'pim_connector.import.decimalSeparator.label',
+                        'help'    => 'pim_connector.import.decimalSeparator.help'
+                    ]
                 ]
             ]
         );

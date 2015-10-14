@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ConnectorBundle;
 
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterConverterPass;
 use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
