@@ -46,9 +46,6 @@ oro_default:
         template:    PimDashboardBundle:Dashboard:index.html.twig
         _controller: FrameworkBundle:Template:template
 
-oro_user:
-    resource: "@OroUserBundle/Resources/config/oro/routing.yml"
-
 oro_config:
     resource: "@OroConfigBundle/Resources/config/oro/routing.yml"
 

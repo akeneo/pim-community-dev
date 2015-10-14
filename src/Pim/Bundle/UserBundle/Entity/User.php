@@ -6,12 +6,7 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\UserBundle\Entity\Group;
-use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -683,7 +678,7 @@ class User implements UserInterface
             $roleName = $role;
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Oro\Bundle\UserBundle\Entity\Role or a string'
+                '$role must be an instance of Pim\Bundle\UserBundle\Entity\Role or a string'
             );
         }
 
@@ -713,7 +708,7 @@ class User implements UserInterface
             $roleObject = $this->getRole($role);
         } else {
             throw new \InvalidArgumentException(
-                '$role must be an instance of Oro\Bundle\UserBundle\Entity\Role or a string'
+                '$role must be an instance of Pim\Bundle\UserBundle\Entity\Role or a string'
             );
         }
         if ($roleObject) {

@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container">
-    <form action="{{ path('oro_user_reset_reset', { token: token }) }}" {{ form_enctype(form) }} method="post" class="form-signin">
+    <form action="{{ path('pim_user_reset_reset', { token: token }) }}" {{ form_enctype(form) }} method="post" class="form-signin">
         <div class="title-box">
             <h1>
                 <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="Akeneo">
@@ -16,7 +16,7 @@
             {{ form_widget(form.plainPassword) }}
             {{ form_widget(form._token) }}
             <div class="form-row">
-                <a href="{{ path('oro_user_security_login') }}" class="btn btn-large extra-btn-large">{{ 'Cancel'|trans }}</a>
+                <a href="{{ path('pim_user_security_login') }}" class="btn btn-large extra-btn-large">{{ 'Cancel'|trans }}</a>
                 <button type="submit" class="btn btn-large pull-right btn-primary">{{ 'Reset'|trans }}</button>
             </div>
         </fieldset>

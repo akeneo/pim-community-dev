@@ -3,8 +3,8 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM\Base;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
+use Pim\Bundle\UserBundle\Entity\Group;
 use Symfony\Component\Yaml\Yaml;
 
 /**

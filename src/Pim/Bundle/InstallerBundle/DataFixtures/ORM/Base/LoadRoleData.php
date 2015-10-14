@@ -4,8 +4,8 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM\Base;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
+use Pim\Bundle\UserBundle\Entity\Role;
 use Symfony\Component\Yaml\Yaml;
 
 /**

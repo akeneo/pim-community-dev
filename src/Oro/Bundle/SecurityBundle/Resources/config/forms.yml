@@ -1,0 +1,17 @@
+parameters:
+    oro_security.form.type.acl_collection.class: Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType
+    oro_security.form.type.acl_privilege.class:  Oro\Bundle\SecurityBundle\Form\Type\AclPrivilegeType
+
+services:
+
+    # Types
+
+    oro_security.form.type.acl_collection:
+        class: %oro_security.form.type.acl_collection.class%
+        tags:
+            - { name: form.type, alias: oro_acl_collection }
+
+    oro_security.form.type.acl_privilege:
+        class: %oro_security.form.type.acl_privilege.class%
+        tags:
+            - { name: form.type, alias: oro_acl_privilege }

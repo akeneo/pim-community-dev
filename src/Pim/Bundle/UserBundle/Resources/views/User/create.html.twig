@@ -1,0 +1,12 @@
+{% extends 'PimUserBundle:User:form.html.twig' %}
+
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+{% set fullname = 'N/A' %}
+{% set title = 'New user'|trans %}
+{% set formAction = path('pim_user_create') %}
+
+{% set buttons %}
+    {{ elements.backLink(path('pim_user_index')) }}
+    {{ elements.submitBtn('', 'ok') }}
+{% endset %}

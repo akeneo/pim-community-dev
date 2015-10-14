@@ -55,9 +55,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     {
         $object   = $this->object;
 
-        $value = $object->getOrCreateValue('oro_user', 'level');
+        $value = $object->getOrCreateValue('pim_user', 'level');
 
-        $this->assertEquals('oro_user', $value->getSection());
+        $this->assertEquals('pim_user', $value->getSection());
         $this->assertEquals('level', $value->getName());
         $this->assertEquals($object, $value->getConfig());
 

@@ -10,7 +10,6 @@ use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
@@ -22,6 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
@@ -1067,7 +1067,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $userGroupName
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Group
+     * @return \Pim\Bundle\UserBundle\Entity\Group
      *
      * @Then /^there should be a "([^"]+)" user group$/
      */
@@ -1079,7 +1079,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $userRoleName
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @return \Pim\Bundle\UserBundle\Entity\Role
      *
      * @Then /^there should be a "([^"]+)" user role$/
      */
@@ -1091,7 +1091,7 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $roleLabel
      *
-     * @return \Oro\Bundle\UserBundle\Entity\Role
+     * @return \Pim\Bundle\UserBundle\Entity\Role
      */
     public function getRole($roleLabel)
     {

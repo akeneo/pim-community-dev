@@ -1,0 +1,11 @@
+pim_user_security_login:
+    path: /user/login
+    defaults: { _controller: PimUserBundle:Security:login }
+
+pim_user_security_check:
+    path: /user/login-check
+    defaults: { _controller: PimUserBundle:Security:check }
+
+pim_user_security_logout:
+    path: /user/logout
+    defaults: { _controller: PimUserBundle:Security:logout }
