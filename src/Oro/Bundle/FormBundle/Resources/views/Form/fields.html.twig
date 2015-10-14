@@ -38,59 +38,6 @@
     {% endspaceless %}
 {% endblock form_label %}
 
-{% block oro_money_currency_addon %}
-    <span class="add-on">{{ currency_symbol }}</span>
-{% endblock oro_money_currency_addon %}
-
-{% block oro_date_widget %}
-    {% set actual_id = id %}
-    {% set selector_name = 'date_selector_' ~ id %}
-    {% set selector_id = selector_name %}
-
-    {# Actual date field that uses ISO format #}
-    {% set attr = attr|merge({'data-input-id': selector_id}) %}
-    <span style="display:none">{{ block('date_widget') }}</span>
-
-    {# Visible fake datepicker field that uses localized format #}
-    <input type="text"
-           name="{{ selector_name }}"
-           id="{{ selector_id }}"
-           placeholder="{{ placeholder|trans }}" />
-
-    <script type="text/javascript">
-        require(['jquery', 'oro/formatter/datetime', 'jquery-ui'],
-        function($, datetimeFormatter) {
-            var selector = $("#{{ selector_id }}");
-            var actual = $("#{{ actual_id }}");
-            var sync = function() {
-                selector.val(datetimeFormatter.formatDate(actual.val()));
-            };
-            actual.on('change', sync);
-            if (actual.val() && actual.val().length) {
-                sync();
-            }
-            selector.datepicker({
-                altField: '#{{ actual_id }}',
-                altFormat: 'yy-mm-dd',
-                changeMonth: true,
-                changeYear: true,
-                yearRange: '-80:+1',
-                showButtonPanel: true
-            });
-            selector.keyup(
-                function () {
-                    var selectorValue = selector.val();
-                    if (datetimeFormatter.isDateValid(selectorValue)) {
-                        actual.val(datetimeFormatter.convertDateToBackendFormat(selectorValue));
-                    } else {
-                        actual.val('');
-                    }
-                }
-            );
-        });
-    </script>
-{% endblock oro_date_widget %}
-
 {% block oro_form_js_validation %}
 <script type="text/javascript">
     require(['jquery', 'jquery.validate'],
