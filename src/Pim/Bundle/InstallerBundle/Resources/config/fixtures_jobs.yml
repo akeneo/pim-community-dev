@@ -125,6 +125,7 @@ jobs:
                 - 'picture'
             enabledComparison: true
             decimalSeparator: .
+            formatDate: YYYY-MM-DD
 
     fixtures_job_yml:
         order: 100

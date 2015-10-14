@@ -39,3 +39,4 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - %pim_localization.decimal_separators%
+            - %pim_localization.format_dates%

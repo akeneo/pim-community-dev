@@ -23,20 +23,31 @@ class CsvProductReader extends CsvReader
     /** @var string */
     protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var array */
     protected $decimalSeparators;
 
+    /** @var string */
+    protected $formatDate = 'YYYY-DD-MM';
+
+    /** @var array */
+    protected $formatDates;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param array                        $decimalSeparators
+     * @param AttributeRepositoryInterface $attributeRepository attribute repository
+     * @param array                        $decimalSeparators   decimal separators defined in config
+     * @param array                        $formatDates         format dates defined in config
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository, array $decimalSeparators)
-    {
+    public function __construct(
+        AttributeRepositoryInterface $attributeRepository,
+        array $decimalSeparators,
+        array $formatDates
+    ) {
         $this->attributeRepository = $attributeRepository;
         $this->decimalSeparators   = $decimalSeparators;
+        $this->formatDates         = $formatDates;
     }
 
     /**
@@ -88,6 +99,26 @@ class CsvProductReader extends CsvReader
     }
 
     /**
+     * Set the format for date field
+     *
+     * @param string $formatDate
+     */
+    public function setFormatDate($formatDate)
+    {
+        $this->formatDate = $formatDate;
+    }
+
+    /**
+     * Get the format for date field
+     *
+     * @return string
+     */
+    public function getFormatDate()
+    {
+        return $this->formatDate;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
@@ -105,6 +136,15 @@ class CsvProductReader extends CsvReader
                         'select2' => true,
                         'label'   => 'pim_connector.import.decimalSeparator.label',
                         'help'    => 'pim_connector.import.decimalSeparator.help'
+                    ]
+                ],
+                'formatDate' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices' => $this->formatDates,
+                        'select2' => true,
+                        'label'   => 'pim_connector.import.formatDate.label',
+                        'help'    => 'pim_connector.import.formatDate.help'
                     ]
                 ]
             ]
