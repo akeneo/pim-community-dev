@@ -35,7 +35,7 @@ class ProductPropertyAdderSpec extends ObjectBehavior
         AttributeAdderInterface $adder
     ) {
         $attributeRepository->findOneByIdentifier('color')->willReturn($attribute);
-        $adderRegistry->getAttributeAdder($attribute)->willReturn($adder);
+        $adderRegistry->getAdder('color')->willReturn($adder);
         $adder
             ->addAttributeData($product, $attribute, ['red', 'blue'], [])
             ->shouldBeCalled();
@@ -50,7 +50,7 @@ class ProductPropertyAdderSpec extends ObjectBehavior
         FieldAdderInterface $adder
     ) {
         $attributeRepository->findOneByIdentifier('category')->willReturn(null);
-        $adderRegistry->getFieldAdder('category')->willReturn($adder);
+        $adderRegistry->getAdder('category')->willReturn($adder);
         $adder
             ->addFieldData($product, 'category', 'tshirt', [])
             ->shouldBeCalled();

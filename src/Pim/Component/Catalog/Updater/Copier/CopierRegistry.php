@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -19,6 +20,17 @@ class CopierRegistry implements CopierRegistryInterface
     /** @var FieldCopierInterface[] priorized field copiers */
     protected $fieldCopiers = [];
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param IdentifiableObjectRepositoryInterface $repository
+     */
+    public function __construct(IdentifiableObjectRepositoryInterface $repository)
+    {
+        $this->attributeRepository = $repository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +44,22 @@ class CopierRegistry implements CopierRegistryInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCopier($fromProperty, $toProperty)
+    {
+        $fromAttribute = $this->getAttribute($fromProperty);
+        $toAttribute   = $this->getAttribute($toProperty);
+        if (null !== $fromAttribute && null !== $toAttribute) {
+            $copier = $this->getAttributeCopier($fromAttribute, $toAttribute);
+        } else {
+            $copier = $this->getFieldCopier($fromProperty, $toProperty);
+        }
+
+        return $copier;
     }
 
     /**
@@ -60,5 +88,15 @@ class CopierRegistry implements CopierRegistryInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return AttributeInterface|null
+     */
+    protected function getAttribute($code)
+    {
+        return $this->attributeRepository->findOneByIdentifier($code);
     }
 }
