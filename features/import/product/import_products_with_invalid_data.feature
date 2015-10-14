@@ -291,12 +291,14 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 3"
-    And there should be 2 products
+    Then I should see "skipped 2"
+    And there should be 3 products
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
     And the product "honda-civic" should have the following value:
       | length | 2.0000 METER |
+    And the product "fiat-panda" should have the following value:
+      | length | |
 
   Scenario: Skip new products with invalid metric (two columns) during an import
     Given the following CSV file to import:
@@ -312,10 +314,12 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 3"
-    And there should be 1 product
+    Then I should see "skipped 2"
+    And there should be 2 product
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
+    And the product "fiat-500" should have the following value:
+      | length | |
 
   Scenario: Skip new products with invalid price during an import
     Given the following attributes:

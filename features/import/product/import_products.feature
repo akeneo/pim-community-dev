@@ -215,3 +215,17 @@ Feature: Execute a job
     And the product "SKU-002" should have the following values:
       | name-en_US | Donex |
       | 123        | bbb   |
+
+  Scenario: Successfully import a csv file with sku and family column
+    Given the following CSV file to import:
+      """
+      sku;family
+      SKU-001;boots
+      SKU-002;sneakers
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 2 products
