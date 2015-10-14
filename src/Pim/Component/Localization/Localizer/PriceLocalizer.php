@@ -28,11 +28,11 @@ class PriceLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($prices)
+    public function convertLocalizedToDefault($prices, array $options = [])
     {
         foreach ($prices as $i => $price) {
             if (isset($price['data'])) {
-                $prices[$i]['data'] = $this->convertNumber($price['data']);
+                $prices[$i]['data'] = $this->convertNumber($price['data'], $options);
             }
         }
 

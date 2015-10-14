@@ -68,7 +68,7 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
     protected function convertAttribute(LocalizerInterface $localizer, array $item, array $options, $code)
     {
         if ($localizer->isValid($item['data'], $options)) {
-            $item['data'] = $localizer->convertLocalizedToDefault($item['data']);
+            $item['data'] = $localizer->convertLocalizedToDefault($item['data'], $options, $code);
 
             return $item;
         }

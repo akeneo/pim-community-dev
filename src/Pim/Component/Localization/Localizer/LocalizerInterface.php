@@ -27,10 +27,11 @@ interface LocalizerInterface
      * Convert a localized value to the default format
      *
      * @param mixed $data
+     * @param array $options
      *
-     * @return array
+     * @return mixed
      */
-    public function convertLocalizedToDefault($data);
+    public function convertLocalizedToDefault($data, array $options = []);
 
     /**
      * Whether or not the class supports the localizer

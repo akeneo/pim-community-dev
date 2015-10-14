@@ -22,8 +22,8 @@ class NumberLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($number)
+    public function convertLocalizedToDefault($number, array $options = [])
     {
-        return $this->convertNumber($number);
+        return $this->convertNumber($number, $options);
     }
 }
