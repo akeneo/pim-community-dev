@@ -7,6 +7,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+
+/**
+ * Class Router
+ *
+ * TODO: only used by user bundle controller
+ */
 class Router
 {
     const ACTION_PARAMETER = 'input_action';
