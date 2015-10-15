@@ -36,7 +36,7 @@ class RefuseTasklet extends AbstractReviewTasklet
         $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
             try {
-                $this->refuseDraft($productDraft);
+                $this->refuseDraft($productDraft, $configuration['comment']);
                 $this->stepExecution->incrementSummaryInfo('refused');
             } catch (DraftNotReviewableException $e) {
                 $this->skipWithWarning(
@@ -54,10 +54,11 @@ class RefuseTasklet extends AbstractReviewTasklet
      * Refuse a draft
      *
      * @param ProductDraftInterface $productDraft
+     * @param string|null           $comment
      *
      * @throws DraftNotReviewableException If draft cannot be refused
      */
-    protected function refuseDraft(ProductDraftInterface $productDraft)
+    protected function refuseDraft(ProductDraftInterface $productDraft, $comment)
     {
         if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
@@ -67,6 +68,6 @@ class RefuseTasklet extends AbstractReviewTasklet
             throw new DraftNotReviewableException(self::ERROR_CANNOT_EDIT_ATTR);
         }
 
-        $this->productDraftManager->refuse($productDraft);
+        $this->productDraftManager->refuse($productDraft, ['comment' => $comment]);
     }
 }

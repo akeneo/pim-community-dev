@@ -81,7 +81,9 @@ pimee_enrich:
                 sent_for_approval: Sent for approval
             modal:
                 accept_proposal: Accept proposal
+                accept_selected_proposal: Accept selected proposal(s)
                 reject_proposal: Reject proposal
+                reject_selected_proposal: Reject selected proposal(s)
                 send_for_approval: Send for approval
                 cancel: Cancel
                 confirm: Send

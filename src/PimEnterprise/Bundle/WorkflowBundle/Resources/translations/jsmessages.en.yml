@@ -10,7 +10,3 @@ pimee_workflow:
         published_product:
             btn:
                 original_product: Edit working copy
-    product_draft:
-        modal:
-            accept_proposal: Accept proposal
-            reject_proposal: Reject proposal
