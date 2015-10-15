@@ -54,21 +54,21 @@ class FieldSplitter
      *
      * @param string $value Raw value
      *
-     * @return array|null
+     * @return array
      */
     public function splitPrices($value)
     {
         $prices = [];
         if ('' !== $value) {
-            preg_match_all('|
+            preg_match_all('/
                 (?P<prices>
-                    \d+         # int
-                    (\D{1}\d+)? # decimal separator and decimal (optional)
-                    \s+         # space before currency
-                    [a-z]+      # currency
-                )|ix', $value, $matches);
+                    (\d+|\s)       # int or blank (if there is no price defined)
+                    (?:[^0-9]\d+)? # decimal separator and decimal
+                    \s?            # space before currency
+                    [a-z]+         # currency
+                )/ix', $value, $matches);
             if (empty($matches['prices'])) {
-                return null;
+                return $value;
             }
 
             $prices = $matches['prices'];

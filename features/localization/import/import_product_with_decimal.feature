@@ -77,11 +77,45 @@ Feature: Import product information with decimal
   Scenario: Successfully import a csv file (with decimal separator as a comma) with a price attribute splitting the data and currency
     Given the following CSV file to import:
       """
-      sku;price
-      SKU-001;"125,25 EUR, 199 USD"
-      SKU-002;"125 EUR, 199,25 USD"
-      SKU-003;"125,00 EUR, 199,00 USD"
-      SKU-004;"125,00 EUR,199,00 USD"
+      sku;price;name-en_US
+      SKU-001;"125,25 EUR, 199 USD";"sku 001"
+      SKU-002;"125 EUR, 199,25 USD";"sku 002"
+      SKU-003;"125,00 EUR, 199,00 USD";"sku 003"
+      SKU-004;"125,00 EUR,199,00 USD";"sku 004"
+      SKU-005;"";"sku 005"
+      SKU-006;" EUR, USD";"sku 006"
+      SKU-007;"EUR,USD";"sku 007"
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath         | %file to import% |
+      | decimalSeparator | ,                |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 7 products
+    Then the product "SKU-001" should have the following values:
+      | price | 125.25 EUR, 199.00 USD |
+    Then the product "SKU-002" should have the following values:
+      | price | 125.00 EUR, 199.25 USD |
+    Then the product "SKU-003" should have the following values:
+      | price | 125.00 EUR, 199.00 USD |
+    Then the product "SKU-004" should have the following values:
+      | price | 125.00 EUR, 199.00 USD |
+    Then the product "SKU-005" should have the following values:
+      | price | |
+    Then the product "SKU-006" should have the following values:
+      | price | |
+    Then the product "SKU-007" should have the following values:
+      | price | |
+
+  Scenario: Successfully import a csv file (with decimal separator as a comma) with a price attribute splitting the data and currency
+    Given the following CSV file to import:
+      """
+      sku;price-EUR;price-USD;name-en_US
+      SKU-001;"125,25";"199";"sku 001"
+      SKU-002;"125";"199,25";"sku 002"
+      SKU-003;"125,00";"199,00";"sku 003"
+      SKU-004;"";"";"sku 004"
       """
     And the following job "footwear_product_import" configuration:
       | filePath         | %file to import% |
@@ -97,34 +131,12 @@ Feature: Import product information with decimal
     Then the product "SKU-003" should have the following values:
       | price | 125.00 EUR, 199.00 USD |
     Then the product "SKU-004" should have the following values:
-      | price | 125.00 EUR, 199.00 USD |
-
-  Scenario: Successfully import a csv file (with decimal separator as a comma) with a price attribute splitting the data and currency
-    Given the following CSV file to import:
-      """
-      sku;price-EUR;price-USD
-      SKU-001;"125,25";"199"
-      SKU-002;"125";"199,25"
-      SKU-003;"125,00";"199,00"
-      """
-    And the following job "footwear_product_import" configuration:
-      | filePath         | %file to import% |
-      | decimalSeparator | ,                |
-    When I am on the "footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
-    Then there should be 3 products
-    Then the product "SKU-001" should have the following values:
-      | price | 125.25 EUR, 199.00 USD |
-    Then the product "SKU-002" should have the following values:
-      | price | 125.00 EUR, 199.25 USD |
-    Then the product "SKU-003" should have the following values:
-      | price | 125.00 EUR, 199.00 USD |
+      | price | |
 
   Scenario: Skip product with a decimal separator different as configuration
     Given the following CSV file to import:
       """
-      sku;price-EUR
+      sku;price
       SKU-001;"125,25 EUR, 199 USD"
       SKU-002;"125 EUR, 199,25 USD"
       SKU-003;"125,00 EUR, 199,00 USD"
