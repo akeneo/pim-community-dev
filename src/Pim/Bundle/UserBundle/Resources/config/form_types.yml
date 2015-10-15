@@ -1,5 +1,5 @@
 parameters:
-    oro_user.form.type.user.class:                      Pim\Bundle\UserBundle\Form\Type\UserType
+    pim_user.form.type.user.class:                      Pim\Bundle\UserBundle\Form\Type\UserType
     pim_user.form.type.acl_collection.class:            Pim\Bundle\UserBundle\Form\Type\PrivilegeCollectionType
     oro_user.form.handler.user.class:                   Pim\Bundle\UserBundle\Form\Handler\UserHandler
     oro_user.form.handler.acl_role.class:               Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler
@@ -17,9 +17,9 @@ services:
         tags:
             - { name: form.type, alias: pim_acl_access_level_selector }
 
-    oro_user.form.type.user:
+    pim_user.form.type.user:
         scope: request
-        class: %oro_user.form.type.user.class%
+        class: %pim_user.form.type.user.class%
         arguments:
             - '@security.token_storage'
             - '@request'
@@ -27,7 +27,7 @@ services:
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'
         tags:
-            - { name: form.type, alias: oro_user_user }
+            - { name: form.type, alias: pim_user_user }
 
     pim_user.form.subscriber.user_preferences:
         class: %pim_user.form.subscriber.user_preferences.class%
