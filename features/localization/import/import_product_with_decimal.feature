@@ -148,4 +148,4 @@ Feature: Import product information with decimal
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "skipped 3"
-    And I should see "Format for attribute \"price\" is not respected. Format expected: [ \"decimal_separator\": \".\" ]"
+    And I should see "Format for attribute \"price\" is not respected. Format expected: \".\""

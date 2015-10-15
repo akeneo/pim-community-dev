@@ -67,27 +67,10 @@ class LocalizedAttributeConverter implements LocalizedAttributeConverterInterfac
      */
     protected function convertAttribute(LocalizerInterface $localizer, array $item, array $options, $code)
     {
-        if ($localizer->isValid($item['data'], $options)) {
-            $item['data'] = $localizer->convertLocalizedToDefault($item['data'], $options, $code);
+        if ($localizer->isValid($item['data'], $options, $code)) {
+            $item['data'] = $localizer->convertLocalizedToDefault($item['data'], $options);
 
             return $item;
         }
-
-        throw new \LogicException(
-            sprintf(
-                'Format for attribute "%s" is not respected. Format expected: [ %s ]',
-                $code,
-                implode(
-                    ', ',
-                    array_map(
-                        function ($value, $option) {
-                            return sprintf('"%s": "%s"', $option, $value);
-                        },
-                        $options,
-                        array_keys($options)
-                    )
-                )
-            )
-        );
     }
 }

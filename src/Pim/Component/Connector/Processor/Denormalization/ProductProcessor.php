@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Localization\Exception\FormatLocalizerException;
 use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
 use Pim\Component\Localization\Localizer\DateLocalizer;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
@@ -111,7 +112,7 @@ class ProductProcessor extends AbstractProcessor
 
         try {
             $convertedItem = $this->convertLocalizedAttributes($convertedItem);
-        } catch (\LogicException $exception) {
+        } catch (FormatLocalizerException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
@@ -126,7 +127,7 @@ class ProductProcessor extends AbstractProcessor
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
 
-        if ($this->enabledComparison && null !== $product->getId()) {
+        if ($this->enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
             if (empty($filteredItem)) {

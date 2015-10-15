@@ -2,7 +2,8 @@
 
 namespace Pim\Component\Localization\Localizer;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Pim\Component\Localization\Exception\FormatLocalizerException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
  * Check if date provided respects the format expected and convert it
@@ -29,7 +30,7 @@ class DateLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid($date, array $options = [])
+    public function isValid($date, array $options = [], $attributeCode)
     {
         if (null === $date || '' === $date) {
             return true;
@@ -37,13 +38,9 @@ class DateLocalizer implements LocalizerInterface
 
         $this->checkOptions($options);
 
-        try {
-            $datetime = new \DateTime();
-            if(false === $datetime->createFromFormat($options['format_date'], $date)) {
-                return false;
-            }
-        } catch (\Exception $e) {
-            return false;
+        $datetime = $this->getDateTime($date, $options);
+        if (false === $datetime) {
+            throw new FormatLocalizerException($attributeCode, $options['format_date']);
         }
 
         return true;
@@ -54,14 +51,13 @@ class DateLocalizer implements LocalizerInterface
      */
     public function convertLocalizedToDefault($date, array $options = [])
     {
+        $this->checkOptions($options);
+
         if (null === $date || '' === $date) {
             return $date;
         }
 
-        $this->checkOptions($options);
-
-        $datetime = new \DateTime();
-        $datetime = $datetime->createFromFormat($options['format_date'], $date);
+        $datetime = $this->getDateTime($date, $options);
 
         return $datetime->format(static::DEFAULT_DATE_FORMAT);
     }
@@ -75,14 +71,27 @@ class DateLocalizer implements LocalizerInterface
     }
 
     /**
+     * Get a \DateTime from date and format date provided
+     *
+     * @param string $date
+     * @param array  $options
+     *
+     * @return \DateTime|false
+     */
+    protected function getDateTime($date, array $options)
+    {
+        $datetime = new \DateTime();
+
+        return $datetime->createFromFormat($options['format_date'], $date);
+    }
+
+    /**
      * @param array $options
      */
     protected function checkOptions(array $options)
     {
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['format_date'])
-            ->setAllowedTypes('format_date', 'string');
-
-        $resolver->resolve($options);
+        if (!isset($options['format_date']) || '' === $options['format_date']) {
+            throw new MissingOptionsException('The option "format_date" do not exist.');
+        }
     }
 }

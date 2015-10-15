@@ -14,10 +14,10 @@ class PriceLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function isValid($prices, array $options = [])
+    public function isValid($prices, array $options = [], $attributeCode)
     {
         foreach ($prices as $price) {
-            if (isset($price['data']) && !$this->isValidNumber($price['data'], $options)) {
+            if (isset($price['data']) && !$this->isValidNumber($price['data'], $options, $attributeCode)) {
                 return false;
             }
         }

@@ -14,9 +14,9 @@ class NumberLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function isValid($number, array $options = [])
+    public function isValid($number, array $options = [], $attributeCode)
     {
-        return $this->isValidNumber($number, $options);
+        return $this->isValidNumber($number, $options, $attributeCode);
     }
 
     /**
