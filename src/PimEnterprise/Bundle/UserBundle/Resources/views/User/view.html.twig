@@ -80,7 +80,22 @@
     ]
     %}
 
-    {% set dataBlocks = dataBlocks|merge(additional) %}
+    {% set interfaces = [
+        {
+            'title': 'Interfaces'|trans,
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        UI.attibuteRow('UI locale'|trans, entity.uiLocale),
+                    ]
+                }
+            ]
+      }
+    ]
+    %}
+
+    {% set dataBlocks = dataBlocks|merge(additional)|merge(interfaces) %}
 
     {#
       EntityExtend fields END
