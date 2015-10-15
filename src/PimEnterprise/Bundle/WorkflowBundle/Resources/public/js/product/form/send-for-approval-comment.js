@@ -26,7 +26,11 @@ define(
                 this.model.set('comment', this.$('textarea[id="modal-comment"]').val());
             },
             render: function () {
-                this.$el.html(this.template({title: _.__('pimee_enrich.entity.product_draft.modal.title')}));
+                this.$el.html(
+                    this.template({
+                        label: _.__('pimee_enrich.entity.product_draft.modal.title')
+                    })
+                );
 
                 return this;
             }

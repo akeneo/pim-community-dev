@@ -105,7 +105,7 @@ define(
                     return deferred;
                 };
                 var myFormModal = new FormModal(
-                    'pimee-workflow-notification-comment',
+                    'pimee-workflow-send-for-approval-comment',
                     callback,
                     {
                         title: _.__('pimee_enrich.entity.product_draft.modal.send_for_approval'),

@@ -44,7 +44,7 @@ define(
                 };
 
                 var formModal = new FormModal(
-                    'pimee-proposal-add-comment-form',
+                    'pimee-workflow-proposal-add-comment',
                     this.validateForm.bind(this),
                     modalParameters
                 );

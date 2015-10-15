@@ -1,3 +1,6 @@
 extensions:
-    pimee-workflow-notification-comment:
+    pimee-workflow-send-for-approval-comment:
         module: pimee/product-edit-form/send-for-approval-comment
+
+    pimee-workflow-proposal-add-comment:
+        module: pimee/product-edit-form/proposal-add-comment

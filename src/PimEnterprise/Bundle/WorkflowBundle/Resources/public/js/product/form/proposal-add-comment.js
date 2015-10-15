@@ -10,7 +10,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pimee/template/product/form/add-comment'
+        'text!pimee/template/product/meta/notification-comment'
     ],
     function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
@@ -26,7 +26,7 @@ define(
             updateModel: function () {
                 // TODO: count and display remaining chars
 
-                this.model.set('comment', this.$('textarea[name="comment"]').val());
+                this.model.set('comment', this.$('textarea[id="modal-comment"]').val());
             },
             render: function () {
                 this.$el.html(
