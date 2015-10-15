@@ -12,7 +12,7 @@ Feature: Change user locale
     Given I edit my profile
     Then I visit the "Interfaces" tab
     And I fill in the following information:
-     | Ui locale | fr_FR |
+     | Ui locale | French (France) |
     And I save the user
     Then I should see "Collecter"
 
@@ -20,7 +20,7 @@ Feature: Change user locale
     Given I edit the "mary" user
     Then I visit the "Interfaces" tab
     And I fill in the following information:
-     | Ui locale | fr_FR |
+     | Ui locale | French (France) |
     And I save the user
     Then I should see "Collect"
 
