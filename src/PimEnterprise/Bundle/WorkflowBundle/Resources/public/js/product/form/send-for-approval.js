@@ -16,7 +16,7 @@ define(
         'pim/form',
         'pim/product-manager',
         'text!pimee/template/product/submit-draft',
-        'pim/form-builder'
+        'pim/form-modal'
     ],
     function (
         $,
@@ -28,7 +28,7 @@ define(
         BaseForm,
         ProductManager,
         submitTemplate,
-        FormBuilder
+        FormModal
     ) {
         return BaseForm.extend({
             className: 'btn-group',
@@ -97,37 +97,34 @@ define(
              * Callback triggered on "send for approval" button click
              */
             onSubmitDraft: function () {
-                var deferred = $.Deferred();
+                var callback = function () {
+                    var deferred = $.Deferred();
 
-                FormBuilder.build('pim-notification-comment').done(function (form) {
-                    var modal = new Backbone.BootstrapModal({
-                        modalOptions: {
-                            backdrop: 'static',
-                            keyboard: false
-                        },
-                        allowCancel: true,
-                        okCloses: false,
+                    deferred.resolve();
+
+                    return deferred;
+                };
+                var myFormModal = new FormModal(
+                    'pimee-workflow-notification-comment',
+                    callback,
+                    {
                         title: _.__('pimee_enrich.entity.product_draft.modal.send_for_approval'),
-                        content: '',
                         cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel'),
                         okText: _.__('pimee_enrich.entity.product_draft.modal.confirm')
-                    });
+                    }
+                );
 
-                    modal.open();
-                    form.setElement(modal.$('.modal-body')).render(
-                        {'title': _.__('pimee_enrich.entity.product_draft.modal.title')}
-                    );
-                    modal.on('cancel', deferred.reject);
-                    modal.on('ok', function () {
+                myFormModal
+                    .open()
+                    .then(function(myFormData) {
+                        var comment = _.isUndefined(myFormData.comment) ? null : myFormData.comment;
+
                         this.getRoot().trigger('pim_enrich:form:state:confirm', {
                             message: this.confirmationMessage,
                             title:   this.confirmationTitle,
-                            action:  this.submitDraft.bind(this, $('.modal-body textarea').val())
+                            action:  this.submitDraft.bind(this, comment)
                         });
-
-                        modal.close();
                     }.bind(this));
-                }.bind(this));
             },
 
             /**
