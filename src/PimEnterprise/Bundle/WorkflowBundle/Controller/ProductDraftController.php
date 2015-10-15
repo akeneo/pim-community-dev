@@ -274,11 +274,11 @@ class ProductDraftController extends AbstractController
     public function massApproveAction(Request $request)
     {
         $request->request->add(['actionName' => 'massApprove' ]);
-        $params = $this->gridFilterAdapter->adapt($request);
+        $params           = $this->gridFilterAdapter->adapt($request);
         $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_APPROVE_JOB_CODE);
         $rawConfiguration = addslashes(json_encode([
             'draftIds' => $params['values'],
-            'comment' => $request->get('comment'),
+            'comment'  => $request->get('comment'),
         ]));
 
         $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
@@ -301,11 +301,11 @@ class ProductDraftController extends AbstractController
     public function massRefuseAction(Request $request)
     {
         $request->request->add(['actionName' => 'massApprove' ]);
-        $params = $this->gridFilterAdapter->adapt($request);
+        $params           = $this->gridFilterAdapter->adapt($request);
         $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
         $rawConfiguration = addslashes(json_encode([
             'draftIds' => $params['values'],
-            'comment' => $request->get('comment'),
+            'comment'  => $request->get('comment'),
         ]));
 
         $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);

@@ -88,6 +88,7 @@ class ProductDraftManager
      * Approve a product draft
      *
      * @param ProductDraftInterface $productDraft
+     * @param array                 $context
      */
     public function approve(ProductDraftInterface $productDraft, array $context = [])
     {
@@ -106,6 +107,7 @@ class ProductDraftManager
      * Refuse a product draft
      *
      * @param ProductDraftInterface $productDraft
+     * @param array                 $context
      */
     public function refuse(ProductDraftInterface $productDraft, array $context = [])
     {
