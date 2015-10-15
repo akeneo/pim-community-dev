@@ -79,7 +79,7 @@ define(
             /**
              * Validate the given form data. We must check for comment length.
              *
-             * @param {Object }form
+             * @param {Object} form
              *
              * @return {Deferred}
              */
