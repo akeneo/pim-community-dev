@@ -40,5 +40,6 @@ class PimLocalizationExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');
         $loader->load('services.yml');
+        $loader->load('twig.yml');
     }
 }
