@@ -43,6 +43,11 @@ interface LocaleInterface extends ReferableInterface
     public function getLanguage();
 
     /**
+     * @return string|null
+     */
+    public function getName();
+
+    /**
      * @return bool
      */
     public function isActivated();

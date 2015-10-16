@@ -12,7 +12,7 @@ Feature: Change user locale
     Given I edit my profile
     Then I visit the "Interfaces" tab
     And I fill in the following information:
-     | Ui locale | fr_FR |
+     | Ui locale | French (France) |
     And I save the user
     Then I should see "Collecter"
 
@@ -20,6 +20,12 @@ Feature: Change user locale
     Given I edit the "mary" user
     Then I visit the "Interfaces" tab
     And I fill in the following information:
-     | Ui locale | fr_FR |
+     | Ui locale | French (France) |
     And I save the user
     Then I should see "Collect"
+
+  Scenario: Should only see translated locales
+    Given I edit my profile
+    And I visit the "Interfaces" tab
+    Then I should see English locale option
+    And I should not see Breton locale option
