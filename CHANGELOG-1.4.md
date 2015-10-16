@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.4 (2015-10-16)
 
 ## Bug fixes
 - PIM-5016: Fix import product with only sku and family columns
