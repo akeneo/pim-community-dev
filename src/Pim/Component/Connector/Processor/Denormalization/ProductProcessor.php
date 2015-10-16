@@ -64,7 +64,7 @@ class ProductProcessor extends AbstractProcessor
     protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
 
     /** @var string */
-    protected $formatDate = DateLocalizer::DEFAULT_DATE_FORMAT;
+    protected $dateFormat = DateLocalizer::DEFAULT_DATE_FORMAT;
 
     /** @var ProductFilterInterface */
     protected $productFilter;
@@ -276,11 +276,11 @@ class ProductProcessor extends AbstractProcessor
     /**
      * Set the format for date field
      *
-     * @param string $formatDate
+     * @param string $dateFormat
      */
-    public function setFormatDate($formatDate)
+    public function setDateFormat($dateFormat)
     {
-        $this->formatDate = $formatDate;
+        $this->dateFormat = $dateFormat;
     }
 
     /**
@@ -288,9 +288,9 @@ class ProductProcessor extends AbstractProcessor
      *
      * @return string
      */
-    public function getFormatDate()
+    public function getDateFormat()
     {
-        return $this->formatDate;
+        return $this->dateFormat;
     }
 
     /**
@@ -338,11 +338,11 @@ class ProductProcessor extends AbstractProcessor
                     'help'  => 'pim_connector.import.decimalSeparator.help'
                 ]
             ],
-            'formatDate' => [
+            'dateFormat' => [
                 'type'    => 'choice',
                 'options' => [
-                    'label' => 'pim_connector.import.formatDate.label',
-                    'help'  => 'pim_connector.import.formatDate.help'
+                    'label' => 'pim_connector.import.dateFormat.label',
+                    'help'  => 'pim_connector.import.dateFormat.help'
                 ]
             ]
         ];
@@ -359,7 +359,7 @@ class ProductProcessor extends AbstractProcessor
     {
         return $this->localizedConverter->convert($convertedItem, [
             'decimal_separator' => $this->decimalSeparator,
-            'format_date'       => $this->formatDate
+            'date_format'       => $this->dateFormat
         ]);
     }
 

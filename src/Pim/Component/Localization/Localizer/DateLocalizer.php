@@ -40,7 +40,7 @@ class DateLocalizer implements LocalizerInterface
 
         $datetime = $this->getDateTime($date, $options);
         if (false === $datetime) {
-            throw new FormatLocalizerException($attributeCode, $options['format_date']);
+            throw new FormatLocalizerException($attributeCode, $options['date_format']);
         }
 
         return true;
@@ -82,7 +82,7 @@ class DateLocalizer implements LocalizerInterface
     {
         $datetime = new \DateTime();
 
-        return $datetime->createFromFormat($options['format_date'], $date);
+        return $datetime->createFromFormat($options['date_format'], $date);
     }
 
     /**
@@ -90,8 +90,8 @@ class DateLocalizer implements LocalizerInterface
      */
     protected function checkOptions(array $options)
     {
-        if (!isset($options['format_date']) || '' === $options['format_date']) {
-            throw new MissingOptionsException('The option "format_date" do not exist.');
+        if (!isset($options['date_format']) || '' === $options['date_format']) {
+            throw new MissingOptionsException('The option "date_format" do not exist.');
         }
     }
 }

@@ -17,7 +17,7 @@ Feature: Import product information with date
       """
     And the following job "footwear_product_import" configuration:
       | filePath   | %file to import% |
-      | formatDate | d/m/Y            |
+      | dateFormat | d/m/Y            |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
@@ -39,7 +39,7 @@ Feature: Import product information with date
       """
     And the following job "footwear_product_import" configuration:
       | filePath   | %file to import% |
-      | formatDate | Y-m-d            |
+      | dateFormat | Y-m-d            |
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish

@@ -32,7 +32,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                ->arrayNode('format_dates')
+                ->arrayNode('date_formats')
                     ->isRequired()
                     ->requiresAtLeastOneElement()
                     ->prototype('array')

@@ -100,7 +100,7 @@ pim_localization:
     decimal_separators:
         - { value: '.', label: 'dot (.)' }
         - { value: ',', label: 'comma (,)' }
-    format_dates:
+    date_formats:
         - { value: 'Y-m-d', label: 'yyyy-mm-dd' }
         - { value: 'Y/m/d', label: 'yyyy/mm/dd' }
         - { value: 'm/d/Y', label: 'mm/dd/yyyy' }

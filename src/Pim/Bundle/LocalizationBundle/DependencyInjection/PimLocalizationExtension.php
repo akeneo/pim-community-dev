@@ -28,11 +28,11 @@ class PimLocalizationExtension extends Extension
         }
         $container->setParameter('pim_localization.decimal_separators', $decimalSeparators);
 
-        $formatDates = [];
-        foreach ($config['format_dates'] as $formatDate) {
-            $formatDates[$formatDate['value']] = $formatDate['label'];
+        $dateFormats = [];
+        foreach ($config['date_formats'] as $dateFormat) {
+            $dateFormats[$dateFormat['value']] = $dateFormat['label'];
         }
-        $container->setParameter('pim_localization.format_dates', $formatDates);
+        $container->setParameter('pim_localization.date_formats', $dateFormats);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('localizers.yml');

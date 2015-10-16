@@ -142,7 +142,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => '.',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
@@ -220,7 +220,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => '.',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
 
         $preFilteredData = $filteredData = [
@@ -323,7 +323,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => '.',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
 
         $filteredData = [
@@ -428,7 +428,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => '.',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
 
         $filteredData = [
@@ -499,7 +499,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => '.',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
 
         $this
@@ -572,7 +572,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => '.',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
 
         $filteredData = [
@@ -677,7 +677,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => '.',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
 
         $filteredData = [
@@ -786,7 +786,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => '.',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
 
         $filteredData = [
@@ -836,7 +836,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
         $this->setDecimalSeparator(',');
-        $this->setFormatDate('d/m/Y');
+        $this->setDateFormat('d/m/Y');
 
         $originalData = [
             'sku'    => 'tshirt',
@@ -896,7 +896,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $postConverterData['date'][0]['data'] = '2015-10-20';
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => ',',
-            'format_date'       => 'd/m/Y'
+            'date_format'       => 'd/m/Y'
         ])->willReturn($postConverterData);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
@@ -954,7 +954,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => '.',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willThrow(new FormatLocalizerException('number', '.'));
 
         $this
@@ -1013,7 +1013,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $postConvertedData['number'][0]['data'] = '10.45';
         $localizedConverter->convert($convertedData, [
             'decimal_separator' => ',',
-            'format_date'       => 'Y-m-d'
+            'date_format'       => 'Y-m-d'
         ])->willReturn($postConvertedData);
 
         $filteredData = [
