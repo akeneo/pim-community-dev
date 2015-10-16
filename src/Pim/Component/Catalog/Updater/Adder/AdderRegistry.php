@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Adder;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -19,6 +20,17 @@ class AdderRegistry implements AdderRegistryInterface
     /** @var FieldAdderInterface[] priorized field adders */
     protected $fieldAdders = [];
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param IdentifiableObjectRepositoryInterface $repository
+     */
+    public function __construct(IdentifiableObjectRepositoryInterface $repository)
+    {
+        $this->attributeRepository = $repository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +44,21 @@ class AdderRegistry implements AdderRegistryInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAdder($property)
+    {
+        $attribute = $this->getAttribute($property);
+        if (null !== $attribute) {
+            $adder = $this->getAttributeAdder($attribute);
+        } else {
+            $adder = $this->getFieldAdder($property);
+        }
+
+        return $adder;
     }
 
     /**
@@ -60,5 +87,15 @@ class AdderRegistry implements AdderRegistryInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return AttributeInterface|null
+     */
+    protected function getAttribute($code)
+    {
+        return $this->attributeRepository->findOneByIdentifier($code);
     }
 }

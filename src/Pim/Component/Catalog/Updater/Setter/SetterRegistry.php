@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -19,6 +20,17 @@ class SetterRegistry implements SetterRegistryInterface
     /** @var FieldSetterInterface[] priorized field setters */
     protected $fieldSetters = [];
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param IdentifiableObjectRepositoryInterface $repository
+     */
+    public function __construct(IdentifiableObjectRepositoryInterface $repository)
+    {
+        $this->attributeRepository = $repository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,6 +44,21 @@ class SetterRegistry implements SetterRegistryInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSetter($property)
+    {
+        $attribute = $this->getAttribute($property);
+        if (null !== $attribute) {
+            $setter = $this->getAttributeSetter($attribute);
+        } else {
+            $setter = $this->getFieldSetter($property);
+        }
+
+        return $setter;
     }
 
     /**
@@ -60,5 +87,15 @@ class SetterRegistry implements SetterRegistryInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return AttributeInterface|null
+     */
+    protected function getAttribute($code)
+    {
+        return $this->attributeRepository->findOneByIdentifier($code);
     }
 }
