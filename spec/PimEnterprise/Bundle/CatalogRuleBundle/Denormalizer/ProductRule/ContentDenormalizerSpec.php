@@ -59,13 +59,13 @@ class ContentDenormalizerSpec extends ObjectBehavior
 
         $chainedDenormalizer->denormalize(
             ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueAction',
+            'set_value',
             Argument::cetera()
         )->shouldBeCalled();
 
         $chainedDenormalizer->denormalize(
             ['type' => 'copy_value', 'fromField' => 'description', 'toField' => 'description', 'fromLocale' => 'fr_FR', 'toLocale' => 'fr_CH'],
-            'PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction',
+            'copy_value',
             Argument::cetera()
         )->shouldBeCalled();
 
@@ -91,7 +91,7 @@ class ContentDenormalizerSpec extends ObjectBehavior
         )->during('denormalize', [$content, 'Akeneo\Bundle\RuleEngineBundle\Model\Rule']);
     }
 
-    function it_throws_an_exception_when_deserializing_a_product_rule_content_with_an_invalid_action_type()
+    function it_throws_an_exception_when_deserializing_a_product_rule_content_with_an_invalid_action_type($chainedDenormalizer)
     {
         $content = [
             'conditions' => [
@@ -103,6 +103,10 @@ class ContentDenormalizerSpec extends ObjectBehavior
                 ['type' => 'copy_value', 'fromField' => 'description', 'toField' => 'description', 'fromLocale' => 'fr_FR', 'toLocale' => 'fr_CH']
             ]
         ];
+
+        $chainedDenormalizer->denormalize($content['conditions'][0], Argument::cetera())->shouldBeCalled();
+        $chainedDenormalizer->denormalize($content['conditions'][1], Argument::cetera())->shouldBeCalled();
+        $chainedDenormalizer->denormalize($content['actions'][0], Argument::cetera())->willThrow(new \LogicException());
 
         $this->shouldThrow(
             new \LogicException(sprintf('Rule content "%s" has an unknown type of action "unknown_action".', json_encode($content)))

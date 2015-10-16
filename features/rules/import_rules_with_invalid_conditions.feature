@@ -888,8 +888,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "conditions[0].field: The field \"wrong\" does not exist."
-    And I should see "conditions[0].field: The field \"another wrong\" does not exist."
+    And I should see "conditions[0].field: The field \"wrong\" cannot be filtered."
+    And I should see "conditions[0].field: The field \"another wrong\" cannot be filtered."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see "Another good description"

@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validation constraint on a value.
+ * Validation constraint to check if the fromField and the toField have an existing copier
  *
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Julien Sanchez <julien@akeneo.com>
  */
-class ValueAction extends Constraint
+class ExistingCopyFields extends Constraint
 {
     /** @var string */
-    public $message = '%message%';
+    public $message = 'You cannot copy data from "%fromField%" field to the "%toField%" field.';
 
     /**
      * {@inheritdoc}
@@ -36,6 +36,6 @@ class ValueAction extends Constraint
      */
     public function validatedBy()
     {
-        return 'pimee_constraint_value_action_validator';
+        return 'pimee_constraint_copy_fields_validator';
     }
 }

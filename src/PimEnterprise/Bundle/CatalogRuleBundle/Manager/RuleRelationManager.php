@@ -13,10 +13,12 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\FieldImpactActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
+use PimEnterprise\Component\CatalogRule\Model\ProductAddActionInterface;
 
 /**
  * Class RuleRelationManager
@@ -28,27 +30,39 @@ class RuleRelationManager
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
     /** @var RuleRelationRepositoryInterface */
     protected $ruleRelationRepo;
 
     /** @var string */
     protected $attributeClass;
 
+    /** @var string */
+    protected $categoryClass;
+
     /**
      * Constructor
      *
      * @param RuleRelationRepositoryInterface $ruleRelationRepo
      * @param AttributeRepositoryInterface    $attributeRepository
+     * @param CategoryRepositoryInterface     $categoryRepository
      * @param string                          $attributeClass
+     * @param string                          $categoryClass
      */
     public function __construct(
         RuleRelationRepositoryInterface $ruleRelationRepo,
         AttributeRepositoryInterface $attributeRepository,
-        $attributeClass
+        CategoryRepositoryInterface $categoryRepository,
+        $attributeClass,
+        $categoryClass
     ) {
-        $this->ruleRelationRepo = $ruleRelationRepo;
+        $this->ruleRelationRepo    = $ruleRelationRepo;
         $this->attributeRepository = $attributeRepository;
-        $this->attributeClass = $attributeClass;
+        $this->categoryRepository  = $categoryRepository;
+        $this->attributeClass      = $attributeClass;
+        $this->categoryClass       = $categoryClass;
     }
 
     /**
@@ -58,25 +72,32 @@ class RuleRelationManager
      *
      * @return array
      */
-    public function getImpactedAttributes(RuleInterface $rule)
+    public function getImpactedElements(RuleInterface $rule)
     {
+        $impactedElements = [];
         $fields = [];
         foreach ($rule->getActions() as $action) {
             if ($action instanceof FieldImpactActionInterface) {
-                $fields = array_merge($fields, $action->getImpactedFields());
+                foreach ($action->getImpactedFields() as $impactedField) {
+                    if ('categories' === $impactedField && $action instanceof ProductAddActionInterface) {
+                        $impactedElements = array_merge(
+                            $impactedElements,
+                            $this->categoryRepository->getCategoriesByCodes($action->getItems())->toArray()
+                        );
+                    } else {
+                        $fields[] = $impactedField;
+                    }
+                }
             }
         }
 
         $fields = array_unique($fields);
 
-        $impactedAttributes = [];
         foreach ($fields as $field) {
-            $impactedAttributes[] = $this->attributeRepository->findOneByIdentifier($field);
+            $impactedElements[] = $this->attributeRepository->findOneByIdentifier($field);
         }
 
-        $impactedAttributes = array_filter($impactedAttributes);
-
-        return $impactedAttributes;
+        return array_filter($impactedElements);
     }
 
     /**
@@ -159,6 +180,10 @@ class RuleRelationManager
             case 'attribute':
             case $this->attributeClass:
                 $type = $this->attributeClass;
+                break;
+            case 'category':
+            case $this->categoryClass:
+                $type = $this->categoryClass;
                 break;
             default:
                 $type = null;

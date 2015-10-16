@@ -520,8 +520,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "actions[0].field: The field \"wrong\" does not exist."
-    And I should see "actions[0].field: The field \"another wrong\" does not exist."
+    And I should see "actions[0].field: You cannot set data to the \"wrong\" field."
+    And I should see "actions[0].field: You cannot set data to the \"another wrong\" field."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     And I should see "Another good description"
@@ -567,8 +567,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "actions[0].fromField: The field \"wrong\" does not exist."
-    And I should see "actions[0].fromField: The field \"another wrong\" does not exist."
+    And I should see "actions[0]: You cannot copy data from \"wrong\" field to the \"description\" field."
+    And I should see "actions[0]: You cannot copy data from \"another wrong\" field to the \"description\" field."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the following rule copier actions:
@@ -616,8 +616,8 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "actions[0].toField: The field \"wrong\" does not exist."
-    And I should see "actions[0].toField: The field \"another wrong\" does not exist."
+    And I should see "actions[0]: You cannot copy data from \"description\" field to the \"wrong\" field."
+    And I should see "actions[0]: You cannot copy data from \"description\" field to the \"another wrong\" field."
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the following rule copier actions:

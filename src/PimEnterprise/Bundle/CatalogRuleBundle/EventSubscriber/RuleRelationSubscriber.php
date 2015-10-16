@@ -153,14 +153,14 @@ class RuleRelationSubscriber implements EventSubscriberInterface
     protected function addRuleRelations(RuleDefinitionInterface $definition)
     {
         $rule = $this->productRuleBuilder->build($definition);
-        $relatedAttributes = $this->ruleRelationManager->getImpactedAttributes($rule);
+        $relatedElements = $this->ruleRelationManager->getImpactedElements($rule);
 
         $ruleRelations = [];
-        foreach ($relatedAttributes as $relatedAttribute) {
+        foreach ($relatedElements as $relatedElement) {
             $ruleRelation = new $this->ruleRelationClass();
             $ruleRelation->setRuleDefinition($definition);
-            $ruleRelation->setResourceName(ClassUtils::getClass($relatedAttribute));
-            $ruleRelation->setResourceId($relatedAttribute->getId());
+            $ruleRelation->setResourceName(ClassUtils::getClass($relatedElement));
+            $ruleRelation->setResourceId($relatedElement->getId());
 
             $ruleRelations[] = $ruleRelation;
         }

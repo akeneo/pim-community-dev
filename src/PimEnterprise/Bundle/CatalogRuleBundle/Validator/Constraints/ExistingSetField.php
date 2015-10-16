@@ -14,22 +14,20 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validation constraint on a field.
+ * Validation constraint on a field on which you want to set new data.
  *
- * @deprecated will be removed in 1.6 please use ExistingFilterField, ExistingAddField, ExistingSetField or
- *             ExistingCopierField
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Julien Sanchez <julien@akeneo.com>
  */
-class ExistingField extends Constraint
+class ExistingSetField extends Constraint
 {
     /** @var string */
-    public $message = 'The field "%field%" does not exist.';
+    public $message = 'You cannot set data to the "%field%" field.';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'pimee_constraint_field_validator';
+        return 'pimee_constraint_set_field_validator';
     }
 }

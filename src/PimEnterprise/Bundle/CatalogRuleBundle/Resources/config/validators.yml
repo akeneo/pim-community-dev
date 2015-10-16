@@ -1,16 +1,49 @@
 parameters:
     pimee_catalog_rule.validator.existing_field.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingFieldValidator
+    pimee_catalog_rule.validator.existing_filter_field.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingFilterFieldValidator
+    pimee_catalog_rule.validator.existing_set_field.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingSetFieldValidator
+    pimee_catalog_rule.validator.existing_copy_fields.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingCopyFieldsValidator
+    pimee_catalog_rule.validator.existing_add_field.class: PimEnterprise\Component\CatalogRule\Validator\Constraints\ExistingAddFieldValidator
     pimee_catalog_rule.validator.product_rule.supported_operator_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\SupportedOperatorConditionValidator
     pimee_catalog_rule.validator.product_rule.value_condition.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueConditionValidator
-    pimee_catalog_rule.validator.product_rule.value_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueActionValidator
+    pimee_catalog_rule.validator.product_rule.property_action.class: PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyActionValidator
 
 services:
+    # deprecated, will be removed in 1.6, please use pimee_catalog_rule.validator.existing_(filter|set|copy|add)_field(s) instead
     pimee_catalog_rule.validator.existing_field:
         class: %pimee_catalog_rule.validator.existing_field.class%
         arguments:
             - '@pim_catalog.query.filter.registry'
         tags:
             - { name: validator.constraint_validator, alias: pimee_constraint_field_validator }
+
+    pimee_catalog_rule.validator.existing_filter_field:
+        class: %pimee_catalog_rule.validator.existing_filter_field.class%
+        arguments:
+            - '@pim_catalog.query.filter.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_constraint_filter_field_validator }
+
+    pimee_catalog_rule.validator.existing_set_field:
+        class: %pimee_catalog_rule.validator.existing_set_field.class%
+        arguments:
+            - '@pim_catalog.updater.setter.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_constraint_set_field_validator }
+
+    pimee_catalog_rule.validator.existing_copy_fields:
+        class: %pimee_catalog_rule.validator.existing_copy_fields.class%
+        arguments:
+            - '@pim_catalog.updater.copier.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_constraint_copy_fields_validator }
+
+    pimee_catalog_rule.validator.existing_add_field:
+        class: %pimee_catalog_rule.validator.existing_add_field.class%
+        arguments:
+            - '@pim_catalog.updater.adder.registry'
+        tags:
+            - { name: validator.constraint_validator, alias: pimee_constraint_add_field_validator }
 
     pimee_catalog_rule.validator.product_rule.supported_operator_condition:
         class: %pimee_catalog_rule.validator.product_rule.supported_operator_condition.class%
@@ -26,12 +59,11 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pimee_constraint_value_condition_validator }
 
-    pimee_catalog_rule.validator.product_rule.value_action:
-        class: %pimee_catalog_rule.validator.product_rule.value_action.class%
+    pimee_catalog_rule.validator.product_rule.property_action:
+        class: %pimee_catalog_rule.validator.product_rule.property_action.class%
         arguments:
-            - '@pim_catalog.updater.product_property_setter'
-            - '@pim_catalog.updater.product_property_copier'
+            - '@akeneo_rule_engine.action_applier.registry'
             - '@pim_catalog.builder.product'
             - '@pim_validator'
         tags:
-            - { name: validator.constraint_validator, alias: pimee_constraint_value_action_validator }
+            - { name: validator.constraint_validator, alias: pimee_constraint_property_action_validator }

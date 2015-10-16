@@ -9,27 +9,33 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
+namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validation constraint on a field.
+ * Validation constraint on a value.
  *
- * @deprecated will be removed in 1.6 please use ExistingFilterField, ExistingAddField, ExistingSetField or
- *             ExistingCopierField
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
-class ExistingField extends Constraint
+class PropertyAction extends Constraint
 {
     /** @var string */
-    public $message = 'The field "%field%" does not exist.';
+    public $message = '%message%';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'pimee_constraint_field_validator';
+        return 'pimee_constraint_property_action_validator';
     }
 }

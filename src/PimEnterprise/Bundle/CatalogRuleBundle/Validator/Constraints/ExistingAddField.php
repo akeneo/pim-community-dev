@@ -14,22 +14,20 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validation constraint on a field.
+ * Validation constraint on a field on which you want to add a collection of items.
  *
- * @deprecated will be removed in 1.6 please use ExistingFilterField, ExistingAddField, ExistingSetField or
- *             ExistingCopierField
- * @author Olivier Soulet <olivier.soulet@akeneo.com>
+ * @author Julien Sanchez <julien@akeneo.com>
  */
-class ExistingField extends Constraint
+class ExistingAddField extends Constraint
 {
     /** @var string */
-    public $message = 'The field "%field%" does not exist.';
+    public $message = 'You cannot add items to the "%field%" field.';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'pimee_constraint_field_validator';
+        return 'pimee_constraint_add_field_validator';
     }
 }
