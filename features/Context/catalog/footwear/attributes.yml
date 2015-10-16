@@ -333,6 +333,13 @@ attributes:
             reference_data_name: fabrics
         localizable:         true
         scopable:            true
+    123:
+        labels:
+            en_US: Attribute 123
+        type:  pim_catalog_text
+        useableAsGridFilter: true
+        group: other
+        maxCharacters: 255
     rate_sale:
         labels:
             en_US: Rate of sale

@@ -114,13 +114,13 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
 
             $normalizedValues = [];
             foreach ($values as $value) {
-                $normalizedValues = array_merge(
+                $normalizedValues = array_replace(
                     $normalizedValues,
                     $this->serializer->normalize($value, $format, $context)
                 );
             }
             ksort($normalizedValues);
-            $this->results = array_merge($this->results, $normalizedValues);
+            $this->results = array_replace($this->results, $normalizedValues);
         } else {
             // TODO only used for quick export, find a way to homogenize this part
             $values = $product->getValues();
@@ -131,7 +131,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
                 if (AttributeTypes::PRICE_COLLECTION === $value->getAttribute()->getAttributeType()
                     || isset($this->fields[$fieldValue])) {
                     $normalizedValue = $this->serializer->normalize($value, $format, $context);
-                    $this->results = array_merge($this->results, $normalizedValue);
+                    $this->results = array_replace($this->results, $normalizedValue);
                 }
             }
         }
