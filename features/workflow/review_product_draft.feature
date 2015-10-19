@@ -33,6 +33,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "SKU"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product SKU should be "your-jacket"
@@ -46,6 +47,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Name"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Name should be "Coat"
@@ -59,6 +61,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Description"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Description for scope "mobile" should be "An awesome coat"
@@ -72,6 +75,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Number in stock"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
@@ -88,6 +92,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Price"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
@@ -103,6 +108,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Manufacturer"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Manufacturer should be "Nike"
@@ -116,6 +122,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Weather conditions"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Weather conditions should be "cold, dry, hot and wet"
@@ -129,6 +136,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Datasheet"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Media" group
@@ -143,6 +151,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Side view"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Media" group
@@ -157,6 +166,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Handmade"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Handmade should be "on"
@@ -170,6 +180,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Release date"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Release date for scope "mobile" should be "2014-05-20"
@@ -183,6 +194,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Length"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Sizes" group
@@ -197,6 +209,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "reject" action of the row which contains "Name"
+    And I press the "Send" button in the popin
     Then the grid should contain 1 element
     And the row "Mary" should contain:
       | column | value       |
@@ -213,6 +226,7 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     When I visit the "Proposals" tab
     And I click on the "remove" action of the row which contains "Name"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Name should be "Jacket"

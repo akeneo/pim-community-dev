@@ -223,7 +223,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $steps[] = new Step\Given('I press the "Send for approval" button');
 
             if (null !== $comment) {
-                $steps[] = new Step\Given(sprintf('I fill in "Comment your proposal (optionnal)" with "%s"', $comment));
+                $steps[] = new Step\Given(sprintf('I fill in this comment in the popin: "%s"', $comment));
             }
 
             $steps[] = new Step\Given('I press the "Send" button');

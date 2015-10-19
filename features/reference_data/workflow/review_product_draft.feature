@@ -32,6 +32,7 @@ Feature: Review a product draft with reference data
     And I edit the "my-vans" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Sole color"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Other" group
@@ -46,6 +47,7 @@ Feature: Review a product draft with reference data
     And I edit the "my-vans" product
     When I visit the "Proposals" tab
     And I click on the "reject" action of the row which contains "Sole color"
+    And I press the "Send" button in the popin
     Then the grid should contain 1 element
     And the row "Mary" should contain:
       | column | value       |
@@ -63,6 +65,7 @@ Feature: Review a product draft with reference data
     And I edit the "my-vans" product
     When I visit the "Proposals" tab
     And I click on the "remove" action of the row which contains "Sole color"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Other" group
@@ -77,6 +80,7 @@ Feature: Review a product draft with reference data
     And I edit the "my-vans" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Sole fabric"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Other" group
@@ -91,6 +95,7 @@ Feature: Review a product draft with reference data
     And I edit the "my-vans" product
     When I visit the "Proposals" tab
     And I click on the "reject" action of the row which contains "Sole fabric"
+    And I press the "Send" button in the popin
     Then the grid should contain 1 element
     And the row "Mary" should contain:
       | column | value       |
@@ -108,6 +113,7 @@ Feature: Review a product draft with reference data
     And I edit the "my-vans" product
     When I visit the "Proposals" tab
     And I click on the "remove" action of the row which contains "Sole fabric"
+    And I press the "Send" button in the popin
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     And I visit the "Other" group
