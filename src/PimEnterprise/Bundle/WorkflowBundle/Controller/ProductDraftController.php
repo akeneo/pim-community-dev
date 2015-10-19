@@ -241,7 +241,7 @@ class ProductDraftController extends AbstractController
         }
 
         $this->manager->refuse($productDraft, [
-            'comment' => $request->get('comment')
+            'comment' => $request->request->get('comment')
         ]);
 
         if ($request->isXmlHttpRequest()) {
