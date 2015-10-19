@@ -22,9 +22,10 @@ config:
         pimee/product-edit-form/source-switcher:           pimenterpriseworkflow/js/product/form/source-switcher
         pimee/product-edit-form/working-copy:              pimenterpriseworkflow/js/product/form/working-copy
         pimee/product-edit-form/original-product:          pimenterpriseworkflow/js/product/form/original-product
-        pimee/published-view-form/back-to-grid:            pimenterpriseworkflow/js/published-product/form/back-to-grid
         pimee/product-edit-form/send-for-approval-comment: pimenterpriseworkflow/js/product/form/send-for-approval-comment
         pimee/product-edit-form/proposal-add-comment:      pimenterpriseworkflow/js/product/form/proposal-add-comment
+        pimee/published-view-form/back-to-grid:            pimenterpriseworkflow/js/published-product/form/back-to-grid
+        pimee/product-edit-form/abstract-add-notification-comment: pimenterpriseworkflow/js/product/form/abstract-add-notification-comment
 
         # Templates
         pimee/template/product/meta/published:                  pimenterpriseworkflow/templates/product/meta/published.html

@@ -90,8 +90,8 @@ pimee_enrich:
                 send_for_approval: Send for approval
                 cancel: Cancel
                 confirm: Send
-                title: Comment your proposal (optional)
-                title_comment: Leave a comment (optional)
+                title: Comment your proposal (optional - 255 characters max.)
+                characters: chars.
             confirmation:
                 discard_changes: Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes?
                 discard_changes_title: Are you sure you want to send this draft?

@@ -109,6 +109,41 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     }
 
     /**
+     * @Then /^I should see that "([^"]+)" characters are remaining$/
+     *
+     * @param int $expectedNumber
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeThatCharactersAreRemaining($expectedNumber)
+    {
+        $modalBodyContent     = $this->getCurrentPage()->find('css', '.modal-body');
+        $remainingCharContent = $modalBodyContent->find('css', '.remaining-chars');
+        $remainingChar        = $remainingCharContent->getText();
+
+        if ($remainingChar !== $expectedNumber) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to see "%s" remaining chars but got "%s".', $expectedNumber, $remainingChar)
+            );
+        }
+    }
+
+    /**
+     * @Given /^I should not be able to send the comment$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldNotBeAbleToSendTheComment()
+    {
+        $modalFooterContent = $this->getCurrentPage()->find('css', '.modal-footer');
+        $disabledOkBtn      = $modalFooterContent->find('css', '.ok.disabled');
+
+        if (null === $disabledOkBtn) {
+            throw $this->createExpectationException('Expecting to see the Send button disabled, it was not.');
+        }
+    }
+
+    /**
      * @param string $code
      *
      * @throws \Exception
