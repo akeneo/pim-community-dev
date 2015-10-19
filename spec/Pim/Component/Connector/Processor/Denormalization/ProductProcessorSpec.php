@@ -984,7 +984,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'sku' => 'tshirt',
             'number' => '10.45',
         ];
-        $postConvertedData = $convertedData =                 [
+        $postConvertedData = $convertedData = [
             'sku' => [
                 [
                     'locale' => null,
@@ -1034,5 +1034,107 @@ class ProductProcessorSpec extends ObjectBehavior
         $this
             ->process($originalData)
             ->shouldReturn(null);
+    }
+
+    function it_updates_an_existing_product_and_does_not_change_his_state(
+        $arrayConverter,
+        $productRepository,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
+        $localizedConverter,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $originalData = [
+            'sku' => 'tshirt',
+            'family' => 'TShirt',
+            'description-en_US-mobile' => 'My description',
+            'name-fr_FR' => 'T-shirt super beau',
+            'name-en_US' => 'My awesome T-shirt',
+        ];
+        $convertedData = [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'family' => 'Summer Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My very awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ],
+            'enabled' => false,
+        ];
+        $converterOptions = [
+            'mapping'           => ['family' => 'family', 'categories' => 'categories', 'groups' => 'groups'],
+            'default_values'    => ['enabled' => true],
+            'with_associations' => false,
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'family' => 'Summer Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My very awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ],
+        ];
+
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $productValidator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $this
+            ->process($originalData)
+            ->shouldReturn($product);
     }
 }
