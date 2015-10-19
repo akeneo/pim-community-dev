@@ -9,4 +9,3 @@
 - PropertySetterInterface and PropertyCopierInterface were removed from the PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater and replaced by Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface
 - Removed $actionClasses from the PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer constructor
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueAction to PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction
-- Update method `approveAction` and `rejectAction` of `pimee_workflow.controller.product_draft_rest` to accept a `Symfony\Component\HttpFoundation\Request` as first argument.
