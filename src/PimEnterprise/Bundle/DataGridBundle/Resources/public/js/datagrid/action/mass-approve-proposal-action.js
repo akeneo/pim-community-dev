@@ -13,7 +13,7 @@ define(
         'oro/datagrid/mass-action',
         'pim/form-modal'
     ],
-    function(
+    function (
         $,
         _,
         MassAction,
@@ -35,7 +35,7 @@ define(
             /**
              * Override the default execute to trigger the popin to add comment
              */
-            execute: function() {
+            execute: function () {
                 var modalParameters = {
                     title: _.__('pimee_enrich.entity.product_draft.modal.accept_selected_proposal'),
                     okText: _.__('pimee_enrich.entity.product_draft.modal.confirm'),
@@ -75,7 +75,7 @@ define(
             /**
              * @inheritdoc
              */
-            getActionParameters: function() {
+            getActionParameters: function () {
                 var massActionParam = MassAction.prototype.getActionParameters.apply(this, arguments);
 
                 return _.extend(massActionParam, {'comment': this.comment});

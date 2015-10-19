@@ -116,7 +116,7 @@ define(
 
                 myFormModal
                     .open()
-                    .then(function(myFormData) {
+                    .then(function (myFormData) {
                         var comment = _.isUndefined(myFormData.comment) ? null : myFormData.comment;
 
                         this.getRoot().trigger('pim_enrich:form:state:confirm', {
