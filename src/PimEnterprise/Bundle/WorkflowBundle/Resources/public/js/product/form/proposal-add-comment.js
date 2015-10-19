@@ -24,8 +24,6 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             updateModel: function () {
-                // TODO: count and display remaining chars
-
                 this.model.set('comment', this.$('textarea[id="modal-comment"]').val());
             },
             render: function () {

@@ -21,11 +21,10 @@ define(
         FormModal
     ) {
         return AjaxAction.extend({
-
             actionParameters: {},
 
             /**
-             * @inheritdoc
+             * {@inheritdoc}
              */
             getMethod: function () {
                 return 'POST';
@@ -81,21 +80,17 @@ define(
              *
              * @param {Object} form
              *
-             * @return {Deferred}
+             * @return {Promise}
              */
             validateForm: function (form) {
-                var deferred = $.Deferred();
                 var comment = form.getFormData().comment;
-                this.actionParameters.comment = comment;
+                this.actionParameters.comment = _.isUndefined(comment) ? null : comment;
 
-                // TODO: Check for max char. length
-                deferred.resolve();
-
-                return deferred;
+                return $.Deferred().resolve();
             },
 
             /**
-             * @inheritdoc
+             * {@inheritdoc}
              */
             getActionParameters: function () {
                 return this.actionParameters;
