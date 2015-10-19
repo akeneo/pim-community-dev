@@ -28,6 +28,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/product.csv
+            decimalSeparator: .
     csv_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
