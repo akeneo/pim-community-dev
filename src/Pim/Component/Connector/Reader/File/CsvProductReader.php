@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\Reader\File;
 
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
+use Pim\Component\Localization\Localizer\DateLocalizer;
 
 /**
  * Product csv reader
@@ -23,20 +24,31 @@ class CsvProductReader extends CsvReader
     /** @var string */
     protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var array */
     protected $decimalSeparators;
 
+    /** @var string */
+    protected $dateFormat = DateLocalizer::DEFAULT_DATE_FORMAT;
+
+    /** @var array */
+    protected $dateFormats;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param array                        $decimalSeparators
+     * @param AttributeRepositoryInterface $attributeRepository attribute repository
+     * @param array                        $decimalSeparators   decimal separators defined in config
+     * @param array                        $dateFormats         format dates defined in config
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository, array $decimalSeparators)
-    {
+    public function __construct(
+        AttributeRepositoryInterface $attributeRepository,
+        array $decimalSeparators,
+        array $dateFormats
+    ) {
         $this->attributeRepository = $attributeRepository;
         $this->decimalSeparators   = $decimalSeparators;
+        $this->dateFormats         = $dateFormats;
     }
 
     /**
@@ -88,6 +100,26 @@ class CsvProductReader extends CsvReader
     }
 
     /**
+     * Set the format for date field
+     *
+     * @param string $dateFormat
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+    /**
+     * Get the format for date field
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
@@ -105,6 +137,15 @@ class CsvProductReader extends CsvReader
                         'select2' => true,
                         'label'   => 'pim_connector.import.decimalSeparator.label',
                         'help'    => 'pim_connector.import.decimalSeparator.help'
+                    ]
+                ],
+                'dateFormat' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices' => $this->dateFormats,
+                        'select2' => true,
+                        'label'   => 'pim_connector.import.dateFormat.label',
+                        'help'    => 'pim_connector.import.dateFormat.help'
                     ]
                 ]
             ]

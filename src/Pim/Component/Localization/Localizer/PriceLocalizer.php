@@ -14,10 +14,10 @@ class PriceLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function isValid($prices, array $options = [])
+    public function isValid($prices, array $options = [], $attributeCode)
     {
         foreach ($prices as $price) {
-            if (isset($price['data']) && !$this->isValidNumber($price['data'], $options)) {
+            if (isset($price['data']) && !$this->isValidNumber($price['data'], $options, $attributeCode)) {
                 return false;
             }
         }
@@ -28,11 +28,11 @@ class PriceLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($prices)
+    public function convertLocalizedToDefault($prices, array $options = [])
     {
         foreach ($prices as $i => $price) {
             if (isset($price['data'])) {
-                $prices[$i]['data'] = $this->convertNumber($price['data']);
+                $prices[$i]['data'] = $this->convertNumber($price['data'], $options);
             }
         }
 

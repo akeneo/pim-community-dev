@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Localization\Exception\FormatLocalizerException;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 class PriceLocalizerSpec extends ObjectBehavior
@@ -42,16 +42,18 @@ class PriceLocalizerSpec extends ObjectBehavior
             ['data' => 0, 'currency' => 'PES'],
             ['data' => '0', 'currency' => 'PES'],
         ];
-        $this->isValid($prices, ['decimal_separator' => '.'])->shouldReturn(true);
+        $this->isValid($prices, ['decimal_separator' => '.'], 'prices')->shouldReturn(true);
     }
 
-    function it_does_not_valid_the_decimal_separator()
+    function it_throws_an_exception_if_the_decimal_separator_is_not_valid()
     {
         $prices = [['data' => '10.00', 'currency' => 'EUR'], ['data' => '10,05', 'currency' => 'USD']];
-        $this->isValid($prices, ['decimal_separator' => ','])->shouldReturn(false);
+        $exception = new FormatLocalizerException('prices', ',');
+        $this->shouldThrow($exception)
+            ->during('isValid', [$prices, ['decimal_separator' => ','], 'prices']);
     }
 
-    function it_convert_comma_to_dot_separator()
+    function it_converts()
     {
         $prices = [
             ['data' => '10,05', 'currency' => 'EUR'],
@@ -67,37 +69,33 @@ class PriceLocalizerSpec extends ObjectBehavior
             ['data' => '0', 'currency' => 'EUR']
         ];
 
-        $this->convertLocalizedToDefault($prices)->shouldReturn(
+        $this->convertLocalizedToDefault($prices, ['decimal_separator' => ','])->shouldReturn(
             [
                 ['data' => '10.05', 'currency' => 'EUR'],
                 ['data' => '-10.05', 'currency' => 'EUR'],
                 ['data' => '10', 'currency' => 'PES'],
                 ['data' => '-10', 'currency' => 'PES'],
-                ['data' => '10', 'currency' => 'PES'],
+                ['data' => 10, 'currency' => 'PES'],
                 ['data' => '10.05', 'currency' => 'PES'],
                 ['data' => ' 10.05 ', 'currency' => 'PES'],
                 ['data' => null, 'currency' => null],
                 ['data' => '', 'currency' => ''],
-                ['data' => '0', 'currency' => 'EUR'],
+                ['data' => 0, 'currency' => 'EUR'],
                 ['data' => '0', 'currency' => 'EUR']
             ]
         );
     }
 
-    function it_fails_if_decimal_separator_is_missing()
+    function it_throws_an_exception_if_decimal_separator_is_missing()
     {
-        $exception = new MissingOptionsException('The required option "decimal_separator" is missing.');
+        $exception = new MissingOptionsException('The option "decimal_separator" do not exist.');
         $this->shouldThrow($exception)
-            ->during('isValid', [[['data' => '10.00']], []]);
-    }
+            ->during('isValid', [[['data' => '10.00']], [], 'prices']);
 
-    function it_fails_if_decimal_separator_is_empty()
-    {
-        $message = 'The option "decimal_separator" with value null is expected to be of type "string", ';
-        $message.= 'but is of type "NULL".';
-        $exception = new InvalidOptionsException($message);
         $this->shouldThrow($exception)
+            ->during('isValid', [[['data' => '10.00']], ['decimal_separator' => null], 'prices']);
 
-            ->during('isValid', [[['data' => '10.00']], ['decimal_separator' => null]]);
+        $this->shouldThrow($exception)
+            ->during('isValid', [[['data' => '10.00']], ['decimal_separator' => ''], 'prices']);
     }
 }

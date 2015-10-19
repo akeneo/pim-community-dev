@@ -3,6 +3,7 @@ parameters:
     pim_localization.localizer.number.class:    Pim\Component\Localization\Localizer\NumberLocalizer
     pim_localization.localizer.price.class:     Pim\Component\Localization\Localizer\PriceLocalizer
     pim_localization.localizer.metric.class:    Pim\Component\Localization\Localizer\MetricLocalizer
+    pim_localization.localizer.date.class:      Pim\Component\Localization\Localizer\DateLocalizer
     pim_localization.localizer.converter.class: Pim\Component\Localization\Localizer\LocalizedAttributeConverter
 
 services:
@@ -33,5 +34,12 @@ services:
         class: %pim_localization.localizer.metric.class%
         arguments:
             - ['pim_catalog_metric']
+        tags:
+            - { name: pim_localization.localizer }
+
+    pim_localization.localizer.date:
+        class: %pim_localization.localizer.date.class%
+        arguments:
+            - ['pim_catalog_date']
         tags:
             - { name: pim_localization.localizer }

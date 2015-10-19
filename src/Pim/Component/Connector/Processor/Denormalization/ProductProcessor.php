@@ -9,7 +9,9 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Localization\Exception\FormatLocalizerException;
 use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
+use Pim\Component\Localization\Localizer\DateLocalizer;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -61,6 +63,9 @@ class ProductProcessor extends AbstractProcessor
     /** @var string */
     protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
 
+    /** @var string */
+    protected $dateFormat = DateLocalizer::DEFAULT_DATE_FORMAT;
+
     /** @var ProductFilterInterface */
     protected $productFilter;
 
@@ -107,7 +112,7 @@ class ProductProcessor extends AbstractProcessor
 
         try {
             $convertedItem = $this->convertLocalizedAttributes($convertedItem);
-        } catch (\LogicException $exception) {
+        } catch (FormatLocalizerException $exception) {
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
@@ -251,7 +256,7 @@ class ProductProcessor extends AbstractProcessor
     /**
      * Set the separator for decimal
      *
-     * @param string decimalSeparator
+     * @param string $decimalSeparator
      */
     public function setDecimalSeparator($decimalSeparator)
     {
@@ -266,6 +271,26 @@ class ProductProcessor extends AbstractProcessor
     public function getDecimalSeparator()
     {
         return $this->decimalSeparator;
+    }
+
+    /**
+     * Set the format for date field
+     *
+     * @param string $dateFormat
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+    /**
+     * Get the format for the date field
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
     }
 
     /**
@@ -312,6 +337,13 @@ class ProductProcessor extends AbstractProcessor
                     'label' => 'pim_connector.import.decimalSeparator.label',
                     'help'  => 'pim_connector.import.decimalSeparator.help'
                 ]
+            ],
+            'dateFormat' => [
+                'type'    => 'choice',
+                'options' => [
+                    'label' => 'pim_connector.import.dateFormat.label',
+                    'help'  => 'pim_connector.import.dateFormat.help'
+                ]
             ]
         ];
     }
@@ -325,7 +357,10 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertLocalizedAttributes(array $convertedItem)
     {
-        return $this->localizedConverter->convert($convertedItem, ['decimal_separator' => $this->decimalSeparator]);
+        return $this->localizedConverter->convert($convertedItem, [
+            'decimal_separator' => $this->decimalSeparator,
+            'date_format'       => $this->dateFormat
+        ]);
     }
 
     /**

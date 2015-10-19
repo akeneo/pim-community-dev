@@ -14,22 +14,22 @@ class MetricLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function isValid($metric, array $options = [])
+    public function isValid($metric, array $options = [], $attributeCode)
     {
         if (!isset($metric['data'])) {
             return true;
         }
 
-        return $this->isValidNumber($metric['data'], $options);
+        return $this->isValidNumber($metric['data'], $options, $attributeCode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($metric)
+    public function convertLocalizedToDefault($metric, array $options = [])
     {
         if (isset($metric['data'])) {
-            $metric['data'] = $this->convertNumber($metric['data']);
+            $metric['data'] = $this->convertNumber($metric['data'], $options);
         }
 
         return $metric;

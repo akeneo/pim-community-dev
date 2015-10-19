@@ -2,7 +2,8 @@
 
 namespace Pim\Component\Localization\Localizer;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Pim\Component\Localization\Exception\FormatLocalizerException;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -25,12 +26,15 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
     }
 
     /**
-     * @param mixed $number
-     * @param array $options
+     * @param mixed  $number
+     * @param array  $options
+     * @param string $attributeCode
+     *
+     * @throws FormatLocalizerException
      *
      * @return bool
      */
-    protected function isValidNumber($number, array $options = [])
+    protected function isValidNumber($number, array $options = [], $attributeCode)
     {
         if (null === $number || ''  === $number) {
             return true;
@@ -38,9 +42,9 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
 
         $this->checkOptions($options);
 
-        preg_match('|\d+((?P<decimal>\D{1})\d+)?|', $number, $matches);
-        if (isset($matches['decimal']) && $matches['decimal'] !== $options['decimal_separator']) {
-            return false;
+        $matchesNumber = $this->getMatchesNumber($number);
+        if (isset($matchesNumber['decimal']) && $matchesNumber['decimal'] !== $options['decimal_separator']) {
+            throw new FormatLocalizerException($attributeCode, $options['decimal_separator']);
         }
 
         return true;
@@ -49,15 +53,20 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function convertNumber($number)
+    protected function convertNumber($number, array $options = [])
     {
         if (null === $number || ''  === $number) {
             return $number;
         }
 
-        $replacement = sprintf('${1}%s${2}', static::DEFAULT_DECIMAL_SEPARATOR);
+        $this->checkOptions($options);
 
-        return preg_replace('|(\d+)\D{1}(\d+)|', $replacement, $number);
+        $matchesNumber = $this->getMatchesNumber($number);
+        if (!isset($matchesNumber['decimal'])) {
+            return $number;
+        }
+
+        return str_replace($matchesNumber['decimal'], static::DEFAULT_DECIMAL_SEPARATOR, $number);
     }
 
     /**
@@ -69,14 +78,24 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
     }
 
     /**
+     * @param string $number
+     *
+     * @return array
+     */
+    protected function getMatchesNumber($number)
+    {
+        preg_match('|\d+((?P<decimal>\D+)\d+)?|', $number, $matches);
+
+        return $matches;
+    }
+
+    /**
      * @param array $options
      */
     protected function checkOptions(array $options)
     {
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['decimal_separator'])
-            ->setAllowedTypes('decimal_separator', 'string');
-
-        $resolver->resolve($options);
+        if (!isset($options['decimal_separator']) || '' === $options['decimal_separator']) {
+            throw new MissingOptionsException('The option "decimal_separator" do not exist.');
+        }
     }
 }

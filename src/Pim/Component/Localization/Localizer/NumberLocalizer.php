@@ -14,16 +14,16 @@ class NumberLocalizer extends AbstractNumberLocalizer
     /**
      * {@inheritdoc}
      */
-    public function isValid($number, array $options = [])
+    public function isValid($number, array $options = [], $attributeCode)
     {
-        return $this->isValidNumber($number, $options);
+        return $this->isValidNumber($number, $options, $attributeCode);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convertLocalizedToDefault($number)
+    public function convertLocalizedToDefault($number, array $options = [])
     {
-        return $this->convertNumber($number);
+        return $this->convertNumber($number, $options);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Localization\Localizer;
 
+use Pim\Component\Localization\Exception\FormatLocalizerException;
+
 /**
  * A localizer ;
  *    - check if data provided respects the expected format
@@ -16,21 +18,25 @@ interface LocalizerInterface
     /**
      * Data provided respects the expected format ?
      *
-     * @param mixed $data
-     * @param array $options
+     * @param mixed  $data
+     * @param array  $options
+     * @param string $attributeCode
+     *
+     * @throws FormatLocalizerException
      *
      * @return bool
      */
-    public function isValid($data, array $options);
+    public function isValid($data, array $options = [], $attributeCode);
 
     /**
      * Convert a localized value to the default format
      *
      * @param mixed $data
+     * @param array $options
      *
-     * @return array
+     * @return mixed
      */
-    public function convertLocalizedToDefault($data);
+    public function convertLocalizedToDefault($data, array $options = []);
 
     /**
      * Whether or not the class supports the localizer

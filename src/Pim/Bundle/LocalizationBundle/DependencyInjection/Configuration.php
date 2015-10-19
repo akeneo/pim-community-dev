@@ -32,6 +32,16 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('date_formats')
+                    ->isRequired()
+                    ->requiresAtLeastOneElement()
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('value')->isRequired()->canNotBeEmpty()->end()
+                            ->scalarNode('label')->isRequired()->canNotBeEmpty()->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

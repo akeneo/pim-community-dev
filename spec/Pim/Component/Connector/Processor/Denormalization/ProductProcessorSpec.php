@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Localization\Exception\FormatLocalizerException;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Pim\Component\Localization\Localizer\ConverterInterface;
 use Prophecy\Argument;
@@ -54,7 +55,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_has_extra_configuration()
     {
-        $this->getConfigurationFields()->shouldHaveCount(6);
+        $this->getConfigurationFields()->shouldHaveCount(7);
     }
 
     function it_updates_an_existing_product(
@@ -139,7 +140,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
-        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -214,7 +218,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
 
         $preFilteredData = $filteredData = [
             'family' => 'Tshirt',
@@ -314,7 +321,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -416,7 +426,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -484,7 +497,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
 
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
@@ -554,7 +570,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -656,7 +675,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -762,7 +784,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willReturn($convertedData);
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -811,10 +836,12 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
         $product->getId()->willReturn(42);
         $this->setDecimalSeparator(',');
+        $this->setDateFormat('d/m/Y');
 
         $originalData = [
             'sku'    => 'tshirt',
-            'number' => '10.00'
+            'number' => '10.00',
+            'date'   => null
         ];
         $postConverterData = $convertedData = [
             'sku' => [
@@ -829,6 +856,13 @@ class ProductProcessorSpec extends ObjectBehavior
                     'locale' => null,
                     'scope'  =>  null,
                     'data'   => '10,45'
+                ]
+            ],
+            'date' => [
+                [
+                    'locale' => null,
+                    'scope'  =>  null,
+                    'data'   => '20/10/2015'
                 ]
             ]
         ];
@@ -848,11 +882,22 @@ class ProductProcessorSpec extends ObjectBehavior
                     'scope' =>  null,
                     'data' => '10.45'
                 ]
+            ],
+            'date' => [
+                [
+                    'locale' => null,
+                    'scope'  =>  null,
+                    'data'   => '2015-10-20'
+                ]
             ]
         ];
 
         $postConverterData['number'][0]['data'] = '10.45';
-        $localizedConverter->convert($convertedData, ['decimal_separator' => ','])->willReturn($postConverterData);
+        $postConverterData['date'][0]['data'] = '2015-10-20';
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => ',',
+            'date_format'       => 'd/m/Y'
+        ])->willReturn($postConverterData);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -868,7 +913,7 @@ class ProductProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
-    function it_skips_a_product_if_decimal_has_not_the_expected_format(
+    function it_skips_a_product_if_format_of_localized_attribute_is_not_expected(
         $arrayConverter,
         $localizedConverter,
         $productRepository,
@@ -907,7 +952,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
-        $localizedConverter->convert($convertedData, ['decimal_separator' => '.'])->willThrow(new \LogicException());
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willThrow(new FormatLocalizerException('number', '.'));
 
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
@@ -963,7 +1011,10 @@ class ProductProcessorSpec extends ObjectBehavior
             ->willReturn($convertedData);
 
         $postConvertedData['number'][0]['data'] = '10.45';
-        $localizedConverter->convert($convertedData, ['decimal_separator' => ','])->willReturn($postConvertedData);
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => ',',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($postConvertedData);
 
         $filteredData = [
             'number' => [
