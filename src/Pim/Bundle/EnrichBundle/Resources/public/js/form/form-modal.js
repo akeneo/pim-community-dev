@@ -47,12 +47,14 @@ define(
         'jquery',
         'underscore',
         'backbone',
+        'oro/mediator',
         'pim/form-builder'
     ],
     function (
         $,
         _,
         Backbone,
+        mediator,
         FormBuilder
     ) {
         return Backbone.View.extend({
@@ -117,8 +119,19 @@ define(
 
                         form.setElement(this.modal.$('.modal-body')).render();
 
+                        mediator.on('pim_enrich:form:modal:ok_button:disable', function () {
+                            this.disableOkBtn();
+                        }.bind(this));
+
+                        mediator.on('pim_enrich:form:modal:ok_button:enable', function () {
+                            this.enableOkBtn();
+                        }.bind(this));
+
                         this.modal.on('cancel', deferred.reject);
                         this.modal.on('ok', function () {
+                            if (this.modal.$('.modal-footer .ok').hasClass('disabled')) {
+                                return;
+                            }
                             this.submitCallback(form).then(function () {
                                 var data = form.getFormData();
                                 deferred.resolve(data);
@@ -136,6 +149,20 @@ define(
              */
             close: function () {
                 this.modal.close();
+            },
+
+            /**
+             * Enable the modal ok button.
+             */
+            enableOkBtn: function () {
+                this.modal.$('.modal-footer .ok').removeClass('disabled');
+            },
+
+            /**
+             * Disable the modal ok button.
+             */
+            disableOkBtn: function () {
+                this.modal.$('.modal-footer .ok').addClass('disabled');
             }
         });
     }
