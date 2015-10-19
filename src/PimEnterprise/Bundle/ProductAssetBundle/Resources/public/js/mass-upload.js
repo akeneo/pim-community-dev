@@ -72,6 +72,12 @@ define(
                     maxFilesize: 1000
                 });
 
+                myDropzone.on('removedfile', function (file) {
+                    if (0 === myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length) {
+                        this.$('.navbar-buttons .btn.schedule').addClass('hide');
+                    }
+                }.bind(this));
+
                 myDropzone.on('addedfile', function (file) {
                     if (Dropzone.SUCCESS === file.status) {
                         this.setStatus(file);
@@ -107,25 +113,6 @@ define(
                     }
                 }.bind(this));
 
-                myDropzone.on('removedfile', function (file) {
-                    if (0 === myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length) {
-                        this.$('.navbar-buttons .btn.schedule').addClass('hide');
-                    }
-                    if (Dropzone.SUCCESS === file.status) {
-                        return $.ajax({
-                            url: Routing.generate('pimee_product_asset_mass_upload_rest_delete', {
-                                filename: encodeURIComponent(file.name)
-                            }),
-                            type: 'DELETE'
-                        }).fail(function () {
-                            messenger.notificationFlashMessage(
-                                'success',
-                                _.__('pimee_product_asset.mass_upload.error.delete')
-                            );
-                        });
-                    }
-                }.bind(this));
-
                 myDropzone.on('success', function (file) {
                     this.setStatus(file);
                     file.previewElement.querySelector('div.progress').className = 'progress success';
@@ -147,6 +134,36 @@ define(
                         this.$('.navbar-buttons .btn.schedule').removeClass('hide');
                     }
                 }.bind(this));
+
+                /**
+                 * Delete/Cancel file handler
+                 *
+                 * @param {Object} file File object to remve
+                 */
+                myDropzone.removeFile = function (file) {
+                    if (Dropzone.SUCCESS === file.status) {
+                        $.ajax({
+                            url: Routing.generate(
+                                'pimee_product_asset_mass_upload_rest_delete',
+                                {
+                                    filename: encodeURIComponent(file.name)
+                                }
+                            ),
+                            type: 'DELETE'
+                        })
+                        .success(function () {
+                            Dropzone.prototype.removeFile.call(this, file);
+                        }.bind(this))
+                        .fail(function () {
+                            messenger.notificationFlashMessage(
+                                'error',
+                                _.__('pimee_product_asset.mass_upload.error.delete')
+                            );
+                        });
+                    } else {
+                        Dropzone.prototype.removeFile.call(this, file);
+                    }
+                };
 
                 $.ajax({
                     url: Routing.generate('pimee_product_asset_mass_upload_rest_list'),
