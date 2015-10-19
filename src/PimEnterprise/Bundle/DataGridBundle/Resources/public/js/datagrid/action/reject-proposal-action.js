@@ -21,6 +21,9 @@ define(
         FormModal
     ) {
         return AjaxAction.extend({
+            /**
+             * Parameters to be send with the request
+             */
             actionParameters: {},
 
             /**
@@ -33,7 +36,7 @@ define(
             /**
              * Override the default handler to trigger the popin to add comment
              *
-             * @param action
+             * {@inheritdoc}
              */
             _handleAjax: function (action) {
                 var modalParameters = {
