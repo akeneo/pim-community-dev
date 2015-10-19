@@ -190,3 +190,13 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
+    csv_family_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_export
+        label:     Demo family export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/family.csv
