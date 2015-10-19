@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\CatalogRule\Validator\Constraints;
 
-use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
