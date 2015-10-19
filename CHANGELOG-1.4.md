@@ -1,9 +1,7 @@
-# 1.4.x
+# 1.4.4 (2015-10-19)
 
 ## Bug fixes
 - PIM-4971: Fix flash messages for asset edit form
-
-# 1.4.4 (2015-10-16)
 
 # 1.4.3 (2015-10-09)
 
