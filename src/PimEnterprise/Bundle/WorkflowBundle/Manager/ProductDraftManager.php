@@ -104,7 +104,7 @@ class ProductDraftManager
     }
 
     /**
-     * Refuse a product draft
+     * Refuse a product draft ready for approval
      *
      * @param ProductDraftInterface $productDraft
      * @param array                 $context
@@ -116,11 +116,26 @@ class ProductDraftManager
         if (!$productDraft->isInProgress()) {
             $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS);
             $this->productDraftSaver->save($productDraft);
-        } else {
-            $this->productDraftRemover->remove($productDraft);
         }
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, new GenericEvent($productDraft, $context));
+    }
+
+    /**
+     * Remove an in progress product draft
+     *
+     * @param ProductDraftInterface $productDraft
+     * @param array                 $context
+     */
+    public function remove(ProductDraftInterface $productDraft, array $context = [])
+    {
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_REMOVE, new GenericEvent($productDraft, $context));
+
+        if ($productDraft->isInProgress()) {
+            $this->productDraftRemover->remove($productDraft);
+        }
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_REMOVE, new GenericEvent($productDraft, $context));
     }
 
     /**

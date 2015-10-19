@@ -23,6 +23,7 @@ pimee_workflow:
         notification:
             approve: %owner% has accepted your proposal for the product %product%
             refuse: %owner% has rejected your proposal for the product %product%
+            remove: %owner% has deleted your proposal for the product %product%
         mass_review_action:
             approve: Approve selected
             refuse:  Reject selected
@@ -62,6 +63,7 @@ btn.unpublish: Unpublish
 
 pimee_workflow_product_draft_notification_approve: Proposal approved
 pimee_workflow_product_draft_notification_refuse: Proposal rejected
+pimee_workflow_product_draft_notification_remove: Proposal deleted
 
 flash:
     product:
@@ -73,6 +75,8 @@ flash:
             error: The proposal can't be applied due to the following error. %error%
         refuse:
             success: The proposal has been rejected.
+        remove:
+            success: The proposal has been removed.
 
 pim_menu:
     item:

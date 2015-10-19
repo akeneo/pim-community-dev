@@ -169,6 +169,36 @@ class ProductDraftController
     }
 
     /**
+     * Remove a product draft
+     *
+     * @param Request $request
+     * @param mixed   $id
+     *
+     * @throws \LogicException
+     * @throws AccessDeniedHttpException
+     *
+     * @return JsonResponse
+     */
+    public function removeAction(Request $request, $id)
+    {
+        $productDraft = $this->findProductDraftOr404($id);
+
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $this->manager->remove($productDraft, [
+            'comment' => $request->request->get('comment')
+        ]);
+
+        return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
+    }
+
+    /**
      * Find a product draft for the current user and specified product
      *
      * @param ProductInterface $product

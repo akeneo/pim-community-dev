@@ -73,6 +73,24 @@ class ProductDraftEvents
     const POST_REFUSE = 'pimee_workflow.product_draft.post_refuse';
 
     /**
+     * This event is dispatched before product draft is removed
+     *
+     * The event listener receives an Symfony\Component\EventDispatcher\GenericEvent instance
+     *
+     * @staticvfaudraitar string
+     */
+    const PRE_REMOVE = 'pimee_workflow.product_draft.pre_remove';
+
+    /**
+     * This event is dispatched after product draft is removed
+     *
+     * The event listener receives an Symfony\Component\EventDispatcher\GenericEvent instance
+     *
+     * @staticvar string
+     */
+    const POST_REMOVE = 'pimee_workflow.product_draft.post_remove';
+
+    /**
      * This event is dispatched before product draft is marked as ready
      *
      * The event listener receives an Symfony\Component\EventDispatcher\GenericEvent instance
