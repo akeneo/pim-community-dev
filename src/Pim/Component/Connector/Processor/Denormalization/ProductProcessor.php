@@ -49,7 +49,7 @@ class ProductProcessor extends AbstractProcessor
     protected $enabled = true;
 
     /** @var bool */
-    protected $hasStatus = false;
+    protected $itemHasStatus = false;
 
     /** @var string */
     protected $categoriesColumn = 'categories';
@@ -130,7 +130,7 @@ class ProductProcessor extends AbstractProcessor
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
 
-        if (false === $this->hasStatus && null !== $product->getId()) {
+        if (false === $this->itemHasStatus && null !== $product->getId()) {
             unset($filteredItem['enabled']);
         }
 
@@ -389,7 +389,7 @@ class ProductProcessor extends AbstractProcessor
     protected function convertItemData(array $item)
     {
         if (array_key_exists('enabled', $item)) {
-            $this->hasStatus = true;
+            $this->itemHasStatus = true;
         }
 
         return $this->arrayConverter->convert($item, $this->getArrayConverterOptions());
