@@ -26,8 +26,8 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                          |
-      | warning | Peter Williams has rejected your proposal for the product tshirt |
+      | type  | message                                                          |
+      | error | Peter Williams has rejected your proposal for the product tshirt |
     When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
@@ -42,8 +42,8 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                          | comment                                 |
-      | warning | Peter Williams has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
+      | type  | message                                                          | comment                                 |
+      | error | Peter Williams has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
     When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
@@ -58,8 +58,8 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                          |
-      | warning | Peter Williams has rejected your proposal for the product tshirt |
+      | type  | message                                                          |
+      | error | Peter Williams has rejected your proposal for the product tshirt |
     When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
@@ -75,8 +75,8 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                          | comment                                 |
-      | warning | Peter Williams has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
+      | type  | message                                                          | comment                                 |
+      | error | Peter Williams has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
     When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
@@ -91,8 +91,8 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                          |
-      | warning | Peter Williams has rejected your proposal for the product tshirt |
+      | type  | message                                                          |
+      | error | Peter Williams has rejected your proposal for the product tshirt |
     When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page
 
@@ -108,7 +108,7 @@ Feature: Approve notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                          | comment                                 |
-      | warning | Peter Williams has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
+      | type  | message                                                          | comment                                 |
+      | error | Peter Williams has rejected your proposal for the product tshirt | To be reviewed, this value looks wrong. |
     When I click on the notification "Peter Williams has rejected your proposal for the product tshirt"
     Then I should be on the product "tshirt" edit page

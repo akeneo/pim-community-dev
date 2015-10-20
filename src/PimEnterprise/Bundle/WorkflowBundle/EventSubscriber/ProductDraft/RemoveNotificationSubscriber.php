@@ -88,7 +88,7 @@ class RemoveNotificationSubscriber implements EventSubscriberInterface
         $this->notifier->notify(
             [$productDraft->getAuthor()],
             'pimee_workflow.product_draft.notification.remove',
-            'warning',
+            'error',
             $options
         );
     }

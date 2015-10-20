@@ -88,7 +88,7 @@ class RefuseNotificationSubscriber implements EventSubscriberInterface
         $this->notifier->notify(
             [$productDraft->getAuthor()],
             'pimee_workflow.product_draft.notification.refuse',
-            'warning',
+            'error',
             $options
         );
     }

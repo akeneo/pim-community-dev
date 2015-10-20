@@ -79,7 +79,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $notifier->notify(
             ['author'],
             'pimee_workflow.product_draft.notification.remove',
-            'warning',
+            'error',
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
@@ -118,7 +118,7 @@ class RemoveNotificationSubscriberSpec extends ObjectBehavior
         $notifier->notify(
             ['author'],
             'pimee_workflow.product_draft.notification.remove',
-            'warning',
+            'error',
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],

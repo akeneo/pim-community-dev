@@ -39,8 +39,8 @@ Feature: Remove notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                         | comment       |
-      | warning | Julia Stark has deleted your proposal for the product my-jacket | You're fired. |
+      | type  | message                                                         | comment       |
+      | error | Julia Stark has deleted your proposal for the product my-jacket | You're fired. |
     When I click on the notification "Julia Stark has deleted your proposal for the product my-jacket"
     Then I should be on the product "my-jacket" edit page
 
@@ -51,7 +51,7 @@ Feature: Remove notifications
     And I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
-      | type    | message                                                         |
-      | warning | Julia Stark has deleted your proposal for the product my-jacket |
+      | type  | message                                                         |
+      | error | Julia Stark has deleted your proposal for the product my-jacket |
     When I click on the notification "Julia Stark has deleted your proposal for the product my-jacket"
     Then I should be on the product "my-jacket" edit page
