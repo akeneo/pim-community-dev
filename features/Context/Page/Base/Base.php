@@ -82,6 +82,21 @@ class Base extends Page
     }
 
     /**
+     * @param string $locator
+     * @param string $value
+     */
+    public function simpleFillField($locator, $value)
+    {
+        $field = parent::findField($locator);
+
+        if (null === $field) {
+            throw $this->elementNotFound('form field', 'id|name|label|value', $locator);
+        }
+
+        $field->setValue($value);
+    }
+
+    /**
      * Toggle the bootstrapSwitch on or off
      *
      * @param string $locator
