@@ -48,6 +48,9 @@ class ProductProcessor extends AbstractProcessor
     /** @var bool */
     protected $enabled = true;
 
+    /** @var bool */
+    protected $itemHasStatus = false;
+
     /** @var string */
     protected $categoriesColumn = 'categories';
 
@@ -126,6 +129,10 @@ class ProductProcessor extends AbstractProcessor
         $filteredItem  = $this->filterItemData($convertedItem);
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
+
+        if (false === $this->itemHasStatus && null !== $product->getId()) {
+            unset($filteredItem['enabled']);
+        }
 
         if ($this->enabledComparison) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
@@ -381,6 +388,8 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
+        $this->itemHasStatus = array_key_exists('enabled', $item);
+
         return $this->arrayConverter->convert($item, $this->getArrayConverterOptions());
     }
 

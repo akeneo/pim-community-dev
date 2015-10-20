@@ -2,6 +2,8 @@
 
 ## Technical improvements
 
+- PIM-4964: Use enable / disable import parameter only to create the product
+
 ## Bug fixes
 
 ## BC breaks
