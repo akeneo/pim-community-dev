@@ -39,10 +39,10 @@ class MetricProperty extends TwigProperty
         if ($data && $unit) {
             $formattedData = $this->formatter->format($data);
             return $this->getTemplate()->render(
-                array(
+                [
                     'data' => $formattedData,
                     'unit' => $unit
-                )
+                ]
             );
         }
     }
