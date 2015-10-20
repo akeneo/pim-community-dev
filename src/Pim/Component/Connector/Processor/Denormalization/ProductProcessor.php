@@ -388,9 +388,7 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
-        if (array_key_exists('enabled', $item)) {
-            $this->itemHasStatus = true;
-        }
+        $this->itemHasStatus = array_key_exists('enabled', $item);
 
         return $this->arrayConverter->convert($item, $this->getArrayConverterOptions());
     }
