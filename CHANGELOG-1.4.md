@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4970: Asset mass upload - Do not remove uploaded asset if not deleted from server
+- PIM-5028: Fix log levels for prod environment
 
 # 1.4.4 (2015-10-19)
 
