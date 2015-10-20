@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
+use Pim\Component\Localization\Formatter\FormatterInterface;
+
 /**
  * Metric field property, able to render metric attribute type
  *
@@ -11,6 +13,20 @@ namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
  */
 class MetricProperty extends TwigProperty
 {
+    /** @var FormatterInterface */
+    protected $formatter;
+
+    /**
+     * @param \Twig_Environment  $environment
+     * @param FormatterInterface $formatter
+     */
+    public function __construct(\Twig_Environment $environment, FormatterInterface $formatter)
+    {
+        parent::__construct($environment);
+
+        $this->formatter = $formatter;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -21,9 +37,10 @@ class MetricProperty extends TwigProperty
         $unit   = $result['unit'];
 
         if ($data && $unit) {
+            $formattedData = $this->formatter->format($data);
             return $this->getTemplate()->render(
                 array(
-                    'data' => $data,
+                    'data' => $formattedData,
                     'unit' => $unit
                 )
             );
