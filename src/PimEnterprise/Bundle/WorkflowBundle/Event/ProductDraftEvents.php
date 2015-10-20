@@ -59,7 +59,7 @@ class ProductDraftEvents
      *
      * The event listener receives an Symfony\Component\EventDispatcher\GenericEvent instance
      *
-     * @staticvfaudraitar string
+     * @staticvar string
      */
     const PRE_REFUSE = 'pimee_workflow.product_draft.pre_refuse';
 
@@ -77,7 +77,7 @@ class ProductDraftEvents
      *
      * The event listener receives an Symfony\Component\EventDispatcher\GenericEvent instance
      *
-     * @staticvfaudraitar string
+     * @staticvar string
      */
     const PRE_REMOVE = 'pimee_workflow.product_draft.pre_remove';
 

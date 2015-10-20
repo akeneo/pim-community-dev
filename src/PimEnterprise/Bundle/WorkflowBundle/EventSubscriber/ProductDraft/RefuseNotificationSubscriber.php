@@ -29,7 +29,7 @@ class RefuseNotificationSubscriber implements EventSubscriberInterface
     protected $notifier;
 
     /** @var UserContext */
-    protected $user;
+    protected $userContext;
 
     /**
      * @param NotificationManager $notifier

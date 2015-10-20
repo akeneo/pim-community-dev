@@ -279,7 +279,7 @@ class EnterpriseWebUser extends BaseWebUser
     }
 
     /**
-     * @Given /^I fill in this comment in the popin: "([^"]*)"$/
+     * @Given /^I fill in this comment in the popin: "([^"]+)"$/
      */
     public function iFillInThisCommentInThePopin($comment)
     {
