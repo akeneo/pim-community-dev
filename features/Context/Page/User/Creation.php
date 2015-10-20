@@ -28,7 +28,7 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Roles' => array('css' => '#pim_user_user_form_roles_collection'),
+                'Roles' => ['css' => '#pim_user_user_form_rolesCollection'],
             )
         );
     }
