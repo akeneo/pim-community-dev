@@ -1,30 +1,29 @@
 'use strict';
 
 /**
- * Reject proposal action
+ * Mass refuse proposal action.
+ * It displays a popin to allow the user to set a comment for this refusal.
  *
- * @author Yohan Blain <yohan.blain@akeneo.com>
+ * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
 define(
     [
         'jquery',
         'underscore',
-        'oro/mediator',
-        'oro/datagrid/ajax-action',
+        'oro/datagrid/mass-action',
         'pim/form-modal'
     ],
     function (
         $,
         _,
-        mediator,
-        AjaxAction,
+        MassAction,
         FormModal
     ) {
-        return AjaxAction.extend({
+        return MassAction.extend({
             /**
-             * Parameters to be send with the request
+             * The comment the user typed in the modal
              */
-            actionParameters: {},
+            comment: null,
 
             /**
              * {@inheritdoc}
@@ -34,13 +33,11 @@ define(
             },
 
             /**
-             * Override the default handler to trigger the popin to add comment
-             *
-             * {@inheritdoc}
+             * Override the default execute to trigger the popin to add comment
              */
-            _handleAjax: function (action) {
+            execute: function () {
                 var modalParameters = {
-                    title: _.__('pimee_enrich.entity.product_draft.modal.reject_proposal'),
+                    title: _.__('pimee_enrich.entity.product_draft.modal.reject_selected_proposal'),
                     okText: _.__('pimee_enrich.entity.product_draft.modal.confirm'),
                     cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel')
                 };
@@ -52,31 +49,20 @@ define(
                 );
 
                 formModal.open().then(function () {
-                    AjaxAction.prototype._handleAjax.apply(this, [action]);
+                    MassAction.prototype.execute.apply(this, arguments);
                 }.bind(this));
-            },
-
-            /**
-             * Override the default handler to trigger the event containing the new product data
-             *
-             * @param product
-             */
-            _onAjaxSuccess: function (product) {
-                this.datagrid.collection.fetch();
-
-                mediator.trigger('pim_enrich:form:proposal:post_reject:success', product);
             },
 
             /**
              * Validate the given form data. We must check for comment length.
              *
-             * @param {Object }form
+             * @param {Object} form
              *
              * @return {Promise}
              */
             validateForm: function (form) {
                 var comment = form.getFormData().comment;
-                this.actionParameters.comment = _.isUndefined(comment) ? null : comment;
+                this.comment = _.isUndefined(comment) ? null : comment;
 
                 return $.Deferred().resolve();
             },
@@ -85,7 +71,9 @@ define(
              * {@inheritdoc}
              */
             getActionParameters: function () {
-                return this.actionParameters;
+                var massActionParam = MassAction.prototype.getActionParameters.apply(this, arguments);
+
+                return _.extend(massActionParam, {'comment': this.comment});
             }
         });
     }

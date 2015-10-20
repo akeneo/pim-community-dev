@@ -105,7 +105,7 @@ define(
                     return deferred;
                 };
                 var myFormModal = new FormModal(
-                    'pimee-workflow-notification-comment',
+                    'pimee-workflow-send-for-approval-comment',
                     callback,
                     {
                         title: _.__('pimee_enrich.entity.product_draft.modal.send_for_approval'),
@@ -116,7 +116,7 @@ define(
 
                 myFormModal
                     .open()
-                    .then(function(myFormData) {
+                    .then(function (myFormData) {
                         var comment = _.isUndefined(myFormData.comment) ? null : myFormData.comment;
 
                         this.getRoot().trigger('pim_enrich:form:state:confirm', {

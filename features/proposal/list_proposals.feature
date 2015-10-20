@@ -43,9 +43,11 @@ Feature: List proposals
     Then the grid should contain 3 elements
     And I should see entities tshirt, sweater and jacket
     When I click on the "Approve" action of the row which contains "tshirt"
+    And I press the "Send" button in the popin
     Then I should see a flash message "The proposal has been applied successfully."
     And the grid should contain 2 elements
     When I click on the "Reject" action of the row which contains "jacket"
+    And I press the "Send" button in the popin
     Then I should see a flash message "The proposal has been refused."
     And the grid should contain 1 element
 

@@ -19,11 +19,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Send a notification to the reviewer when a proposal is refused
+ * Send a notification to the reviewer when a proposal is removed
  *
- * @author Clement Gautier <clement.gautier@akeneo.com>
+ * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class RefuseNotificationSubscriber implements EventSubscriberInterface
+class RemoveNotificationSubscriber implements EventSubscriberInterface
 {
     /** @var NotificationManager */
     protected $notifier;
@@ -47,7 +47,7 @@ class RefuseNotificationSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ProductDraftEvents::POST_REFUSE => ['send', 10],
+            ProductDraftEvents::POST_REMOVE => ['send', 10],
         ];
     }
 
@@ -76,7 +76,7 @@ class RefuseNotificationSubscriber implements EventSubscriberInterface
                 '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
             ],
             'context'       => [
-                'actionType'       => 'pimee_workflow_product_draft_notification_refuse',
+                'actionType'       => 'pimee_workflow_product_draft_notification_remove',
                 'showReportButton' => false,
             ]
         ];
@@ -87,7 +87,7 @@ class RefuseNotificationSubscriber implements EventSubscriberInterface
 
         $this->notifier->notify(
             [$productDraft->getAuthor()],
-            'pimee_workflow.product_draft.notification.refuse',
+            'pimee_workflow.product_draft.notification.remove',
             'error',
             $options
         );

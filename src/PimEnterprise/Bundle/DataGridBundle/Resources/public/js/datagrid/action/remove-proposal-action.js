@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Reject proposal action
+ * Remove proposal action
  *
- * @author Yohan Blain <yohan.blain@akeneo.com>
+ * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
 define(
     [
@@ -40,7 +40,7 @@ define(
              */
             _handleAjax: function (action) {
                 var modalParameters = {
-                    title: _.__('pimee_enrich.entity.product_draft.modal.reject_proposal'),
+                    title: _.__('pimee_enrich.entity.product_draft.modal.remove_proposal'),
                     okText: _.__('pimee_enrich.entity.product_draft.modal.confirm'),
                     cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel')
                 };
@@ -64,13 +64,13 @@ define(
             _onAjaxSuccess: function (product) {
                 this.datagrid.collection.fetch();
 
-                mediator.trigger('pim_enrich:form:proposal:post_reject:success', product);
+                mediator.trigger('pim_enrich:form:proposal:post_remove:success', product);
             },
 
             /**
              * Validate the given form data. We must check for comment length.
              *
-             * @param {Object }form
+             * @param {Object} form
              *
              * @return {Promise}
              */

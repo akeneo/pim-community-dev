@@ -103,14 +103,15 @@ class ProductDraftController
     /**
      * Approve a product draft
      *
-     * @param mixed $id
+     * @param Request $request
+     * @param mixed   $id
      *
      * @throws \LogicException
      * @throws AccessDeniedHttpException
      *
      * @return JsonResponse
      */
-    public function approveAction($id)
+    public function approveAction(Request $request, $id)
     {
         $productDraft = $this->findProductDraftOr404($id);
 
@@ -127,7 +128,9 @@ class ProductDraftController
         }
 
         try {
-            $this->manager->approve($productDraft);
+            $this->manager->approve($productDraft, [
+                'comment' => $request->request->get('comment')
+            ]);
         } catch (ValidatorException $e) {
             return new JsonResponse(['message' => $e->getMessage()], 400);
         }
@@ -138,14 +141,15 @@ class ProductDraftController
     /**
      * Reject a product draft
      *
-     * @param mixed $id
+     * @param Request $request
+     * @param mixed   $id
      *
      * @throws \LogicException
      * @throws AccessDeniedHttpException
      *
      * @return JsonResponse
      */
-    public function rejectAction($id)
+    public function rejectAction(Request $request, $id)
     {
         $productDraft = $this->findProductDraftOr404($id);
 
@@ -157,7 +161,39 @@ class ProductDraftController
             throw new AccessDeniedHttpException();
         }
 
-        $this->manager->refuse($productDraft);
+        $this->manager->refuse($productDraft, [
+            'comment' => $request->request->get('comment')
+        ]);
+
+        return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
+    }
+
+    /**
+     * Remove a product draft
+     *
+     * @param Request $request
+     * @param mixed   $id
+     *
+     * @throws \LogicException
+     * @throws AccessDeniedHttpException
+     *
+     * @return JsonResponse
+     */
+    public function removeAction(Request $request, $id)
+    {
+        $productDraft = $this->findProductDraftOr404($id);
+
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $this->manager->remove($productDraft, [
+            'comment' => $request->request->get('comment')
+        ]);
 
         return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
     }

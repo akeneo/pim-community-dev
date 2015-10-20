@@ -1,17 +1,18 @@
 'use strict';
+
 /**
- * Form to add a comment in a notification when the proposal is sent for approval
- *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * Form used to add a comment on a proposal when
+ * a product owner refuses it or accepts it.
  */
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
         'text!pimee/template/product/meta/notification-comment'
     ],
-    function (_, Backbone, BaseForm, template) {
+    function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             /**
              * Template used for rendering the form
@@ -47,11 +48,11 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        label: _.__('pimee_enrich.entity.product_draft.modal.title')
+                        label: _.__('pimee_enrich.entity.product_draft.modal.title_comment')
                     })
                 );
 
-                return this;
+                return this.renderExtensions();
             }
         });
     }

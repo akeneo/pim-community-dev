@@ -37,6 +37,11 @@ datagrid:
                 route: pimee_workflow_product_draft_rest_reject
                 params:
                     - id
+            remove_link:
+                type: url
+                route: pimee_workflow_product_draft_rest_remove
+                params:
+                    - id
         actions:
             approve:
                 type: approve-proposal
@@ -49,10 +54,10 @@ datagrid:
                 icon: remove
                 link: refuse_link
             remove:
-                type: reject-proposal
+                type: remove-proposal
                 label: pimee_workflow.product_draft.action.remove
                 icon: trash
-                link: refuse_link
+                link: remove_link
         action_configuration: '@pimee_datagrid.datagrid.configuration.product_draft.grid_helper->getActionConfigurationClosure'
         filters:
             columns:

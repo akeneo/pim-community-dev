@@ -277,4 +277,13 @@ class EnterpriseWebUser extends BaseWebUser
         $this->iPressTheButton("Send for approval");
         $this->iPressTheButton("Send");
     }
+
+    /**
+     * @Given /^I fill in this comment in the popin: "([^"]+)"$/
+     */
+    public function iFillInThisCommentInThePopin($comment)
+    {
+        $this->getCurrentPage()->simpleFillField('modal-comment', $comment);
+        $this->getSession()->executeScript('$(\'#modal-comment\').trigger(\'change\');');
+    }
 }

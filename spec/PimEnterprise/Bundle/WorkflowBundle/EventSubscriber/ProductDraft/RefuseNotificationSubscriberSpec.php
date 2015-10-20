@@ -65,6 +65,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         ProductValueInterface $identifier
     ) {
+        $event->hasArgument('comment')->willReturn(false);
         $event->getSubject()->willReturn($draft);
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
@@ -78,7 +79,7 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $notifier->notify(
             ['author'],
             'pimee_workflow.product_draft.notification.refuse',
-            'warning',
+            'error',
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
@@ -87,6 +88,46 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
                     'actionType'       => 'pimee_workflow_product_draft_notification_refuse',
                     'showReportButton' => false
                 ]
+            ]
+        )->shouldBeCalled();
+
+        $this->send($event);
+    }
+
+    function it_sends_on_product_draft_with_a_comment(
+        $notifier,
+        $context,
+        GenericEvent $event,
+        UserInterface $owner,
+        ProductDraftInterface $draft,
+        ProductInterface $product,
+        ProductValueInterface $identifier
+    ) {
+        $event->getSubject()->willReturn($draft);
+        $event->hasArgument('comment')->willReturn(true);
+        $event->getArgument('comment')->willReturn('Nope Mary.');
+        $owner->getFirstName()->willReturn('John');
+        $owner->getLastName()->willReturn('Doe');
+        $context->getUser()->willReturn($owner);
+        $draft->getAuthor()->willReturn('author');
+        $draft->getProduct()->willReturn($product);
+        $product->getId()->willReturn(42);
+        $product->getIdentifier()->willReturn($identifier);
+        $identifier->getData()->willReturn('tshirt');
+
+        $notifier->notify(
+            ['author'],
+            'pimee_workflow.product_draft.notification.refuse',
+            'error',
+            [
+                'route'         => 'pim_enrich_product_edit',
+                'routeParams'   => ['id' => 42],
+                'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
+                'context'       => [
+                    'actionType' => 'pimee_workflow_product_draft_notification_refuse',
+                    'showReportButton' => false,
+                ],
+                'comment'    => 'Nope Mary.',
             ]
         )->shouldBeCalled();
 

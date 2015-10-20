@@ -13,7 +13,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ApproveNotificationSubscriberSpec extends ObjectBehavior
+class RemoveNotificationSubscriberSpec extends ObjectBehavior
 {
     function let(NotificationManager $notifier, UserContext $context)
     {
@@ -22,13 +22,13 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber');
+        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RemoveNotificationSubscriber');
     }
 
     function it_subscribes_to_approve_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductDraftEvents::POST_APPROVE => ['send', 10],
+            ProductDraftEvents::POST_REMOVE => ['send', 10],
         ]);
     }
 
@@ -65,8 +65,8 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         ProductValueInterface $identifier
     ) {
-        $event->getSubject()->willReturn($draft);
         $event->hasArgument('comment')->willReturn(false);
+        $event->getSubject()->willReturn($draft);
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
         $context->getUser()->willReturn($owner);
@@ -78,14 +78,14 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
 
         $notifier->notify(
             ['author'],
-            'pimee_workflow.product_draft.notification.approve',
-            'success',
+            'pimee_workflow.product_draft.notification.remove',
+            'error',
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
                 'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
                 'context'       => [
-                    'actionType'       => 'pimee_workflow_product_draft_notification_approve',
+                    'actionType'       => 'pimee_workflow_product_draft_notification_remove',
                     'showReportButton' => false
                 ]
             ]
@@ -105,7 +105,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($draft);
         $event->hasArgument('comment')->willReturn(true);
-        $event->getArgument('comment')->willReturn('Good job Mary!');
+        $event->getArgument('comment')->willReturn('Nope Mary.');
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
         $context->getUser()->willReturn($owner);
@@ -117,17 +117,17 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
 
         $notifier->notify(
             ['author'],
-            'pimee_workflow.product_draft.notification.approve',
-            'success',
+            'pimee_workflow.product_draft.notification.remove',
+            'error',
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
                 'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
                 'context'       => [
-                    'actionType' => 'pimee_workflow_product_draft_notification_approve',
+                    'actionType' => 'pimee_workflow_product_draft_notification_remove',
                     'showReportButton' => false,
                 ],
-                'comment'    => 'Good job Mary!',
+                'comment'    => 'Nope Mary.',
             ]
         )->shouldBeCalled();
 

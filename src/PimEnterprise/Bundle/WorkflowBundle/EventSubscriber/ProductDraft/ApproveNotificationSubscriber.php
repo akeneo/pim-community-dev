@@ -29,7 +29,7 @@ class ApproveNotificationSubscriber implements EventSubscriberInterface
     protected $notifier;
 
     /** @var UserContext */
-    protected $user;
+    protected $userContext;
 
     /**
      * @param NotificationManager $notifier
@@ -68,22 +68,28 @@ class ApproveNotificationSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $options = [
+            'route'         => 'pim_enrich_product_edit',
+            'routeParams'   => ['id' => $productDraft->getProduct()->getId()],
+            'messageParams' => [
+                '%product%' => $productDraft->getProduct()->getIdentifier()->getData(),
+                '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
+            ],
+            'context'       => [
+                'actionType'       => 'pimee_workflow_product_draft_notification_approve',
+                'showReportButton' => false,
+            ]
+        ];
+
+        if ($event->hasArgument('comment')) {
+            $options['comment'] = $event->getArgument('comment');
+        }
+
         $this->notifier->notify(
             [$productDraft->getAuthor()],
             'pimee_workflow.product_draft.notification.approve',
             'success',
-            [
-                'route'         => 'pim_enrich_product_edit',
-                'routeParams'   => ['id' => $productDraft->getProduct()->getId()],
-                'messageParams' => [
-                    '%product%' => $productDraft->getProduct()->getIdentifier()->getData(),
-                    '%owner%'   => sprintf('%s %s', $user->getFirstName(), $user->getLastName()),
-                ],
-                'context'       => [
-                    'actionType'       => 'pimee_workflow_product_draft_notification_approve',
-                    'showReportButton' => false
-                ]
-            ]
+            $options
         );
     }
 }

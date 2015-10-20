@@ -8,6 +8,7 @@ parameters:
     pimee_workflow.event_subscriber.enrich.add_product_draft_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddProductDraftFormViewParameterSubscriber
     pimee_workflow.event_subscriber.product_draft.approve_notification.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber
     pimee_workflow.event_subscriber.product_draft.refuse_notification.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.remove_notification.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RemoveNotificationSubscriber
 
 services:
     ##
@@ -56,6 +57,14 @@ services:
 
     pimee_workflow.event_subscriber.product_draft.refuse_notification:
         class: %pimee_workflow.event_subscriber.product_draft.refuse_notification.class%
+        arguments:
+            - @pim_notification.manager.notification
+            - @pim_user.context.user
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.remove_notification:
+        class: %pimee_workflow.event_subscriber.product_draft.remove_notification.class%
         arguments:
             - @pim_notification.manager.notification
             - @pim_user.context.user

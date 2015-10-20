@@ -66,7 +66,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(2);
         $this->setStepExecution($stepExecution);
 
-        $this->execute(['draftIds' => [1, 2]]);
+        $this->execute(['draftIds' => [1, 2], 'comment' => null]);
     }
 
     function it_skips_proposals_if_user_does_not_own_the_product(
@@ -103,7 +103,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(1);
         $this->setStepExecution($stepExecution);
 
-        $this->execute(['draftIds' => [1, 2]]);
+        $this->execute(['draftIds' => [1, 2], 'comment' => null]);
     }
 
     function it_skips_proposals_if_user_cannot_edit_the_attributes(
@@ -140,6 +140,45 @@ class RefuseTaskletSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(1);
         $this->setStepExecution($stepExecution);
 
-        $this->execute(['draftIds' => [1, 2]]);
+        $this->execute(['draftIds' => [1, 2], 'comment' => null]);
+    }
+
+    function it_refuses_proposals_with_a_comment(
+        $productDraftRepository,
+        $productDraftManager,
+        $userProvider,
+        $authorizationChecker,
+        $tokenStorage,
+        UserInterface $userJulia,
+        StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
+        ProductInterface $product1,
+        ProductInterface $product2
+    ) {
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('julia');
+        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
+        $userJulia->getRoles()->willReturn(['ProductOwner']);
+        $tokenStorage->setToken(Argument::any())->shouldBeCalled();
+
+        $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
+
+        $productDraft1->getProduct()->willReturn($product1);
+        $authorizationChecker->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
+
+        $productDraft2->getProduct()->willReturn($product2);
+        $authorizationChecker->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
+
+        $stepExecution->incrementSummaryInfo('refused')->shouldBeCalledTimes(2);
+        $this->setStepExecution($stepExecution);
+
+        $productDraftManager->refuse($productDraft1, ['comment' => 'Please fix the typo.'])->shouldBeCalled();
+        $productDraftManager->refuse($productDraft2, ['comment' => 'Please fix the typo.'])->shouldBeCalled();
+
+        $this->execute(['draftIds' => [1, 2], 'comment' => 'Please fix the typo.']);
     }
 }

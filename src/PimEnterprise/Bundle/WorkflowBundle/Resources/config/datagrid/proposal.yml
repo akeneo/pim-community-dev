@@ -48,29 +48,27 @@ datagrid:
                     - dataLocale
         actions:
             approve:
-                type: ajax
+                type: approve-proposal
                 label: pimee_workflow.product_draft.action.approve
                 icon: ok
                 link: approve_link
             refuse:
-                type: ajax
+                type: reject-proposal
                 label: pimee_workflow.product_draft.action.refuse
                 icon: remove
                 link: refuse_link
         action_configuration: '@pimee_datagrid.datagrid.configuration.proposal.grid_helper->getActionConfigurationClosure'
         mass_actions:
             mass_approve:
-                type: redirect
+                type: mass-approve-proposal
                 handler: mass_approve
                 label: pimee_workflow.product_draft.mass_review_action.approve
-                confirmation: true
                 route: pimee_workflow_product_draft_mass_approve
                 icon: ok
             mass_refuse:
-                type: redirect
+                type: mass-refuse-proposal
                 handler: mass_refuse
                 label: pimee_workflow.product_draft.mass_review_action.refuse
-                confirmation: true
                 route: pimee_workflow_product_draft_mass_refuse
                 icon: remove
         filters:
