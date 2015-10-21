@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRequirementRepository;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
@@ -13,10 +12,10 @@ use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Prophecy\Argument;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class FamilyUpdaterSpec extends ObjectBehavior
 {
@@ -26,7 +25,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $attrRequiFactory,
-        AttributeRequirementRepository $attrRequiRepo
+        AttributeRequirementRepositoryInterface $attrRequiRepo
     ) {
         $this->beConstructedWith(
             $familyRepository,

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
 
 /**
  * Repository for attribute requirement entity
@@ -11,6 +12,6 @@ use Doctrine\ORM\EntityRepository;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRequirementRepository extends EntityRepository
+class AttributeRequirementRepository extends EntityRepository implements AttributeRequirementRepositoryInterface
 {
 }
