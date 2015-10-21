@@ -2,14 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
  * Repository for attribute requirement entity
