@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
 
 /**
  * Product value interface
@@ -125,7 +124,7 @@ interface ProductValueInterface
      *
      * @param ArrayCollection $prices
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     public function setPrices($prices);
 
@@ -203,7 +202,7 @@ interface ProductValueInterface
      *
      * @param FileInfoInterface $media
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     public function setMedia(FileInfoInterface $media = null);
 
@@ -233,7 +232,7 @@ interface ProductValueInterface
      *
      * @param MetricInterface $metric
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     public function setMetric(MetricInterface $metric);
 
@@ -242,7 +241,7 @@ interface ProductValueInterface
      *
      * @param ProductPriceInterface $price
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     public function addPrice(ProductPriceInterface $price);
 
@@ -258,7 +257,7 @@ interface ProductValueInterface
      *
      * @param ProductPriceInterface $price
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     public function removePrice(ProductPriceInterface $price);
 
@@ -281,7 +280,7 @@ interface ProductValueInterface
      *
      * @param AttributeOptionInterface $option
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     public function removeOption(AttributeOptionInterface $option);
 
