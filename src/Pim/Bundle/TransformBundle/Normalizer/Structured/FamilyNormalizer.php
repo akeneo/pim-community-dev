@@ -41,14 +41,13 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        return array(
-            'code'             => $object->getCode(),
-            'attributes'       => $this->normalizeAttributes($object),
-            'attributeAsLabel' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
-            'requirements'     => $this->normalizeRequirements($object),
-        ) + $this->transNormalizer->normalize($object, $format, $context);
+        return [
+            'code'               => $object->getCode(),
+            'attributes'         => $this->normalizeAttributes($object),
+            'attribute_as_label' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
+        ] + $this->normalizeRequirements($object) + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -75,7 +74,7 @@ class FamilyNormalizer implements NormalizerInterface
             ) :
             $family->getAttributes();
 
-        $normalizedAttributes = array();
+        $normalizedAttributes = [];
         foreach ($filteredAttributes as $attribute) {
             $normalizedAttributes[] = $attribute->getCode();
         }
@@ -92,14 +91,14 @@ class FamilyNormalizer implements NormalizerInterface
      */
     protected function normalizeRequirements(FamilyInterface $family)
     {
-        $required = array();
+        $required = [];
         foreach ($family->getAttributeRequirements() as $requirement) {
             $channelCode = $requirement->getChannel()->getCode();
             if (!isset($required[$channelCode])) {
-                $required[$channelCode] = array();
+                $required['requirements-' . $channelCode] = [];
             }
             if ($requirement->isRequired()) {
-                $required[$channelCode][] = $requirement->getAttribute()->getCode();
+                $required['requirements-' . $channelCode][] = $requirement->getAttribute()->getCode();
             }
         }
 
