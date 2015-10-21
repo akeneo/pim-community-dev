@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Normalization;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  * Processes and transforms families object to array of normalized families
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FamilyProcessor extends Processor
@@ -19,19 +19,23 @@ class FamilyProcessor extends Processor
     /** @var NormalizerInterface */
     protected $familyNormalizer;
 
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /**
-     * @param SerializerInterface $serializer
-     * @param LocaleManager       $localeManager
-     * @param NormalizerInterface $familyNormalizer
+     * @param SerializerInterface       $serializer
+     * @param NormalizerInterface       $familyNormalizer
+     * @param LocaleRepositoryInterface $localeRepository
      */
     public function __construct(
         SerializerInterface $serializer,
-        LocaleManager $localeManager,
-        NormalizerInterface $familyNormalizer
+        NormalizerInterface $familyNormalizer,
+        LocaleRepositoryInterface $localeRepository
     ) {
-        parent::__construct($serializer, $localeManager);
+        parent::__construct($serializer, $localeRepository);
 
         $this->familyNormalizer = $familyNormalizer;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -49,7 +53,7 @@ class FamilyProcessor extends Processor
                 'enclosure'     => $this->enclosure,
                 'withHeader'    => $this->withHeader,
                 'heterogeneous' => false,
-                'locales'       => $this->localeManager->getActiveCodes(),
+                'locales'       => $this->localeRepository->getActivatedLocaleCodes(),
             ]
         );
     }

@@ -148,14 +148,9 @@ class FamilyUpdater implements ObjectUpdaterInterface
             );
         }
 
-        $requirements      = $this->addMissingIdentifierRequirements($family, $requirements);
-        $checkRequirements = new ArrayCollection($requirements);
+        $requirements = $this->addMissingIdentifierRequirements($family, $requirements);
 
-        foreach ($oldRequirements as $requirement) {
-            if (!$checkRequirements->contains($requirement)) {
-                $family->removeAttributeRequirement($requirement);
-            }
-        }
+        $this->removeRequirements($family, $requirements, $oldRequirements);
 
         $family->setAttributeRequirements($requirements);
     }
@@ -201,7 +196,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
                 );
             }
             if (AttributeTypes::IDENTIFIER !== $attribute->getAttributeType()) {
-                $requirements[] = $this->createAttributeRequirement($attribute, $family, $channelCode);
+                $requirements[] = $this->createAttributeRequirement($family, $attribute, $channelCode);
             }
         }
 
@@ -233,13 +228,13 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
      * @param FamilyInterface    $family
+     * @param AttributeInterface $attribute
      * @param string             $channelCode
      *
      * @return AttributeRequirementInterface
      */
-    protected function createAttributeRequirement(AttributeInterface $attribute, FamilyInterface $family, $channelCode)
+    protected function createAttributeRequirement(FamilyInterface $family, AttributeInterface $attribute, $channelCode)
     {
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
@@ -297,6 +292,24 @@ class FamilyUpdater implements ObjectUpdaterInterface
             throw new \InvalidArgumentException(
                 sprintf('Attribute with "%s" code does not exist', $data)
             );
+        }
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param array           $requirements
+     * @param array           $oldRequirements
+     */
+    protected function removeRequirements(
+        FamilyInterface $family,
+        array $requirements,
+        array $oldRequirements
+    ) {
+        $checkRequirements = new ArrayCollection($requirements);
+        foreach ($oldRequirements as $requirement) {
+            if (!$checkRequirements->contains($requirement)) {
+                $family->removeAttributeRequirement($requirement);
+            }
         }
     }
 }

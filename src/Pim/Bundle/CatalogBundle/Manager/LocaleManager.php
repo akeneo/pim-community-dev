@@ -29,6 +29,7 @@ class LocaleManager
      * Get active locales
      *
      * @return LocaleInterface[]
+     * @deprecated will be removed in 1.5, please use LocaleRepository::getActivatedLocaleCodes()
      */
     public function getActiveLocales()
     {

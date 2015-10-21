@@ -5,10 +5,10 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -16,11 +16,11 @@ class ProductProcessorSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         StepExecution $stepExecution,
         ChannelManager $channelManager
     ) {
-        $this->beConstructedWith($serializer, $localeManager, $channelManager);
+        $this->beConstructedWith($serializer, $localeRepository, $channelManager);
         $this->setStepExecution($stepExecution);
     }
 
