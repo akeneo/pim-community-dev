@@ -151,8 +151,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
             );
         }
 
-        $requirements = $this->addMissingIdentifierRequirements($family, $requirements);
-
+        $requirements      = $this->addMissingIdentifierRequirements($family, $requirements);
         $checkRequirements = new ArrayCollection($requirements);
 
         foreach ($oldRequirements as $requirement) {
