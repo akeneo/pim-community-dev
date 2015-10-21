@@ -6,7 +6,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 
@@ -136,7 +136,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AttributeInterface $attribute the attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute the attribute
      * @param string             $joinAlias the value join alias
      * @param string             $locale    the locale
      * @param string             $scope     the scope

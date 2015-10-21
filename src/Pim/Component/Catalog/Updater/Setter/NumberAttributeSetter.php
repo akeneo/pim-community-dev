@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -51,7 +51,7 @@ class NumberAttributeSetter extends AbstractAttributeSetter
      * Set data into product value
      *
      * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $locale
      * @param string             $scope

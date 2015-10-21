@@ -176,7 +176,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param string $code
      * @param string $type
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      */
     private function getAttributeMock($code, $type = null)
     {

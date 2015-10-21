@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator\Mapping;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraint;
@@ -93,7 +93,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     /**
      * @param ClassMetadata      $metadata
      * @param Constraint         $constraint
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      */
     protected function addConstraint(ClassMetadata $metadata, Constraint $constraint, AttributeInterface $attribute)
     {

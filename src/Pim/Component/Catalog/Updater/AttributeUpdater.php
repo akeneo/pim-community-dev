@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
@@ -63,7 +63,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
         if (!$attribute instanceof AttributeInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\AttributeInterface", "%s" provided.',
                     ClassUtils::getClass($attribute)
                 )
             );
@@ -79,7 +79,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param string             $field
      * @param mixed              $data
      *
@@ -144,7 +144,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param array              $data
      */
     protected function setLabels(AttributeInterface $attribute, array $data)
@@ -157,7 +157,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param array              $data
      */
     protected function setAvailableLocales(AttributeInterface $attribute, array $data)
@@ -172,7 +172,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param string             $data
      *
      * @throws \InvalidArgumentException

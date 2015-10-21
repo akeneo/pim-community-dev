@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -18,7 +18,7 @@ interface AttributeRemoverInterface extends RemoverInterface
      * Remove attribute data
      *
      * @param \Pim\Component\Catalog\Model\ProductInterface   $product   The product to modify
-     * @param AttributeInterface $attribute The attribute of the product to modify
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute The attribute of the product to modify
      * @param mixed              $data      The data to remove
      * @param array              $options   Options passed to the remover
      */

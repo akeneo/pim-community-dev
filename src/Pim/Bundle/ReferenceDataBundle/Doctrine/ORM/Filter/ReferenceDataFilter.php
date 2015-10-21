@@ -4,7 +4,7 @@ namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\AbstractAttributeFilter;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
@@ -104,7 +104,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /**
      * Add empty filter to the qb
      *
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
      */
@@ -136,7 +136,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /**
      * Add non empty filter to the query
      *
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param string             $operator
      * @param string             $value
      * @param string             $locale

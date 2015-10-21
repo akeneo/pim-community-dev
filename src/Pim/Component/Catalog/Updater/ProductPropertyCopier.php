@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Copier\AttributeCopierInterface;
 use Pim\Component\Catalog\Updater\Copier\CopierRegistryInterface;
@@ -76,7 +76,7 @@ class ProductPropertyCopier implements PropertyCopierInterface
     /**
      * @param string $code
      *
-     * @return AttributeInterface|null
+     * @return \Pim\Component\Catalog\Model\AttributeInterface|null
      */
     protected function getAttribute($code)
     {

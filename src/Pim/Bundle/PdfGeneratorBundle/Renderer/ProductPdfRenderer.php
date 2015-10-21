@@ -7,7 +7,7 @@ use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -152,7 +152,7 @@ class ProductPdfRenderer implements RendererInterface
      * @param string           $locale
      * @param string           $scope
      *
-     * @return AttributeInterface[]
+     * @return \Pim\Component\Catalog\Model\AttributeInterface[]
      */
     protected function getImageAttributes(ProductInterface $product, $locale, $scope)
     {

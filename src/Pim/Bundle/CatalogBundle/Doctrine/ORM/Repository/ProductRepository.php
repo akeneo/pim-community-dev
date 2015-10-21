@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -571,7 +571,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * Return the identifier attribute
      *
-     * @return AttributeInterface|null
+     * @return \Pim\Component\Catalog\Model\AttributeInterface|null
      */
     protected function getIdentifierAttribute()
     {

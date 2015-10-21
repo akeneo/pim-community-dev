@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

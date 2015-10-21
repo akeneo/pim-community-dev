@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Validator\Constraint;
 
 /**
@@ -26,7 +26,7 @@ interface ConstraintGuesserInterface
     /**
      * Guess the constraints for the given attribute
      *
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      *
      * @return Constraint[]
      */

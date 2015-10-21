@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Interface for column info
@@ -16,7 +16,7 @@ interface ColumnInfoInterface
     /**
      * Sets the attribute
      *
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      *
      * @throws \Pim\Bundle\TransformBundle\Exception\ColumnLabelException
      */

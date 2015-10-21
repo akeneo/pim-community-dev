@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater\Setter;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -71,7 +71,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
     /**
      * Check if data is valid
      *
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param mixed              $data
      */
     protected function checkData(AttributeInterface $attribute, $data)
@@ -105,7 +105,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
      * Set the data into the product value
      *
      * @param \Pim\Component\Catalog\Model\ProductInterface   $product
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $unit
      * @param string             $locale

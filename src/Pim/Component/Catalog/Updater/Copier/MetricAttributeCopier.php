@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -75,8 +75,8 @@ class MetricAttributeCopier extends AbstractAttributeCopier
     /**
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
      * @param string             $fromLocale
      * @param string             $toLocale
      * @param string             $fromScope

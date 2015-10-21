@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Family interface

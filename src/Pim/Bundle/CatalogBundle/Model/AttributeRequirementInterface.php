@@ -1,6 +1,7 @@
 <?php
 
 namespace Pim\Bundle\CatalogBundle\Model;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * The attribute requirement for a channel and a family

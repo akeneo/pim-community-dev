@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterInterface;
 
 /**
@@ -84,7 +84,7 @@ abstract class AbstractFilter implements FilterInterface
     /**
      * Prepare join to attribute condition with current locale and scope criterias
      *
-     * @param AttributeInterface $attribute the attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute the attribute
      * @param string             $joinAlias the value join alias
      * @param string             $locale    the locale
      * @param string             $scope     the scope

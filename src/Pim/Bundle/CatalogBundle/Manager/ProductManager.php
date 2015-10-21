@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -168,7 +168,7 @@ class ProductManager implements ProductManagerInterface
      * Deletes values that link an attribute to a product
      *
      * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param array              $savingOptions
      *
      * @deprecated Will be removed in 1.5, please use ProductBuilderInterface::removeAttributeFromProduct() and
@@ -192,7 +192,7 @@ class ProductManager implements ProductManagerInterface
     /**
      * Return the identifier attribute
      *
-     * @return AttributeInterface|null
+     * @return \Pim\Component\Catalog\Model\AttributeInterface|null
      *
      * @deprecated will be removed in 1.5, please use AttributeRepositoryInterface::getIdentifier();
      */

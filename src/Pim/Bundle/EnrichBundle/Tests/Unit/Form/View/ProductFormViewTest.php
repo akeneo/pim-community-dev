@@ -531,7 +531,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      */
     private function getAttributeMock(array $options)
     {

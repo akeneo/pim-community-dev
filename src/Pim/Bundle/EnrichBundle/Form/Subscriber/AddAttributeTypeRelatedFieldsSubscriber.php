@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
@@ -101,7 +101,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      * Customize the attribute form
      *
      * @param Form               $form
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      */
     protected function customizeForm(Form $form, AttributeInterface $attribute)
     {

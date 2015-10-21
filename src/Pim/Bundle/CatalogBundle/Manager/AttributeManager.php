@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
@@ -61,7 +61,7 @@ class AttributeManager
      *
      * @param string $type
      *
-     * @return AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      *
      * @deprecated will be removed in 1.5, please use AttributeFactory::createAttribute
      */
@@ -102,7 +102,7 @@ class AttributeManager
     /**
      * Update attribute option sorting
      *
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param array              $sorting
      */
     public function updateSorting(AttributeInterface $attribute, array $sorting = [])
@@ -124,7 +124,7 @@ class AttributeManager
      *
      * @throws EntityNotFoundException
      *
-     * @return AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      *
      * @deprecated will be removed in 1.5 please use AttributeRepositoryInterface->find()
      */

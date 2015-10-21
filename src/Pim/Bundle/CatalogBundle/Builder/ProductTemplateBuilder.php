@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -87,7 +87,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      * Build product values from template values raw data
      *
      * @param ProductTemplateInterface $template
-     * @param AttributeInterface[]     $attributes
+     * @param \Pim\Component\Catalog\Model\AttributeInterface[]     $attributes
      *
      * @return ProductValueInterface[]
      */

@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -67,12 +67,12 @@ class ProductSpec extends ObjectBehavior
         $this->getAssociationForType($assocType1)->shouldReturn(null);
     }
 
-    function it_has_not_attribute_in_family_without_family(AttributeInterface $attribute)
+    function it_has_not_attribute_in_family_without_family(\Pim\Component\Catalog\Model\AttributeInterface $attribute)
     {
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
     }
 
-    function it_has_not_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
+    function it_has_not_attribute_in_family(\Pim\Component\Catalog\Model\AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
     {
         $attributes->contains($attribute)->willReturn(false);
         $family->getId()->willReturn(42);
@@ -81,7 +81,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInfamily($attribute)->shouldReturn(false);
     }
 
-    function it_has_attribute_in_family(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
+    function it_has_attribute_in_family(\Pim\Component\Catalog\Model\AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $attributes)
     {
         $attributes->contains($attribute)->willReturn(true);
         $family->getId()->willReturn(42);
@@ -90,7 +90,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInfamily($attribute)->shouldReturn(true);
     }
 
-    function it_has_not_attribute_in_group_without_groups(AttributeInterface $attribute)
+    function it_has_not_attribute_in_group_without_groups(\Pim\Component\Catalog\Model\AttributeInterface $attribute)
     {
         $this->hasAttributeInVariantGroup($attribute)->shouldReturn(false);
     }
@@ -136,7 +136,7 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeEditable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_editable_with_group_containing_attribute(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
+    function it_is_not_attribute_editable_with_group_containing_attribute(\Pim\Component\Catalog\Model\AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(true);

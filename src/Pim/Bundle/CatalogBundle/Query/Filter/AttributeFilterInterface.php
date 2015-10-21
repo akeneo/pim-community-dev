@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * Filter interface
@@ -16,7 +16,7 @@ interface AttributeFilterInterface extends FilterInterface
     /**
      * Add an attribute to filter
      *
-     * @param AttributeInterface $attribute the attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute the attribute
      * @param string             $operator  the used operator
      * @param string|array       $value     the value(s) to filter
      * @param string             $locale    the locale

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -112,7 +112,7 @@ interface ProductBuilderInterface
      * Add a missing value to the product
      *
      * @param \Pim\Component\Catalog\Model\ProductInterface   $product
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope
      *

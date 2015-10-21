@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Query;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
@@ -204,7 +204,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Add a filter condition on an attribute
      *
      * @param AttributeFilterInterface $filter    the filter
-     * @param AttributeInterface       $attribute the attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface       $attribute the attribute
      * @param string                   $operator  the operator
      * @param mixed                    $value     the value to filter
      * @param array                    $context   the filter context
@@ -249,7 +249,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Sort by attribute value
      *
      * @param AttributeSorterInterface $sorter    the sorter
-     * @param AttributeInterface       $attribute the attribute to sort on
+     * @param \Pim\Component\Catalog\Model\AttributeInterface       $attribute the attribute to sort on
      * @param string                   $direction the direction to use
      * @param array                    $context   the sorter context
      *

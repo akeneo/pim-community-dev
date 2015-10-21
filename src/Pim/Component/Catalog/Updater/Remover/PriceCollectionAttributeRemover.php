@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Remover;
 
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -69,7 +69,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * Remove prices from product value
      *
      * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $locale
      * @param string             $scope
@@ -90,7 +90,7 @@ class PriceCollectionAttributeRemover extends AbstractAttributeRemover
      * Check if data are valid
      * "data": doesn't need value
      *
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param mixed              $data
      *
      * @return mixed

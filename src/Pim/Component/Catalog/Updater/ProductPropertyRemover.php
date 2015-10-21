@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface;
 use Pim\Component\Catalog\Updater\Remover\RemoverRegistryInterface;
@@ -69,7 +69,7 @@ class ProductPropertyRemover implements PropertyRemoverInterface
     /**
      * @param string $code
      *
-     * @return AttributeInterface|null
+     * @return \Pim\Component\Catalog\Model\AttributeInterface|null
      */
     protected function getAttribute($code)
     {

@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
 use Doctrine\Common\Util\Inflector;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Exception\ColumnLabelException;
 
 /**
@@ -52,7 +52,7 @@ class ColumnInfo implements ColumnInfoInterface
     protected $rawSuffixes;
 
     /**
-     * @var AttributeInterface
+     * @var \Pim\Component\Catalog\Model\AttributeInterface
      */
     protected $attribute;
 
@@ -74,7 +74,7 @@ class ColumnInfo implements ColumnInfoInterface
     /**
      * Sets the attribute
      *
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      *
      * @throws ColumnLabelException
      */

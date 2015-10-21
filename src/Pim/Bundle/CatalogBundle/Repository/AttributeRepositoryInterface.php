@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
@@ -20,7 +20,7 @@ interface AttributeRepositoryInterface extends
     ObjectRepository
 {
     /**
-     * @return AttributeInterface[]
+     * @return \Pim\Component\Catalog\Model\AttributeInterface[]
      */
     public function findAllWithTranslations();
 
@@ -37,7 +37,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Find all attributes that belongs to the default group
      *
-     * @return AttributeInterface[]
+     * @return \Pim\Component\Catalog\Model\AttributeInterface[]
      */
     public function findAllInDefaultGroup();
 
@@ -119,7 +119,7 @@ interface AttributeRepositoryInterface extends
      * Get the identifier attribute
      * Only one identifier attribute can exists
      *
-     * @return AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      */
     public function getIdentifier();
 
@@ -133,7 +133,7 @@ interface AttributeRepositoryInterface extends
     /**
      * Get non identifier attributes
      *
-     * @return AttributeInterface[]
+     * @return \Pim\Component\Catalog\Model\AttributeInterface[]
      */
     public function getNonIdentifierAttributes();
 

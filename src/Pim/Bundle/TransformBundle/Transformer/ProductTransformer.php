@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -34,7 +34,7 @@ class ProductTransformer extends EntityTransformer
     /** @var CachedReader */
     protected $associationReader;
 
-    /** @var AttributeInterface */
+    /** @var \Pim\Component\Catalog\Model\AttributeInterface */
     protected $identifierAttribute;
 
     /** @var array */

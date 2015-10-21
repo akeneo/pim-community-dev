@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -320,7 +320,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
      *
      * @throws ObjectNotFoundException
      *
-     * @return AttributeInterface
+     * @return \Pim\Component\Catalog\Model\AttributeInterface
      */
     protected function getAttribute($code)
     {

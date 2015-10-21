@@ -3,7 +3,7 @@
 namespace Pim\Component\ReferenceData\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -82,8 +82,8 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     /**
      * @param \Pim\Component\Catalog\Model\ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
      * @param string|null        $fromLocale
      * @param string|null        $toLocale
      * @param string|null        $fromScope
@@ -115,7 +115,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
 
     /**
      * @param ProductValueInterface $value
-     * @param AttributeInterface    $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface    $attribute
      * @param string                $type
      *
      * @return string

@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater\Setter;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -76,7 +76,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
     /**
      * Check if data is valid
      *
-     * @param AttributeInterface $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $attribute
      * @param mixed              $data
      */
     protected function checkData(AttributeInterface $attribute, $data)
@@ -99,7 +99,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
      * Set option into the product value
      *
      * @param ProductInterface              $product
-     * @param AttributeInterface            $attribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface            $attribute
      * @param AttributeOptionInterface|null $option
      * @param string|null                   $locale
      * @param string|null                   $scope

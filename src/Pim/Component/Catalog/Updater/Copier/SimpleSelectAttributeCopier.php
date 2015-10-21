@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -67,7 +67,7 @@ class SimpleSelectAttributeCopier extends AbstractAttributeCopier
     /**
      * @param \Pim\Component\Catalog\Model\ProductInterface   $fromProduct
      * @param \Pim\Component\Catalog\Model\ProductInterface   $toProduct
-     * @param AttributeInterface $fromAttribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string|null        $fromLocale
      * @param string|null        $toLocale

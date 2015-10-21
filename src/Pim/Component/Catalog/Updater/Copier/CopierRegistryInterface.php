@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Updater\Copier\CopierInterface;
 
 /**
@@ -42,8 +42,8 @@ interface CopierRegistryInterface
     public function getFieldCopier($fromField, $toField);
 
     /**
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $fromAttribute
+     * @param \Pim\Component\Catalog\Model\AttributeInterface $toAttribute
      *
      * @return AttributeCopierInterface
      */

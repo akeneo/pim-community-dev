@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**

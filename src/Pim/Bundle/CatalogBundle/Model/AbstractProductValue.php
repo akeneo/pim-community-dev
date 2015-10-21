@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -23,7 +24,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /** @var int|string */
     protected $id;
 
-    /** @var \Pim\Bundle\CatalogBundle\Model\AttributeInterface */
+    /** @var \Pim\Component\Catalog\Model\AttributeInterface */
     protected $attribute;
 
     /** @var mixed */

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

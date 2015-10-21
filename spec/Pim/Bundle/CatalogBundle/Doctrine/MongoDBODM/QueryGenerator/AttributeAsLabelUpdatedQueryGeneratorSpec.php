@@ -4,14 +4,14 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 class AttributeAsLabelUpdatedQueryGeneratorSpec extends ObjectBehavior
 {
     function let(NamingUtility $utility)
     {
-        $this->beConstructedWith($utility, 'Pim\Bundle\CatalogBundle\Model\AttributeInterface', 'attributeAsLabel');
+        $this->beConstructedWith($utility, 'Pim\Component\Catalog\Model\AttributeInterface', 'attributeAsLabel');
     }
 
     function it_filters_updates_on_attribute_class_and_attribute_as_label_field(
