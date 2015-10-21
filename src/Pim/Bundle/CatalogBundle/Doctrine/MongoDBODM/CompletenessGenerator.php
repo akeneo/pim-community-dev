@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;

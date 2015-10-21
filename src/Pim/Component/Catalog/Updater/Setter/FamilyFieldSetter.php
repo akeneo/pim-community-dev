@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -78,7 +78,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
     /**
      * @param string $familyCode
      *
-     * @return FamilyInterface
+     * @return \Pim\Component\Catalog\Model\FamilyInterface
      */
     protected function getFamily($familyCode)
     {

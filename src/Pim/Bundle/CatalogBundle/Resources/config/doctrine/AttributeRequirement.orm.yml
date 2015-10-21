@@ -18,7 +18,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeRequirement:
             type: boolean
     manyToOne:
         family:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\FamilyInterface
+            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
             inversedBy: requirements
             joinColumns:
                 family_id:

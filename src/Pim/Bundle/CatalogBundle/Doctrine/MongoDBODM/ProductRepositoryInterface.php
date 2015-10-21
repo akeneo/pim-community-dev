@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
@@ -27,7 +27,7 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface, Ass
     public function findAllIdsForAttribute(AttributeInterface $attribute);
 
     /**
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      *
      * @return string[]
      */

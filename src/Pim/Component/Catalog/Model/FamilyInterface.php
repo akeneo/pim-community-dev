@@ -1,7 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Model;
+namespace Pim\Component\Catalog\Model;
 
+use Pim\Bundle\CatalogBundle\Model\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;

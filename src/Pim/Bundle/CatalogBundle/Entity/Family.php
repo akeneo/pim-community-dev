@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**

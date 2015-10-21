@@ -67,7 +67,7 @@ class FamilyFactorySpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $family = $this->createFamily();
-        $family->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\FamilyInterface');
+        $family->shouldBeAnInstanceOf('Pim\Component\Catalog\Model\FamilyInterface');
         $family->getAttributes()->shouldHaveCount(1);
         $family->getAttributes()->first()->shouldBeEqualTo($identifierAttribute);
         $family->getAttributeRequirements()->shouldHaveCount(2);

@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
@@ -32,7 +32,7 @@ interface FamilyRepositoryInterface extends
     /**
      * Returns a querybuilder to get full requirements
      *
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      * @param string          $localeCode
      *
      * @return \Doctrine\ORM\QueryBuilder
@@ -43,7 +43,7 @@ interface FamilyRepositoryInterface extends
      * Returns all families code with their required attributes code
      * Requirements can be restricted to a channel.
      *
-     * @param FamilyInterface  $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface  $family
      * @param ChannelInterface $channel
      *
      * @return array

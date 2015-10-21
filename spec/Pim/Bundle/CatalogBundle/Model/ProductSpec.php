@@ -9,14 +9,14 @@ use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
 class ProductSpec extends ObjectBehavior
 {
-    function it_has_family(FamilyInterface $family)
+    function it_has_family(\Pim\Component\Catalog\Model\FamilyInterface $family)
     {
         $family->getId()->willReturn(42);
         $this->setFamily($family);
@@ -165,7 +165,7 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_removable_with_family_containing_attribute(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
+    function it_is_not_attribute_removable_with_family_containing_attribute(AttributeInterface $attribute, \Pim\Component\Catalog\Model\FamilyInterface $family, ArrayCollection $familyAttributes)
     {
         $familyAttributes->contains($attribute)->willReturn(true);
         $family->getId()->willReturn(42);

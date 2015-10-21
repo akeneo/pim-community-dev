@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -101,7 +101,7 @@ class FamilyProcessor extends AbstractProcessor
     }
 
     /**
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      * @param array           $convertedItem
      *
      * @throws \InvalidArgumentException
@@ -112,7 +112,7 @@ class FamilyProcessor extends AbstractProcessor
     }
 
     /**
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      *
      * @throws \InvalidArgumentException
      *

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 
 /**
  * The attribute requirement for a channel and a family

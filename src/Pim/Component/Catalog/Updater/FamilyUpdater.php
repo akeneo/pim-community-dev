@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRequirementRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
@@ -81,7 +81,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
         if (!$family instanceof FamilyInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\FamilyInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\FamilyInterface", "%s" provided.',
                     ClassUtils::getClass($family)
                 )
             );
@@ -133,7 +133,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      * @param array           $data
      */
     protected function setAttributeRequirements(FamilyInterface $family, array $data)
@@ -156,7 +156,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      *
      * @return AttributeRequirementInterface[]
      */
@@ -255,7 +255,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      * @param array           $data
      *
      * @throws \InvalidArgumentException
@@ -279,7 +279,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      * @param string          $data
      *
      * @throws \InvalidArgumentException

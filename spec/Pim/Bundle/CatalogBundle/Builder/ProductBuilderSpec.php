@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;

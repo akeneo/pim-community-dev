@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Cache;
 
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -127,7 +127,7 @@ class AttributeCache
     /**
      * Returns the attribute codes for a family
      *
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      *
      * @return array
      */

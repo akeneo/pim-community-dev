@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -48,7 +48,7 @@ interface CompletenessGeneratorInterface
      * Schedule recalculation of completenesses for all product
      * of a family
      *
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      */
     public function scheduleForFamily(FamilyInterface $family);
 

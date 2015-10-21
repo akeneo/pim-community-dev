@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;

@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 class FamilyNormalizerSpec extends ObjectBehavior

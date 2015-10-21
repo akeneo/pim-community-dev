@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\LocalizableInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;

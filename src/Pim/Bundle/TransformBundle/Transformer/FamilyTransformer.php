@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -97,7 +97,7 @@ class FamilyTransformer extends NestedEntityTransformer
      * Sets the requirements for a channel
      *
      * @param string          $class
-     * @param FamilyInterface $family
+     * @param \Pim\Component\Catalog\Model\FamilyInterface $family
      * @param string          $channelCode
      * @param array           $attributeCodes
      */
