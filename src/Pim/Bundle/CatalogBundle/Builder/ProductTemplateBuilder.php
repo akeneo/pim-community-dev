@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -89,7 +89,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
      * @param ProductTemplateInterface $template
      * @param \Pim\Component\Catalog\Model\AttributeInterface[]     $attributes
      *
-     * @return ProductValueInterface[]
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface[]
      */
     protected function buildProductValuesFromTemplateValuesData(ProductTemplateInterface $template, array $attributes)
     {

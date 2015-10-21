@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Event;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\Event;
 class CreateProductValueFormEvent extends Event
 {
     /**
-     * @var ProductValueInterface
+     * @var \Pim\Component\Catalog\Model\ProductValueInterface
      */
     protected $productValue;
 
@@ -58,7 +58,7 @@ class CreateProductValueFormEvent extends Event
     }
 
     /**
-     * @return ProductValueInterface
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface
      */
     public function getProductValue()
     {

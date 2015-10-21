@@ -5,7 +5,7 @@ namespace Pim\Component\Catalog\Updater\Copier;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -102,7 +102,7 @@ class MultiSelectAttributeCopier extends AbstractAttributeCopier
     /**
      * Remove options from attribute
      *
-     * @param ProductValueInterface $toValue
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $toValue
      */
     protected function removeOptions(ProductValueInterface $toValue)
     {

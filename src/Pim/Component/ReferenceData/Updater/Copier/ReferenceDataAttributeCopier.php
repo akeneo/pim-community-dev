@@ -5,7 +5,7 @@ namespace Pim\Component\ReferenceData\Updater\Copier;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier;
 use Pim\Component\ReferenceData\MethodNameGuesser;
@@ -114,7 +114,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      * @param \Pim\Component\Catalog\Model\AttributeInterface    $attribute
      * @param string                $type
      *

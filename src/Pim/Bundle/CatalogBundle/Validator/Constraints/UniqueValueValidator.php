@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\UniqueValuesSet;
 use Symfony\Component\Form\Form;
@@ -97,7 +97,7 @@ class UniqueValueValidator extends ConstraintValidator
      *
      * When validates values for a VariantGroup there is not product related to the value
      *
-     * @param ProductValueInterface $productValue
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $productValue
      *
      * @return bool
      */
@@ -123,7 +123,7 @@ class UniqueValueValidator extends ConstraintValidator
     /**
      * Get product value from form
      *
-     * @return ProductValueInterface|null
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface|null
      */
     protected function getProductValueFromForm()
     {

@@ -5,7 +5,7 @@ namespace Pim\Component\ReferenceData\Updater\Copier;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Updater\Copier\AbstractAttributeCopier;
 use Pim\Component\ReferenceData\MethodNameGuesser;
@@ -117,7 +117,7 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     /**
      * Remove reference data collection from attribute
      *
-     * @param ProductValueInterface $toValue
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $toValue
      * @param \Pim\Component\Catalog\Model\AttributeInterface    $toAttribute
      */
     protected function removeReferenceDataCollection(ProductValueInterface $toValue, AttributeInterface $toAttribute)
@@ -133,8 +133,8 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     /**
      * Copy attribute reference data collection into a reference data collection attribute
      *
-     * @param ProductValueInterface $fromValue
-     * @param ProductValueInterface $toValue
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $fromValue
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $toValue
      * @param \Pim\Component\Catalog\Model\AttributeInterface    $fromAttribute
      * @param AttributeInterface    $toAttribute
      */
@@ -153,7 +153,7 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      * @param \Pim\Component\Catalog\Model\AttributeInterface    $attribute
      * @param string                $type
      * @param bool                  $singularify

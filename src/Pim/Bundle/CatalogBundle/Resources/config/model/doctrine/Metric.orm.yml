@@ -36,7 +36,7 @@ Pim\Bundle\CatalogBundle\Model\Metric:
             column: family
     oneToOne:
         value:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+            targetEntity: Pim\Component\Catalog\Model\ProductValueInterface
             mappedBy: metric
             joinColumns:
                 metric_id:

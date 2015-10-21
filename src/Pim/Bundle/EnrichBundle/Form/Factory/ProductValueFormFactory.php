@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Factory;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

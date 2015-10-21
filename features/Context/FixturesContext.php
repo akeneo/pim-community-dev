@@ -1794,7 +1794,7 @@ class FixturesContext extends RawMinkContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface
      */
     protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {

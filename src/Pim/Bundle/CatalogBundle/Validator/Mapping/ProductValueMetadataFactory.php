@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Mapping;
 
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
@@ -70,7 +70,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     }
 
     /**
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      *
      * @return ClassMetadata
      */

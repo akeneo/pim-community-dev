@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -33,7 +33,7 @@ class ScopableValueValidator extends ConstraintValidator
      */
     public function validate($productValue, Constraint $constraint)
     {
-        /** @var ProductValueInterface */
+        /** @var \Pim\Component\Catalog\Model\ProductValueInterface */
         if ($productValue instanceof ProductValueInterface) {
             $isScopable = $productValue->getAttribute()->isScopable();
             $channelCode = $productValue->getScope();
@@ -62,7 +62,7 @@ class ScopableValueValidator extends ConstraintValidator
 
     /**
      * @param ScopableValue         $constraint
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      */
     protected function addExpectedScopeViolation(ScopableValue $constraint, ProductValueInterface $value)
     {

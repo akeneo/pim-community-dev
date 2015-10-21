@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator;
 
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Contains the state of the unique value for a product, due to EAV model we cannot ensure it via constraints on

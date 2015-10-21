@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -76,7 +76,7 @@ class LocalizableValueValidator extends ConstraintValidator
 
     /**
      * @param LocalizableValue      $constraint
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      * @param string                $localeCode
      */
     protected function addUnexistingLocaleViolation(

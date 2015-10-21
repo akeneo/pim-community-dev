@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 class UniqueValuesSetSpec extends ObjectBehavior
 {

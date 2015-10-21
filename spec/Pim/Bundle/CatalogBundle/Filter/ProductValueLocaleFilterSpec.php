@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 class ProductValueLocaleFilterSpec extends ObjectBehavior
 {

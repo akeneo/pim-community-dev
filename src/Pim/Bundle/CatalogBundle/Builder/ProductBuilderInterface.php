@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * Product builder interface
@@ -72,7 +72,7 @@ interface ProductBuilderInterface
     /**
      * Add a product price with currency to the value. If the price already exists, it is returned.
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      * @param string                $currency
      *
      * @return null|ProductPriceInterface
@@ -94,7 +94,7 @@ interface ProductBuilderInterface
     /**
      * Remove extra prices that are not in the currencies passed in arguments
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      * @param array                 $currencies
      */
     public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies);

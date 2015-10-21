@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -216,7 +216,7 @@ class ProductManager implements ProductManagerInterface
     /**
      * Create a product value
      *
-     * @return ProductValueInterface
+     * @return \Pim\Component\Catalog\Model\ProductValueInterface
      *
      * @deprecated will be removed in 1.5, please use ProductBuilderInterface::createProductValue();
      */
@@ -304,7 +304,7 @@ class ProductManager implements ProductManagerInterface
     /**
      * Check if a product value with a specific value already exists
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      *
      * @return bool
      *

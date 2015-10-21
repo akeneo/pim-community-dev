@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Completeness\Checker;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 interface ProductValueCompleteCheckerInterface
 {
     /**
-     * @param ProductValueInterface $productValue
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $productValue
      * @param ChannelInterface|null $channel
      * @param LocaleInterface|null  $locale
      *
@@ -27,7 +27,7 @@ interface ProductValueCompleteCheckerInterface
     );
 
     /**
-     * @param ProductValueInterface $productValue
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $productValue
      *
      * @return bool
      */

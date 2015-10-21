@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -34,7 +34,7 @@ interface AttributeTypeInterface
     /**
      * Get value form type alias to use to render value
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      *
      * @return string
      */
@@ -52,7 +52,7 @@ interface AttributeTypeInterface
     /**
      * Guess the constraints to apply on the form
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      *
      * @return array
      */
@@ -61,7 +61,7 @@ interface AttributeTypeInterface
     /**
      * Get value form type data
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      *
      * @return mixed
      */

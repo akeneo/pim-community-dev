@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -136,7 +136,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get the value form type name to use to ensure binding
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      *
      * @return string
      */
@@ -148,7 +148,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get value form type alias to use to render value
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      *
      * @return string
      */
@@ -177,7 +177,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Guess the constraints to apply on the form
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      *
      * @return array
      */
@@ -195,7 +195,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Get value form type data
      *
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      *
      * @return mixed
      */

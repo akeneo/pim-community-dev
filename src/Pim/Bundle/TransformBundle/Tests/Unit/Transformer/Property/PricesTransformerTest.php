@@ -112,7 +112,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
     protected function getProductValueMock()
     {
         return $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
+            ->getMockBuilder('Pim\Component\Catalog\Model\ProductValueInterface')
             ->setMethods(
                 [
                     'setText',

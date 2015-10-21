@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\View;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
 use Symfony\Component\Form\FormView;
 
@@ -127,7 +127,7 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param ProductValueInterface $value
+     * @param \Pim\Component\Catalog\Model\ProductValueInterface $value
      * @param FormView              $view
      */
     protected function addValue(ProductValueInterface $value, FormView $view)
