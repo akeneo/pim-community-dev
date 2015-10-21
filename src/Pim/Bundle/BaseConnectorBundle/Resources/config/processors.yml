@@ -12,6 +12,7 @@ parameters:
 
     pim_base_connector.processor.product_to_flat_array.class:           Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.normalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor
+    pim_base_connector.processor.normalization.family.class:            Pim\Bundle\BaseConnectorBundle\Processor\Normalization\FamilyProcessor
     pim_base_connector.processor.dummy.class:                           Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
 
 services:
@@ -170,3 +171,10 @@ services:
             - '@pim_serializer'
             - %upload_dir%
             - 'csv'
+
+    pim_base_connector.processor.normalization.family.flat:
+        class: %pim_base_connector.processor.normalization.family.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.manager.locale'
+            - '@pim_serializer.normalizer.flat.family'
