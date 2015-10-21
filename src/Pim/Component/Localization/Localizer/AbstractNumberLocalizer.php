@@ -51,11 +51,16 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Convert a number to the default format
+     *
+     * @param mixed $number
+     * @param array $options
+     *
+     * @return mixed
      */
-    protected function convertNumber($number, array $options = [])
+    protected function convertNumberToDefault($number, array $options = [])
     {
-        if (null === $number || ''  === $number) {
+        if (null === $number || '' === $number) {
             return $number;
         }
 
