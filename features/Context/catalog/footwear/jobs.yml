@@ -150,6 +150,17 @@ jobs:
             enclosure:     '"'
             escape:        '\'
             copyValues: true
+    footwear_family_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_import
+        label:     Footwear family import
+        type:      import
+        configuration:
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+            copyValues: true
     update_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value
