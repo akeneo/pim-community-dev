@@ -44,6 +44,10 @@ pim_connector:
             title: Association type import in CSV
             validation.title: File validation
             import.title: Association type import
+        csv_family_import:
+            title: Family import in CSV
+            validation.title: File validation
+            import.title: Family import
         csv_group_import:
             title: Group import in CSV
             validation.title: File validation

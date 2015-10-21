@@ -25,7 +25,7 @@ pim_base_connector:
             export.title: Variant group export
         csv_family_export:
             title: Family export in CSV
-            export: Family export
+            export.title: Family export
         csv_product_import:
             title: Product import in CSV
             validation.title: File validation
