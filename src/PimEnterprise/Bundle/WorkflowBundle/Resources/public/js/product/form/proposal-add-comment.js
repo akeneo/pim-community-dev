@@ -9,38 +9,10 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        'pim/form',
-        'text!pimee/template/product/meta/notification-comment'
+        'pimee/product-edit-form/abstract-add-notification-comment'
     ],
-    function ($, _, Backbone, BaseForm, template) {
-        return BaseForm.extend({
-            /**
-             * Template used for rendering the form
-             */
-            template: _.template(template),
-
-            /**
-             * Backbone events we listen to
-             */
-            events: {
-                'change textarea': 'updateModel'
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function () {
-                this.model = new Backbone.Model();
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * Update the model the form is attached to
-             */
-            updateModel: function () {
-                this.model.set('comment', this.$('textarea').val());
-            },
+    function ($,_, Backbone, AbstractCommentForm) {
+        return AbstractCommentForm.extend({
 
             /**
              * {@inheritdoc}
@@ -48,7 +20,8 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        label: _.__('pimee_enrich.entity.product_draft.modal.title_comment')
+                        label: _.__('pimee_workflow.entity.proposal.modal.title'),
+                        characters: _.__('pimee_enrich.entity.product_draft.modal.characters')
                     })
                 );
 

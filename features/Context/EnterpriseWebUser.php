@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Behat\Context\Step;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
@@ -280,10 +281,15 @@ class EnterpriseWebUser extends BaseWebUser
 
     /**
      * @Given /^I fill in this comment in the popin: "([^"]+)"$/
+     * @Given /^I fill in this comment in the popin:$/
      */
     public function iFillInThisCommentInThePopin($comment)
     {
+        if ($comment instanceof PyStringNode) {
+            $comment = $comment->getRaw();
+        }
+
         $this->getCurrentPage()->simpleFillField('modal-comment', $comment);
-        $this->getSession()->executeScript('$(\'#modal-comment\').trigger(\'change\');');
+        $this->getSession()->executeScript("$('#modal-comment').trigger('change');");
     }
 }
