@@ -81,5 +81,5 @@ connector:
                     title:     pim_base_connector.jobs.csv_family_export.export.title
                     services:
                         reader:    pim_base_connector.reader.orm.family
-                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        processor: pim_base_connector.processor.normalization.family.flat
                         writer:    pim_base_connector.writer.file
