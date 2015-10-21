@@ -168,8 +168,9 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     {
         if (null === $this->normalizerContext) {
             $this->normalizerContext = [
-                'scopeCode'   => $this->channel,
-                'localeCodes' => $this->getLocaleCodes($this->channel)
+                'scopeCode'         => $this->channel,
+                'localeCodes'       => $this->getLocaleCodes($this->channel),
+                'decimal_separator' => $this->decimalSeparator,
             ];
         }
 

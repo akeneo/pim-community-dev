@@ -17,7 +17,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
     function let(Serializer $serializer, ChannelManager $channelManager)
     {
-        $this->beConstructedWith($serializer, $channelManager, ['pim_catalog_file', 'pim_catalog_image']);
+        $this->beConstructedWith($serializer, $channelManager, ['pim_catalog_file', 'pim_catalog_image'], ['.', ',']);
     }
 
     function it_is_initializable()
@@ -44,6 +44,16 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
                         'select2'  => true,
                         'label'    => 'pim_base_connector.export.channel.label',
                         'help'     => 'pim_base_connector.export.channel.help'
+                    ]
+                ],
+                'decimalSeparator' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => ['.', ','],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.decimalSeparator.label',
+                        'help'     => 'pim_base_connector.export.decimalSeparator.help'
                     ]
                 ]
             ]
@@ -98,7 +108,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->normalize($media2, 'flat', ['field_name' => 'media', 'prepare_copy' => true, 'value' => $value2])
             ->willReturn(['normalized_media2']);
         $serializer
-            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
+            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => '', 'decimal_separator' => '.'])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
@@ -119,9 +129,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Serializer $serializer
     ) {
         $product->getValues()->willReturn([]);
+        $this->setDecimalSeparator(',');
 
         $serializer
-            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
+            ->normalize($product, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => '', 'decimal_separator' => ','])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
