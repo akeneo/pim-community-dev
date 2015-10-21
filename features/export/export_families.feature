@@ -16,9 +16,9 @@ Feature: Export families
     And I should see "Written 4"
     And exported file of "footwear_family_export" should contain:
     """
-    code;attributes;attributeAsLabel;requirements;label-en_US
-    boots;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;mobile:sku,name,price,size,color|tablet:sku,name,description,weather_conditions,price,rating,side_view,size,color;Boots
-    heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;mobile:sku,name,price,size,color,heel_color,sole_color|tablet:sku,name,description,price,side_view,size,color,heel_color,sole_color;Heels
-    sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;mobile:sku,name,price,size,color|tablet:sku,name,description,weather_conditions,price,rating,side_view,size,color;Sneakers
-    sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;mobile:sku,name,price,size,color|tablet:sku,name,description,price,rating,side_view,size,color;Sandals
+    code;attributes;attribute_as_label;requirements-mobile;requirements-tablet;label-en_US
+    boots;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;color;color;Boots
+    heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;sole_color;sole_color;Heels
+    sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;color;color;Sneakers
+    sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;color;color;Sandals
     """
