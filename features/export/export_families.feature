@@ -15,10 +15,10 @@ Feature: Export families
     Then I should see "Read 4"
     And I should see "Written 4"
     And exported file of "footwear_family_export" should contain:
-    """
-    code;attributes;attribute_as_label;requirements-mobile;requirements-tablet;label-en_US
-    boots;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;color;color;Boots
-    heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;sole_color;sole_color;Heels
-    sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;color;color;Sneakers
-    sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;color;color;Sandals
-    """
+      """
+      code;attributes;attribute_as_label;requirements-mobile;requirements-tablet;label-en_US
+      boots;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;color;color;Boots
+      heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;sole_color;sole_color;Heels
+      sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;color;color;Sneakers
+      sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;color;color;Sandals
+      """
