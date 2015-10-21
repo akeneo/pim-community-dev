@@ -61,12 +61,13 @@ class FamilyNormalizerSpec extends ObjectBehavior
         $mobile->getCode()->willReturn('mobile');
         $ecommercereq->getAttribute()->willReturn($name);
 
-        $result = $this->normalize($family)->shouldReturn(
+        $this->normalize($family)->shouldReturn(
             [
-                'code'             => 'mugs',
-                'attributes'       => 'name,price',
-                'attributeAsLabel' => 'name',
-                'requirements'     => 'ecommerce:name|mobile:',
+                'code'                   => 'mugs',
+                'attributes'             => 'name,price',
+                'attribute_as_label'     => 'name',
+                'requirements-ecommerce' => 'name',
+                'requirements-mobile'    => '',
             ]
         );
     }
