@@ -1,7 +1,12 @@
-# 1.4.4 (2015-10-16)
+# 1.4.x
 
 ## Bug fixes
 - PIM-4794: Fix static attributes types for reference data
+- PIM-5035: Fix products sorting in associations grid
+
+# 1.4.4 (2015-10-16)
+
+## Bug fixes
 - PIM-5016: Fix import product with only sku and family columns
 - PIM-5000: Fix the products on which mass actions are applied
 - PIM-5006: Fix the API key generation

@@ -2,9 +2,11 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\MongoDB\ArrayIterator;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ODM\MongoDB\Query\Query;
 use PhpSpec\ObjectBehavior;
@@ -12,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Prophecy\Argument;
+use Prophecy\Promise\ReturnPromise;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -41,8 +44,13 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
         AssociationType $associationType,
         ProductInterface $associatedProduct1,
         ProductInterface $associatedProduct2,
+        ArrayCollection $productsCollection,
+        ArrayCollection $productIdsCollection,
+        ArrayIterator $productsIterator,
+        ArrayCollection $associationsCollection,
+        ArrayIterator $associationsIterator,
         DocumentManager $documentManager,
-        \Doctrine\ODM\MongoDB\Mapping\ClassMetadata $metadata,
+        ClassMetadata $metadata,
         Collection $collection,
         ArrayIterator $arrayIterator
     ) {
@@ -58,17 +66,40 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
         $builder->getQuery()->willReturn($query);
         $builder->hydrate(false)->willReturn($builder);
 
-        $associatedProduct1->getId()->willReturn('550ae6b98ead0ed7778b46bb');
-        $associatedProduct2->getId()->willReturn('550ae6b98abd0ec8778b46bb');
-
-        $product->getAssociations()->willReturn([$association]);
+        $product->getAssociations()->willReturn($associationsCollection);
+        $associationsCollection->getIterator()->willReturn($associationsIterator);
+        $associationsIterator->rewind()->shouldBeCalled();
+        $associationsCount = 1;
+        $associationsIterator->valid()->will(
+            function () use (&$associationsCount) {
+                return $associationsCount-- > 0;
+            }
+        );
+        $associationsIterator->next()->shouldBeCalled();
+        $associationsIterator->current()->will(new ReturnPromise([$association]));
+        $associationsCollection->filter(Argument::any())->willReturn($associationsIterator);
+        $associationsIterator->first()->willReturn($association);
 
         $association->getAssociationType()->willReturn($associationType);
         $associationType->getId()->willReturn(1);
 
-        $association->getProducts()->willReturn([
-            $associatedProduct1,
-            $associatedProduct2,
+        $associatedProduct1->getId()->willReturn('550ae6b98ead0ed7778b46bb');
+        $associatedProduct2->getId()->willReturn('550ae6b98abd0ec8778b46bb');
+        $association->getProducts()->willReturn($productsCollection);
+        $productsCollection->getIterator()->willReturn($productsIterator);
+        $productsIterator->rewind()->shouldBeCalled();
+        $productsCount = 2;
+        $productsIterator->valid()->will(
+            function () use (&$productsCount) {
+                return $productsCount-- > 0;
+            }
+        );
+        $productsIterator->next()->shouldBeCalled();
+        $productsIterator->current()->will(new ReturnPromise([$associatedProduct1, $associatedProduct2]));
+        $productsCollection->map(Argument::any())->willReturn($productIdsCollection);
+        $productIdsCollection->toArray()->willReturn([
+            '550ae6b98ead0ed7778b46bb',
+            '550ae6b98abd0ec8778b46bb'
         ]);
 
         $queryDefinition = [
