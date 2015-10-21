@@ -19,7 +19,7 @@ Feature: Import categories
     And I wait for the "footwear_family_import" job to finish
     Then there should be the following families:
       | code     | attributes            | attribute_as_label | requirements-mobile | requirements-tablet | label-en_US |
-      | tractors | sku,name,manufacturer | name               | manufacturer        | manufacturer        | Tractors    |
+      | tractors | sku,name,manufacturer | name               | sku,manufacturer    | sku,manufacturer    | Tractors    |
 
   Scenario: Successfully update existing family
     Given the "footwear" catalog configuration
