@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Structured;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * A normalizer to transform an AttributeInterface entity into a flat array

@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product;
 
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

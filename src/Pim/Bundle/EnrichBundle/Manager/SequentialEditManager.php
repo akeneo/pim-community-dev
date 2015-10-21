@@ -5,10 +5,10 @@ namespace Pim\Bundle\EnrichBundle\Manager;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 
 /**

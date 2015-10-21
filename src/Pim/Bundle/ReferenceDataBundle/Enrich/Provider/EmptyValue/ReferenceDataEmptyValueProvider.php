@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Enrich\Provider\EmptyValue;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * EmptyValue provider for reference data attributes

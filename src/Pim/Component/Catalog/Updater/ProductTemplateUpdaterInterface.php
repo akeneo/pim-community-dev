@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\Updater;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Update many products at a time from the product template values

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
  * AttributeValidatorHelper
