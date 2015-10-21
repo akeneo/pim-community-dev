@@ -1,11 +1,21 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Model;
+namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
+use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\LocalizableInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\CatalogBundle\Model\ScopableInterface;
+use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
@@ -205,14 +215,14 @@ interface ProductInterface extends
     /**
      * Get product completenesses
      *
-     * @return Collection of CompletenessInterface
+     * @return ArrayCollection of CompletenessInterface
      */
     public function getCompletenesses();
 
     /**
      * Set product completenesses
      *
-     * @param Collection $completenesses CompletenessInterface
+     * @param ArrayCollection $completenesses CompletenessInterface
      *
      * @return ProductInterface
      */

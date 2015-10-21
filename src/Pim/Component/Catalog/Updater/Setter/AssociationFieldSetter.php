@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Sets the association field
@@ -70,7 +70,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /**
      * Clear associations (remove groups and products from existing associations)
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     protected function clearAssociations(ProductInterface $product)
     {
@@ -87,7 +87,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /**
      * Add missing associations (if association type has been added after the last processing)
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     protected function addMissingAssociations(ProductInterface $product)
     {
@@ -97,7 +97,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
     /**
      * Set products and groups to associations
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     protected function setProductsAndGroupsToAssociations(ProductInterface $product, $data)
     {

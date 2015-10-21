@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Interface for association repository
@@ -26,7 +26,7 @@ interface AssociationRepositoryInterface
     /**
      * Get the list of associations corresponding to the given owner IDs
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param array            $ownerIds
      *
      * @return \Pim\Bundle\CatalogBundle\Model\Association[]

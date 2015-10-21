@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Product category repository interface
@@ -21,7 +21,7 @@ interface ProductCategoryRepositoryInterface
     /**
      * Return the number of times the product is present in each tree
      *
-     * @param ProductInterface $product The product to look for in the trees
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product The product to look for in the trees
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
      *

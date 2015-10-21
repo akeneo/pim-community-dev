@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Localization\Exception\FormatLocalizerException;
@@ -370,7 +370,7 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param array            $filteredItem
      *
      * @return array
@@ -450,7 +450,7 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param array            $filteredItem
      *
      * @throws \InvalidArgumentException

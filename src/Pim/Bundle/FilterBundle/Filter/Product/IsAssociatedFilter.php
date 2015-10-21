@@ -9,7 +9,7 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Request\RequestParametersExtractorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -96,7 +96,7 @@ class IsAssociatedFilter extends BooleanFilter
     }
 
     /**
-     * @return ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     protected function getCurrentProduct()
     {
@@ -110,7 +110,7 @@ class IsAssociatedFilter extends BooleanFilter
     }
 
     /**
-     * @param ProductInterface         $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface         $product
      * @param AssociationTypeInterface $type
      *
      * @return array

@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Cache;
 
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -82,7 +82,7 @@ class AttributeCache
     /**
      * Returns the required attribute codes for a product
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      *
      * @return array
      */

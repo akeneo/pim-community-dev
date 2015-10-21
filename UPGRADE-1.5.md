@@ -151,6 +151,14 @@ src/
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
 ```
 
+## Catalog Bundle & Component
+
+We've extracted model interfaces as ProductInterface from the Catalog bundle to the Catalog component.
+
+We keep the old interfaces as deprecated to avoid a large BC Break.
+
+This allow us to continue to split our classes in components and bundles.
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
@@ -161,4 +169,5 @@ Based on a PIM standard installation, execute the following command in your proj
 
 ```
     find ./src/ -type f -print0 | xargs -0 sed -i 's/EntityBundle\\DependencyInjection\\Compiler\\DoctrineOrmMappingsPass/StorageUtilsBundle\\DependencyInjection\\Compiler\\DoctrineOrmMappingsPass/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Bundle\\CatalogBundle\\Model\\ProductInterface/Component\\Catalog\\Model\\ProductInterface/g'
 ```

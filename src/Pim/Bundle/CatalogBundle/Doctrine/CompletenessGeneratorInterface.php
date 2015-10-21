@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Completeness generator interface. Will be implemented differently
@@ -21,7 +21,7 @@ interface CompletenessGeneratorInterface
      * Generate completeness for a product. CAUTION: in current
      * implementations, the product must already be flushed to the DBs
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     public function generateMissingForProduct(ProductInterface $product);
 
@@ -40,7 +40,7 @@ interface CompletenessGeneratorInterface
     /**
      * Schedule recalculation of completenesses for a product
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     public function schedule(ProductInterface $product);
 

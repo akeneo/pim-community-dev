@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Sets a value in a product
@@ -17,7 +17,7 @@ interface AttributeSetterInterface extends SetterInterface
     /**
      * Set attribute data
      *
-     * @param ProductInterface   $product   The product to modify
+     * @param \Pim\Component\Catalog\Model\ProductInterface   $product   The product to modify
      * @param AttributeInterface $attribute The attribute of the product to modify
      * @param mixed              $data      The data to set
      * @param array              $options   Options passed to the setter

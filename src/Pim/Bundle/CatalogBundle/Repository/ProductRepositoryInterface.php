@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 
@@ -28,7 +28,7 @@ interface ProductRepositoryInterface
      *
      * @throws NonUniqueResultException
      *
-     * @return ProductInterface|null
+     * @return \Pim\Component\Catalog\Model\ProductInterface|null
      */
     public function findOneByWithValues($id);
 
@@ -61,7 +61,7 @@ interface ProductRepositoryInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return ProductInterface[]
+     * @return \Pim\Component\Catalog\Model\ProductInterface[]
      */
     public function findAllWithAttribute(AttributeInterface $attribute);
 
@@ -70,7 +70,7 @@ interface ProductRepositoryInterface
      *
      * @param AttributeOptionInterface $option
      *
-     * @return ProductInterface[]
+     * @return \Pim\Component\Catalog\Model\ProductInterface[]
      */
     public function findAllWithAttributeOption(AttributeOptionInterface $option);
 
@@ -79,7 +79,7 @@ interface ProductRepositoryInterface
      *
      * @param int $id
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     public function getFullProduct($id);
 
@@ -134,7 +134,7 @@ interface ProductRepositoryInterface
     /**
      * @param string|int $id
      *
-     * @return ProductInterface|null
+     * @return \Pim\Component\Catalog\Model\ProductInterface|null
      */
     public function findOneById($id);
 

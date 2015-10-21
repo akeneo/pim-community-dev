@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
@@ -94,7 +94,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      */
     protected function doDenormalize($data, $format, array $context)
     {
-        /** @var ProductInterface $product */
+        /** @var \Pim\Component\Catalog\Model\ProductInterface $product */
         $product = $this->getEntity($data, $context);
 
         if (isset($data[self::FIELD_ENABLED])) {
@@ -130,7 +130,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string           $data
      * @param string           $format
      * @param array            $context
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     protected function denormalizeFamily($data, $format, array $context, ProductInterface $product)
     {
@@ -149,7 +149,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string           $data
      * @param string           $format
      * @param array            $context
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     protected function denormalizeCategories($data, $format, array $context, ProductInterface $product)
     {
@@ -193,7 +193,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string           &$data
      * @param string           $format
      * @param array            $context
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      *
      * @throws \RuntimeException
      */
@@ -252,7 +252,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string           $data
      * @param string           $format
      * @param array            $context
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     protected function denormalizeValues($data, $format, array $context, ProductInterface $product)
     {

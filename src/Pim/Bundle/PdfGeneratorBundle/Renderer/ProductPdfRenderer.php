@@ -8,7 +8,7 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -111,7 +111,7 @@ class ProductPdfRenderer implements RendererInterface
     /**
      * Get attributes to display
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param string           $locale
      *
      * @return AttributeInterface[]
@@ -124,7 +124,7 @@ class ProductPdfRenderer implements RendererInterface
     /**
      * get attributes grouped by attribute group
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param string           $locale
      *
      * @return AttributeGroup[]

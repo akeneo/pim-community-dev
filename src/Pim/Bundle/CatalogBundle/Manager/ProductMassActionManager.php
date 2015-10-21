@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 
@@ -68,7 +68,7 @@ class ProductMassActionManager
      * Filter attribute by removing attributes coming from variants
      *
      * @param AttributeInterface[] $attributes
-     * @param ProductInterface[]   $products
+     * @param \Pim\Component\Catalog\Model\ProductInterface[]   $products
      *
      * @return AttributeInterface[]
      */
@@ -111,7 +111,7 @@ class ProductMassActionManager
     /**
      * Get common attributes coming also from variant groups
      *
-     * @param ProductInterface[] $products
+     * @param \Pim\Component\Catalog\Model\ProductInterface[] $products
      *
      * @return array
      */

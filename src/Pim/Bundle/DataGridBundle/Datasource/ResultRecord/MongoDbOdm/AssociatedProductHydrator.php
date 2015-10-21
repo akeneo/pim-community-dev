@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\CompletenessTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FamilyTransformer;
@@ -24,7 +24,7 @@ class AssociatedProductHydrator implements HydratorInterface
     protected $productClass;
 
     /**
-     * @param ProductInterface $productClass
+     * @param \Pim\Component\Catalog\Model\ProductInterface $productClass
      */
     public function __construct($productClass)
     {

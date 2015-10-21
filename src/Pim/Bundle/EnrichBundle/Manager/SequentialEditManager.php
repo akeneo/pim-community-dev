@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Manager;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
 use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
@@ -120,7 +120,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
      * Find wrapped products from a product
      *
      * @param SequentialEdit   $sequentialEdit
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     public function findWrap(SequentialEdit $sequentialEdit, ProductInterface $product)
     {
@@ -141,7 +141,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
      * @param SequentialEdit $sequentialEdit
      * @param int            $currentKey
      *
-     * @return null|ProductInterface
+     * @return null|\Pim\Component\Catalog\Model\ProductInterface
      */
     protected function findNext(SequentialEdit $sequentialEdit, $currentKey)
     {
@@ -161,7 +161,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
      * @param SequentialEdit $sequentialEdit
      * @param int            $currentKey
      *
-     * @return null|ProductInterface
+     * @return null|\Pim\Component\Catalog\Model\ProductInterface
      */
     protected function findPrevious(SequentialEdit $sequentialEdit, $currentKey)
     {

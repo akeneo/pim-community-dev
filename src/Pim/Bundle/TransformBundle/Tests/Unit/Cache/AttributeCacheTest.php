@@ -180,7 +180,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      * @param array  $familyAttributeCodes
      * @param array  $categories
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     protected function getProductMock(
         $productId = null,

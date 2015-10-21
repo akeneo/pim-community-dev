@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Copies a data from a product's field to another product's field
@@ -16,8 +16,8 @@ interface FieldCopierInterface extends CopierInterface
     /**
      * Copy a data from a source field to a destination field
      *
-     * @param ProductInterface $fromProduct
-     * @param ProductInterface $toProduct
+     * @param \Pim\Component\Catalog\Model\ProductInterface $fromProduct
+     * @param \Pim\Component\Catalog\Model\ProductInterface $toProduct
      * @param string           $fromField
      * @param string           $toField
      * @param array            $options

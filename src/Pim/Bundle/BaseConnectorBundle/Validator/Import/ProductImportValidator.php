@@ -6,7 +6,7 @@ use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
@@ -227,7 +227,7 @@ class ProductImportValidator extends ImportValidator
     /**
      * Returns a ProductValue
      *
-     * @param ProductInterface    $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface    $product
      * @param ColumnInfoInterface $columnInfo
      *
      * @return ProductValueInterface

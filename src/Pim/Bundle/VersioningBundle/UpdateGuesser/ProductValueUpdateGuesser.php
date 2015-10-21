@@ -63,7 +63,7 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
      * @param EntityManager $em
      * @param object        $entity
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface[]
+     * @return \Pim\Component\Catalog\Model\ProductInterface[]
      */
     protected function guessDeletionUpdates(EntityManager $em, $entity)
     {

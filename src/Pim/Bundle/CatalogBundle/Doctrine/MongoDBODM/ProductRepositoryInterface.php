@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface as BaseProductRepositoryInterface;
 
@@ -36,14 +36,14 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface, Ass
     /**
      * @param CategoryInterface $category
      *
-     * @return ProductInterface[]
+     * @return \Pim\Component\Catalog\Model\ProductInterface[]
      */
     public function findAllForCategory(CategoryInterface $category);
 
     /**
      * @param GroupInterface $group
      *
-     * @return ProductInterface[]
+     * @return \Pim\Component\Catalog\Model\ProductInterface[]
      */
     public function findAllForGroup(GroupInterface $group);
 

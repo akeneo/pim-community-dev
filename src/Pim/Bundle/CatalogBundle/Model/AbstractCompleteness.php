@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Abstract product completeness entity

@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
@@ -232,7 +232,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update groups of the product
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      *
      * @return bool
      */
@@ -244,7 +244,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update categories of the product
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      *
      * @return bool
      */
@@ -256,7 +256,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update status of the product
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      *
      * @return bool
      */
@@ -268,7 +268,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * Return whether the current user is allowed to update associations of the product
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      *
      * @return bool
      */

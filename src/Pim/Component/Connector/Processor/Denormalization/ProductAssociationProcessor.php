@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -179,7 +179,7 @@ class ProductAssociationProcessor extends AbstractProcessor
     /**
      * @param string $identifier
      *
-     * @return ProductInterface|null
+     * @return \Pim\Component\Catalog\Model\ProductInterface|null
      */
     public function findProduct($identifier)
     {

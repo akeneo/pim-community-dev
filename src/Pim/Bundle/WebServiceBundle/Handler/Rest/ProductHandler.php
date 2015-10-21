@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\WebServiceBundle\Handler\Rest;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -28,7 +28,7 @@ class ProductHandler
     /**
      * Serialize a single product
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param string[]         $channels
      * @param string[]         $locales
      * @param string           $url

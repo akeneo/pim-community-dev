@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -63,7 +63,7 @@ class CreateProductCommand extends ContainerAwareCommand
     /**
      * @param string $identifier
      *
-     * @return ProductInterface|null
+     * @return \Pim\Component\Catalog\Model\ProductInterface|null
      */
     protected function getProduct($identifier)
     {
@@ -76,7 +76,7 @@ class CreateProductCommand extends ContainerAwareCommand
     /**
      * @param string $identifier
      *
-     * @return ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     protected function createProduct($identifier)
     {
@@ -87,7 +87,7 @@ class CreateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      *
      * @return ConstraintViolationListInterface
      */
@@ -100,7 +100,7 @@ class CreateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     protected function saveProduct(ProductInterface $product)
     {

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Comparator\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -127,7 +127,7 @@ class ProductAssociationFilter implements ProductFilterInterface
     /**
      * Normalize original associations
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      *
      * @return array
      */

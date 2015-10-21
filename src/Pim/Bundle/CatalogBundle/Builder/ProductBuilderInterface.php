@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Builder;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -24,7 +24,7 @@ interface ProductBuilderInterface
      * @param string $identifier
      * @param string $familyCode
      *
-     * @return ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     public function createProduct($identifier = null, $familyCode = null);
 
@@ -52,7 +52,7 @@ interface ProductBuilderInterface
     /**
      * Creates required value(s) to add the attribute to the product
      *
-     * @param ProductInterface   $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
      * @param AttributeInterface $attribute
      */
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute);
@@ -60,7 +60,7 @@ interface ProductBuilderInterface
     /**
      * Deletes values that link an attribute to a product
      *
-     * @param ProductInterface   $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
      * @param AttributeInterface $attribute
      *
      * @return bool
@@ -111,7 +111,7 @@ interface ProductBuilderInterface
     /**
      * Add a missing value to the product
      *
-     * @param ProductInterface   $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
      * @param AttributeInterface $attribute
      * @param string             $locale
      * @param string             $scope

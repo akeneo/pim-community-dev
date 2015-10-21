@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater\Remover;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Remove a data from a product field
@@ -16,7 +16,7 @@ interface FieldRemoverInterface extends RemoverInterface
     /**
      * Remove field data
      *
-     * @param ProductInterface $product The product to modify
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product The product to modify
      * @param string           $field   The field of the product to modify
      * @param mixed            $data    The data to remove
      * @param array            $options Options passed to the remover

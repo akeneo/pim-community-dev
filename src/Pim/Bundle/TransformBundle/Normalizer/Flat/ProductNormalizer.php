@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
@@ -92,7 +92,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalize properties
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      */
     protected function normalizeProperties(ProductInterface $product)
     {
@@ -102,7 +102,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalize values
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param string|null      $format
      * @param array            $context
      */
@@ -140,7 +140,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Get filtered values
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param array            $context
      *
      * @return ProductValueInterface[]

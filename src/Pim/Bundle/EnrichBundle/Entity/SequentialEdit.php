@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Entity;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -29,7 +29,7 @@ class SequentialEdit
     /** @var ProductInterface */
     protected $previous;
 
-    /** @var ProductInterface */
+    /** @var \Pim\Component\Catalog\Model\ProductInterface */
     protected $next;
 
     /**
@@ -117,7 +117,7 @@ class SequentialEdit
     }
 
     /**
-     * @return ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     public function getCurrent()
     {
@@ -145,7 +145,7 @@ class SequentialEdit
     }
 
     /**
-     * @param ProductInterface $previous
+     * @param \Pim\Component\Catalog\Model\ProductInterface $previous
      *
      * @return SequentialEdit
      */

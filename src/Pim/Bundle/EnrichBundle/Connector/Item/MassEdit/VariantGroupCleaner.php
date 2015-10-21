@@ -11,7 +11,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -203,7 +203,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
 
     /**
      * @param ConstraintViolationListInterface $violations
-     * @param ProductInterface                 $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface                 $product
      */
     protected function addWarningMessage($violations, $product)
     {
@@ -253,7 +253,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
      *    'red_xs_ferrari'  => [13]
      * ]
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param array            $axisAttributeCodes
      *
      * @return string
@@ -272,7 +272,7 @@ class VariantGroupCleaner extends AbstractConfigurableStepElement implements Ste
     /**
      * Fill the array with products id based on their variant axis combination as key
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param array            $productAttributeAxis
      * @param string           $keyCombination
      *

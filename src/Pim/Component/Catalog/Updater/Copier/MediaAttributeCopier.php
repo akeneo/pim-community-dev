@@ -7,7 +7,7 @@ use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use League\Flysystem\MountManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\FileStorage;
 
@@ -88,8 +88,8 @@ class MediaAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * @param ProductInterface   $fromProduct
-     * @param ProductInterface   $toProduct
+     * @param \Pim\Component\Catalog\Model\ProductInterface   $fromProduct
+     * @param \Pim\Component\Catalog\Model\ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string             $fromLocale

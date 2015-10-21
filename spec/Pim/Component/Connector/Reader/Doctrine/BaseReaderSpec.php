@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\Reader\Doctrine;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 class BaseReaderSpec extends ObjectBehavior
 {

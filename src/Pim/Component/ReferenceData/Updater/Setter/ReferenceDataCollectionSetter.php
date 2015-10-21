@@ -6,7 +6,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\Catalog\Updater\Setter\AbstractAttributeSetter;
 use Pim\Component\ReferenceData\MethodNameGuesser;
@@ -119,7 +119,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
      * Set reference data collection into the product value
      *
      * @param AttributeInterface $attribute
-     * @param ProductInterface   $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface   $product
      * @param array              $referenceDataCollection
      * @param string|null        $locale
      * @param string|null        $scope

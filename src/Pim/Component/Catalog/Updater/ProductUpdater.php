@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 
 /**
@@ -108,7 +108,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
         if (!$product instanceof ProductInterface) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\ProductInterface", "%s" provided.',
+                    'Expects a "Pim\Component\Catalog\Model\ProductInterface", "%s" provided.',
                     ClassUtils::getClass($product)
                 )
             );
@@ -170,7 +170,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     /**
      * Sets the field
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param string           $field
      * @param mixed            $value
      */
@@ -185,7 +185,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
      *  - sets optional values (not related to family's attributes) when a data is provided
      *  - sets optional values (not related to family's attributes) with empty data if value already exists
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param string           $attributeCode
      * @param array            $values
      */
@@ -210,7 +210,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
      * Updates product with its variant group values to ensure that values coming from variant group are always
      * applied after the product values (if a product value is updated and should come from variant group)
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param array            $data
      */
     protected function updateProductVariantValues(ProductInterface $product, array $data)

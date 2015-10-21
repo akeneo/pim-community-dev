@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -61,7 +61,7 @@ class ValidateProductCommand extends ContainerAwareCommand
     /**
      * @param string $identifier
      *
-     * @return ProductInterface
+     * @return \Pim\Component\Catalog\Model\ProductInterface
      */
     protected function getProduct($identifier)
     {
@@ -72,7 +72,7 @@ class ValidateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      *
      * @return ConstraintViolationListInterface
      */

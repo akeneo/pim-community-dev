@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * Category interface

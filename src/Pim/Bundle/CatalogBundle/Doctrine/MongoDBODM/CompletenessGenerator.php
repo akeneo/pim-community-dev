@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 
@@ -90,7 +90,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Generate missing completenesses for a channel if provided or a product
      * if provided. CAUTION: the product must be already flushed to the DB
      *
-     * @param ProductInterface $product
+     * @param \Pim\Component\Catalog\Model\ProductInterface $product
      * @param ChannelInterface $channel
      */
     protected function generate(ProductInterface $product = null, ChannelInterface $channel = null)

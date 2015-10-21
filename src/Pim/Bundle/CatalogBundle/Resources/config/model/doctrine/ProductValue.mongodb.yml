@@ -27,7 +27,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         entity:
             reference: true
             type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            targetDocument: Pim\Component\Catalog\Model\ProductInterface
             inversedBy: values
         option:
             type: entity
