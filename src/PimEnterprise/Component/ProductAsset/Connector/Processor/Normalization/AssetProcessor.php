@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -27,16 +27,16 @@ class AssetProcessor extends Processor
     protected $assetNormalizer;
 
     /**
-     * @param SerializerInterface $serializer
-     * @param LocaleManager       $localeManager
-     * @param NormalizerInterface $assetNormalizer
+     * @param SerializerInterface       $serializer
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param NormalizerInterface       $assetNormalizer
      */
     public function __construct(
         SerializerInterface $serializer,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         NormalizerInterface $assetNormalizer
     ) {
-        parent::__construct($serializer, $localeManager);
+        parent::__construct($serializer, $localeRepository);
 
         $this->assetNormalizer = $assetNormalizer;
     }
@@ -56,7 +56,7 @@ class AssetProcessor extends Processor
                 'enclosure'     => $this->enclosure,
                 'withHeader'    => $this->withHeader,
                 'heterogeneous' => false,
-                'locales'       => $this->localeManager->getActiveCodes(),
+                'locales'       => $this->localeRepository->getActivatedLocaleCodes(),
             ]
         );
     }
