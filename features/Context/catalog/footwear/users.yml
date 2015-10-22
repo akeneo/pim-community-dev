@@ -52,3 +52,12 @@ users:
         last_name:        Rose
         roles:            [ ROLE_ASSET_MANAGER ]
         groups:           [ Manager ]
+    Julien:
+        catalogLocale:    fr_FR
+        uiLocale:         fr_FR
+        catalogScope:     mobile
+        defaultTree:      winter_collection
+        defaultAssetTree: asset_main_catalog
+        last_name:        Février
+        roles:            [ ROLE_USER ]
+        groups:           [ Redactor ]
