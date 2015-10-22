@@ -9,6 +9,7 @@ use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Base\Base;
+use Context\Spin\SpinCapableTrait;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -31,29 +32,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 {
     use SpinCapableTrait;
 
-    /**
-     * @var string|null
-     */
-    public $currentPage = null;
+    /** @var string|null */
+    public $currentPage;
 
-    /**
-     * @var string
-     */
-    protected $username = null;
+    /** @var string */
+    protected $username;
 
-    /**
-     * @var string
-     */
-    protected $password = null;
+    /** @var string */
+    protected $password;
 
-    /**
-     * @var PageFactory
-     */
-    protected $pageFactory = null;
+    /** @var PageFactory */
+    protected $pageFactory;
 
-    /**
-     * @var array
-     */
+    /** @var string */
+    protected $baseUrl;
+
+    /** @var array */
     protected $pageMapping = [
         'association types'        => 'AssociationType index',
         'attributes'               => 'Attribute index',
@@ -83,6 +77,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'search'                   => 'Search index',
         'job tracker'              => 'JobTracker index',
     ];
+
+    /**
+     * @param string $baseUrl
+     */
+    public function __construct($baseUrl)
+    {
+        $this->baseUrl = $baseUrl;
+    }
 
     /**
      * @param PageFactory $pageFactory
@@ -157,6 +159,20 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $page
+     * @param string $referer
+     *
+     * @Given /^I am on the relative path ([^"]+) from ([^"]+)$/
+     */
+    public function iAmOnTheRelativePath($path, $referer)
+    {
+        $basePath = parse_url($this->baseUrl)['path'];
+        $uri = sprintf('%s%s/#url=%s%s', $this->baseUrl, $referer, $basePath, $path);
+
+        $this->getSession()->visit($uri);
+    }
+
+    /**
      * @param string $not
      * @param string $page
      *
@@ -174,7 +190,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->currentPage = $page;
         $this->getCurrentPage()->open();
 
-        return new Step\Then('I should see "Access denied"');
+        return new Step\Then('I should see "403 Forbidden"');
     }
 
     /**
@@ -212,7 +228,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->currentPage = sprintf('%s %s', $page, $action);
         $this->getCurrentPage()->open(['id' => $entity->getId()]);
 
-        return new Step\Then('I should see "Access denied"');
+        return new Step\Then('I should see "403 Forbidden"');
     }
 
     /**
@@ -229,6 +245,30 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
         $this->wait();
+    }
+
+    /**
+     * @Given /^I edit my profile$/
+     */
+    public function iAmOnMyProfileEditPage()
+    {
+        $this->openPage('User profile edit');
+    }
+
+    /**
+     * @Given /^I am on my profile page$/
+     */
+    public function iAmOnMyProfilePage()
+    {
+        $this->openPage('User profile show');
+    }
+
+    /**
+     * @Given /^I edit the system configuration$/
+     */
+    public function iAmOnTheSystemEditPage()
+    {
+        $this->openPage('System index');
     }
 
     /**
@@ -452,7 +492,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
         $page              = $this->getCurrentPage()->open(['id' => $job->getId()]);
 
-        return new Step\Then('I should see "Access denied"');
+        return new Step\Then('I should see "403 Forbidden"');
     }
 
     /**
@@ -596,6 +636,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @Given /^I should be on the attributes page$/
+     */
+    public function iShouldBeOnTheAttributesPage()
+    {
+        $this->assertAddress($this->getPage('Attribute index')->getUrl());
+    }
+
+    /**
+     * @Given /^I should be on the categories page$/
+     */
+    public function iShouldBeOnTheCategoriesPage()
+    {
+        $this->assertAddress($this->getPage('Category index')->getUrl());
+    }
+
+    /**
      * @param Category $category
      *
      * @Then /^I should be on the (category "([^"]*)") edit page$/
@@ -653,6 +709,32 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $this->getMainContext()->reload();
         $this->wait();
+    }
+
+    /**
+     * @When /^I pin the current page$/
+     */
+    public function iPinTheCurrentPage()
+    {
+        $pinButton = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.minimize-button');
+        }, 10);
+
+        $pinButton->click();
+    }
+
+    /**
+     * @When /^I click on the pinned item "([^"]+)"$/
+     *
+     * @param string $label
+     */
+    public function iClickOnThePinnedItem($label)
+    {
+        $pinnedItem = $this->spin(function () use ($label) {
+            return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
+        }, 10);
+
+        $pinnedItem->click();
     }
 
     /**
@@ -730,6 +812,10 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
         if (false !== $urlWithoutLocale = strstr($filteredUrl, '?dataLocale=', true)) {
             $filteredUrl = $urlWithoutLocale;
+        }
+
+        if (false !== $urlWithoutRedirect = strstr($filteredUrl, '?redirectTab=', true)) {
+            $filteredUrl = $urlWithoutRedirect;
         }
 
         if (false !== $urlWithoutGrid = strstr($filteredUrl, '|g/', true)) {

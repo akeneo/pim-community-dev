@@ -108,7 +108,7 @@ services:
             - '@?pim_reference_data.registry'
 
     pim_catalog.updater.category:
-        class: %pim_classification.updater.category.class%
+        class: %akeneo_classification.updater.category.class%
         arguments:
             - '@pim_catalog.repository.category'
 
@@ -143,6 +143,8 @@ services:
     # Setters
     pim_catalog.updater.setter.registry:
         class: %pim_catalog.updater.setter.registry.class%
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.setter.abstract:
         class: %pim_catalog.updater.setter.abstract.class%
@@ -271,8 +273,8 @@ services:
         class: %pim_catalog.updater.setter.media_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
-            - '@akeneo_file_storage.repository.file'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.repository.file_info'
             - ['pim_catalog_file', 'pim_catalog_image']
             - %upload_dir%
         tags:
@@ -288,6 +290,8 @@ services:
 
     pim_catalog.updater.copier.registry:
         class: %pim_catalog.updater.copier.registry.class%
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.copier.text_value:
         class: %pim_catalog.updater.copier.text_value.class%
@@ -302,8 +306,8 @@ services:
         class: %pim_catalog.updater.copier.image_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@akeneo_file_storage.file_storage.raw_file.fetcher'
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.file.file_fetcher'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@oneup_flysystem.mount_manager'
             - ['pim_catalog_image']
             - ['pim_catalog_image']
@@ -314,8 +318,8 @@ services:
         class: %pim_catalog.updater.copier.file_value.class%
         parent: pim_catalog.updater.copier.abstract
         arguments:
-            - '@akeneo_file_storage.file_storage.raw_file.fetcher'
-            - '@akeneo_file_storage.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.file.file_fetcher'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
             - '@oneup_flysystem.mount_manager'
             - ['pim_catalog_file']
             - ['pim_catalog_file']
@@ -398,6 +402,8 @@ services:
     # Adders
     pim_catalog.updater.adder.registry:
         class: %pim_catalog.updater.adder.registry.class%
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.adder.category_field:
         class: %pim_catalog.updater.adder.category_field.class%
@@ -448,6 +454,8 @@ services:
     # Removers
     pim_catalog.updater.remover.registry:
         class: %pim_catalog.updater.remover.registry.class%
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.remover.category_field:
         class: %pim_catalog.updater.remover.category_field.class%

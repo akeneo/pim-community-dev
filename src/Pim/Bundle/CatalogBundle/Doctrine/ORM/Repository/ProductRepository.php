@@ -171,15 +171,25 @@ class ProductRepository extends EntityRepository implements
         $index = 0;
         foreach ($criteria as $item) {
             $code = $item['attribute']->getCode();
+            ++$index;
             $qb
                 ->innerJoin(
                     'Product.values',
                     sprintf('Value_%s', $code),
                     'WITH',
-                    sprintf('Value_%s.attribute = ?%d AND Value_%s.option = ?%d', $code, ++$index, $code, ++$index)
+                    sprintf('Value_%s.attribute = ?%d', $code, $index)
                 )
-                ->setParameter($index - 1, $item['attribute'])
-                ->setParameter($index, $item['option']);
+                ->setParameter($index, $item['attribute']);
+
+            if (isset($item['option'])) {
+                ++$index;
+                $qb->andWhere(sprintf('Value_%s.option = ?%d', $code, $index))
+                    ->setParameter($index, $item['option']);
+            } elseif (isset($item['referenceData'])) {
+                ++$index;
+                $qb->andWhere(sprintf('Value_%s.%s = ?%d', $code, $item['referenceData']['name'], $index))
+                    ->setParameter($index, $item['referenceData']['data']);
+            }
         }
 
         return $qb->getQuery()->getResult();
@@ -593,6 +603,19 @@ class ProductRepository extends EntityRepository implements
             ->select('COUNT(p)')
             ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
             ->setParameter('group', $group)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $count = $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
             ->getQuery()
             ->getSingleScalarResult();
 

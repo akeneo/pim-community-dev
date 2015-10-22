@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\CompletenessSavingOptionsResolver;
-use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Prophecy\Argument;
@@ -36,8 +36,8 @@ class FamilySaverSpec extends ObjectBehavior
         $objectManager->persist($family)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $eventDispatcher->dispatch(FamilyEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(FamilyEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($family);
     }
 
@@ -50,8 +50,8 @@ class FamilySaverSpec extends ObjectBehavior
         $objectManager->persist($family)->shouldBeCalled();
         $objectManager->flush()->shouldNotBeCalled();
 
-        $eventDispatcher->dispatch(FamilyEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(FamilyEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($family, ['flush' => false]);
     }
 
@@ -70,8 +70,8 @@ class FamilySaverSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
         $completenessManager->scheduleForFamily($family)->shouldNotBeCalled($family);
 
-        $eventDispatcher->dispatch(FamilyEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(FamilyEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
+        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
         $this->save($family, ['schedule' => false]);
     }
 

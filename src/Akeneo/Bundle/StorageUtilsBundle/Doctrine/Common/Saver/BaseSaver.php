@@ -2,10 +2,10 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -65,7 +65,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->eventDispatcher->dispatch(BaseEvents::PRE_SAVE, new GenericEvent($object));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($object, $options));
 
         $options = $this->optionsResolver->resolveSaveOptions($options);
         $this->objectManager->persist($object);
@@ -74,7 +74,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(BaseEvents::POST_SAVE, new GenericEvent($object));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($object, $options));
     }
 
     /**
@@ -86,7 +86,7 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-        $this->eventDispatcher->dispatch(BaseEvents::PRE_SAVE_ALL, new GenericEvent($objects));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($objects, $options));
 
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
@@ -100,6 +100,6 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
             $this->objectManager->flush();
         }
 
-        $this->eventDispatcher->dispatch(BaseEvents::POST_SAVE_ALL, new GenericEvent($objects));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($objects, $options));
     }
 }

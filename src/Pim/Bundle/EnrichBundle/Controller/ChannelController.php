@@ -96,16 +96,14 @@ class ChannelController extends AbstractDoctrineController
     /**
      * List channels
      *
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pim_enrich_channel_index")
      *
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -139,7 +137,7 @@ class ChannelController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.channel.saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_enrich_channel_edit', array('id' => $channel->getId()))
+                $this->generateUrl('pim_enrich_channel_edit', ['id' => $channel->getId()])
             );
         }
 
@@ -158,16 +156,11 @@ class ChannelController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, Channel $channel)
     {
+        // @todo This validation should be moved to a validator and that validation trigered by the remover
         $channelCount = $this->getRepository('PimCatalogBundle:Channel')->countAll();
         if ($channelCount <= 1) {
             throw new DeleteException($this->getTranslator()->trans('flash.channel.not removable'));
         }
-
-        foreach ($channel->getLocales() as $locale) {
-            $locale->removeChannel($channel);
-        }
-        $locales = ($channel->getLocales()) ? $channel->getLocales()->toArray() : [];
-        $this->localeSaver->saveAll($locales);
 
         $this->channelRemover->remove($channel);
 

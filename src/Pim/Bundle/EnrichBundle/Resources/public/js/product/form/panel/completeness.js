@@ -14,10 +14,9 @@ define(
         'pim/form',
         'text!pim/template/product/panel/completeness',
         'pim/fetcher-registry',
-        'pim/i18n',
-        'oro/mediator'
+        'pim/i18n'
     ],
-    function ($, _, BaseForm, template, FetcherRegistry, i18n, mediator) {
+    function ($, _, BaseForm, template, FetcherRegistry, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -35,8 +34,8 @@ define(
                     label: _.__('pim_enrich.form.product.panel.completeness.title')
                 });
 
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.update);
-                this.listenTo(mediator, 'pim_enrich:form:change-family:after', this.onChangeFamily);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -92,7 +91,7 @@ define(
              * @param Event event
              */
             showAttribute: function (event) {
-                mediator.trigger(
+                this.getRoot().trigger(
                     'pim_enrich:form:show_attribute',
                     {
                         attribute: event.currentTarget.dataset.attribute,

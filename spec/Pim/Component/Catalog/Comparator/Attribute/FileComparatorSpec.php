@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Component\Catalog\Comparator\Attribute;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class FileComparatorSpec extends ObjectBehavior
 {
-    function let(FileRepositoryInterface $repository)
+    function let(FileInfoRepositoryInterface $repository)
     {
         $this->beConstructedWith(['pim_catalog_file', 'pim_catalog_file'], $repository);
     }
@@ -27,10 +27,10 @@ class FileComparatorSpec extends ObjectBehavior
         )->shouldReturn(['data' => ['filePath' => 'path/to/my/file.txt']]);
     }
 
-    function it_finds_a_diff_when_file_the_is_deleted($repository, FileInterface $file)
+    function it_finds_a_diff_when_file_the_is_deleted($repository, FileInfoInterface $fileInfo)
     {
-        $file->getHash()->willReturn('hash');
-        $repository->findOneByIdentifier('key/of/my/original/file.txt')->willReturn($file);
+        $fileInfo->getHash()->willReturn('hash');
+        $repository->findOneByIdentifier('key/of/my/original/file.txt')->willReturn($fileInfo);
 
         $this->compare(
             ['data' => ['filePath' => null]],
@@ -38,10 +38,10 @@ class FileComparatorSpec extends ObjectBehavior
         )->shouldReturn(['data' => ['filePath' => null]]);
     }
 
-    function it_finds_a_diff_when_files_are_different($repository, FileInterface $file)
+    function it_finds_a_diff_when_files_are_different($repository, FileInfoInterface $fileInfo)
     {
-        $file->getHash()->willReturn('hash');
-        $repository->findOneByIdentifier('key/of/my/original/file.txt')->willReturn($file);
+        $fileInfo->getHash()->willReturn('hash');
+        $repository->findOneByIdentifier('key/of/my/original/file.txt')->willReturn($fileInfo);
 
         $this->compare(
             ['data' => ['filePath' => __FILE__]],
@@ -49,10 +49,10 @@ class FileComparatorSpec extends ObjectBehavior
         )->shouldReturn(['data' => ['filePath' => __FILE__]]);
     }
 
-    function it_returns_null_when_there_is_no_diff($repository, FileInterface $file)
+    function it_returns_null_when_there_is_no_diff($repository, FileInfoInterface $fileInfo)
     {
-        $file->getHash()->willReturn(sha1_file(__FILE__));
-        $repository->findOneByIdentifier('key/of/my/original/file.txt')->willReturn($file);
+        $fileInfo->getHash()->willReturn(sha1_file(__FILE__));
+        $repository->findOneByIdentifier('key/of/my/original/file.txt')->willReturn($fileInfo);
 
         $this->compare(
             ['data' => ['filePath' => __FILE__]],

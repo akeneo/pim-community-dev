@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 
 /**
  * Product file denormalizer used for following attribute type:
@@ -15,14 +15,14 @@ use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
  */
 class FileDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var FileRepositoryInterface */
+    /** @var FileInfoRepositoryInterface */
     protected $repository;
 
     /**
-     * @param array                   $supportedTypes
-     * @param FileRepositoryInterface $repository
+     * @param array                       $supportedTypes
+     * @param FileInfoRepositoryInterface $repository
      */
-    public function __construct(array $supportedTypes, FileRepositoryInterface $repository)
+    public function __construct(array $supportedTypes, FileInfoRepositoryInterface $repository)
     {
         parent::__construct($supportedTypes);
 

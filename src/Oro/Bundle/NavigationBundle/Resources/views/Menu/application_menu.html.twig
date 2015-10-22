@@ -1,0 +1,19 @@
+{% extends 'OroNavigationBundle:Menu:menu.html.twig' %}
+
+{% block item %}
+    {% if item.hasChildren and item.displayChildren %}
+        {%- set classes = classes|merge(['dropdown']) %}
+        {%- set childrenClasses = childrenClasses|merge(['dropdown-menu']) %}
+    {% endif %}
+    {{ block('item_renderer') }}
+{% endblock %}
+
+{% block linkElement %}
+    {% import 'OroNavigationBundle:Menu:menu.html.twig' as oro_menu %}
+    {% if item.hasChildren and item.displayChildren and item.level is sameas(0)%}
+        {% set linkAttributes = linkAttributes|merge(
+        {'class': oro_menu.add_attribute_values(linkAttributes, 'class', ['dropdown-toggle']), 'data-toggle': 'dropdown'})
+        %}
+    {% endif %}
+    <a href="{{ item.uri }}"{{ oro_menu.attributes(linkAttributes) }}><span class="title">{{ block('label') }}</span></a>
+{% endblock %}

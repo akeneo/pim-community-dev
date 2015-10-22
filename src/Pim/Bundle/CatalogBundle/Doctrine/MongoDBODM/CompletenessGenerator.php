@@ -320,15 +320,20 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 $fields[$expectedCompleteness]['reqs']['prices'] = [];
 
                 foreach ($familyReqs[$channel->getCode()] as $requirement) {
-                    $fieldName = $this->getNormalizedFieldName($requirement->getAttribute(), $channel, $locale);
+                    $attribute = $requirement->getAttribute();
+                    $fieldName = $this->getNormalizedFieldName($attribute, $channel, $locale);
 
-                    if (AbstractAttributeType::BACKEND_TYPE_PRICE === $requirement->getAttribute()->getBackendType()) {
-                        $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = [];
-                        foreach ($channel->getCurrencies() as $currency) {
-                            $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
+                    $shouldExistInLocale = !$attribute->isLocaleSpecific() || $attribute->hasLocaleSpecific($locale);
+
+                    if ($shouldExistInLocale) {
+                        if (AbstractAttributeType::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
+                            $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = [];
+                            foreach ($channel->getCurrencies() as $currency) {
+                                $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
+                            }
+                        } else {
+                            $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;
                         }
-                    } else {
-                        $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;
                     }
                 }
             }

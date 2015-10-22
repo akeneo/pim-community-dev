@@ -76,7 +76,7 @@ define(
 
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-                mediator.trigger('pim_enrich:form:entity:pre_save');
+                this.getRoot().trigger('pim_enrich:form:entity:pre_save');
 
                 return ProductManager
                     .save(productId, product)
@@ -89,7 +89,7 @@ define(
 
                         this.setData(data, options);
 
-                        mediator.trigger('pim_enrich:form:entity:post_fetch', data);
+                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', data);
                     }.bind(this))
                     .fail(function (response) {
                         switch (response.status) {
@@ -102,7 +102,7 @@ define(
                             case 500:
                                 /* global console */
                                 console.log('Errors:', response.responseJSON);
-                                mediator.trigger('pim_enrich:form:entity:error:save', response.responseJSON);
+                                this.getRoot().trigger('pim_enrich:form:entity:error:save', response.responseJSON);
                                 break;
                             default:
                         }

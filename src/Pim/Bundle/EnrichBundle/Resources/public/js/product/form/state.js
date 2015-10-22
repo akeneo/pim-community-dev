@@ -46,10 +46,10 @@ define(
              * @inheritdoc
              */
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:entity:update_state', this.render);
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.render);
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.collectAndRender);
-                this.listenTo(mediator, 'pim_enrich:form:state:confirm', this.onConfirmation);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:update_state', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.collectAndRender);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:state:confirm', this.onConfirmation);
                 mediator.on('hash_navigation_click', this.linkClicked.bind(this), 'pim_enrich:form');
                 $(window).on('beforeunload', this.beforeUnload.bind(this));
 

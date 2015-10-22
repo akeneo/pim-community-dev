@@ -9,6 +9,7 @@
  */
 define(
     [
+        'module',
         'underscore',
         'backbone',
         'text!pim/template/product/form',
@@ -18,6 +19,7 @@ define(
         'pim/field-manager'
     ],
     function (
+        module,
         _,
         Backbone,
         template,
@@ -37,6 +39,10 @@ define(
                 mediator.clear('pim_enrich:form');
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
+                if (_.has(module.config(), 'forwarded-events')) {
+                    this.forwardMediatorEvents(module.config()['forwarded-events']);
+                }
+
                 this.onExtensions('save-buttons:register-button', function (button) {
                     this.getExtension('save-buttons').trigger('save-buttons:add-button', button);
                 }.bind(this));
@@ -47,7 +53,7 @@ define(
                 if (!this.configured) {
                     return this;
                 }
-                mediator.trigger('pim_enrich:form:render:before');
+                this.getRoot().trigger('pim_enrich:form:render:before');
 
                 this.$el.html(
                     this.template({
@@ -57,7 +63,7 @@ define(
 
                 this.renderExtensions();
 
-                mediator.trigger('pim_enrich:form:render:after');
+                this.getRoot().trigger('pim_enrich:form:render:after');
             },
             unbindEvents: function () {
                 mediator.clear('pim_enrich:form');

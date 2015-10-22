@@ -38,6 +38,16 @@ interface LocaleInterface extends ReferableInterface
     public function setCode($code);
 
     /**
+     * @return string|null
+     */
+    public function getLanguage();
+
+    /**
+     * @return string|null
+     */
+    public function getName();
+
+    /**
      * @return bool
      */
     public function isActivated();
@@ -46,6 +56,13 @@ interface LocaleInterface extends ReferableInterface
      * @return ArrayCollection
      */
     public function getChannels();
+
+    /**
+     * @param ChannelInterface $channel
+     *
+     * @return bool
+     */
+    public function hasChannel(ChannelInterface $channel);
 
     /**
      * @param ArrayCollection $channels

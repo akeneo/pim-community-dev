@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
@@ -102,26 +103,18 @@ class LocaleRepository extends EntityRepository implements LocaleRepositoryInter
     public function getDeletedLocalesForChannel(ChannelInterface $channel)
     {
         $currentLocaleIds = array_map(
-            function ($locale) {
-                return $locale->getId();
-            },
+            function (LocaleInterface $locale) {return $locale->getId();},
             $channel->getLocales()->toArray()
         );
 
-        $dql = <<<DQL
-            SELECT l
-            JOIN l.channels c
-            WHERE c.id = :channel_id
-              AND l.id NOT IN (:current_locale_ids)
-DQL;
-
-        $query = $this
-            ->getEntityManager()
-            ->createQuery($dql)
+        return $this->createQueryBuilder('l')
+            ->innerJoin('l.channels', 'lc')
+            ->andWhere('lc.id = :channel_id')
+            ->andWhere('l.id NOT IN (:current_locale_ids)')
             ->setParameter(':channel_id', $channel->getId())
-            ->setParameter(':current_locale_ids', implode(',', $currentLocaleIds));
-
-        return $query->getResult();
+            ->setParameter(':current_locale_ids', implode(',', $currentLocaleIds))
+            ->getQuery()
+            ->getResult();
     }
 
     /**
@@ -138,5 +131,20 @@ DQL;
     public function getIdentifierProperties()
     {
         return ['code'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAllActivated()
+    {
+        $countQb = $this->createQueryBuilder('l');
+        $count = $countQb
+            ->select('COUNT(l.id)')
+            ->where($countQb->expr()->eq('l.activated', true))
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
     }
 }

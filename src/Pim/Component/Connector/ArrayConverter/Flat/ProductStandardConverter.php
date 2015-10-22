@@ -176,7 +176,9 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     protected function prepareOptions(array $options)
     {
-        $options['with_required_identifier'] = isset($options['with_required_identifier']) ? $options['with_required_identifier'] : true;
+        $options['with_required_identifier'] = isset($options['with_required_identifier']) ?
+            $options['with_required_identifier'] :
+            true;
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
 

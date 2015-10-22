@@ -137,5 +137,18 @@ class ProductRepositorySpec extends ObjectBehavior
 
         $this->getFullProducts([42]);
     }
+
+    function it_count_all_products($em, QueryBuilder $queryBuilder, AbstractQuery $query)
+    {
+        $em->createQueryBuilder()->willReturn($queryBuilder);
+        $queryBuilder->select('p')->willReturn($queryBuilder);
+        $queryBuilder->from('Pim\Bundle\CatalogBundle\Model\Product', 'p')->willReturn($queryBuilder);
+        $queryBuilder->select('COUNT(p.id)')->willReturn($queryBuilder);
+
+        $queryBuilder->getQuery()->willReturn($query);
+        $query->getSingleScalarResult()->shouldBeCalled();
+
+        $this->countAll();
+    }
 }
 

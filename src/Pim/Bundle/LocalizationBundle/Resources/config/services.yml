@@ -1,0 +1,10 @@
+parameters:
+    pim_localization.form.type.locale.class: Pim\Bundle\LocalizationBundle\Form\Type\LocaleType
+
+services:
+    pim_localization.form.type.locale:
+        class: %pim_localization.form.type.locale.class%
+        arguments:
+            - @pim_localization.provider.ui_locale
+        tags:
+            - { name: form.type, alias: "pim_locale" }

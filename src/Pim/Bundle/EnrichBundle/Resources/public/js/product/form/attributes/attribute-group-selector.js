@@ -44,8 +44,8 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:entity:validation_error', this.onValidationError);
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.onValidationError);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -71,8 +71,8 @@ define(
                                 this.addToBadge(attributeGroup, 'invalid');
                             }.bind(this));
 
-                            if (0 < valuesErrors.length) {
-                                mediator.trigger(
+                            if (!_.isEmpty(valuesErrors)) {
+                                this.getRoot().trigger(
                                     'pim_enrich:form:show_attribute',
                                     {attribute: _.first(_.keys(valuesErrors))}
                                 );

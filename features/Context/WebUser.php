@@ -12,6 +12,7 @@ use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Context\Spin\SpinCapableTrait;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
@@ -391,6 +392,16 @@ class WebUser extends RawMinkContext
     /**
      * @param string $locale
      *
+     * @When /^the locale "([^"]*)" should be selected$/
+     */
+    public function theLocaleShouldBeSelected($locale)
+    {
+        $this->getCurrentPage()->hasSelectedLocale($locale);
+    }
+
+    /**
+     * @param string $locale
+     *
      * @When /^I switch the locale to "([^"]*)"$/
      */
     public function iSwitchTheLocaleTo($locale)
@@ -420,8 +431,11 @@ class WebUser extends RawMinkContext
      *
      * @throws ExpectationException
      */
-    public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table, $productPage = 'edit', $copy = false)
-    {
+    public function theLocaleSwitcherShouldContainTheFollowingItems(
+        TableNode $table,
+        $productPage = 'edit',
+        $copy = false
+    ) {
         $pageName          = sprintf('Product %s', $productPage);
         $linkCount         = $this->getPage($pageName)->countLocaleLinks($copy);
         $expectedLinkCount = count($table->getHash());
@@ -798,6 +812,18 @@ class WebUser extends RawMinkContext
                 )
             );
         }
+    }
+
+    /**
+     * @param string $not
+     * @param string $choices
+     * @param string $label
+     *
+     * @Then /^I should(?P<not> not)? see the choices? (?P<choices>.+) in (?P<label>.+)$/
+     */
+    public function iShouldSeeTheChoicesInField($not, $choices, $label)
+    {
+        $this->getCurrentPage()->checkFieldChoices($label, $this->listToArray($choices), !$not);
     }
 
     /**
@@ -1351,22 +1377,22 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Then /^removing the following permissions? should hide the following history:$/
+     * @Then /^removing the following permissions? should hide the following section:$/
      *
      * @return Then[]
      */
-    public function removingPermissionsShouldHideTheHistory(TableNode $table)
+    public function removingPermissionsShouldHideTheSection(TableNode $table)
     {
         $steps = [];
 
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then('I should see "History"');
+            $steps[] = new Step\Then(sprintf('I should see "%s"', $data['section']));
             $steps[] = new Step\Then('I am on the "Administrator" role page');
             $steps[] = new Step\Then(sprintf('I remove rights to %s', $data['permission']));
             $steps[] = new Step\Then('I save the role');
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
-            $steps[] = new Step\Then('I should not see "History"');
+            $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['section']));
         }
         $steps[] = new Step\Then('I reset the "Administrator" rights');
 
@@ -1614,6 +1640,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $status
+     *
+     * @When /^I (en|dis)able the inclusion of sub-categories$/
+     */
+    public function iSwitchTheSubCategoriesInclusion($status)
+    {
+        $switch = $this->spin(function () {
+            return $this->getCurrentPage()->findById('nested_switch_input');
+        }, 5);
+
+        $on = 'en' === $status;
+        if ($switch->isChecked() !== $on) {
+            $switch->getParent()->find('css', 'label')->click();
+        }
+        $this->wait();
+    }
+
+    /**
      * @param Product $product
      *
      * @Given /^(product "([^"]*)") should be disabled$/
@@ -1672,9 +1716,13 @@ class WebUser extends RawMinkContext
      */
     public function thereShouldBeUpdate($count)
     {
-        if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
-            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
-        }
+        $this->spin(function () use ($count) {
+            if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
+                throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
+            }
+
+            return true;
+        });
     }
 
     /**
@@ -2138,6 +2186,39 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $locale
+     * @param string $channel
+     *
+     * @Then /^I click on the missing "([^"]*)" value for "([^"]*)" locale and "([^"]*)" channel/
+     */
+    public function iClickOnTheMissingValueForLocaleAndChannel($attribute, $locale, $channel)
+    {
+        $cell = $this->getCurrentPage()->findCompletenessCell($channel, $locale);
+
+        $link = $this->spin(function () use ($attribute, $cell) {
+            return $cell->find('css', sprintf(".missing-attributes [data-attribute='%s']", $attribute));
+        }, 20, sprintf("Can't find missing '%s' value link for %s/%s", $attribute, $locale, $channel));
+
+        $link->click();
+    }
+
+    /**
+     * @param string $group
+     *
+     * @Then /^I should be on the "([^"]*)" attribute group$/
+     */
+    public function iShouldBeOnTheAttributeGroup($group)
+    {
+        $groupNode = $this->getCurrentPage()->getAttributeGroupTab($group);
+
+        assertTrue(
+            $groupNode->hasClass('active'),
+            sprintf('Expected to be on attribute group "%s"', $group)
+        );
+    }
+
+    /**
      * @param string $email
      *
      * @Given /^an email to "([^"]*)" should have been sent$/
@@ -2213,6 +2294,47 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^the path of the exported file of "([^"]+)" should be "([^"]+)"$/
+     */
+    public function thePathOfTheExportedFileOfShouldBe($code, $path)
+    {
+        $executionPath = $this->getJobInstancePath($code);
+
+        if ($path !== $executionPath) {
+            throw $this->createExpectationException(
+                sprintf('Expected file name "%s" got "%s"', $path, $executionPath)
+            );
+        }
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getJobInstancePath($code)
+    {
+        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
+        $configuration = $this->getFixturesContext()->findEntity('JobConfiguration', [
+            'jobExecution' => $jobInstance->getJobExecutions()->first()
+        ]);
+
+        $step = $this->getMainContext()
+            ->getContainer()
+            ->get('akeneo_batch.connectors')
+            ->getJob($jobInstance)
+            ->getSteps()[0];
+
+        $context = json_decode(stripcslashes($configuration->getConfiguration()), true);
+
+        if (null !== $context) {
+            $step->setConfiguration($context);
+        }
+
+        return $step->getWriter()->getPath();
+    }
+
+    /**
      * @param string       $code
      * @param PyStringNode $csv
      *
@@ -2227,7 +2349,7 @@ class WebUser extends RawMinkContext
             ->getFixturesContext()
             ->getJobInstance($code)->getRawConfiguration();
 
-        $path = $config['filePath'];
+        $path = $this->getJobInstancePath($code);
 
         if (!is_file($path)) {
             throw $this->createExpectationException(
@@ -2398,6 +2520,53 @@ class WebUser extends RawMinkContext
     public function iCopySelectedTranslations()
     {
         $this->getCurrentPage()->copySelectedTranslations();
+    }
+
+    /**
+     * @param string $language
+     *
+     * @Given /^I select (.+) (?:language|locale)$/
+     */
+    public function iSelectLanguage($language)
+    {
+        $this->getCurrentPage()->selectFieldOption('localization[oro_locale___language][value]', $language);
+    }
+
+    /**
+     * @param string|null $not
+     * @param string      $locale
+     *
+     * @Then /^I should (not )?see (.+) locale option$/
+     *
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function iShouldSeeLocaleOption($not, $locale)
+    {
+        $selectNames = ['localization[oro_locale___language][value]', 'pim_user_user_form[uiLocale]'];
+        $field = null;
+        foreach ($selectNames as $selectName) {
+            $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
+        }
+        if (null === $field) {
+            throw new \Exception(sprintf('Could not find field with name %s', json_encode($selectNames)));
+        }
+
+        $options = $field->findAll('css', 'option');
+
+        foreach ($options as $option) {
+            $text = $option->getHtml();
+            if ($text === $locale) {
+                if ($not) {
+                    throw new \Exception(sprintf('Should not see %s locale', $locale));
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -2774,5 +2943,23 @@ class WebUser extends RawMinkContext
         $this->openPage('massEditJob show', ['id' => $jobExecution->getId()]);
 
         $this->iWaitForTheJobToFinish($code);
+    }
+
+    /**
+     * @Then /^I should (not )?see the status-switcher button$/
+     */
+    public function iShouldSeeTheStatusSwitcherButton($not)
+    {
+        $statusSwitcher = $this->getCurrentPage()->getStatusSwitcher();
+
+        if ($not) {
+            if ($statusSwitcher && $statusSwitcher->isVisible()) {
+                throw $this->createExpectationException('Status switcher should not be visible');
+            }
+        } else {
+            if (!$statusSwitcher || !$statusSwitcher->isVisible()) {
+                throw $this->createExpectationException('Status switcher should be visible');
+            }
+        }
     }
 }

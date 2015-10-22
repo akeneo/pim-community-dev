@@ -2,9 +2,9 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -22,24 +22,24 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class MediaAttributeSetter extends AbstractAttributeSetter
 {
-    /** @var RawFileStorerInterface */
+    /** @var FileStorerInterface */
     protected $storer;
 
-    /** @var FileRepositoryInterface */
+    /** @var FileInfoRepositoryInterface */
     protected $repository;
 
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param RawFileStorerInterface   $storer
-     * @param FileRepositoryInterface  $repository
+     * @param FileStorerInterface   $storer
+     * @param FileInfoRepositoryInterface  $repository
      * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        RawFileStorerInterface $storer,
-        FileRepositoryInterface $repository,
+        FileStorerInterface $storer,
+        FileInfoRepositoryInterface $repository,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
@@ -80,16 +80,16 @@ class MediaAttributeSetter extends AbstractAttributeSetter
     /**
      * Set media in the product value
      *
-     * @param ProductInterface   $product
-     * @param AttributeInterface $attribute
-     * @param FileInterface|null $file
-     * @param string|null        $locale
-     * @param string|null        $scope
+     * @param ProductInterface       $product
+     * @param AttributeInterface     $attribute
+     * @param FileInfoInterface|null $fileInfo
+     * @param string|null            $locale
+     * @param string|null            $scope
      */
     protected function setMedia(
         ProductInterface $product,
         AttributeInterface $attribute,
-        FileInterface $file = null,
+        FileInfoInterface $fileInfo = null,
         $locale = null,
         $scope = null
     ) {
@@ -98,7 +98,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
 
-        $value->setMedia($file);
+        $value->setMedia($fileInfo);
     }
 
     /**
@@ -143,7 +143,8 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      * @param mixed              $data
      *
      * @throws InvalidArgumentException If an invalid filePath is provided
-     * @return FileInterface|null
+     *
+     * @return FileInfoInterface|null
      */
     protected function storeFile(AttributeInterface $attribute, $data)
     {

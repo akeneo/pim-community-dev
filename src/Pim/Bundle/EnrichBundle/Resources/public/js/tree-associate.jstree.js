@@ -3,7 +3,7 @@ define(
     function ($, _, Routing, mediator) {
         'use strict';
 
-        return function (elementId, hiddenCategoryId) {
+        return function (elementId, hiddenCategoryId, routes) {
             var $el = $(elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
                 return;
@@ -42,13 +42,13 @@ define(
                 json_data: {
                     ajax: {
                         url: function (node) {
-                            var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
 
-                            if ((!node || (node === -1)) && treeHasProduct) {
+                            if ((!node || (node === -1)) && treeHasItem) {
                                 // First load of the tree: get the checked categories
                                 var selected = this.parseHiddenCategories();
                                 return Routing.generate(
-                                    'pim_enrich_product_listcategories',
+                                    routes.list_categories,
                                     {
                                         id: id,
                                         categoryId: currentTree,
@@ -61,7 +61,7 @@ define(
                             }
 
                             return Routing.generate(
-                                'pim_enrich_categorytree_children',
+                                routes.children,
                                 {
                                     _format: 'json',
                                     dataLocale: dataLocale,
@@ -71,12 +71,12 @@ define(
                         }.bind(this),
                         data: function (node) {
                             var data           = {};
-                            var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var treeHasItem = $('#tree-link-' + currentTree).hasClass('tree-has-item');
 
                             if (node && node !== -1 && node.attr) {
                                 data.id = node.attr('id').replace('node_', '');
                             } else {
-                                if (!treeHasProduct) {
+                                if (!treeHasItem) {
                                     data.id = currentTree;
                                 }
                                 data.include_parent = 'true';

@@ -12,7 +12,7 @@ Feature: Edit common attributes of many products at once
     And the following attributes:
       | code         | label       | type   | metric family | default metric unit | families                 |
       | weight       | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
-      | heel_height  | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
+      | heel_height  | Heel Height | metric | Length        | CENTIMETER          | high_heels, sandals      |
       | buckle_color | Buckle      | text   |               |                     | high_heels               |
     And the following product groups:
       | code          | label         | axis  | type    |

@@ -109,7 +109,7 @@ define(
                     }.bind(this));
                 }.bind(this));
 
-                this.listenTo(mediator, 'pim_enrich:form:entity:post_update', this.postUpdate.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.postUpdate.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -167,9 +167,11 @@ define(
                 }.bind(this));
             },
             postUpdate: function () {
-                this.$('.selection-inputs input').val('');
-                this.state.set('selectedAssociations', {});
-                this.render();
+                if (this.isVisible()) {
+                    this.$('.selection-inputs input').val('');
+                    this.state.set('selectedAssociations', {});
+                    this.render();
+                }
             },
             loadAssociationTypes: function () {
                 return FetcherRegistry.getFetcher('association-type').fetchAll();
@@ -325,7 +327,7 @@ define(
 
                 this.state.set('selectedAssociations', selectedAssoc);
 
-                mediator.trigger('pim_enrich:form:entity:update_state');
+                this.getRoot().trigger('pim_enrich:form:entity:update_state');
             },
 
             /**

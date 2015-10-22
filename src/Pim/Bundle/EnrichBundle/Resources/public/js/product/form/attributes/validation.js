@@ -24,9 +24,9 @@ define(
         return BaseForm.extend({
             validationErrors: {},
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:entity:pre_save', this.onPreSave);
-                this.listenTo(mediator, 'pim_enrich:form:entity:bad_request', this.onValidationError);
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_save', this.onPreSave);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onValidationError);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -41,7 +41,7 @@ define(
                     messenger.notificationFlashMessage('error', this.validationErrors[''].message);
                 }
 
-                mediator.trigger('pim_enrich:form:entity:validation_error', event);
+                this.getRoot().trigger('pim_enrich:form:entity:validation_error', event);
             },
             addFieldExtension: function (event) {
                 var field = event.field;

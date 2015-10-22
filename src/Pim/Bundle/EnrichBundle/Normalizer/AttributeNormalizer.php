@@ -48,13 +48,28 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function normalize($attribute, $format = null, array $context = [])
     {
+        $dateMin = (null === $attribute->getDateMin()) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
+        $dateMax = (null === $attribute->getDateMax()) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
+
         $normalizedAttribute = $this->normalizer->normalize($attribute, 'json', $context) + [
             'id'                    => $attribute->getId(),
             'wysiwyg_enabled'       => $attribute->isWysiwygEnabled(),
             'empty_value'           => $this->emptyValueProvider->getEmptyValue($attribute),
             'field_type'            => $this->fieldProvider->getField($attribute),
             'is_locale_specific'    => (int) $attribute->isLocaleSpecific(),
-            'locale_specific_codes' => $attribute->getLocaleSpecificCodes()
+            'locale_specific_codes' => $attribute->getLocaleSpecificCodes(),
+            'max_characters'        => $attribute->getMaxCharacters(),
+            'validation_rule'       => $attribute->getValidationRule(),
+            'validation_regexp'     => $attribute->getValidationRegexp(),
+            'number_min'            => $attribute->getNumberMin(),
+            'number_max'            => $attribute->getNumberMax(),
+            'decimals_allowed'      => $attribute->isDecimalsAllowed(),
+            'negative_allowed'      => $attribute->isNegativeAllowed(),
+            'date_min'              => $dateMin,
+            'date_max'              => $dateMax,
+            'metric_family'         => $attribute->getMetricFamily(),
+            'default_metric_unit'   => $attribute->getDefaultMetricUnit(),
+            'max_file_size'         => $attribute->getMaxFileSize(),
         ];
 
         return $normalizedAttribute;

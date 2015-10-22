@@ -13,15 +13,15 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'text!pim/template/product/form-tabs',
-        'oro/mediator'
+        'text!pim/template/product/form-tabs'
     ],
-    function ($, _, Backbone, BaseForm, template, mediator) {
+    function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'tabbable tabs-top',
             tabs: [],
             fullPanel: false,
+            urlParsed: false,
             events: {
                 'click header ul.nav-tabs li': 'selectTab'
             },
@@ -40,10 +40,10 @@ define(
              */
             configure: function () {
                 this.onExtensions('tab:register',  this.registerTab.bind(this));
-                this.listenTo(mediator, 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:form-tabs:change', this.setCurrentTab);
 
                 window.addEventListener('resize', this.resize.bind(this));
-                this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -193,9 +193,18 @@ define(
             },
 
             /**
-             * Ensure default value for the current tab
+             * Ensure default value for the current tab.
+             * We'll check tab redirection from URL & from SessionsStorage.
              */
             ensureDefault: function () {
+                var regex = /redirectTab(=[A-Za-z-]+)/gi;
+                var fromUrl = regex.exec(location.href);
+
+                if (!this.urlParsed && fromUrl && fromUrl[1]) {
+                    sessionStorage.setItem('redirectTab', fromUrl[1]);
+                    this.urlParsed = true;
+                }
+
                 if (!_.isNull(sessionStorage.getItem('redirectTab')) &&
                     _.findWhere(this.tabs, {code: sessionStorage.getItem('redirectTab').substring(1)})
                 ) {

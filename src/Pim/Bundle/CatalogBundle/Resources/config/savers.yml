@@ -94,12 +94,12 @@ services:
             - %pim_catalog.model.category.interface%
 
     pim_catalog.saver.channel:
-        class: %pim_catalog.saver.channel.class%
+        class: %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.saver.completeness_options_resolver'
             - '@event_dispatcher'
+            - %pim_catalog.model.channel.interface%
 
     pim_catalog.saver.locale:
         class: %pim_catalog.saver.base.class%

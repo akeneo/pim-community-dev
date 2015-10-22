@@ -3,12 +3,15 @@
 namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
-use Oro\Bundle\UserBundle\Form\Type\UserType as OroUserType;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -18,7 +21,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserType extends OroUserType
+class UserType extends AbstractType
 {
     /** @var UserPreferencesSubscriber */
     protected $subscriber;
@@ -28,6 +31,12 @@ class UserType extends OroUserType
 
     /** @var GroupRepository  */
     protected $groupRepository;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
+    /** @var bool */
+    protected $isMyProfilePage;
 
     /**
      * @param TokenStorageInterface     $tokenStorage
@@ -43,8 +52,8 @@ class UserType extends OroUserType
         RoleRepository $roleRepository,
         GroupRepository $groupRepository
     ) {
-        parent::__construct($tokenStorage, $request);
-
+        $this->tokenStorage = $tokenStorage;
+        $this->isMyProfilePage = $request->attributes->get('_route') === 'oro_user_profile_update';
         $this->subscriber = $subscriber;
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
@@ -55,7 +64,7 @@ class UserType extends OroUserType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
+        $this->addEntityFields($builder);
 
         $builder->addEventSubscriber($this->subscriber);
     }
@@ -73,7 +82,7 @@ class UserType extends OroUserType
             ->add(
                 'rolesCollection',
                 'entity',
-                array(
+                [
                     'label'          => 'Roles',
                     'class'          => 'OroUserBundle:Role',
                     'property'       => 'label',
@@ -83,12 +92,12 @@ class UserType extends OroUserType
                     'required'       => !$this->isMyProfilePage,
                     'read_only'      => $this->isMyProfilePage,
                     'disabled'       => $this->isMyProfilePage,
-                )
+                ]
             )
             ->add(
                 'groups',
                 'entity',
-                array(
+                [
                     'class'          => 'OroUserBundle:Group',
                     'property'       => 'name',
                     'query_builder'  => $this->groupRepository->getAllButDefaultQB(),
@@ -97,17 +106,17 @@ class UserType extends OroUserType
                     'required'       => false,
                     'read_only'      => $this->isMyProfilePage,
                     'disabled'       => $this->isMyProfilePage
-                )
+                ]
             )
             ->add(
                 'plainPassword',
                 'repeated',
-                array(
+                [
                     'type'           => 'password',
                     'required'       => true,
-                    'first_options'  => array('label' => 'Password'),
-                    'second_options' => array('label' => 'Re-enter password'),
-                )
+                    'first_options'  => ['label' => 'Password'],
+                    'second_options' => ['label' => 'Re-enter password'],
+                ]
             )
             ->add(
                 'change_password',
@@ -116,5 +125,125 @@ class UserType extends OroUserType
             ->add('productGridFilters', 'pim_datagrid_product_filter_choice', [
                 'multiple' => true,
             ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'data_class'        => 'Pim\Bundle\UserBundle\Entity\UserInterface',
+                'intention'         => 'user',
+                'validation_groups' => function ($form) {
+                    if ($form instanceof FormInterface) {
+                        $user = $form->getData();
+                    } elseif ($form instanceof FormView) {
+                        $user = $form->vars['value'];
+                    } else {
+                        $user = null;
+                    }
+
+                    return $user && $user->getId()
+                        ? ['User', 'Default']
+                        : ['Registration', 'User', 'Default'];
+                },
+                'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
+                'error_mapping'        => [
+                    'roles' => 'rolesCollection'
+                ],
+                'cascade_validation'   => true
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_user_user';
+    }
+
+    /**
+     * Set user fields
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function setDefaultUserFields(FormBuilderInterface $builder)
+    {
+        $builder
+            ->add(
+                'username',
+                'text',
+                [
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'email',
+                'email',
+                [
+                    'label'    => 'E-mail',
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'namePrefix',
+                'text',
+                [
+                    'label'    => 'Name prefix',
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'firstName',
+                'text',
+                [
+                    'label'    => 'First name',
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'middleName',
+                'text',
+                [
+                    'label'    => 'Middle name',
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'lastName',
+                'text',
+                [
+                    'label'    => 'Last name',
+                    'required' => true,
+                ]
+            )
+            ->add(
+                'nameSuffix',
+                'text',
+                [
+                    'label'    => 'Name suffix',
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'birthday',
+                'oro_date',
+                [
+                    'label'    => 'Date of birth',
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'imageFile',
+                'file',
+                [
+                    'label'    => 'Avatar',
+                    'required' => false,
+                ]
+            );
     }
 }

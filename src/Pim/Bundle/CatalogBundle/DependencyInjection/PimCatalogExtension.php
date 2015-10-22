@@ -26,6 +26,7 @@ class PimCatalogExtension extends Extension
         $loader->load('builders.yml');
         $loader->load('comparators.yml');
         $loader->load('completeness_checkers.yml');
+        $loader->load('console.yml');
         $loader->load('context.yml');
         $loader->load('doctrine.yml');
         $loader->load('entities.yml');
@@ -42,6 +43,7 @@ class PimCatalogExtension extends Extension
         $loader->load('savers.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
+        $loader->load('versions.yml');
 
         $this->loadStorageDriver($container);
     }

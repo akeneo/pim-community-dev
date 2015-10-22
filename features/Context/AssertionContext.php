@@ -10,6 +10,7 @@ use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\ResponseTextException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
@@ -32,7 +33,7 @@ class AssertionContext extends RawMinkContext
     {
         //Remove unecessary escaped antislashes
         $text = str_replace('\\', '', $text);
-        $this->getMainContext()->spin(function () use ($text) {
+        $this->spin(function () use ($text) {
             $this->assertSession()->pageTextContains($text);
 
             return true;
@@ -46,7 +47,7 @@ class AssertionContext extends RawMinkContext
      */
     public function assertPageNotContainsText($text)
     {
-        $this->getMainContext()->spin(function () use ($text) {
+        $this->spin(function () use ($text) {
             $this->assertSession()->pageTextNotContains($text);
 
             return true;
@@ -152,6 +153,32 @@ class AssertionContext extends RawMinkContext
                 }
             } catch (ElementNotFoundException $e) {
                 throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $field));
+            }
+        }
+    }
+
+    /**
+     * @param string $currencies
+     * @param string $field
+     *
+     * @Then /^I should see "(.+)" currencies on the (.*) price field$/
+     *
+     * @throws ExpectationException
+     */
+    public function iShouldSeeCurrenciesOnThePriceField($currencies, $field)
+    {
+        if (null === $priceLabelField = $this->getCurrentPage()->findField($field)) {
+            throw $this->createExpectationException(sprintf('Expecting to see the price field "%s".', $field));
+        }
+        $currencies = explode(',', $currencies);
+        $currencies = array_map('trim', $currencies);
+        $priceField = $priceLabelField->getParent();
+
+        foreach ($currencies as $currency) {
+            if (null === $priceField->find('css', sprintf('.controls input[value="%s"]', $currency))) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see the currency "%s" on price field "%s".', $currency, $field)
+                );
             }
         }
     }
@@ -357,12 +384,12 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeHistoryInPanel(TableNode $table)
     {
-        $block = $this->getMainContext()->spin(function () {
+        $block = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.history-block');
         });
 
         foreach ($table->getHash() as $data) {
-            $row = $this->getMainContext()->spin(function () use ($block, $data) {
+            $row = $this->spin(function () use ($block, $data) {
                 return $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
             });
 
@@ -430,12 +457,10 @@ class AssertionContext extends RawMinkContext
                 );
             }
 
-            if (
-                !preg_match(
-                    sprintf('/^%s$/', $newValue),
-                    $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
-                )
-            ) {
+            if (!preg_match(
+                sprintf('/^%s$/', $newValue),
+                $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
+            )) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Wrong new value in row %s, expected %s, got %s',
@@ -579,6 +604,46 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @When /^I open the notification panel$/
+     */
+    public function iOpenTheNotificationPanel()
+    {
+        $notificationWidget = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '#header-notification-widget');
+        });
+
+        if ($notificationWidget->hasClass('open')) {
+            return;
+        }
+
+        $notificationWidget->find('css', '.dropdown-toggle')->click();
+
+        // Wait for the footer of the notification panel dropdown to be loaded
+        $this->spin(function () {
+            $footer  = $this->getCurrentPage()->find('css', '#header-notification-widget ul.dropdown-menu > p');
+            $content = trim($footer->getText());
+
+            return !empty($content);
+        });
+    }
+
+    /**
+     * @When /^I click on the notification "([^"]+)"$/
+     */
+    public function iClickOnTheNotification($message)
+    {
+        $this->iOpenTheNotificationPanel();
+        $page = $this->getCurrentPage();
+        $selector = sprintf('#header-notification-widget .dropdown-menu li>a:contains("%s")', $message);
+
+        $link = $this->spin(function () use ($page, $selector) {
+            return $page->find('css', $selector);
+        });
+
+        $link->click();
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^I should see notifications?:$/
@@ -587,18 +652,21 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeNotifications(TableNode $table)
     {
-        $element = $this->getCurrentPage()->find('css', '#header-notification-widget');
-        $element->find('css', '.dropdown-toggle')->click();
-        $this->getMainContext()->wait();
+        $this->iOpenTheNotificationPanel();
+
+        $notificationWidget = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '#header-notification-widget');
+        });
 
         $icons = [
             'success' => 'icon-ok',
             'warning' => 'icon-warning-sign',
             'error'   => 'icon-remove',
+            'add'     => 'icon-plus',
         ];
 
         foreach ($table->getHash() as $data) {
-            $notification = $element->find('css', sprintf('.dropdown-menu li>a:contains("%s")', $data['message']));
+            $notification = $notificationWidget->find('css', sprintf('.dropdown-menu li>a:contains("%s")', $data['message']));
 
             if (!$notification) {
                 throw $this->createExpectationException(
@@ -627,6 +695,30 @@ class AssertionContext extends RawMinkContext
                         $data['type']
                     )
                 );
+            }
+
+            if (isset($data['comment']) && '' !== $data['comment']) {
+                $commentNode = $notification->find('css', 'div.comment');
+
+                if (!$commentNode) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting notification "%s" to have a comment.',
+                            $data['message']
+                        )
+                    );
+                }
+
+                if ($data['comment'] !== $commentNode->getText()) {
+                    throw $this->createExpectationException(
+                        sprintf(
+                            'Expecting notification "%s" to have the comment "%s", got "%s"',
+                            $data['message'],
+                            $data['comment'],
+                            $commentNode->getText()
+                        )
+                    );
+                }
             }
         }
     }
@@ -735,11 +827,21 @@ class AssertionContext extends RawMinkContext
     {
         $this->getCurrentPage()->waitForProgressionBar();
 
-        $this->getMainContext()->spin(function () use ($text) {
+        $this->spin(function () use ($text) {
             $this->assertSession()->pageTextContains((string) $text);
 
             return true;
         });
+    }
+
+    /**
+     * Checks that avatar was not the default one
+     *
+     * @Then /^I should not see the default avatar$/
+     */
+    public function iShouldNotSeeDefaultAvatar()
+    {
+        $this->assertSession()->elementAttributeNotContains('css', '.customer-info img', 'src', 'user-info.png');
     }
 
     /**

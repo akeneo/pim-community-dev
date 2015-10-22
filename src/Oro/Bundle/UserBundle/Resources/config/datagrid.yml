@@ -1,0 +1,283 @@
+datagrid:
+    users-grid:
+        extended_entity_name: %oro_user.entity.class%
+        options:
+            entityHint: user
+        source:
+            acl_resource: pim_user_user_index
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                    - u.createdAt
+                    - u.updatedAt
+                    - u.enabled
+                from:
+                    - { table: %oro_user.entity.class%, alias: u }
+        columns:
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            createdAt:
+                label: oro.user.grid.users.columns.createdAt
+                frontend_type: datetime
+            updatedAt:
+                label: oro.user.grid.users.columns.updatedAt
+                frontend_type: datetime
+            enabled:
+                label: oro.user.grid.users.columns.enabled
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_user_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: oro_user_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: oro_user_user_delete
+                params:
+                    - id
+        sorters:
+            columns:
+                username:
+                    data_name: u.username
+                email:
+                    data_name: u.email
+                firstName:
+                    data_name: u.firstName
+                lastName:
+                    data_name: u.lastName
+                createdAt:
+                    data_name: u.createdAt
+                updatedAt:
+                    data_name: u.updatedAt
+                enabled:
+                    data_name: u.enabled
+            default:
+                username: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                createdAt:
+                    type: datetime
+                    data_name: u.createdAt
+                updatedAt:
+                    type: datetime
+                    data_name: u.updatedAt
+                enabled:
+                    type: choice
+                    data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                               - Inactive
+                               - Active
+
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          user
+                acl_resource:  pim_user_user_index
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  pim_user_user_edit
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  pim_user_user_remove
+
+    groups-grid:
+        options:
+            entityHint: group
+        source:
+            acl_resource: pim_user_group_index
+            type: orm
+            query:
+                select:
+                    - g.id
+                    - g.name
+                from:
+                    - { table: OroUserBundle:Group, alias: g }
+                where:
+                    and:
+                        - g.name <> '%oro_user.entity.class%::GROUP_DEFAULT'
+        columns:
+            name:
+                label: oro.user.grid.groups.columns.name
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_user_group_update
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: oro_user_group_delete
+                params:
+                    - id
+
+        actions:
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  pim_user_group_edit
+                rowAction:     true
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  pim_user_group_remove
+
+        sorters:
+            columns:
+                name:
+                    data_name: g.name
+            default:
+                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: g.name
+
+    roles-grid:
+        options:
+            entityHint: role
+        source:
+            acl_resource: pim_user_role_index
+            type: orm
+            query:
+                select:
+                    - r.id
+                    - r.role
+                    - r.label
+                from:
+                    - { table: OroUserBundle:Role, alias: r }
+                where:
+                    and:
+                        - r.role <> '%oro_user.entity.class%::ROLE_ANONYMOUS'
+        columns:
+            label:
+                label: oro.user.grid.roles.columns.label
+
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_user_role_update
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: oro_user_role_delete
+                params:
+                    - id
+
+        actions:
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  pim_user_role_edit
+                rowAction:     true
+            delete:
+                type:          delete
+                label:         Delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  pim_user_role_remove
+
+        sorters:
+            columns:
+                label:
+                    data_name: r.label
+            default:
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                label:
+                    type: string
+                    data_name: r.label
+
+    user-relation-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                from:
+                    - { table: PimUserBundle:User, alias: u }
+
+        columns: []
+
+        properties:
+            id: ~
+
+        sorters:
+            columns:
+                username:
+                    data_name: u.username
+                email:
+                    data_name: u.email
+                firstName:
+                    data_name: u.firstName
+                lastName:
+                    data_name: u.lastName
+            default:
+                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters: []

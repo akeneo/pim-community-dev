@@ -64,6 +64,12 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             throw new InvalidArgumentException('Missing configuration for \'actions\'.');
         }
 
+        if (!$this->isProductEditable($product)) {
+            $this->stepExecution->incrementSummaryInfo('skipped_products');
+
+            return null;
+        }
+
         $actions = $configuration['actions'];
 
         $product = $this->updateProduct($product, $actions);
@@ -146,5 +152,15 @@ class EditCommonAttributesProcessor extends AbstractProcessor
         $this->addWarningMessage($violations, $product);
 
         return 0 === $violations->count();
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isProductEditable(ProductInterface $product)
+    {
+        return true;
     }
 }

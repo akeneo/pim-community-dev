@@ -97,6 +97,7 @@ class UserLoader extends LoadUserData
         }
 
         $user->setCatalogLocale($this->getLocale($data['catalogLocale']));
+        $user->setUiLocale($this->getLocale($data['uiLocale']));
         $user->setCatalogScope($this->getChannel($data['catalogScope']));
         $user->setDefaultTree($this->getTree($data['defaultTree']));
 

@@ -30,20 +30,19 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
 
 .select2-container .select2-choice {
     display: block;
-    height: 26px;
-    padding: 0 0 0 8px;
+    height: 30px;
+    padding: 0 0 0 10px;
     overflow: hidden;
     position: relative;
-
     border: 1px solid #aaa;
     white-space: nowrap;
-    line-height: 26px;
+    line-height: 30px;
     color: #444;
     text-decoration: none;
 
-    -webkit-border-radius: 4px;
-       -moz-border-radius: 4px;
-            border-radius: 4px;
+    -webkit-border-radius: 0;
+       -moz-border-radius: 0;
+            border-radius: 0;
 
     -webkit-background-clip: padding-box;
        -moz-background-clip: padding;
@@ -56,14 +55,7 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
           -ms-user-select: none;
               user-select: none;
 
-    background-color: #fff;
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0, #eeeeee), color-stop(0.5, white));
-    background-image: -webkit-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-    background-image: -moz-linear-gradient(center bottom, #eeeeee 0%, white 50%);
-    background-image: -o-linear-gradient(bottom, #eeeeee 0%, #ffffff 50%);
-    background-image: -ms-linear-gradient(top, #ffffff 0%, #eeeeee 50%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr = '#ffffff', endColorstr = '#eeeeee', GradientType = 0);
-    background-image: linear-gradient(top, #ffffff 0%, #eeeeee 50%);
+    background-color: #f1f4f9;
 }
 
 .select2-container.select2-drop-above .select2-choice {
@@ -103,7 +95,7 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
     width: 12px;
     height: 12px;
     position: absolute;
-    right: 24px;
+    right: 40px;
     top: 8px;
 
     font-size: 1px;
@@ -465,13 +457,14 @@ disabled look for disabled choices in the results dropdown
 }
 
 .select2-container.select2-container-disabled .select2-choice .select2-arrow {
-    background-color: #f4f4f4;
+    background-color: #e7e7eC;
     background-image: none;
     border-left: 0;
+    display: none;
 }
 
 .select2-container.select2-container-disabled .select2-choice abbr {
-    display: none;
+    display: none !important;
 }
 
 
@@ -483,18 +476,10 @@ disabled look for disabled choices in the results dropdown
     margin: 0;
     padding: 0;
     position: relative;
-
     border: 1px solid #aaa;
     cursor: text;
     overflow: hidden;
-
     background-color: #fff;
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eeeeee), color-stop(15%, #ffffff));
-    background-image: -webkit-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-    background-image: -moz-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-    background-image: -o-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-    background-image: -ms-linear-gradient(top, #eeeeee 1%, #ffffff 15%);
-    background-image: linear-gradient(top, #eeeeee 1%, #ffffff 15%);
 }
 
 .select2-locked {
@@ -502,7 +487,7 @@ disabled look for disabled choices in the results dropdown
 }
 
 .select2-container-multi .select2-choices {
-    min-height: 26px;
+    min-height: 30px;
 }
 
 .select2-container-multi.select2-container-active .select2-choices {
@@ -526,7 +511,6 @@ disabled look for disabled choices in the results dropdown
 .select2-container-multi .select2-choices .select2-search-field input {
     padding: 5px;
     margin: 1px 0;
-
     font-family: sans-serif;
     font-size: 100%;
     color: #666;
@@ -546,28 +530,14 @@ disabled look for disabled choices in the results dropdown
     color: #999 !important;
 }
 
-.select2-container-multi .select2-choices .select2-search-choice {
-    padding: 3px 5px 3px 18px;
+  .select2-container-multi .select2-choices .select2-search-choice {
+    padding: 3px 5px 3px 20px;
     margin: 3px 0 3px 5px;
     position: relative;
-
-    line-height: 13px;
-    color: #333;
+    line-height: 19px;
+    color: #67768a;
     cursor: default;
-    border: 1px solid #aaaaaa;
-
-    -webkit-border-radius: 3px;
-       -moz-border-radius: 3px;
-            border-radius: 3px;
-
-    -webkit-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
-       -moz-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
-            box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
-
-    -webkit-background-clip: padding-box;
-       -moz-background-clip: padding;
-            background-clip: padding-box;
-
+    border: 1px solid #ccc;
     -webkit-touch-callout: none;
       -webkit-user-select: none;
        -khtml-user-select: none;
@@ -575,14 +545,7 @@ disabled look for disabled choices in the results dropdown
           -ms-user-select: none;
               user-select: none;
 
-    background-color: #e4e4e4;
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#f4f4f4', GradientType=0 );
-    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eeeeee));
-    background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-    background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-    background-image: -o-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-    background-image: -ms-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
-    background-image: linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+    background-color: #f1f4f9;
 }
 .select2-container-multi .select2-choices .select2-search-choice .select2-chosen {
     cursor: default;
@@ -593,6 +556,7 @@ disabled look for disabled choices in the results dropdown
 
 .select2-search-choice-close {
     display: block;
+    color: #67768a;
     width: 12px;
     height: 13px;
     position: absolute;
@@ -605,7 +569,7 @@ disabled look for disabled choices in the results dropdown
 }
 
 .select2-container-multi .select2-search-choice-close {
-    left: 3px;
+    left: 5px;
 }
 
 .select2-container-multi .select2-choices .select2-search-choice .select2-search-choice-close:hover {

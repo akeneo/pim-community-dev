@@ -210,6 +210,7 @@ services:
 
     pim_catalog.repository.product_category:
         class: %pim_catalog.repository.product_category.class%
+        parent: akeneo_classification.repository.abstract_item_category
         arguments:
             - '@pim_catalog.object_manager.product'
             - %pim_catalog.entity.product.class%

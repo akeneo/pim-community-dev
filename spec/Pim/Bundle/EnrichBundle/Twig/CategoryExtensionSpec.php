@@ -5,17 +5,16 @@ namespace spec\Pim\Bundle\EnrichBundle\Twig;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
 use Prophecy\Argument;
 
 class CategoryExtensionSpec extends ObjectBehavior
 {
-    function let(CategoryRepositoryInterface $categoryRepo, ItemCategoryRepositoryInterface $itemCategoryRepo)
+    function let(CategoryItemsCounterRegistryInterface $registry)
     {
         $productsLimitForRemoval = 10;
-        $this->beConstructedWith($categoryRepo, $itemCategoryRepo, $productsLimitForRemoval);
+        $this->beConstructedWith($registry, $productsLimitForRemoval);
     }
 
     function it_is_a_twig_extension()
@@ -40,9 +39,14 @@ class CategoryExtensionSpec extends ObjectBehavior
         $functions->shouldHaveKey('get_products_limit_for_removal');
     }
 
-    function it_formats_trees_with_products_count($itemCategoryRepo, Category $tree1, Category $tree2)
-    {
-        $itemCategoryRepo->getItemsCountInCategory(Argument::any(), null)->willReturn(5);
+    function it_formats_trees_with_products_count(
+        $registry,
+        CategoryItemsCounterInterface $categoryItemsCounter,
+        Category $tree1,
+        Category $tree2
+    ) {
+        $registry->get('product')->willReturn($categoryItemsCounter);
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $tree1->getId()->willReturn(1);
         $tree1->getLabel()->willReturn('Selected tree');
@@ -62,9 +66,14 @@ class CategoryExtensionSpec extends ObjectBehavior
         $this->listTreesResponse([$tree1, $tree2], 1)->shouldEqualUsingJSON($expected);
     }
 
-    function it_formats_trees_without_products_count($itemCategoryRepo, Category $tree1, Category $tree2)
-    {
-        $itemCategoryRepo->getItemsCountInCategory(Argument::any(), null)->willReturn(5);
+    function it_formats_trees_without_products_count(
+        $registry,
+        CategoryItemsCounterInterface $categoryItemsCounter,
+        Category $tree1,
+        Category $tree2
+    ) {
+        $registry->get('product')->willReturn($categoryItemsCounter);
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $tree1->getId()->willReturn(1);
         $tree1->getLabel()->willReturn('Selected tree');
@@ -85,12 +94,14 @@ class CategoryExtensionSpec extends ObjectBehavior
     }
 
     function it_formats_a_list_of_categories_with_product_count(
-        $itemCategoryRepo,
+        $registry,
+        CategoryItemsCounterInterface $categoryItemsCounter,
         Category $root,
         Category $category1,
         Category $category2
     ) {
-        $itemCategoryRepo->getItemsCountInCategory(Argument::any(), null)->willReturn(5);
+        $registry->get('product')->willReturn($categoryItemsCounter);
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $root->getId()->willReturn(1);
         $root->getCode()->willReturn('root');
@@ -142,12 +153,14 @@ class CategoryExtensionSpec extends ObjectBehavior
     }
 
     function it_formats_a_list_of_categories_without_product_count(
-        $itemCategoryRepo,
+        $registry,
+        CategoryItemsCounterInterface $categoryItemsCounter,
         Category $root,
         Category $category1,
         Category $category2
     ) {
-        $itemCategoryRepo->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
+        $registry->get('product')->willReturn($categoryItemsCounter);
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), null)->willReturn(5);
 
         $root->getId()->willReturn(1);
         $root->getCode()->willReturn('root');
@@ -199,12 +212,14 @@ class CategoryExtensionSpec extends ObjectBehavior
     }
 
     function it_lists_categories_and_their_children_with_product_count(
-        $itemCategoryRepo,
+        $registry,
+        CategoryItemsCounterInterface $categoryItemsCounter,
         Category $category0,
         Category $category1,
         Category $category2
     ) {
-        $itemCategoryRepo->getItemsCountInCategory(Argument::any(), null)->willReturn(5);
+        $registry->get('product')->willReturn($categoryItemsCounter);
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $category0->getId()->willReturn(1);
         $category0->getCode()->willReturn('selected_category');
@@ -246,12 +261,14 @@ class CategoryExtensionSpec extends ObjectBehavior
     }
 
     function it_lists_categories_and_their_children_without_product_count(
-        $itemCategoryRepo,
+        $registry,
+        CategoryItemsCounterInterface $categoryItemsCounter,
         Category $category0,
         Category $category1,
         Category $category2
     ) {
-        $itemCategoryRepo->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
+        $registry->get('product')->willReturn($categoryItemsCounter);
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), null)->willReturn(5);
 
         $category0->getId()->willReturn(1);
         $category0->getCode()->willReturn('selected_category');
@@ -293,12 +310,14 @@ class CategoryExtensionSpec extends ObjectBehavior
     }
 
     function it_lists_and_format_categories(
-        $itemCategoryRepo,
+        $registry,
+        CategoryItemsCounterInterface $categoryItemsCounter,
         Category $category0,
         Category $category1,
         Category $category2
     ) {
-        $itemCategoryRepo->getItemsCountInCategory(Argument::any(), false)->willReturn(5);
+        $registry->get('product')->willReturn($categoryItemsCounter);
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), null)->willReturn(5);
 
         $category1->getId()->willReturn(2);
         $category1->getCode()->willReturn('some_category1');
@@ -358,12 +377,18 @@ class CategoryExtensionSpec extends ObjectBehavior
         $this->listCategoriesResponse([$category0Array], new ArrayCollection())->shouldEqualUsingJSON($expected);
     }
 
-    function it_checks_if_a_category_exceeds_the_products_limit_for_removal($itemCategoryRepo, Category $category)
-    {
-        $itemCategoryRepo->getItemsCountInCategory(Argument::any(), null)->willReturn(11);
+    function it_checks_if_a_category_exceeds_the_products_limit_for_removal(
+        $registry,
+        CategoryItemsCounterInterface $categoryItemsCounter,
+        Category $category
+    ) {
+        $registry->get('product')->willReturn($categoryItemsCounter);
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), true)->willReturn(5);
+
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), true)->willReturn(11);
         $this->exceedsProductsLimitForRemoval($category, true)->shouldReturn(true);
 
-        $itemCategoryRepo->getItemsCountInCategory(Argument::any(), null)->willReturn(10);
+        $categoryItemsCounter->getItemsCountInCategory(Argument::any(), true)->willReturn(10);
         $this->exceedsProductsLimitForRemoval($category, true)->shouldReturn(false);
     }
 

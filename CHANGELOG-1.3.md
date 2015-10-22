@@ -1,3 +1,20 @@
+# 1.3.26 (2015-09-16)
+
+# 1.3.25 (2015-09-14)
+
+## Technical improvements
+- PIM-4866: Added I should see the tab assertion method in behat
+
+# 1.3.24 (2015-09-03)
+
+## Bug fixes
+- PIM-4845: Family menu access denied from the shortcut dashboard entry
+
+# 1.3.23 (2015-08-31)
+
+## Bug fixes
+- PIM-4810: Correctly detach association reference when transformation fails
+
 # 1.3.22 (2015-08-25)
 
 ## Bug fixes

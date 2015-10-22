@@ -3,7 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
@@ -546,6 +548,14 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
+    public function hasLocaleSpecific(LocaleInterface $locale)
+    {
+        return in_array($locale->getCode(), $this->getLocaleSpecificCodes());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setAvailableLocales(ArrayCollection $availableLocales)
     {
         $this->availableLocales = $availableLocales;
@@ -1036,5 +1046,16 @@ abstract class AbstractAttribute implements AttributeInterface
         $this->setProperty('reference_data_name', $name);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isBackendTypeReferenceData()
+    {
+        return in_array($this->getBackendType(), [
+            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
+            AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
+        ]);
     }
 }

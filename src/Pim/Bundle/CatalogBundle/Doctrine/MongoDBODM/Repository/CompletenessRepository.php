@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Completeness Repository for ODM

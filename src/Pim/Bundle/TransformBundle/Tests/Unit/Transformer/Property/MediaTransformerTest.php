@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
-use Akeneo\Component\FileStorage\Model\File;
+use Akeneo\Component\FileStorage\Model\FileInfo;
 use Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer;
 
 /**
@@ -32,7 +32,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
         $f = $d . '/file';
         touch($f);
         $this->assertEquals(null, $transformer->transform(' ' . $d . ' '));
-        $this->assertEquals(new File(), $transformer->transform(' ' . $f . ' '));
+        $this->assertEquals(new FileInfo(), $transformer->transform(' ' . $f . ' '));
         unlink($f);
         rmdir($d);
     }
@@ -42,12 +42,12 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function getUpdateProductValueData()
     {
-        return array(
-            'no_file_no_media' => array(false, false),
-            'file_no_media'    => array(true, false),
-            'no_file_media'    => array(false, true),
-            'file_media'       => array(true, true),
-        );
+        return [
+            'no_file_no_media' => [false, false],
+            'file_no_media'    => [true, false],
+            'no_file_media'    => [false, true],
+            'file_media'       => [true, true],
+        ];
     }
 
     /**
@@ -59,8 +59,8 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     public function testUpdateProductValue($hasFile, $mediaExists)
     {
         $f = tempnam('/tmp', 'pim-media-transformer-test');
-        $this->media = $mediaExists ? new File() : null;
-        $file = $hasFile ? new File() : null;
+        $this->media = $mediaExists ? new FileInfo() : null;
+        $file = $hasFile ? new FileInfo() : null;
         $transformer = new MediaTransformer($this->fileStorer);
         $productValue = $this->getValue($hasFile, $mediaExists);
         $columnInfo = $this->getMock('Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface');
@@ -83,7 +83,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->fileStorer = $this
-            ->getMockBuilder('Akeneo\Component\FileStorage\RawFile\RawFileStorer')
+            ->getMockBuilder('Akeneo\Component\FileStorage\File\FileStorer')
             ->disableOriginalConstructor()
             ->setMethods(['store'])
             ->getMock()
@@ -92,7 +92,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
         $this->fileStorer
             ->expects($this->any())
             ->method('store')
-            ->will($this->returnValue(new File()))
+            ->will($this->returnValue(new FileInfo()))
         ;
     }
 
@@ -157,7 +157,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                 $productValue
                     ->expects($this->once())
                     ->method('setMedia')
-                    ->with($this->isInstanceOf('Akeneo\Component\FileStorage\Model\FileInterface'))
+                    ->with($this->isInstanceOf('Akeneo\Component\FileStorage\Model\FileInfoInterface'))
                     ->will(
                         $this->returnCallback(
                             function ($createdMedia) use ($test) {

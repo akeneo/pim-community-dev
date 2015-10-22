@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\Exception\LinkedChannelException;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
@@ -34,7 +34,7 @@ class CurrencyDisablingSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [BaseEvents::PRE_SAVE => 'checkChannelLink'];
+        return [StorageEvents::PRE_SAVE => 'checkChannelLink'];
     }
 
     /**

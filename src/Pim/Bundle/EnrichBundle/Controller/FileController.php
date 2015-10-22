@@ -2,13 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use League\Flysystem\MountManager;
 use Liip\ImagineBundle\Controller\ImagineController;
-use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Liip\ImagineBundle\Model\Binary;
 use Pim\Bundle\EnrichBundle\File\DefaultImageProviderInterface;
 use Pim\Bundle\EnrichBundle\File\FileTypeGuesserInterface;
 use Pim\Bundle\EnrichBundle\File\FileTypes;
@@ -32,8 +29,8 @@ class FileController extends Controller
     /** @var MountManager */
     protected $mountManager;
 
-    /** @var FileRepositoryInterface */
-    protected $fileRepository;
+    /** @var FileInfoRepositoryInterface */
+    protected $fileInfoRepository;
 
     /** @var FileTypeGuesserInterface */
     protected $fileTypeGuesser;
@@ -47,7 +44,7 @@ class FileController extends Controller
     /**
      * @param ImagineController             $imagineController
      * @param MountManager                  $mountManager
-     * @param FileRepositoryInterface       $fileRepository
+     * @param FileInfoRepositoryInterface   $fileInfoRepository
      * @param FileTypeGuesserInterface      $fileTypeGuesser
      * @param DefaultImageProviderInterface $defaultImageProvider
      * @param array                         $filesystemAliases
@@ -55,14 +52,14 @@ class FileController extends Controller
     public function __construct(
         ImagineController $imagineController,
         MountManager $mountManager,
-        FileRepositoryInterface $fileRepository,
+        FileInfoRepositoryInterface $fileInfoRepository,
         FileTypeGuesserInterface $fileTypeGuesser,
         DefaultImageProviderInterface $defaultImageProvider,
         array $filesystemAliases
     ) {
         $this->imagineController    = $imagineController;
         $this->mountManager         = $mountManager;
-        $this->fileRepository       = $fileRepository;
+        $this->fileInfoRepository   = $fileInfoRepository;
         $this->fileTypeGuesser      = $fileTypeGuesser;
         $this->defaultImageProvider = $defaultImageProvider;
         $this->filesystemAliases    = $filesystemAliases;
@@ -83,7 +80,7 @@ class FileController extends Controller
             return $this->renderDefaultImage(FileTypes::MISC, $filter);
         }
 
-        $file = $this->fileRepository->findOneByIdentifier($filename);
+        $file = $this->fileInfoRepository->findOneByIdentifier($filename);
         if (null !== $file) {
             if (FileTypes::IMAGE === $fileType = $this->fileTypeGuesser->guess($file->getMimeType())) {
                 try {
@@ -114,14 +111,36 @@ class FileController extends Controller
             $fs = $this->mountManager->getFilesystem($alias);
             if ($fs->has($filename)) {
                 $stream = $fs->readStream($filename);
+                $headers = [];
 
-                return new StreamedFileResponse($stream);
+                if (null !== $fileInfo = $this->fileInfoRepository->findOneByIdentifier($filename)) {
+                    $headers['Content-Disposition'] = sprintf(
+                        'attachment; filename="%s"',
+                        $fileInfo->getOriginalFilename()
+                    );
+                }
+
+                return new StreamedFileResponse($stream, 200, $headers);
             }
         }
 
         throw $this->createNotFoundException(
             sprintf('File with key "%s" could not be found.', $filename)
         );
+    }
+
+    /**
+     * Get the default thumbnail from a mime type
+     *
+     * @param string $mimeType
+     *
+     * @return RedirectResponse
+     */
+    public function defaultThumbnailAction($mimeType)
+    {
+        $fileType = $this->fileTypeGuesser->guess($mimeType);
+
+        return $this->renderDefaultImage($fileType, 'thumbnail');
     }
 
     /**

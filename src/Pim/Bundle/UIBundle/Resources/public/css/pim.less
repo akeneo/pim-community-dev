@@ -180,6 +180,22 @@ a.back-link i {
     background-color: #f7f7f9;
     padding: 15px;
   }
+  .version-container {
+    .current-version {
+      display:inline-block;
+      margin-left: 10px;
+      :first-child {
+        margin-right: 3px;
+      }
+    }
+    .last-version {
+      display: inline-block;
+      margin-left: 10px;
+      :first-child {
+        margin-right: 3px;
+      }
+    }
+  }
 }
 
 hr.small {
@@ -626,6 +642,8 @@ header.tab-header {
 
   h3 {
     line-height: 24px;
+    margin-left: 20px;
+    font-size: 16px;
   }
 }
 
@@ -714,6 +732,10 @@ h3.tab-header {
 
   .tabs-left > .sidebar > .nav-tabs a {
     padding: 8px 15px 8px 15px;
+
+    .green {
+      color: @fern-green;
+    }
   }
 
   & > header {
@@ -968,11 +990,17 @@ h3.tab-header {
     .progress {
       border-radius: 10px;
       margin-bottom: 5px;
+      margin-right: 50px;
 
       .bar {
         background-image: none;
         box-shadow: none;
       }
+    }
+
+    .literal-progress {
+      float: right;
+      color: #777;
     }
 
     .missing {
@@ -1096,6 +1124,10 @@ h3.tab-header {
   .footer-elements-container {
     color: @color-form-info;
     font-size: 12px;
+
+    > * {
+      display: block;
+    }
   }
 
   input:not([type="file"]),
@@ -1123,6 +1155,7 @@ h3.tab-header {
     .input-append .add-on {
       box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
       font-size: 11px;
+      padding: 5px;
       color: @color-form-label;
       .border-radius(0);
       .box-sizing();
@@ -1200,6 +1233,10 @@ h3.tab-header {
   height: 34px;
   width: 34px;
   line-height: 34px;
+}
+
+.field-input .unavailable {
+  color: @color-form-info;
 }
 
 .media-uploader {
@@ -1375,7 +1412,7 @@ h3.tab-header {
     .select2-search-choice {
       .border-radius(0);
       background-image:none;
-      background-color: white;
+      background-color: #f1f4f9;
       line-height: 22px;
       border: 1px solid #ccc;
       padding: 0;
@@ -1392,8 +1429,6 @@ h3.tab-header {
 
     .select2-search-choice-close {
       line-height: 26px;
-      border-right: solid 1px #ccc;
-      width: 26px;
       height: 26px;
       text-align: center;
       position: relative;

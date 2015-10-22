@@ -7,18 +7,18 @@
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
-        <div id="tree" {% if resource_granted("pim_enrich_product_category_edit") %} data-editable="true"{% endif %}{% if resource_granted("pim_enrich_product_category_create") %} data-creatable="true"{% endif %}></div>
+        <div id="tree" {% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
 
         <div id="category-form">
             <div class="sub-title buffer-extra-top buffer-left fullwidth text-center">
-                {% if resource_granted('pim_enrich_product_category_edit') %}
+                {% if resource_granted(acl ~ '_category_edit') %}
                     {{ 'category.suggest selection'|trans }}
                 {% endif %}
-                {% if resource_granted('pim_enrich_product_category_create') %}
+                {% if resource_granted(acl ~ '_category_create') %}
                     <br/>
                     <br/>
                     {{ 'category.or'|trans }}
-                    <a href="{{ path('pim_enrich_categorytree_create') }}">
+                    <a href="{{ path(route ~ '_categorytree_create') }}">
                         <span class="label link-label large">{{ 'category.create new'|trans }}</span>
                     </a>
                 {% endif %}

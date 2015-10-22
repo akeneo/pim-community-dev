@@ -38,3 +38,5 @@ parameters:
     doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema
 
     security.exception_listener.class: Pim\Bundle\UserBundle\Security\FirewallExceptionListener
+
+    pim_analytics_update_server_url: https://updates.akeneo.com

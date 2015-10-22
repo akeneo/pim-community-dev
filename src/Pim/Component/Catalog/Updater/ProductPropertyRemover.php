@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Updater\Remover\AttributeRemoverInterface;
 use Pim\Component\Catalog\Updater\Remover\RemoverRegistryInterface;
 
 /**
@@ -50,18 +51,13 @@ class ProductPropertyRemover implements PropertyRemoverInterface
             );
         }
 
-        $attribute = $this->getAttribute($field);
-        if (null !== $attribute) {
-            $remover = $this->removerRegistry->getAttributeRemover($attribute);
-        } else {
-            $remover = $this->removerRegistry->getFieldRemover($field);
-        }
-
+        $remover = $this->removerRegistry->getRemover($field);
         if (null === $remover) {
             throw new \LogicException(sprintf('No remover found for field "%s"', $field));
         }
 
-        if (null !== $attribute) {
+        if ($remover instanceof AttributeRemoverInterface) {
+            $attribute = $this->getAttribute($field);
             $remover->removeAttributeData($product, $attribute, $data, $options);
         } else {
             $remover->removeFieldData($product, $field, $data, $options);
@@ -77,8 +73,6 @@ class ProductPropertyRemover implements PropertyRemoverInterface
      */
     protected function getAttribute($code)
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-
-        return $attribute;
+        return $this->attributeRepository->findOneByIdentifier($code);
     }
 }

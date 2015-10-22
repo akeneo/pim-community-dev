@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\File\FileStorerInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
@@ -25,7 +25,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         CatalogContext $catalogContext,
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
-        RawFileStorerInterface $rawFileStorer,
+        FileStorerInterface $fileStorer,
         ProductMassActionManager $massActionManager
     ) {
         $this->beConstructedWith(
@@ -34,7 +34,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $catalogContext,
             $attributeRepository,
             $normalizer,
-            $rawFileStorer,
+            $fileStorer,
             $massActionManager
         );
     }

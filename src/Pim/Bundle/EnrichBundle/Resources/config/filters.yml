@@ -9,3 +9,4 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.channel'

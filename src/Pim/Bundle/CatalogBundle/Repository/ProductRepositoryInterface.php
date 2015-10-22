@@ -159,4 +159,11 @@ interface ProductRepositoryInterface
      * @return int
      */
     public function getProductCountByGroup(GroupInterface $group);
+
+    /**
+     * Return the number of existing products
+     *
+     * @return int
+     */
+    public function countAll();
 }

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -13,12 +13,12 @@ class FileNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer');
     }
 
-    function it_normalizes_a_file(FileInterface $file)
+    function it_normalizes_a_file(FileInfoInterface $fileInfo)
     {
-        $file->getKey()->willReturn('key/of/file.txt');
-        $file->getOriginalFilename()->willReturn('original file name.txt');
+        $fileInfo->getKey()->willReturn('key/of/file.txt');
+        $fileInfo->getOriginalFilename()->willReturn('original file name.txt');
 
-        $this->normalize($file, Argument::cetera())->shouldReturn(
+        $this->normalize($fileInfo, Argument::cetera())->shouldReturn(
             [
                 'filePath' => 'key/of/file.txt',
                 'originalFilename' => 'original file name.txt',
@@ -26,10 +26,10 @@ class FileNormalizerSpec extends ObjectBehavior
         );
     }
 
-    function it_supports_files_and_internal_api(FileInterface $file)
+    function it_supports_files_and_internal_api(FileInfoInterface $fileInfo)
     {
-        $this->supportsNormalization($file, 'internal_api')->shouldReturn(true);
-        $this->supportsNormalization($file, 'json')->shouldReturn(false);
+        $this->supportsNormalization($fileInfo, 'internal_api')->shouldReturn(true);
+        $this->supportsNormalization($fileInfo, 'json')->shouldReturn(false);
         $this->supportsNormalization(new \StdClass(), 'internal_api')->shouldReturn(false);
     }
 }

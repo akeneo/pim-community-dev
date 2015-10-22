@@ -10,13 +10,12 @@ define(
     [
         'jquery',
         'underscore',
-        'pim/form',
-        'oro/mediator'
+        'pim/form'
     ],
-    function ($, _, BaseForm, mediator) {
+    function ($, _, BaseForm) {
         return BaseForm.extend({
             configure: function () {
-                this.listenTo(mediator, 'pim_enrich:form:field:extension:add', this.addFieldExtension);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -48,10 +47,13 @@ define(
              * @param {Object} field
              */
             updateFieldElements: function (field) {
+                var message = _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
+                var element = '<span class="unavailable">' + message + '</span>';
+
                 field.addElement(
                     'field-input',
                     'input_placeholder',
-                    _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable')
+                    element
                 );
             }
         });

@@ -3,6 +3,7 @@ php:
     - "5.4"
     - "5.5"
     - "5.6"
+    - "7.0"
     - "hhvm"
 
 # Allow to use container infrastructure
@@ -10,6 +11,7 @@ sudo: false
 
 matrix:
     allow_failures:
+        - php: "7.0"
         - php: "hhvm"
 
 cache:

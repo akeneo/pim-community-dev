@@ -126,7 +126,7 @@ pim_connector:
             help: Whether or not to allow uploading the file directly
         delimiter:
             label: Delimiter
-            help: One character used to set the field delimiter
+            help: One character used to set the field delimiter for CSV file
         enclosure:
             label: Enclosure
             help: One character used to set the field enclosure
@@ -145,6 +145,12 @@ pim_connector:
         enabledComparison:
             label: Compare values
             help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values
+        decimalSeparator:
+            label: Decimal separator
+            help: One character used to set the field separator for decimal
+        dateFormat:
+            label: Date format
+            help: Specify the format of any date columns in the file, e.g. here DD/MM/YYYY for a 31/04/2014 format.
 
 job_execution.summary:
     read:       read

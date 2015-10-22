@@ -1,0 +1,9 @@
+pim_analytics:
+    new_patch_available: New patch available
+    system_config:
+        group:
+            notification.title: Notifications
+            version_update.title: Version updates
+        form:
+            version_update.label: New versions notifications
+            version_update.tooltip: Send request to a distant server to retrieve information about the release of new patchs

@@ -173,9 +173,9 @@ define([
              * @param {Array} values
              */
             setValues: function (values) {
-                if (values.length === 0) {
-                    /*global alert: true */
-                    alert('value array is empty');
+                if (_.isUndefined(values) || values.length === 0) {
+                    /*global console: true */
+                    console.log('value array is empty');
                 }
 
                 this.model.set('values', values);
@@ -193,7 +193,7 @@ define([
             /**
              * Add an element to this field block
              *
-             * @param {string} position
+             * @param {string} position 'footer', 'label' or 'comparison'
              * @param {string} code
              * @param {Object} element
              */

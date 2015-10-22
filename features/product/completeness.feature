@@ -268,3 +268,9 @@ Feature: Display the completeness of a product
     Then I should not see "No family defined. Please define a family to calculate the completeness of this product."
     And I save the product
     Then I should see the completeness summary
+
+  Scenario: Quickly jump to a field from completeness panel
+    Given I am on the "sneakers" product page
+    When I open the "Completeness" panel
+    And I click on the missing "side_view" value for "en_US" locale and "tablet" channel
+    Then I should be on the "Media" attribute group

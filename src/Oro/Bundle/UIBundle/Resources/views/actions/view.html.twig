@@ -1,0 +1,65 @@
+{% extends bap.layout %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% block content %}
+<div class="layout-content">
+    <div class="navigation clearfix navbar-extra">
+        <div class="row">
+            <div class="pull-right">
+                <div class="pull-right">
+                    {% block navButtons %}{% endblock navButtons %}
+                </div>
+            </div>
+            <div class="span10">
+            {% block pageHeader %}
+                <div class="customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %}">
+                    {% if breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar %}
+                        <div class="visual">
+                            <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/img/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+                        </div>
+                    {% endif %}
+                    <div class="pull-left">
+                        <div class="clearfix">
+                            {% block breadcrumbs %}
+                                <div class="pull-left">
+                                    {% if breadcrumbs.indexLabel is defined %}
+                                    <div class="sub-title">
+                                    {%- if breadcrumbs.indexPath is defined -%}
+                                        <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
+                                    {%- else -%}
+                                        {{ breadcrumbs.indexLabel|trans }}
+                                    {%- endif -%}
+                                    </div>
+                                    <span class="separator">/</span>
+                                    {% endif %}
+                                    {% if breadcrumbs.additional is defined %}
+                                        {% for breadcrumb in breadcrumbs.additional %}
+                                            <div class="sub-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
+                                            <span class="separator">/</span>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <h1 class="user-name">{{ breadcrumbs.entityTitle }}</h1>
+                                </div>
+                            {% endblock breadcrumbs %}
+                        </div>
+                        <div class="clearfix">
+                            <ul class="inline">
+                                {% block stats %}
+                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|oro_format_datetime : 'N/A' }}</li>
+                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
+                                {% endblock stats %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endblock pageHeader %}
+            </div>
+        </div>
+    </div>
+    <div class="layout-content scrollable-container">
+        {% block content_data %}
+            {{ UI.scrollData(id, data) }}
+        {% endblock content_data %}
+    </div>
+</div>
+{% endblock content %}

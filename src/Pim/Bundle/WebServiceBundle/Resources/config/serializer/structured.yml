@@ -2,6 +2,8 @@ services:
     # Normalizers
     pim_webservice.serializer.normalizer.product:
         class: %pim_serializer.normalizer.product.class%
+        arguments:
+            - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_webservice.serializer.normalizer, priority: 90 }
 

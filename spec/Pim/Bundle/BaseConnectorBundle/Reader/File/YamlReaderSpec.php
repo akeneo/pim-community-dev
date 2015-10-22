@@ -78,7 +78,7 @@ class YamlReaderSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(false, false);
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalledTimes(3);
 
         $this->setFilePath(
             realpath(__DIR__ . '/../../../../../../features/Context/fixtures/fake_products_with_code.yml')
@@ -123,7 +123,7 @@ class YamlReaderSpec extends ObjectBehavior
     ) {
         $this->beConstructedWith(true, false);
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('read_lines')->shouldBeCalled();
 
         $this->setFilePath(
             realpath(__DIR__ . '/../../../../../../features/Context/fixtures/fake_products_with_code.yml')

@@ -244,28 +244,6 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function getOroFixturesList()
     {
-        $bundles = $this->getContainer()->getParameter('kernel.bundles');
-
-        $basePath = realpath($this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR .'..');
-        $finder = new Finder();
-
-        foreach ($bundles as $bundleName => $bundleNamespace) {
-            if (strpos($bundleNamespace, 'Oro\\') === 0) {
-                $bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
-                $finder->in($bundle->getPath());
-            }
-        }
-        // Oro User Bundle overriden by Pim User Bundle, but we still need the data fixtures inside OroUserBundle
-        $finder->in($basePath."/vendor/oro/platform/src/Oro/Bundle/UserBundle");
-        $directories = $finder
-            ->path('/^DataFixtures$/')
-            ->directories();
-
-        $oroFixtures = [];
-        foreach ($directories as $directory) {
-            $oroFixtures[] = $directory->getPathName();
-        }
-
-        return $oroFixtures;
+        return [];
     }
 }

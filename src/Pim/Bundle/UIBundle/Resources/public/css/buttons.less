@@ -164,9 +164,20 @@
   &:hover {
     background-color: darken(@color-new-blue, 10%);
   }
+
+  &.icons-holder-text {
+    padding: 0 10px 0 44px;
+
+    i {
+      .icon-button();
+      background-color: darken(@color-new-blue, 10%);
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+    }
+  }
 }
 
-.btn.btn-delete, .btn.trash, .btn.remove-button {
+.btn.btn-delete, .btn.trash, .btn.remove-button, .btn.delete {
   background-color: @color-new-red;
   color: #fff;
   padding: 0 10px 0 44px;
@@ -174,6 +185,7 @@
 
   i {
     .icon-button();
+    color: white;
     background-color: darken(@color-new-red, 10%);
   }
 
@@ -379,7 +391,7 @@
 .navbar-title .sub-title .pimmultiselect {
   height: 34px;
   line-height: 34px;
-  margin-top: -2px !important;
+  margin-top: 0 !important;
   padding: 0;
 
   .pull-left {
@@ -414,4 +426,3 @@
 .label-warning, .badge-warning {
   background-color: @color-new-yellow;
 }
-

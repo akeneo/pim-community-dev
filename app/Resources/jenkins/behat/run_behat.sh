@@ -9,15 +9,13 @@
 XDEBUG_EXTENSION="xdebug.so"
 CHECK_WAIT="0.5"
 OUTPUT=`mktemp`
+FEATURES_SEPARATOR=','
 
 usage() {
-    echo "Usage: $0 -c concurrency -x xdebug|noxdebug -d database_prefix -p profile_prefix [-f behat_feature1:behat_feature2:behat_dir1] [-h] -b behat_command_and_options"
-    echo "  -f : Force features file or directory. If not specified, all features are executed"
+    echo "Usage: $0 [-h] -c concurrency -x xdebug|noxdebug -d database_prefix -p profile_prefix -f behat_feature1:behat_feature2:behat_dir1 -b behat_command_and_options [-r application_root]"
     exit 1;
 }
 
-APP_ROOT=`dirname $0`/../../../..
-FEATURES_DIR=$APP_ROOT/features
 
 IS_OPTION='echo $1 | grep "^-" > /dev/null'
 
@@ -35,8 +33,8 @@ while [ "$1" != "" ]; do
                 ;;
 
         -f)     shift
-                eval $IS_OPTION || FORCED_FEATURES=$1
-                [ -n "$FORCED_FEATURES" ] && shift
+                eval $IS_OPTION || ASKED_FEATURES=$1
+                [ -n "$ASKED_FEATURES" ] && shift
                 ;;
 
         -d)     shift
@@ -54,24 +52,19 @@ while [ "$1" != "" ]; do
                 [ -n "$BEHAT_CMD" ] && shift
                 ;;
 
+        -r)
+                shift
+                eval $IS_OPTION || APP_ROOT=$1
+                [ -n "$APP_ROOT" ] && shift
+                ;;
+
         *|-h)   usage
                 ;;
     esac
 done
 
-FEATURES=""
-for FORCED_FEATURE in $(echo $FORCED_FEATURES | sed -e "s#:# #g"); do
 
-    if (echo $FORCED_FEATURE | grep "\.feature$" > /dev/null); then
-        # Feature file provided
-        FEATURES="$FEATURES $FEATURES_DIR/$FORCED_FEATURE"
-    else
-        # Directory provided
-        FEATURES="$FEATURES $(find $FEATURES_DIR/$FORCED_FEATURE -name *.feature)"
-    fi
-done
-
-if [ -z "$XDEBUG" ] || [ $XDEBUG != 'xdebug' ] && [ $XDEBUG != 'noxdebug' ] ; then
+if [ -z "$XDEBUG" ] || [ "$XDEBUG" != 'xdebug' ] && [ "$XDEBUG" != 'noxdebug' ] ; then
     echo "Missing or Invalid xdebug parameter [$XDEBUG]"
     usage
 fi
@@ -86,8 +79,8 @@ if [ -z "$DB_PREFIX" ]; then
     usage
 fi
 
-if [ -z "$BEHAT_CMD" ]; then
-    echo "Missing Behat command and options"
+if [ -z "$ASKED_FEATURES" ]; then
+    echo "Missing features parameter"
     usage
 fi
 
@@ -96,6 +89,27 @@ if [ $? != 0 ]; then
     echo "Invalid concurrency parameter [$CONCURRENCY]"
     usage
 fi
+
+if [ -z "$BEHAT_CMD" ]; then
+    echo "Missing Behat command and options"
+    usage
+fi
+
+if [ -z "$APP_ROOT" ]; then
+    APP_ROOT=`dirname $0`/../../../..
+fi
+
+FEATURES=""
+for ASKED_FEATURE in $(echo $ASKED_FEATURES | sed -e "s#$FEATURES_SEPARATOR# #g" | sed -e "s/  \+/ /g"); do
+
+    if (echo $ASKED_FEATURE | grep "\.feature$" > /dev/null); then
+        # Feature file provided
+        FEATURES="$FEATURES $APP_ROOT/$ASKED_FEATURE"
+    else
+        # Directory provided
+        FEATURES="$FEATURES $(find $APP_ROOT/$ASKED_FEATURE -name *.feature)"
+    fi
+done
 
 ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/_$//"`
 
@@ -122,13 +136,9 @@ for PROC in `seq 1 $CONCURRENCY`; do
 done
 cd -
 
-if [ -z "$FEATURES" ]; then
-    FEATURES=$(find $FEATURES_DIR/ -name *.feature)
-fi
-
 for FEATURE in $FEATURES; do
 
-    FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
+    FEATURE_NAME=`echo "${FEATURE#$APP_ROOT/}"`
 
     while [ ! -z $FEATURE_NAME ]; do
 
@@ -170,7 +180,9 @@ done
 for PROC in `seq 1 $CONCURRENCY`; do
     PID_VARNAME=PID_$PROC
     PID="${!PID_VARNAME}"
-    wait $PID
+    if [ $PID -ne 0 ]; then
+        wait $PID
+    fi
 done
 
 # Check the output

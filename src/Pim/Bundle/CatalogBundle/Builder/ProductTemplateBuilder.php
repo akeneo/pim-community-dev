@@ -104,6 +104,8 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
             $this->productBuilder->addAttributeToProduct($product, $attribute);
         }
 
+        $this->productBuilder->addMissingProductValues($product);
+
         return $product->getValues();
     }
 }

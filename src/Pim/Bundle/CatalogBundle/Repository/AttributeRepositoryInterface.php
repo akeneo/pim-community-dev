@@ -154,4 +154,11 @@ interface AttributeRepositoryInterface extends
      * @return string[]
      */
     public function getAttributeCodesByType($type);
+
+    /**
+     * Return the number of existing attributes
+     *
+     * @return int
+     */
+    public function countAll();
 }

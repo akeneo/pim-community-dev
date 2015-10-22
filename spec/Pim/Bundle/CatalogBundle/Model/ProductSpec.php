@@ -131,13 +131,8 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInVariantGroup($attribute)->shouldReturn(true);
     }
 
-    function it_is_not_attribute_editable_with_family_containing_attribute(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
+    function it_is_not_attribute_editable_without_family(AttributeInterface $attribute)
     {
-        $familyAttributes->contains($attribute)->willReturn(true);
-        $family->getId()->willReturn(42);
-        $family->getAttributes()->willReturn($familyAttributes);
-
-        $this->setFamily($family);
         $this->isAttributeEditable($attribute)->shouldReturn(false);
     }
 
@@ -153,8 +148,13 @@ class ProductSpec extends ObjectBehavior
         $this->isAttributeEditable($attribute)->shouldReturn(false);
     }
 
-    function it_is_attribute_editable(AttributeInterface $attribute)
+    function it_is_attribute_editable_with_family_containing_attribute(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
+        $familyAttributes->contains($attribute)->willReturn(true);
+        $family->getId()->willReturn(42);
+        $family->getAttributes()->willReturn($familyAttributes);
+        $this->setFamily($family);
+
         $this->isAttributeEditable($attribute)->shouldReturn(true);
     }
 

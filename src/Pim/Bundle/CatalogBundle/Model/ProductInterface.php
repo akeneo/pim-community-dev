@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\Classification\CategoryAwareInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
-use Pim\Component\Classification\CategoryAwareInterface;
 
 /**
  * Product interface
@@ -126,21 +126,21 @@ interface ProductInterface extends
     public function getVariantGroup();
 
     /**
-     * Get a string with groups
+     * Get groups code
      *
-     * @return string
+     * @return array
      */
     public function getGroupCodes();
 
     /**
-     * Get the product associations
+     * Get types of associations
      *
      * @return AssociationInterface[]|null
      */
     public function getAssociations();
 
     /**
-     * Set product associations
+     * Set types of associations
      *
      * @param AssociationInterface[] $associations
      *
@@ -149,7 +149,7 @@ interface ProductInterface extends
     public function setAssociations(array $associations = []);
 
     /**
-     * Add product association
+     * Add a type of an association
      *
      * @param AssociationInterface $association
      *
@@ -160,7 +160,7 @@ interface ProductInterface extends
     public function addAssociation(AssociationInterface $association);
 
     /**
-     * Remove product association
+     * Remove a type of an association
      *
      * @param AssociationInterface $association
      *
@@ -205,14 +205,14 @@ interface ProductInterface extends
     /**
      * Get product completenesses
      *
-     * @return ArrayCollection
+     * @return Collection of CompletenessInterface
      */
     public function getCompletenesses();
 
     /**
      * Set product completenesses
      *
-     * @param ArrayCollection $completenesses
+     * @param Collection $completenesses CompletenessInterface
      *
      * @return ProductInterface
      */
@@ -285,7 +285,7 @@ interface ProductInterface extends
      *
      * @deprecated will be removed in 1.4
      *
-     * @return FileInterface[]
+     * @return FileInfoInterface[]
      */
     public function getMedia();
 

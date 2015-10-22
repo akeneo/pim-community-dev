@@ -2,6 +2,7 @@
 
 namespace Context\Page\Product;
 
+use Akeneo\Component\Classification\Model\Category;
 use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
@@ -47,6 +48,7 @@ class Edit extends Form
                 'Comparison dropdown'     => ['css' => '.attribute-copy-actions'],
                 'Copy selection dropdown' => ['css' => '.attribute-copy-actions .selection-dropdown'],
                 'Copy translations link'  => ['css' => '.attribute-copy-actions .copy'],
+                'Copy actions'            => ['css' => '.copy-actions'],
                 'Comment threads'         => ['css' => '.comment-threads'],
                 'Meta zone'               => ['css' => '.baseline > .meta'],
                 'Modal'                   => ['css' => '.modal'],
@@ -378,9 +380,12 @@ class Edit extends Form
             return $this->findCompoundField($fieldContainer, $currency);
         }
 
-        $fieldContainer = $this->findFieldContainer($label);
-        $subContainer   = $fieldContainer->find('css', $copy ? '.copy-container .form-field' : '.form-field');
-        $field          = $this->spin(function () use ($subContainer) {
+        $subContainer = $this->spin(function () use ($label, $copy) {
+            return $this->findFieldContainer($label)
+                ->find('css', $copy ? '.copy-container .form-field' : '.form-field');
+        });
+
+        $field = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.field-input input, .field-input textarea');
         }, 10);
 
@@ -1026,6 +1031,22 @@ class Edit extends Form
     /**
      * @return NodeElement|null
      */
+    public function getStatusSwitcher()
+    {
+        try {
+            $switcher = $this->spin(function () {
+                return $this->find('css', '.status-switcher');
+            }, 5);
+        } catch (\Exception $e) {
+            $switcher = null;
+        }
+
+        return $switcher;
+    }
+
+    /**
+     * @return NodeElement|null
+     */
     public function getImagePreview()
     {
         $preview = $this->getElement('Image preview');
@@ -1352,17 +1373,58 @@ class Edit extends Form
     /**
      * @param string $category
      *
-     * @return CategoryView
+     * @return Edit
      */
     public function selectTree($category)
     {
+        if (null !== $treeSelect = $this->findById('tree_select')) {
+            $treeSelect->selectOption($category);
+
+            return $this;
+        }
+
         $link = $this->getElement('Category pane')->find('css', sprintf('#trees-list li a:contains("%s")', $category));
-        if (!$link) {
+
+        if (null === $link) {
             throw new \InvalidArgumentException(sprintf('Tree "%s" not found', $category));
         }
         $link->click();
 
         return $this;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @throws \Exception
+     */
+    public function clickCategoryFilterLink($category)
+    {
+        $node = $this
+            ->getCategoryTree()
+            ->find('css', sprintf('#node_%s a', $category->getId()));
+
+        if (null === $node) {
+            throw new \Exception(sprintf('Could not find category filter "%s".', $category->getId()));
+        }
+
+        $node->click();
+    }
+
+    /**
+     * Filter by unclassified products
+     */
+    public function clickUnclassifiedCategoryFilterLink()
+    {
+        $node = $this
+            ->getCategoryTree()
+            ->find('css', '#node_-1 a');
+
+        if (null === $node) {
+            throw new \Exception(sprintf('Could not find unclassified category filter.'));
+        }
+
+        $node->click();
     }
 
     /**
@@ -1389,12 +1451,12 @@ class Edit extends Form
      */
     public function findCategoryInTree($category)
     {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        if (!$elt) {
+        $leaf = $this->getCategoryTree()->find('css', sprintf('li a:contains("%s")', $category));
+        if (null === $leaf) {
             throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
         }
 
-        return $elt;
+        return $leaf;
     }
 
     /**
@@ -1402,7 +1464,11 @@ class Edit extends Form
      */
     public function startCopy()
     {
-        $this->getElement('Comparison dropdown')->find('css', 'div.start-copying')->click();
+        $startCopyBtn = $this->spin(function () {
+            return $this->getElement('Comparison dropdown')->find('css', 'div.start-copying');
+        }, 5);
+
+        $startCopyBtn->click();
         $this->getSession()->wait(500);
     }
 
@@ -1415,7 +1481,15 @@ class Edit extends Form
      */
     public function compareWith($localeCode, $scope = null, $source = null)
     {
-        $this->startCopy();
+        try {
+            $this->startCopy();
+        } catch (\Exception $e) {
+            // Is panel already open?
+            $this->spin(function () {
+                return $this->getElement('Copy actions')->find('css', '.stop-copying');
+            }, 20, "Copy panel seems neither open nor closed.");
+        }
+
         $this->switchLocale($localeCode, true);
         if (null !== $scope) {
             $this->switchScope($scope, true);
@@ -1523,7 +1597,7 @@ class Edit extends Form
      *
      * @return NodeElement
      */
-    protected function findCompletenessCell($channelCode, $localeCode)
+    public function findCompletenessCell($channelCode, $localeCode)
     {
         $completenessTable = $this->findCompletenessContent();
 
@@ -1544,6 +1618,26 @@ class Edit extends Form
         }
 
         return $cell->getParent();
+    }
+
+    /**
+     * Find an attribute group in the nav
+     *
+     * @param string $attributeGroupCode
+     *
+     * @throws \Exception
+     *
+     * @return NodeElement
+     */
+    public function getAttributeGroupTab($group)
+    {
+        $groups = $this->getElement('Form Groups');
+
+        $groupNode = $this->spin(function () use ($groups, $group) {
+            return $groups->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
+        }, 20, sprintf("Can't find attribute group '%s'", $group));
+
+        return $groupNode->getParent()->getParent();
     }
 
     /**
@@ -1571,5 +1665,18 @@ class Edit extends Form
         }
 
         return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
+    }
+
+    /**
+     * @return NodeElement|null
+     */
+    public function getCategoryTree()
+    {
+        $modal = $this->find('css', '.modal');
+        if (null !== $modal && $modal->isVisible() && null !== $tree = $modal->find('css', '#tree')) {
+            return $tree;
+        }
+
+        return $this->getElement('Category tree');
     }
 }

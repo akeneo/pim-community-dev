@@ -49,4 +49,4 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductPriceInterface
         media:
             type: entity
-            targetEntity: Akeneo\Component\FileStorage\Model\File
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInfo

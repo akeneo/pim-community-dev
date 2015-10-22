@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Akeneo\Bundle\FileStorageBundle\Form\Type\FileType;
+use Akeneo\Bundle\FileStorageBundle\Form\Type\FileInfoType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MediaType extends FileType
+class MediaType extends FileInfoType
 {
     /**
      * {@inheritdoc}

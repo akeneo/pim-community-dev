@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\Filesystem;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -64,8 +64,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Filesystem $filesystem,
         ChannelInterface $channel,
         ProductInterface $product,
-        FileInterface $media1,
-        FileInterface $media2,
+        FileInfoInterface $media1,
+        FileInfoInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
         AttributeInterface $attribute,

@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Akeneo\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
-use Pim\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 
 /**
  * Abstract product
@@ -516,7 +516,7 @@ abstract class AbstractProduct implements ProductInterface
         }
         sort($codes);
 
-        return implode(',', $codes);
+        return $codes;
     }
 
     /**
@@ -530,7 +530,7 @@ abstract class AbstractProduct implements ProductInterface
         }
         sort($codes);
 
-        return implode(',', $codes);
+        return $codes;
     }
 
     /**
@@ -605,7 +605,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function isAttributeEditable(AttributeInterface $attribute)
     {
-        if ($this->hasAttributeInFamily($attribute)) {
+        if (!$this->hasAttributeInFamily($attribute)) {
             return false;
         }
 

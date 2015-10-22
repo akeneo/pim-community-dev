@@ -47,7 +47,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution)->shouldReturn($this);
     }
 
-    function it_does_not_sets_values_from_variant_group(
+    function it_does_not_set_values_when_attribute_is_not_editable(
         $validator,
         $propertySetter,
         AttributeInterface $attribute,
@@ -85,7 +85,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $product->isAttributeEditable($attribute)->willReturn(false);
         $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldNotBeCalled();
 
-        $this->process($product)->shouldReturn(null);;
+        $this->process($product)->shouldReturn(null);
     }
 
     function it_sets_values_to_attributes(

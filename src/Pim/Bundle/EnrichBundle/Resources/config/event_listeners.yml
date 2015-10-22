@@ -2,7 +2,7 @@ parameters:
     pim_enrich.event_listener.user_context.class:               Pim\Bundle\EnrichBundle\EventListener\UserContextListener
     pim_enrich.event_listener.request.class:                    Pim\Bundle\EnrichBundle\EventListener\RequestListener
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
-    pim_enrich.event_listener.kernel_exception.class:           Pim\Bundle\EnrichBundle\EventListener\KernelExceptionListener
+    pim_enrich.event_subscriber.storage.channel_locale.class:   Pim\Bundle\EnrichBundle\EventListener\Storage\ChannelLocaleSubscriber
 
 services:
     # User context listener
@@ -28,9 +28,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_enrich.event_listener.kernel_exception:
-        class: %pim_enrich.event_listener.kernel_exception.class%
+    # Storage event listeners
+    pim_enrich.event_subscriber.storage.channel_locale:
+        class: %pim_enrich.event_subscriber.storage.channel_locale.class%
         arguments:
-            - '@templating'
+            - @pim_catalog.repository.locale
+            - @pim_catalog.saver.locale
+            - @pim_catalog.doctrine.completeness_generator
         tags:
-            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+            - { name: kernel.event_subscriber }

@@ -130,13 +130,13 @@ define(
                 options = options || {};
 
                 if (!options.silent) {
-                    mediator.trigger('pim_enrich:form:entity:pre_update', data);
+                    this.getRoot().trigger('pim_enrich:form:entity:pre_update', data);
                 }
 
                 this.getRoot().model.set(data, options);
 
                 if (!options.silent) {
-                    mediator.trigger('pim_enrich:form:entity:post_update', data);
+                    this.getRoot().trigger('pim_enrich:form:entity:post_update', data);
                 }
 
                 return this;
@@ -261,6 +261,21 @@ define(
              */
             getFormCode: function () {
                 return this.getRoot().code;
+            },
+
+            /**
+             * Listen to given mediator events to trigger them locally (in the local root).
+             * This way, extensions attached to this form don't have to listen "globally" on the mediator.
+             *
+             * @param {Array} mediator events to forward:
+             *                [ {'mediator:event:name': 'this:event:name'}, {...} ]
+             */
+            forwardMediatorEvents: function (events) {
+                _.map(events, function (localEvent, mediatorEvent) {
+                    this.listenTo(mediator, mediatorEvent, function (data) {
+                        this.trigger(localEvent, data);
+                    });
+                }.bind(this));
             }
         });
     }

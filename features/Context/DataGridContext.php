@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Base\Grid;
+use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 
@@ -806,7 +807,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iSelectRows($entities)
     {
         foreach ($this->getMainContext()->listToArray($entities) as $entity) {
-            $this->getCurrentPage()->selectRow($entity);
+            $this->getCurrentPage()->selectRow($entity, true);
+        }
+    }
+
+    /**
+     * @param string $entities
+     *
+     * @Then /^I unselect rows? (.*)$/
+     */
+    public function iUnSelectRows($entities)
+    {
+        foreach ($this->getMainContext()->listToArray($entities) as $entity) {
+            $this->getCurrentPage()->selectRow($entity, false);
         }
     }
 

@@ -6,6 +6,7 @@ use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -22,6 +23,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
@@ -69,23 +71,24 @@ class FixturesContext extends RawMinkContext
     ];
 
     protected $entities = [
-        'Attribute'       => 'PimCatalogBundle:Attribute',
-        'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
-        'AttributeOption' => 'PimCatalogBundle:AttributeOption',
-        'Channel'         => 'PimCatalogBundle:Channel',
-        'Currency'        => 'PimCatalogBundle:Currency',
-        'Family'          => 'PimCatalogBundle:Family',
-        'Category'        => 'PimCatalogBundle:Category', // TODO: To remove
-        'ProductCategory' => 'PimCatalogBundle:Category',
-        'AssociationType' => 'PimCatalogBundle:AssociationType',
-        'JobInstance'     => 'AkeneoBatchBundle:JobInstance',
-        'User'            => 'PimUserBundle:User',
-        'Role'            => 'OroUserBundle:Role',
-        'UserGroup'       => 'OroUserBundle:Group',
-        'Locale'          => 'PimCatalogBundle:Locale',
-        'GroupType'       => 'PimCatalogBundle:GroupType',
-        'Product'         => 'Pim\Bundle\CatalogBundle\Model\Product',
-        'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
+        'Attribute'        => 'PimCatalogBundle:Attribute',
+        'AttributeGroup'   => 'PimCatalogBundle:AttributeGroup',
+        'AttributeOption'  => 'PimCatalogBundle:AttributeOption',
+        'Channel'          => 'PimCatalogBundle:Channel',
+        'Currency'         => 'PimCatalogBundle:Currency',
+        'Family'           => 'PimCatalogBundle:Family',
+        'Category'         => 'PimCatalogBundle:Category', // TODO: To remove
+        'ProductCategory'  => 'PimCatalogBundle:Category',
+        'AssociationType'  => 'PimCatalogBundle:AssociationType',
+        'JobInstance'      => 'AkeneoBatchBundle:JobInstance',
+        'JobConfiguration' => 'Pim\Component\Connector\Model\JobConfiguration',
+        'User'             => 'PimUserBundle:User',
+        'Role'             => 'OroUserBundle:Role',
+        'UserGroup'        => 'OroUserBundle:Group',
+        'Locale'           => 'PimCatalogBundle:Locale',
+        'GroupType'        => 'PimCatalogBundle:GroupType',
+        'Product'          => 'Pim\Bundle\CatalogBundle\Model\Product',
+        'ProductGroup'     => 'Pim\Bundle\CatalogBundle\Entity\Group',
     ];
 
     protected $placeholderValues = [];
@@ -808,6 +811,21 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $locale
+     * @param string $channel
+     *
+     * @Given /^I set the "([^"]*)" locales? to the "([^"]*)" channel$/
+     */
+    public function iSetTheLocaleToTheChannel($locale, $channel)
+    {
+        return [
+            new Step\Given("I am on the \"$channel\" channel page"),
+            new Step\Given("I fill in \"Locales\" with \"$locale\" on the current page"),
+            new Step\Given("I press \"Save\""),
+        ];
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following jobs?:$/
@@ -1015,6 +1033,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * We use the tag |NL| for \n in gherkin
+     *
      * @param string $lang
      * @param string $scope
      * @param string $attribute
@@ -1025,6 +1045,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
+        $value = str_replace('|NL|', "\n", $value);
         $this->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang], $scope);
 
@@ -1522,6 +1543,21 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $username
+     * @param string $locale
+     *
+     * @return bool
+     *
+     * @Then /^the user "([^"]+)" should have "([^"]+)" locale$/
+     */
+    public function checkUserUiLocale($username, $locale)
+    {
+        $user = $this->getUser($username);
+        $this->refresh($user);
+        assertEquals($user->getUiLocale()->getLanguage(), $locale);
+    }
+
+    /**
+     * @param string $username
      */
     public function setUsername($username)
     {
@@ -1723,6 +1759,32 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^the following associations for the (product "([^"]+)"):$/
+     */
+    public function theFollowingAssociationsForTheProduct(ProductInterface $owner, $id, TableNode $values)
+    {
+        $rows = $values->getHash();
+
+        foreach ($rows as $row) {
+            $association = $owner->getAssociationForTypeCode($row['type']);
+
+            if (null === $association) {
+                $associationType = $this->getContainer()
+                    ->get('pim_catalog.repository.association_type')
+                    ->findOneBy(['code' => $row['type']]);
+
+                $association = new Association();
+                $association->setAssociationType($associationType);
+                $owner->addAssociation($association);
+            }
+
+            $association->addProduct($this->getProduct($row['product']));
+        }
+
+        $this->getProductSaver()->save($owner, ['recalculate' => false]);
+    }
+
+    /**
      * @param string $identifier
      * @param string $attribute
      * @param string $locale
@@ -1791,6 +1853,7 @@ class FixturesContext extends RawMinkContext
                 'code'     => null,
                 'label'    => null,
                 'families' => null,
+                'locales'  => null,
                 'type'     => 'text',
                 'group'    => 'other',
             ],
@@ -1807,13 +1870,21 @@ class FixturesContext extends RawMinkContext
         $families = $data['families'];
         unset($data['families']);
 
+        $locales = $data['locales'];
+        unset($data['locales']);
+
         $data['type'] = $this->getAttributeType($data['type']);
 
         foreach ($data as $key => $element) {
             if (in_array($element, ['yes', 'no'])) {
                 $element    = $element === 'yes';
                 $data[$key] = $element;
-            } elseif (in_array($key, ['available_locales', 'date_min', 'date_max', 'number_min', 'number_max']) && '' === $element) {
+            } elseif (in_array(
+                $key,
+                ['available_locales', 'date_min', 'date_max', 'number_min', 'number_max']
+            ) &&
+                '' === $element
+            ) {
                 unset($data[$key]);
             }
         }
@@ -1830,6 +1901,13 @@ class FixturesContext extends RawMinkContext
         }
 
         $this->validate($attribute);
+
+        if (null !== $locales) {
+            foreach ($this->listToArray($locales) as $localeCode) {
+                $attribute->addAvailableLocale($this->getLocale($localeCode));
+            }
+        }
+
         $this->persist($attribute);
         foreach ($familiesToPersist as $family) {
             $this->validate($family);
@@ -2261,7 +2339,8 @@ class FixturesContext extends RawMinkContext
             throw new \InvalidArgumentException(
                 sprintf(
                     'Object "%s" is not valid, cf following constraint violations "%s"',
-                    ClassUtils::getClass($object), implode(', ', $messages)
+                    ClassUtils::getClass($object),
+                    implode(', ', $messages)
                 )
             );
         }

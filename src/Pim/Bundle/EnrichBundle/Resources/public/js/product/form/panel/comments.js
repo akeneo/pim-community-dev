@@ -16,9 +16,10 @@ define(
         'pim/user-context',
         'text!pim/template/product/panel/comments',
         'routing',
-        'oro/messenger'
+        'oro/messenger',
+        'pim/dialog'
     ],
-    function ($, _, Backbone, BaseForm, UserContext, template, Routing, messenger) {
+    function ($, _, Backbone, BaseForm, UserContext, template, Routing, messenger, Dialog) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -99,6 +100,13 @@ define(
                 });
             },
             removeComment: function (event) {
+                Dialog.confirm(
+                    _.__('confirmation.remove.comment'),
+                    _.__('pim_enrich.confirmation.delete_item'),
+                    this.doRemove.bind(this, event)
+                );
+            },
+            doRemove: function (event) {
                 $.ajax({
                     url: Routing.generate('pim_comment_comment_delete', { id: event.currentTarget.dataset.commentId }),
                     type: 'POST',

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
@@ -125,6 +126,15 @@ interface AttributeInterface extends
      * @return array
      */
     public function getLocaleSpecificCodes();
+
+    /**
+     * Test if the attribute have the given locale specific available
+     *
+     * @param LocaleInterface $locale
+     *
+     * @return bool
+     */
+    public function hasLocaleSpecific(LocaleInterface $locale);
 
     /**
      * Set entity type
@@ -629,4 +639,9 @@ interface AttributeInterface extends
      * @param string $name
      */
     public function setReferenceDataName($name);
+
+    /**
+     * @return bool
+     */
+    public function isBackendTypeReferenceData();
 }

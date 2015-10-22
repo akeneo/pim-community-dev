@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -30,12 +30,12 @@ class MediaExporterPathGeneratorSpec extends ObjectBehavior
 
     function it_generates_the_path(
         ProductValueInterface $value,
-        FileInterface $file,
+        FileInfoInterface $fileInfo,
         AttributeInterface $attribute
     ) {
-        $value->getMedia()->willReturn($file);
+        $value->getMedia()->willReturn($fileInfo);
         $value->getAttribute()->willReturn($attribute);
-        $file->getOriginalFilename()->willReturn('file.jpg');
+        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
         $attribute->getCode()->willReturn('picture');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -46,14 +46,14 @@ class MediaExporterPathGeneratorSpec extends ObjectBehavior
     function it_generates_the_path_when_no_identifier_is_provided(
         ProductValueInterface $value,
         ProductInterface $product,
-        FileInterface $file,
+        FileInfoInterface $fileInfo,
         AttributeInterface $attribute
     ) {
-        $value->getMedia()->willReturn($file);
+        $value->getMedia()->willReturn($fileInfo);
         $value->getAttribute()->willReturn($attribute);
         $value->getEntity()->willReturn($product);
         $product->getIdentifier()->willReturn('sku-product');
-        $file->getOriginalFilename()->willReturn('file.jpg');
+        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
         $attribute->getCode()->willReturn('picture');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -63,13 +63,13 @@ class MediaExporterPathGeneratorSpec extends ObjectBehavior
 
     function it_generates_the_path_when_the_value_is_localisable(
         ProductValueInterface $value,
-        FileInterface $file,
+        FileInfoInterface $fileInfo,
         AttributeInterface $attribute
     ) {
-        $value->getMedia()->willReturn($file);
+        $value->getMedia()->willReturn($fileInfo);
         $value->getLocale()->willReturn('fr_FR');
         $value->getAttribute()->willReturn($attribute);
-        $file->getOriginalFilename()->willReturn('file.jpg');
+        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
         $attribute->getCode()->willReturn('picture');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
@@ -79,13 +79,13 @@ class MediaExporterPathGeneratorSpec extends ObjectBehavior
 
     function it_generates_the_path_when_the_value_is_scopable(
         ProductValueInterface $value,
-        FileInterface $file,
+        FileInfoInterface $fileInfo,
         AttributeInterface $attribute
     ) {
-        $value->getMedia()->willReturn($file);
+        $value->getMedia()->willReturn($fileInfo);
         $value->getScope()->willReturn('ecommerce');
         $value->getAttribute()->willReturn($attribute);
-        $file->getOriginalFilename()->willReturn('file.jpg');
+        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
         $attribute->getCode()->willReturn('picture');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(true);
@@ -95,14 +95,14 @@ class MediaExporterPathGeneratorSpec extends ObjectBehavior
 
     function it_generates_the_path_when_the_value_is_localisable_and_scopable(
         ProductValueInterface $value,
-        FileInterface $file,
+        FileInfoInterface $fileInfo,
         AttributeInterface $attribute
     ) {
-        $value->getMedia()->willReturn($file);
+        $value->getMedia()->willReturn($fileInfo);
         $value->getLocale()->willReturn('fr_FR');
         $value->getScope()->willReturn('ecommerce');
         $value->getAttribute()->willReturn($attribute);
-        $file->getOriginalFilename()->willReturn('file.jpg');
+        $fileInfo->getOriginalFilename()->willReturn('file.jpg');
         $attribute->getCode()->willReturn('picture');
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);

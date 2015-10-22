@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
+use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Classification\Model\CategoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\Counter\CategoryItemsCounterRegistryInterface;
 
 /**
  * Twig extension to render category from twig templates
@@ -16,23 +16,16 @@ use Pim\Component\Classification\Repository\ItemCategoryRepositoryInterface;
  */
 class CategoryExtension extends \Twig_Extension
 {
-    /** @var CategoryRepositoryInterface */
-    protected $productCategoryRepo;
-
-    /** @var ItemCategoryRepositoryInterface */
-    protected $itemProductCatRepo;
+    /** @var CategoryItemsCounterRegistryInterface */
+    protected $categoryItemsCounter;
 
     /** @var int */
-    protected $productsLimitForRemoval;
+    protected $itemsLimitRemoval;
 
-    public function __construct(
-        CategoryRepositoryInterface $productCategoryRepo,
-        ItemCategoryRepositoryInterface $itemProductCatRepo,
-        $productsLimitForRemoval = null
-    ) {
-        $this->productCategoryRepo     = $productCategoryRepo;
-        $this->itemProductCatRepo      = $itemProductCatRepo;
-        $this->productsLimitForRemoval = $productsLimitForRemoval;
+    public function __construct(CategoryItemsCounterRegistryInterface $categoryItemsCounter, $itemsLimitRemoval = null)
+    {
+        $this->categoryItemsCounter = $categoryItemsCounter;
+        $this->itemsLimitRemoval    = $itemsLimitRemoval;
     }
 
     /**
@@ -173,23 +166,28 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param CategoryInterface $category
      * @param bool              $includeSub
+     * @param string            $relatedEntity
+     *
+     * @throws \Exception
      *
      * @return bool
      */
-    public function exceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub)
+    public function exceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub, $relatedEntity = 'product')
     {
-        return null !== $this->productsLimitForRemoval &&
-            $this->countItems($category, $includeSub, 'product') > $this->productsLimitForRemoval;
+        return null !== $this->itemsLimitRemoval &&
+            $this->countItems($category, $includeSub, $relatedEntity) > $this->itemsLimitRemoval;
     }
 
     /**
      * Return the linked products limit for category removal
      *
+     * @param string $relatedEntity
+     *
      * @return int
      */
     public function getProductsLimitForRemoval()
     {
-        return $this->productsLimitForRemoval;
+        return $this->itemsLimitRemoval;
     }
 
     /**
@@ -472,17 +470,11 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return int
      */
-    protected function countItems(CategoryInterface $category, $includeSub, $relatedEntity)
+    protected function countItems(CategoryInterface $category, $includeSub, $relatedEntity = 'product')
     {
-        $categoryQb = null;
+        $categoryItemsCounter = $this->getExtension($relatedEntity);
 
-        if ($includeSub) {
-            $categoryQb = $this->getRelatedEntityRepo($relatedEntity)
-                ->getAllChildrenQueryBuilder($category, $includeSub);
-        }
-
-        return $this->getRelatedCategoryEntityRepo($relatedEntity)
-            ->getItemsCountInCategory($category, $categoryQb);
+        return $categoryItemsCounter->getItemsCountInCategory($category, $includeSub);
     }
 
     /**
@@ -538,36 +530,22 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * @param string $relatedEntity
+     * Get type of extension
      *
-     * @throw \LogicException If no repo found for the given $relatedEntity
+     * @param string $type
      *
-     * @return CategoryRepositoryInterface
+     * @throws \Exception
+     *
+     * @return CategoryItemsCounterInterface
      */
-    protected function getRelatedEntityRepo($relatedEntity)
+    protected function getExtension($type)
     {
-        switch ($relatedEntity) {
-            case 'product':
-                return $this->productCategoryRepo;
-            default:
-                throw new \LogicException(sprintf('No repository for related entity "%s"', $relatedEntity));
-        }
-    }
+        $categoryItemsCounter = $this->categoryItemsCounter->get($type);
 
-    /**
-     * @param string $relatedEntity
-     *
-     * @throw \LogicException If no repo found for the given $relatedEntity
-     *
-     * @return ItemCategoryRepositoryInterface
-     */
-    protected function getRelatedCategoryEntityRepo($relatedEntity)
-    {
-        switch ($relatedEntity) {
-            case 'product':
-                return $this->itemProductCatRepo;
-            default:
-                throw new \LogicException(sprintf('No repository for related entity "%s"', $relatedEntity));
+        if (null === $categoryItemsCounter) {
+            throw new \Exception(sprintf('No category counter found for %s', $type));
         }
+
+        return $categoryItemsCounter;
     }
 }

@@ -126,7 +126,7 @@ a.accordion-toggle {
 }
 
 .form-horizontal .control-group {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   label.control-label {
     &:not(.add-on) {
       max-height: 25px;
@@ -882,9 +882,16 @@ div.dropdown-menu.channel {
   cursor: default;
   opacity: 0;
   .label-warning {
-    color: @textColor + #333;
+    color: @color-form-info;
     text-shadow: none;
-    background-color: #fefecb;
+    background-color: #fdd9b6;
+    border-radius: 10px;
+    font-weight: 400;
+    padding: 2px 10px 2px 2px;
+
+    .icon {
+      color: #fa9f47;
+    }
   }
 }
 

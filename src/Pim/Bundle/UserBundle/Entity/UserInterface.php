@@ -10,8 +10,6 @@ use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -372,6 +370,13 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function removeGroup(Group $group);
 
     /**
+     * Get groups ids
+     *
+     * @return array
+     */
+    public function getGroupsIds();
+
+    /**
      * @return string|null
      */
     public function getImagePath();
@@ -408,6 +413,18 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
      * @return UserInterface
      */
     public function setCatalogLocale(LocaleInterface $catalogLocale);
+
+    /**
+     * @return LocaleInterface
+     */
+    public function getUiLocale();
+
+    /**
+     * @param LocaleInterface $uiLocale
+     *
+     * @return UserInterface
+     */
+    public function setUiLocale(LocaleInterface $uiLocale);
 
     /**
      * @return ChannelInterface

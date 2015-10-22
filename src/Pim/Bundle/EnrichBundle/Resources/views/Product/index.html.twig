@@ -6,25 +6,10 @@
 {% block head_script %}
     {{ parent() }}
     <script type="text/javascript">
-        require(
-            ['jquery', 'pim/user-context', 'jquery.sidebarize'],
-            function ($, UserContext) {
-                'use strict';
-                UserContext.set('catalogLocale', '{{ dataLocale.code }}');
-                $(function() {
-                    var sidebarize = function () {
-                        if (2 === $('.has-sidebar').children().length) {
-                            $('.has-sidebar').sidebarize();
-
-                            return;
-                        }
-                        window.setTimeout(sidebarize, 200);
-                    };
-
-                    sidebarize();
-                });
-            }
-        );
+        require(['jquery', 'pim/user-context'], function ($, UserContext) {
+            'use strict';
+            UserContext.set('catalogLocale', '{{ dataLocale.code }}');
+        });
 
         sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
     </script>
@@ -47,13 +32,28 @@
 
     {{ elements.page_header(title, buttons, subtitle) }}
 
-    {% set categoriesGranted = resource_granted('pim_enrich_product_category_list') %}
-    <div class="row-fluid {{ categoriesGranted ? 'has-sidebar': '' }}">
-        {% if categoriesGranted %}
+    {% if resource_granted('pim_enrich_product_category_list') %}
+        <script type="text/javascript">
+            require(['jquery', 'jquery.sidebarize'], function ($) {
+                'use strict';
+
+                $(function() {
+                    $('.has-sidebar').sidebarize();
+                });
+            });
+        </script>
+
+        <div class="row-fluid has-sidebar">
             <div id="tree" data-datalocale="{{ dataLocale.code }}" data-relatedentity="product"></div>
-        {% endif %}
-        <div id="product-grid">
-            {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
+            <div id="product-grid">
+                {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
+            </div>
         </div>
-    </div>
+    {% else %}
+        <div class="row-fluid">
+            <div id="product-grid">
+                {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }, {}, 'pim_enrich_categorytree') }}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

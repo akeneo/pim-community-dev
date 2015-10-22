@@ -25,11 +25,16 @@
           min-height: 80px;
           display: flex;
           flex-direction: row;
+          flex-wrap: wrap;
           align-items: flex-start;
           opacity: 0.4;
           
           &:hover {
             background-color: darken(@color-purple_hover, 2%);
+
+            .comment {
+              background-color: darken(@color-purple_hover, 5%);
+            }
           }
 
           &.new {
@@ -91,6 +96,10 @@
               background-image: url("/bundles/pimui/images/icon-edit.svg");
             }
 
+            &.mass-upload {
+              background-image: url("/bundles/pimui/images/icon-import.svg");
+            }
+
             &.quick-export {
               background-image: url("/bundles/pimui/images/icon-export.svg");
             }
@@ -121,6 +130,15 @@
                 }
               }
             }
+          }
+
+          .comment {
+            background-color: @akeneo-light;
+            color: @akeneo-dark;
+            line-height: 20px;
+            padding: 15px;
+            margin-top: 10px;
+            width: 100%;
           }
 
           time {

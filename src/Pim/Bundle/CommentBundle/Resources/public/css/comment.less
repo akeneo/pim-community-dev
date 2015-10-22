@@ -28,7 +28,7 @@
   }
 
   textarea {
-    height: 27px;
+    height: 31px;
     width: 100%;
     transition: height .5s ease-in-out;
     border: none;
@@ -101,7 +101,6 @@
 
 li.comment-create {
   border: 1px solid #ddd;
-  border-radius: 3px;
 }
 
 ol.comment-thread li {
@@ -111,14 +110,11 @@ ol.comment-thread li {
 
 ol.comment-thread > :first-child {
   margin-top: 15px;
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
   border: 1px solid #ddd;
 }
 
 ol.comment-thread > :last-child {
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
+  overflow: hidden;
 }
 
 li.comment-reply:last-child {
@@ -133,7 +129,7 @@ li.comment-topic {
 
 li.comment-topic, li.comment-reply {
   .message {
-    word-break: break-all;
+    word-break: normal;
   }
 }
 

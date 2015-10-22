@@ -9,6 +9,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Context\Spin\SpinCapableTrait;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
@@ -50,7 +51,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
         $this->useContext('command', new CommandContext());
-        $this->useContext('navigation', new NavigationContext());
+        $this->useContext('navigation', new NavigationContext($parameters['base_url']));
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
@@ -105,8 +106,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
+
+            $rootDir   = dirname($this->getContainer()->getParameter('kernel.root_dir'));
+            $filePath  = $event->getLogicalParent()->getFile();
             $stepStats = [
-                'scenario_file'  => strstr($event->getLogicalParent()->getFile(), 'features/'),
+                'scenario_file'  => substr($filePath, strlen($rootDir) + 1),
                 'scenario_line'  => $event->getLogicalParent()->getLine(),
                 'scenario_label' => $event->getLogicalParent()->getTitle(),
                 'exception'      => $event->getException()->getMessage(),
@@ -366,6 +370,19 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function iShouldNotSeeText(PyStringNode $error)
     {
         $this->assertSession()->pageTextNotContains((string) $error);
+    }
+
+    /**
+     * Fills in form field with specified id|name|label|value.
+     *
+     * @When /^(?:|I )fill in "(?P<field>(?:[^"]|\\")*)" with "(?P<value>(?:[^"]|\\")*)" on the current page$/
+     * @When /^(?:|I )fill in "(?P<value>(?:[^"]|\\")*)" for "(?P<field>(?:[^"]|\\")*)" on the current page$/
+     */
+    public function fillFieldOnCurrentPage($field, $value)
+    {
+        $field = $this->fixStepArgument($field);
+        $value = $this->fixStepArgument($value);
+        $this->getMainContext()->getSubcontext('navigation')->getCurrentPage()->fillField($field, $value);
     }
 
     /**

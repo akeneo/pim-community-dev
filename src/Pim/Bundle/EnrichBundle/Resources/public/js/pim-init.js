@@ -21,7 +21,7 @@ define(
             var pageInit = function ($target) {
                 if (!$target) {
                     $target = $('body');
-                    $target.find('form.form-horizontal').each(function () {
+                    $target.find('form.form-horizontal, [data-saveformstate]').each(function () {
                         saveformstate($(this).attr('id'), loadTab);
                     });
                 }
@@ -71,7 +71,7 @@ define(
             };
 
             $(function () {
-                $(document).on('tab.loaded', 'form.form-horizontal', function (e, tab) {
+                $(document).on('tab.loaded', 'form.form-horizontal, [data-saveformstate]', function (e, tab) {
                     pageInit($(tab));
                 });
 

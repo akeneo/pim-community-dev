@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
+use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
@@ -22,7 +23,6 @@ use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 /**
  * Product repository
@@ -324,12 +324,15 @@ class ProductRepository extends DocumentRepository implements
         $qb->field('groupIds')->in([$variantGroup->getId()]);
 
         foreach ($criteria as $item) {
-            $andExpr = $qb
-                ->expr()
-                ->field('values')
-                ->elemMatch(['attribute' => (int) $item['attribute']->getId(), 'option' => $item['option']->getId()]);
+            $match = ['attribute' => (int) $item['attribute']->getId()];
 
-            $qb->addAnd($andExpr);
+            if (isset($item['option'])) {
+                $match['option'] = $item['option']->getId();
+            } elseif (isset($item['referenceData'])) {
+                $match[$item['referenceData']['name']] = $item['referenceData']['data']->getId();
+            }
+
+            $qb->addAnd($qb->expr()->field('values')->elemMatch($match));
         }
 
         $cursor = $qb->getQuery()->execute();
@@ -720,6 +723,17 @@ class ProductRepository extends DocumentRepository implements
             ->hydrate(false)
             ->field('groupIds')->in([$group->getId()]);
 
+        $count = $qb->getQuery()->execute()->count();
+
+        return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('p')->hydrate(false);
         $count = $qb->getQuery()->execute()->count();
 
         return $count;

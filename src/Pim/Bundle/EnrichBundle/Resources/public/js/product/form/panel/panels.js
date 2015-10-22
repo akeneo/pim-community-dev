@@ -33,7 +33,7 @@ define(
             },
             configure: function () {
                 this.onExtensions('panel:register', this.registerPanel.bind(this));
-                this.listenTo(mediator, 'pim_enrich:form:render:after', this.resize);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:render:after', this.resize);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

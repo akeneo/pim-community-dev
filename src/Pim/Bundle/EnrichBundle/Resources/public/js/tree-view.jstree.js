@@ -41,8 +41,7 @@ define(
                     dataLocale:     dataLocale,
                     select_node_id: getActiveNode(true),
                     include_sub:    +includeSub,
-                    related_entity: relatedEntity,
-                    context: 'view'
+                    context:        'view'
                 }
             );
         };
@@ -53,8 +52,7 @@ define(
                 {
                     _format:    'json',
                     dataLocale: dataLocale,
-                    related_entity: relatedEntity,
-                    context: 'view'
+                    context:    'view'
                 }
             );
         };
@@ -220,12 +218,12 @@ define(
                     return;
                 }
 
-                $el           = $element;
-                dataLocale    = $el.attr('data-datalocale');
-                relatedEntity = $el.attr('data-relatedentity');
-                selectedNode  = _.has(state, 'selectedNode') ? state.selectedNode : selectedNode;
-                selectedTree  = _.has(state, 'selectedTree') ? state.selectedTree : selectedTree;
-                includeSub    = _.has(state, 'includeSub')   ? state.includeSub   : includeSub;
+                $el               = $element;
+                dataLocale        = $el.attr('data-datalocale');
+                relatedEntity     = $el.attr('data-relatedentity');
+                selectedNode      = _.has(state, 'selectedNode') ? state.selectedNode : selectedNode;
+                selectedTree      = _.has(state, 'selectedTree') ? state.selectedTree : selectedTree;
+                includeSub        = _.has(state, 'includeSub')   ? state.includeSub   : includeSub;
                 categoryBaseRoute = baseRoute;
 
                 initTree();

@@ -2,16 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Akeneo\Bundle\StorageUtilsBundle\Event\BaseEvents;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
-use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
-use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
-use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -69,14 +63,7 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            AssociationTypeEvents::POST_REMOVE   => 'postRemove',
-            AttributeEvents::POST_REMOVE         => 'postRemove',
-            CategoryEvents::POST_REMOVE_CATEGORY => 'postRemove',
-            CategoryEvents::POST_REMOVE_TREE     => 'postRemove',
-            FamilyEvents::POST_REMOVE            => 'postRemove',
-            GroupEvents::POST_REMOVE             => 'postRemove',
-            ProductEvents::POST_REMOVE           => 'postRemove',
-            BaseEvents::POST_REMOVE              => 'postRemove',
+            StorageEvents::POST_REMOVE => 'postRemove',
         ];
     }
 
@@ -85,25 +72,27 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
      */
     public function postRemove(RemoveEvent $event)
     {
+        $author  = '';
+        $subject = $event->getSubject();
+
         if (null !== ($token = $this->tokenStorage->getToken()) &&
             $this->authorizationChecker->isGranted('IS_AUTHENTICATED_REMEMBERED')
         ) {
             $author = $token->getUser()->getUsername();
-        } else {
-            $author = '';
         }
 
         $previousVersion = $this->versionRepository->getNewestLogEntry(
-            ClassUtils::getClass($event->getSubject()),
+            ClassUtils::getClass($subject),
             $event->getSubjectId()
         );
 
         $version = $this->versionFactory->create(
-            ClassUtils::getClass($event->getSubject()),
+            ClassUtils::getClass($subject),
             $event->getSubjectId(),
             $author,
             'Deleted'
         );
+
         $version->setVersion(null !== $previousVersion ? $previousVersion->getVersion() + 1 : 1)
             ->setSnapshot(null !== $previousVersion ? $previousVersion->getSnapshot(): [])
             ->setChangeset([]);
