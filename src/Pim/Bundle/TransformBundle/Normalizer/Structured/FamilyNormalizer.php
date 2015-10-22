@@ -43,11 +43,16 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
+        $normalizedRequirements = $this->normalizeRequirements($object);
+        $transNormalized = $this->transNormalizer->normalize($object, $format, $context);
+
         return [
             'code'               => $object->getCode(),
-            'attributes'         => $this->normalizeAttributes($object),
-            'attribute_as_label' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
-        ] + $this->normalizeRequirements($object) + $this->transNormalizer->normalize($object, $format, $context);
+            'attributes'         => $this->normalizeAttributes($object)
+        ]
+        + $transNormalized
+        + ['attribute_as_label' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '']
+        + $normalizedRequirements;
     }
 
     /**
@@ -94,7 +99,7 @@ class FamilyNormalizer implements NormalizerInterface
         $required = [];
         foreach ($family->getAttributeRequirements() as $requirement) {
             $channelCode = $requirement->getChannel()->getCode();
-            if (!isset($required[$channelCode])) {
+            if (!isset($required['requirements-' . $channelCode])) {
                 $required['requirements-' . $channelCode] = [];
             }
             if ($requirement->isRequired()) {

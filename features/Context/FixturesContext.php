@@ -705,7 +705,6 @@ class FixturesContext extends RawMinkContext
     public function thereShouldBeTheFollowingFamilies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            /** @var FamilyInterface $family */
             $family = $this->getFamily($data['code']);
             $this->refresh($family);
 

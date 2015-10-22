@@ -176,5 +176,5 @@ services:
         class: %pim_base_connector.processor.normalization.family.class%
         arguments:
             - '@pim_serializer'
-            - '@pim_serializer.normalizer.flat.family'
             - '@pim_catalog.repository.locale'
+            - '@pim_serializer.normalizer.flat.family'

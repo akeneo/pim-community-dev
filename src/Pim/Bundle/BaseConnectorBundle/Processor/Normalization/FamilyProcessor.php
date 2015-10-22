@@ -19,23 +19,19 @@ class FamilyProcessor extends Processor
     /** @var NormalizerInterface */
     protected $familyNormalizer;
 
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
     /**
      * @param SerializerInterface       $serializer
-     * @param NormalizerInterface       $familyNormalizer
      * @param LocaleRepositoryInterface $localeRepository
+     * @param NormalizerInterface       $familyNormalizer
      */
     public function __construct(
         SerializerInterface $serializer,
-        NormalizerInterface $familyNormalizer,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        NormalizerInterface $familyNormalizer
     ) {
         parent::__construct($serializer, $localeRepository);
 
         $this->familyNormalizer = $familyNormalizer;
-        $this->localeRepository = $localeRepository;
     }
 
     /**
