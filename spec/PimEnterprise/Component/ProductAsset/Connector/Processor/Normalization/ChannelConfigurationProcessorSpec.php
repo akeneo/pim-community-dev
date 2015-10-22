@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\Connector\Processor\Normaliz
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,12 +14,12 @@ class ChannelConfigurationProcessorSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         NormalizerInterface $channelNormalizer
     ) {
         $this->beConstructedWith(
             $serializer,
-            $localeManager,
+            $localeRepository,
             $channelNormalizer
         );
     }

@@ -20,6 +20,9 @@ job_profile_accesses:
     footwear_product_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
+    footwear_family_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
 
     footwear_association_type_import:
         executeJobProfile: [IT support, Manager, Redactor]
@@ -40,6 +43,9 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
     footwear_product_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
+    footwear_family_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
 

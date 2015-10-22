@@ -105,3 +105,9 @@ job_profile_accesses:
     yml_asset_channel_configuration_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager]
+    csv_family_import:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
+    csv_family_export:
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]

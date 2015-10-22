@@ -351,3 +351,24 @@ jobs:
             uploadAllowed: true
             multiple:      false
             header:        asset_channel_configurations
+    csv_family_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_import
+        label:     Demo family import
+        type:      import
+        configuration:
+            filePath:      /tmp/family.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
+    csv_family_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_export
+        label:     Demo family export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/family.csv

@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Normal
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -12,10 +13,10 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         NormalizerInterface $ruleNormalizer)
     {
-        $this->beConstructedWith($serializer, $localeManager, $ruleNormalizer);
+        $this->beConstructedWith($serializer, $localeRepository, $ruleNormalizer);
     }
 
     function it_implements()
