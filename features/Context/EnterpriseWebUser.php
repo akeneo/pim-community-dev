@@ -292,4 +292,38 @@ class EnterpriseWebUser extends BaseWebUser
         $this->getCurrentPage()->simpleFillField('modal-comment', $comment);
         $this->getSession()->executeScript("$('#modal-comment').trigger('change');");
     }
+
+    /**
+     * @param TableNode $table
+     * @Given /^I partially approve:$/
+     *
+     * @throws Spin\TimeoutException
+     * @throws \Exception
+     */
+    public function iPartiallyApprove(TableNode $table)
+    {
+        $hash = $table->getHash();
+
+        foreach ($hash as $row) {
+            $buttonLocator = sprintf('.partial-approve-link[data-product="%s"][data-attribute="%s"][data-author="%s"]',
+                $row['product'],
+                $row['attribute'],
+                $row['author']
+            );
+
+            $buttonLocator .= (isset($row['scope']) && '' !== $row['scope']) ? sprintf('[data-scope="%s"]', $row['scope']) : '';
+            $buttonLocator .= (isset($row['locale']) && '' !== $row['locale']) ? sprintf('[data-locale="%s"]', $row['locale']) : '';
+
+            $approveButton = $this->spin(function () use ($buttonLocator) {
+                return $this->getCurrentPage()->find('css', $buttonLocator);
+            });
+
+            $approveButton->click();
+
+            $comment = isset($row['comment']) ? $row['comment'] : '';
+
+            $this->iFillInThisCommentInThePopin($comment);
+            $this->iPressTheButtonInThePopin("Send");
+        }
+    }
 }

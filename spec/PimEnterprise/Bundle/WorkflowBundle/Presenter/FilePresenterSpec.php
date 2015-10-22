@@ -30,96 +30,87 @@ class FilePresenterSpec extends ObjectBehavior
         $this->supports($value)->shouldBe(true);
     }
 
-    function it_presents_files_in_a_list(
-        $generator,
-        ProductValueInterface $value,
-        FileInfoInterface $media
-    ) {
-        $value->getMedia()->willReturn($media);
-        $media->getKey()->willReturn('key/of/the/media.pdf');
-        $media->getHash()->willReturn('54qsfda8e7r54f');
-        $media->getOriginalFilename()->willReturn('original_foo.pdf');
-
-        $generator
-            ->generate('pim_enrich_media_show', ['filename' => urlencode('key/of/the/media.pdf')])
-            ->willReturn('url/of/the/media.pdf');
-        $generator
-            ->generate('pim_enrich_media_show', ['filename' => urlencode('key/of/the/change.txt')])
-            ->willReturn('url/of/the/change.txt');
-
-        $change = [
-            'data' => [
-                'hash' => '98az7er654ert4s',
-                'filePath' => 'key/of/the/change.txt',
-                'originalFilename' => 'the new change.txt',
-            ]
-        ];
-
-        $this->present($value, $change)->shouldReturn(sprintf(
-            '<ul class="diff">' .
-                '<li class="base file">' .
-                    '<i class="icon-file"></i>' .
-                    '<a target="_blank" class="no-hash" href="%s">original_foo.pdf</a>' .
-                '</li>' .
-                '<li class="changed file">' .
-                    '<i class="icon-file"></i>' .
-                    '<a target="_blank" class="no-hash" href="%s">the new change.txt</a>' .
-                '</li>' .
-            '</ul>',
-            'url/of/the/media.pdf',
-            'url/of/the/change.txt'
-        ));
-    }
-
-    function it_only_presents_new_file_if_value_does_not_has_a_media_yet(
-        $generator,
+    function it_does_not_presents_original_if_original_is_empty(
         ProductValueInterface $value
     ) {
         $value->getMedia()->willReturn(null);
 
-        $generator
-            ->generate('pim_enrich_media_show', ['filename' => urlencode('key/of/the/change.txt')])
-            ->willReturn('url/of/the/change.txt');
-
-        $change = [
-            'data' => [
-                'hash'             => '98az7er654ert4s',
-                'filePath'         => 'key/of/the/change.txt',
-                'originalFilename' => 'the new change.txt',
-            ]
-        ];
-
-        $this->present($value, $change)->shouldReturn(
-            '<ul class="diff">' .
-                '<li class="changed file">' .
-                    '<i class="icon-file"></i>' .
-                    '<a target="_blank" class="no-hash" href="url/of/the/change.txt">the new change.txt</a>' .
-                '</li>' .
-            '</ul>'
-        );
+        $this
+            ->presentOriginal($value, [
+                'data' => [
+                    'filePath' => 'key/of/the/change.jpg',
+                    'originalFilename' => 'change_bar.jpg',
+                ]
+            ])
+            ->shouldReturn('');
     }
 
-    function it_only_presents_old_file_if_a_new_one_is_not_provided(
+    function it_does_not_presents_new_if_new_is_empty(
+        ProductValueInterface $value,
+        FileInfoInterface $media
+    ) {
+        $value->getMedia()->willReturn($media);
+
+        $this
+            ->presentNew($value, ['data' => null])
+            ->shouldReturn('');
+    }
+
+    function it_presents_original_file(
         $generator,
         ProductValueInterface $value,
         FileInfoInterface $media
     ) {
         $value->getMedia()->willReturn($media);
-        $media->getKey()->willReturn('key/of/the/media.pdf');
-        $media->getHash()->willReturn('54qsfda8e7r54f');
-        $media->getOriginalFilename()->willReturn('original_foo.pdf');
+        $media->getKey()->willReturn('key/of/the/media.jpg');
+        $media->getOriginalFilename()->willReturn('original_foo.jpg');
 
         $generator
-            ->generate('pim_enrich_media_show', ['filename' => urlencode('key/of/the/media.pdf')])
-            ->willReturn('url/of/the/media.pdf');
+            ->generate(
+                'pim_enrich_media_show',
+                ['filename' => urlencode('key/of/the/media.jpg')]
+            )
+            ->willReturn('url/of/the/media.jpg');
 
-        $this->present($value, ['data' => []])->shouldReturn(
-            '<ul class="diff">' .
-                '<li class="base file">' .
-                    '<i class="icon-file"></i>' .
-                    '<a target="_blank" class="no-hash" href="url/of/the/media.pdf">original_foo.pdf</a>' .
-                '</li>' .
-            '</ul>'
-        );
+        $this
+            ->presentOriginal($value, [
+                'data' => [
+                    'filePath' => 'key/of/the/change.jpg',
+                    'originalFilename' => 'change_bar.jpg',
+                ]
+            ])
+            ->shouldReturn(sprintf(
+                '<i class="icon-file"></i><a target="_blank" class="no-hash" href="url/of/the/media.jpg">original_foo.jpg</a>',
+                'url/of/the/media.jpg'
+            ));
+    }
+
+    function it_presents_new_file(
+        $generator,
+        ProductValueInterface $value,
+        FileInfoInterface $media
+    ) {
+        $value->getMedia()->willReturn($media);
+        $media->getKey()->willReturn('key/of/the/media.jpg');
+        $media->getOriginalFilename()->willReturn('original_foo.jpg');
+
+        $generator
+            ->generate(
+                'pim_enrich_media_show',
+                ['filename' => urlencode('key/of/the/change.jpg')]
+            )
+            ->willReturn('url/of/the/media.jpg');
+
+        $this
+            ->presentNew($value, [
+                'data' => [
+                    'filePath' => 'key/of/the/change.jpg',
+                    'originalFilename' => 'change_bar.jpg',
+                ]
+            ])
+            ->shouldReturn(sprintf(
+                '<i class="icon-file"></i><a target="_blank" class="no-hash" href="url/of/the/media.jpg">change_bar.jpg</a>',
+                'url/of/the/media.jpg'
+            ));
     }
 }

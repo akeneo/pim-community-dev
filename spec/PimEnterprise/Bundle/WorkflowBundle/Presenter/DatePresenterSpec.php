@@ -27,10 +27,10 @@ class DatePresenterSpec extends ObjectBehavior
         $value->getData()->willReturn($date);
         $date->format('F, d Y')->willReturn('January, 20 2012');
 
-        $renderer->renderDiff('January, 20 2012', 'April, 25 2012')->willReturn('diff between two dates');
+        $renderer->renderOriginalDiff('January, 20 2012', 'April, 25 2012')->willReturn('diff between two dates');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['data' => '2012-04-25'])->shouldReturn('diff between two dates');
+        $this->presentOriginal($value, ['data' => '2012-04-25'])->shouldReturn('diff between two dates');
     }
 
     function it_presents_only_new_date_when_no_previous_date_is_set(
@@ -39,10 +39,10 @@ class DatePresenterSpec extends ObjectBehavior
     ) {
         $value->getData()->willReturn(null);
 
-        $renderer->renderDiff('', 'April, 25 2012')->willReturn('diff between two dates');
+        $renderer->renderOriginalDiff('', 'April, 25 2012')->willReturn('diff between two dates');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['data' => '2012-04-25'])->shouldReturn('diff between two dates');
+        $this->presentOriginal($value, ['data' => '2012-04-25'])->shouldReturn('diff between two dates');
     }
 
     function it_presents_only_old_date_when_no_new_date_is_set(
@@ -53,9 +53,9 @@ class DatePresenterSpec extends ObjectBehavior
         $value->getData()->willReturn($date);
         $date->format('F, d Y')->willReturn('January, 20 2012');
 
-        $renderer->renderDiff('January, 20 2012', '')->willReturn('diff between two dates');
+        $renderer->renderOriginalDiff('January, 20 2012', '')->willReturn('diff between two dates');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['data' => ''])->shouldReturn('diff between two dates');
+        $this->presentOriginal($value, ['data' => ''])->shouldReturn('diff between two dates');
     }
 }

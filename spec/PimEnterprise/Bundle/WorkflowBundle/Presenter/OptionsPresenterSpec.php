@@ -40,10 +40,10 @@ class OptionsPresenterSpec extends ObjectBehavior
         $blue->__toString()->willReturn('Blue');
 
         $renderer
-            ->renderDiff(['Red', 'Green'], ['Red', 'Green', 'Blue'])
+            ->renderOriginalDiff(['Red', 'Green'], ['Red', 'Green', 'Blue'])
             ->willReturn('diff between two options collections');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['data' => ['red', 'green', 'blue']])->shouldReturn('diff between two options collections');
+        $this->presentOriginal($value, ['data' => ['red', 'green', 'blue']])->shouldReturn('diff between two options collections');
     }
 }

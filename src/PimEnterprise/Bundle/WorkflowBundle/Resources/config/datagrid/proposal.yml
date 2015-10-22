@@ -2,6 +2,8 @@ datagrid:
     proposal-grid:
         options:
             entityHint: proposal
+            requireJSModules:
+                - pimee/proposal/partial-proposal-builder
         source:
             type: pimee_datasource_product_draft
             entity: %pimee_workflow.model.product_draft.class%
@@ -22,7 +24,7 @@ datagrid:
                 label: pimee_workflow.product_draft.changes
                 type: twig
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/changes.html.twig
-                frontend_type: expand
+                frontend_type: html
             createdAt:
                 label: pimee_workflow.product_draft.created
                 type: field

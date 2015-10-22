@@ -12,3 +12,10 @@ pimee_workflow:
                 original_product: Edit working copy
         proposal:
             modal.title: Leave a comment (optional - 255 characters max.)
+
+    proposal:
+        partial_accept:
+            modal.title: Approve partial information
+            modal.label: Leave a comment (optional)
+            modal.error: An error occured, the proposal has not been partially approved
+            modal.success: The proposal has been successfully partially validated

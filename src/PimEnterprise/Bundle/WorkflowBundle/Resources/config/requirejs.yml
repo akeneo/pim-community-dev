@@ -8,8 +8,9 @@ config:
                 product_edit: pim_enrich_product_edit
 
     paths:
-        pimee/published-product-manager: pimenterpriseworkflow/js/manager/published-product-manager
-        pimee/product-draft-fetcher:     pimenterpriseworkflow/js/fetcher/product-draft-fetcher
+        pimee/published-product-manager:         pimenterpriseworkflow/js/manager/published-product-manager
+        pimee/product-draft-fetcher:             pimenterpriseworkflow/js/fetcher/product-draft-fetcher
+        pimee/proposal/partial-proposal-builder: pimenterpriseworkflow/js/datagrid/partial-proposal-builder
 
         # Form extensions
         pimee/product-edit-form/meta/published:            pimenterpriseworkflow/js/product/form/meta/published
@@ -26,6 +27,7 @@ config:
         pimee/product-edit-form/proposal-add-comment:      pimenterpriseworkflow/js/product/form/proposal-add-comment
         pimee/published-view-form/back-to-grid:            pimenterpriseworkflow/js/published-product/form/back-to-grid
         pimee/product-edit-form/abstract-add-notification-comment: pimenterpriseworkflow/js/product/form/abstract-add-notification-comment
+        pimee/proposal/partial-approve-proposal-comment:   pimenterpriseworkflow/js/proposal/form/partial-approve-proposal-comment
 
         # Templates
         pimee/template/product/meta/published:                  pimenterpriseworkflow/templates/product/meta/published.html

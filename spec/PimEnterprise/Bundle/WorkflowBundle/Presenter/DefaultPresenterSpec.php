@@ -21,9 +21,9 @@ class DefaultPresenterSpec extends ObjectBehavior
     function it_presents_change_using_the_injected_renderer(RendererInterface $renderer, ProductValueInterface $value)
     {
         $value->getData()->willReturn('bar');
-        $renderer->renderDiff('bar', 'foo')->willReturn('diff between two simple values');
+        $renderer->renderOriginalDiff('bar', 'foo')->willReturn('diff between two simple values');
 
         $this->setRenderer($renderer);
-        $this->present($value, ['id' => 123, 'varchar' => 'foo'])->shouldReturn('diff between two simple values');
+        $this->presentOriginal($value, ['id' => 123, 'varchar' => 'foo'])->shouldReturn('diff between two simple values');
     }
 }

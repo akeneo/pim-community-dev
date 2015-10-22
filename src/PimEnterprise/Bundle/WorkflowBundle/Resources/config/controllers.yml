@@ -48,3 +48,6 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_internal_api_serializer'
             - '@security.token_storage'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'

@@ -12,6 +12,9 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller\Rest;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
@@ -51,6 +54,15 @@ class ProductDraftController
     /** @var TokenStorageInterface */
     protected $tokenStorage;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /**
      * @param AuthorizationCheckerInterface   $authorizationChecker
      * @param ProductDraftRepositoryInterface $repository
@@ -58,6 +70,9 @@ class ProductDraftController
      * @param ProductRepositoryInterface      $productRepository
      * @param NormalizerInterface             $normalizer
      * @param TokenStorageInterface           $tokenStorage
+     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param ChannelRepositoryInterface      $channelRepository
+     * @param LocaleRepositoryInterface       $localeRepository
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -65,7 +80,10 @@ class ProductDraftController
         ProductDraftManager $manager,
         ProductRepositoryInterface $productRepository,
         NormalizerInterface $normalizer,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        AttributeRepositoryInterface $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->authorizationChecker = $authorizationChecker;
         $this->repository           = $repository;
@@ -73,6 +91,9 @@ class ProductDraftController
         $this->productRepository    = $productRepository;
         $this->normalizer           = $normalizer;
         $this->tokenStorage         = $tokenStorage;
+        $this->attributeRepository  = $attributeRepository;
+        $this->channelRepository    = $channelRepository;
+        $this->localeRepository     = $localeRepository;
     }
 
     /**
@@ -98,6 +119,68 @@ class ProductDraftController
         $this->manager->markAsReady($productDraft, $comment);
 
         return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
+    }
+
+    /**
+     * Approve an attribute change in a product draft
+     *
+     * @param Request $request
+     * @param mixed   $id
+     * @param string  $code
+     *
+     * @throws NotFoundHttpException
+     * @throws \LogicException
+     * @throws AccessDeniedHttpException
+     *
+     * @return JsonResponse
+     */
+    public function partialApproveAction(Request $request, $id, $code)
+    {
+        $productDraft = $this->findProductDraftOr404($id);
+
+        if (null === $attribute = $this->attributeRepository->findOneByIdentifier($code)) {
+            throw new NotFoundHttpException(sprintf('Attribute "%s" not found', $code));
+        }
+
+        if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
+            throw new \LogicException('A product draft that is not ready can not be approved');
+        }
+
+        if (!$this->authorizationChecker->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        if (!$this->authorizationChecker->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $channel = $locale = null;
+
+        if ($request->query->has('scope')) {
+            $channel = $this->channelRepository->findOneByIdentifier($request->query->get('scope'));
+
+            if (null === $channel) {
+                throw new NotFoundHttpException(sprintf('Channel "%s" not found', $request->query->get('scope')));
+            }
+        }
+
+        if ($request->query->has('locale')) {
+            $locale = $this->localeRepository->findOneByIdentifier($request->query->get('locale'));
+
+            if (null === $locale) {
+                throw new NotFoundHttpException(sprintf('Locale "%s" not found', $request->query->get('locale')));
+            }
+        }
+
+        try {
+            $this->manager->partialApprove($productDraft, $attribute, $channel, $locale, [
+                'comment' => $request->query->get('comment')
+            ]);
+        } catch (ValidatorException $e) {
+            return new JsonResponse(['message' => $e->getMessage()], 400);
+        }
+
+        return new JsonResponse($this->normalizer->normalize($productDraft->getProduct(), 'internal_api'));
     }
 
     /**

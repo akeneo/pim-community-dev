@@ -30,14 +30,39 @@ class ImagePresenterSpec extends ObjectBehavior
         $this->supports($value)->shouldBe(true);
     }
 
-    function it_presents_old_and_new_images_side_by_side(
+    function it_does_not_presents_original_if_original_is_empty(
+        ProductValueInterface $value
+    ) {
+        $value->getMedia()->willReturn(null);
+
+        $this
+            ->presentOriginal($value, [
+                'data' => [
+                    'filePath' => 'key/of/the/change.jpg',
+                    'originalFilename' => 'change_bar.jpg',
+                ]
+            ])
+            ->shouldReturn('');
+    }
+
+    function it_does_not_presents_new_if_new_is_empty(
+        ProductValueInterface $value,
+        FileInfoInterface $media
+    ) {
+        $value->getMedia()->willReturn($media);
+
+        $this
+            ->presentNew($value, ['data' => null])
+            ->shouldReturn('');
+    }
+
+    function it_presents_original_image(
         $generator,
         ProductValueInterface $value,
         FileInfoInterface $media
     ) {
         $value->getMedia()->willReturn($media);
         $media->getKey()->willReturn('key/of/the/media.jpg');
-        $media->getHash()->willReturn('54qsfda8e7r54f');
         $media->getOriginalFilename()->willReturn('original_foo.jpg');
 
         $generator
@@ -46,84 +71,46 @@ class ImagePresenterSpec extends ObjectBehavior
                 ['filename' => urlencode('key/of/the/media.jpg'), 'filter' => 'thumbnail']
             )
             ->willReturn('url/of/the/media.jpg');
+
+        $this
+            ->presentOriginal($value, [
+                'data' => [
+                    'filePath' => 'key/of/the/change.jpg',
+                    'originalFilename' => 'change_bar.jpg',
+                ]
+            ])
+            ->shouldReturn(sprintf(
+                '<img src="%s" title="original_foo.jpg" />',
+                'url/of/the/media.jpg'
+            ));
+    }
+
+    function it_presents_new_image(
+        $generator,
+        ProductValueInterface $value,
+        FileInfoInterface $media
+    ) {
+        $value->getMedia()->willReturn($media);
+        $media->getKey()->willReturn('key/of/the/media.jpg');
+        $media->getOriginalFilename()->willReturn('original_foo.jpg');
+
         $generator
             ->generate(
                 'pim_enrich_media_show',
                 ['filename' => urlencode('key/of/the/change.jpg'), 'filter' => 'thumbnail']
             )
-            ->willReturn('url/of/the/change.jpg');
-
-        $change = [
-            'data' => [
-                'hash' => '98az7er654ert4s',
-                'filePath' => 'key/of/the/change.jpg',
-                'originalFilename' => 'change_bar.jpg',
-            ]
-        ];
-
-        $this
-            ->present($value, $change)
-            ->shouldReturn(sprintf(
-                '<ul class="diff">' .
-                '<li class="base file"><img src="%s" title="original_foo.jpg" /></li>' .
-                '<li class="changed file"><img src="%s" title="change_bar.jpg" /></li>' .
-                '</ul>',
-                'url/of/the/media.jpg',
-                'url/of/the/change.jpg'
-            ));
-    }
-
-    function it_presents_only_old_image_if_no_new_one_is_provided(
-        $generator,
-        ProductValueInterface $value,
-        FileInfoInterface $media
-    ) {
-        $value->getMedia()->willReturn($media);
-        $media->getKey()->willReturn('key/of/the/media.jpg');
-        $media->getHash()->willReturn('54qsfda8e7r54f');
-        $media->getOriginalFilename()->willReturn('original_foo.jpg');
-
-        $generator
-            ->generate(
-                'pim_enrich_media_show',
-                ['filename' => urlencode('key/of/the/media.jpg'), 'filter' => 'thumbnail']
-            )
             ->willReturn('url/of/the/media.jpg');
 
-        $this->present($value, ['data' => []])->shouldReturn(
-            '<ul class="diff">' .
-            '<li class="base file"><img src="url/of/the/media.jpg" title="original_foo.jpg" /></li>' .
-            '</ul>'
-        );
-    }
-
-    function it_presents_only_new_image_if_there_is_no_old_one(
-        $generator,
-        ProductValueInterface $value
-    ) {
-        $value->getMedia()->willReturn(null);
-
-        $generator
-            ->generate(
-                'pim_enrich_media_show',
-                ['filename' => urlencode('key/of/the/change.png'), 'filter' => 'thumbnail']
-            )
-            ->willReturn('url/of/the/change.png');
-
-        $change = [
-            'data' => [
-                'hash'             => '98az7er654ert4s',
-                'filePath'         => 'key/of/the/change.png',
-                'originalFilename' => 'change_foo.png',
-            ]
-        ];
-
         $this
-            ->present($value, $change)
-            ->shouldReturn(
-                '<ul class="diff">' .
-                    '<li class="changed file"><img src="url/of/the/change.png" title="change_foo.png" /></li>' .
-                '</ul>'
-            );
+            ->presentNew($value, [
+                'data' => [
+                    'filePath' => 'key/of/the/change.jpg',
+                    'originalFilename' => 'change_bar.jpg',
+                ]
+            ])
+            ->shouldReturn(sprintf(
+                '<img src="%s" title="change_bar.jpg" />',
+                'url/of/the/media.jpg'
+            ));
     }
 }

@@ -56,7 +56,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         $this->send($event);
     }
 
-    function it_sends_on_product_draft(
+    function it_sends_a_notification(
         $notifier,
         $context,
         GenericEvent $event,
@@ -66,12 +66,13 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         ProductValueInterface $identifier
     ) {
         $event->getSubject()->willReturn($draft);
-        $event->hasArgument('comment')->willReturn(false);
+        $event->hasArgument(Argument::any())->willReturn(false);
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
         $context->getUser()->willReturn($owner);
         $draft->getAuthor()->willReturn('author');
         $draft->getProduct()->willReturn($product);
+        $draft->getId()->willReturn(42);
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn($identifier);
         $identifier->getData()->willReturn('tshirt');
@@ -94,7 +95,7 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         $this->send($event);
     }
 
-    function it_sends_on_product_draft_with_a_comment(
+    function it_sends_a_notification_based_on_context(
         $notifier,
         $context,
         GenericEvent $event,
@@ -104,30 +105,43 @@ class ApproveNotificationSubscriberSpec extends ObjectBehavior
         ProductValueInterface $identifier
     ) {
         $event->getSubject()->willReturn($draft);
-        $event->hasArgument('comment')->willReturn(true);
-        $event->getArgument('comment')->willReturn('Good job Mary!');
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
+        $event->hasArgument('comment')->willReturn(true);
+        $event->hasArgument('message')->willReturn(true);
+        $event->hasArgument('messageParams')->willReturn(true);
+        $event->hasArgument('actionType')->willReturn(true);
+        $event->getArgument('comment')->willReturn('a comment');
+        $event->getArgument('message')->willReturn('a message');
+        $event->getArgument('messageParams')->willReturn(['%owner%' => 'Joe Doe', '%attribute%' => 'name']);
+        $event->getArgument('actionType')->willReturn('pimee_workflow_product_draft_notification_partial_approve');
+
         $context->getUser()->willReturn($owner);
         $draft->getAuthor()->willReturn('author');
         $draft->getProduct()->willReturn($product);
+        $draft->getChanges()->willReturn(['values' => ['name' => 'new name']]);
+        $draft->getId()->willReturn(null);
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn($identifier);
         $identifier->getData()->willReturn('tshirt');
 
         $notifier->notify(
             ['author'],
-            'pimee_workflow.product_draft.notification.approve',
+            'a message',
             'success',
             [
                 'route'         => 'pim_enrich_product_edit',
                 'routeParams'   => ['id' => 42],
-                'messageParams' => ['%product%' => 'tshirt', '%owner%' => 'John Doe'],
-                'context'       => [
-                    'actionType' => 'pimee_workflow_product_draft_notification_approve',
-                    'showReportButton' => false,
+                'messageParams' => [
+                    '%product%'   => 'tshirt',
+                    '%owner%'     => 'Joe Doe',
+                    '%attribute%' => 'name'
                 ],
-                'comment'    => 'Good job Mary!',
+                'context'       => [
+                    'actionType'       => 'pimee_workflow_product_draft_notification_partial_approve',
+                    'showReportButton' => false
+                ],
+                'comment' => 'a comment'
             ]
         )->shouldBeCalled();
 
