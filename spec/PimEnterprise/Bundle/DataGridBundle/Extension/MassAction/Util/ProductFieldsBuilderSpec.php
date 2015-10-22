@@ -7,10 +7,10 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -22,7 +22,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
 {
     function let(
         ProductManagerInterface $productManager,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
         AssociationTypeManager $assocTypeManager,
         CatalogContext $catalogContext,
@@ -40,7 +40,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $productManager,
-            $localeManager,
+            $localeRepository,
             $currencyManager,
             $assocTypeManager,
             $catalogContext,
@@ -57,8 +57,15 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         $this->getAttributeIds()->shouldReturn([]);
     }
 
-    function it_filters_attributes_based_on_user_access($productRepository, $accessRepository, $attributeRepository, $user, $assocTypeManager, AttributeInterface $attribute, AssociationTypeInterface $association)
-    {
+    function it_filters_attributes_based_on_user_access(
+        $productRepository,
+        $accessRepository,
+        $attributeRepository,
+        $user,
+        $assocTypeManager,
+        AttributeInterface $attribute,
+        AssociationTypeInterface $association
+    ) {
         $association->getCode()->willReturn('association-type-code');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
@@ -68,7 +75,8 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         $assocTypeManager->getAssociationTypes()->willReturn([$association]);
         $attributeRepository->findBy(['id' => ['baz']])->willReturn([$attribute]);
         $productRepository->getAvailableAttributeIdsToExport(['foo', 'bar'])->willReturn(['fooz', 'baz']);
-        $accessRepository->getGrantedAttributeIds($user, Attributes::VIEW_ATTRIBUTES, ['fooz', 'baz'])->willReturn(['baz']);
+        $accessRepository->getGrantedAttributeIds($user, Attributes::VIEW_ATTRIBUTES, ['fooz', 'baz'])
+            ->willReturn(['baz']);
 
         $this->getFieldsList(['foo', 'bar'])->shouldReturn([
             "attribute-code",

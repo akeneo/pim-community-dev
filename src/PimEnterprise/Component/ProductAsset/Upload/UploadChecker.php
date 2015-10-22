@@ -31,9 +31,6 @@ class UploadChecker implements UploadCheckerInterface
     /** @var LocaleInterface[] */
     protected $locales;
 
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
     /**
      * @param AssetRepositoryInterface  $assetRepository
      * @param LocaleRepositoryInterface $localeRepository
@@ -42,9 +39,8 @@ class UploadChecker implements UploadCheckerInterface
         AssetRepositoryInterface $assetRepository,
         LocaleRepositoryInterface $localeRepository
     ) {
-        $this->assetRepository  = $assetRepository;
-        $this->localeRepository = $localeRepository;
-        $this->locales          = $localeRepository->findAll();
+        $this->assetRepository = $assetRepository;
+        $this->locales         = $localeRepository->findAll();
     }
 
     /**
@@ -133,7 +129,7 @@ class UploadChecker implements UploadCheckerInterface
      *
      * @return bool
      */
-    public function isLocaleActivated(array $locales, $localeCode)
+    protected function isLocaleActivated(array $locales, $localeCode)
     {
         $foundLocale = null;
 
