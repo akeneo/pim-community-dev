@@ -45,6 +45,15 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    footwear_family_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_export
+        label:     Footwear family export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
     category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import

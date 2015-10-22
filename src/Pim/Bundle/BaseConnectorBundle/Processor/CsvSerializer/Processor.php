@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -50,19 +51,19 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
     /**
      * Constructor
      *
-     * @param SerializerInterface $serializer
-     * @param LocaleManager       $localeManager
+     * @param SerializerInterface       $serializer
+     * @param LocaleRepositoryInterface $localeRepository
      */
-    public function __construct(SerializerInterface $serializer, LocaleManager $localeManager)
+    public function __construct(SerializerInterface $serializer, LocaleRepositoryInterface $localeRepository)
     {
-        $this->serializer    = $serializer;
-        $this->localeManager = $localeManager;
+        $this->serializer       = $serializer;
+        $this->localeRepository = $localeRepository;
     }
 
     /**

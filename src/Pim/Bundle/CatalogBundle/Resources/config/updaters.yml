@@ -120,6 +120,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
+            - '@pim_catalog.repository.attribute_requirement'
 
     pim_catalog.updater.association_type:
         class: %pim_catalog.updater.association_type.class%
