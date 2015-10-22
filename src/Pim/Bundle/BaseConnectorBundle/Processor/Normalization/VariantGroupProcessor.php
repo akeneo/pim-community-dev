@@ -8,6 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -35,22 +36,31 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
     /** @var string */
     protected $format;
 
+    /** @var string */
+    protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
+
+    /** @var array */
+    protected $decimalSeparators;
+
     /**
      * @param NormalizerInterface   $normalizer
      * @param DenormalizerInterface $denormalizer
+     * @param array                 $decimalSeparators
      * @param string                $uploadDirectory
      * @param string                $format
      */
     public function __construct(
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
+        array $decimalSeparators,
         $uploadDirectory,
         $format
     ) {
-        $this->normalizer      = $normalizer;
-        $this->denormalizer    = $denormalizer;
-        $this->uploadDirectory = $uploadDirectory;
-        $this->format          = $format;
+        $this->normalizer        = $normalizer;
+        $this->denormalizer      = $denormalizer;
+        $this->decimalSeparators = $decimalSeparators;
+        $this->uploadDirectory   = $uploadDirectory;
+        $this->format            = $format;
     }
 
     /**
@@ -65,7 +75,8 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
             $this->format,
             [
                 'with_variant_group_values' => true,
-                'identifier'                => $item->getCode()
+                'identifier'                => $item->getCode(),
+                'decimal_separator'         => $this->decimalSeparator,
             ]
         );
 
@@ -77,7 +88,38 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
      */
     public function getConfigurationFields()
     {
-        return [];
+        return [
+            'decimalSeparator' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => $this->decimalSeparators,
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_base_connector.export.decimalSeparator.label',
+                    'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * Set the separator for decimal
+     *
+     * @param string $decimalSeparator
+     */
+    public function setDecimalSeparator($decimalSeparator)
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    /**
+     * Get the delimiter for decimal
+     *
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
     }
 
     /**

@@ -170,6 +170,7 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_serializer'
+            - %pim_localization.decimal_separators%
             - %upload_dir%
             - 'csv'
 

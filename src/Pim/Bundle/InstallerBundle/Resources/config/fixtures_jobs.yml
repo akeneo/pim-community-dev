@@ -93,6 +93,7 @@ jobs:
         configuration:
             filePath: variant_groups.csv
             multiple: false
+            decimalSeparator: .
 
     fixtures_group_csv:
         order: 70

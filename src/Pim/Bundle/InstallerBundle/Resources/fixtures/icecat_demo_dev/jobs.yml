@@ -114,6 +114,7 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/variant_group.csv
+            decimalSeparator: .
     csv_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
