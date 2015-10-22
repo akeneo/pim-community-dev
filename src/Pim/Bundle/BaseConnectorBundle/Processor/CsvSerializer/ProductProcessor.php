@@ -4,9 +4,8 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -31,10 +30,10 @@ class ProductProcessor extends HeterogeneousProcessor
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
     /**
+     * @param SerializerInterface       $serializer
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param ChannelManager            $channelManager
      * @param SerializerInterface        $serializer
      * @param LocaleRepositoryInterface  $localeRepository
      * @param ChannelManager             $channelManager

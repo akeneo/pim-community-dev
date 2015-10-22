@@ -6,8 +6,8 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
 
 /**
@@ -19,19 +19,19 @@ use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
  */
 class ProductFieldsBuilder
 {
-    /** @var ProductManagerInterface $productManager */
+    /** @var ProductManagerInterface */
     protected $productManager;
 
-    /** @var LocaleManager $localeManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
-    /** @var CurrencyManager $currencyManager */
+    /** @var CurrencyManager */
     protected $currencyManager;
 
-    /** @var AssociationTypeManager $assocTypeManager */
+    /** @var AssociationTypeManager */
     protected $assocTypeManager;
 
-    /** @var CatalogContext $catalogContext */
+    /** @var CatalogContext */
     protected $catalogContext;
 
     /** @var integer(] */
@@ -40,21 +40,21 @@ class ProductFieldsBuilder
     /**
      * Constructor
      *
-     * @param ProductManagerInterface $productManager
-     * @param LocaleManager           $localeManager
-     * @param CurrencyManager         $currencyManager
-     * @param AssociationTypeManager  $assocTypeManager
-     * @param CatalogContext          $catalogContext
+     * @param ProductManagerInterface   $productManager
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param CurrencyManager           $currencyManager
+     * @param AssociationTypeManager    $assocTypeManager
+     * @param CatalogContext            $catalogContext
      */
     public function __construct(
         ProductManagerInterface $productManager,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
         AssociationTypeManager $assocTypeManager,
         CatalogContext $catalogContext
     ) {
         $this->productManager   = $productManager;
-        $this->localeManager    = $localeManager;
+        $this->localeRepository = $localeRepository;
         $this->currencyManager  = $currencyManager;
         $this->assocTypeManager = $assocTypeManager;
         $this->catalogContext   = $catalogContext;
@@ -77,7 +77,7 @@ class ProductFieldsBuilder
             return [];
         }
 
-        $attributes = $this->productManager->getAttributeRepository()->findBy(array('id' => $this->getAttributeIds()));
+        $attributes = $this->productManager->getAttributeRepository()->findBy(['id' => $this->getAttributeIds()]);
 
         return $this->prepareFieldsList($attributes);
     }
@@ -111,7 +111,7 @@ class ProductFieldsBuilder
      *
      * @return array
      */
-    protected function prepareFieldsList(array $attributesList = array())
+    protected function prepareFieldsList(array $attributesList = [])
     {
         $fieldsList   = $this->prepareAttributesList($attributesList);
         $fieldsList[] = ProductNormalizer::FIELD_FAMILY;
@@ -137,7 +137,7 @@ class ProductFieldsBuilder
     protected function prepareAttributesList(array $attributesList)
     {
         $scopeCode   = $this->catalogContext->getScopeCode();
-        $localeCodes = $this->localeManager->getActiveCodes();
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
         $fieldsList  = [];
 
         foreach ($attributesList as $attribute) {
