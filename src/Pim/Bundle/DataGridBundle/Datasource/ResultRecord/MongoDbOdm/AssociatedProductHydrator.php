@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\AssociationTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\CompletenessTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FamilyTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FieldsTransformer;
@@ -36,26 +37,26 @@ class AssociatedProductHydrator implements HydratorInterface
      */
     public function hydrate($queryBuilder, array $options = [])
     {
-        $locale = $options['locale_code'];
-        $scope = $options['scope_code'];
-        $config = $options['attributes_configuration'];
-        $groupId = $options['current_group_id'];
+        $locale            = $options['locale_code'];
+        $scope             = $options['scope_code'];
+        $config            = $options['attributes_configuration'];
+        $groupId           = $options['current_group_id'];
         $associationTypeId = $options['association_type_id'];
-        $currentProduct = $options['current_product'];
+        $currentProduct    = $options['current_product'];
 
         $query = $queryBuilder->hydrate(false)->getQuery();
         $queryDefinition = $query->getQuery();
 
-        $hasCurrentProduct = null !== $currentProduct;
+        $hasCurrentProduct    = null !== $currentProduct;
         $sortedByIsAssociated = isset($queryDefinition['sort']['normalizedData.is_associated']);
-        $hasResults = 0 !== $queryDefinition['limit'];
+        $hasResults           = 0 !== $queryDefinition['limit'];
 
         if ($hasCurrentProduct && $sortedByIsAssociated && $hasResults) {
             $documentManager = $query->getDocumentManager();
-            $productFields = $documentManager->getClassMetadata($this->productClass)->getFieldNames();
-            $pipeline = $this->pipelineFromQuery($currentProduct, $queryDefinition, $productFields, $associationTypeId);
-            $collection = $documentManager->getDocumentCollection($this->productClass);
-            $results = $collection->aggregate($pipeline)->toArray();
+            $productFields   = $documentManager->getClassMetadata($this->productClass)->getFieldNames();
+            $pipeline        = $this->pipelineFromQuery($currentProduct, $queryDefinition, $productFields, $associationTypeId);
+            $collection      = $documentManager->getDocumentCollection($this->productClass);
+            $results         = $collection->aggregate($pipeline)->toArray();
         } else {
             $results = $query->execute();
         }
@@ -69,8 +70,9 @@ class AssociatedProductHydrator implements HydratorInterface
         $fieldsTransformer = new FieldsTransformer();
         $valuesTransformer = new ValuesTransformer();
         $familyTransformer = new FamilyTransformer();
-        $complTransformer = new CompletenessTransformer();
+        $complTransformer  = new CompletenessTransformer();
         $groupsTransformer = new GroupsTransformer();
+        $assocTransformer  = new AssociationTransformer();
 
         foreach ($results as $result) {
             $result = $fieldsTransformer->transform($result, $locale);
@@ -78,6 +80,7 @@ class AssociatedProductHydrator implements HydratorInterface
             $result = $familyTransformer->transform($result, $locale);
             $result = $complTransformer->transform($result, $locale, $scope);
             $result = $groupsTransformer->transform($result, $locale, $groupId);
+            $result = $assocTransformer->transform($result, $associationTypeId, $currentProduct);
             $result['is_checked'] = $result['is_associated'];
 
             $rows[] = new ResultRecord($result);
@@ -89,7 +92,7 @@ class AssociatedProductHydrator implements HydratorInterface
     /**
      * @param ProductInterface $currentProduct
      * @param array            $queryDefinition
-     * @param string []        $productFields
+     * @param string[]         $productFields
      * @param int              $associationTypeId
      *
      * @return array
@@ -100,9 +103,10 @@ class AssociatedProductHydrator implements HydratorInterface
         array $productFields,
         $associationTypeId
     ) {
+        $associationTypeId = (int) $associationTypeId;
         $or = [];
         foreach ($currentProduct->getAssociations() as $association) {
-            if ($associationTypeId != $association->getAssociationType()->getId()) {
+            if ($association->getAssociationType()->getId() !== $associationTypeId) {
                 continue;
             }
             foreach ($association->getProducts() as $myProduct) {
@@ -110,10 +114,10 @@ class AssociatedProductHydrator implements HydratorInterface
             }
         }
 
-        $match = $queryDefinition['query'];
+        $match     = $queryDefinition['query'];
         $direction = $queryDefinition['sort']['normalizedData.is_associated'];
-        $limit = $queryDefinition['limit'];
-        $skip = $queryDefinition['skip'];
+        $limit     = $queryDefinition['limit'];
+        $skip      = $queryDefinition['skip'];
 
         $productFields = array_fill_keys($productFields, 1);
         $productFields['is_associated'] = [
