@@ -4,11 +4,11 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -21,7 +21,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $productNormalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider
     ) {
@@ -29,7 +29,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             $productNormalizer,
             $versionNormalizer,
             $versionManager,
-            $localeManager,
+            $localeRepository,
             $structureVersionProvider,
             $formProvider
         );
@@ -40,8 +40,19 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($mug, 'internal_api')->shouldReturn(true);
     }
 
-    function it_normalize_products($productNormalizer, $versionNormalizer, $versionManager, $localeManager, $structureVersionProvider, $formProvider, ProductInterface $mug, AssociationInterface $upsell, AssociationTypeInterface $groupType, GroupInterface $group, ArrayCollection $groups)
-    {
+    function it_normalize_products(
+        $productNormalizer,
+        $versionNormalizer,
+        $versionManager,
+        $localeRepository,
+        $structureVersionProvider,
+        $formProvider,
+        ProductInterface $mug,
+        AssociationInterface $upsell,
+        AssociationTypeInterface $groupType,
+        GroupInterface $group,
+        ArrayCollection $groups
+    ) {
         $productNormalizer->normalize($mug, 'json', [])->willReturn(
             ['normalized_property' => 'a nice normalized property']
         );
@@ -52,7 +63,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $versionManager->getNewestLogEntry($mug)->willReturn('update_version');
         $versionNormalizer->normalize('update_version', 'internal_api')->willReturn('normalized_update_version');
 
-        $localeManager->getActiveCodes()->willReturn(['en_US', 'fr_FR']);
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $mug->getLabel('en_US')->willReturn('A nice Mug!');
         $mug->getLabel('fr_FR')->willReturn('Un très beau Mug !');
 
