@@ -57,10 +57,10 @@ class ChannelType extends AbstractType
         $dataClass
     ) {
         $this->localeRepository = $localeRepository;
-        $this->localeHelper  = $localeHelper;
-        $this->provider      = $provider;
-        $this->categoryClass = $categoryClass;
-        $this->dataClass     = $dataClass;
+        $this->localeHelper     = $localeHelper;
+        $this->provider         = $provider;
+        $this->categoryClass    = $categoryClass;
+        $this->dataClass        = $dataClass;
     }
 
     /**
@@ -192,7 +192,7 @@ class ChannelType extends AbstractType
                 'query_builder'     => function (LocaleRepositoryInterface $repository) {
                     return $repository->getLocalesQB();
                 },
-                'preferred_choices' => $this->localeRepository->getActiveLocales()
+                'preferred_choices' => $this->localeRepository->getActivatedLocaleCodes()
             ]
         );
 

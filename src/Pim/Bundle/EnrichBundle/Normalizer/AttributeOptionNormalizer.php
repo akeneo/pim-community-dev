@@ -115,7 +115,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     protected function getActiveLocales()
     {
         if (!$this->activeLocales) {
-            $this->activeLocales = $this->localeRepository->getActivatedLocaleCodes();
+            $this->activeLocales = $this->localeRepository->getActivatedLocales();
         }
 
         return $this->activeLocales;

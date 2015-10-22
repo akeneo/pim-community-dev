@@ -184,7 +184,7 @@ class AttributeController extends AbstractDoctrineController
         return [
             'form'            => $this->attributeForm->createView(),
             'locales'         => $this->localeRepository->getActivatedLocaleCodes(),
-            'disabledLocales' => $this->localeRepository->getDisabledLocales(),
+            'disabledLocales' => $this->localeRepository->findBy(['activated' => false]),
             'measures'        => $this->measuresConfig,
             'attributeType'   => $attributeType
         ];
