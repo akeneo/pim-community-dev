@@ -131,14 +131,12 @@ class UploadChecker implements UploadCheckerInterface
      */
     protected function isLocaleActivated(array $locales, $localeCode)
     {
-        $foundLocale = null;
-
         foreach ($locales as $locale) {
             if ($localeCode === $locale->getCode()) {
                 return $locale->isActivated();
             }
         }
 
-        throw new \RuntimeException(sprintf('locale code %s is unknown', $localeCode));
+        throw new \RuntimeException(sprintf('Locale code %s is unknown', $localeCode));
     }
 }

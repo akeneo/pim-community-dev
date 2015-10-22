@@ -113,7 +113,7 @@ class UploadCheckerSpec extends ObjectBehavior
         $parsedFilename->getAssetCode()->willReturn('foobar');
         $parsedFilename->getLocaleCode()->willReturn('fo_FO');
 
-        $this->shouldThrow(new \RuntimeException(sprintf('locale code %s is unknown', 'fo_FO')))
+        $this->shouldThrow(new \RuntimeException(sprintf('Locale code %s is unknown', 'fo_FO')))
             ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyScheduledDir']);
     }
 
