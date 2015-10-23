@@ -18,6 +18,20 @@ body {
   }
 }
 
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('/bundles/pimui/fonts/Lato-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 a {
   color: @color-purple_dark;
 }
@@ -1085,7 +1099,7 @@ h3.tab-header {
   }
 
   .language {
-    font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    font-family: @sansFontFamily;
     font-size: 11px;
     color: @color-form-label;
     font-weight: normal;
@@ -1561,7 +1575,7 @@ h3.tab-header {
     }
 
     .flag-language .language {
-      font-family: Helvetica;
+      font-family: @sansFontFamily;
       color: #555;
       padding-top: 1px;
     }

@@ -251,7 +251,7 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
     margin: 0;
 
     outline: 0;
-    font-family: sans-serif;
+    font-family: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 1em;
 
     border: 1px solid #aaa;
@@ -511,7 +511,7 @@ disabled look for disabled choices in the results dropdown
 .select2-container-multi .select2-choices .select2-search-field input {
     padding: 5px;
     margin: 1px 0;
-    font-family: sans-serif;
+    font-family: 'Lato', "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 100%;
     color: #666;
     outline: 0;
