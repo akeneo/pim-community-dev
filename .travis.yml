@@ -36,6 +36,7 @@ script:
     - ./phpspec-fix
     - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then grunt travis; else grunt codestyle; fi;'
+    - php ./bin/coupling-detector pim-community-dev
 
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo
