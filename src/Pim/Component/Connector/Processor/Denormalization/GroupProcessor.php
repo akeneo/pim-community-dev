@@ -36,6 +36,7 @@ class GroupProcessor extends AbstractProcessor
     /**
      * @param StandardArrayConverterInterface       $groupConverter
      * @param IdentifiableObjectRepositoryInterface $repository
+     * @param GroupFactory                          $groupFactory
      * @param ObjectUpdaterInterface                $groupUpdater
      * @param ValidatorInterface                    $validator
      */
