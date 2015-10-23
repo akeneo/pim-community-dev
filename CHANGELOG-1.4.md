@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-4794: Fix static attributes types for reference data
 - PIM-5035: Fix products sorting in associations grid
+- PIM-5046: Fix identifier attribute not unique on creation
 
 # 1.4.4 (2015-10-16)
 
