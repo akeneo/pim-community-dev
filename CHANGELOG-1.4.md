@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.5 (2015-10-23)
 
 ## Bug fixes
 - PIM-4970: Asset mass upload - Do not remove uploaded asset if not deleted from server
