@@ -46,13 +46,14 @@ class FamilyNormalizer implements NormalizerInterface
         $normalizedRequirements = $this->normalizeRequirements($object);
         $transNormalized = $this->transNormalizer->normalize($object, $format, $context);
 
-        return [
-            'code'               => $object->getCode(),
-            'attributes'         => $this->normalizeAttributes($object)
-        ]
-        + $transNormalized
-        + ['attribute_as_label' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '']
-        + $normalizedRequirements;
+        $defaults = ['code' => $object->getCode()];
+
+        $normalizedData = [
+            'attributes'         => $this->normalizeAttributes($object),
+            'attribute_as_label' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
+        ];
+
+        return array_merge($defaults, $transNormalized, $normalizedData, $normalizedRequirements);
     }
 
     /**
