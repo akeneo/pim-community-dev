@@ -60,12 +60,4 @@ class AssetProcessor extends Processor
             ]
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
 }

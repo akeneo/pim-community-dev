@@ -60,12 +60,4 @@ class VariationProcessor extends Processor
             ]
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
 }
