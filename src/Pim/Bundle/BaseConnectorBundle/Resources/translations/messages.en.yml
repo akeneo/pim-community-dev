@@ -106,6 +106,9 @@ pim_base_connector:
         channel:
             label: Channel
             help: The channel you want to export
+        decimalSeparator:
+            label: Decimal separator
+            help: Determine the decimal separator
     import:
         enabled:
             label: Enable the product

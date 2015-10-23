@@ -10,8 +10,10 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
@@ -54,7 +56,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'mainContext' => ['scope' => 'ecommerce']])
+            json_encode(['filters' => [], 'mainContext' => ['scope' => 'ecommerce', 'ui_locale' => 'en_US']])
         );
 
         $this->initialize();
@@ -81,6 +83,21 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->shouldThrow(new InvalidArgumentException('No channel found'))->duringInitialize();
     }
 
+    function it_throw_an_exception_if_there_is_no_ui_locale(
+        $stepExecution,
+        $jobConfigurationRepo,
+        JobExecution $jobExecution,
+        JobConfigurationInterface $jobConfiguration
+    ) {
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
+            json_encode(['filters' => [], 'mainContext' => ['scope' => 'ecommerce']])
+        );
+
+        $this->shouldThrow(new InvalidArgumentException('No UI locale found'))->duringInitialize();
+    }
+
     function it_returns_flat_data_with_media(
         ChannelInterface $channel,
         $channelManager,
@@ -92,6 +109,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         AttributeInterface $attribute,
         $serializer
     ) {
+        $this->setDecimalSeparator('.');
         $media1->getFilename()->willReturn('media_name');
         $media1->getOriginalFilename()->willReturn('media_original_name');
 
@@ -110,13 +128,18 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             ->willReturn(['normalized_media1', 'normalized_media2']);
 
         $serializer
-            ->normalize($product, 'flat', ['scopeCode' => 'mobile', 'localeCodes' => ''])
+            ->normalize($product, 'flat', ['scopeCode' => 'mobile', 'localeCodes' => '', 'decimal_separator' => '.'])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('mobile')->willReturn($channel);
 
         $this->setChannelCode('mobile');
-        $this->process($product)->shouldReturn(['media' => ['normalized_media1', 'normalized_media2'], 'product' => ['normalized_product']]);
+        $this->process($product)->shouldReturn(
+            [
+                'media'   => ['normalized_media1', 'normalized_media2'],
+                'product' => ['normalized_product']
+            ]
+        );
     }
 
     function it_returns_flat_data_without_media(
@@ -125,10 +148,11 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         Serializer $serializer
     ) {
+        $this->setDecimalSeparator('.');
         $product->getValues()->willReturn([]);
 
         $serializer
-            ->normalize($product, 'flat', ['scopeCode' => 'mobile', 'localeCodes' => ''])
+            ->normalize($product, 'flat', ['scopeCode' => 'mobile', 'localeCodes' => '', 'decimal_separator' => '.'])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('mobile')->willReturn($channel);
@@ -154,13 +178,156 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $attribute->getAttributeType()->willReturn('pim_catalog_image');
 
-        $serializer->normalize([$media], Argument::cetera())->willThrow(new FileNotFoundException('upload/path/img.jpg'));
+        $serializer->normalize([$media], Argument::cetera())->willThrow(
+            new FileNotFoundException('upload/path/img.jpg')
+        );
 
         $this->shouldThrow(
             new InvalidItemException(
                 'The file "upload/path/img.jpg" does not exist',
-                [ 'item' => 23, 'uploadDirectory' => 'upload/path/']
+                ['item' => 23, 'uploadDirectory' => 'upload/path/']
             )
         )->duringProcess($product);
+    }
+
+    function it_returns_flat_data_with_english_number(
+        ChannelInterface $channel,
+        $channelManager,
+        ProductInterface $product,
+        ProductValueInterface $number,
+        AttributeInterface $attribute,
+        MetricInterface $metric,
+        ProductValueInterface $metricValue,
+        ProductPriceInterface $price,
+        ProductValueInterface $priceValue,
+        $serializer
+    ) {
+        $this->setDecimalSeparator('en_US');
+
+        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $number->getDecimal('10.50');
+        $number->getAttribute()->willReturn($attribute);
+
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $metric->getData()->willReturn('10.00');
+        $metric->getUnit()->willReturn('GRAM');
+        $metricValue->getAttribute()->willReturn($attribute);
+        $metricValue->getData()->willReturn($metric);
+
+        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price->getData()->willReturn('10');
+        $price->getCurrency()->willReturn('EUR');
+        $priceValue->getAttribute()->willReturn($attribute);
+        $priceValue->getData()->willReturn($price);
+
+        $product->getValues()->willReturn([$number, $metricValue, $priceValue]);
+
+        $serializer
+            ->normalize($product, 'flat', ['scopeCode' => 'mobile', 'localeCodes' => '', 'decimal_separator' => '.'])
+            ->willReturn(['10.50', '10.00 GRAM', '10.00 EUR']);
+
+        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+
+        $this->setChannelCode('mobile');
+        $this->process($product)->shouldReturn(
+            [
+                'media'   => [],
+                'product' => ['10.50', '10.00 GRAM', '10.00 EUR']
+            ]
+        );
+    }
+
+    function it_returns_flat_data_with_english_attributes(
+        ChannelInterface $channel,
+        $channelManager,
+        ProductInterface $product,
+        ProductValueInterface $number,
+        AttributeInterface $attribute,
+        MetricInterface $metric,
+        ProductValueInterface $metricValue,
+        ProductPriceInterface $price,
+        ProductValueInterface $priceValue,
+        $serializer
+    ) {
+        $this->setDecimalSeparator('en_US');
+
+        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $number->getDecimal('10.50');
+        $number->getAttribute()->willReturn($attribute);
+
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $metric->getData()->willReturn('10.00');
+        $metric->getUnit()->willReturn('GRAM');
+        $metricValue->getAttribute()->willReturn($attribute);
+        $metricValue->getData()->willReturn($metric);
+
+        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price->getData()->willReturn('10');
+        $price->getCurrency()->willReturn('EUR');
+        $priceValue->getAttribute()->willReturn($attribute);
+        $priceValue->getData()->willReturn($price);
+
+        $product->getValues()->willReturn([$number, $metricValue, $priceValue]);
+
+        $serializer
+            ->normalize($product, 'flat', ['scopeCode' => 'mobile', 'localeCodes' => '', 'decimal_separator' => '.'])
+            ->willReturn(['10.50', '10.00 GRAM', '10.00 EUR']);
+
+        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+
+        $this->setChannelCode('mobile');
+        $this->process($product)->shouldReturn(
+            [
+                'media'   => [],
+                'product' => ['10.50', '10.00 GRAM', '10.00 EUR']
+            ]
+        );
+    }
+
+    function it_returns_flat_data_with_french_attribute(
+        ChannelInterface $channel,
+        $channelManager,
+        ProductInterface $product,
+        ProductValueInterface $number,
+        AttributeInterface $attribute,
+        MetricInterface $metric,
+        ProductValueInterface $metricValue,
+        ProductPriceInterface $price,
+        ProductValueInterface $priceValue,
+        $serializer
+    ) {
+        $this->setDecimalSeparator('fr_FR');
+
+        $attribute->getAttributeType()->willReturn('pim_catalog_number');
+        $number->getDecimal('10.50');
+        $number->getAttribute()->willReturn($attribute);
+
+        $attribute->getAttributeType()->willReturn('pim_catalog_metric');
+        $metric->getData()->willReturn('10.00');
+        $metric->getUnit()->willReturn('GRAM');
+        $metricValue->getAttribute()->willReturn($attribute);
+        $metricValue->getData()->willReturn($metric);
+
+        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+        $price->getData()->willReturn('10');
+        $price->getCurrency()->willReturn('EUR');
+        $priceValue->getAttribute()->willReturn($attribute);
+        $priceValue->getData()->willReturn($price);
+
+        $product->getValues()->willReturn([$number, $metricValue, $priceValue]);
+
+        $serializer
+            ->normalize($product, 'flat', ['scopeCode' => 'mobile', 'localeCodes' => '', 'decimal_separator' => ','])
+            ->willReturn(['10,50', '10,00 GRAM', '10,00 EUR']);
+
+        $channelManager->getChannelByCode('mobile')->willReturn($channel);
+
+        $this->setChannelCode('mobile');
+        $this->process($product)->shouldReturn(
+            [
+                'media'   => [],
+                'product' => ['10,50', '10,00 GRAM', '10,00 EUR']
+            ]
+        );
     }
 }

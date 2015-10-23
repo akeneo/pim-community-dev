@@ -36,6 +36,9 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var string */
     protected $channelCode;
 
+    /** @var string */
+    protected $decimalSeparator;
+
     /** @var array Normalizer context */
     protected $normalizerContext;
 
@@ -114,14 +117,35 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
+     * @param string $uiLocale
+     *
+     * @return string
+     */
+    public function setDecimalSeparator($uiLocale)
+    {
+        $number = new \NumberFormatter($uiLocale, \NumberFormatter::DECIMAL);
+
+        $this->decimalSeparator = $number->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
      * @return array
      */
     protected function getNormalizerContext()
     {
         if (null === $this->normalizerContext) {
             $this->normalizerContext = [
-                'scopeCode'   => $this->channelCode,
-                'localeCodes' => $this->getLocaleCodes($this->channelCode)
+                'scopeCode'         => $this->channelCode,
+                'localeCodes'       => $this->getLocaleCodes($this->channelCode),
+                'decimal_separator' => $this->decimalSeparator
             ];
         }
 
@@ -173,6 +197,12 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         if (!isset($configuration['mainContext']['scope'])) {
             throw new InvalidArgumentException('No channel found');
         }
+
+        if (!isset($configuration['mainContext']['ui_locale'])) {
+            throw new InvalidArgumentException('No UI locale found');
+        }
+
         $this->setChannelCode($configuration['mainContext']['scope']);
+        $this->setDecimalSeparator($configuration['mainContext']['ui_locale']);
     }
 }

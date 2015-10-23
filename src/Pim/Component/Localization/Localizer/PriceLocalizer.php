@@ -32,7 +32,7 @@ class PriceLocalizer extends AbstractNumberLocalizer
     {
         foreach ($prices as $i => $price) {
             if (isset($price['data'])) {
-                $prices[$i]['data'] = $this->convertNumber($price['data'], $options);
+                $prices[$i]['data'] = $this->convertNumberToDefault($price['data'], $options);
             }
         }
 

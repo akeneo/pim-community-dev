@@ -62,6 +62,24 @@ class DateLocalizer implements LocalizerInterface
         return $datetime->format(static::DEFAULT_DATE_FORMAT);
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function convertDefaultToLocalized($date, array $options = [])
+    {
+        $this->checkOptions($options);
+
+        if (null === $date || '' === $date) {
+            return $date;
+        }
+
+        $datetime = new \DateTime();
+        $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
+
+        return $datetime->format($options['date_format']);
+    }
+
     /**
      * {@inheritdoc}
      */
