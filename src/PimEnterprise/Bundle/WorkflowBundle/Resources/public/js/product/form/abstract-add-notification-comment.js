@@ -18,8 +18,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             events: {
-                'change textarea': 'updateCounter',
-                'keyup textarea': 'updateCounter'
+                'input textarea': 'updateCounter'
             },
 
             /**
