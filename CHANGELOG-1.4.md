@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.5 (2015-10-23)
 
 ## Bug fixes
 - PIM-4794: Fix static attributes types for reference data
