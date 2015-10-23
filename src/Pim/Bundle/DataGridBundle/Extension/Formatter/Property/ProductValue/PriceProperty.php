@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
+use Pim\Component\Localization\Formatter\FormatterInterface;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Price field property, able to render price attribute type
@@ -13,6 +15,22 @@ use Symfony\Component\Intl\Intl;
  */
 class PriceProperty extends FieldProperty
 {
+    /** @var FormatterInterface */
+    protected $formatter;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param TranslatorInterface $translator
+     * @param FormatterInterface  $formatter
+     */
+    public function __construct(TranslatorInterface $translator, FormatterInterface $formatter)
+    {
+        parent::__construct($translator);
+
+        $this->formatter = $formatter;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,7 +41,12 @@ class PriceProperty extends FieldProperty
         $prices = [];
         foreach ($data as $price) {
             if (isset($price['data']) && $price['data'] !== null) {
-                $prices[] = $price['data'].' '. Intl::getCurrencyBundle()->getCurrencySymbol($price['currency']);
+                $formattedPrice = $this->formatter->format($price['data']);
+                $prices[] = sprintf(
+                    '%s %s',
+                    $formattedPrice,
+                    Intl::getCurrencyBundle()->getCurrencySymbol($price['currency'])
+                );
             }
         }
 

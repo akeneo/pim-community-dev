@@ -29,6 +29,34 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /** @var Grid */
     public $datagrid;
 
+    /** @var array $gridNames */
+    protected $gridNames;
+
+    public function __construct()
+    {
+        $this->gridNames = [
+            'products' => 'product-grid'
+        ];
+    }
+
+    /**
+     * Returns the internal grid name from a human readable label
+     *
+     * @param string $gridLabel
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    public function getGridName($gridLabel)
+    {
+        if (array_key_exists($gridLabel, $this->gridNames)) {
+            return $this->gridNames[$gridLabel];
+        }
+
+        throw new \InvalidArgumentException(sprintf('No grid found for label %s.', $gridLabel));
+    }
+
     /**
      * @param PageFactory $pageFactory
      */
@@ -311,15 +339,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $columns
+     * @param string $gridLabel
      *
-     * @Given /^I display the columns (.*)$/
+     * @Given /^I display(?: in the (.*) grid)? the columns (.*)$/
      */
-    public function iDisplayTheColumns($columns)
+    public function iDisplayTheColumns($gridLabel, $columns)
     {
+        $gridLabel = (null === $gridLabel || '' === $gridLabel) ? 'products' : $gridLabel;
+        $gridName = $this->getGridName($gridLabel);
+
         $columns = $this->getMainContext()->listToArray($columns);
 
         $this->getMainContext()->executeScript(
-            sprintf('sessionStorage.setItem("product-grid.columns", "%s");', implode(',', $columns))
+            sprintf('sessionStorage.setItem("%s.columns", "%s");', $gridName, implode(',', $columns))
         );
 
         $this->getMainContext()->reload();

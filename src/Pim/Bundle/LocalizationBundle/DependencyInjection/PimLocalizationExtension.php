@@ -35,6 +35,7 @@ class PimLocalizationExtension extends Extension
         $container->setParameter('pim_localization.date_formats', $dateFormats);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('formatters.yml');
         $loader->load('localizers.yml');
         $loader->load('providers.yml');
         $loader->load('services.yml');
