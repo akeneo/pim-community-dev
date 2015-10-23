@@ -25,7 +25,13 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
         AuthorizationCheckerInterface $authorizationChecker,
         SaverInterface $versionSaver
     ) {
-        $this->beConstructedWith($versionFactory, $versionRepository, $tokenStorage, $authorizationChecker, $versionSaver);
+        $this->beConstructedWith(
+            $versionFactory,
+            $versionRepository,
+            $tokenStorage,
+            $authorizationChecker,
+            $versionSaver
+        );
     }
 
     function it_subscribes_to_post_remove_events()
@@ -35,8 +41,19 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_creates_a_version_on_object_deletion($versionFactory, $versionRepository, $tokenStorage, $authorizationChecker, $versionSaver, Version $previousVersion, Version $removeVersion, TokenInterface $token, UserInterface $admin, VersionableInterface $price, RemoveEvent $event)
-    {
+    function it_creates_a_version_on_object_deletion(
+        $versionFactory,
+        $versionRepository,
+        $tokenStorage,
+        $authorizationChecker,
+        $versionSaver,
+        Version $previousVersion,
+        Version $removeVersion,
+        TokenInterface $token,
+        UserInterface $admin,
+        VersionableInterface $price,
+        RemoveEvent $event
+    ) {
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($admin);
         $admin->getUsername()->willReturn('admin');
@@ -51,10 +68,13 @@ class AddRemoveVersionSubscriberSpec extends ObjectBehavior
         $removeVersion->setSnapshot(['foo' => 'bar'])->willReturn($removeVersion);
         $removeVersion->setChangeset([])->willReturn($removeVersion);
 
-        $versionSaver->save($removeVersion)->shouldBeCalled();
+        $saveOptions = ['flush' => true];
+
+        $versionSaver->save($removeVersion, $saveOptions)->shouldBeCalled();
 
         $event->getSubject()->willReturn($price);
         $event->getSubjectId()->willReturn(12);
+        $event->getArguments()->willReturn($saveOptions);
 
         $this->postRemove($event);
     }

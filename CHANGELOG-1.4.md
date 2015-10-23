@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5051: Fix mass delete products error on versionning 
+
 # 1.4.5 (2015-10-23)
 
 ## Bug fixes
