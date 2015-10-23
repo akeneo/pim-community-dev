@@ -47,7 +47,7 @@ services:
         class: %pimee_catalog.filter.product_value_locale_right.class%
         arguments:
             - '@security.authorization_checker'
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'
         tags:
             - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
             - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }

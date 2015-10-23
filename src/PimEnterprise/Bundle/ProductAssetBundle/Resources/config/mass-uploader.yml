@@ -11,7 +11,7 @@ services:
         arguments:
             - '@pimee_product_asset.repository.asset'
             - '@pim_catalog.repository.locale'
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'
 
     pimee_product_asset.upload_scheduler:
         class: %pimee_product_asset.upload_scheduler.class%

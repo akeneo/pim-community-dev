@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 use Prophecy\Argument;
