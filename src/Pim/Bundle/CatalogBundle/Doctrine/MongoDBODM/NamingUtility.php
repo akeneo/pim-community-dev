@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
  * Provides util methods to get attributes codes
@@ -32,20 +33,31 @@ class NamingUtility
     /** @var string */
     protected $currencyClass;
 
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /**
-     * @param ManagerRegistry $managerRegistry
-     * @param string          $channelClass
-     * @param string          $localeClass
-     * @param string          $attributeClass
-     * @param string          $currencyClass
+     * @param ManagerRegistry           $managerRegistry
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param string                    $channelClass
+     * @param string                    $localeClass
+     * @param string                    $attributeClass
+     * @param string                    $currencyClass
      */
-    public function __construct($managerRegistry, $channelClass, $localeClass, $attributeClass, $currencyClass)
-    {
-        $this->managerRegistry = $managerRegistry;
-        $this->channelClass    = $channelClass;
-        $this->localeClass     = $localeClass;
-        $this->attributeClass  = $attributeClass;
-        $this->currencyClass   = $currencyClass;
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        LocaleRepositoryInterface $localeRepository,
+        $channelClass,
+        $localeClass,
+        $attributeClass,
+        $currencyClass
+    ) {
+        $this->managerRegistry  = $managerRegistry;
+        $this->localeRepository = $localeRepository;
+        $this->channelClass     = $channelClass;
+        $this->localeClass      = $localeClass;
+        $this->attributeClass   = $attributeClass;
+        $this->currencyClass    = $currencyClass;
     }
 
     /**
@@ -188,10 +200,7 @@ class NamingUtility
      */
     public function getLocales()
     {
-        $localeManager    = $this->managerRegistry->getManagerForClass($this->localeClass);
-        $localeRepository = $localeManager->getRepository($this->localeClass);
-
-        return $localeRepository->getActivatedLocales();
+        return $this->localeRepository->getActivatedLocales();
     }
 
     /**

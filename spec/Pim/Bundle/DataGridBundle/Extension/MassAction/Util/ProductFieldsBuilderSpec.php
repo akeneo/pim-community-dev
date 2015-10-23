@@ -8,16 +8,16 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 class ProductFieldsBuilderSpec extends ObjectBehavior
 {
     function let(
         ProductManagerInterface $productManager,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
         AssociationTypeManager $assocTypeManager,
         CatalogContext $catalogContext,
@@ -29,7 +29,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $productManager,
-            $localeManager,
+            $localeRepository,
             $currencyManager,
             $assocTypeManager,
             $catalogContext
@@ -43,8 +43,14 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         $this->getFieldsList(['foo'])->shouldreturn([]);
     }
 
-    function it_retrieves_field_list_with_product_with_attributes($productRepository, $attributeRepository, $assocTypeManager, AttributeInterface $bar, AttributeInterface $baz, AssociationTypeInterface $association)
-    {
+    function it_retrieves_field_list_with_product_with_attributes(
+        $productRepository,
+        $attributeRepository,
+        $assocTypeManager,
+        AttributeInterface $bar,
+        AttributeInterface $baz,
+        AssociationTypeInterface $association
+    ) {
         $bar->getCode()->willReturn('bar-code');
         $bar->isLocalizable()->willReturn(false);
         $bar->isScopable()->willReturn(false);

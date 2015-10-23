@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -30,8 +30,8 @@ class ProductNormalizer implements NormalizerInterface
     /** @var VersionManager */
     protected $versionManager;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
     /** @var StructureVersionProviderInterface */
     protected $structureVersionProvider;
@@ -43,7 +43,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface               $productNormalizer
      * @param NormalizerInterface               $versionNormalizer
      * @param VersionManager                    $versionManager
-     * @param LocaleManager                     $localeManager
+     * @param LocaleRepositoryInterface         $localeRepository
      * @param StructureVersionProviderInterface $structureVersionProvider
      * @param FormProviderInterface             $formProvider
      */
@@ -51,14 +51,14 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $productNormalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider
     ) {
         $this->productNormalizer        = $productNormalizer;
         $this->versionNormalizer        = $versionNormalizer;
         $this->versionManager           = $versionManager;
-        $this->localeManager            = $localeManager;
+        $this->localeRepository         = $localeRepository;
         $this->structureVersionProvider = $structureVersionProvider;
         $this->formProvider             = $formProvider;
     }
@@ -105,7 +105,7 @@ class ProductNormalizer implements NormalizerInterface
     {
         $labels = [];
 
-        foreach ($this->localeManager->getActiveCodes() as $localeCode) {
+        foreach ($this->localeRepository->getActivatedLocaleCodes() as $localeCode) {
             $labels[$localeCode] = $product->getLabel($localeCode);
         }
 

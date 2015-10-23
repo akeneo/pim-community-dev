@@ -129,7 +129,7 @@ services:
             - '@pim_enrich.form.attribute'
             - '@pim_catalog.manager.attribute'
             - '@pim_catalog.manager.attribute_option'
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.attribute'
             - '@pim_catalog.remover.attribute'

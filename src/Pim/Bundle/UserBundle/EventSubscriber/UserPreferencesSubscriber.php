@@ -21,30 +21,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class UserPreferencesSubscriber implements EventSubscriber
 {
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $container;
 
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $manager;
 
-    /**
-     * @var UnitOfWork
-     */
+    /** @var UnitOfWork */
     protected $uow;
 
-    /**
-     * @var array
-     */
-    private $metadata = array();
+    /** @var array */
+    protected $metadata = [];
 
-    /**
-     * @var array
-     */
-    private $deactivatedLocales = array();
+    /** @var array */
+    protected $deactivatedLocales = [];
 
     /**
      * Inject service container
@@ -67,10 +57,10 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'onFlush',
             'postFlush',
-        );
+        ];
     }
 
     /**
@@ -170,7 +160,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function onChannelRemoved(ChannelInterface $channel)
     {
-        $users  = $this->findUsersBy(array('catalogScope' => $channel));
+        $users  = $this->findUsersBy(['catalogScope' => $channel]);
         $scopes = $this->container->get('pim_catalog.manager.channel')->getChannels();
 
         $defaultScope = current(
@@ -195,7 +185,7 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function onTreeRemoved(CategoryInterface $category)
     {
-        $users = $this->findUsersBy(array('defaultTree' => $category));
+        $users = $this->findUsersBy(['defaultTree' => $category]);
         $trees = $this->container->get('pim_catalog.repository.category')->getTrees();
 
         $defaultTree = current(
@@ -218,20 +208,20 @@ class UserPreferencesSubscriber implements EventSubscriber
      */
     protected function onLocalesDeactivated()
     {
-        $localeManager = $this->container->get('pim_catalog.manager.locale');
-        $activeLocales = $localeManager->getActiveLocales();
+        $localeRepository = $this->container->get('pim_catalog.repository.locale');
+        $activeLocales = $localeRepository->getActivatedLocales();
         $defaultLocale = current($activeLocales);
 
         foreach ($this->deactivatedLocales as $localeCode) {
-            $deactivatedLocale = $localeManager->getLocaleByCode($localeCode);
-            $users = $this->findUsersBy(array('catalogLocale' => $deactivatedLocale));
+            $deactivatedLocale = $localeRepository->findOneByIdentifier($localeCode);
+            $users = $this->findUsersBy(['catalogLocale' => $deactivatedLocale]);
 
             foreach ($users as $user) {
                 $user->setCatalogLocale($defaultLocale);
                 $this->manager->persist($user);
             }
         }
-        $this->deactivatedLocales = array();
+        $this->deactivatedLocales = [];
 
         $this->manager->flush();
     }

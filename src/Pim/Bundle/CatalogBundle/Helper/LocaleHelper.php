@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Helper;
 
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Intl;
 
@@ -22,19 +22,19 @@ class LocaleHelper
     /** @var UserContext */
     protected $userContext;
 
-    /** @var LocaleManager*/
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface*/
+    protected $localeRepository;
 
     /**
      * Constructor
      *
-     * @param UserContext   $userContext
-     * @param LocaleManager $localeManager
+     * @param UserContext               $userContext
+     * @param LocaleRepositoryInterface $localeRepository
      */
-    public function __construct(UserContext $userContext, LocaleManager $localeManager)
+    public function __construct(UserContext $userContext, LocaleRepositoryInterface $localeRepository)
     {
         $this->userContext   = $userContext;
-        $this->localeManager = $localeManager;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -199,7 +199,7 @@ class LocaleHelper
     public function getActivatedLocaleChoices()
     {
         $translateIn  = $this->getCurrentLocaleCode();
-        $activeCodes = $this->localeManager->getActiveCodes();
+        $activeCodes = $this->localeRepository->getActivatedLocaleCodes();
 
         $results = [];
         foreach ($activeCodes as $activeCode) {

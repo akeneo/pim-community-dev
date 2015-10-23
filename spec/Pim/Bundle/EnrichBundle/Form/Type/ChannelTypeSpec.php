@@ -4,19 +4,19 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ChannelTypeSpec extends ObjectBehavior
 {
     function let(
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
         ColorsProvider $provider
     ) {
         $this->beConstructedWith(
-            $localeManager,
+            $localeRepository,
             $localeHelper,
             $provider,
             'Pim\Bundle\CatalogBundle\Entity\Category',
