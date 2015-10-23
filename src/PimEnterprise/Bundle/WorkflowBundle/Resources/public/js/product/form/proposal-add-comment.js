@@ -11,7 +11,7 @@ define(
         'backbone',
         'pimee/product-edit-form/abstract-add-notification-comment'
     ],
-    function ($,_, Backbone, AbstractCommentForm) {
+    function ($, _, Backbone, AbstractCommentForm) {
         return AbstractCommentForm.extend({
 
             /**
