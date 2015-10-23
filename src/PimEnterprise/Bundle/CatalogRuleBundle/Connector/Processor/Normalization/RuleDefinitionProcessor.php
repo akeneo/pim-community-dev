@@ -55,12 +55,4 @@ class RuleDefinitionProcessor extends Processor
 
         return $rule;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
 }
