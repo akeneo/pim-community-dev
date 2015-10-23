@@ -14,7 +14,7 @@ define(
         'pim/form',
         'text!pimee/template/product/meta/notification-comment'
     ],
-    function ($,_, Backbone, mediator, BaseForm, template) {
+    function ($, _, Backbone, mediator, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             events: {
