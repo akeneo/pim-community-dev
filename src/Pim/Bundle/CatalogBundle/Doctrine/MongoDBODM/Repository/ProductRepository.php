@@ -106,6 +106,23 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
+
++    public function findAll()
++    {
++        $pqb = $this->queryBuilderFactory->create();
++        $qb = $pqb->getQueryBuilder();
++        $result = $qb->getQuery()->execute();
++
++        if (empty($result)) {
++            return null;
++        }
++
++        return $result;
++    }
++
++    /**
++     * {@inheritdoc}
++     */
     public function findOneById($id)
     {
         $pqb = $this->queryBuilderFactory->create();

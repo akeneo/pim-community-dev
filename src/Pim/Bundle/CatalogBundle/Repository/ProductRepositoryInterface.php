@@ -84,7 +84,7 @@ interface ProductRepositoryInterface
     public function getFullProduct($id);
 
     /**
-     * Returns true if a ProductValue with the provided value alread exists,
+     * Returns true if a ProductValue with the provided value already exists,
      * false otherwise.
      *
      * @param ProductValueInterface $value
@@ -132,9 +132,15 @@ interface ProductRepositoryInterface
     public function findOneByIdentifier($identifier);
 
     /**
-     * @param string|int $id
      *
      * @return ProductInterface|null
+     */
+    public function findAll();
+
+    /**
+     * @param string|int $id
+     *
+     * @return array ProductInterface|null
      */
     public function findOneById($id);
 

@@ -3,6 +3,7 @@
 ## Technical improvements
 
 - PIM-4964: Use enable / disable import parameter only to create the product
+- Enhance REST API to return all products when calling /products without a product SKU.
 
 ## Bug fixes
 
