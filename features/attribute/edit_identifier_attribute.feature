@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit an identifier attribute
   In order to specify options for the identifier
   As a product manager
@@ -12,7 +13,6 @@ Feature: Edit an identifier attribute
     Then I should see the Max characters and Validation rule fields
     And the fields Unique, Scope and Usable as grid filter should be disabled
 
-  @javascript
   Scenario: Fail to create a second identifier attribute
     Given I am on the attributes page
     When I create an "Identifier" attribute
@@ -24,7 +24,6 @@ Feature: Edit an identifier attribute
     And I visit the "Parameters" tab
     Then I should see validation error "An identifier attribute already exists."
 
-  @javascript
   Scenario: Successfully edit an identifier attribute
     Given I am on the "SKU" attribute page
     When I fill in the following information:
@@ -51,8 +50,23 @@ Feature: Edit an identifier attribute
       | title   | Are you sure you want to leave this page?                      |
       | content | You will lose changes to the attribute if you leave this page. |
 
-  @javascript @skip
+  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "SKU" attribute page
     And I change the "Validation rule" to "Regular expression"
     Then I should see "There are unsaved changes."
+
+  Scenario: Successfully retrieve the last visited tab
+    Given I am on the "SKU" attribute page
+    And I visit the "History" tab
+    And I am on the products page
+    Then I am on the "SKU" attribute page
+    And I should see "version"
+    And I should see "author"
+
+  Scenario: Successfully retrieve the last visited tab after a save
+    Given I am on the "SKU" attribute page
+    And I visit the "History" tab
+    Then I save the "attribute"
+    And I should see "version"
+    And I should see "author"

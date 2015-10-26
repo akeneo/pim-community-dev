@@ -29,7 +29,7 @@ define(
         }
 
         function restoreFormState() {
-            if (sessionStorage.redirectTab) {
+            if (sessionStorage['redirectTab']) {
                 var $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']');
                 if ($redirectTab.length && !$('.loading-mask').is(':visible')) {
                     $redirectTab.tab('show');
@@ -40,7 +40,7 @@ define(
                 }
             } else if (sessionStorage[formId + '_activeTab']) {
                 var $activeTab = $('a[href=' + sessionStorage[formId + '_activeTab'] + ']');
-                if ($activeTab.length && !$('.loading-mask').is(':visible')) {
+                if ($activeTab.length) {
                     $activeTab.tab('show');
                     if (cb) {
                         cb($activeTab);
