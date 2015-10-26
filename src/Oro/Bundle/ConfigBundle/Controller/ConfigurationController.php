@@ -13,11 +13,11 @@ class ConfigurationController extends Controller
      * @Template()
      * @AclAncestor("oro_config_system")
      */
-    public function systemAction($activeGroup = null, $activeSubGroup = null)
+    public function systemAction()
     {
         $provider = $this->get('oro_config.provider.system_configuration.form_provider');
 
-        list($activeGroup, $activeSubGroup) = $provider->chooseActiveGroups($activeGroup, $activeSubGroup);
+        list($activeGroup, $activeSubGroup) = $provider->chooseActiveGroups(null, null);
 
         $tree = $provider->getTree();
         $form = false;

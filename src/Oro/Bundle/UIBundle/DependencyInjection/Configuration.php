@@ -22,27 +22,6 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('oro_ui');
 
-        $rootNode->children()
-            ->scalarNode('wrap_class')
-                ->cannotBeEmpty()
-                ->defaultValue('block-wrap')
-                ->end()
-            ->arrayNode('placeholders_items')
-                ->useAttributeAsKey('name')
-                ->prototype('array')
-                ->children()
-                    ->arrayNode('items')
-                    ->prototype('array')
-                        ->children()
-                            ->booleanNode('remove')->defaultValue(false)->end()
-                            ->scalarNode('placeholder')->end()
-                            ->scalarNode('order')->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
-            ->end();
-
         SettingsBuilder::append(
             $rootNode,
             array(
