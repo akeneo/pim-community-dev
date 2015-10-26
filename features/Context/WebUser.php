@@ -1839,7 +1839,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish($code)
     {
-        $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED)$/.test($("#status").text().trim())';
+        $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED|TERMINÉ|ARRÊTÉ|EN ÉCHEC)$/.test($("#status").text().trim())';
 
         try {
             $this->wait(120000, $condition);

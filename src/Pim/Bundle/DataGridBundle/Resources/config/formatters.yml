@@ -3,6 +3,7 @@ parameters:
     pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\AttributeOptionsProperty
     pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\AttributeOptionProperty
     pim_datagrid.extension.formatter.property.product_value.price_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\PriceProperty
+    pim_datagrid.extension.formatter.property.product_value.number_property.class:            Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\NumberProperty
     pim_datagrid.extension.formatter.property.product_value.image_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\ImageProperty
     pim_datagrid.extension.formatter.property.product_value.file_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\FileProperty
     pim_datagrid.extension.formatter.property.product_value.metric_property.class:            Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\MetricProperty
@@ -39,8 +40,17 @@ services:
         class: %pim_datagrid.extension.formatter.property.product_value.price_property.class%
         arguments:
             - '@translator'
+            - '@pim_localization.formatter.number'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_price }
+
+    pim_datagrid.extension.formatter.property.product_value.number_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.number_property.class%
+        arguments:
+            - '@translator'
+            - '@pim_localization.formatter.number'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_number }
 
     pim_datagrid.extension.formatter.property.product_value.image_property:
         class: %pim_datagrid.extension.formatter.property.product_value.image_property.class%
@@ -60,6 +70,7 @@ services:
         class: %pim_datagrid.extension.formatter.property.product_value.metric_property.class%
         arguments:
             - '@twig'
+            - '@pim_localization.formatter.number'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_metric }
 

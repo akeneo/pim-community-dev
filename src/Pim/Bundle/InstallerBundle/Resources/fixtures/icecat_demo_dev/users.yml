@@ -74,3 +74,18 @@ users:
         groups:
             - IT support
         enable: true
+    julien:
+        username: julien
+        password: julien
+        email: 'julien@example.com'
+        firstname: Julien
+        lastname: Février
+        catalog_locale: fr_FR
+        ui_locale: fr_FR
+        catalog_scope: mobile
+        default_tree: master
+        roles:
+            - ROLE_USER
+        groups:
+            - Redactor
+        enable: true

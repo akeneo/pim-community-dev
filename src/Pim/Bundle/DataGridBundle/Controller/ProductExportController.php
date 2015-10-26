@@ -133,12 +133,14 @@ class ProductExportController
             throw new \LogicException('getContextParameters is only implemented for ProductDatasource');
         }
 
+        $user = $this->getUser();
         $dataSourceParams = $dataSource->getParameters();
         $contextParams    = [];
         if (is_array($dataSourceParams)) {
             $contextParams = [
-                'locale' => $dataSourceParams['dataLocale'],
-                'scope'  => $dataSourceParams['scopeCode']
+                'locale'    => $dataSourceParams['dataLocale'],
+                'scope'     => $dataSourceParams['scopeCode'],
+                'ui_locale' => null !== $user ? $user->getUiLocale()->getCode() : $this->request->getDefaultLocale()
             ];
         }
 

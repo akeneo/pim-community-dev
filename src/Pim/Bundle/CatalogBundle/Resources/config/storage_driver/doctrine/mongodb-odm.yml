@@ -90,6 +90,7 @@ services:
         class: %pim_catalog.doctrine.naming_utility.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.repository.locale'
             - %pim_catalog.entity.channel.class%
             - %pim_catalog.entity.locale.class%
             - %pim_catalog.entity.attribute.class%

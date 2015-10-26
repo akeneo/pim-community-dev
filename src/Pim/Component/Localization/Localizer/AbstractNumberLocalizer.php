@@ -26,6 +26,24 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function convertDefaultToLocalized($number, array $options = [])
+    {
+        if (null === $number || ''  === $number) {
+            return $number;
+        }
+
+        $this->checkOptions($options);
+        $matchesNumber = $this->getMatchesNumber($number);
+        if (!isset($matchesNumber['decimal'])) {
+            return $number;
+        }
+
+        return str_replace(static::DEFAULT_DECIMAL_SEPARATOR, $options['decimal_separator'], $number);
+    }
+
+    /**
      * @param mixed  $number
      * @param array  $options
      * @param string $attributeCode
@@ -51,11 +69,16 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Convert a number to the default format
+     *
+     * @param mixed $number
+     * @param array $options
+     *
+     * @return mixed
      */
-    protected function convertNumber($number, array $options = [])
+    protected function convertNumberToDefault($number, array $options = [])
     {
-        if (null === $number || ''  === $number) {
+        if (null === $number || '' === $number) {
             return $number;
         }
 

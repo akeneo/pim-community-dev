@@ -16,9 +16,9 @@ Feature: Export families
     And I should see "Written 4"
     And exported file of "footwear_family_export" should contain:
       """
-      code;attributes;label-en_US;attribute_as_label;requirements-mobile;requirements-tablet
-      boots;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;Boots;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
-      heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;Heels;name;sku,name,price,size,color,heel_color,sole_color;sku,name,description,price,side_view,size,color,heel_color,sole_color
-      sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;Sneakers;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
-      sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;Sandals;name;sku,name,price,size,color;sku,name,description,price,rating,side_view,size,color
+      code;label-en_US;attributes;attribute_as_label;requirements-mobile;requirements-tablet
+      boots;Boots;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
+      heels;Heels;sku,name,manufacturer,description,price,side_view,top_view,size,color,heel_color,sole_color,sole_fabric;name;sku,name,price,size,color,heel_color,sole_color;sku,name,description,price,side_view,size,color,heel_color,sole_color
+      sneakers;Sneakers;sku,name,manufacturer,weather_conditions,description,price,rating,side_view,top_view,size,color,lace_color;name;sku,name,price,size,color;sku,name,description,weather_conditions,price,rating,side_view,size,color
+      sandals;Sandals;sku,name,manufacturer,description,price,rating,side_view,size,color;name;sku,name,price,size,color;sku,name,description,price,rating,side_view,size,color
       """

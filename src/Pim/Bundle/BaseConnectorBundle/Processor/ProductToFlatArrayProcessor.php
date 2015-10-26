@@ -8,6 +8,7 @@ use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -40,19 +41,28 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var array */
     protected $mediaAttributeTypes;
 
+    /** @var string */
+    protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
+
+    /** @var array */
+    protected $decimalSeparators;
+
     /**
      * @param Serializer     $serializer
      * @param ChannelManager $channelManager
      * @param string[]       $mediaAttributeTypes
+     * @param array          $decimalSeparators
      */
     public function __construct(
         Serializer $serializer,
         ChannelManager $channelManager,
-        array $mediaAttributeTypes
+        array $mediaAttributeTypes,
+        array $decimalSeparators
     ) {
         $this->serializer          = $serializer;
         $this->channelManager      = $channelManager;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
+        $this->decimalSeparators   = $decimalSeparators;
     }
 
     /**
@@ -91,6 +101,16 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
                     'label'    => 'pim_base_connector.export.channel.label',
                     'help'     => 'pim_base_connector.export.channel.help'
                 ]
+            ],
+            'decimalSeparator' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => $this->decimalSeparators,
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_base_connector.export.decimalSeparator.label',
+                    'help'     => 'pim_base_connector.export.decimalSeparator.help'
+                ]
             ]
         ];
     }
@@ -120,6 +140,26 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
+     * Set the separator for decimal
+     *
+     * @param string $decimalSeparator
+     */
+    public function setDecimalSeparator($decimalSeparator)
+    {
+        $this->decimalSeparator = $decimalSeparator;
+    }
+
+    /**
+     * Get the delimiter for decimal
+     *
+     * @return string
+     */
+    public function getDecimalSeparator()
+    {
+        return $this->decimalSeparator;
+    }
+
+    /**
      * Get normalizer context
      *
      * @return array $normalizerContext
@@ -128,8 +168,9 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     {
         if (null === $this->normalizerContext) {
             $this->normalizerContext = [
-                'scopeCode'   => $this->channel,
-                'localeCodes' => $this->getLocaleCodes($this->channel)
+                'scopeCode'         => $this->channel,
+                'localeCodes'       => $this->getLocaleCodes($this->channel),
+                'decimal_separator' => $this->decimalSeparator,
             ];
         }
 

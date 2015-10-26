@@ -25,6 +25,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
@@ -1537,6 +1538,16 @@ class FixturesContext extends RawMinkContext
     public function getUser($username)
     {
         return $this->getEntityOrException('User', ['username' => $username]);
+    }
+
+    /**
+     * @param string $localeCode
+     *
+     * @return LocaleInterface
+     */
+    public function getLocaleFromCode($localeCode)
+    {
+        return $this->getEntityOrException('Locale', ['code' => $localeCode]);
     }
 
     /**

@@ -29,7 +29,7 @@ class MetricLocalizer extends AbstractNumberLocalizer
     public function convertLocalizedToDefault($metric, array $options = [])
     {
         if (isset($metric['data'])) {
-            $metric['data'] = $this->convertNumber($metric['data'], $options);
+            $metric['data'] = $this->convertNumberToDefault($metric['data'], $options);
         }
 
         return $metric;

@@ -10,8 +10,8 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
@@ -49,8 +49,8 @@ class AttributeController extends AbstractDoctrineController
     /** @var AttributeOptionManager */
     protected $optionManager;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
     /** @var VersionManager */
     protected $versionManager;
@@ -76,25 +76,25 @@ class AttributeController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param TokenStorageInterface    $tokenStorage
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param HandlerInterface         $attributeHandler
-     * @param Form                     $attributeForm
-     * @param AttributeManager         $attributeManager
-     * @param AttributeOptionManager   $optionManager
-     * @param LocaleManager            $localeManager
-     * @param VersionManager           $versionManager
-     * @param BulkSaverInterface       $attributeSaver
-     * @param RemoverInterface         $attributeRemover
-     * @param SaverInterface           $optionSaver
-     * @param array                    $measuresConfig
+     * @param Request                   $request
+     * @param EngineInterface           $templating
+     * @param RouterInterface           $router
+     * @param TokenStorageInterface     $tokenStorage
+     * @param FormFactoryInterface      $formFactory
+     * @param ValidatorInterface        $validator
+     * @param TranslatorInterface       $translator
+     * @param EventDispatcherInterface  $eventDispatcher
+     * @param ManagerRegistry           $doctrine
+     * @param HandlerInterface          $attributeHandler
+     * @param Form                      $attributeForm
+     * @param AttributeManager          $attributeManager
+     * @param AttributeOptionManager    $optionManager
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param VersionManager            $versionManager
+     * @param BulkSaverInterface        $attributeSaver
+     * @param RemoverInterface          $attributeRemover
+     * @param SaverInterface            $optionSaver
+     * @param array                     $measuresConfig
      */
     public function __construct(
         Request $request,
@@ -110,7 +110,7 @@ class AttributeController extends AbstractDoctrineController
         Form $attributeForm,
         AttributeManager $attributeManager,
         AttributeOptionManager $optionManager,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         VersionManager $versionManager,
         BulkSaverInterface $attributeSaver,
         RemoverInterface $attributeRemover,
@@ -133,7 +133,7 @@ class AttributeController extends AbstractDoctrineController
         $this->attributeForm    = $attributeForm;
         $this->attributeManager = $attributeManager;
         $this->optionManager    = $optionManager;
-        $this->localeManager    = $localeManager;
+        $this->localeRepository = $localeRepository;
         $this->versionManager   = $versionManager;
         $this->measuresConfig   = $measuresConfig;
         $this->attributeSaver   = $attributeSaver;
@@ -183,8 +183,8 @@ class AttributeController extends AbstractDoctrineController
 
         return [
             'form'            => $this->attributeForm->createView(),
-            'locales'         => $this->localeManager->getActiveCodes(),
-            'disabledLocales' => $this->localeManager->getDisabledLocales(),
+            'locales'         => $this->localeRepository->getActivatedLocaleCodes(),
+            'disabledLocales' => $this->localeRepository->findBy(['activated' => false]),
             'measures'        => $this->measuresConfig,
             'attributeType'   => $attributeType
         ];
@@ -212,8 +212,8 @@ class AttributeController extends AbstractDoctrineController
 
         return [
             'form'            => $this->attributeForm->createView(),
-            'locales'         => $this->localeManager->getActiveCodes(),
-            'disabledLocales' => $this->localeManager->getDisabledLocales(),
+            'locales'         => $this->localeRepository->getActivatedLocaleCodes(),
+            'disabledLocales' => $this->localeRepository->findBy(['activated' => false]),
             'measures'        => $this->measuresConfig,
             'created'         => $this->versionManager->getOldestLogEntry($attribute),
             'updated'         => $this->versionManager->getNewestLogEntry($attribute),

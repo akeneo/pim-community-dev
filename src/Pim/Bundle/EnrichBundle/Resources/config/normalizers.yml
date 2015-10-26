@@ -23,7 +23,7 @@ services:
     pim_enrich.normalizer.attribute_option:
         class: %pim_enrich.normalizer.attribute_option.class%
         arguments:
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'
             - '@pim_catalog.manager.attribute_option'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
@@ -39,7 +39,7 @@ services:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.version'
             - '@pim_versioning.manager.version'
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'
             - '@pim_enrich.provider.structure_version.product'
             - '@pim_enrich.provider.form.chained'
         tags:

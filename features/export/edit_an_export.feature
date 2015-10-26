@@ -19,12 +19,13 @@ Feature: Edit an export
   @javascript @unstable
   Scenario: Successfully update export job configuration
     Given I am on the "footwear_product_export" export job edit page
-    Then I should see the Channel, Delimiter, Enclosure, With header and File path fields
+    Then I should see the Channel, Delimiter, Enclosure, With header, File path and Decimal separator fields
     When I fill in the following information:
-      | Channel   | Tablet   |
-      | Delimiter | \|       |
-      | Enclosure | '        |
-      | File path | file.csv |
+      | Channel           | Tablet   |
+      | Delimiter         | \|       |
+      | Enclosure         | '        |
+      | File path         | file.csv |
+      | Decimal separator | ,        |
     And I uncheck the "With header" switch
     And I press the "Save" button
     Then I should see "Channel tablet"
@@ -32,6 +33,7 @@ Feature: Edit an export
     And I should see "Delimiter |"
     And I should see "Enclosure '"
     And I should see "With header No"
+    And I should see "Decimal Separator ,"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "footwear_product_export" export job edit page
