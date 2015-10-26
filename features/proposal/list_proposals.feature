@@ -10,11 +10,13 @@ Feature: List proposals
       | product category | user group | access |
       | 2014_collection  | Redactor   | edit   |
       | 2015_collection  | Redactor   | edit   |
+      | 2014_collection  | IT Support | view   |
       | 2015_collection  | Manager    | edit   |
     And the following products:
       | sku     | family   | categories      |
-      | tshirt  | tshirts  | 2014_collection |
-      | sweater | sweaters | 2014_collection |
+      | tshirt  | tshirts  | 2015_collection |
+      | sweater | sweaters | 2015_collection |
+      | hoodie  | jackets  | 2014_collection |
       | jacket  | jackets  | 2015_collection |
     And Mary proposed the following change to "tshirt":
       | field | value          |
@@ -25,6 +27,9 @@ Feature: List proposals
     And Julia proposed the following change to "jacket":
       | field | value         |
       | Name  | Autumn jacket |
+    And Mary proposed the following change to "hoodie":
+      | field | value              |
+      | Name  | Hoodie for hackers |
 
   Scenario: Successfully sort and filter proposals in the grid
     Given I am logged in as "admin"
@@ -33,9 +38,11 @@ Feature: List proposals
     And the rows should be sorted descending by proposed at
     And I should be able to sort the rows by author and proposed at
     And I should be able to use the following filters:
-      | filter | value       | result          |
-      | Author | Julia       | jacket          |
-      | Author | Sandra,Mary | sweater, tshirt |
+      | filter        | value         | result          |
+      | Author        | Julia         | jacket          |
+      | Author        | Sandra,Mary   | sweater, tshirt |
+      | Product label | tshirt        | tshirt          |
+      | Product label | tshirt,jacket | tshirt, jacket  |
 
   Scenario: Successfully approve or reject a proposal
     Given I am logged in as "admin"
@@ -54,5 +61,5 @@ Feature: List proposals
   Scenario: Successfully display only proposals that the current user can approve
     Given I am logged in as "Julia"
     And I am on the proposals page
-    Then the grid should contain 2 elements
-    And I should see entities tshirt and sweater
+    Then the grid should contain 1 elements
+    And I should see entities hoodie

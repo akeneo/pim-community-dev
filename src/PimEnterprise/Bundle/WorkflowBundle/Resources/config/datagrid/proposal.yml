@@ -87,6 +87,15 @@ datagrid:
                     ftype:     date
                     data_name: createdAt
                     label:     pimee_workflow.product_draft.created
+                product:
+                    type:        product_draft_choice
+                    ftype:       choice
+                    data_name:   product.id
+                    label:       pimee_workflow.product_draft.product.label
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: '@pimee_datagrid.datagrid.configuration.proposal.grid_helper->getProductChoices'
         sorters:
             columns:
                 author:

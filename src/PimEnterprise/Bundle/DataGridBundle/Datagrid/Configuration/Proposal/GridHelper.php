@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -29,16 +30,22 @@ class GridHelper
     /** @var AuthorizationCheckerInterface */
     protected $authorizationChecker;
 
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /**
      * @param ProductDraftRepositoryInterface $draftRepository
      * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param TokenStorageInterface           $tokenStorage
      */
     public function __construct(
         ProductDraftRepositoryInterface $draftRepository,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        TokenStorageInterface $tokenStorage
     ) {
         $this->draftRepository      = $draftRepository;
         $this->authorizationChecker = $authorizationChecker;
+        $this->tokenStorage         = $tokenStorage;
     }
 
     /**
@@ -66,6 +73,26 @@ class GridHelper
     {
         $authors = $this->draftRepository->getDistinctAuthors();
         $choices = array_combine($authors, $authors);
+
+        return $choices;
+    }
+
+    /**
+     * Returns available proposal product choices
+     *
+     * @return array
+     */
+    public function getProductChoices()
+    {
+        $user = $this->tokenStorage->getToken()->getUser();
+        $proposals = $this->draftRepository->findApprovableByUser($user);
+        $choices = [];
+
+        foreach ($proposals as $proposal) {
+            $product = $proposal->getProduct();
+            $choices[$product->getId()] = $product->getLabel();
+        }
+        asort($choices);
 
         return $choices;
     }
