@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
+use Pim\Component\Localization\Localizer\DateLocalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -47,22 +48,31 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /** @var array */
     protected $decimalSeparators;
 
+    /** @var string */
+    protected $dateFormat = DateLocalizer::DEFAULT_DATE_FORMAT;
+
+    /** @var array */
+    protected $dateFormats;
+
     /**
      * @param Serializer     $serializer
      * @param ChannelManager $channelManager
      * @param string[]       $mediaAttributeTypes
      * @param array          $decimalSeparators
+     * @param array          $dateFormats
      */
     public function __construct(
         Serializer $serializer,
         ChannelManager $channelManager,
         array $mediaAttributeTypes,
-        array $decimalSeparators
+        array $decimalSeparators,
+        array $dateFormats
     ) {
         $this->serializer          = $serializer;
         $this->channelManager      = $channelManager;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->decimalSeparators   = $decimalSeparators;
+        $this->dateFormats         = $dateFormats;
     }
 
     /**
@@ -111,7 +121,17 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
                     'label'    => 'pim_base_connector.export.decimalSeparator.label',
                     'help'     => 'pim_base_connector.export.decimalSeparator.help'
                 ]
-            ]
+            ],
+            'dateFormat' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => $this->dateFormats,
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_base_connector.export.dateFormat.label',
+                    'help'     => 'pim_base_connector.export.dateFormat.help',
+                ]
+            ],
         ];
     }
 
@@ -160,6 +180,26 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
+     * Set the date format
+     *
+     * @param string $dateFormat
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+    /**
+     * Get the date format
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
      * Get normalizer context
      *
      * @return array $normalizerContext
@@ -171,6 +211,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
                 'scopeCode'         => $this->channel,
                 'localeCodes'       => $this->getLocaleCodes($this->channel),
                 'decimal_separator' => $this->decimalSeparator,
+                'date_format'       => $this->dateFormat,
             ];
         }
 

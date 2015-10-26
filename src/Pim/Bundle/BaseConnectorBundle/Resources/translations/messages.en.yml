@@ -109,6 +109,9 @@ pim_base_connector:
         decimalSeparator:
             label: Decimal separator
             help: Determine the decimal separator
+        dateFormat:
+            label: Date format
+            help: Determine the format of date fields
     import:
         enabled:
             label: Enable the product

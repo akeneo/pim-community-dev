@@ -28,5 +28,6 @@ services:
         arguments:
             - '@pim_serializer.normalizer.flat.product_value'
             - '@pim_localization.localizer.number'
+            - '@pim_localization.localizer.date'
         tags:
             - { name: pim_serializer.normalizer, priority: 95 }
