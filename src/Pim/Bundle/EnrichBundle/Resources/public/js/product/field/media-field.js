@@ -17,9 +17,10 @@ define([
         'pim/dialog',
         'oro/mediator',
         'pim/media-url-generator',
+        'oro/messenger',
         'jquery.slimbox'
     ],
-    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, MediaUrlGenerator) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator, MediaUrlGenerator, messenger) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             events: {
@@ -101,9 +102,7 @@ define([
                         xhr.responseJSON.message :
                         _.__('pim_enrich.entity.product.error.upload');
 
-                    //TODO PIM-3232 fix that
-                    // navigation.addFlashMessage('error', message);
-                    // navigation.afterRequest();
+                    messenger.notificationFlashMessage('error', message);
                 })
                 .always(function () {
                     this.$('> .akeneo-media-uploader-field .progress').css({opacity: 0});

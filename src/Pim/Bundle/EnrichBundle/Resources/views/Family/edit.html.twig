@@ -5,7 +5,6 @@
 </script>
 
 {% block content %}
-
     {% if resource_granted('pim_enrich_family_edit_attributes') %}
         {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
             'form': attributesForm,
@@ -73,8 +72,12 @@
                         $input.prop('checked', !checked).trigger('change');
                     });
                     {% endif %}
+
                 });
+
             }
         );
+
+        window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
     </script>
 {% endblock %}

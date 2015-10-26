@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'backbone', 'oro/translator', 'oro/mediator', 'oro/messenger', 'pim/dialog',
+    ['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/messenger', 'pim/dialog',
      'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask'],
-    function ($, Backbone, __, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
+    function ($, _, Backbone, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
         'use strict';
         var initialized = false;
         return function () {
@@ -44,7 +44,7 @@ define(
                 var $localizableIcon = $('<i>', {
                     'class': 'icon-globe',
                     'attr': {
-                        'data-original-title': __('Localized value'),
+                        'data-original-title': _.__('Localized value'),
                         'data-toggle': 'tooltip',
                         'data-placement': 'right'
                     }
@@ -66,6 +66,19 @@ define(
                 $target.find('a[data-toggle="tab"]').on('show.bs.tab', function () {
                     loadTab(this);
                 });
+
+                //Flash messages:
+                if (window.flashMessages) {
+                    _.each(window.flashMessages, function(messages, type) {
+                        _.each(messages, function (message) {
+                            messenger.notificationFlashMessage(
+                                type,
+                                message
+                            );
+                        });
+                    });
+                }
+                window.flashMessages = [];
 
                 setFullHeight($target);
             };
