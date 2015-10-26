@@ -226,7 +226,7 @@ class WebUser extends RawMinkContext
     public function iVisitTheTab($tab)
     {
         $tabLocator = sprintf('$("a:contains(\'%s\')").length > 0;', $tab);
-        $this->wait(30000, $tabLocator);
+        $this->wait($tabLocator);
         $this->getCurrentPage()->visitTab($tab);
         $this->wait();
     }
@@ -1154,7 +1154,7 @@ class WebUser extends RawMinkContext
 
         $addButton->click();
 
-        $this->getMainContext()->wait(10000);
+        $this->wait();
     }
 
     /**
@@ -1416,7 +1416,7 @@ class WebUser extends RawMinkContext
         }
 
         $this->getCurrentPage()->attachFileToField($field, $file);
-        $this->getMainContext()->wait();
+        $this->wait();
     }
 
     /**
@@ -1426,14 +1426,14 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheFile($field)
     {
-        $this->getMainContext()->wait();
+        $this->wait();
         $script = sprintf("$('label:contains(\"%s\")').parents('.form-field').find('.clear-field').click();", $field);
         if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
 
         $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');
-        $this->getMainContext()->wait();
+        $this->wait();
     }
 
     /**
@@ -1490,7 +1490,7 @@ class WebUser extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $this->getCurrentPage()->addOption($data['Code']);
-            $this->wait(3000);
+            $this->wait();
         }
     }
 
@@ -1503,7 +1503,7 @@ class WebUser extends RawMinkContext
     public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
         $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
-        $this->wait(3000);
+        $this->wait();
     }
 
     /**
@@ -1515,7 +1515,7 @@ class WebUser extends RawMinkContext
     public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
         $this->getCurrentPage()->editOptionAndCancel($oldOptionName, $newOptionName);
-        $this->wait(3000);
+        $this->wait();
     }
 
     /**
@@ -1842,7 +1842,7 @@ class WebUser extends RawMinkContext
         $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED|TERMINÉ|ARRÊTÉ|EN ÉCHEC)$/.test($("#status").text().trim())';
 
         try {
-            $this->wait(120000, $condition);
+            $this->wait($condition);
         } catch (BehaviorException $e) {
             $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
             $jobExecution = $jobInstance->getJobExecutions()->first();
@@ -1881,12 +1881,12 @@ class WebUser extends RawMinkContext
                     $jobExecution->getId()
                 )
             );
-            $this->wait(2000);
+            $this->wait();
             $executionLog = $this->getSession()->evaluateScript("return window.executionLog;");
             $this->getMainContext()->addErrorMessage(sprintf('Job execution: %s', print_r($executionLog, true)));
 
             // Call the wait method again to trigger timeout failure
-            $this->wait(100, $condition);
+            $this->wait($condition);
         }
     }
 
@@ -1935,7 +1935,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheWidgetsToLoad()
     {
-        $this->wait(2000, false);
+        $this->wait(false);
         $this->wait();
     }
 
@@ -1944,7 +1944,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheOptionsToLoad()
     {
-        $this->wait(2000, false);
+        $this->wait(false);
         $this->wait();
     }
 
@@ -2033,7 +2033,7 @@ class WebUser extends RawMinkContext
         $maxTime = 10000;
 
         while ($maxTime > 0) {
-            $this->wait(2000, false);
+            $this->wait(false);
             $maxTime -= 1000;
             if ($this->getPage('Product edit')->getImagePreview()) {
                 return;
@@ -2243,7 +2243,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitSeconds($seconds)
     {
-        $this->wait($seconds * 1000, false);
+        $this->wait(false);
     }
 
     /**
@@ -2278,7 +2278,7 @@ class WebUser extends RawMinkContext
     public function iMoveOnToTheNextStep()
     {
         $this->scrollContainerTo(900);
-        $this->wait(10000, '$(".btn:contains(\'Next\')").length > 0');
+        $this->wait('$(".btn:contains(\'Next\')").length > 0');
         $this->getCurrentPage()->next();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
@@ -2856,12 +2856,11 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param int    $time
      * @param string $condition
      */
-    protected function wait($time = 20000, $condition = null)
+    protected function wait($condition = null)
     {
-        $this->getMainContext()->wait($time, $condition);
+        $this->getMainContext()->wait($condition);
     }
 
     /**

@@ -261,7 +261,7 @@ class Edit extends Form
      */
     public function fillField($label, $value, Element $element = null)
     {
-        $this->getSession()->wait(5000);
+        $this->getSession()->wait($this->getTimeout());
         $isLabel = false;
 
         try {
@@ -1469,7 +1469,7 @@ class Edit extends Form
         }, 5);
 
         $startCopyBtn->click();
-        $this->getSession()->wait(500);
+        $this->getSession()->wait($this->getTimeout());
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Context\Page\Base;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -391,5 +392,14 @@ class Base extends Page
         }
 
         return true;
+    }
+
+    /**
+     * @return int timeout in millisecond
+     */
+    protected function getTimeout()
+    {
+        // no way to retrieve the timeout from behat.yml at the moment
+        return FeatureContext::DEFAULT_TIMEOUT;
     }
 }
