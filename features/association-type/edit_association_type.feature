@@ -32,3 +32,18 @@ Feature: Edit an association type
     When I fill in the following information:
       | English (United States) | My pack |
     Then I should see "There are unsaved changes."
+
+  Scenario: Successfully retrieve the last visited tab
+    Given I am on the "PACK" association type page
+    And I visit the "History" tab
+    And I am on the products page
+    Then I am on the "PACK" association type page
+    And I should see "version"
+    And I should see "author"
+
+  Scenario: Successfully retrieve the last visited tab after a save
+    Given I am on the "PACK" association type page
+    And I visit the "History" tab
+    And I save the "association type"
+    And I should see "version"
+    And I should see "author"
