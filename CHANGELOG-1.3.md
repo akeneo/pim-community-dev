@@ -1,3 +1,14 @@
+# 1.3.28 (2015-10-22)
+
+## Technical improvements
+- PIM-5028: Fix log levels configuration for prod and dev environments
+- PIM-5037: Do not cascade detach product associated entities
+
+# 1.3.27 (2015-10-02)
+
+## Bug fixes
+PIM-4920: add translation keys
+
 # 1.3.26 (2015-09-16)
 
 # 1.3.25 (2015-09-14)
