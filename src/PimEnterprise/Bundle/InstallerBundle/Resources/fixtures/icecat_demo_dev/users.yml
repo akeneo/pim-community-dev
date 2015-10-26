@@ -10,6 +10,8 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
+        proposals_to_review_notification: true
+        proposals_state_notifications: true
         roles:
             - ROLE_ADMINISTRATOR
         groups:
@@ -26,6 +28,8 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
+        proposals_to_review_notification: true
+        proposals_state_notifications: true
         roles:
             - ROLE_CATALOG_MANAGER
         groups:
@@ -42,6 +46,8 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
+        proposals_to_review_notification: true
+        proposals_state_notifications: true
         roles:
             - ROLE_USER
         groups:
@@ -58,6 +64,8 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
+        proposals_to_review_notification: true
+        proposals_state_notifications: true
         roles:
             - ROLE_USER
         groups:
@@ -74,6 +82,8 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
+        proposals_to_review_notification: true
+        proposals_state_notifications: true
         roles:
             - ROLE_ADMINISTRATOR
         groups:
@@ -90,6 +100,8 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         default_asset_tree: asset_main_catalog
+        proposals_to_review_notification: true
+        proposals_state_notifications: true
         roles:
             - ROLE_ASSET_MANAGER
         groups:
@@ -106,6 +118,8 @@ users:
         catalog_scope: mobile
         default_tree: master
         default_asset_tree: asset_main_catalog
+        proposals_to_review_notification: true
+        proposals_state_notifications: true
         roles:
             - ROLE_USER
         groups:

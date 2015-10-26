@@ -28,6 +28,12 @@ class User extends BaseUser implements UserInterface
      /** @var CategoryInterface */
     protected $defaultAssetTree;
 
+    /** @var bool Be notified when the user receives a proposal to review */
+    protected $proposalsToReviewNotification;
+
+    /** @var bool Be notified when the user's proposal has been accepted or rejected */
+    protected $proposalsStateNotification;
+
     /**
      * {@inheritdoc}
      */
@@ -60,6 +66,42 @@ class User extends BaseUser implements UserInterface
     public function setDefaultAssetTree(CategoryInterface $defaultAssetTree)
     {
         $this->defaultAssetTree = $defaultAssetTree;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasProposalsToReviewNotification()
+    {
+        return $this->proposalsToReviewNotification;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProposalsToReviewNotification($proposalsToReviewNotification)
+    {
+        $this->proposalsToReviewNotification = $proposalsToReviewNotification;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasProposalsStateNotification()
+    {
+        return $this->proposalsStateNotification;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProposalsStateNotification($proposalsStateNotification)
+    {
+        $this->proposalsStateNotification = $proposalsStateNotification;
 
         return $this;
     }

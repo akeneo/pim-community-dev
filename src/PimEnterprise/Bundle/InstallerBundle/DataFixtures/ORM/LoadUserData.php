@@ -31,6 +31,10 @@ class LoadUserData extends BaseLoadUserData
         $tree = $this->getAssetTree($data['default_asset_tree']);
         $user->setDefaultAssetTree($tree);
 
+        $user->setProposalsToReviewNotification($data['proposals_to_review_notification']);
+
+        $user->setProposalsStateNotification($data['proposals_state_notifications']);
+
         return $user;
     }
 
