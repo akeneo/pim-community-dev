@@ -22,7 +22,7 @@ Feature: Datagrid views
     And I create the view:
       | label | Sneakers only |
     Then I should be on the products page
-    And I should see "Datagrid view successfully created"
+    And I should see a flash message "Datagrid view successfully created"
     And I should see "Views Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
@@ -39,7 +39,7 @@ Feature: Datagrid views
     And I create the view:
       | label | Some shoes |
     Then I should be on the products page
-    And I should see "Datagrid view successfully created"
+    And I should see a flash message "Datagrid view successfully created"
     And I should see "Views Some shoes"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
@@ -58,7 +58,7 @@ Feature: Datagrid views
     And I create the view:
       | label | Boots only |
     Then I should be on the products page
-    And I should see "Datagrid view successfully created"
+    And I should see a flash message "Datagrid view successfully created"
     And I should see "Views Boots only"
     And I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
