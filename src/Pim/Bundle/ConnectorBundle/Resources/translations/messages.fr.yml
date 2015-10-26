@@ -119,7 +119,6 @@ pim_connector:
       help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
     delimiter:
       label: Délimiteur
-      help: Caractère unique utilisé pour délimiter les valeurs
     enclosure:
       label: "Caractère d'encadrement"
       help: Caractère unique utilisé pour encadrer les champs
