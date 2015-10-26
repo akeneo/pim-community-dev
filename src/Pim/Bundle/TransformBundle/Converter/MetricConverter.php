@@ -42,6 +42,9 @@ class MetricConverter
             $data = $value->getData();
             $attribute = $value->getAttribute();
             if ($data instanceof MetricInterface && isset($channelUnits[$attribute->getCode()])) {
+                if (null === $data->getData()) {
+                    return;
+                }
                 $channelUnit = $channelUnits[$attribute->getCode()];
                 $this->converter->setFamily($data->getFamily());
                 $data->setData(

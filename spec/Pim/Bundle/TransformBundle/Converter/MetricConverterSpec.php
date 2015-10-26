@@ -63,4 +63,32 @@ class MetricConverterSpec extends ObjectBehavior
 
         $this->convert($product, $channel);
     }
+
+    function it_does_not_convert_null_metric_values_in_the_channel(
+        $converter,
+        ProductValueInterface $weightValue,
+        AttributeInterface $weight,
+        MetricInterface $weightMetric,
+        ProductInterface $product,
+        ChannelInterface $channel
+    ) {
+        $weightValue->getAttribute()->willReturn($weight);
+        $weightValue->getData()->willReturn($weightMetric);
+        $weight->getCode()->willReturn('weight');
+
+        $weightMetric->getFamily()->willReturn('Weight');
+        $weightMetric->getUnit()->willReturn(null);
+        $weightMetric->getData()->willReturn(null);
+
+        $product->getValues()->willReturn(array($weightValue));
+
+        $channel->getConversionUnits()->willReturn(array('weight' => 'GRAM'));
+
+        $converter->setFamily('Weight')->shouldNotBeCalled();
+        $converter->convert('KILOGRAM', 'GRAM', 1)->shouldNotBeCalled();
+        $weightMetric->setData(null)->shouldNotBeCalled();
+        $weightMetric->setUnit('GRAM')->shouldNotBeCalled();
+
+        $this->convert($product, $channel);
+    }
 }
