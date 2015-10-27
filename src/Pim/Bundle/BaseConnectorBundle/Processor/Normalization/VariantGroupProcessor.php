@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
+use Pim\Component\Localization\Localizer\DateLocalizer;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -42,10 +43,17 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
     /** @var array */
     protected $decimalSeparators;
 
+    /** @var string */
+    protected $dateFormat = DateLocalizer::DEFAULT_DATE_FORMAT;
+
+    /** @var array */
+    protected $dateFormats;
+
     /**
      * @param NormalizerInterface   $normalizer
      * @param DenormalizerInterface $denormalizer
      * @param array                 $decimalSeparators
+     * @param array                 $dateFormats
      * @param string                $uploadDirectory
      * @param string                $format
      */
@@ -53,12 +61,14 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
         array $decimalSeparators,
+        array $dateFormats,
         $uploadDirectory,
         $format
     ) {
         $this->normalizer        = $normalizer;
         $this->denormalizer      = $denormalizer;
         $this->decimalSeparators = $decimalSeparators;
+        $this->dateFormats       = $dateFormats;
         $this->uploadDirectory   = $uploadDirectory;
         $this->format            = $format;
     }
@@ -77,6 +87,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
                 'with_variant_group_values' => true,
                 'identifier'                => $item->getCode(),
                 'decimal_separator'         => $this->decimalSeparator,
+                'date_format'               => $this->dateFormat,
             ]
         );
 
@@ -98,7 +109,17 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
                     'label'    => 'pim_base_connector.export.decimalSeparator.label',
                     'help'     => 'pim_base_connector.export.decimalSeparator.help'
                 ]
-            ]
+            ],
+            'dateFormat' => [
+                'type'    => 'choice',
+                'options' => [
+                    'choices'  => $this->dateFormats,
+                    'required' => true,
+                    'select2'  => true,
+                    'label'    => 'pim_base_connector.export.dateFormat.label',
+                    'help'     => 'pim_base_connector.export.dateFormat.help'
+                ]
+            ],
         ];
     }
 
@@ -120,6 +141,26 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
     public function getDecimalSeparator()
     {
         return $this->decimalSeparator;
+    }
+
+    /**
+     * Set the date format for date fields
+     *
+     * @param string $dateFormat
+     */
+    public function setDateFormat($dateFormat)
+    {
+        $this->dateFormat = $dateFormat;
+    }
+
+    /**
+     * Get the date format for date fields
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
     }
 
     /**

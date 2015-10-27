@@ -172,6 +172,7 @@ services:
             - '@pim_serializer'
             - '@pim_serializer'
             - %pim_localization.decimal_separators%
+            - %pim_localization.date_formats%
             - %upload_dir%
             - 'csv'
 
