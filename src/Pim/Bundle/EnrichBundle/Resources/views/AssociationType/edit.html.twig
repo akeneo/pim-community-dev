@@ -44,3 +44,7 @@
         </div>
     {{ form_end(form) }}
 {% endblock %}
+
+<script type="text/javascript">
+    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>

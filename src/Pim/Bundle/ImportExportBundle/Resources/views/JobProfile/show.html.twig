@@ -11,3 +11,7 @@
     {% include 'PimImportExportBundle:JobProfile:_show_form.html.twig' %}
 
 {% endblock %}
+
+<script type="text/javascript">
+    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>
