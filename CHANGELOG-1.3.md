@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.29 (2015-10-27)
 
 ## Bug fixes
 - PIM-5062: Do not convert NULL metric value
