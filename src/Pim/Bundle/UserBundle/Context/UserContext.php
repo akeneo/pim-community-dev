@@ -229,6 +229,16 @@ class UserContext
     }
 
     /**
+     * Returns the UI user locale
+     *
+     * @return LocaleInterface|null
+     */
+    public function getUiLocale()
+    {
+        return $this->getUserOption('uiLocale');
+    }
+
+    /**
      * Returns the request locale
      *
      * @return LocaleInterface|null
@@ -250,7 +260,7 @@ class UserContext
     }
 
     /**
-     * Returns the user locale
+     * Returns the catalog user locale
      *
      * @return LocaleInterface|null
      */

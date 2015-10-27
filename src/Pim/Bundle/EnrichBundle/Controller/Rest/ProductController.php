@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,18 +68,22 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var LocalizedAttributeConverterInterface */
+    protected $localizedConverter;
+
     /**
-     * @param ProductRepositoryInterface   $productRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param PropertySetterInterface      $productUpdater
-     * @param SaverInterface               $productSaver
-     * @param NormalizerInterface          $normalizer
-     * @param ValidatorInterface           $validator
-     * @param UserContext                  $userContext
-     * @param ObjectFilterInterface        $objectFilter
-     * @param CollectionFilterInterface    $productEditDataFilter
-     * @param RemoverInterface             $productRemover
-     * @param ProductBuilderInterface      $productBuilder
+     * @param ProductRepositoryInterface           $productRepository
+     * @param AttributeRepositoryInterface         $attributeRepository
+     * @param PropertySetterInterface              $productUpdater
+     * @param SaverInterface                       $productSaver
+     * @param NormalizerInterface                  $normalizer
+     * @param ValidatorInterface                   $validator
+     * @param UserContext                          $userContext
+     * @param ObjectFilterInterface                $objectFilter
+     * @param CollectionFilterInterface            $productEditDataFilter
+     * @param RemoverInterface                     $productRemover
+     * @param ProductBuilderInterface              $productBuilder
+     * @param LocalizedAttributeConverterInterface $localizedConverter
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -91,7 +96,8 @@ class ProductController
         ObjectFilterInterface $objectFilter,
         CollectionFilterInterface $productEditDataFilter,
         RemoverInterface $productRemover,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        LocalizedAttributeConverterInterface $localizedConverter
     ) {
         $this->productRepository     = $productRepository;
         $this->attributeRepository   = $attributeRepository;
@@ -104,6 +110,7 @@ class ProductController
         $this->productEditDataFilter = $productEditDataFilter;
         $this->productRemover        = $productRemover;
         $this->productBuilder        = $productBuilder;
+        $this->localizedConverter    = $localizedConverter;
     }
 
     /**
@@ -144,7 +151,8 @@ class ProductController
                 [
                     'locales'     => $locales,
                     'channels'    => $channels,
-                    'filter_type' => 'pim.internal_api.product_value.view'
+                    'filter_type' => 'pim.internal_api.product_value.view',
+                    'locale'      => $this->userContext->getUiLocale()->getCode()
                 ]
             )
         );
@@ -183,9 +191,17 @@ class ProductController
         $violations = $this->validator->validate($product);
 
         if (0 === $violations->count()) {
+            $data['values'] = $this->localizedConverter->convert(
+                $data['values'],
+                ['locale' => $this->userContext->getUiLocale()->getCode()]
+            );
+            $this->updateProduct($product, $data);
+
             $this->productSaver->save($product);
 
-            return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
+            return new JsonResponse($this->normalizer->normalize($product, 'internal_api', [
+                'locale' => $this->userContext->getUiLocale()->getCode()
+            ]));
         } else {
             $errors = $this->transformViolations($violations, $product);
 
