@@ -13,7 +13,6 @@ define(
         'pim/error'
     ],
     function ($, _, BaseController, FormBuilder, ProductManager, UserContext, Dialog, PageTitle, Error) {
-
         return BaseController.extend({
             id: 'product-edit-form',
             renderRoute: function (route) {

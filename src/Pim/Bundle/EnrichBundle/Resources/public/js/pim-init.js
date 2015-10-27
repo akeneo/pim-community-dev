@@ -1,7 +1,7 @@
 define(
     ['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/messenger', 'pim/dialog',
-     'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask'],
-    function ($, _, Backbone, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
+     'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask', 'pim/router'],
+    function ($, _, Backbone, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask, router) {
         'use strict';
         var initialized = false;
         return function () {
@@ -135,9 +135,7 @@ define(
                             success: function () {
                                 loadingMask.hide().$el.remove();
                                 var targetUrl = $el.attr('data-redirect-url');
-                                // If already on the desired page, make sure it is refreshed
-                                Backbone.history.fragment = new Date().getTime();
-                                Backbone.history.navigate(targetUrl);
+                                router.redirect(targetUrl, {trigger: true});
                                 messenger.notificationFlashMessage('success', $el.attr('data-success-message'));
                             },
                             error: function (xhr) {
