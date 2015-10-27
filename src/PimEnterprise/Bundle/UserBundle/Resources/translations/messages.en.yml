@@ -1,5 +1,15 @@
 user:
     email:
         notifications: Email notifications
+    proposals:
+        notifications:
+            to_review: When new proposal to review
+            state: When proposal is accepted or rejected
+            yes: Yes
+            no: No
     asset_delay_reminder: Asset delay reminder (in days)
 Default asset tree: Default asset tree
+pimee_user:
+    user:
+        tab:
+            notifications.title: Notifications
