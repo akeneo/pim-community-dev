@@ -368,6 +368,7 @@ btn:
   to grid: Retour à la grille
   to parent: Retour au parent
   download_pdf: PDF
+  download: télécharger
 confirmation:
   confirm: Confirmation
   delete: Confirmation de la suppression
