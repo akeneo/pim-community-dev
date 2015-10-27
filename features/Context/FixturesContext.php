@@ -559,10 +559,7 @@ class FixturesContext extends RawMinkContext
             $this->getProductBuilder()->addAttributeToProduct($product, $this->getAttribute($code));
         }
         $this->validate($product);
-
-        // TODO use a Saver
-        $this->persist($product);
-        $this->flush();
+        $this->getProductSaver()->save($product);
     }
 
     /**
@@ -580,9 +577,7 @@ class FixturesContext extends RawMinkContext
         $family->setAttributeAsLabel($attribute);
 
         $this->validate($family);
-        // TODO use a Saver
-        $this->persist($family);
-        $this->flush();
+        $this->getFamilySaver()->save($family);
     }
 
     /**
@@ -1578,10 +1573,9 @@ class FixturesContext extends RawMinkContext
     {
         $product = $this->getProduct($identifier);
         $product->setFamily($this->getFamily($family));
-        // TODO replace by call to a saver
+
         $this->validate($product);
-        $this->persist($product);
-        $this->flush();
+        $this->getProductSaver()->save($product);
     }
 
     /**
@@ -1954,8 +1948,7 @@ class FixturesContext extends RawMinkContext
         $this->persist($category, true);
         foreach ($products as $product) {
             $product->addCategory($category);
-            // TODO replace by call to a saver
-            $this->flush($product);
+            $this->getProductSaver()->save($product);
         }
 
         return $category;
@@ -2038,8 +2031,7 @@ class FixturesContext extends RawMinkContext
                 $product = $this->getProduct($sku);
                 $product->addGroup($group);
                 $this->validate($product);
-                // TODO replace by call to a saver
-                $this->flush($product);
+                $this->getProductSaver()->save($product);
             }
         }
     }
