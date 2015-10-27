@@ -139,11 +139,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             ];
 
             if ($driver instanceof Selenium2Driver) {
-                $dir      = getenv('WORKSPACE');
                 $buildUrl = getenv('BUILD_URL');
-                if (false !== $dir) {
-                    $dir = sprintf('%s/app/build/screenshots', $dir);
-                } else {
+
+                // this directory exists only when Behat are run from the CI
+                $dir = $this->getContainer()->getParameter('kernel.root_dir') . '/build/screenshots';
+                if (!is_dir($dir)) {
                     $dir = '/tmp/behat/screenshots';
                 }
 
@@ -155,18 +155,18 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
                 $fs->dumpFile($path, $driver->getScreenshot());
 
-                if (false !== $dir) {
-                    $path = sprintf(
-                        '%s/artifact/app/build/screenshots/%s',
-                        $buildUrl,
-                        $filename
-                    );
-                }
+                // TODO: should be fixed later
+                $path = sprintf(
+                    '%s/artifact/app/build/screenshots/%s',
+                    $buildUrl,
+                    $filename
+                );
 
                 $stepStats['screenshot'] = $path;
                 $this->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
             }
 
+            // TODO: should be fixed later
             if ('JENKINS' === getenv('BEHAT_CONTEXT')) {
                 echo sprintf("\033[1;37m##glados_step##%s##glados_step##\033[0m\n", json_encode($stepStats));
             }
