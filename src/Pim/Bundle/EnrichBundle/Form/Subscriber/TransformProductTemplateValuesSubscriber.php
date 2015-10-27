@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Component\Localization\LocaleResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,14 +25,22 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
     /** @var DenormalizerInterface */
     protected $denormalizer;
 
+    /** @var LocaleResolver */
+    protected $localeResolver;
+
     /**
      * @param NormalizerInterface   $normalizer
      * @param DenormalizerInterface $denormalizer
+     * @param LocaleResolver        $localeResolver
      */
-    public function __construct(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer)
-    {
-        $this->normalizer   = $normalizer;
-        $this->denormalizer = $denormalizer;
+    public function __construct(
+        NormalizerInterface $normalizer,
+        DenormalizerInterface $denormalizer,
+        LocaleResolver $localeResolver
+    ) {
+        $this->normalizer     = $normalizer;
+        $this->denormalizer   = $denormalizer;
+        $this->localeResolver = $localeResolver;
     }
 
     /**
@@ -56,7 +65,14 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
             return;
         }
 
-        $values = $this->denormalizer->denormalize($data->getValuesData(), 'ProductValue[]', 'json');
+        $values = $this->denormalizer->denormalize(
+            $data->getValuesData(),
+            'ProductValue[]',
+            'json',
+            [
+                'locale' => $this->localeResolver->getCurrentLocale(),
+            ]
+        );
         $data->setValues($values);
     }
 
@@ -71,7 +87,11 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
             return;
         }
 
-        $valuesData = $this->normalizer->normalize($data->getValues(), 'json', ['entity' => 'product']);
+        $options = [
+            'entity' => 'product',
+            'locale' => $this->localeResolver->getCurrentLocale(),
+        ];
+        $valuesData = $this->normalizer->normalize($data->getValues(), 'json', $options);
         $data->setValuesData($valuesData);
     }
 }
