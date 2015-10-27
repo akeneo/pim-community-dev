@@ -7,7 +7,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Prophecy\Argument;
@@ -15,9 +16,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class RefuseNotificationSubscriberSpec extends ObjectBehavior
 {
-    function let(NotificationManager $notifier, UserContext $context)
+    function let(NotificationManager $notifier, UserContext $context, UserRepositoryInterface $userRepository)
     {
-        $this->beConstructedWith($notifier, $context);
+        $this->beConstructedWith($notifier, $context, $userRepository);
     }
 
     function it_is_initializable()
@@ -53,27 +54,54 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($draft);
         $notifier->notify(Argument::any())->shouldNotBeCalled();
 
-        $this->send($event);
+        $this->shouldThrow('\LogicException')->duringSend($event);
+    }
+
+    function it_does_not_send_if_author_does_not_want_to_receive_notification(
+        $userRepository,
+        $notifier,
+        ProductDraftInterface $draft,
+        UserInterface $author,
+        GenericEvent $event
+    ) {
+        $event->getSubject()->willReturn($draft);
+        $draft->getAuthor()->willReturn('author');
+        $userRepository->findOneByIdentifier('author')->willReturn($author);
+        $author->hasProposalsStateNotification()->willReturn(false);
+
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
+
+        $this->send($event)->shouldReturn(null);
     }
 
     function it_sends_on_product_draft(
         $notifier,
         $context,
+        $userRepository,
         GenericEvent $event,
         UserInterface $owner,
+        UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
         ProductValueInterface $identifier
     ) {
         $event->hasArgument('comment')->willReturn(false);
         $event->getSubject()->willReturn($draft);
+
+        $userRepository->findOneByIdentifier('author')->willReturn($author);
+        $author->hasProposalsStateNotification()->willReturn(true);
+
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
+
         $context->getUser()->willReturn($owner);
+
         $draft->getAuthor()->willReturn('author');
         $draft->getProduct()->willReturn($product);
+
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn($identifier);
+
         $identifier->getData()->willReturn('tshirt');
 
         $notifier->notify(
@@ -97,8 +125,10 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
     function it_sends_on_product_draft_with_a_comment(
         $notifier,
         $context,
+        $userRepository,
         GenericEvent $event,
         UserInterface $owner,
+        UserInterface $author,
         ProductDraftInterface $draft,
         ProductInterface $product,
         ProductValueInterface $identifier
@@ -106,13 +136,21 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($draft);
         $event->hasArgument('comment')->willReturn(true);
         $event->getArgument('comment')->willReturn('Nope Mary.');
+
+        $userRepository->findOneByIdentifier('author')->willReturn($author);
+        $author->hasProposalsStateNotification()->willReturn(true);
+
         $owner->getFirstName()->willReturn('John');
         $owner->getLastName()->willReturn('Doe');
+
         $context->getUser()->willReturn($owner);
+
         $draft->getAuthor()->willReturn('author');
         $draft->getProduct()->willReturn($product);
+
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn($identifier);
+
         $identifier->getData()->willReturn('tshirt');
 
         $notifier->notify(
