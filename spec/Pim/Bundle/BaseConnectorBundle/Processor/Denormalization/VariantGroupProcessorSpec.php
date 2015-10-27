@@ -36,7 +36,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution
     ) {
         $templateClass = 'Pim\Bundle\CatalogBundle\Entity\ProductTemplate';
-        $groupClass = 'Pim\Bundle\CatalogBundle\Entity\Group';
+        $groupClass    = 'Pim\Bundle\CatalogBundle\Entity\Group';
         $this->beConstructedWith(
             $groupRepository,
             $denormalizer,
@@ -105,10 +105,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $denormalizer->denormalize(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt',
-                'type' => 'VARIANT'
+                'type'        => 'VARIANT'
             ],
             'Pim\Bundle\CatalogBundle\Entity\Group',
             'csv',
@@ -122,8 +122,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $this->process(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt'
             ]
         );
@@ -148,10 +148,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $denormalizer->denormalize(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt',
-                'type' => 'VARIANT'
+                'type'        => 'VARIANT'
             ],
             'Pim\Bundle\CatalogBundle\Entity\Group',
             'csv',
@@ -160,11 +160,11 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $variantGroup->getProductTemplate()->willReturn($template);
 
-        $values = new ArrayCollection([$value]);
+        $newValues = new ArrayCollection([$value]);
 
         $denormalizer
             ->denormalize(['name' => 'Nice product'], 'ProductValue[]', 'csv')
-            ->willReturn($values);
+            ->willReturn($newValues);
 
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
@@ -172,31 +172,29 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn(new ConstraintViolationList());
 
+        $variantGroup->getProductTemplate()->willReturn($template);
+
+        $template->getValues()->willReturn($newValues);
+
+        $template
+            ->setValues($newValues)
+            ->shouldBeCalled();
+
         $valueNormalizer
-            ->normalize($values, 'json', ['entity' => 'product'])
+            ->normalize($newValues, 'json', ['entity' => 'product'])
             ->willReturn(
                 [
                     'name' => [
-                        ['scope'  => null, 'locale' => null, 'value'  => 'Nice product']
+                        ['scope' => null, 'locale' => null, 'value' => 'Nice product']
                     ]
                 ]
             );
-
-        $variantGroup->getProductTemplate()->willReturn($template);
-
-        $template
-            ->setValues($values)
-            ->shouldBeCalled();
-
-        $template
-            ->getValues()
-            ->willReturn($values);
 
         $template
             ->setValuesData(
                 [
                     'name' => [
-                        ['scope'  => null, 'locale' => null, 'value'  => 'Nice product']
+                        ['scope' => null, 'locale' => null, 'value' => 'Nice product']
                     ]
                 ]
             )
@@ -206,7 +204,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ->getValuesData()->willReturn(
                 [
                     'name' => [
-                        ['scope'  => null, 'locale' => null, 'value'  => 'Nice product']
+                        ['scope' => null, 'locale' => null, 'value' => 'Nice product']
                     ]
                 ]
             );
@@ -218,10 +216,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $this->process(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt',
-                'name' => 'Nice product'
+                'name'        => 'Nice product'
             ]
         );
     }
@@ -245,10 +243,10 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 
         $denormalizer->denormalize(
             [
-                'code' => 'tshirt',
-                'axis' => 'color',
+                'code'        => 'tshirt',
+                'axis'        => 'color',
                 'label-en_US' => 'Tshirt',
-                'type' => 'VARIANT'
+                'type'        => 'VARIANT'
             ],
             'Pim\Bundle\CatalogBundle\Entity\Group',
             'csv',
@@ -266,7 +264,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
 
-        $violation = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'name', 'Nice product');
+        $violation  = new ConstraintViolation('There is a small problem', 'foo', [], 'bar', 'name', 'Nice product');
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($value)->shouldBeCalled()->willReturn($violations);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
@@ -276,20 +274,20 @@ class VariantGroupProcessorSpec extends ObjectBehavior
                 new InvalidItemException(
                     "name: There is a small problem: Nice product\n",
                     [
-                        'code' => 'tshirt',
-                        'axis' => 'color',
+                        'code'        => 'tshirt',
+                        'axis'        => 'color',
                         'label-en_US' => 'Tshirt',
-                        'name' => 'Nice product',
-                        'type' => 'VARIANT'
+                        'name'        => 'Nice product',
+                        'type'        => 'VARIANT'
                     ]
                 )
             )
             ->duringProcess(
                 [
-                    'code' => 'tshirt',
-                    'axis' => 'color',
+                    'code'        => 'tshirt',
+                    'axis'        => 'color',
                     'label-en_US' => 'Tshirt',
-                    'name' => 'Nice product'
+                    'name'        => 'Nice product'
                 ]
             );
     }
