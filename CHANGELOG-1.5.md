@@ -11,6 +11,7 @@
 
 ## BC breaks
 
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController`. Add `Pim\Component\Localization\LocaleConfiguration` 
 - Add `Pim\Component\Localization\Localizer\LocalizedAttributeConverter` to `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`
 - Add an array `$decimalSeparators` to `Pim\Component\Connector\Reader\File\CsvProductReader`
 - Column 'comment' has been added on the `pim_notification_notification` table.

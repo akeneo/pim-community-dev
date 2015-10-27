@@ -64,7 +64,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param CatalogContext               $catalogContext
      * @param AttributeRepositoryInterface $attributeRepository
      * @param NormalizerInterface          $normalizer
-     * @param FileStorerInterface       $fileStorer
+     * @param FileStorerInterface          $fileStorer
      * @param ProductMassActionManager     $massActionManager
      */
     public function __construct(
@@ -83,7 +83,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
         $this->values              = new ArrayCollection();
         $this->normalizer          = $normalizer;
         $this->attributeRepository = $attributeRepository;
-        $this->fileStorer       = $fileStorer;
+        $this->fileStorer          = $fileStorer;
         $this->massActionManager   = $massActionManager;
     }
 
@@ -169,6 +169,18 @@ class EditCommonAttributes extends AbstractMassEditOperation
             'all_attributes' => $this->getAllAttributes(),
             'current_locale' => $this->getLocale()->getCode()
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchConfig()
+    {
+        $config = json_decode(stripslashes(parent::getBatchConfig()), true);
+
+        $config['locale'] = $this->userContext->getUiLocale();
+
+        return addslashes(json_encode($config));
     }
 
     /**
@@ -279,9 +291,10 @@ class EditCommonAttributes extends AbstractMassEditOperation
     public function getActions()
     {
         $actions = [];
+        $options = ['entity' => 'product', 'locale' => $this->userContext->getUiLocale()];
 
         foreach ($this->values as $value) {
-            $rawData = $this->normalizer->normalize($value->getData(), 'json', ['entity' => 'product']);
+            $rawData = $this->normalizer->normalize($value->getData(), 'json', $options);
             // if the value is localizable, let's use the locale the user has chosen in the form
             $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
 
