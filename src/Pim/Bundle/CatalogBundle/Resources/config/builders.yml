@@ -21,6 +21,7 @@ services:
             - '@pim_serializer'
             - '@pim_serializer'
             - '@pim_catalog.builder.product'
+            - '@pim_localization.resolver.locale'
             - %pim_catalog.entity.product_template.class%
             - %pim_catalog.entity.product.class%
 
