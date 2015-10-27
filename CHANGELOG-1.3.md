@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Technical improvements
+- PIM-5028: Fix log levels in prod environment
+
 # 1.3.28 (2015-10-22)
 
 # 1.3.27 (2015-10-02)
