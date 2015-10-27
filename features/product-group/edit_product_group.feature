@@ -19,6 +19,13 @@ Feature: Edit a product group
     And I press the "Save" button
     Then I should see "My similar boots"
 
+  Scenario: Successfully browse to the history tab after save
+    When I fill in the following information:
+      | English (United States) | My similar boots |
+    And I press the "Save" button
+    Then I visit the "History" tab
+    Then I should see the text "label-en_US: Boots"
+
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I fill in the following information:
       | English (United States) | My similar boots |
@@ -27,11 +34,10 @@ Feature: Edit a product group
       | title   | Are you sure you want to leave this page?                          |
       | content | You will lose changes to the product group if you leave this page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I fill in the following information:
       | English (United States) | My similar boots |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
   Scenario: Successfully retrieve the last visited tab
     Given I am on the categories page
