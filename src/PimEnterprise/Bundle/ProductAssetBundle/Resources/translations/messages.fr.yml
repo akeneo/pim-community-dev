@@ -4,6 +4,10 @@ pimee_product_asset:
       index: Enrichir les ressources
       create: Créer une ressource
       remove: Supprimer une ressource
+      categories_view: "Consulter les catégories d'une ressource"
+      mass_upload: Envoi en masse des ressources
+    category_asset_picker:
+      list: "Liste les catégories de ressources dans le sélecteur d'éléments"
     category:
       create: Créer une catégorie de ressources
       edit: Editer une catégorie de ressources
@@ -18,6 +22,7 @@ pimee_product_asset:
     button:
       upload: Télécharger
       delete: Supprimer
+      download: Télécharger
       generate_from_reference: Générer depuis la référence
       reset_variations: Réinitialiser les variations
     confirmation.remove: 'Êtes-vous sûr de que vouloir supprimer la ressource «%asset% » ?'
@@ -99,6 +104,7 @@ pimee_product_asset:
   tabs:
     properties.title: Propriétés
     variations.title: Variations
+    categories.title: Catégories
   validation:
     code:
       not_empty: Code est requis. Le champ ne peut pas être vide.
@@ -107,11 +113,13 @@ pimee_product_asset:
   jobs:
     csv_asset_import.title: Import des ressources en csv
     csv_asset_export.title: Export des ressources en csv
+    csv_asset_variation_export.title: Export des variations de ressources en CSV
     csv_tag_import.title: Import des mots clés en csv
     csv_asset_category_import.title: Import des catégories de ressources en csv
     csv_asset_configuration_import.title: Import des configurations des transformations pour les canaux en csv
+    yml_asset_configuration_export.title: Export de la configuration des canaux de ressources en Yaml
     csv_asset_category_export.title: Export des catégories de ressources en csv
-    yml_asset_channel_configuration_import.title: Import en Yaml des configurations des transformations pour les canaux
+    yml_asset_channel_configuration_import.title: Import des configurations des transformations pour les canaux en CSV
   steps:
     channel_configuration.processor.title: Traiter les configurations des canaux
   notAvailable:
@@ -129,7 +137,8 @@ pimee_product_asset:
     error:
       upload: "Une erreur s'est produite lors du téléchargement"
       code: Format de code non valide pour la ressource
-      locale: "Une ressource existe mais n'est pas localisable"
+      localizable: "Une ressource existe mais n'est pas traduisible"
+      invalid_locale: Les paramètres régionaux sont désactivés ou non valides
   category:
     menu: Catégories de ressources
     permissions:
@@ -144,7 +153,9 @@ btn.create.asset: Créer une ressource
 btn.drag_or_upload: Glisser-déposer un fichier ou cliquer ici
 job_execution.summary:
   asset_file_processed: Fichier de ressource traité
+  variations_not_generated: Variations non générées
   pimee_product_asset.mass_upload.new: Ressource créée depuis le fichier
   pimee_product_asset.mass_upload.updated: Ressource mise à jour
 assets_mass_upload.steps:
   asset_mass_upload.title: Téléchargement massif de ressources
+mass_upload: Téléchargement en masse de ressources
