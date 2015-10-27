@@ -39,6 +39,9 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var string */
     protected $decimalSeparator;
 
+    /** @var string */
+    protected $dateFormat;
+
     /** @var array Normalizer context */
     protected $normalizerContext;
 
@@ -137,6 +140,34 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     }
 
     /**
+     * Set the date format from a uiLocale. The date format is the standard date format from CLDR.
+     * The resulting pattern can be used into php date methods.
+     *
+     * @see http://php.net/manual/fr/function.date.php
+     * @see http://userguide.icu-project.org/formatparse/datetime
+     *
+     * @param string $uiLocale
+     */
+    public function setDateFormat($uiLocale)
+    {
+        $dateFormatter = new \IntlDateFormatter($uiLocale, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE);
+        $patternCLDR = $dateFormatter->getPattern();
+
+        $search  = [ 'y', 'YY', 'MM', 'd', 'jj', 'M', 'G', 'GGGG' ];
+        $replace = [ 'Y', 'y',  'm',  'j', 'd',  'n', '',  ''     ];
+
+        $this->dateFormat = str_replace($search, $replace, $patternCLDR);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return $this->dateFormat;
+    }
+
+    /**
      * @return array
      */
     protected function getNormalizerContext()
@@ -145,7 +176,8 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
             $this->normalizerContext = [
                 'scopeCode'         => $this->channelCode,
                 'localeCodes'       => $this->getLocaleCodes($this->channelCode),
-                'decimal_separator' => $this->decimalSeparator
+                'decimal_separator' => $this->decimalSeparator,
+                'date_format'       => $this->dateFormat,
             ];
         }
 
@@ -204,5 +236,6 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
 
         $this->setChannelCode($configuration['mainContext']['scope']);
         $this->setDecimalSeparator($configuration['mainContext']['ui_locale']);
+        $this->setDateFormat($configuration['mainContext']['ui_locale']);
     }
 }
