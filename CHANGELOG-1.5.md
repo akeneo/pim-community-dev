@@ -15,3 +15,4 @@
 - Change constructor of `PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
 - Change constructor of `PimEnterprise\Component\ProductAsset\Upload\UploadChecker`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
+- Change constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper`. Added argument `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
