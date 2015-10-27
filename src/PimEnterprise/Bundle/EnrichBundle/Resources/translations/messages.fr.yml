@@ -117,6 +117,7 @@ pimee_enrich:
     label: Groupes propriétaires
     empty: aucun
   asset_transformation:
+    not_found: Aucune transformation trouvée
     title:
       transformation: Transformation
       options: Options
@@ -146,6 +147,7 @@ pimee_enrich:
         width: '%value%px de largeur'
         height: '%value%px de hauteur'
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Ajouter la valeur du produit avec permission
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Mettre à jour la valeur du produit avec la permission
 edit_common_attributes_with_permission: Édition des attributs communs avec permission
 job_execution.summary:
   mass_published: Produit publié

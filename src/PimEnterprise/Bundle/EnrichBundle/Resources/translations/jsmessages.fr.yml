@@ -31,7 +31,7 @@ pimee_enrich:
         product_published: Produit publié avec succès
         product_not_published: Échec de la publication du produit
         product_not_unpublished: Échec de la dépublication du produit
-        product_reverted: Produit restauré à la version antérieure
+        product_reverted: Produit restauré à la version précédente
       meta:
         published: Version publiée
         owner_groups: Groupes propriétaires
@@ -51,10 +51,12 @@ pimee_enrich:
                   - erreur
             reject:
               success: La proposition a été rejetée.
+            remove:
+              success: La proposition a été supprimée.
       confirmation:
         revert:
           title: "Confirmer la restauration d'une version antérieure"
-          content: Êtes-vous sûr de que vouloir restaurer le produit dans cette version ?
+          content: Êtes-vous sûr de vouloir restaurer le produit dans cette version ?
         publish:
           title: Publier ce produit
           content: Êtes-vous sûr de vouloir publier ce produit ?
@@ -78,6 +80,17 @@ pimee_enrich:
       btn:
         send_for_approval: Envoyer pour validation
         sent_for_approval: Envoyé pour validation
+      modal:
+        accept_proposal: Accepter la proposition
+        accept_selected_proposal: Accepter le(s) proposition(s) sélectionnée(s)
+        reject_proposal: Rejeter la proposition
+        reject_selected_proposal: Rejeter le(s) proposition(s) sélectionnée(s)
+        remove_proposal: Supprimer la proposition
+        send_for_approval: Envoyer pour approbation
+        cancel: Annuler
+        confirm: Envoyer
+        title: 'Commenter votre proposition (facultatif - 255 caractères max.)'
+        characters: caractères.
       confirmation:
         discard_changes: Les modifications non enregistrées seront perdues. Êtes-vous sûr de que vouloir envoyer votre brouillon pour validation sans ces modifications?
         discard_changes_title: Êtes-vous sûr de vouloir envoyer ce brouillon?
