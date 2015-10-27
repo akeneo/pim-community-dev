@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Localization\Normalizer;
+namespace spec\Pim\Component\Localization\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;

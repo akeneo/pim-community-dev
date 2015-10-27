@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Localization\Normalizer;
+namespace Pim\Component\Localization\Normalizer\Flat;
 
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Component\Localization\Localizer\LocalizerInterface;

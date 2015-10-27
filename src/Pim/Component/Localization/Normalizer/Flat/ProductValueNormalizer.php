@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Localization\Normalizer;
+namespace Pim\Component\Localization\Normalizer\Flat;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
