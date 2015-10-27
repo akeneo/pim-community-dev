@@ -20,6 +20,10 @@ pimee_workflow:
       approve: Accepter
       refuse: Refuser
       remove: Supprimer
+    notification:
+      approve: '%owner% a accepté votre proposition pour le produit %product%'
+      refuse: '%owner% a rejeté votre proposition pour le produit %product%'
+      remove: '%owner% a supprimé votre proposition pour le produit %product%'
     mass_review_action:
       approve: Approuver les éléments sélectionnés
       refuse: Rejeter les éléments sélectionnés
@@ -28,6 +32,8 @@ pimee_workflow:
         not_product_owner: "Vous n'êtes pas propriétaire du produit associé à cette proposition"
         cannot_edit_attributes: Vous ne pouvez pas modifier les attributs modifiés par cette proposition
         invalid_draft: "La proposition ne peut être appliquée en raison de l'erreur suivante. %error%"
+  proposal:
+    to_review: '%author.firstname% %author.lastname% a envoyé une proposition à examiner pour le produit %product.label%'
   published_product:
     index: Produits publiés
     title: Produit publié
@@ -51,8 +57,12 @@ pimee_workflow:
       perform.title: Rejeter les propositions
   steps:
     product_draft_processor.title: Processeur de proposition
+pimee_workflow_product_draft_notification_new_proposal: Nouvelle proposition
 btn.publish: Publier
 btn.unpublish: Dépublier
+pimee_workflow_product_draft_notification_approve: Proposition approuvée
+pimee_workflow_product_draft_notification_refuse: Proposition rejetée
+pimee_workflow_product_draft_notification_remove: Proposition supprimée
 flash:
   product:
     published: Le produit a été publié avec succès.
@@ -63,6 +73,8 @@ flash:
       error: "La proposition ne peut être soumise en raison de l'erreur suivante. %error%"
     refuse:
       success: La proposition a été rejetée.
+    remove:
+      success: La proposition a été supprimée.
 pim_menu:
   item:
     published_product: Produits publiés
