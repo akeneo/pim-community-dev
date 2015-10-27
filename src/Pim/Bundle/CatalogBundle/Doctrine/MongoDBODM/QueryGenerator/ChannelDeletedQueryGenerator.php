@@ -38,9 +38,15 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
 
             foreach ($attributeNormFields as $attributeNormField) {
                 $queries[] = [
-                    [sprintf('%s', $attributeNormField) => [ '$exists' => true ]],
-                    ['$unset'   => [$attributeNormField => '']],
-                    ['multiple' => true]
+                    [
+                        sprintf('%s', $attributeNormField) => ['$exists' => true]
+                    ],
+                    [
+                        '$unset' => [$attributeNormField => '']
+                    ],
+                    [
+                        'multiple' => true
+                    ]
                 ];
             }
         }
