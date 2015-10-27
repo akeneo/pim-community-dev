@@ -127,6 +127,8 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
                 $invalidValue = (string) $invalidValue;
             } elseif (is_object($invalidValue)) {
                 $invalidValue = get_class($invalidValue);
+            } elseif (is_array($invalidValue)) {
+                $invalidValue = implode(', ', $invalidValue);
             }
             $errors[] = sprintf(
                 "%s: %s: %s\n",
