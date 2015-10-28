@@ -771,15 +771,19 @@ h3.tab-header {
       .display-flex();
       .flex(1);
 
-      span {
+      > span {
         font-size: 11px;
         color: @color-form-info;
         overflow: hidden;
         text-overflow: ellipsis;
 
-        &:not(:first-child) > *:before {
-          margin: 0 10px;
-          content: "|";
+        &:not(:first-child) {
+          > *:first-child {
+            &:before {
+              margin: 0 10px;
+              content: "|";
+            }
+          }
         }
       }
     }
