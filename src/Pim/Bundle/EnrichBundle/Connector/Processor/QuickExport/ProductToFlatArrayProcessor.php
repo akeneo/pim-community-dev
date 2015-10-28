@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Localization\Provider\DateFormatProviderInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -30,6 +31,9 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var ChannelManager */
     protected $channelManager;
 
+    /** @var DateFormatProviderInterface */
+    protected $dateFormatProvider;
+
     /** @var string */
     protected $uploadDirectory;
 
@@ -49,19 +53,22 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
+     * @param DateFormatProviderInterface         $dateFormatProvider
      * @param string                              $uploadDirectory
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
+        DateFormatProviderInterface $dateFormatProvider,
         $uploadDirectory
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->serializer      = $serializer;
-        $this->channelManager  = $channelManager;
-        $this->uploadDirectory = $uploadDirectory;
+        $this->serializer         = $serializer;
+        $this->channelManager     = $channelManager;
+        $this->dateFormatProvider = $dateFormatProvider;
+        $this->uploadDirectory    = $uploadDirectory;
     }
 
     /**
@@ -121,14 +128,13 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
 
     /**
      * @param string $uiLocale
-     *
-     * @return string
      */
-    public function setDecimalSeparator($uiLocale)
+    public function configureOptions($uiLocale)
     {
         $number = new \NumberFormatter($uiLocale, \NumberFormatter::DECIMAL);
-
         $this->decimalSeparator = $number->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
+
+        $this->dateFormat = $this->dateFormatProvider->getDateFormat($uiLocale);
     }
 
     /**
@@ -137,34 +143,6 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     public function getDecimalSeparator()
     {
         return $this->decimalSeparator;
-    }
-
-    /**
-     * Set the date format from a uiLocale. The date format is the standard date format from CLDR.
-     * The resulting pattern can be used into php date methods.
-     *
-     * @see http://php.net/manual/fr/function.date.php
-     * @see http://userguide.icu-project.org/formatparse/datetime
-     *
-     * @param string $uiLocale
-     */
-    public function setDateFormat($uiLocale)
-    {
-        $dateFormatter = new \IntlDateFormatter($uiLocale, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE);
-        $patternCLDR = $dateFormatter->getPattern();
-
-        $search  = [ 'y', 'YY', 'MM', 'd', 'jj', 'M', 'G', 'GGGG' ];
-        $replace = [ 'Y', 'y',  'm',  'j', 'd',  'n', '',  ''     ];
-
-        $this->dateFormat = str_replace($search, $replace, $patternCLDR);
-    }
-
-    /**
-     * @return string
-     */
-    public function getDateFormat()
-    {
-        return $this->dateFormat;
     }
 
     /**
@@ -235,7 +213,6 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         }
 
         $this->setChannelCode($configuration['mainContext']['scope']);
-        $this->setDecimalSeparator($configuration['mainContext']['ui_locale']);
-        $this->setDateFormat($configuration['mainContext']['ui_locale']);
+        $this->configureOptions($configuration['mainContext']['ui_locale']);
     }
 }

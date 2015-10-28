@@ -17,6 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Localization\Provider\DateFormatProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
@@ -27,9 +28,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         Serializer $serializer,
         ChannelManager $channelManager,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        DateFormatProviderInterface $provider
     ) {
-        $this->beConstructedWith($jobConfigurationRepo, $serializer, $channelManager, 'upload/path/');
+        $this->beConstructedWith($jobConfigurationRepo, $serializer, $channelManager, $provider, 'upload/path/');
         $this->setStepExecution($stepExecution);
     }
 
@@ -44,10 +46,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_is_configurable(
-        $stepExecution,
-        $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobConfigurationInterface $jobConfiguration,
+        $stepExecution,
+        $jobConfigurationRepo
     ) {
         $this->getChannelCode()->shouldReturn(null);
         $this->setChannelCode('print');
@@ -99,18 +101,20 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_media(
-        ChannelInterface $channel,
+        $serializer,
         $channelManager,
+        ChannelInterface $channel,
         ProductInterface $product,
         ProductMediaInterface $media1,
         ProductMediaInterface $media2,
         ProductValueInterface $value1,
         ProductValueInterface $value2,
         AttributeInterface $attribute,
-        $serializer
+        DateFormatProviderInterface $provider
     ) {
-        $this->setDecimalSeparator('en_US');
-        $this->setDateFormat('en_US');
+        $provider->getDateFormat('en_US')->willReturn('n/j/y');
+        $this->configureOptions('en_US');
+
         $media1->getFilename()->willReturn('media_name');
         $media1->getOriginalFilename()->willReturn('media_original_name');
 
@@ -154,10 +158,11 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $product,
-        Serializer $serializer
+        Serializer $serializer,
+        DateFormatProviderInterface $provider
     ) {
-        $this->setDecimalSeparator('en_US');
-        $this->setDateFormat('en_US');
+        $provider->getDateFormat('en_US')->willReturn('n/j/y');
+        $this->configureOptions('en_US');
         $product->getValues()->willReturn([]);
 
         $serializer
@@ -207,8 +212,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_english_attributes(
-        ChannelInterface $channel,
         $channelManager,
+        $serializer,
+        ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
         AttributeInterface $attribute,
@@ -218,10 +224,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $priceValue,
         AttributeInterface $date,
         ProductValueInterface $dateValue,
-        $serializer
+        DateFormatProviderInterface $provider
     ) {
-        $this->setDecimalSeparator('en_US');
-        $this->setDateFormat('en_US');
+        $provider->getDateFormat('en_US')->willReturn('n/j/y');
+        $this->configureOptions('en_US');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
         $number->getDecimal('10.50');
@@ -267,8 +273,9 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_with_french_attribute(
-        ChannelInterface $channel,
         $channelManager,
+        $serializer,
+        ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
         AttributeInterface $attribute,
@@ -276,11 +283,10 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $metricValue,
         ProductPriceInterface $price,
         ProductValueInterface $priceValue,
-        $serializer
+        DateFormatProviderInterface $provider
     ) {
-        $this->setDecimalSeparator('fr_FR');
-        $this->setDateFormat('fr_FR');
-        $this->getDateFormat()->shouldReturn('d/m/Y');
+        $provider->getDateFormat('fr_FR')->willReturn('d/m/Y');
+        $this->configureOptions('fr_FR');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
         $number->getDecimal('10.50');
