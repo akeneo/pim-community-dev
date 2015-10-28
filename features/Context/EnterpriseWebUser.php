@@ -305,19 +305,7 @@ class EnterpriseWebUser extends BaseWebUser
         $hash = $table->getHash();
 
         foreach ($hash as $row) {
-            $buttonLocator = sprintf('.partial-approve-link[data-product="%s"][data-attribute="%s"][data-author="%s"]',
-                $row['product'],
-                $row['attribute'],
-                $row['author']
-            );
-
-            $buttonLocator .= (isset($row['scope']) && '' !== $row['scope']) ? sprintf('[data-scope="%s"]', $row['scope']) : '';
-            $buttonLocator .= (isset($row['locale']) && '' !== $row['locale']) ? sprintf('[data-locale="%s"]', $row['locale']) : '';
-
-            $approveButton = $this->spin(function () use ($buttonLocator) {
-                return $this->getCurrentPage()->find('css', $buttonLocator);
-            });
-
+            $approveButton = $this->getElementByDataAttribute($row, '.partial-approve-link');
             $approveButton->click();
 
             $comment = isset($row['comment']) ? $row['comment'] : '';
@@ -325,5 +313,131 @@ class EnterpriseWebUser extends BaseWebUser
             $this->iFillInThisCommentInThePopin($comment);
             $this->iPressTheButtonInThePopin("Send");
         }
+    }
+
+    /**
+     * @Then /^I should not see the following partial approve buttons?:$/
+     *
+     * @param TableNode $table
+     */
+    public function iShouldNotSeeTheFollowingPartialApproveButtons(TableNode $table)
+    {
+        $this->iShouldSeeTheFollowingPartialApproveButtons($table, true);
+    }
+
+    /**
+     * @Then /^I should see the following partial approve buttons?:$/
+     *
+     * @param bool      $not
+     * @param TableNode $table
+     *
+     * @throws \Exception
+     */
+    public function iShouldSeeTheFollowingPartialApproveButtons(TableNode $table, $not = false)
+    {
+        $hash = $table->getHash();
+
+        foreach ($hash as $row) {
+            try {
+                $approveButton = $this->getElementByDataAttribute($row, '.partial-approve-link');
+            } catch (\Exception $e) {
+                $approveButton = null;
+            }
+
+            if ($not && $approveButton !== null && $approveButton->isVisible()) {
+                throw new \Exception(
+                    sprintf(
+                        'Partial approve button is visible, but it should not (%s)',
+                        json_encode($row)
+                    )
+                );
+            }
+
+            if (!$not && ($approveButton === null || !$approveButton->isVisible())) {
+                throw new \Exception(
+                    sprintf(
+                        'Partial approve button is not visible, but it should (%s)',
+                        json_encode($row)
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^I should not see the following changes on the proposals?:$/
+     *
+     * @param TableNode $table
+     */
+    public function iShouldNotSeeTheFollowingChanges(TableNode $table)
+    {
+        $this->iShouldSeeTheFollowingChanges($table, true);
+    }
+
+    /**
+     * @Then /^I should see the following changes on the proposals?:$/
+     *
+     * @param TableNode $table
+     * @param bool      $not
+     *
+     * @throws \Exception
+     */
+    public function iShouldSeeTheFollowingChanges(TableNode $table, $not = false)
+    {
+        $hash = $table->getHash();
+
+        foreach ($hash as $data) {
+            try {
+                $row = $this->getElementByDataAttribute($data, '.proposal-changes');
+            } catch (\Exception $e) {
+                $row = null;
+            }
+
+            if ($not && $row !== null && $row->isVisible()) {
+                throw new \Exception(
+                    sprintf(
+                        'Partial change is visible, but it should not (%s)',
+                        json_encode($data)
+                    )
+                );
+            }
+
+            if (!$not && ($row === null || !$row->isVisible())) {
+                throw new \Exception(
+                    sprintf(
+                        'Partial change is not visible, but it should (%s)',
+                        json_encode($data)
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Get the NodeElement to partially approve a proposal, identified by the given $data
+     *
+     * @param array  $data    ['product' => '', 'attribute' => '', 'author' => '', 'scope' => '', 'locale' => '']
+     * @param string $context ".proposal-changes" for example
+     *
+     * @return NodeElement
+     *
+     * @throws Spin\TimeoutException
+     * @throws \Exception
+     */
+    protected function getElementByDataAttribute($data, $context)
+    {
+        $locator = sprintf('%s[data-product="%s"][data-attribute="%s"][data-author="%s"]',
+            $context,
+            $data['product'],
+            $data['attribute'],
+            $data['author']
+        );
+
+        $locator .= (isset($data['scope']) && '' !== $data['scope']) ? sprintf('[data-scope="%s"]', $data['scope']) : '';
+        $locator .= (isset($data['locale']) && '' !== $data['locale']) ? sprintf('[data-locale="%s"]', $data['locale']) : '';
+
+        return $this->spin(function () use ($locator) {
+            return $this->getCurrentPage()->find('css', $locator);
+        });
     }
 }

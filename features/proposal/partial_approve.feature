@@ -32,9 +32,9 @@ Feature: Partial approve
     Then I should have 2 new notification
     And I should see notification:
       | type    | message                                                                       |
-      | success | Peter Williams has accepted the value for name for the product: tshirt        |
-      | success | Peter Williams has accepted the value for description for the product: tshirt |
-    When I click on the notification "Peter Williams has accepted the value for name for the product: tshirt"
+      | success | Peter Williams has accepted the value for Name for the product: tshirt        |
+      | success | Peter Williams has accepted the value for Description for the product: tshirt |
+    When I click on the notification "Peter Williams has accepted the value for Name for the product: tshirt"
     Then I should be on the product "tshirt" edit page
     And the product "tshirt" should have the following values:
       | name-en_US               | Summer t-shirt             |
@@ -56,8 +56,8 @@ Feature: Partial approve
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                       | comment                                      |
-      | success | Peter Williams has accepted the value for description for the product: tshirt | Yes, remember to update the price next time! |
-    When I click on the notification "Peter Williams has accepted the value for description for the product: tshirt"
+      | success | Peter Williams has accepted the value for Description for the product: tshirt | Yes, remember to update the price next time! |
+    When I click on the notification "Peter Williams has accepted the value for Description for the product: tshirt"
     Then I should be on the product "tshirt" edit page
     And the product "tshirt" should have the following values:
       | description-en_US-mobile | Summer t-shirt description |
@@ -79,8 +79,8 @@ Feature: Partial approve
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                                                                |
-      | success | Peter Williams has accepted the value for name for the product: tshirt |
-    When I click on the notification "Peter Williams has accepted the value for name for the product: tshirt"
+      | success | Peter Williams has accepted the value for Name for the product: tshirt |
+    When I click on the notification "Peter Williams has accepted the value for Name for the product: tshirt"
     Then I should be on the product "tshirt" edit page
     And the product "tshirt" should have the following values:
       | name-en_US | Summer t-shirt |
@@ -111,8 +111,12 @@ Feature: Partial approve
     And I partially approve:
       | product | author | attribute   | locale | scope  |
       | tshirt  | Mary   | name        | en_US  |        |
-    Then I should not see the "Approve changes on attribute name of the product tshirt" button
-    And I should see the "Approve changes on attribute description of the product tshirt" button
+    Then I should not see the following partial approve button:
+      | product | author | attribute | locale |
+      | tshirt  | Mary   | name      | en_US  |
+    But I should see the following partial approve button:
+      | product | author | attribute   | locale | scope  |
+      | tshirt  | Mary   | description | en_US  | mobile |
 
   Scenario: I dont see the propposal tab if I can't approve anything
     Given Mary proposed the following change to "jacket":
@@ -134,8 +138,12 @@ Feature: Partial approve
     And I am logged in as "Julia"
     And I edit the "tshirt" product
     And I visit the "Proposals" tab
-    Then I should not see the "Approve changes on attribute price of the product tshirt" button
-    And I should see the "Approve changes on attribute name of the product tshirt" button
+    Then I should not see the following partial approve button:
+      | product | author | attribute |
+      | tshirt  | Mary   | price     |
+    But I should see the following partial approve button:
+      | product | author | attribute | locale |
+      | tshirt  | Mary   | name      | en_US  |
 
   Scenario: I can partially approve only on locale I can edit
     Given I am logged in as "Mary"
@@ -166,4 +174,26 @@ Feature: Partial approve
     When I am logged in as "Julia"
     And I edit the "tshirt" product
     And I visit the "Proposals" tab
-    Then I should not see the "Approve changes on attribute name of the product tshirt" button
+    Then I should not see the following partial approve button:
+      | product | author | attribute | locale |
+      | tshirt  | Mary   | name      | en_US  |
+    And I should not see the "Approve changes on attribute name of the product tshirt" button
+
+  Scenario: I should not be able to see changes on attributes I am not able to see
+    Given Mary proposed the following change to "tshirt":
+      | field       | value         | tab                 |
+      | Name        | Summer jacket | Product information |
+      | Price       | 10 USD        | Marketing           |
+    And the following attribute group accesses:
+      | attribute group | user group | access |
+      | info            | Manager    | view   |
+      | marketing       | Manager    | none   |
+    And I am logged in as "Julia"
+    And I edit the "tshirt" product
+    And I visit the "Proposals" tab
+    And I should not see the following changes on the proposals:
+      | product | author | attribute |
+      | tshirt  | Mary   | price     |
+    And I should see the following changes on the proposals:
+      | product | author | attribute | locale |
+      | tshirt  | Mary   | name      | en_US  |

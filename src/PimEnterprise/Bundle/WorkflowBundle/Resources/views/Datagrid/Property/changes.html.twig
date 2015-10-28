@@ -1,7 +1,8 @@
 {% if value['values'] is defined %}
     {% for code, changes in value['values'] %}
         {% for change in changes %}
-            <table class="table table-bordered proposal-changes">
+            {% if is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ATTRIBUTES'), code) %}
+            <table class="table table-bordered proposal-changes" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}">
                 <thead>
                     <tr>
                         <th class="label-cell">{{ get_attribute_label_from_code(code) }}</th>
@@ -15,7 +16,8 @@
                         <th class="action-cell">
                             {% if
                                 is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_ATTRIBUTES'), code) and
-                                is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), record.rootEntity.product)
+                                is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), record.rootEntity.product) and
+                                record.rootEntity.getStatus() == constant('PimEnterprise\\Bundle\\WorkflowBundle\\Model\\ProductDraft::READY')
                             %}
                                 <span class="partial-approve pull-right">
                                     <a href="#" class="partial-approve-link hide-text" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}">
@@ -31,7 +33,7 @@
                 <tbody>
                     <tr>
                         <td>{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
-                        <td colspan="2">
+                        <td class="original-value" colspan="2">
                             <span class="alert-error">
                                 {{ record.rootEntity.product.value(code, change.locale, change.scope)|present_original_change(change) }}
                             </span>
@@ -39,7 +41,7 @@
                     </tr>
                     <tr>
                         <td>{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
-                        <td colspan="2">
+                        <td class="new-value" colspan="2">
                             <span class="alert-success">
                                 {{ change|present_new_change(code) }}
                             </span>
@@ -47,6 +49,7 @@
                     </tr>
                 </tbody>
             </table>
+            {% endif %}
         {% endfor %}
     {% endfor %}
 {% endif %}
