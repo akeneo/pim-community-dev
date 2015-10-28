@@ -27,6 +27,33 @@ config:
                 get:    pim_enrich_product_rest_get
                 post:   pim_enrich_product_rest_post
                 remove: pim_enrich_product_rest_remove
+
+        pim/controller-registry:
+            defaultController: pim/controller/template
+            controllers:
+                pim_enrich_associationtype_edit:      pim/controller/form
+                pim_enrich_attribute_create:          pim/controller/form
+                pim_enrich_attribute_edit:            pim/controller/form
+                pim_enrich_attributegroup_create:     pim/controller/form
+                pim_enrich_attributegroup_edit:       pim/controller/form
+                pim_enrich_attributegroup_edit:       pim/controller/form
+                pim_enrich_categorytree_create:       pim/controller/category
+                pim_enrich_categorytree_edit:         pim/controller/category
+                pim_enrich_categorytree_index:        pim/controller/category
+                pim_enrich_channel_edit:              pim/controller/channel
+                pim_enrich_family_edit:               pim/controller/form
+                pim_enrich_group_edit:                pim/controller/form
+                pim_enrich_grouptype_edit:            pim/controller/form
+                pim_enrich_product_edit:              pim/controller/product
+                pim_enrich_variant_group_edit:        pim/controller/variant-group
+                pim_importexport_export_profile_edit: pim/controller/form
+                pim_importexport_import_profile_edit: pim/controller/form
+                oro_user_create:                      pim/controller/form
+                oro_user_update:                      pim/controller/form
+                oro_user_role_create:                 pim/controller/form
+                oro_user_role_update:                 pim/controller/form
+                oro_user_group_create:                pim/controller/form
+                oro_user_group_update:                pim/controller/form
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
@@ -99,6 +126,21 @@ config:
                             get: pim_enrich_product_history_rest_get
 
     paths:
+        pim/app:                            pimenrich/js/app
+        pim/router:                         pimenrich/js/router
+        pim/route-matcher:                  pimenrich/js/route-matcher
+        pim/page-title:                     pimenrich/js/page-title
+
+        # Controllers
+        pim/controller-registry:               pimenrich/js/controller/registry
+        pim/controller/base:                   pimenrich/js/controller/base
+        pim/controller/template:               pimenrich/js/controller/template
+        pim/controller/form:                   pimenrich/js/controller/form
+        pim/controller/channel:                pimenrich/js/controller/channel
+        pim/controller/product:                pimenrich/js/controller/product
+        pim/controller/variant-group:          pimenrich/js/controller/variant-group
+        pim/controller/category:               pimenrich/js/controller/category
+
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
         jstree/nested_switch:               pimenrich/js/jstree/jquery.jstree.nested_switch

@@ -18,7 +18,7 @@
 {% block brand %}
     {% if item.extra('brand') is not none %}
         {% set brandLink = item.extra('brandLink') is not null ? item.extra('brandLink') : '/' %}
-        <a class="brand" href="{{ brandLink }}">{{ item.extra('brand')}}</a>
+        <a class="brand" href="#{{ brandLink }}">{{ item.extra('brand')}}</a>
     {% endif %}
 {% endblock %}
 

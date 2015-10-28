@@ -1,9 +1,0 @@
-test_block:
-    top_test_template:
-        template: TestBundle::test.html.twig
-        order: 10
-    top_temp_block:
-        action: TesthBundle:Test:testBar
-    enother_temp_block:
-        action: TesthBundle:Test:anotherBar
-        order: 10

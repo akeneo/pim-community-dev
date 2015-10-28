@@ -1,7 +1,7 @@
 /* jshint browser:true */
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/navigation', 'oro/mediator', 'oro/error'],
-function($, _, Backbone, app, Navigation, mediator, error) {
+define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator', 'oro/error'],
+function($, _, Backbone, app, mediator, error) {
     'use strict';
 
     /**
@@ -39,7 +39,7 @@ function($, _, Backbone, app, Navigation, mediator, error) {
              * Change active pinbar item after hash navigation request is completed
              */
             mediator.bind(
-                "hash_navigation_request:complete",
+                "route_complete",
                 function() {
                     /*if (!this.isRemoved && this.checkCurrentUrl()) {
                         this.maximize();
@@ -77,17 +77,10 @@ function($, _, Backbone, app, Navigation, mediator, error) {
         },
 
         checkCurrentUrl: function() {
-            var url = '',
-                modelUrl = this.model.get('url'),
-                navigation = Navigation.getInstance();
-            if (navigation) {
-                url = navigation.getHashUrl();
-                url = navigation.removeGridParams(url);
-                modelUrl = navigation.removeGridParams(modelUrl);
-            } else {
-                url = window.location.pathname;
-            }
-            return modelUrl == url;
+            var url = Backbone.history.getFragment();
+            var modelUrl = this.model.get('url');
+
+            return modelUrl === url;
         },
 
         setActiveItem: function() {

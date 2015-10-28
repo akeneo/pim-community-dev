@@ -101,7 +101,7 @@
 
 {% block linkElement %}
     {% import _self as oro_menu %}
-    <a href="{{ item.uri }}"{{ oro_menu.attributes(linkAttributes) }}>{{ block('label') }}</a>
+    <a href="#{{ item.uri }}"{{ oro_menu.attributes(linkAttributes) }}>{{ block('label') }}</a>
 {% endblock %}
 
 {% block spanElement %}

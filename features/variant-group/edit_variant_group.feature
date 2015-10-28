@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a variant group
   In order to manage existing variant groups for the catalog
   As a product manager
@@ -9,7 +10,6 @@ Feature: Edit a variant group
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Properties" tab
 
-  @javascript
   Scenario: Successfully edit a variant group
     Then I should see the Code and Axis fields
     And the fields Code and Axis should be disabled
@@ -26,8 +26,20 @@ Feature: Edit a variant group
       | title   | Are you sure you want to leave this page?                          |
       | content | You will lose changes to the variant group if you leave this page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I fill in the following information:
       | English (United States) | My boots |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
+
+  Scenario: Successfully retrieve the last visited tab
+    Given I am on the categories page
+    And I am on the "caterpillar_boots" variant group page
+    And I should see "Code"
+    And I should see "Type"
+    And I should see "Axis"
+
+  Scenario: Successfully retrieve the last visited tab after a save
+    Given I save the "variant group"
+    And I should see "Code"
+    And I should see "Type"
+    And I should see "Axis"

@@ -1,4 +1,4 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% block content %}
 
@@ -38,11 +38,6 @@
             </tbody>
         </table>
     </div>
-
-{% endblock %}
-
-{% block head_script %}
-    {{ parent() }}
 
     <script type="text/template" id="job-execution-summary">
         {% block job_execution_summary %}
@@ -193,7 +188,7 @@
                         statusLabel:   '{{ 'Status'|trans }}',
                         downloadLabel: '{{ 'Download log'|trans }}',
 
-                        path:              '{{ path(refresh_route, {id:  execution.id, _format:  'json'}) }}',
+                        path:              '{{ path(refresh_route, {id: execution.id}) }}',
                         executionId:       {{ execution.id }},
                         downloadFileRoute: '{{ download_file_route }}',
                         downloadLogRoute:  '{{ download_log_route }}'

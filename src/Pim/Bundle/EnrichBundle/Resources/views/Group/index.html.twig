@@ -1,4 +1,4 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% block content %}
@@ -15,7 +15,7 @@
                 'plus'
             ) }}
         {% elseif resource_granted('pim_enrich_grouptype_index') %}
-            <a href="{{ path('pim_enrich_grouptype_index') }}">
+            <a href="#{{ path('pim_enrich_grouptype_index') }}">
                 <span class="label link-label">{{ 'info.group.no group types'|trans }}</span>
             </a>
         {% endif %}

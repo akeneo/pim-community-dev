@@ -114,7 +114,7 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                if (!this.configured) {
+                if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
                     return;
                 }
 

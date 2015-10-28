@@ -16,5 +16,5 @@ class Creation extends TreeCreation
     /**
      * @var string
      */
-    protected $path = '/enrich/product-category-tree/create/{id}';
+    protected $path = '#/enrich/product-category-tree/create/{id}';
 }

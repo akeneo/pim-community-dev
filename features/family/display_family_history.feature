@@ -1,3 +1,4 @@
+@javascript
 Feature: Display the family history
   In order to know who, when and what changes has been made to an family
   As an administrator
@@ -13,7 +14,6 @@ Feature: Display the family history
       | label       | group   |
       | Description | General |
 
-  @javascript
   Scenario: Successfully create a family and see the history
     Given I am on the families page
     And I create a new family

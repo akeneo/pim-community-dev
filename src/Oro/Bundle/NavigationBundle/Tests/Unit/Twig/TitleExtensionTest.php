@@ -26,26 +26,11 @@ class TitleExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $functions = $this->extension->getFunctions();
         $this->assertArrayHasKey('oro_title_render', $functions);
-        $this->assertArrayHasKey('oro_title_render_short', $functions);
-        $this->assertArrayHasKey('oro_title_render_serialized', $functions);
     }
 
     public function testNameConfigured()
     {
         $this->assertInternalType('string', $this->extension->getName());
-    }
-
-    public function testRenderSerialized()
-    {
-        $expectedResult = 'expected';
-
-        $this->service->expects($this->at(0))
-            ->method('setData')
-            ->will($this->returnSelf());
-
-        $this->service->expects($this->at(1))->method('getSerialized')->will($this->returnValue($expectedResult));
-
-        $this->assertEquals($expectedResult, $this->extension->renderSerialized());
     }
 
     public function testRender()
@@ -64,24 +49,6 @@ class TitleExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->render($title));
-    }
-
-    public function testRenderShort()
-    {
-        $expectedResult = 'expected';
-        $title = 'title';
-
-        $this->service->expects($this->at(0))
-            ->method('setData')
-            ->with(array())
-            ->will($this->returnSelf());
-
-        $this->service->expects($this->at(1))
-            ->method('render')
-            ->with(array(), $title, null, null, true, true)
-            ->will($this->returnValue($expectedResult));
-
-        $this->assertEquals($expectedResult, $this->extension->renderShort($title));
     }
 
     /**
