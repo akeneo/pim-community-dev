@@ -22,6 +22,7 @@ parameters:
                 field_options:
                     attr:
                         empty_choice: true
+                        choice_list: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_textarea:
         column:
