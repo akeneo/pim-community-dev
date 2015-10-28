@@ -8,7 +8,7 @@
         {% for locale in locales %}
             <li{% if currentLocaleCode == locale.code %} class="active"{% endif %}>
                 {% set routeParams = routeParams|default({})|merge({ (localeParamName): locale.code }) %}
-                <a href="{{ path(routeName, routeParams) }}"
+                <a href="/{{ path(routeName, routeParams) }}"
                    title="{{ locale_label(locale.code) }}">
                     <span class="indicator">
                         {% if currentLocaleCode == locale.code %}

@@ -46,6 +46,7 @@ config:
                 pim_enrich_grouptype_edit:                   pim/controller/form
                 pim_enrich_product_edit:                     pim/controller/product
                 pim_enrich_variant_group_edit:               pim/controller/variant-group
+                pim_enrich_variant_group_edit_localized:     pim/controller/variant-group
                 pim_importexport_export_profile_edit:        pim/controller/form
                 pim_importexport_import_profile_edit:        pim/controller/form
                 pim_enrich_currency_toggle:                  pim/controller/redirect
