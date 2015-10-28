@@ -791,7 +791,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     protected function assertAddress($expected)
     {
-        $expected = str_replace('#', '', $expected);
+        $expected      = str_replace('#', '', $expected);
         $actualFullUrl = str_replace('#', '', $this->getSession()->getCurrentUrl());
         $actualUrl     = $this->sanitizeUrl($actualFullUrl);
 
@@ -828,6 +828,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         if (false !== $urlWithoutGrid = strstr($filteredUrl, '|g/', true)) {
             $filteredUrl = $urlWithoutGrid;
         }
+
+        $filteredUrl = str_replace('//', '/', $filteredUrl);
 
         return $filteredUrl;
     }

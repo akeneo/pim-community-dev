@@ -190,6 +190,8 @@ class AttributeGroupController extends AbstractDoctrineController
 
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
+
+            return new JsonResponse(['id' => $group->getId()]);
         }
 
         return [

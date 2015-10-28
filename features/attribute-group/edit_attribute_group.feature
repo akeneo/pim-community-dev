@@ -26,6 +26,8 @@ Feature: Edit an attribute group
       | title   | Are you sure you want to leave this page?                            |
       | content | You will lose changes to the attribute group if you leave this page. |
 
+  # Too randomish
+  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "media" attribute group page
     When I fill in the following information:
