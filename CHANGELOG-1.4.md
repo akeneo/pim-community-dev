@@ -6,6 +6,7 @@
 - PIM-5082: Fix variant group modal display in product edit form (in mongo storage)
 - PIM-5084: Fix attribute groups order in product edit form
 - PIM-5008: Optimize product edit form when lots of attributes are used
+- PIM-5041: Add cache warmup for product edit form
 
 # 1.4.6 (2015-10-27)
 
