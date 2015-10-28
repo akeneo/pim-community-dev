@@ -152,7 +152,8 @@ class AttributeGroupController extends AbstractDoctrineController
                 $this->addFlash('success', 'flash.attribute group.created');
 
                 return new JsonResponse([
-                    'id' => $group->getId()
+                    'route'  => 'pim_enrich_attributegroup_edit',
+                    'params' => ['id' => $group->getId()]
                 ]);
             }
 
@@ -191,7 +192,10 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
 
-            return new JsonResponse(['id' => $group->getId()]);
+            return new JsonResponse([
+                'route'  => 'pim_enrich_attributegroup_edit',
+                'params' => ['id' => $group->getId()]
+            ]);
         }
 
         return [
@@ -310,7 +314,10 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->manager->addAttributes($group, $availableAttributes->getAttributes());
         $this->addFlash('success', 'flash.attribute group.attributes added');
 
-        return new JsonResponse(['id' => $group->getId()]);
+        return new JsonResponse([
+            'route'  => 'pim_enrich_attributegroup_edit',
+            'params' => ['id' => $group->getId()]
+        ]);
     }
 
     /**

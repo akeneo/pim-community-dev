@@ -32,9 +32,17 @@ define([
                 return false;
             },
             afterSubmit: function (xhr) {
-                this.renderTemplate(xhr.responseText);
-                mediator.trigger('route_complete pim:reinit');
-                router.hideLoadingMask();
+                if (xhr.responseJSON && xhr.responseJSON.route) {
+                    router.redirectToRoute(
+                        xhr.responseJSON.route,
+                        xhr.responseJSON.params ? xhr.responseJSON.params : {},
+                        {trigger: true}
+                    );
+                } else {
+                    this.renderTemplate(xhr.responseText);
+                    mediator.trigger('route_complete pim:reinit');
+                    router.hideLoadingMask();
+                }
             }
         });
     }

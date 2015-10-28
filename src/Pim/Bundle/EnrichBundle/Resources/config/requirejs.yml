@@ -32,9 +32,10 @@ config:
             defaultController: pim/controller/template
             controllers:
                 pim_enrich_associationtype_edit:      pim/controller/form
+                pim_enrich_attribute_create:          pim/controller/form
                 pim_enrich_attribute_edit:            pim/controller/form
-                pim_enrich_attributegroup_create:     pim/controller/attribute-group/create
-                pim_enrich_attributegroup_edit:       pim/controller/attribute-group/edit
+                pim_enrich_attributegroup_create:     pim/controller/form
+                pim_enrich_attributegroup_edit:       pim/controller/form
                 pim_enrich_attributegroup_edit:       pim/controller/form
                 pim_enrich_categorytree_create:       pim/controller/category
                 pim_enrich_categorytree_edit:         pim/controller/category
@@ -139,8 +140,6 @@ config:
         pim/controller/product:                pimenrich/js/controller/product
         pim/controller/variant-group:          pimenrich/js/controller/variant-group
         pim/controller/category:               pimenrich/js/controller/category
-        pim/controller/attribute-group/create: pimenrich/js/controller/attribute-group/create
-        pim/controller/attribute-group/edit:   pimenrich/js/controller/attribute-group/edit
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
