@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5082: Fix variant group modal display in product edit form (in mongo storage)
+
 # 1.4.6 (2015-10-27)
 
 ## Bug fixes
