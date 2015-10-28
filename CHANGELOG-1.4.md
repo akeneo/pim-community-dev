@@ -1,6 +1,7 @@
 # 1.4.6 (2015-10-27)
 
 ## Bug fixes
+- PIM-4925: Fix dashboard patch available information
 - PIM-5051: Fix mass delete products error on versionning 
 
 # 1.4.5 (2015-10-23)

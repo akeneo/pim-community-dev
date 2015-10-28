@@ -9,8 +9,9 @@
                     try {
                         var updateServerUrl = '{{ get_update_server_url() }}';
                         Fetcher.fetch(updateServerUrl).then(function (patch) {
-                            var currentVersion = $('.current-version:first span:last').text();
-                            if (patch !== null && currentVersion.indexOf(patch) < 0) {
+                            var currentVersionName = $('.current-version:first span:last').text();
+                            var currentVersion = currentVersionName.split(' ')[0];
+                            if (patch !== null && currentVersion < patch) {
                                 $('.last-version span:last').text(patch);
                             } else {
                                 $('.last-version').remove();
