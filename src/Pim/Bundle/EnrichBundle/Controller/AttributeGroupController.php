@@ -308,7 +308,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->manager->addAttributes($group, $availableAttributes->getAttributes());
         $this->addFlash('success', 'flash.attribute group.attributes added');
 
-        return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
+        return new JsonResponse(['id' => $group->getId()]);
     }
 
     /**
