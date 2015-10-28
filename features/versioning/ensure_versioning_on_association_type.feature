@@ -1,3 +1,4 @@
+@javascript
 Feature: Ensure versioning on association type
   In order to see old version of an existing association type
   As a product manager
@@ -7,7 +8,6 @@ Feature: Ensure versioning on association type
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully version an association type
     Given I am on the "PACK" association type page
     And I visit the "History" tab

@@ -33,6 +33,7 @@ Feature: Edit a category
       | title   | Are you sure you want to leave this page?                    |
       | content | You will lose changes to the category if you leave the page. |
 
+  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I edit the "winter_boots" category
     When I fill in the following information:

@@ -1,3 +1,4 @@
+@javascript
 Feature: Attribute group creation
   In order to organize attributes into group
   As Julia
@@ -14,14 +15,12 @@ Feature: Attribute group creation
       | red  | colors |
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully delete an attribute group
     Given I am on the "sizes" attribute group page
     When I press the "Delete" button
     And I confirm the deletion
     Then I should see the text "Attribute group successfully removed"
 
-  @javascript
   Scenario: Fail to delete an attribute group that contains attributes
     Given I am on the "colors" attribute group page
     When I press the "Delete" button

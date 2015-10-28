@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -108,6 +109,6 @@ class CurrencyController extends AbstractDoctrineController
             $this->addFlash('error', 'flash.error ocurred');
         }
 
-        return $this->redirect($this->generateUrl('pim_enrich_currency_index'));
+        return new JsonResponse(['route' => 'pim_enrich_currency_index']);
     }
 }

@@ -1,3 +1,4 @@
+@javascript
 Feature: Ensure versioning on family
   In order to see old version of an existing family
   As a product manager
@@ -7,7 +8,6 @@ Feature: Ensure versioning on family
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript
   Scenario: Successfully version a family
     Given I am on the "heels" family page
     And I visit the "History" tab
