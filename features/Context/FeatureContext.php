@@ -23,7 +23,7 @@ use Symfony\Component\Yaml\Parser;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
-    const DEFAULT_TIMEOUT = 10000;
+    const DEFAULT_TIMEOUT = 30000;
 
     use SpinCapableTrait;
 

@@ -25,7 +25,7 @@ ci:
     context:
         parameters:
             base_url: http://behat.ci/
-            timeout: 10000
+            timeout: 30000
     extensions:
         Behat\MinkExtension\Extension:
             base_url: http://behat.ci/
