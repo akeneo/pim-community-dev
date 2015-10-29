@@ -595,7 +595,8 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+        $actualCount = (int) $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+
         assertEquals(
             $actualCount,
             $count,
