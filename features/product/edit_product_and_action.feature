@@ -32,7 +32,7 @@ Feature: Product edition clicking on another action
     Given I fill in the following information:
       | Price | foo EUR |
     And I save the product
-    Then I should see flash message "Please check your entry and try again"
+    Then I should see the text "Please check your entry and try again"
     Then I press the "Back to grid" button
     And I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                   |
