@@ -525,7 +525,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $manageAssets = $this->spin(function () use ($field) {
             return $this->getSubcontext('navigation')->getCurrentPage()->findFieldContainer($field)->getParent()
                 ->find('css', '.add-asset');
-        }, 5);
+        });
 
         $manageAssets->click();
 
