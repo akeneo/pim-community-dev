@@ -29,7 +29,7 @@ define(
         }
 
         function restoreFormState() {
-            if (sessionStorage['redirectTab']) {
+            if (sessionStorage.redirectTab) {
                 var $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']');
                 if ($redirectTab.length && !$('.loading-mask').is(':visible')) {
                     $redirectTab.tab('show');

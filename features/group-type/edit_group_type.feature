@@ -26,9 +26,8 @@ Feature: Edit a group type
       | title   | Are you sure you want to leave this page?                       |
       | content | You will lose changes to the group type if you leave this page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "VARIANT" group type page
     When I fill in the following information:
       | English (United States) | My variant |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

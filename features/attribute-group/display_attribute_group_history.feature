@@ -1,3 +1,4 @@
+@javascript
 Feature: Display the attribute group history
   In order to know who, when and what changes has been made to an attribute group
   As a product manager
@@ -10,7 +11,6 @@ Feature: Display the attribute group history
       | label       |
       | Description |
 
-  @javascript
   Scenario: Successfully edit a group and see the history
     Given I am on the attribute group creation page
     And I change the Code to "Technical"

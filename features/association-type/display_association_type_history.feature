@@ -1,9 +1,9 @@
+@javascript
 Feature: Display the association type history
   In order to know who, when and what changes has been made to an association type
   As a product manager
   I need to have access to an association history
 
-  @javascript
   Scenario: Successfully edit an association type and see the history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"

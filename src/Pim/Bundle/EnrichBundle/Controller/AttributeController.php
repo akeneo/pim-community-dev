@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -178,7 +179,10 @@ class AttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.created');
 
-            return $this->redirectToRoute('pim_enrich_attribute_edit', ['id' => $attribute->getId()]);
+            return new JsonResponse([
+                'route'  => 'pim_enrich_attribute_edit',
+                'params' => ['id' => $attribute->getId()]
+            ]);
         }
 
         return [

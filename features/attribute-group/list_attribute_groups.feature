@@ -1,3 +1,4 @@
+@javascript
 Feature: List attribute groups
   In order to see attribute groups in my catalog
   As a product manager

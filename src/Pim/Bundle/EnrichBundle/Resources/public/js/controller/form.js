@@ -1,31 +1,63 @@
 'use strict';
 
-define(function (require) {
-    var $ = require('jquery');
-    var _ = require('underscore');
-    var mediator = require('oro/mediator');
-    var TemplateController = require('pim/controller/template');
-    var router = require('pim/router');
-    require('jquery.form');
+define([
+        'jquery',
+        'underscore',
+        'oro/mediator',
+        'pim/controller/template',
+        'pim/router',
+        'jquery.form'
+    ], function (
+        $,
+        _,
+        mediator,
+        TemplateController,
+        router
+    ) {
+        return TemplateController.extend({
+            events: {
+                'submit form': 'submitForm'
+            },
 
-    return TemplateController.extend({
-        events: {
-            'submit form': 'submitForm'
-        },
-        submitForm: function (event) {
-            var $form = $(event.currentTarget);
+            /**
+             * Handle form submission on the page
+             *
+             * @param {Event} event
+             *
+             * @return {boolean}
+             */
+            submitForm: function (event) {
+                var $form = $(event.currentTarget);
 
-            router.showLoadingMask();
+                router.showLoadingMask();
 
-            $form.ajaxSubmit({
-                complete: _.bind(function (xhr) {
+                $form.ajaxSubmit({
+                    complete: function (xhr) {
+                        this.afterSubmit(xhr, $form);
+                    }.bind(this)
+                });
+
+                return false;
+            },
+
+            /**
+             * Called after a successful submit (after a submitForm)
+             *
+             * @param {Object} xhr
+             */
+            afterSubmit: function (xhr) {
+                if (xhr.responseJSON && xhr.responseJSON.route) {
+                    router.redirectToRoute(
+                        xhr.responseJSON.route,
+                        xhr.responseJSON.params ? xhr.responseJSON.params : {},
+                        {trigger: true}
+                    );
+                } else {
                     this.renderTemplate(xhr.responseText);
                     mediator.trigger('route_complete pim:reinit');
                     router.hideLoadingMask();
-                }, this)
-            });
-
-            return false;
-        }
-    });
-});
+                }
+            }
+        });
+    }
+);

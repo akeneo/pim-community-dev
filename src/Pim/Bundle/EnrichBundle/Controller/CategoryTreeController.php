@@ -281,9 +281,12 @@ class CategoryTreeController extends Controller
                 $this->addFlash('success', $message);
                 $this->eventDispatcher->dispatch(CategoryEvents::POST_CREATE, new GenericEvent($category));
 
-                return $this->redirectToRoute($this->buildRouteName('categorytree_edit'), [
-                    'id' => $category->getId()
-                ]);
+                return new JsonResponse(
+                    [
+                        'route'  => $this->buildRouteName('categorytree_edit'),
+                        'params' => ['id' => $category->getId()]
+                    ]
+                );
             }
         }
 

@@ -17,6 +17,10 @@ define(
                 'submit form.form-horizontal': 'submitForm',
                 'submit form#pim_available_attributes': 'clearCache'
             },
+
+            /**
+             * {@inheritdoc}
+             */
             renderTemplate: function () {
                 FormController.prototype.renderTemplate.apply(this, arguments);
 
@@ -39,6 +43,10 @@ define(
 
                 mediator.trigger('pim:reinit');
             },
+
+            /**
+             * Clear the variant group cache after variant group edition
+             */
             clearCache: function () {
                 FetcherRegistry.getFetcher('variant-group').clear();
             }

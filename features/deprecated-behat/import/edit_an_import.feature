@@ -53,9 +53,9 @@ Feature: Edit an import
       | title   | Are you sure you want to leave this page?                           |
       | content | You will lose changes to the import profile if you leave this page. |
 
-  @javascript @skip
+  @javascript
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "footwear_product_import" import job edit page
     When I fill in the following information:
       | Label | My import |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."

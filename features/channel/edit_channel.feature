@@ -26,12 +26,11 @@ Feature: Edit a channel
       | title   | Are you sure you want to leave this page?                    |
       | content | You will lose changes to the channel if you leave this page. |
 
-  @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "mobile" channel page
     When I fill in the following information:
       | Default label | My mobile |
-    Then I should see "There are unsaved changes."
+    Then I should see the text "There are unsaved changes."
 
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
     Given I am on the "tablet" channel page

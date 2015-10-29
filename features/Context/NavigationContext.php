@@ -526,7 +526,11 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeRedirectedOnThePage($page)
     {
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
-        $this->assertAddress($this->getPage($page)->getUrl());
+        $this->spin(function () use ($page) {
+            $this->assertAddress($this->getPage($page)->getUrl());
+
+            return true;
+        });
     }
 
     /**
@@ -666,7 +670,11 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheCategoryEditPage(Category $category)
     {
         $expectedAddress = $this->getPage('Category edit')->getUrl(['id' => $category->getId()]);
-        $this->assertAddress($expectedAddress);
+        $this->spin(function () use ($category) {
+            $this->assertAddress($expectedAddress);
+
+            return true;
+        });
     }
 
     /**
@@ -677,7 +685,11 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
     {
         $expectedAddress = $this->getPage('Category node creation')->getUrl(['id' => $category->getId()]);
-        $this->assertAddress($expectedAddress);
+        $this->spin(function () use ($category) {
+            $this->assertAddress($expectedAddress);
+
+            return true;
+        });
     }
 
     /**
@@ -791,7 +803,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     protected function assertAddress($expected)
     {
-        $expected = str_replace('#', '', $expected);
+        $expected      = str_replace('#', '', $expected);
         $actualFullUrl = str_replace('#', '', $this->getSession()->getCurrentUrl());
         $actualUrl     = $this->sanitizeUrl($actualFullUrl);
 
@@ -828,6 +840,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         if (false !== $urlWithoutGrid = strstr($filteredUrl, '|g/', true)) {
             $filteredUrl = $urlWithoutGrid;
         }
+
+        $filteredUrl = str_replace('//', '/', $filteredUrl);
 
         return $filteredUrl;
     }

@@ -13,9 +13,10 @@ define(
         'pim/error'
     ],
     function ($, _, BaseController, FormBuilder, ProductManager, UserContext, Dialog, PageTitle, Error) {
-
         return BaseController.extend({
-            id: 'product-edit-form',
+            /**
+             * {@inheritdoc}
+             */
             renderRoute: function (route) {
                 return ProductManager.get(route.params.id)
                     .then(_.bind(function (product) {
