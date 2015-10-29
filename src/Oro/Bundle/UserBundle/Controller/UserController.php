@@ -158,25 +158,22 @@ class UserController extends Controller
             if (count($viewRoute)) {
                 $closeButtonRoute = $viewRoute;
             } else {
-                $closeButtonRoute = array(
+                $closeButtonRoute = [
                     'route'      => 'oro_user_view',
-                    'parameters' => array('id' => $user->getId())
-                );
+                    'parameters' => ['id' => $user->getId()]
+                ];
             }
 
-            return $this->get('oro_ui.router')->actionRedirect(
-                array(
-                    'route'      => 'oro_user_update',
-                    'parameters' => array('id' => $user->getId()),
-                ),
-                $closeButtonRoute
-            );
+            return new JsonResponse([
+                'route'      => 'oro_user_update',
+                'params' => ['id' => $user->getId()],
+            ]);
         }
 
-        return array(
+        return [
             'form'      => $this->get('oro_user.form.user')->createView(),
             'editRoute' => $updateRoute
-        );
+        ];
     }
 
     /**

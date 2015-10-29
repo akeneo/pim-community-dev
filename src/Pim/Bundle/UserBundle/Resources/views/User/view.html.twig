@@ -178,4 +178,8 @@
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
   </div>
+
+    <script type="text/javascript">
+        window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+    </script>
 {% endblock content_data %}
