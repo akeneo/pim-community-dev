@@ -3,8 +3,6 @@
 define(
     ['jquery', 'module'],
     function ($, module) {
-        var $ = require('jquery');
-
         var controllers = module.config().controllers || {};
         var defaultController = module.config().defaultController;
 
