@@ -379,8 +379,8 @@ class Base extends Page
     }
 
     /**
-     * Drag an element on another one.
-     * Works better than the standard dragTo
+     * Drags an element on another one.
+     * Works better than the standard dragTo.
      *
      * @param NodeElement $element
      * @param NodeElement $dropZone
@@ -389,12 +389,12 @@ class Base extends Page
     {
         $session = $this->getSession()->getDriver()->getWebDriverSession();
 
-        $from = $session->element('xpath',$element->getXpath());
-        $to = $session->element('xpath',$dropZone->getXpath());
+        $from = $session->element('xpath', $element->getXpath());
+        $to = $session->element('xpath', $dropZone->getXpath());
 
-        $session->moveto(array('element' => $from->getID()));
-        $session->buttondown("");
-        $session->moveto(array('element' => $to->getID()));
-        $session->buttonup("");
+        $session->moveto(['element' => $from->getID()]);
+        $session->buttondown('');
+        $session->moveto(['element' => $to->getID()]);
+        $session->buttonup('');
     }
 }

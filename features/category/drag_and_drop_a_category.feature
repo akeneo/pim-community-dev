@@ -15,7 +15,7 @@ Feature: Drag and drop a category
     And I expand the "Winter collection" category
     And I drag the "Summer collection" category to the "Winter boots" category
     Then I should see the "Summer collection" category under the "Winter collection" category
-    Given I refresh current page
-    When I select the "2014 collection" tree
+    When I refresh current page
+    Then I select the "2014 collection" tree
     And I expand the "Winter collection" category
     Then I should see the "Summer collection" category under the "Winter collection" category
