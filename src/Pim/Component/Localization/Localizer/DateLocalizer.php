@@ -14,8 +14,6 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  */
 class DateLocalizer implements LocalizerInterface
 {
-    const DEFAULT_DATE_FORMAT = 'Y-m-d';
-
     /** @var array */
     protected $attributeTypes;
 

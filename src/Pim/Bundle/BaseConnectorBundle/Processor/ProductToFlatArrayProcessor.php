@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
-use Pim\Component\Localization\Localizer\DateLocalizer;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -49,7 +49,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     protected $decimalSeparators;
 
     /** @var string */
-    protected $dateFormat = DateLocalizer::DEFAULT_DATE_FORMAT;
+    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
 
     /** @var array */
     protected $dateFormats;

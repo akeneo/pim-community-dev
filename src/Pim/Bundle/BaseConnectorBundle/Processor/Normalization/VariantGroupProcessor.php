@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
-use Pim\Component\Localization\Localizer\DateLocalizer;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -44,7 +44,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
     protected $decimalSeparators;
 
     /** @var string */
-    protected $dateFormat = DateLocalizer::DEFAULT_DATE_FORMAT;
+    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
 
     /** @var array */
     protected $dateFormats;
