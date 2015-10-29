@@ -69,7 +69,7 @@ define(
 
                 //Flash messages:
                 if (window.flashMessages) {
-                    _.each(window.flashMessages, function(messages, type) {
+                    _.each(window.flashMessages, function (messages, type) {
                         _.each(messages, function (message) {
                             messenger.notificationFlashMessage(
                                 type,

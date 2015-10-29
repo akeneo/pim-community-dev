@@ -18,8 +18,10 @@ define([
             events: {
                 'submit form': 'submitForm'
             },
+
             /**
              * Handle form submission on the page
+             *
              * @param {Event} event
              *
              * @return {boolean}
@@ -39,7 +41,7 @@ define([
             },
 
             /**
-             * Handle after submit success
+             * Called after a successful submit (after a submitForm)
              *
              * @param {Object} xhr
              */

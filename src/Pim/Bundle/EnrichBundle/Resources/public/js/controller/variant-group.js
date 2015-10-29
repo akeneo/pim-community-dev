@@ -17,6 +17,7 @@ define(
                 'submit form.form-horizontal': 'submitForm',
                 'submit form#pim_available_attributes': 'clearCache'
             },
+
             /**
              * {@inheritdoc}
              */
@@ -42,6 +43,7 @@ define(
 
                 mediator.trigger('pim:reinit');
             },
+
             /**
              * Clear the variant group cache after variant group edition
              */

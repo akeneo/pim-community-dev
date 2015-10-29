@@ -10,6 +10,7 @@ define(
             renderRoute: function (route, path) {
                 return $.get(path).then(_.bind(this.renderTemplate, this)).promise();
             },
+
             /**
              * Add the given template to the current container
              *
