@@ -42,6 +42,7 @@ class Form extends Base
                 'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
                 'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
                 'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
+                'Save'                            => ['css' => 'button.btn-submit']
             ],
             $this->elements
         );
@@ -52,7 +53,7 @@ class Form extends Base
      */
     public function save()
     {
-        $this->pressButton('Save');
+        $this->getElement('Save')->click();
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
             $this->getSession()->wait($this->getTimeout(), '!$.active');
         }

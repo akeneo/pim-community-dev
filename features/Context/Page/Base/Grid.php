@@ -41,6 +41,7 @@ class Grid extends Index
                 'View selector'     => ['css' => '#view-selector'],
                 'Views list'        => ['css' => 'div.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'   => ['css' => '#select2-drop .select2-results'],
+                'Mass Edit'         => ['css' => '.mass-actions-panel .action i.icon-edit'],
             ],
             $this->elements
         );
@@ -1062,7 +1063,14 @@ class Grid extends Index
      */
     public function massEdit()
     {
-        $this->pressButton('Mass Edit');
+        $button = $this->getElement('Mass Edit');
+        $parent = $button->getParent();
+
+        if (null === $parent) {
+            throw new \InvalidArgumentException('"Mass edit" button not found');
+        }
+
+        $this->pressButton($parent->getText());
     }
 
     /**

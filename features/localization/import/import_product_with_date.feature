@@ -49,4 +49,4 @@ Feature: Import product information with date
       | destocking_date | 2014-10-28 |
     Then the product "SKU-005" should have the following values:
       | destocking_date | |
-    And I should see "Format for attribute \"destocking_date\" is not respected. Format expected: \"Y-m-d\""
+    And I should see "This type of value expects the use of the format Y-m-d for dates."
