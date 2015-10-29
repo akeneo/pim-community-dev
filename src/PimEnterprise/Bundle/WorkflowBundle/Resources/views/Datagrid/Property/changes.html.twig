@@ -1,7 +1,10 @@
 {% if value['values'] is defined %}
     {% for code, changes in value['values'] %}
         {% for change in changes %}
-            {% if is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ATTRIBUTES'), code) %}
+            {% if
+                is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ATTRIBUTES'), code) and
+                (not is_attribute_localizable(code) or is_locale_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ITEMS'), change.locale))
+            %}
             <table class="table table-bordered proposal-changes" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}">
                 <thead>
                     <tr>
