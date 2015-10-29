@@ -1048,7 +1048,9 @@ class Grid extends Index
      */
     public function massEdit()
     {
-        $this->pressButton('Mass Edit');
+        $button = $this->find('css', '.mass-actions-panel .action i.icon-edit');
+
+        $this->pressButton($button->getParent()->getText());
     }
 
     /**

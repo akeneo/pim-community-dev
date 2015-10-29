@@ -22,15 +22,26 @@ class Edit extends Form
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Locales dropdown' => array('css' => '#locale-switcher')
-            )
+            [
+                'Locales dropdown' => ['css' => '#locale-switcher'],
+                'Save'             => ['css' => 'button.btn-submit']
+            ]
         );
+    }
+
+    /**
+     * Press the save button
+     */
+    public function save()
+    {
+        $this->getElement('Save')->click();
+
+        $this->getSession()->wait($this->getTimeout(), '!$.active');
     }
 
     /**

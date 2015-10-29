@@ -38,3 +38,11 @@ users:
         last_name:     Harvey
         roles:         [ ROLE_USER ]
         groups:        [ Redactor ]
+    Julien:
+        catalogLocale: fr_FR
+        uiLocale:      fr_FR
+        catalogScope:  mobile
+        defaultTree:   winter_collection
+        last_name:     Février
+        roles:         [ ROLE_USER ]
+        groups:        [ Redactor ]
