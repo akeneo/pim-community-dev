@@ -6,7 +6,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Localizer\DateLocalizer;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
+use Pim\Component\Localization\Localizer\NumberLocalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -14,10 +16,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $productValueNormalizer,
-        LocalizerInterface $numberLocalizer,
-        LocalizerInterface $dateLocalizer
+        LocalizerRegistryInterface $localizerRegistry
     ) {
-        $this->beConstructedWith($productValueNormalizer, $numberLocalizer, $dateLocalizer);
+        $this->beConstructedWith($productValueNormalizer, $localizerRegistry);
     }
 
     function it_is_a_normalizer()
@@ -35,15 +36,16 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_number_with_decimal(
         $productValueNormalizer,
-        $numberLocalizer,
+        $localizerRegistry,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        NumberLocalizer $numberLocalizer
     ) {
         $options = ['decimal_separator' => ','];
         $productValue->getData()->willReturn(25.3);
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $numberLocalizer->supports('pim_catalog_number')->willReturn(true);
+        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '25.30']);
         $numberLocalizer->convertDefaultToLocalized('25.30', $options)->willReturn('25,30');
@@ -53,15 +55,16 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_number_without_decimal(
         $productValueNormalizer,
-        $numberLocalizer,
+        $localizerRegistry,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        NumberLocalizer $numberLocalizer
     ) {
         $options = ['decimal_separator' => ','];
         $productValue->getData()->willReturn(25);
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $numberLocalizer->supports('pim_catalog_number')->willReturn(true);
+        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '25']);
         $numberLocalizer->convertDefaultToLocalized('25', $options)->willReturn('25');
@@ -71,15 +74,16 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_number_without_decimal_as_string(
         $productValueNormalizer,
-        $numberLocalizer,
+        $localizerRegistry,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        NumberLocalizer $numberLocalizer
     ) {
         $options = ['decimal_separator' => ','];
         $productValue->getData()->willReturn('25');
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $numberLocalizer->supports('pim_catalog_number')->willReturn(true);
+        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '25']);
         $numberLocalizer->convertDefaultToLocalized('25', $options)->willReturn('25');
@@ -89,15 +93,16 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_null_number(
         $productValueNormalizer,
-        $numberLocalizer,
+        $localizerRegistry,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        NumberLocalizer $numberLocalizer
     ) {
         $options = ['decimal_separator' => ','];
         $productValue->getData()->willReturn(null);
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $numberLocalizer->supports('pim_catalog_number')->willReturn(true);
+        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '']);
         $numberLocalizer->convertDefaultToLocalized('', $options)->willReturn('');
@@ -107,15 +112,16 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_empty_number(
         $productValueNormalizer,
-        $numberLocalizer,
+        $localizerRegistry,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        NumberLocalizer $numberLocalizer
     ) {
         $options = ['decimal_separator' => ','];
         $productValue->getData()->willReturn('');
         $attribute->getAttributeType()->willReturn(AttributeTypes::NUMBER);
         $productValue->getAttribute()->willReturn($attribute);
-        $numberLocalizer->supports('pim_catalog_number')->willReturn(true);
+        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['number' => '']);
         $numberLocalizer->convertDefaultToLocalized('', $options)->willReturn('');
@@ -125,16 +131,17 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_product_value_which_is_not_a_number(
         $productValueNormalizer,
-        $numberLocalizer,
+        $localizerRegistry,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        NumberLocalizer $numberLocalizer
     ) {
         $options = ['decimal_separator' => ','];
         $productValue->getData()->willReturn('shoes');
         $attribute->getAttributeType()->willReturn(AttributeTypes::TEXT);
         $productValue->getAttribute()->willReturn($attribute);
-        $numberLocalizer->supports('pim_catalog_number')->willReturn(true);
-        $numberLocalizer->supports(Argument::any())->willReturn(false);
+        $localizerRegistry->getProductValueLocalizer('pim_catalog_number')->willReturn($numberLocalizer);
+        $localizerRegistry->getProductValueLocalizer(Argument::any())->willReturn(null);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['simple-select' => 'shoes']);
         $numberLocalizer->convertDefaultToLocalized('', $options)->shouldNotBeCalled();
@@ -144,15 +151,16 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_date(
         $productValueNormalizer,
-        $dateLocalizer,
+        $localizerRegistry,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        DateLocalizer $dateLocalizer
     ) {
         $options = ['date_format' => 'd/m/Y'];
         $productValue->getData()->willReturn(new \DateTime('2000-10-28'));
         $attribute->getAttributeType()->willReturn(AttributeTypes::DATE);
         $productValue->getAttribute()->willReturn($attribute);
-        $dateLocalizer->supports('pim_catalog_date')->willReturn(true);
+        $localizerRegistry->getProductValueLocalizer('pim_catalog_date')->willReturn($dateLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['date' => '2000-10-28']);
         $dateLocalizer->convertDefaultToLocalized('2000-10-28', $options)->willReturn('28/10/2000');
@@ -162,15 +170,16 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_empty_date(
         $productValueNormalizer,
-        $dateLocalizer,
+        $localizerRegistry,
         ProductValueInterface $productValue,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        DateLocalizer $dateLocalizer
     ) {
         $options = ['date_format' => 'd/m/Y'];
         $productValue->getData()->willReturn('');
         $attribute->getAttributeType()->willReturn(AttributeTypes::DATE);
         $productValue->getAttribute()->willReturn($attribute);
-        $dateLocalizer->supports('pim_catalog_date')->willReturn(true);
+        $localizerRegistry->getProductValueLocalizer('pim_catalog_date')->willReturn($dateLocalizer);
 
         $productValueNormalizer->normalize($productValue, null, $options)->willReturn(['date' => '']);
         $dateLocalizer->convertDefaultToLocalized('', $options)->willReturn('');

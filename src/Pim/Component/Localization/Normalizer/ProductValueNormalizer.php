@@ -3,7 +3,7 @@
 namespace Pim\Component\Localization\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -21,25 +21,19 @@ class ProductValueNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $valuesNormalizer;
 
-    /** @var LocalizerInterface */
-    protected $numberLocalizer;
-
-    /** @var LocalizerInterface */
-    protected $dateLocalizer;
+    /** @var LocalizerRegistryInterface */
+    protected $localizerRegistry;
 
     /**
-     * @param NormalizerInterface $valuesNormalizer
-     * @param LocalizerInterface  $numberLocalizer
-     * @param LocalizerInterface  $dateLocalizer
+     * @param NormalizerInterface        $valuesNormalizer
+     * @param LocalizerRegistryInterface $localizerRegistry
      */
     public function __construct(
         NormalizerInterface $valuesNormalizer,
-        LocalizerInterface $numberLocalizer,
-        LocalizerInterface $dateLocalizer
+        LocalizerRegistryInterface $localizerRegistry
     ) {
-        $this->valuesNormalizer = $valuesNormalizer;
-        $this->numberLocalizer  = $numberLocalizer;
-        $this->dateLocalizer    = $dateLocalizer;
+        $this->valuesNormalizer  = $valuesNormalizer;
+        $this->localizerRegistry = $localizerRegistry;
     }
 
     /**
@@ -49,7 +43,9 @@ class ProductValueNormalizer implements NormalizerInterface
     {
         $result = $this->valuesNormalizer->normalize($entity, $format, $context);
 
-        $localizer = $this->getLocalizer($entity);
+        $type = $entity->getAttribute()->getAttributeType();
+
+        $localizer = $this->localizerRegistry->getProductValueLocalizer($type);
         if (null !== $localizer) {
             foreach ($result as $field => $data) {
                 $result[$field] = $localizer->convertDefaultToLocalized($data, $context);
@@ -65,26 +61,5 @@ class ProductValueNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductValueInterface && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Returns a localizer from the entity type. If no localizer can be found, returns null.
-     *
-     * @param mixed $entity
-     *
-     * @return LocalizerInterface|null
-     */
-    protected function getLocalizer($entity)
-    {
-        $type = $entity->getAttribute()->getAttributeType();
-        $localizers = [$this->numberLocalizer, $this->dateLocalizer];
-
-        foreach ($localizers as $localizer) {
-            if ($localizer->supports($type)) {
-                return $localizer;
-            }
-        }
-
-        return null;
     }
 }

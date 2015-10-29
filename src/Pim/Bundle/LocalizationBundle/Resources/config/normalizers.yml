@@ -27,7 +27,6 @@ services:
         class: %pim_localization.normalizer.product_value.class%
         arguments:
             - '@pim_serializer.normalizer.flat.product_value'
-            - '@pim_localization.localizer.number'
-            - '@pim_localization.localizer.date'
+            - '@pim_localization.localizer.registry'
         tags:
             - { name: pim_serializer.normalizer, priority: 95 }
