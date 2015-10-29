@@ -347,7 +347,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         }
 
         // Make sure the AJAX calls are fired up before checking the condition
-        //TODO: change thie one?
         $this->getSession()->wait(100, false);
 
         $this->getSession()->wait($timeout, $condition);

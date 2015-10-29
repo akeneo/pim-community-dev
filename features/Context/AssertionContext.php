@@ -51,7 +51,7 @@ class AssertionContext extends RawMinkContext
             $this->assertSession()->pageTextNotContains($text);
 
             return true;
-        }, 5);
+        });
     }
 
     /**

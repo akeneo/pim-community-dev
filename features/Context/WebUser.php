@@ -445,7 +445,7 @@ class WebUser extends RawMinkContext
             $expectedLinkCount = count($table->getHash());
 
             return $linkCount === $expectedLinkCount;
-        }, 20, sprintf('Expected to see %d items in the locale switcher, saw %d', $expectedLinkCount, $linkCount));
+        }, sprintf('Expected to see %d items in the locale switcher, saw %d', $expectedLinkCount, $linkCount));
 
         foreach ($table->getHash() as $data) {
             $this->spin(
@@ -457,7 +457,6 @@ class WebUser extends RawMinkContext
                         $copy
                     );
                 },
-                5,
                 sprintf(
                     'Could not find locale "%s %s" in the locale switcher',
                     $data['locale'],
@@ -1648,7 +1647,7 @@ class WebUser extends RawMinkContext
     {
         $switch = $this->spin(function () {
             return $this->getCurrentPage()->findById('nested_switch_input');
-        }, 5);
+        });
 
         $on = 'en' === $status;
         if ($switch->isChecked() !== $on) {
@@ -2198,7 +2197,7 @@ class WebUser extends RawMinkContext
 
         $link = $this->spin(function () use ($attribute, $cell) {
             return $cell->find('css', sprintf(".missing-attributes [data-attribute='%s']", $attribute));
-        }, 20, sprintf("Can't find missing '%s' value link for %s/%s", $attribute, $locale, $channel));
+        }, sprintf("Can't find missing '%s' value link for %s/%s", $attribute, $locale, $channel));
 
         $link->click();
     }

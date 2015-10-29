@@ -35,11 +35,11 @@ class Base extends Page
     /**
      * {@inheritdoc}
      */
-    public function getElement($name, $timeout = 20, $message = 'no message')
+    public function getElement($name, $message = 'no message')
     {
         return $this->spin(function () use ($name) {
             return parent::getElement($name);
-        }, $timeout, $message);
+        }, $message);
     }
 
     /**

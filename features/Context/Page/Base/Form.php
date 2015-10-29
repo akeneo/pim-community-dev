@@ -143,7 +143,7 @@ class Form extends Base
         try {
             $node = $this->spin(function () use ($tab) {
                 return $this->getElement('Form tabs')->find('css', sprintf('a:contains("%s")', $tab));
-            }, 5);
+            });
         } catch (\Exception $e) {
             $node = null;
         }
@@ -507,7 +507,7 @@ class Form extends Base
 
                 return $choices;
             }
-        }, 10);
+        });
 
         if ($isExpected) {
             foreach ($choices as $choice) {

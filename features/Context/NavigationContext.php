@@ -718,7 +718,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $pinButton = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.minimize-button');
-        }, 10);
+        });
 
         $pinButton->click();
     }
@@ -732,7 +732,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $pinnedItem = $this->spin(function () use ($label) {
             return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
-        }, 10);
+        });
 
         $pinnedItem->click();
     }
