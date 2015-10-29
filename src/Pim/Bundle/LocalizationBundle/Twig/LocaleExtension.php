@@ -32,6 +32,8 @@ class LocaleExtension extends \Twig_Extension
     }
 
     /**
+     * Display the name of a locale by its code, like English (United States) when you provide en_US
+     *
      * @param string $code
      */
     public function prettyLocaleName($code)

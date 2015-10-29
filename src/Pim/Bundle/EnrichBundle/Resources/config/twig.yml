@@ -1,12 +1,11 @@
 parameters:
-    pim_enrich.twig.locale_extension.class:            Pim\Bundle\EnrichBundle\Twig\LocaleExtension
-    pim_enrich.twig.category_extension.class:          Pim\Bundle\EnrichBundle\Twig\CategoryExtension
-    pim_enrich.twig.channel_extension.class:           Pim\Bundle\EnrichBundle\Twig\ChannelExtension
-    pim_enrich.twig.view_element_extension.class:      Pim\Bundle\EnrichBundle\Twig\ViewElementExtension
-    pim_enrich.twig.attribute_extension.class:         Pim\Bundle\EnrichBundle\Twig\AttributeExtension
-    pim_enrich.twig.object_class_extension.class:      Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
-    pim_enrich.twig.version_extension.class:           Pim\Bundle\EnrichBundle\Twig\VersionExtension
-    pim_enrich.twig.attribute_granted_extension.class: Pim\Bundle\EnrichBundle\Twig\AttributeGrantedExtension
+    pim_enrich.twig.locale_extension.class:       Pim\Bundle\EnrichBundle\Twig\LocaleExtension
+    pim_enrich.twig.category_extension.class:     Pim\Bundle\EnrichBundle\Twig\CategoryExtension
+    pim_enrich.twig.channel_extension.class:      Pim\Bundle\EnrichBundle\Twig\ChannelExtension
+    pim_enrich.twig.view_element_extension.class: Pim\Bundle\EnrichBundle\Twig\ViewElementExtension
+    pim_enrich.twig.attribute_extension.class:    Pim\Bundle\EnrichBundle\Twig\AttributeExtension
+    pim_enrich.twig.object_class_extension.class: Pim\Bundle\EnrichBundle\Twig\ObjectClassExtension
+    pim_enrich.twig.version_extension.class:      Pim\Bundle\EnrichBundle\Twig\VersionExtension
 
 services:
     # Twig extensions
@@ -46,14 +45,6 @@ services:
         class: %pim_enrich.twig.attribute_extension.class%
         arguments:
             - %pim_enrich.attribute_icons%
-        tags:
-            - { name: twig.extension }
-
-    pim_enrich.twig.attribute_granted_extension:
-        class: %pim_enrich.twig.attribute_granted_extension.class%
-        arguments:
-            - '@security.authorization_checker'
-            - '@pim_catalog.repository.attribute'
         tags:
             - { name: twig.extension }
 
