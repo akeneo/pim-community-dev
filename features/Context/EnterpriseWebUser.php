@@ -159,7 +159,7 @@ class EnterpriseWebUser extends BaseWebUser
                     'css',
                     sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $tag)
                 );
-            }, 5);
+            });
             $item->click();
         }
     }
