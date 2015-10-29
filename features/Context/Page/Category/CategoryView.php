@@ -44,7 +44,7 @@ abstract class CategoryView extends Form
     {
         $elt = $this->spin(function () use ($category) {
             return $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
-        }, 10, sprintf('Unable to find category "%s" in the tree', $category));
+        }, sprintf('Unable to find category "%s" in the tree', $category));
 
         return $elt;
     }

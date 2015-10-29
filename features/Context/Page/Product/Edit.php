@@ -151,7 +151,6 @@ class Edit extends Form
     {
         $dropdown = $this->getElement(
             $copy ? 'Copy locales dropdown' : 'Locales dropdown',
-            20,
             'Could not find locale switcher'
         );
 
@@ -162,7 +161,7 @@ class Edit extends Form
 
         $option = $this->spin(function () use ($dropdown, $localeCode) {
             return $dropdown->find('css', sprintf('a[data-locale="%s"]', $localeCode));
-        }, 20, sprintf('Could not find locale "%s" in switcher', $localeCode));
+        }, sprintf('Could not find locale "%s" in switcher', $localeCode));
         $option->click();
     }
 
@@ -176,7 +175,6 @@ class Edit extends Form
     {
         $dropdown = $this->getElement(
             $copy ? 'Copy channel dropdown' : 'Channel dropdown',
-            20,
             'Could not find scope switcher'
         );
 
@@ -187,7 +185,7 @@ class Edit extends Form
 
         $option = $this->spin(function () use ($dropdown, $scopeCode) {
             return $dropdown->find('css', sprintf('a[data-scope="%s"]', $scopeCode));
-        }, 20, sprintf('Could not find scope "%s" in switcher', $scopeCode));
+        }, sprintf('Could not find scope "%s" in switcher', $scopeCode));
         $option->click();
     }
 
@@ -201,12 +199,12 @@ class Edit extends Form
         $dropdown = $this->getElement('Copy source dropdown');
         $toggle   = $this->spin(function () use ($dropdown) {
             return $dropdown->find('css', '.dropdown-toggle');
-        }, 20, 'Could not find copy source switcher.');
+        }, 'Could not find copy source switcher.');
         $toggle->click();
 
         $option = $this->spin(function () use ($dropdown, $source) {
             return $dropdown->find('css', sprintf('a[data-source="%s"]', $source));
-        }, 20, sprintf('Could not find source "%s" in switcher', $source));
+        }, sprintf('Could not find source "%s" in switcher', $source));
         $option->click();
     }
 
@@ -261,7 +259,7 @@ class Edit extends Form
      */
     public function fillField($label, $value, Element $element = null)
     {
-        $this->getSession()->wait(5000);
+        $this->getSession()->wait($this->getTimeout());
         $isLabel = false;
 
         try {
@@ -387,7 +385,7 @@ class Edit extends Form
 
         $field = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.field-input input, .field-input textarea');
-        }, 10);
+        });
 
         return $field;
     }
@@ -411,7 +409,7 @@ class Edit extends Form
         try {
             $labelNode = $this->spin(function () use ($label) {
                 return $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
-            }, 10);
+            });
         } catch (\Exception $e) {
             throw new ElementNotFoundException($this->getSession());
         }
@@ -447,11 +445,11 @@ class Edit extends Form
         if ($element) {
             $label = $this->spin(function () use ($element, $labelContent) {
                 return $element->find('css', sprintf('label:contains("%s")', $labelContent));
-            }, 10, sprintf('unable to find label %s in element : %s', $labelContent, $element->getHtml()));
+            }, sprintf('unable to find label %s in element : %s', $labelContent, $element->getHtml()));
         } else {
             $label = $this->spin(function () use ($labelContent) {
                 return $this->find('css', sprintf('label:contains("%s")', $labelContent));
-            }, 10, sprintf('unable to find label %s', $labelContent));
+            }, sprintf('unable to find label %s', $labelContent));
         }
 
         if (!$label) {
@@ -637,7 +635,7 @@ class Edit extends Form
 
         $link = $this->spin(function () use ($fieldContainer) {
             return $fieldContainer->find('css', 'a.select2-choice');
-        }, 20, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
+        }, sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()));
 
 
         $link->click();
@@ -666,7 +664,7 @@ class Edit extends Form
     {
         $input = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', 'input[type="hidden"].select-field');
-        }, 5);
+        });
 
         return $input->getValue();
     }
@@ -703,7 +701,7 @@ class Edit extends Form
                     'css',
                     sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $value)
                 );
-            }, 5);
+            });
 
             // Select the value in the displayed dropdown
             if (null !== $item) {
@@ -731,7 +729,7 @@ class Edit extends Form
     {
         $input = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', 'input[type="hidden"].select-field');
-        }, 5);
+        });
 
         return '' === $input->getValue() ? [] : explode(',', $input->getValue());
     }
@@ -747,7 +745,7 @@ class Edit extends Form
     {
         $widget = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.field-input .media-uploader');
-        }, 5);
+        });
 
         $filenameNode = $widget->find('css', '.filename');
 
@@ -767,7 +765,7 @@ class Edit extends Form
     {
         $widget = $this->spin(function () use ($fieldContainer) {
             return $fieldContainer->find('css', '.field-input .switch.has-switch');
-        }, 5);
+        });
 
         if ($widget->find('css', '.switch-on')) {
             return true;
@@ -853,7 +851,7 @@ class Edit extends Form
 
                 $item = $this->spin(function () use ($select) {
                     return $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
-                }, 5);
+                });
             }
 
             if (!$item) {
@@ -880,7 +878,7 @@ class Edit extends Form
         $input  = $subContainer->find('css', '.data');
         $select = $this->spin(function () use ($subContainer) {
             return $subContainer->find('css', '.select2-container');
-        }, 5);
+        });
 
         return sprintf(
             '%s %s',
@@ -974,7 +972,7 @@ class Edit extends Form
         try {
             $button = $this->spin(function () use ($field) {
                 return $this->find('css', sprintf('.field-container:contains("%s") .clear-field', $field));
-            }, 5);
+            });
         } catch (\Exception $e) {
             $button = null;
         }
@@ -1036,7 +1034,7 @@ class Edit extends Form
         try {
             $switcher = $this->spin(function () {
                 return $this->find('css', '.status-switcher');
-            }, 5);
+            });
         } catch (\Exception $e) {
             $switcher = null;
         }
@@ -1067,7 +1065,7 @@ class Edit extends Form
      */
     public function findCompletenessContent()
     {
-        return $this->getElement('Completeness', 20, 'Completeness content not found !!!');
+        return $this->getElement('Completeness', 'Completeness content not found !!!');
     }
 
     /**
@@ -1466,10 +1464,10 @@ class Edit extends Form
     {
         $startCopyBtn = $this->spin(function () {
             return $this->getElement('Comparison dropdown')->find('css', 'div.start-copying');
-        }, 5);
+        });
 
         $startCopyBtn->click();
-        $this->getSession()->wait(500);
+        $this->getSession()->wait($this->getTimeout());
     }
 
     /**
@@ -1487,7 +1485,7 @@ class Edit extends Form
             // Is panel already open?
             $this->spin(function () {
                 return $this->getElement('Copy actions')->find('css', '.stop-copying');
-            }, 20, "Copy panel seems neither open nor closed.");
+            }, "Copy panel seems neither open nor closed.");
         }
 
         $this->switchLocale($localeCode, true);
@@ -1584,7 +1582,7 @@ class Edit extends Form
     {
         $this->spin(function () {
             return $this->getElement('Progress bar');
-        }, 30);
+        });
     }
 
     /**
@@ -1635,7 +1633,7 @@ class Edit extends Form
 
         $groupNode = $this->spin(function () use ($groups, $group) {
             return $groups->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
-        }, 20, sprintf("Can't find attribute group '%s'", $group));
+        }, sprintf("Can't find attribute group '%s'", $group));
 
         return $groupNode->getParent()->getParent();
     }
