@@ -98,13 +98,39 @@ abstract class CategoryView extends Form
      *
      * @return CategoryView
      */
+    /*
     public function dragCategoryTo($category1, $category2)
     {
         $category1 = $this->findCategoryInTree($category1);
         $category2 = $this->findCategoryInTree($category2);
 
-        $category1->dragTo($category2);
+        $session = $this->getSession()->getDriver()->getWebDriverSession();
+
+        $from = $session->element('xpath',$category1->getXpath());
+        $to = $session->element('xpath',$category2->getXpath());
+
+        $session->moveto(array('element' => $from->getID()));
+        $session->buttondown("");
+        $session->moveto(array('element' => $to->getID()));
+        $session->buttonup("");
 
         return $this;
+    }*/
+
+    /**
+     * @param string $category1
+     * @param string $category2
+     *
+     * @return CategoryView
+     */
+    public function dragCategoryTo($category1, $category2)
+    {
+        $category1 = $this->findCategoryInTree($category1);
+        $category2 = $this->findCategoryInTree($category2);
+
+        $this->dragElementTo($category1, $category2);
+
+        return $this;
+
     }
 }
