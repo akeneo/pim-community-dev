@@ -5,6 +5,9 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Manager;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
@@ -50,6 +53,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
     ) {
         $productDraft->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
         $productDraft->getProduct()->willReturn($product);
+        $productDraft->getId()->willReturn(42);
 
         $dispatcher
             ->dispatch(
@@ -70,6 +74,135 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->approve($productDraft);
+    }
+
+    function it_does_not_remove_new_draft_on_approve(
+        $workingCopySaver,
+        $applier,
+        $dispatcher,
+        ProductDraftInterface $productDraft,
+        ProductInterface $product,
+        $remover
+    ) {
+        $productDraft->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
+        $productDraft->getProduct()->willReturn($product);
+        $productDraft->getId()->willReturn(null);
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::PRE_APPROVE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+
+        $applier->apply($product, $productDraft)->shouldBeCalled();
+        $workingCopySaver->save($product)->shouldBeCalled();
+        $remover->remove(Argument::any(), Argument::any())->shouldNotBeCalled();
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::POST_APPROVE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+
+        $this->approve($productDraft);
+    }
+
+    function it_applies_changes_to_the_product_when_partially_approve_a_product_draft(
+        $workingCopySaver,
+        $factory,
+        $applier,
+        $dispatcher,
+        ProductDraftInterface $productDraft,
+        ProductDraftInterface $temporaryDraft,
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        $remover,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
+        $productDraft->getProduct()->willReturn($product);
+        $productDraft->getAuthor()->willReturn('Mary');
+        $productDraft->getChangeForAttribute($attribute, $channel, $locale)->willReturn('new name');
+        $productDraft->removeChangeForAttribute($attribute, $channel, $locale)->shouldBeCalled();
+        $productDraft->hasChanges()->willReturn(true);
+
+        $attribute->getLabel()->willReturn('Name');
+        $attribute->getCode()->willReturn('name');
+        $temporaryDraft->setChanges(['values' => ['name' => [['locale' => null, 'scope' => null, 'data' => 'new name']]]])->shouldBeCalled();
+        $temporaryDraft->getProduct()->willReturn($product);
+        $temporaryDraft->getId()->willReturn(null);
+
+        $factory->createProductDraft($product, 'Mary')->willReturn($temporaryDraft);
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::PRE_APPROVE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+
+        $applier->apply($product, $temporaryDraft)->shouldBeCalled();
+        $workingCopySaver->save($product)->shouldBeCalled();
+        $remover->remove(Argument::any(), Argument::any())->shouldNotBeCalled();
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::POST_APPROVE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+
+        $this->partialApprove($productDraft, $attribute, $channel, $locale);
+    }
+
+    function it_applies_changes_and_remove_the_draft_when_partially_approve_a_product_draft(
+        $workingCopySaver,
+        $factory,
+        $applier,
+        $dispatcher,
+        ProductDraftInterface $productDraft,
+        ProductDraftInterface $temporaryDraft,
+        AttributeInterface $attribute,
+        ProductInterface $product,
+        $remover,
+        ChannelInterface $channel,
+        LocaleInterface $locale
+    ) {
+        $productDraft->getProduct()->willReturn($product);
+        $productDraft->getAuthor()->willReturn('Mary');
+        $productDraft->getChangeForAttribute($attribute, $channel, $locale)->willReturn('new name');
+        $productDraft->removeChangeForAttribute($attribute, $channel, $locale)->shouldBeCalled();
+        $productDraft->hasChanges()->willReturn(false);
+
+        $attribute->getLabel()->willReturn('Name');
+        $attribute->getCode()->willReturn('name');
+        $temporaryDraft->setChanges(['values' => ['name' => [['locale' => null, 'scope' => null, 'data' => 'new name']]]])->shouldBeCalled();
+        $temporaryDraft->getProduct()->willReturn($product);
+        $temporaryDraft->getId()->willReturn(null);
+
+        $factory->createProductDraft($product, 'Mary')->willReturn($temporaryDraft);
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::PRE_APPROVE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+
+        $applier->apply($product, $temporaryDraft)->shouldBeCalled();
+        $workingCopySaver->save($product)->shouldBeCalled();
+        $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::POST_APPROVE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
+
+        $this->partialApprove($productDraft, $attribute, $channel, $locale);
     }
 
     function it_marks_as_in_progress_product_draft_which_is_ready_when_refusing_it(

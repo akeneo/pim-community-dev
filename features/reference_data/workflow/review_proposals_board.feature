@@ -21,8 +21,8 @@ Feature: Review proposals on board
     And I am logged in as "Julia"
     When I am on the proposals page
     Then I should see the following proposals:
-      | product_label | author | "Lace color" base | "Lace color" changed | status               |
-      | my-hoody      | Mary   |                   | Black                | Waiting for approval |
+      | product  | author | attribute  | original | new   |
+      | my-hoody | Mary   | lace_color |          | Black |
 
   Scenario: Successfully review a proposal with a simple select value changed
     Given the product:
@@ -36,8 +36,8 @@ Feature: Review proposals on board
     And I am logged in as "Julia"
     When I am on the proposals page
     Then I should see the following proposals:
-      | product_label | author | "Lace color" base | "Lace color" changed | status               |
-      | my-hoody      | Mary   | Red               | Black                | Waiting for approval |
+      | product  | author | attribute  | original | new   |
+      | my-hoody | Mary   | lace_color | Red      | Black |
 
   Scenario: Successfully review a proposal with a new multi select value
     Given the product:
@@ -51,8 +51,8 @@ Feature: Review proposals on board
     And I am logged in as "Julia"
     When I am on the proposals page
     Then I should see the following proposals:
-      | product_label | author | "Sleeve fabric" insert | status               |
-      | my-hoody      | Mary   | Neoprene               | Waiting for approval |
+      | product  | author | attribute     | original | new            |
+      | my-hoody | Mary   | sleeve_fabric |          | Nylon;Neoprene |
 
   Scenario: Successfully review a proposal with several reference data value changed
     Given the product:
@@ -68,5 +68,6 @@ Feature: Review proposals on board
     And I am logged in as "Julia"
     When I am on the proposals page
     Then I should see the following proposals:
-      | product_label | author | "Sleeve fabric" base | "Sleeve fabric" changed | "Lace color" base | "Lace color" changed | status               |
-      | my-hoody      | Mary   | Nylon                | PVC; Neoprene           | Red               | Black                | Waiting for approval |
+      | product  | author | attribute     | original | new          |
+      | my-hoody | Mary   | sleeve_fabric | Nylon    | PVC;Neoprene |
+      | my-hoody | Mary   | lace_color    | Red      | Black        |

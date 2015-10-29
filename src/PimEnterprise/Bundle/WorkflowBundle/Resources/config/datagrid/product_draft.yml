@@ -2,6 +2,8 @@ datagrid:
     product-draft-grid:
         options:
             entityHint: product_draft
+            requireJSModules:
+                - pimee/proposal/partial-proposal-builder
         source:
             type: pimee_datasource_product_draft
             entity: %pimee_workflow.model.product_draft.class%

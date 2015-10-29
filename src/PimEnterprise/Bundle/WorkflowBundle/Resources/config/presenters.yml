@@ -1,9 +1,10 @@
 parameters:
     pimee_workflow.twig.extension.product_draft_changes.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProductDraftChangesExtension
     pimee_workflow.twig.extension.product_value_presenter.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProductValuePresenterExtension
-    pimee_workflow.renderer.html.simple_list.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\SimpleList
+    pimee_workflow.rendering.diff_factory.class: PimEnterprise\Bundle\WorkflowBundle\Rendering\DiffFactory
+    pimee_workflow.renderer.html.base_only.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\BaseOnly
+    pimee_workflow.renderer.html.changed_only.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\ChangedOnly
     pimee_workflow.product_draft_renderer.class: PimEnterprise\Bundle\WorkflowBundle\Rendering\PhpDiffRenderer
-    pimee_workflow.presenter.attribute.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\AttributePresenter
     pimee_workflow.presenter.text.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\TextPresenter
     pimee_workflow.presenter.metric.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter
     pimee_workflow.presenter.date.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter
@@ -30,8 +31,8 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pimee_workflow.product_draft_renderer'
             - '@translator'
-            - '@pim_catalog.manager.product'
-            - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.factory.attribute'
         tags:
             - { name: twig.extension }
 
@@ -45,11 +46,24 @@ services:
     pimee_workflow.product_draft_renderer:
         class: %pimee_workflow.product_draft_renderer.class%
         arguments:
-            - '@pimee_workflow.renderer.html.simple_list'
+            - @pimee_workflow.renderer.html.base_only
+            - @pimee_workflow.renderer.html.changed_only
+            - @pimee_workflow.rendering.diff_factory
 
-    pimee_workflow.renderer.html.simple_list:
+    ##
+    # Renderers
+    ##
+    pimee_workflow.rendering.diff_factory:
         public: false
-        class: %pimee_workflow.renderer.html.simple_list.class%
+        class: %pimee_workflow.rendering.diff_factory.class%
+
+    pimee_workflow.renderer.html.base_only:
+        public: false
+        class: %pimee_workflow.renderer.html.base_only.class%
+
+    pimee_workflow.renderer.html.changed_only:
+        public: false
+        class: %pimee_workflow.renderer.html.changed_only.class%
 
     ##
     # Presenters
@@ -57,12 +71,7 @@ services:
     pimee_workflow.presenter.default:
         class: %pimee_workflow.presenter.default.class%
         tags:
-            - { name: pimee_workflow.presenter, priority: -128 }
-
-    pimee_workflow.presenter.attribute:
-        class: %pimee_workflow.presenter.attribute.class%
-        tags:
-            - { name: pimee_workflow.presenter }
+            - { name: pimee_workflow.presenter, priority: 255 }
 
     pimee_workflow.presenter.text:
         class: %pimee_workflow.presenter.text.class%
@@ -108,7 +117,7 @@ services:
         arguments:
             - '@router'
         tags:
-            - { name: pimee_workflow.presenter, priority: -64 }
+            - { name: pimee_workflow.presenter }
 
     pimee_workflow.presenter.image:
         class: %pimee_workflow.presenter.image.class%

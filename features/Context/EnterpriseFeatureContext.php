@@ -67,16 +67,11 @@ class EnterpriseFeatureContext extends FeatureContext
 
     /**
      * Expects table as :
-     * | product_label | author | "Lace color" base | "Lace color" changed | status               |
-     * | my-hoody      | mary   |                   | Black                | Waiting for approval |
-     * or
-     * | product label | author | "Lace color" insert | status               |
-     * | my-hoody      | mary   | Black               | Waiting for approval |
+     * | product  | author | attribute  | original | new         |
+     * | my-hoody | Mary   | Lace color |          | Black;White |
      *
-     * There are three types of changes displayed in proposals :
-     *     "base" is the replaced data
-     *     "changed" is the new data
-     *     "insert" is an inserted data (there was no attribute before for example)
+     * Note: As values are not ordered you can add multiple values using semicolon separator.
+     * Warning: we split the results with space separator so values with spaces will fail.
      *
      * @Given /^I should see the following proposals:$/
      *
@@ -84,32 +79,51 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeTheFollowingProposals(TableNode $table)
     {
-        foreach ($table->getHash() as $row) {
-            $expectedGenericValues = [];
-            $expectedChanges = [];
-            foreach ($row as $key => $value) {
-                switch (strtolower($key)) {
-                    case 'product_label':
-                    case 'product label':
-                        $expectedGenericValues['product label'] = $value;
-                        break;
-                    case 'author':
-                        $expectedGenericValues['author'] = $value;
-                        break;
-                    case 'status':
-                        $expectedGenericValues['status'] = $value;
-                        break;
-                    default:
-                        $expectedChanges[] = $this->getExpectedChanges($key, $value);
-                        break;
-                }
+        foreach ($table->getHash() as $hash) {
+
+            $page = $this->getSubcontext('navigation')->getCurrentPage();
+
+            // Assert the change is good
+            $change = $this->spin(function () use ($page, $hash) {
+                return $page->find('css', sprintf(
+                    'table.proposal-changes[data-product="%s"][data-attribute="%s"][data-author="%s"]',
+                    $hash['product'],
+                    $hash['attribute'],
+                    $hash['author']
+                ));
+            }, 20, sprintf('Unable to find the change on the proposal for attribute "%s"', $hash['attribute']));
+
+            $original = $this->spin(function () use ($change) {
+                return $change->find('css', '.original-value');
+            }, 20, 'Unable to find the original value of the change');
+
+            $new = $this->spin(function () use ($change) {
+                return $change->find('css', '.new-value');
+            }, 20, 'Unable to find the new value of the change');
+
+            $originalExpectedValues = explode(';', $hash['original']);
+            $newExpectedValues = explode(';', $hash['new']);
+            $originalValues = explode(' ', $original->getText());
+            $newValues = explode(' ', $new->getText());
+
+            foreach ($originalExpectedValues as $originalExpectedValue) {
+                assertContains($originalExpectedValue, $originalValues, sprintf(
+                    '"%s" original value not found in "%s".',
+                    $originalExpectedValue,
+                    json_encode($originalValues)
+                ));
             }
 
-            $proposalRow     = $this->getProposalByProductLabel($expectedGenericValues['product label']);
-            $actualAttrParts = $this->getAttributePartFromProposalRow($proposalRow);
+            foreach ($newExpectedValues as $newExpectedValue) {
+                assertContains($newExpectedValue, $newValues, sprintf(
+                    '"%s" original value not found in "%s".',
+                    $newExpectedValue,
+                    json_encode($newValues)
+                ));
+            }
 
-            $this->assertProposalGenericValues($expectedGenericValues);
-            $this->assertProposalChanges($actualAttrParts, $expectedChanges);
+            assertEquals(count($originalExpectedValues), count($originalValues));
+            assertEquals(count($newExpectedValues), count($newValues));
         }
     }
 
@@ -540,127 +554,6 @@ class EnterpriseFeatureContext extends FeatureContext
         });
 
         $removeButton->click();
-    }
-
-    /**
-     * @param array $expectedGenericValues All values that are not in changes and indexed by their column name
-     *
-     * @throws ExpectationException
-     */
-    protected function assertProposalGenericValues(array $expectedGenericValues)
-    {
-        $page = $this->getSubcontext('navigation')->getCurrentPage();
-        foreach ($expectedGenericValues as $column => $value) {
-            $actualValue = $page->getColumnValue($column, $expectedGenericValues['product label']);
-            if ($actualValue !== $value) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see %s "%s" but got "%s".', $column, $value, $actualValue)
-                );
-            }
-        }
-    }
-
-    /**
-     * @param array $actualAttrParts see getActualAttributePart()
-     * @param array $expectedChanges see getExpectingChanges()
-     *
-     * @throws ExpectationException
-     */
-    protected function assertProposalChanges(array $actualAttrParts, array $expectedChanges)
-    {
-        foreach ($expectedChanges as $expectedAttrChange) {
-            $actualAttrDiff = $actualAttrParts[$expectedAttrChange['attribute']];
-            if (null === $actualAttrDiff) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see field "%s" in changes.', $expectedAttrChange['attribute'])
-                );
-            }
-
-            $actualDiff = $actualAttrDiff->findAll('css', sprintf('.diff .%s', $expectedAttrChange['type']));
-            if (null === $actualDiff) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see "%s" type in changes.', $expectedAttrChange['type'])
-                );
-            }
-
-            foreach ($actualDiff as $diff) {
-                $diffKey = array_search($diff->getText(), $expectedAttrChange['values']);
-                if (false === $diffKey) {
-                    throw $this->createExpectationException(
-                        sprintf(
-                            'Changes "%s" was not expected for attribute "%s".',
-                            $diff->getText(),
-                            $expectedAttrChange['attribute']
-                        )
-                    );
-                }
-                unset($expectedAttrChange['values'][$diffKey]);
-            }
-
-            if (!empty($expectedAttrChange['values'])) {
-                $missingValues = implode(', ', $expectedAttrChange['values']);
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expecting to see "%s" in %s for attribute "%s".',
-                        $missingValues,
-                        $expectedAttrChange['type'],
-                        $expectedAttrChange['attribute']
-                    )
-                );
-            }
-        }
-    }
-
-    /**
-     * Gets the attribute label and changes part from a proposal datagrid row
-     *
-     * @param NodeElement $proposalRow
-     *
-     * @throws ExpectationException
-     *
-     * @return NodeElement[]
-     */
-    protected function getAttributePartFromProposalRow(NodeElement $proposalRow)
-    {
-        $details        = $proposalRow->find('css', 'div.details');
-        $attrLabel      = null;
-        $attributesPart = [];
-        foreach ($details->findAll('css', 'dd, dt') as $child) {
-            if (null !== $attrLabel) {
-                $attributesPart[$attrLabel] = $child;
-                $attrLabel = null;
-                continue;
-            }
-            if (null === $child->find('css', 'ul.diff')) {
-                $attrLabel = $child->getText();
-            }
-        }
-
-        return $attributesPart;
-    }
-
-    /**
-     * Gets the proposal row from the proposals grid in terms of product label
-     *
-     * @param string $productLabel
-     *
-     * @throws ExpectationException
-     *
-     * @return NodeElement
-     */
-    protected function getProposalByProductLabel($productLabel)
-    {
-        try {
-            $page = $this->getSubcontext('navigation')->getCurrentPage();
-            $row  = $page->getRow($productLabel);
-            if (null === $row) {
-                throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $productLabel));
-            }
-        } catch (ElementNotFoundException $e) {
-            throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $productLabel));
-        }
-
-        return $row;
     }
 
     /**

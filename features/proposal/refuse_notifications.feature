@@ -1,5 +1,5 @@
 @javascript
-Feature: Approve notifications
+Feature: Refuse notifications
   In order to easily quickly now if my proposals have been reviewed
   As a proposal redactor
   I need to be able to see a notification when the owner reject a proposal

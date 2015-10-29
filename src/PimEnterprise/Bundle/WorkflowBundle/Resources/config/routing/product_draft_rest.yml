@@ -15,3 +15,9 @@ pimee_workflow_product_draft_rest_remove:
     defaults: { _controller: pimee_workflow.controller.product_draft_rest:removeAction }
     requirements:
         _method: POST
+
+pimee_workflow_product_draft_rest_partial_approve:
+    path: /rest/{id}/partial-approve/{code}
+    defaults: { _controller: pimee_workflow.controller.product_draft_rest:partialApproveAction }
+    requirements:
+        _method: POST

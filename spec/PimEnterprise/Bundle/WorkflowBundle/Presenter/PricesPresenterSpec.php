@@ -58,10 +58,10 @@ class PricesPresenterSpec extends ObjectBehavior
         ];
 
         $renderer
-            ->renderDiff(['15 EUR', '22 USD'], ['12 EUR', '25 GBP', '20 USD'])
+            ->renderOriginalDiff(['15 EUR', '22 USD'], ['12 EUR', '25 GBP', '20 USD'])
             ->willReturn('diff between two price collections');
 
         $this->setRenderer($renderer);
-        $this->present($value, $change)->shouldReturn('diff between two price collections');
+        $this->presentOriginal($value, $change)->shouldReturn('diff between two price collections');
     }
 }

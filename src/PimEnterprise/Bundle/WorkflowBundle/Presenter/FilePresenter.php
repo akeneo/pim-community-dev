@@ -46,30 +46,27 @@ class FilePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    public function presentOriginal($data, array $change)
     {
         $media = $data->getMedia();
-        if (!$this->isDiff($change, $media)) {
+
+        if (null === $media || null === $media->getKey() || null === $media->getOriginalFilename()) {
             return '';
         }
 
-        $before = '';
-        if (null !== $media && null !== $media->getKey() && null !== $media->getOriginalFilename()) {
-            $before = sprintf(
-                '<li class="base file">%s</li>',
-                $this->createFileElement($media->getKey(), $media->getOriginalFilename())
-            );
+        return $this->createFileElement($media->getKey(), $media->getOriginalFilename());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function presentNew($data, array $change)
+    {
+        if (!isset($change['data']['originalFilename']) || !isset($change['data']['filePath'])) {
+            return '';
         }
 
-        $after = '';
-        if (isset($change['data']['originalFilename']) && isset($change['data']['filePath'])) {
-            $after = sprintf(
-                '<li class="changed file">%s</li>',
-                $this->createFileElement($change['data']['filePath'], $change['data']['originalFilename'])
-            );
-        }
-
-        return sprintf('<ul class="diff">%s%s</ul>', $before, $after);
+        return $this->createFileElement($change['data']['filePath'], $change['data']['originalFilename']);
     }
 
     /**
@@ -87,21 +84,5 @@ class FilePresenter implements PresenterInterface
             $this->generator->generate('pim_enrich_media_show', ['filename' => urlencode($filename)]),
             $originalFilename
         );
-    }
-
-    /**
-     * Check diff between old and new file
-     *
-     * @param array             $change
-     * @param FileInfoInterface $fileInfo
-     *
-     * @return bool
-     */
-    protected function isDiff(array $change, FileInfoInterface $fileInfo = null)
-    {
-        $dataHash   = null !== $fileInfo ? $fileInfo->getHash() : null;
-        $changeHash = isset($change['data']['hash']) ? $change['data']['hash'] : null;
-
-        return $dataHash !== $changeHash;
     }
 }

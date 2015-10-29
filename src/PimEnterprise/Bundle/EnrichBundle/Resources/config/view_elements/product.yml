@@ -1,5 +1,4 @@
 parameters:
-    pimee_enrich.view_element.product.tab.proposal.template:       'PimEnterpriseEnrichBundle:Product:Tab/proposal.html.twig'
     pimee_enrich.view_element.product.tab.attribute_show.template: 'PimEnterpriseEnrichBundle:Product:Tab/attribute_show.html.twig'
 
 services:

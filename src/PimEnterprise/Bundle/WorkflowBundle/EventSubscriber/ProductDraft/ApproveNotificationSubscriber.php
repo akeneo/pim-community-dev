@@ -68,6 +68,8 @@ class ApproveNotificationSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $message = 'pimee_workflow.product_draft.notification.approve';
+
         $options = [
             'route'         => 'pim_enrich_product_edit',
             'routeParams'   => ['id' => $productDraft->getProduct()->getId()],
@@ -85,11 +87,18 @@ class ApproveNotificationSubscriber implements EventSubscriberInterface
             $options['comment'] = $event->getArgument('comment');
         }
 
-        $this->notifier->notify(
-            [$productDraft->getAuthor()],
-            'pimee_workflow.product_draft.notification.approve',
-            'success',
-            $options
-        );
+        if ($event->hasArgument('message')) {
+            $message = $event->getArgument('message');
+        }
+
+        if ($event->hasArgument('messageParams')) {
+            $options['messageParams'] = array_merge($options['messageParams'], $event->getArgument('messageParams'));
+        }
+
+        if ($event->hasArgument('actionType')) {
+            $options['context']['actionType'] = $event->getArgument('actionType');
+        }
+
+        $this->notifier->notify([$productDraft->getAuthor()], $message, 'success', $options);
     }
 }

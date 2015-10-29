@@ -1,13 +1,55 @@
 {% if value['values'] is defined %}
-    <dl>
-        {% for code, changes in value['values'] %}
-            {% for change in changes %}
-                {% set product_draft_change = present_product_draft_change(record.rootEntity, change, code) %}
-                {% if '' != product_draft_change %}
-                    <dt>{{ present_product_draft_attribute(change, code) }}</dt>
-                    <dd>{{ product_draft_change|raw }}</dd>
-                {% endif %}
-            {% endfor %}
+    {% for code, changes in value['values'] %}
+        {% for change in changes %}
+            {% if is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::VIEW_ATTRIBUTES'), code) %}
+            <table class="table table-bordered proposal-changes" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}">
+                <thead>
+                    <tr>
+                        <th class="label-cell">{{ get_attribute_label_from_code(code) }}</th>
+                        <th>
+                            {{ change.locale|pretty_locale_name }}
+
+                            {% if change.scope is not null %}
+                                - {{ change.scope }}
+                            {% endif %}
+                        </th>
+                        <th class="action-cell">
+                            {% if
+                                is_attribute_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_ATTRIBUTES'), code) and
+                                is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), record.rootEntity.product) and
+                                record.rootEntity.getStatus() == constant('PimEnterprise\\Bundle\\WorkflowBundle\\Model\\ProductDraft::READY')
+                            %}
+                                <span class="partial-approve pull-right">
+                                    <a href="#" class="partial-approve-link hide-text" data-product="{{ record.rootEntity.product.identifier }}" data-scope="{{ change.scope }}" data-locale="{{ change.locale }}" data-attribute="{{ code }}" data-product-draft="{{ record.rootEntity.id }}" data-author="{{ record.rootEntity.author }}">
+                                        <i class="icon-ok hide-text">
+                                            {{ 'pimee_workflow.product_draft.action.partial_approve'|trans({'%attribute%': code, '%product%': record.rootEntity.product.identifier}) }}
+                                        </i>
+                                    </a>
+                                </span>
+                            {% endif %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{ 'pimee_workflow.proposal.original_value'|trans }}</td>
+                        <td class="original-value" colspan="2">
+                            <span class="alert-error">
+                                {{ record.rootEntity.product.value(code, change.locale, change.scope)|present_original_change(change) }}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>{{ 'pimee_workflow.proposal.new_value'|trans }}</td>
+                        <td class="new-value" colspan="2">
+                            <span class="alert-success">
+                                {{ change|present_new_change(code) }}
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endif %}
         {% endfor %}
-    </dl>
+    {% endfor %}
 {% endif %}
