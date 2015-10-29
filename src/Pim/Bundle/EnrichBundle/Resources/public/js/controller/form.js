@@ -18,6 +18,12 @@ define([
             events: {
                 'submit form': 'submitForm'
             },
+            /**
+             * Handle form submission on the page
+             * @param {Event} event
+             *
+             * @return {boolean}
+             */
             submitForm: function (event) {
                 var $form = $(event.currentTarget);
 
@@ -31,6 +37,12 @@ define([
 
                 return false;
             },
+
+            /**
+             * Handle after submit success
+             *
+             * @param {Object} xhr
+             */
             afterSubmit: function (xhr) {
                 if (xhr.responseJSON && xhr.responseJSON.route) {
                     router.redirectToRoute(

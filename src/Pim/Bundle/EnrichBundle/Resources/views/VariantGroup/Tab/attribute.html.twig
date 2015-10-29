@@ -15,7 +15,7 @@
             {% include 'PimEnrichBundle:Locale:_locale_switcher.html.twig' with {
                 'locales':           locales,
                 'currentLocaleCode': dataLocale,
-                'routeName':         'pim_enrich_variant_group_edit_localized',
+                'routeName':         'pim_enrich_variant_group_edit',
                 'routeParams':       { 'id': form.vars.data.id }
             } only %}
             {{ elements.channelSwitcher(channels) }}

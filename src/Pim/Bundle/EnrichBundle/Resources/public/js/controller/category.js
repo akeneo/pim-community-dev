@@ -15,6 +15,9 @@ define([
         router
     ) {
         return FormController.extend({
+            /**
+             * {@inheritdoc}
+             */
             afterSubmit: function (xhr) {
                 this.$('#category-form').html(xhr.responseText);
                 mediator.trigger('route_complete pim:reinit');

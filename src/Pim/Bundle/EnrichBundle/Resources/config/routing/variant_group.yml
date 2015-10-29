@@ -12,12 +12,6 @@ pim_enrich_variant_group_edit:
     requirements:
         id: \d+
 
-pim_enrich_variant_group_edit_localized:
-    path: /{id}/edit/{dataLocale}
-    defaults: { _controller: pim_enrich.controller.variant_group:editAction, dataLocale: null }
-    requirements:
-        id: \d+
-
 pim_enrich_variant_group_remove:
     path: /{id}/remove
     defaults: { _controller: pim_enrich.controller.variant_group:removeAction }
