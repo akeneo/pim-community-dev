@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -32,25 +33,31 @@ class EditCommonAttributesProcessor extends AbstractProcessor
     /** @var array */
     protected $skippedAttributes = [];
 
+    /** @var LocalizerRegistryInterface */
+    protected $localizerRegistry;
+
     /**
      * @param PropertySetterInterface              $propertySetter
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
      * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
+     * @param LocalizerRegistryInterface           $localizerRegistry
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
+        LocalizerRegistryInterface $localizerRegistry
     ) {
         parent::__construct($jobConfigurationRepo);
 
         $this->propertySetter      = $propertySetter;
         $this->validator           = $validator;
         $this->attributeRepository = $attributeRepository;
+        $this->localizerRegistry   = $localizerRegistry;
     }
 
     /**
@@ -70,9 +77,7 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             return null;
         }
 
-        $actions = $configuration['actions'];
-
-        $product = $this->updateProduct($product, $actions);
+        $product = $this->updateProduct($product, $configuration);
         if (null !== $product && !$this->isProductValid($product)) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
 
@@ -102,16 +107,16 @@ class EditCommonAttributesProcessor extends AbstractProcessor
      * ]
      *
      * @param ProductInterface $product
-     * @param array            $actions
+     * @param array            $configuration
      *
      * @throws \LogicException
      *
      * @return ProductInterface $product
      */
-    protected function updateProduct(ProductInterface $product, array $actions)
+    protected function updateProduct(ProductInterface $product, array $configuration)
     {
         $modifiedAttributesNb = 0;
-        foreach ($actions as $action) {
+        foreach ($configuration['actions'] as $action) {
             $attribute = $this->attributeRepository->findOneBy(['code' => $action['field']]);
 
             if (null === $attribute) {
@@ -119,6 +124,12 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             }
 
             if ($product->isAttributeEditable($attribute)) {
+                $localizer = $this->localizerRegistry->getLocalizer($attribute->getAttributeType());
+                if (null !== $localizer) {
+                    $action['value'] = $localizer->convertLocalizedToDefault($action['value'], [
+                        'locale' => $configuration['locale']
+                    ]);
+                }
                 $this->propertySetter->setData($product, $action['field'], $action['value'], $action['options']);
                 $modifiedAttributesNb++;
             }
