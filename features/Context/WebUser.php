@@ -1232,6 +1232,7 @@ class WebUser extends RawMinkContext
         if ($popin && !$element) {
             $element = $this->getCurrentPage()->find('css', '.modal');
         }
+
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value, $element);
         }
@@ -1565,14 +1566,20 @@ class WebUser extends RawMinkContext
      */
     public function iPressTheButtonInThePopin($buttonLabel)
     {
-        $buttonElement = $this
-            ->getCurrentPage()
-            ->find('css', sprintf('.ui-dialog button:contains("%s")', $buttonLabel));
-        if (!$buttonElement) {
-            $buttonElement = $this
-            ->getCurrentPage()
-            ->find('css', sprintf('.modal a:contains("%s")', $buttonLabel));
-        }
+        $buttonElement = $this->spin(function () use ($buttonLabel) {
+            $node = $this
+                ->getCurrentPage()
+                ->find('css', sprintf('.ui-dialog button:contains("%s")', $buttonLabel));
+
+            if (null === $node) {
+                $node = $this
+                    ->getCurrentPage()
+                    ->find('css', sprintf('.modal a:contains("%s")', $buttonLabel));
+            }
+
+            return $node;
+        }, 20, sprintf('Button or link containing "%s" not found in the modal.', $buttonLabel));
+
         $buttonElement->press();
         $this->wait();
     }
