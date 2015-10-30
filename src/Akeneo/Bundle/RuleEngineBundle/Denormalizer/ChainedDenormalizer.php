@@ -42,7 +42,7 @@ class ChainedDenormalizer implements DenormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         foreach ($this->denormalizers as $denormalizer) {
             if ($denormalizer->supportsDenormalization($data, $class, $format)) {

@@ -45,8 +45,8 @@ class LocaleController extends BaseLocaleController
             }
         }
 
-        return array(
+        return [
             'form' => $form->createView()
-        );
+        ];
     }
 }

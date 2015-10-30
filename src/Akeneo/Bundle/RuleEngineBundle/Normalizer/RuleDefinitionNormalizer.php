@@ -27,7 +27,7 @@ class RuleDefinitionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         return [
             'id'       => $object->getId(),

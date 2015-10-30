@@ -36,7 +36,7 @@ abstract class AbstractOrderedPass implements CompilerPassInterface
     {
         $services = $container->findTaggedServiceIds($tagName);
 
-        $sortedServices = array();
+        $sortedServices = [];
         foreach ($services as $serviceId => $tags) {
             foreach ($tags as $tag) {
                 $priority = isset($tag['priority']) ? $tag['priority'] : $defaultPriority;

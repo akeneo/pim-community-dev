@@ -30,16 +30,16 @@ class AkeneoRuleEngineBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $mappings = array(
+        $mappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Bundle\RuleEngineBundle\Model'
-        );
+        ];
 
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(
                 DoctrineOrmMappingsPass::createYamlMappingDriver(
                     $mappings,
-                    array('doctrine.orm.entity_manager'),
+                    ['doctrine.orm.entity_manager'],
                     false
                 )
             )
