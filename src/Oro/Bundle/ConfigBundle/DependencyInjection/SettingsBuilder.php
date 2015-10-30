@@ -26,7 +26,7 @@ class SettingsBuilder
                 ->addDefaultsIfNotSet()
                 ->children();
 
-            $type = isset($setting['type']) && in_array($setting['type'], array('scalar', 'boolean', 'array'))
+            $type = isset($setting['type']) && in_array($setting['type'], ['scalar', 'boolean', 'array'])
                 ? $setting['type']
                 : 'scalar';
 

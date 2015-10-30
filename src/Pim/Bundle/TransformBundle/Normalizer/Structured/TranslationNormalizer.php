@@ -15,12 +15,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class TranslationNormalizer implements NormalizerInterface
 {
     /** @var array $supportedFormats */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $context = array_merge(
             [
@@ -44,7 +44,7 @@ class TranslationNormalizer implements NormalizerInterface
             }
         }
 
-        return array($context['property'] => $translations);
+        return [$context['property'] => $translations];
     }
 
     /**

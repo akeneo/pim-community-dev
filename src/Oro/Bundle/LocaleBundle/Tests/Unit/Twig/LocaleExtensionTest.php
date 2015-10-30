@@ -24,7 +24,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->localeSettings =
             $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
                 ->disableOriginalConstructor()
-                ->setMethods(array('getLocale', 'getTimeZone'))
+                ->setMethods(['getLocale', 'getTimeZone'])
                 ->getMock();
 
         $this->extension = new LocaleExtension($this->localeSettings);
@@ -43,18 +43,18 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFunctions()
     {
-        $expectedFunctions = array(
-            'oro_locale'                            => array($this->localeSettings, 'getLocale'),
-            'oro_language'                          => array($this->localeSettings, 'getLanguage'),
-            'oro_country'                           => array($this->localeSettings, 'getCountry'),
-            'oro_currency'                          => array($this->localeSettings, 'getCurrency'),
-            'oro_timezone'                          => array($this->localeSettings, 'getTimeZone'),
-            'oro_timezone_offset'                   => array($this->extension, 'getTimeZoneOffset'),
-            'oro_format_address_by_address_country' => array(
+        $expectedFunctions = [
+            'oro_locale'                            => [$this->localeSettings, 'getLocale'],
+            'oro_language'                          => [$this->localeSettings, 'getLanguage'],
+            'oro_country'                           => [$this->localeSettings, 'getCountry'],
+            'oro_currency'                          => [$this->localeSettings, 'getCurrency'],
+            'oro_timezone'                          => [$this->localeSettings, 'getTimeZone'],
+            'oro_timezone_offset'                   => [$this->extension, 'getTimeZoneOffset'],
+            'oro_format_address_by_address_country' => [
                 $this->localeSettings,
                 'isFormatAddressByAddressCountry'
-            )
-        );
+            ]
+        ];
 
         $actualFunctions = $this->extension->getFunctions();
         $this->assertSameSize($expectedFunctions, $actualFunctions);

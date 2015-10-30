@@ -127,7 +127,7 @@ class Calendar
                 break;
         }
         $formatter = $this->getFormatter($pattern, $this->getLanguage());
-        return array(
+        return [
             1 => $formatter->format($this->createDateTime('2013-01-01')),
             $formatter->format($this->createDateTime('2013-02-01')),
             $formatter->format($this->createDateTime('2013-03-01')),
@@ -140,7 +140,7 @@ class Calendar
             $formatter->format($this->createDateTime('2013-10-01')),
             $formatter->format($this->createDateTime('2013-11-01')),
             $formatter->format($this->createDateTime('2013-12-01')),
-        );
+        ];
     }
 
     /**
@@ -172,7 +172,7 @@ class Calendar
         }
 
         $formatter = $this->getFormatter($pattern, $this->getLanguage());
-        return array(
+        return [
             self::DOW_SUNDAY    => $formatter->format($this->createDateTime('Sunday, January 1, 2012')),
             self::DOW_MONDAY    => $formatter->format($this->createDateTime('Monday, January 2, 2012')),
             self::DOW_TUESDAY   => $formatter->format($this->createDateTime('Tuesday, January 3, 2012')),
@@ -180,7 +180,7 @@ class Calendar
             self::DOW_THURSDAY  => $formatter->format($this->createDateTime('Thursday, January 5, 2012')),
             self::DOW_FRIDAY    => $formatter->format($this->createDateTime('Friday, January 5, 2012')),
             self::DOW_SATURDAY  => $formatter->format($this->createDateTime('Saturday, January 5, 2012')),
-        );
+        ];
     }
 
     /**

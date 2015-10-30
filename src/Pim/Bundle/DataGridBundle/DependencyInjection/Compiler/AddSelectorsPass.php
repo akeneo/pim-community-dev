@@ -36,7 +36,7 @@ class AddSelectorsPass implements CompilerPassInterface
                         sprintf('The service %s must be configured with a type attribute', $serviceId)
                     );
                 }
-                $extension->addMethodCall('addSelector', array($tagAttrs['type'], new Reference($serviceId)));
+                $extension->addMethodCall('addSelector', [$tagAttrs['type'], new Reference($serviceId)]);
             }
         }
     }

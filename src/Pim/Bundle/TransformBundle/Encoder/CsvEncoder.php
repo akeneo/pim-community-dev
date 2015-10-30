@@ -54,7 +54,7 @@ class CsvEncoder implements EncoderInterface
     /**
      * {@inheritdoc}
      */
-    public function encode($data, $format, array $context = array())
+    public function encode($data, $format, array $context = [])
     {
         if (!is_array($data)) {
             throw new \InvalidArgumentException(
@@ -117,12 +117,12 @@ class CsvEncoder implements EncoderInterface
      */
     protected function getDefaultContext()
     {
-        return array(
+        return [
             'delimiter'     => ';',
             'enclosure'     => '"',
             'withHeader'    => false,
             'heterogeneous' => false,
-        );
+        ];
     }
 
     /**
@@ -184,7 +184,7 @@ class CsvEncoder implements EncoderInterface
      */
     private function getColumns(array $data)
     {
-        $columns = array();
+        $columns = [];
 
         foreach ($data as $item) {
             foreach (array_keys($item) as $key) {

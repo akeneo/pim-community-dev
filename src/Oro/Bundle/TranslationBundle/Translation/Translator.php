@@ -20,7 +20,7 @@ class Translator extends BaseTranslator
      * @param string|null $locale  locale of translations, by default is current locale
      * @return array
      */
-    public function getTranslations(array $domains = array(), $locale = null)
+    public function getTranslations(array $domains = [], $locale = null)
     {
         if (null === $locale) {
             $locale = $this->getLocale();
@@ -30,14 +30,14 @@ class Translator extends BaseTranslator
             $this->loadCatalogue($locale);
         }
 
-        $fallbackCatalogues = array();
+        $fallbackCatalogues = [];
         $fallbackCatalogues[] = $catalogue = $this->catalogues[$locale];
         while ($catalogue = $catalogue->getFallbackCatalogue()) {
             $fallbackCatalogues[] = $catalogue;
         }
 
         $domains = array_flip($domains);
-        $translations = array();
+        $translations = [];
         for ($i = count($fallbackCatalogues) - 1; $i >= 0; $i--) {
             $localeTranslations = $fallbackCatalogues[$i]->all();
             // if there are domains -> filter only their translations

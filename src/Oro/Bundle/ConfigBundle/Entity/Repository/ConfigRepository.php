@@ -19,10 +19,10 @@ class ConfigRepository extends EntityRepository
      */
     public function loadSettings($entity, $entityId, $section)
     {
-        $criteria = array(
+        $criteria = [
             'scopedEntity' => $entity,
             'recordId'     => $entityId,
-        );
+        ];
 
         if (!is_null($section)) {
             $criteria['section'] = $section;
@@ -30,16 +30,16 @@ class ConfigRepository extends EntityRepository
 
         $scope = $this->findOneBy($criteria);
         if (!$scope) {
-            return array();
+            return [];
         }
 
-        $settings = array();
+        $settings = [];
         foreach ($scope->getValues() as $value) {
-            $settings[$value->getSection()][$value->getName()] = array(
+            $settings[$value->getSection()][$value->getName()] = [
                 'value'                  => $value->getValue(),
                 'scope'                  => $scope->getEntity() ?: 'app',
                 'use_parent_scope_value' => false
-            );
+            ];
         }
 
         return $settings;
@@ -52,7 +52,7 @@ class ConfigRepository extends EntityRepository
      */
     public function getByEntity($entityName, $scopeId)
     {
-        $config = $this->findOneBy(array('scopedEntity' => $entityName, 'recordId' => $scopeId));
+        $config = $this->findOneBy(['scopedEntity' => $entityName, 'recordId' => $scopeId]);
 
         if (!$config) {
             $config = new Config();

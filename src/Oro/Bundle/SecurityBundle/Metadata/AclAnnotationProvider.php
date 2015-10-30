@@ -14,7 +14,7 @@ class AclAnnotationProvider
     /**
      * @var AclAnnotationLoaderInterface[]
      */
-    protected $loaders = array();
+    protected $loaders = [];
 
     /**
      * @var CacheProvider

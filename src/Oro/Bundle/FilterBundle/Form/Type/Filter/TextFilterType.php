@@ -49,19 +49,19 @@ class TextFilterType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $choices = array(
+        $choices = [
             self::TYPE_CONTAINS     => $this->translator->trans('oro.filter.form.label_type_contains'),
             self::TYPE_NOT_CONTAINS => $this->translator->trans('oro.filter.form.label_type_not_contains'),
             self::TYPE_EQUAL        => $this->translator->trans('oro.filter.form.label_type_equals'),
             self::TYPE_STARTS_WITH  => $this->translator->trans('oro.filter.form.label_type_start_with'),
             self::TYPE_ENDS_WITH    => $this->translator->trans('oro.filter.form.label_type_end_with'),
-        );
+        ];
 
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'       => 'text',
                 'operator_choices' => $choices,
-            )
+            ]
         );
     }
 }

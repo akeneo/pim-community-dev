@@ -60,7 +60,7 @@ class SystemConfigurationFormProviderTest extends FormIntegrationTestCase
     {
         $this->setExpectedException('\Exception', $message);
         $provider = $this->getProviderWithConfigLoaded(__DIR__ . '/../Fixtures/Provider/' . $filename);
-        call_user_func_array(array($provider, $method), $arguments);
+        call_user_func_array([$provider, $method], $arguments);
     }
 
     /**
@@ -68,38 +68,38 @@ class SystemConfigurationFormProviderTest extends FormIntegrationTestCase
      */
     public function exceptionDataProvider()
     {
-        return array(
-            'tree does not defined should trigger error' => array(
+        return [
+            'tree does not defined should trigger error' => [
                 'filename'  => 'tree_does_not_defined.yml',
                 'message'   => 'Tree "system_configuration" does not defined',
                 'method'    => 'getTree',
-                'arguments' => array()
-            ),
-            'fields definition on bad tree level'        => array(
+                'arguments' => []
+            ],
+            'fields definition on bad tree level'        => [
                 'filename'  => 'bad_field_level_definition.yml',
                 'message'   => 'Field "some_field" will not be ever rendered. Please check nesting level',
                 'method'    => 'getTree',
-                'arguments' => array()
-            ),
-            'trying to get not existing subtree'         => array(
+                'arguments' => []
+            ],
+            'trying to get not existing subtree'         => [
                 'filename'  => 'good_definition.yml',
                 'message'   => 'Subtree "NOT_EXISTING_ONE" not found',
                 'method'    => 'getSubtree',
-                'arguments' => array('NOT_EXISTING_ONE')
-            ),
-            'bad field definition'                       => array(
+                'arguments' => ['NOT_EXISTING_ONE']
+            ],
+            'bad field definition'                       => [
                 'filename'  => 'bad_field_definition.yml',
                 'message'   => 'Field "NOT_EXISTED_FIELD" does not defined',
                 'method'    => 'getTree',
-                'arguments' => array()
-            ),
-            'bad group definition'                       => array(
+                'arguments' => []
+            ],
+            'bad group definition'                       => [
                 'filename'  => 'bad_group_definition.yml',
                 'message'   => 'Group "NOT_EXITED_GROUP" does not defined',
                 'method'    => 'getTree',
-                'arguments' => array()
-            ),
-        );
+                'arguments' => []
+            ],
+        ];
     }
 
     public function testTreeProcessingWithACL()
@@ -143,26 +143,26 @@ class SystemConfigurationFormProviderTest extends FormIntegrationTestCase
 
     public function activeGroupsDataProvider()
     {
-        return array(
-            'check auto choosing both groups' => array(
+        return [
+            'check auto choosing both groups' => [
                 null,
                 null,
                 'horizontal tab name' => 'first_group',
                 'vertical tab name'   => 'third_group'
-            ),
-            'check auto choosing sub group' => array(
+            ],
+            'check auto choosing sub group' => [
                 'first_group',
                 null,
                 'horizontal tab name' => 'first_group',
                 'vertical tab name'   => 'third_group'
-            ),
-            'check not changing if all exists' => array(
+            ],
+            'check not changing if all exists' => [
                 'first_group',
                 'another_branch_first',
                 'horizontal tab name' => 'first_group',
                 'vertical tab name'   => 'another_branch_first'
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -197,20 +197,20 @@ class SystemConfigurationFormProviderTest extends FormIntegrationTestCase
     public function getExtensions()
     {
         $subscriber    = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber')
-            ->setMethods(array('__construct'))
+            ->setMethods(['__construct'])
             ->disableOriginalConstructor()->getMock();
 
         $formType      = new FormType($subscriber);
         $formFieldType = new FormFieldType();
 
-        return array(
+        return [
             new PreloadedExtension(
-                array(
+                [
                     $formType->getName()      => $formType,
                     $formFieldType->getName() => $formFieldType
-                ),
-                array()
+                ],
+                []
             ),
-        );
+        ];
     }
 }

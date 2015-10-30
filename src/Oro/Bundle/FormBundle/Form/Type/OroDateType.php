@@ -45,16 +45,16 @@ class OroDateType extends AbstractType
                 $default = $placeholderDefault($options);
 
                 return array_merge(
-                    array('year' => $default, 'month' => $default, 'day' => $default),
+                    ['year' => $default, 'month' => $default, 'day' => $default],
                     $placeholder
                 );
             }
 
-            return array(
+            return [
                 'year'  => $placeholder,
                 'month' => $placeholder,
                 'day'   => $placeholder,
-            );
+            ];
         });
     }
 

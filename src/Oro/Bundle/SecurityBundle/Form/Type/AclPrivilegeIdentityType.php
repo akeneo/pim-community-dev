@@ -16,16 +16,16 @@ class AclPrivilegeIdentityType extends AbstractType
         $builder->add(
             'id',
             'hidden',
-            array(
+            [
                 'required' => true,
-            )
+            ]
         );
         $builder->add(
             'name',
             'oro_acl_label',
-            array(
+            [
                 'required' => false,
-            )
+            ]
         );
     }
 
@@ -43,9 +43,9 @@ class AclPrivilegeIdentityType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Oro\Bundle\SecurityBundle\Model\AclPrivilegeIdentity',
-            )
+            ]
         );
     }
 }

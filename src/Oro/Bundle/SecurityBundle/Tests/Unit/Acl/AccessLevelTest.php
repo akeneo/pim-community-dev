@@ -29,6 +29,6 @@ class AccessLevelTest extends \PHPUnit_Framework_TestCase
 
     public function testAllAccessLevelNames()
     {
-        $this->assertEquals(array('BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM'), AccessLevel::$allAccessLevelNames);
+        $this->assertEquals(['BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM'], AccessLevel::$allAccessLevelNames);
     }
 }

@@ -17,10 +17,10 @@ abstract class AbstractExtension extends \Twig_Extension
     /**
      * @var array
      */
-    protected $defaultFunctionOptions = array(
-        'is_safe'           => array('html'),
+    protected $defaultFunctionOptions = [
+        'is_safe'           => ['html'],
         'needs_environment' => true
-    );
+    ];
 
     /**
      * @param string $templateName

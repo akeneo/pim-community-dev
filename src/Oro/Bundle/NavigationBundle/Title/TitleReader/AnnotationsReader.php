@@ -15,7 +15,7 @@ class AnnotationsReader extends Reader
     /**
      * @var array
      */
-    private $routes = array();
+    private $routes = [];
 
     const ANNOTATION_CLASS = 'Oro\Bundle\NavigationBundle\Annotation\TitleTemplate';
 
@@ -38,7 +38,7 @@ class AnnotationsReader extends Reader
 
         $directories = $this->getScanDirectories();
         if (!$directories) {
-            return array();
+            return [];
         }
 
         $files = $this->findFiles('*.php', $directories);
@@ -61,7 +61,7 @@ class AnnotationsReader extends Reader
      */
     private function findTitlesAnnotations(array $files)
     {
-        $titles = array();
+        $titles = [];
 
         foreach ($files as $file) {
             $className = $this->getClassName($file);
@@ -158,7 +158,7 @@ class AnnotationsReader extends Reader
             ->in($dirs)
             ->ignoreVCS(true);
 
-        $result = array();
+        $result = [];
         /** @var \SplFileInfo $file */
         foreach ($finder as $file) {
             $result[] = $file->getRealPath();

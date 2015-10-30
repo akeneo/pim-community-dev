@@ -27,14 +27,14 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $settings = array(
-        'oro_user' => array(
-            'level'    => array(
+    protected $settings = [
+        'oro_user' => [
+            'level'    => [
                 'value' => 20,
                 'type'  => 'scalar',
-            )
-        )
-    );
+            ]
+        ]
+    ];
 
     protected function setUp()
     {
@@ -75,8 +75,8 @@ class UserConfigManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->object = $this->getMock(
             'Oro\Bundle\ConfigBundle\Config\UserConfigManager',
-            array('loadStoredSettings'),
-            array($this->om, $this->settings)
+            ['loadStoredSettings'],
+            [$this->om, $this->settings]
         );
     }
 

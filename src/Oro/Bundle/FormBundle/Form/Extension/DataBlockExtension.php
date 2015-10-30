@@ -15,12 +15,12 @@ class DataBlockExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setOptional(
-            array(
+            [
                 'block',
                 'subblock',
                 'block_config',
                 'tooltip'
-            )
+            ]
         );
     }
 

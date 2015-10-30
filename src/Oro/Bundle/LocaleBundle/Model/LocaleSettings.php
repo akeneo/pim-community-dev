@@ -61,7 +61,7 @@ class LocaleSettings
      *
      * @var array
      */
-    protected $nameFormats = array();
+    protected $nameFormats = [];
 
     /**
      * Format placeholders (lowercase and uppercase):
@@ -89,7 +89,7 @@ class LocaleSettings
      *
      * @var array
      */
-    protected $addressFormats = array();
+    protected $addressFormats = [];
 
     /**
      * Array format:
@@ -103,7 +103,7 @@ class LocaleSettings
      *
      * @var array
      */
-    protected $localeData = array();
+    protected $localeData = [];
 
     /**
      * Array format:
@@ -115,7 +115,7 @@ class LocaleSettings
      *
      * @var array
      */
-    protected $currencyData = array();
+    protected $currencyData = [];
 
     /**
      * @var CalendarFactoryInterface
@@ -371,15 +371,15 @@ class LocaleSettings
             $region = $localeParts[\Locale::REGION_TAG];
         }
 
-        $variants = array(
-            array($lang, $script, $region),
-            array($lang, $region),
-            array($lang, $script, LocaleConfiguration::DEFAULT_COUNTRY),
-            array($lang, LocaleConfiguration::DEFAULT_COUNTRY),
-            array($lang),
-            array(LocaleConfiguration::DEFAULT_LOCALE, LocaleConfiguration::DEFAULT_COUNTRY),
-            array(LocaleConfiguration::DEFAULT_LOCALE),
-        );
+        $variants = [
+            [$lang, $script, $region],
+            [$lang, $region],
+            [$lang, $script, LocaleConfiguration::DEFAULT_COUNTRY],
+            [$lang, LocaleConfiguration::DEFAULT_COUNTRY],
+            [$lang],
+            [LocaleConfiguration::DEFAULT_LOCALE, LocaleConfiguration::DEFAULT_COUNTRY],
+            [LocaleConfiguration::DEFAULT_LOCALE],
+        ];
 
         $locales = self::getLocales();
         foreach ($variants as $elements) {
@@ -400,7 +400,7 @@ class LocaleSettings
     public static function getLocales()
     {
         if (null === self::$locales) {
-            self::$locales = array();
+            self::$locales = [];
             foreach (Intl::getLocaleBundle()->getLocales() as $locale) {
                 self::$locales[$locale] = $locale;
             }

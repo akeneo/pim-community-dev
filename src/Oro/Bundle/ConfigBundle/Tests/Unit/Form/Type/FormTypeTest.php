@@ -31,7 +31,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()->getMock();
 
         $builder->expects($this->once())->method('addEventSubscriber')->with($this->equalTo($this->subscriber));
-        $this->form->buildForm($builder, array());
+        $this->form->buildForm($builder, []);
     }
 
     public function testGetName()

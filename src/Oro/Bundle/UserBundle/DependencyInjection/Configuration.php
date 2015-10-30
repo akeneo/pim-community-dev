@@ -55,16 +55,16 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                     ->defaultValue(
-                        array(
-                            'action'=> array(
+                        [
+                            'action'=> [
                                 'label'         => 'Capabilities',
                                 'view_type'     => 'list',
-                                'types'         => array('action'),
+                                'types'         => ['action'],
                                 'field_type'    => 'pim_acl_access_level_selector',
                                 'default_value' => 1,
                                 'show_default'  => false,
-                            )
-                        )
+                            ]
+                        ]
                     )
                 ->end()
             ->end();

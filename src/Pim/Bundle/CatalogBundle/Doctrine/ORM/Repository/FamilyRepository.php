@@ -178,7 +178,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
             ->where($qb->expr()->in('f.id', $familyIds));
 
         $results = $qb->getQuery()->getArrayResult();
-        $attrByFamilies = array();
+        $attrByFamilies = [];
         foreach ($results as $result) {
             $attrByFamilies[$result['f_id']][] = $result['a_id'];
         }
@@ -206,7 +206,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -214,7 +214,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 
     /**

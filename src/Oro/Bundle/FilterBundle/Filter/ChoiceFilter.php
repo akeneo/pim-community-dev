@@ -94,7 +94,7 @@ class ChoiceFilter extends AbstractFilter
             $value = $value->getValues();
         }
         if (!is_array($value)) {
-            $value = array($value);
+            $value = [$value];
         }
 
         $data['type']  = isset($data['type']) ? $data['type'] : null;
@@ -112,11 +112,11 @@ class ChoiceFilter extends AbstractFilter
      */
     protected function getOperator($type)
     {
-        $operatorTypes = array(
+        $operatorTypes = [
             ChoiceFilterType::TYPE_CONTAINS     => 'IN',
             ChoiceFilterType::TYPE_NOT_CONTAINS => 'NOT IN',
             FilterType::TYPE_EMPTY              => 'EMPTY',
-        );
+        ];
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'IN';
     }

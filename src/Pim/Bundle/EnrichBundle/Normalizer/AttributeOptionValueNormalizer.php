@@ -17,13 +17,13 @@ class AttributeOptionValueNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        return array(
+        return [
             'id'     => $object->getId(),
             'locale' => $object->getLocale(),
             'value'  => $object->getValue()
-        );
+        ];
     }
 
     /**

@@ -17,7 +17,7 @@ class ChannelNormalizer extends Structured\ChannelNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}

@@ -24,16 +24,16 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->om = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
-            ->setMethods(array())
+            ->setMethods([])
             ->getMock();
 
         $this->repository = $this->getMock(
             'Oro\Bundle\ConfigBundle\Entity\Repository\ConfigRepository',
-            array('findOneBy'),
-            array(
+            ['findOneBy'],
+            [
                 $this->om,
                 new ClassMetadata('Oro\Bundle\ConfigBundle\Entity\Config')
-            )
+            ]
         );
 
         //new ConfigRepository($this->om, new ClassMetadata('Oro\Bundle\ConfigBundle\Entity\Config'));
@@ -44,10 +44,10 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function loadSettingsProvider()
     {
-        return array(
-            array(null, true),
-            array('oro_user', false),
-        );
+        return [
+            [null, true],
+            ['oro_user', false],
+        ];
     }
 
     /**
@@ -57,10 +57,10 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadSettings($section, $isScope)
     {
-        $criteria = array(
+        $criteria = [
             'scopedEntity' => 'user',
             'recordId'     => 1,
-        );
+        ];
 
         if ($isScope) {
             $value = $this->getMock('Oro\Bundle\ConfigBundle\Entity\ConfigValue');
@@ -77,7 +77,7 @@ class ConfigRepositoryTest extends \PHPUnit_Framework_TestCase
             $scope = $this->getMock('Oro\Bundle\ConfigBundle\Entity\Config');
             $scope->expects($this->once())
                 ->method('getValues')
-                ->will($this->returnValue(array($value)));
+                ->will($this->returnValue([$value]));
             $scope->expects($this->once())
                 ->method('getEntity')
                 ->will($this->returnValue('user'));

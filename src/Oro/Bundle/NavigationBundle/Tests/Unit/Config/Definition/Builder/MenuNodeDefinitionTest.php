@@ -19,7 +19,7 @@ class MenuNodeDefinitionTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->builder = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Config\Definition\Builder\MenuTreeBuilder')
-            ->setMethods(array('node', 'children', 'scalarNode', 'end', 'menuNode', 'menuNodeHierarchy'))
+            ->setMethods(['node', 'children', 'scalarNode', 'end', 'menuNode', 'menuNodeHierarchy'])
             ->getMock();
         $this->definition = new MenuNodeDefinition('test');
         $this->definition->setBuilder($this->builder);

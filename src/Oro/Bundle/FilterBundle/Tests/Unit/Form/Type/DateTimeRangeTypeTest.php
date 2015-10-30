@@ -27,13 +27,13 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
     {
         $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
-            ->setMethods(array('getTimezone'))
+            ->setMethods(['getTimezone'])
             ->getMock();
         $localeSettings->expects($this->any())
             ->method('getTimezone')
             ->will($this->returnValue($this->defaultTimezone));
 
-        $this->formExtensions[] = new CustomFormExtension(array(new DateRangeType()));
+        $this->formExtensions[] = new CustomFormExtension([new DateRangeType()]);
 
         parent::setUp();
 
@@ -58,17 +58,17 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
      */
     public function configureOptionsDataProvider()
     {
-        return array(
-            array(
-                'defaultOptions' => array(
+        return [
+            [
+                'defaultOptions' => [
                     'field_type'    => 'datetime',
-                    'field_options' => array(
+                    'field_options' => [
                         'format'        => 'yyyy-MM-dd HH:mm',
                         'view_timezone' => $this->defaultTimezone
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -76,44 +76,44 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
      */
     public function bindDataProvider()
     {
-        return array(
-            'empty' => array(
-                'bindData' => array('start' => '', 'end' => ''),
-                'formData' => array('start' => null, 'end' => null),
-                'viewData' => array(
-                    'value' => array('start' => '', 'end' => ''),
-                ),
-            ),
-            'default timezone' => array(
-                'bindData' => array('start' => '2012-01-01 13:00', 'end' => '2013-01-01 18:00'),
-                'formData' => array(
+        return [
+            'empty' => [
+                'bindData' => ['start' => '', 'end' => ''],
+                'formData' => ['start' => null, 'end' => null],
+                'viewData' => [
+                    'value' => ['start' => '', 'end' => ''],
+                ],
+            ],
+            'default timezone' => [
+                'bindData' => ['start' => '2012-01-01 13:00', 'end' => '2013-01-01 18:00'],
+                'formData' => [
                     'start' => $this->createDateTime('2012-01-01 23:00', 'UTC'),
                     'end'   => $this->createDateTime('2013-01-02 04:00', 'UTC')
-                ),
-                'viewData' => array(
-                    'value' => array('start' => '2012-01-01 13:00', 'end' => '2013-01-01 18:00'),
-                ),
-            ),
-            'custom timezone' => array(
-                'bindData' => array('start' => '2010-06-02T03:04:00-10:00', 'end' => '2013-06-02T03:04:00-10:00'),
-                'formData' => array(
+                ],
+                'viewData' => [
+                    'value' => ['start' => '2012-01-01 13:00', 'end' => '2013-01-01 18:00'],
+                ],
+            ],
+            'custom timezone' => [
+                'bindData' => ['start' => '2010-06-02T03:04:00-10:00', 'end' => '2013-06-02T03:04:00-10:00'],
+                'formData' => [
                     'start' => $this->createDateTime('2010-06-02 03:04', 'America/New_York')
                         ->setTimezone(new \DateTimeZone('America/Los_Angeles')),
                     'end' => $this->createDateTime('2013-06-02 03:04:00', 'America/New_York')
                         ->setTimezone(new \DateTimeZone('America/Los_Angeles')),
-                ),
-                'viewData' => array(
-                    'value' => array('start' => '2010-06-02T03:04:00', 'end' => '2013-06-02T03:04:00'),
-                ),
-                'customOptions' => array(
-                    'field_options' => array(
+                ],
+                'viewData' => [
+                    'value' => ['start' => '2010-06-02T03:04:00', 'end' => '2013-06-02T03:04:00'],
+                ],
+                'customOptions' => [
+                    'field_options' => [
                         'model_timezone' => 'America/Los_Angeles',
                         'view_timezone'  => 'America/New_York',
                         'format'         => "yyyy-MM-dd'T'HH:mm:ss"
-                    )
-                )
-            ),
-        );
+                    ]
+                ]
+            ],
+        ];
     }
 
     /**

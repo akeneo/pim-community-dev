@@ -86,12 +86,12 @@ abstract class AbstractDateFilter extends AbstractFilter
 
         if (!in_array(
             $data['type'],
-            array(
+            [
                 DateRangeFilterType::TYPE_BETWEEN,
                 DateRangeFilterType::TYPE_NOT_BETWEEN,
                 DateRangeFilterType::TYPE_MORE_THAN,
                 DateRangeFilterType::TYPE_LESS_THAN
-            )
+            ]
         )
         ) {
             $data['type'] = DateRangeFilterType::TYPE_BETWEEN;
@@ -103,11 +103,11 @@ abstract class AbstractDateFilter extends AbstractFilter
             $data['value']['start'] = null;
         }
 
-        return array(
+        return [
             'date_start' => $data['value']['start'],
             'date_end'   => $data['value']['end'],
             'type'       => $data['type']
-        );
+        ];
     }
 
     /**

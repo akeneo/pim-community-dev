@@ -55,7 +55,7 @@ class AkeneoStorageUtilsExtension extends Extension
      */
     public static function getSupportedStorageDrivers()
     {
-        return array(self::DOCTRINE_ORM, self::DOCTRINE_MONGODB_ODM);
+        return [self::DOCTRINE_ORM, self::DOCTRINE_MONGODB_ODM];
     }
 
     /**

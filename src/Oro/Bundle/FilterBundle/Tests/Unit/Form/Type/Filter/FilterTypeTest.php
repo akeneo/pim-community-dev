@@ -37,26 +37,26 @@ class FilterTypeTest extends AbstractTypeTestCase
      */
     public function configureOptionsDataProvider()
     {
-        return array(
-            array(
-                'defaultOptions' => array(
+        return [
+            [
+                'defaultOptions' => [
                     'field_type'       => 'text',
-                    'field_options'    => array(),
-                    'operator_choices' => array(),
+                    'field_options'    => [],
+                    'operator_choices' => [],
                     'operator_type'    => 'choice',
-                    'operator_options' => array(),
+                    'operator_options' => [],
                     'show_filter'      => false
-                ),
-                'requiredOptions' => array(
+                ],
+                'requiredOptions' => [
                     'field_type',
                     'field_options',
                     'operator_choices',
                     'operator_type',
                     'operator_options',
                     'show_filter'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -64,51 +64,51 @@ class FilterTypeTest extends AbstractTypeTestCase
      */
     public function bindDataProvider()
     {
-        return array(
-            'empty data' => array(
-                'bindData' => array(),
-                'formData' => array('type' => null, 'value' => null),
-                'viewData' => array(
-                    'value' => array('type' => '', 'value' => ''),
-                ),
-                'customOptions' => array(
-                    'operator_choices' => array()
-                ),
-            ),
-            'empty choice' => array(
-                'bindData' => array('type'  => '1', 'value' => ''),
-                'formData' => array('value' => null),
-                'viewData' => array(
-                    'value' => array('type' => '1', 'value' => ''),
-                ),
-                'customOptions' => array(
-                    'operator_choices' => array()
-                ),
-            ),
-            'invalid choice' => array(
-                'bindData' => array('type'  => '-1', 'value' => ''),
-                'formData' => array('value' => null),
-                'viewData' => array(
-                    'value' => array('type' => '-1', 'value' => ''),
-                ),
-                'customOptions' => array(
-                    'operator_choices' => array(
+        return [
+            'empty data' => [
+                'bindData' => [],
+                'formData' => ['type' => null, 'value' => null],
+                'viewData' => [
+                    'value' => ['type' => '', 'value' => ''],
+                ],
+                'customOptions' => [
+                    'operator_choices' => []
+                ],
+            ],
+            'empty choice' => [
+                'bindData' => ['type'  => '1', 'value' => ''],
+                'formData' => ['value' => null],
+                'viewData' => [
+                    'value' => ['type' => '1', 'value' => ''],
+                ],
+                'customOptions' => [
+                    'operator_choices' => []
+                ],
+            ],
+            'invalid choice' => [
+                'bindData' => ['type'  => '-1', 'value' => ''],
+                'formData' => ['value' => null],
+                'viewData' => [
+                    'value' => ['type' => '-1', 'value' => ''],
+                ],
+                'customOptions' => [
+                    'operator_choices' => [
                         1 => 'Choice 1'
-                    )
-                ),
-            ),
-            'without choice' => array(
-                'bindData' => array('value' => 'text'),
-                'formData' => array('type'  => null, 'value' => 'text'),
-                'viewData' => array(
-                    'value' => array('type' => '', 'value' => 'text'),
-                ),
-                'customOptions' => array(
-                    'operator_choices' => array(
+                    ]
+                ],
+            ],
+            'without choice' => [
+                'bindData' => ['value' => 'text'],
+                'formData' => ['type'  => null, 'value' => 'text'],
+                'viewData' => [
+                    'value' => ['type' => '', 'value' => 'text'],
+                ],
+                'customOptions' => [
+                    'operator_choices' => [
                         1 => 'Choice 1'
-                    )
-                ),
-            ),
-        );
+                    ]
+                ],
+            ],
+        ];
     }
 }

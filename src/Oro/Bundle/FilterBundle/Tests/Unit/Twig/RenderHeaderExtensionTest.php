@@ -19,18 +19,18 @@ class RenderHeaderExtensionTest extends AbstractExtensionTestCase
     /**
      * @var array
      */
-    protected $expectedFunctions = array(
-        'oro_filter_render_header_javascript' => array(
+    protected $expectedFunctions = [
+        'oro_filter_render_header_javascript' => [
             'callback'          => 'renderHeaderJavascript',
-            'safe'              => array('html'),
+            'safe'              => ['html'],
             'needs_environment' => true
-        ),
-        'oro_filter_render_header_stylesheet' => array(
+        ],
+        'oro_filter_render_header_stylesheet' => [
             'callback'          => 'renderHeaderStylesheet',
-            'safe'              => array('html'),
+            'safe'              => ['html'],
             'needs_environment' => true
-        ),
-    );
+        ],
+    ];
 
     /**
      * Prepares twig environment mock
@@ -44,19 +44,19 @@ class RenderHeaderExtensionTest extends AbstractExtensionTestCase
     {
         $template = $this->getMockForAbstractClass(
             '\Twig_Template',
-            array(),
+            [],
             '',
             false,
             true,
             true,
-            array('renderBlock')
+            ['renderBlock']
         );
         $template->expects($this->once())
             ->method('renderBlock')
-            ->with($blockName, array())
+            ->with($blockName, [])
             ->will($this->returnValue($blockHtml));
 
-        $environment = $this->getMock('\Twig_Environment', array('loadTemplate'));
+        $environment = $this->getMock('\Twig_Environment', ['loadTemplate']);
         $environment->expects($this->once())
             ->method('loadTemplate')
             ->with($templateName)

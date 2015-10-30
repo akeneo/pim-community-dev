@@ -45,16 +45,16 @@ class Configuration implements ConfigurationInterface
 
         SettingsBuilder::append(
             $rootNode,
-            array(
-                'application_name' => array(
+            [
+                'application_name' => [
                     'value' => 'ORO',
                     'type'  => 'scalar'
-                ),
-                'application_title' => array(
+                ],
+                'application_title' => [
                     'value' => 'ORO Business Application Platform',
                     'type'  => 'scalar'
-                ),
-            )
+                ],
+            ]
         );
 
         return $treeBuilder;

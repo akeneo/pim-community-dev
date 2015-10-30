@@ -17,7 +17,7 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
     protected function setUp()
     {
         $translator = $this->createMockTranslator();
-        $this->formExtensions[] = new CustomFormExtension(array(new FilterType($translator)));
+        $this->formExtensions[] = new CustomFormExtension([new FilterType($translator)]);
 
         parent::setUp();
         $this->type = new ChoiceFilterType($translator);
@@ -41,19 +41,19 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
      */
     public function configureOptionsDataProvider()
     {
-        return array(
-            array(
-                'defaultOptions' => array(
+        return [
+            [
+                'defaultOptions' => [
                     'field_type'       => 'choice',
-                    'field_options'    => array('choices' => array()),
-                    'operator_choices' => array(
+                    'field_options'    => ['choices' => []],
+                    'operator_choices' => [
                         ChoiceFilterType::TYPE_CONTAINS     => 'oro.filter.form.label_type_contains',
                         ChoiceFilterType::TYPE_NOT_CONTAINS => 'oro.filter.form.label_type_not_contains',
-                    ),
+                    ],
                     'populate_default' => true
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -61,64 +61,64 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
      */
     public function bindDataProvider()
     {
-        return array(
-            'empty' => array(
-                'bindData' => array(),
-                'formData' => array('type' => null, 'value' => null),
-                'viewData' => array(
-                    'value' => array('type' => null, 'value' => null),
-                )
-            ),
-            'predefined value choice' => array(
-                'bindData' => array('value' => 1),
-                'formData' => array('type'  => null, 'value' => 1),
-                'viewData' => array(
-                    'value' => array('type' => null, 'value' => 1),
-                ),
-                'customOptions' => array(
-                    'field_options' => array(
-                        'choices' => array(1 => 'One', 2 => 'Two')
-                    ),
-                )
-            ),
-            'invalid value choice' => array(
-                'bindData' => array('value' => 3),
-                'formData' => array('type'  => null),
-                'viewData' => array(
-                    'value' => array('type' => null, 'value' => 3),
-                ),
-                'customOptions' => array(
-                    'field_options' => array(
-                        'choices' => array(1 => 'One')
-                    ),
-                )
-            ),
-            'multiple choices' => array(
-                'bindData' => array('value' => array(1, 2)),
-                'formData' => array('type'  => null, 'value' => array(1, 2)),
-                'viewData' => array(
-                    'value' => array('type' => null, 'value' => array(1, 2)),
-                ),
-                'customOptions' => array(
-                    'field_options' => array(
+        return [
+            'empty' => [
+                'bindData' => [],
+                'formData' => ['type' => null, 'value' => null],
+                'viewData' => [
+                    'value' => ['type' => null, 'value' => null],
+                ]
+            ],
+            'predefined value choice' => [
+                'bindData' => ['value' => 1],
+                'formData' => ['type'  => null, 'value' => 1],
+                'viewData' => [
+                    'value' => ['type' => null, 'value' => 1],
+                ],
+                'customOptions' => [
+                    'field_options' => [
+                        'choices' => [1 => 'One', 2 => 'Two']
+                    ],
+                ]
+            ],
+            'invalid value choice' => [
+                'bindData' => ['value' => 3],
+                'formData' => ['type'  => null],
+                'viewData' => [
+                    'value' => ['type' => null, 'value' => 3],
+                ],
+                'customOptions' => [
+                    'field_options' => [
+                        'choices' => [1 => 'One']
+                    ],
+                ]
+            ],
+            'multiple choices' => [
+                'bindData' => ['value' => [1, 2]],
+                'formData' => ['type'  => null, 'value' => [1, 2]],
+                'viewData' => [
+                    'value' => ['type' => null, 'value' => [1, 2]],
+                ],
+                'customOptions' => [
+                    'field_options' => [
                         'multiple' => true,
-                        'choices'  => array(1 => 'One', 2 => 'Two', 3 => 'Three')
-                    ),
-                )
-            ),
-            'invalid multiple choices' => array(
-                'bindData' => array('value' => array(3, 4)),
-                'formData' => array('type'  => null),
-                'viewData' => array(
-                    'value' => array('type' => null, 'value' => array(3, 4)),
-                ),
-                'customOptions' => array(
-                    'field_options' => array(
+                        'choices'  => [1 => 'One', 2 => 'Two', 3 => 'Three']
+                    ],
+                ]
+            ],
+            'invalid multiple choices' => [
+                'bindData' => ['value' => [3, 4]],
+                'formData' => ['type'  => null],
+                'viewData' => [
+                    'value' => ['type' => null, 'value' => [3, 4]],
+                ],
+                'customOptions' => [
+                    'field_options' => [
                         'multiple' => true,
-                        'choices'  => array(1 => 'One', 2 => 'Two', 3 => 'Three')
-                    ),
-                )
-            ),
-        );
+                        'choices'  => [1 => 'One', 2 => 'Two', 3 => 'Three']
+                    ],
+                ]
+            ],
+        ];
     }
 }

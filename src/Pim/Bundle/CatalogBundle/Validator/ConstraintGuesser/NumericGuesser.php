@@ -23,10 +23,10 @@ class NumericGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 AttributeTypes::METRIC,
                 AttributeTypes::NUMBER,
-            )
+            ]
         );
     }
 

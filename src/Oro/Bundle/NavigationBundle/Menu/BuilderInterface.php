@@ -13,5 +13,5 @@ interface BuilderInterface
      * @param array                   $options
      * @param string|null             $alias
      */
-    public function build(ItemInterface $menu, array $options = array(), $alias = null);
+    public function build(ItemInterface $menu, array $options = [], $alias = null);
 }

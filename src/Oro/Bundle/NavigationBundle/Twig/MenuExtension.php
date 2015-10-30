@@ -59,18 +59,18 @@ class MenuExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'oro_menu_render' => new \Twig_Function_Method($this, 'render', array('is_safe' => array('html'))),
+        return [
+            'oro_menu_render' => new \Twig_Function_Method($this, 'render', ['is_safe' => ['html']]),
             'oro_menu_get'    => new \Twig_Function_Method($this, 'getMenu'),
             'oro_breadcrumbs' => new \Twig_Function_Method(
                 $this,
                 'renderBreadCrumbs',
-                array(
-                    'is_safe'           => array('html'),
+                [
+                    'is_safe'           => ['html'],
                     'needs_environment' => true
-                )
+                ]
             )
-        );
+        ];
     }
 
     /**
@@ -83,10 +83,10 @@ class MenuExtension extends \Twig_Extension
      * @throws \InvalidArgumentException
      * @return string
      */
-    public function render($menu, array $options = array(), $renderer = null)
+    public function render($menu, array $options = [], $renderer = null)
     {
         if (!$menu instanceof ItemInterface) {
-            $path = array();
+            $path = [];
             if (is_array($menu)) {
                 if (empty($menu)) {
                     throw new \InvalidArgumentException('The array cannot be empty');
@@ -124,10 +124,10 @@ class MenuExtension extends \Twig_Extension
             $template = $environment->loadTemplate(self::BREADCRUMBS_TEMPLATE);
 
             return $template->render(
-                array(
+                [
                     'breadcrumbs'   => $breadcrumbs,
                     'useDecorators' => $useDecorators
-                )
+                ]
             );
         }
 
@@ -156,7 +156,7 @@ class MenuExtension extends \Twig_Extension
      * @return ItemInterface
      *
      */
-    public function getMenu($menu, array $path = array(), array $options = array())
+    public function getMenu($menu, array $path = [], array $options = [])
     {
         if (!$menu instanceof ItemInterface) {
             $menu = $this->provider->get((string) $menu, $options);

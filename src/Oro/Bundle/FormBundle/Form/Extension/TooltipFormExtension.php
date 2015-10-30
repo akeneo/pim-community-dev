@@ -12,13 +12,13 @@ class TooltipFormExtension extends AbstractTypeExtension
     /**
      * @var array
      */
-    protected $optionalParameters = array(
+    protected $optionalParameters = [
         'tooltip',
         'tooltip_details_enabled',
         'tooltip_details_anchor',
         'tooltip_details_link',
         'tooltip_placement'
-    );
+    ];
 
     /**
      * {@inheritdoc}

@@ -48,7 +48,7 @@ class OroTranslationDumpCommand extends ContainerAwareCommand
                 ->get('oro_translation_jstranslation')->getPath();
 
         foreach ($locales as $locale) {
-            $target = strtr($targetPattern, array('{_locale}' => $locale));
+            $target = strtr($targetPattern, ['{_locale}' => $locale]);
 
             $output->writeln(
                 sprintf(

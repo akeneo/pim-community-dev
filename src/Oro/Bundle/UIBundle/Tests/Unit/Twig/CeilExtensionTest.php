@@ -34,10 +34,10 @@ class CeilExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function provider()
     {
-        return array(
-            array(5, 4.6),
-            array(5, 4.1)
-        );
+        return [
+            [5, 4.6],
+            [5, 4.1]
+        ];
     }
 
     public function testSetFilters()

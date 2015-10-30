@@ -118,14 +118,14 @@ class FileWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'filePath' => array(
-                'options' => array(
+        return [
+            'filePath' => [
+                'options' => [
                     'label' => 'pim_base_connector.export.filePath.label',
                     'help'  => 'pim_base_connector.export.filePath.help'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**

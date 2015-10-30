@@ -17,7 +17,7 @@ class TextFilterTypeTest extends AbstractTypeTestCase
     protected function setUp()
     {
         $translator             = $this->createMockTranslator();
-        $this->formExtensions[] = new CustomFormExtension(array(new FilterType($translator)));
+        $this->formExtensions[] = new CustomFormExtension([new FilterType($translator)]);
 
         parent::setUp();
         $this->type = new TextFilterType($translator);
@@ -41,20 +41,20 @@ class TextFilterTypeTest extends AbstractTypeTestCase
      */
     public function configureOptionsDataProvider()
     {
-        return array(
-            array(
-                'defaultOptions' => array(
+        return [
+            [
+                'defaultOptions' => [
                     'field_type'       => 'text',
-                    'operator_choices' => array(
+                    'operator_choices' => [
                         TextFilterType::TYPE_CONTAINS     => 'oro.filter.form.label_type_contains',
                         TextFilterType::TYPE_NOT_CONTAINS => 'oro.filter.form.label_type_not_contains',
                         TextFilterType::TYPE_EQUAL        => 'oro.filter.form.label_type_equals',
                         TextFilterType::TYPE_STARTS_WITH  => 'oro.filter.form.label_type_start_with',
                         TextFilterType::TYPE_ENDS_WITH    => 'oro.filter.form.label_type_end_with',
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -62,14 +62,14 @@ class TextFilterTypeTest extends AbstractTypeTestCase
      */
     public function bindDataProvider()
     {
-        return array(
-            'simple text' => array(
-                'bindData' => array('type' => TextFilterType::TYPE_CONTAINS, 'value' => 'text'),
-                'formData' => array('type' => TextFilterType::TYPE_CONTAINS, 'value' => 'text'),
-                'viewData' => array(
-                    'value' => array('type' => TextFilterType::TYPE_CONTAINS, 'value' => 'text'),
-                ),
-            ),
-        );
+        return [
+            'simple text' => [
+                'bindData' => ['type' => TextFilterType::TYPE_CONTAINS, 'value' => 'text'],
+                'formData' => ['type' => TextFilterType::TYPE_CONTAINS, 'value' => 'text'],
+                'viewData' => [
+                    'value' => ['type' => TextFilterType::TYPE_CONTAINS, 'value' => 'text'],
+                ],
+            ],
+        ];
     }
 }

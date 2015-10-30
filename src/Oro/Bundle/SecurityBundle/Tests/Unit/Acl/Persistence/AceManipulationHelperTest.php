@@ -64,12 +64,12 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         if ($field === null) {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'Aces')
-                ->will($this->returnValue(array($ace1, $ace2, $ace3)));
+                ->will($this->returnValue([$ace1, $ace2, $ace3]));
         } else {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
-                ->will($this->returnValue(array($ace1, $ace2, $ace3)));
+                ->will($this->returnValue([$ace1, $ace2, $ace3]));
         }
 
         if ($field === null) {
@@ -144,12 +144,12 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         if ($field === null) {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'Aces')
-                ->will($this->returnValue(array($ace1, $ace2)));
+                ->will($this->returnValue([$ace1, $ace2]));
         } else {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
-                ->will($this->returnValue(array($ace1, $ace2)));
+                ->will($this->returnValue([$ace1, $ace2]));
         }
 
         if ($field === null) {
@@ -236,12 +236,12 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         if ($field === null) {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'Aces')
-                ->will($this->returnValue(array($ace1, $ace2, $ace3)));
+                ->will($this->returnValue([$ace1, $ace2, $ace3]));
         } else {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
-                ->will($this->returnValue(array($ace1, $ace2, $ace3)));
+                ->will($this->returnValue([$ace1, $ace2, $ace3]));
         }
         if ($field === null) {
             $this->acl->expects($this->once())
@@ -287,12 +287,12 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         if ($field === null) {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'Aces')
-                ->will($this->returnValue(array($ace1, $ace2)));
+                ->will($this->returnValue([$ace1, $ace2]));
         } else {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
-                ->will($this->returnValue(array($ace1, $ace2)));
+                ->will($this->returnValue([$ace1, $ace2]));
         }
         if ($field === null) {
             $this->acl->expects($this->once())
@@ -320,16 +320,16 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
         if ($field === null) {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'Aces')
-                ->will($this->returnValue(array()));
+                ->will($this->returnValue([]));
         } else {
             $this->acl->expects($this->once())
                 ->method('get' . $type . 'FieldAces')
                 ->with($this->equalTo($field))
-                ->will($this->returnValue(array()));
+                ->will($this->returnValue([]));
         }
 
         $this->assertEquals(
-            array(),
+            [],
             $this->manipulator->getAces($this->acl, $type, $field)
         );
     }
@@ -428,12 +428,12 @@ class AceManipulationHelperTest extends \PHPUnit_Framework_TestCase
 
     public static function aceTypesProvider()
     {
-        return array(
-            array(AclManager::CLASS_ACE, null),
-            array(AclManager::OBJECT_ACE, null),
-            array(AclManager::CLASS_ACE, 'SomeField'),
-            array(AclManager::OBJECT_ACE, 'SomeField'),
-        );
+        return [
+            [AclManager::CLASS_ACE, null],
+            [AclManager::OBJECT_ACE, null],
+            [AclManager::CLASS_ACE, 'SomeField'],
+            [AclManager::OBJECT_ACE, 'SomeField'],
+        ];
     }
 
     private function getAce(

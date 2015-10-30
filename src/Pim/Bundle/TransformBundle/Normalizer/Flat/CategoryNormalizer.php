@@ -18,5 +18,5 @@ class CategoryNormalizer extends Structured\CategoryNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 }

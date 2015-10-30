@@ -43,9 +43,9 @@ class AclAncestor implements \Serializable
     public function serialize()
     {
         return serialize(
-            array(
+            [
                 $this->id
-            )
+            ]
         );
     }
 

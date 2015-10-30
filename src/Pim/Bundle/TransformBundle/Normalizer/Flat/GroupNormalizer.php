@@ -15,12 +15,12 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class GroupNormalizer extends Structured\GroupNormalizer
 {
     /** @var string[] */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $result = parent::normalize($object, $format, $context);
 

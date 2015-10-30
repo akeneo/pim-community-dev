@@ -25,7 +25,7 @@ class ConfigValueRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->om = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
-            ->setMethods(array('createQueryBuilder', 'beginTransaction', 'commit'))
+            ->setMethods(['createQueryBuilder', 'beginTransaction', 'commit'])
             ->getMock();
 
         $this->repository = new ConfigValueRepository(
@@ -41,12 +41,12 @@ class ConfigValueRepositoryTest extends \PHPUnit_Framework_TestCase
     {
         $queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
             ->disableOriginalConstructor()
-            ->setMethods(array('delete', 'andWhere', 'where', 'setParameter', 'getQuery'))
+            ->setMethods(['delete', 'andWhere', 'where', 'setParameter', 'getQuery'])
             ->getMock();
 
         $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
             ->disableOriginalConstructor()
-            ->setMethods(array('execute'))
+            ->setMethods(['execute'])
             ->getMockForAbstractClass();
         $query->expects($this->once())
             ->method('execute');
@@ -78,9 +78,9 @@ class ConfigValueRepositoryTest extends \PHPUnit_Framework_TestCase
         $this->om->expects($this->once())
             ->method('commit');
 
-        $removed = array(
-            array('oro_user', 'level')
-        );
+        $removed = [
+            ['oro_user', 'level']
+        ];
 
         $this->repository->removeValues(1, $removed);
     }

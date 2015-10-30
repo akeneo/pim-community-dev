@@ -43,7 +43,7 @@ class ConfigHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcess()
     {
-        $settings = array();
+        $settings = [];
 
         $this->configManager->expects($this->once())
             ->method('getSettingsByForm')
@@ -78,7 +78,7 @@ class ConfigHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testBadRequest()
     {
-        $settings = array();
+        $settings = [];
 
         $this->configManager->expects($this->once())
             ->method('getSettingsByForm')
@@ -106,7 +106,7 @@ class ConfigHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testFormNotValid()
     {
-        $settings = array();
+        $settings = [];
 
         $this->configManager->expects($this->once())
             ->method('getSettingsByForm')

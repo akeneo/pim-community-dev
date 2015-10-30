@@ -47,13 +47,13 @@ class AssetsCommand extends Command
 
         $this->commandExecutor
             ->runCommand('oro:navigation:init')
-            ->runCommand('fos:js-routing:dump', array('--target' => 'web/js/routes.js'))
+            ->runCommand('fos:js-routing:dump', ['--target' => 'web/js/routes.js'])
             ->runCommand('oro:localization:dump')
             ->runCommand('assets:install')
             ->runCommand('assetic:dump')
             ->runCommand('oro:assetic:dump');
-        $defaultLocales = array('en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it');
-        $this->commandExecutor->runCommand('oro:translation:dump', array('locale' => $defaultLocales));
+        $defaultLocales = ['en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it'];
+        $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => $defaultLocales]);
 
         return $this;
     }

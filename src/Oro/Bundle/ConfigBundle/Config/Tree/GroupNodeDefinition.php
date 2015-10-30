@@ -5,12 +5,12 @@ namespace Oro\Bundle\ConfigBundle\Config\Tree;
 class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, \IteratorAggregate
 {
     /** @var array */
-    protected $children = array();
+    protected $children = [];
 
     /** @var int */
     protected $level = 0;
 
-    public function __construct($name, $definition = array(), $children = array())
+    public function __construct($name, $definition = [], $children = [])
     {
         parent::__construct($name, $definition);
         $this->children = $children;
@@ -100,12 +100,12 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
      */
     public function toBlockConfig()
     {
-        return array(
+        return [
             $this->getName() => array_intersect_key(
                 $this->definition,
-                array_flip(array('title', 'priority', 'description'))
+                array_flip(['title', 'priority', 'description'])
             )
-        );
+        ];
     }
 
     /**
@@ -115,6 +115,6 @@ class GroupNodeDefinition extends AbstractNodeDefinition implements \Countable, 
      */
     public function toViewData()
     {
-        return array_intersect_key($this->definition, array_flip(array('title', 'priority', 'description', 'icon')));
+        return array_intersect_key($this->definition, array_flip(['title', 'priority', 'description', 'icon']));
     }
 }

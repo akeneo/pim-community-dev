@@ -23,7 +23,7 @@ class NumberFormatter
      *
      * @var array
      */
-    protected $currencySymbolPrepend = array();
+    protected $currencySymbolPrepend = [];
 
     /**
      * @param LocaleSettings $localeSettings
@@ -47,9 +47,9 @@ class NumberFormatter
     public function format(
         $value,
         $style,
-        array $attributes = array(),
-        array $textAttributes = array(),
-        array $symbols = array(),
+        array $attributes = [],
+        array $textAttributes = [],
+        array $symbols = [],
         $locale = null
     ) {
         return $this->getFormatter($locale, $this->parseConstantValue($style), $attributes, $textAttributes, $symbols)
@@ -70,9 +70,9 @@ class NumberFormatter
     public function formatCurrency(
         $value,
         $currency = null,
-        array $attributes = array(),
-        array $textAttributes = array(),
-        array $symbols = array(),
+        array $attributes = [],
+        array $textAttributes = [],
+        array $symbols = [],
         $locale = null
     ) {
         if (!$currency) {
@@ -88,7 +88,7 @@ class NumberFormatter
         $formattedString = $formatter->formatCurrency($value, $currency);
 
         return str_replace(
-            array($currency, $currencySymbol, $currencyIntlSymbol),
+            [$currency, $currencySymbol, $currencyIntlSymbol],
             $localizedCurrencySymbol,
             $formattedString
         );
@@ -106,9 +106,9 @@ class NumberFormatter
      */
     public function formatDecimal(
         $value,
-        array $attributes = array(),
-        array $textAttributes = array(),
-        array $symbols = array(),
+        array $attributes = [],
+        array $textAttributes = [],
+        array $symbols = [],
         $locale = null
     ) {
         return $this->format($value, \NumberFormatter::DECIMAL, $attributes, $textAttributes, $symbols, $locale);
@@ -126,9 +126,9 @@ class NumberFormatter
      */
     public function formatPercent(
         $value,
-        array $attributes = array(),
-        array $textAttributes = array(),
-        array $symbols = array(),
+        array $attributes = [],
+        array $textAttributes = [],
+        array $symbols = [],
         $locale = null
     ) {
         return $this->format($value, \NumberFormatter::PERCENT, $attributes, $textAttributes, $symbols, $locale);
@@ -146,9 +146,9 @@ class NumberFormatter
      */
     public function formatSpellout(
         $value,
-        array $attributes = array(),
-        array $textAttributes = array(),
-        array $symbols = array(),
+        array $attributes = [],
+        array $textAttributes = [],
+        array $symbols = [],
         $locale = null
     ) {
         return $this->format($value, \NumberFormatter::SPELLOUT, $attributes, $textAttributes, $symbols, $locale);
@@ -166,9 +166,9 @@ class NumberFormatter
      */
     public function formatDuration(
         $value,
-        array $attributes = array(),
-        array $textAttributes = array(),
-        array $symbols = array(),
+        array $attributes = [],
+        array $textAttributes = [],
+        array $symbols = [],
         $locale = null
     ) {
         return $this->format($value, \NumberFormatter::DURATION, $attributes, $textAttributes, $symbols, $locale);
@@ -186,9 +186,9 @@ class NumberFormatter
      */
     public function formatOrdinal(
         $value,
-        array $attributes = array(),
-        array $textAttributes = array(),
-        array $symbols = array(),
+        array $attributes = [],
+        array $textAttributes = [],
+        array $symbols = [],
         $locale = null
     ) {
         return $this->format($value, \NumberFormatter::ORDINAL, $attributes, $textAttributes, $symbols, $locale);
@@ -309,9 +309,9 @@ class NumberFormatter
     protected function getFormatter(
         $locale,
         $style,
-        array $attributes = array(),
-        array $textAttributes = array(),
-        array $symbols = array()
+        array $attributes = [],
+        array $textAttributes = [],
+        array $symbols = []
     ) {
         $formatter = new IntlNumberFormatter(
             $locale ? : $this->localeSettings->getLocale(),
@@ -342,7 +342,7 @@ class NumberFormatter
      */
     protected function parseAttributes(array $attributes)
     {
-        $result = array();
+        $result = [];
         foreach ($attributes as $attribute => $value) {
             $result[$this->parseConstantValue($attribute)] = $value;
         }
@@ -385,7 +385,7 @@ class NumberFormatter
         }
         $style = $this->parseConstantValue($style);
 
-        $styleConstants = array(
+        $styleConstants = [
             \NumberFormatter::PATTERN_DECIMAL,
             \NumberFormatter::DECIMAL,
             \NumberFormatter::CURRENCY,
@@ -397,7 +397,7 @@ class NumberFormatter
             \NumberFormatter::PATTERN_RULEBASED,
             \NumberFormatter::IGNORE,
             \NumberFormatter::DEFAULT_STYLE,
-        );
+        ];
 
         if (!in_array($style, $styleConstants)) {
             throw new \InvalidArgumentException("NumberFormatter style '$originalValue' is invalid");

@@ -13,13 +13,13 @@ class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->placeholder = new PlaceholderTokenParser(
-            array(
-                 'test_position' => array(
-                     'items' => array(
-                         'test_item' => array()
-                     )
-                 )
-            ),
+            [
+                 'test_position' => [
+                     'items' => [
+                         'test_item' => []
+                     ]
+                 ]
+            ],
             'test_class'
         );
     }
@@ -29,12 +29,12 @@ class PlaceholderTokenParserTest extends \PHPUnit_Framework_TestCase
         $startToken = new \Twig_Token(\Twig_Token::NAME_TYPE, 'placeholder', 12);
 
         $stream = new \Twig_TokenStream(
-            array(
+            [
                  new \Twig_Token(\Twig_Token::NAME_TYPE, 'test_position', 12),
                  new \Twig_Token(\Twig_Token::NAME_TYPE, 'with', 12),
                  new \Twig_Token(\Twig_Token::BLOCK_END_TYPE, '', 12),
                  new \Twig_Token(\Twig_Token::EOF_TYPE, '', 12),
-            )
+            ]
         );
 
         $expressionParser = $this->getMockBuilder('\Twig_ExpressionParser')

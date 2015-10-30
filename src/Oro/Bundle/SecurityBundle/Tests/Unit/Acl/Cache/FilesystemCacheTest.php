@@ -13,7 +13,7 @@ class FilesystemCacheTest extends \PHPUnit_Framework_TestCase
     {
         $cache = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Cache\FilesystemCache')
             ->disableOriginalConstructor()
-            ->setMethods(array('fetch'))
+            ->setMethods(['fetch'])
             ->getMock();
 
         self::setProtectedProperty($cache, 'directory', 'dir');
@@ -21,16 +21,16 @@ class FilesystemCacheTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $expectedFileName,
-            self::callProtectedMethod($cache, 'getFilename', array($id))
+            self::callProtectedMethod($cache, 'getFilename', [$id])
         );
     }
 
     public static function getFilenameProvider()
     {
-        return array(
-            array('test', 'dir' . DIRECTORY_SEPARATOR . 'test.ext'),
-            array('test\\\\//::""**??<<>>||file', 'dir' . DIRECTORY_SEPARATOR . 'testfile.ext'),
-        );
+        return [
+            ['test', 'dir' . DIRECTORY_SEPARATOR . 'test.ext'],
+            ['test\\\\//::""**??<<>>||file', 'dir' . DIRECTORY_SEPARATOR . 'testfile.ext'],
+        ];
     }
 
     /**

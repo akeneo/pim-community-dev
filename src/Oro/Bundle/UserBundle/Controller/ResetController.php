@@ -15,7 +15,7 @@ class ResetController extends Controller
      */
     public function requestAction()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -27,7 +27,7 @@ class ResetController extends Controller
         $user = $this->get('oro_user.manager')->findUserByUsernameOrEmail($username);
 
         if (null === $user) {
-            return $this->render('OroUserBundle:Reset:request.html.twig', array('invalid_username' => $username));
+            return $this->render('OroUserBundle:Reset:request.html.twig', ['invalid_username' => $username]);
         }
 
         if ($user->isPasswordRequestNonExpired($this->container->getParameter('oro_user.reset.ttl'))) {
@@ -53,7 +53,7 @@ class ResetController extends Controller
             ->setFrom($this->container->getParameter('oro_user.email'))
             ->setTo($user->getEmail())
             ->setBody(
-                $this->renderView('OroUserBundle:Mail:reset.html.twig', array('user' => $user)),
+                $this->renderView('OroUserBundle:Mail:reset.html.twig', ['user' => $user]),
                 'text/html'
             );
 
@@ -82,9 +82,9 @@ class ResetController extends Controller
             return $this->redirect($this->generateUrl('oro_user_reset_request'));
         }
 
-        return array(
+        return [
             'email' => $email,
-        );
+        ];
     }
 
     /**
@@ -122,10 +122,10 @@ class ResetController extends Controller
             return $this->redirect($this->generateUrl('oro_user_security_login'));
         }
 
-        return array(
+        return [
             'token' => $token,
             'form'  => $this->get('oro_user.form.reset')->createView(),
-        );
+        ];
     }
 
     /**

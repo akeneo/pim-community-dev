@@ -27,14 +27,14 @@ class ConfigManager
     /**
      * @var array
      */
-    protected $storedSettings = array();
+    protected $storedSettings = [];
 
     /**
      *
      * @param ObjectManager $om
      * @param array         $settings
      */
-    public function __construct(ObjectManager $om, $settings = array())
+    public function __construct(ObjectManager $om, $settings = [])
     {
         $this->om       = $om;
         $this->settings = $settings;
@@ -114,8 +114,8 @@ class ConfigManager
     public function getChanged($newSettings)
     {
         // find new and updated
-        $updated = array();
-        $removed = array();
+        $updated = [];
+        $removed = [];
         foreach ($newSettings as $key => $value) {
             $currentValue = $this->get(
                 str_replace(
@@ -139,11 +139,11 @@ class ConfigManager
 
             if ($valueDefined && !$valueStillDefined) {
                 $key = explode(self::SECTION_VIEW_SEPARATOR, $key);
-                $removed[] = array($key[0], $key[1]);
+                $removed[] = [$key[0], $key[1]];
             }
         }
 
-        return array($updated, $removed);
+        return [$updated, $removed];
     }
 
     /**
@@ -172,7 +172,7 @@ class ConfigManager
      */
     public function getSettingsByForm(FormInterface $form)
     {
-        $settings = array();
+        $settings = [];
 
         foreach ($form as $child) {
             $key = str_replace(

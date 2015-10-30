@@ -62,12 +62,12 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
      */
     public static function createXmlMappingDriver(
         array $mappings,
-        array $managerParameters = array(),
+        array $managerParameters = [],
         $enabledParameter = false
     ) {
-        $arguments = array($mappings, '.orm.xml');
+        $arguments = [$mappings, '.orm.xml'];
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
-        $driver = new Definition('Doctrine\ORM\Mapping\Driver\XmlDriver', array($locator));
+        $driver = new Definition('Doctrine\ORM\Mapping\Driver\XmlDriver', [$locator]);
 
         return new DoctrineOrmMappingsPass($driver, $mappings, $managerParameters, $enabledParameter);
     }
@@ -84,12 +84,12 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
      */
     public static function createYamlMappingDriver(
         array $mappings,
-        array $managerParameters = array(),
+        array $managerParameters = [],
         $enabledParameter = false
     ) {
-        $arguments = array($mappings, '.orm.yml');
+        $arguments = [$mappings, '.orm.yml'];
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
-        $driver = new Definition('Doctrine\ORM\Mapping\Driver\YamlDriver', array($locator));
+        $driver = new Definition('Doctrine\ORM\Mapping\Driver\YamlDriver', [$locator]);
 
         return new DoctrineOrmMappingsPass($driver, $mappings, $managerParameters, $enabledParameter);
     }
@@ -106,12 +106,12 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
      */
     public static function createPhpMappingDriver(
         array $mappings,
-        array $managerParameters = array(),
+        array $managerParameters = [],
         $enabledParameter = false
     ) {
-        $arguments = array($mappings, '.php');
+        $arguments = [$mappings, '.php'];
         $locator = new Definition('Doctrine\Common\Persistence\Mapping\Driver\SymfonyFileLocator', $arguments);
-        $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\PHPDriver', array($locator));
+        $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\PHPDriver', [$locator]);
 
         return new DoctrineOrmMappingsPass($driver, $mappings, $managerParameters, $enabledParameter);
     }
@@ -130,11 +130,11 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
     public static function createAnnotationMappingDriver(
         array $namespaces,
         array $directories,
-        array $managerParameters = array(),
+        array $managerParameters = [],
         $enabledParameter = false
     ) {
         $reader = new Reference('doctrine.orm.metadata.annotation_reader');
-        $driver = new Definition('Doctrine\ORM\Mapping\Driver\AnnotationDriver', array($reader, $directories));
+        $driver = new Definition('Doctrine\ORM\Mapping\Driver\AnnotationDriver', [$reader, $directories]);
 
         return new DoctrineOrmMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter);
     }
@@ -153,10 +153,10 @@ class DoctrineOrmMappingsPass extends RegisterMappingsPass
     public static function createStaticPhpMappingDriver(
         array $namespaces,
         array $directories,
-        array $managerParameters = array(),
+        array $managerParameters = [],
         $enabledParameter = false
     ) {
-        $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver', array($directories));
+        $driver = new Definition('Doctrine\Common\Persistence\Mapping\Driver\StaticPHPDriver', [$directories]);
 
         return new DoctrineOrmMappingsPass($driver, $namespaces, $managerParameters, $enabledParameter);
     }

@@ -17,9 +17,9 @@ class AjaxEntityTransformerFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $doctrine = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
         $transformerClass = 'Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer';
-        $options = array(
+        $options = [
             'class' => 'class'
-        );
+        ];
         $doctrine->expects($this->once())
             ->method('getRepository')
             ->with($this->equalTo('class'))

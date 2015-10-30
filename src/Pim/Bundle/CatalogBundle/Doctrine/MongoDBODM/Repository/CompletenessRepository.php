@@ -62,7 +62,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         $channels = $this->channelManager->getFullChannels();
         $productRepo = $this->documentManager->getRepository($this->productClass);
 
-        $productsCount = array();
+        $productsCount = [];
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
             $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
@@ -91,14 +91,14 @@ class CompletenessRepository implements CompletenessRepositoryInterface
         $channels = $this->channelManager->getFullChannels();
         $productRepo = $this->documentManager->getRepository($this->productClass);
 
-        $productsCount = array();
+        $productsCount = [];
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
             $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
             $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
 
             foreach ($channel->getLocales() as $locale) {
-                $data = array();
+                $data = [];
                 $compSuffix = $channel->getCode().'-'.$locale->getCode();
 
                 $qb = $productRepo->createQueryBuilder()

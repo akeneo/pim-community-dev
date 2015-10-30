@@ -35,7 +35,7 @@ class FormTypeSelect2Extension extends AbstractTypeExtension
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefined(array('select2'));
+        $resolver->setDefined(['select2']);
     }
 
     /**

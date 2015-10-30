@@ -11,7 +11,7 @@ class TestHTML extends Template
         return 'block.html.twig';
     }
 
-    protected function doDisplay(array $context, array $blocks = array())
+    protected function doDisplay(array $context, array $blocks = [])
     {
         echo "<p>test string</p>\n";
     }

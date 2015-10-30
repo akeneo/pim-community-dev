@@ -44,9 +44,9 @@ class Configuration implements ConfigurationInterface
                                 ->defaultValue('%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%')
                             ->end()
                             ->arrayNode('require')
-                                ->treatNullLike(array())
+                                ->treatNullLike([])
                                 ->prototype('scalar')->end()
-                                ->defaultValue(array('street', 'city'))
+                                ->defaultValue(['street', 'city'])
                             ->end()
                             ->scalarNode('zip_name_type')
                                 ->cannotBeEmpty()
@@ -102,15 +102,15 @@ class Configuration implements ConfigurationInterface
         // their values will be calculated by Extension based on chosen locale
         SettingsBuilder::append(
             $rootNode,
-            array(
-                'locale'                            => array('value' => '%locale%'),
-                'language'                          => array('value' => null),
-                'country'                           => array('value' => null),
-                'currency'                          => array('value' => null),
-                'timezone'                          => array('value' => date_default_timezone_get()),
-                'format_address_by_address_country' => array('value' => true, 'type' => 'boolean'),
-                'qwerty'                            => array('value' => array(), 'type' => 'array'),
-            )
+            [
+                'locale'                            => ['value' => '%locale%'],
+                'language'                          => ['value' => null],
+                'country'                           => ['value' => null],
+                'currency'                          => ['value' => null],
+                'timezone'                          => ['value' => date_default_timezone_get()],
+                'format_address_by_address_country' => ['value' => true, 'type' => 'boolean'],
+                'qwerty'                            => ['value' => [], 'type' => 'array'],
+            ]
         );
 
         return $treeBuilder;

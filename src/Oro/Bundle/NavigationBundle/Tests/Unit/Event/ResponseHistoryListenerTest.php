@@ -71,7 +71,7 @@ class ResponseHistoryListenerTest extends \PHPUnit_Framework_TestCase
 
         $this->item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem');
 
-        $this->serializedTitle = json_encode(array('titleTemplate' => 'Test title template'));
+        $this->serializedTitle = json_encode(['titleTemplate' => 'Test title template']);
     }
 
     public function testOnResponse()

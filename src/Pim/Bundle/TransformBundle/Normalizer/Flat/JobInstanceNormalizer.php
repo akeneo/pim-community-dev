@@ -17,7 +17,7 @@ class JobInstanceNormalizer extends Structured\JobInstanceNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}

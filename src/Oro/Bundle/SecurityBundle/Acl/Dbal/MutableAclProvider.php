@@ -64,7 +64,7 @@ class MutableAclProvider extends BaseMutableAclProvider
      */
     public function cacheEmptyAcl(ObjectIdentityInterface $oid)
     {
-        $this->cache->putInCache(new Acl(0, $oid, $this->permissionStrategy, array(), true));
+        $this->cache->putInCache(new Acl(0, $oid, $this->permissionStrategy, [], true));
     }
 
     /**

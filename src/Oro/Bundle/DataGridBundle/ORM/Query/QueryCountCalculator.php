@@ -62,8 +62,8 @@ class QueryCountCalculator
      */
     protected function processParameterMappings(Query $query, $paramMappings)
     {
-        $sqlParams = array();
-        $types     = array();
+        $sqlParams = [];
+        $types     = [];
 
         /** @var Parameter $parameter */
         foreach ($query->getParameters() as $parameter) {
@@ -83,7 +83,7 @@ class QueryCountCalculator
             }
 
             $sqlPositions = $paramMappings[$key];
-            $value = array($value);
+            $value = [$value];
             $countValue = count($value);
 
             for ($i = 0, $l = count($sqlPositions); $i < $l; $i++) {
@@ -103,6 +103,6 @@ class QueryCountCalculator
             $types = array_values($types);
         }
 
-        return array($sqlParams, $types);
+        return [$sqlParams, $types];
     }
 }

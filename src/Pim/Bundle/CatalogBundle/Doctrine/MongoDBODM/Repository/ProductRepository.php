@@ -317,7 +317,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array())
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
         $qb = $this->createQueryBuilder()->eagerCursor(true);
 
@@ -397,7 +397,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array($this->attributeRepository->getIdentifierCode());
+        return [$this->attributeRepository->getIdentifierCode()];
     }
 
     /**
@@ -455,7 +455,7 @@ class ProductRepository extends DocumentRepository implements
      *
      * @return QueryBuilder
      */
-    public function createVariantGroupDatagridQueryBuilder(array $params = array())
+    public function createVariantGroupDatagridQueryBuilder(array $params = [])
     {
         $qb = $this->createQueryBuilder();
 
@@ -471,7 +471,7 @@ class ProductRepository extends DocumentRepository implements
      *
      * @return QueryBuilder
      */
-    public function createAssociationDatagridQueryBuilder(array $params = array())
+    public function createAssociationDatagridQueryBuilder(array $params = [])
     {
         $qb = $this->createQueryBuilder();
 
@@ -586,7 +586,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getFullProducts(array $productIds, array $attributeIds = array())
+    public function getFullProducts(array $productIds, array $attributeIds = [])
     {
         $qb = $this->createQueryBuilder('p');
         $qb->field('_id')->in($productIds);

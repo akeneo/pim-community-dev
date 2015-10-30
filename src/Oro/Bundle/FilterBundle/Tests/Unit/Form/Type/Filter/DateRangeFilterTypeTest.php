@@ -19,7 +19,7 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
     {
         $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
-            ->setMethods(array('getTimezone'))
+            ->setMethods(['getTimezone'])
             ->getMock();
         $localeSettings->expects($this->any())
             ->method('getTimezone')
@@ -27,10 +27,10 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
 
         $translator = $this->createMockTranslator();
 
-        $types = array(
+        $types = [
             new DateRangeType($localeSettings),
             new FilterType($translator)
-        );
+        ];
 
         $this->formExtensions[] = new CustomFormExtension($types);
 
@@ -56,26 +56,26 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
      */
     public function configureOptionsDataProvider()
     {
-        return array(
-            array(
-                'defaultOptions' => array(
+        return [
+            [
+                'defaultOptions' => [
                     'field_type'       => DateRangeType::NAME,
-                    'operator_choices' => array(
+                    'operator_choices' => [
                         DateRangeFilterType::TYPE_BETWEEN     => 'oro.filter.form.label_date_type_between',
                         DateRangeFilterType::TYPE_NOT_BETWEEN => 'oro.filter.form.label_date_type_not_between',
                         DateRangeFilterType::TYPE_MORE_THAN   => 'oro.filter.form.label_date_type_more_than',
                         DateRangeFilterType::TYPE_LESS_THAN   => 'oro.filter.form.label_date_type_less_than',
-                    ),
-                    'widget_options' => array(),
-                    'type_values'    => array(
+                    ],
+                    'widget_options' => [],
+                    'type_values'    => [
                         'between'    => DateRangeFilterType::TYPE_BETWEEN,
                         'notBetween' => DateRangeFilterType::TYPE_NOT_BETWEEN,
                         'moreThan'   => DateRangeFilterType::TYPE_MORE_THAN,
                         'lessThan'   => DateRangeFilterType::TYPE_LESS_THAN
-                    )
-                )
-            )
-        );
+                    ]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -83,18 +83,18 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
      */
     public function bindDataProvider()
     {
-        return array(
-            'empty' => array(
-                'bindData' => array(),
-                'formData' => array('type' => null, 'value' => array('start' => '', 'end' => '')),
-                'viewData' => array(
-                    'value'          => array('type'     => null, 'value' => array('start' => '', 'end' => '')),
-                    'widget_options' => array('firstDay' => 1)
-                ),
-                'customOptions' => array(
-                    'widget_options' => array('firstDay' => 1)
-                )
-            ),
-        );
+        return [
+            'empty' => [
+                'bindData' => [],
+                'formData' => ['type' => null, 'value' => ['start' => '', 'end' => '']],
+                'viewData' => [
+                    'value'          => ['type'     => null, 'value' => ['start' => '', 'end' => '']],
+                    'widget_options' => ['firstDay' => 1]
+                ],
+                'customOptions' => [
+                    'widget_options' => ['firstDay' => 1]
+                ]
+            ],
+        ];
     }
 }

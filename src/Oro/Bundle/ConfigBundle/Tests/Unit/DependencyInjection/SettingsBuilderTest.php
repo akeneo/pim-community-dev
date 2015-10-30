@@ -17,12 +17,12 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         SettingsBuilder::append(
             $root,
-            array(
-                'greeting' => array(
+            [
+                'greeting' => [
                     'value' => true,
                     'type'  => 'boolean',
-                ),
-            )
+                ],
+            ]
         );
 
         $children = $this->getField($root, 'children');
@@ -43,11 +43,11 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         SettingsBuilder::append(
             $root,
-            array(
-                'level' => array(
+            [
+                'level' => [
                     'value' => 10,
-                ),
-            )
+                ],
+            ]
         );
 
         $children = $this->getField($root, 'children');
@@ -68,12 +68,12 @@ class SettingsBuilderTest extends \PHPUnit_Framework_TestCase
 
         SettingsBuilder::append(
             $root,
-            array(
-                'list' => array(
-                    'value' => array(1, 2, 3),
+            [
+                'list' => [
+                    'value' => [1, 2, 3],
                     'type'  => 'array',
-                ),
-            )
+                ],
+            ]
         );
 
         $children = $this->getField($root, 'children');

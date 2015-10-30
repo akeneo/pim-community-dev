@@ -109,7 +109,7 @@ class AclRoleHandler
      */
     public function process(Role $role)
     {
-        if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
+        if (in_array($this->request->getMethod(), ['POST', 'PUT'])) {
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
@@ -167,7 +167,7 @@ class AclRoleHandler
      */
     protected function processPrivileges(Role $role)
     {
-        $formPrivileges = array();
+        $formPrivileges = [];
         foreach ($this->privilegeConfig as $fieldName => $config) {
             $privileges = $this->form->get($fieldName)->getData();
             $formPrivileges = array_merge($formPrivileges, $privileges);

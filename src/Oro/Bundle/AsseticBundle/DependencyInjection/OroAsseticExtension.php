@@ -50,7 +50,7 @@ class OroAsseticExtension extends Extension
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        $css = array();
+        $css = [];
 
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
@@ -64,27 +64,27 @@ class OroAsseticExtension extends Extension
 
         $container->setParameter(
             'oro_assetic.assets_groups',
-            array(
+            [
                 'css' => array_keys($css)
-            )
+            ]
         );
 
         $container->setParameter(
             'oro_assetic.compiled_assets_groups',
-            array(
+            [
                 'css' => $config['css_debug']
-            )
+            ]
         );
 
-        return array(
+        return [
             'css' => $this->getAssetics($css, $config['css_debug'], $config['css_debug_all']),
-        );
+        ];
     }
 
     protected function getAssetics($assetsArray, $debugBlocks, $debugAll)
     {
-        $compressAssets = array();
-        $uncompressAssets = array();
+        $compressAssets = [];
+        $uncompressAssets = [];
         foreach ($assetsArray as $blockName => $files) {
             if ($debugAll || in_array($blockName, $debugBlocks)) {
                 $uncompressAssets = array_merge($uncompressAssets, $files);
@@ -93,9 +93,9 @@ class OroAsseticExtension extends Extension
             }
         }
 
-        return array(
-            'compress'   => array($compressAssets),
-            'uncompress' => array($uncompressAssets)
-        );
+        return [
+            'compress'   => [$compressAssets],
+            'uncompress' => [$uncompressAssets]
+        ];
     }
 }

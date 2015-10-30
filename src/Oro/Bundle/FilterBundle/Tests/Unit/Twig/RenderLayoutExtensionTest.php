@@ -28,22 +28,22 @@ class RenderLayoutExtensionTest extends AbstractExtensionTestCase
     /**
      * @var array
      */
-    protected $expectedFunctions = array(
-        'oro_filter_render_filter_javascript' => array(
+    protected $expectedFunctions = [
+        'oro_filter_render_filter_javascript' => [
             'callback'          => 'renderFilterJavascript',
-            'safe'              => array('html'),
+            'safe'              => ['html'],
             'needs_environment' => true
-        ),
-    );
+        ],
+    ];
 
     /**
      * @var array
      */
-    protected $expectedFilters = array(
-        'oro_filter_choices' => array(
+    protected $expectedFilters = [
+        'oro_filter_choices' => [
             'callback' => 'getChoices'
-        )
-    );
+        ]
+    ];
 
     /**
      * Data provider for testRenderFilterJs
@@ -52,31 +52,31 @@ class RenderLayoutExtensionTest extends AbstractExtensionTestCase
      */
     public function renderFilterJavascriptDataProvider()
     {
-        return array(
-            'empty_prefixes' => array(
-                '$blockPrefixes' => array()
-            ),
-            'incorrect_prefixes' => array(
+        return [
+            'empty_prefixes' => [
+                '$blockPrefixes' => []
+            ],
+            'incorrect_prefixes' => [
                 '$blockPrefixes' => 'not_array_data'
-            ),
-            'no_existing_block' => array(
-                '$blockPrefixes' => array(
+            ],
+            'no_existing_block' => [
+                '$blockPrefixes' => [
                     'not',
                     'existing',
                     'blocks'
-                )
-            ),
-            'existing_blocks' => array(
-                '$blockPrefixes' => array(
+                ]
+            ],
+            'existing_blocks' => [
+                '$blockPrefixes' => [
                     'some',
                     self::TEST_FIRST_EXISTING_TYPE,
                     'existing',
                     self::TEST_SECOND_EXISTING_TYPE,
                     'blocks'
-                ),
+                ],
                 '$expectedBlock' => self::TEST_SECOND_EXISTING_TYPE . RenderLayoutExtension::SUFFIX
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -88,28 +88,28 @@ class RenderLayoutExtensionTest extends AbstractExtensionTestCase
     public function testRenderFilterJavascript($blockPrefixes, $expectedBlock = null)
     {
         $formView = new FormView();
-        $formView->vars = array('block_prefixes' => $blockPrefixes);
+        $formView->vars = ['block_prefixes' => $blockPrefixes];
 
         $template = $this->getMockForAbstractClass(
             '\Twig_Template',
-            array(),
+            [],
             '',
             false,
             true,
             true,
-            array('hasBlock', 'renderBlock')
+            ['hasBlock', 'renderBlock']
         );
         $template->expects($this->any())
             ->method('hasBlock')
-            ->will($this->returnCallback(array($this, 'hasBlockCallback')));
+            ->will($this->returnCallback([$this, 'hasBlockCallback']));
         if ($expectedBlock) {
             $template->expects($this->once())
                 ->method('renderBlock')
-                ->with($expectedBlock, array('formView' => $formView))
+                ->with($expectedBlock, ['formView' => $formView])
                 ->will($this->returnValue(self::TEST_BLOCK_HTML));
         }
 
-        $environment = $this->getMock('\Twig_Environment', array('loadTemplate'));
+        $environment = $this->getMock('\Twig_Environment', ['loadTemplate']);
         $environment->expects($this->any())
             ->method('loadTemplate')
             ->with(self::TEST_TEMPLATE_NAME)
@@ -131,21 +131,21 @@ class RenderLayoutExtensionTest extends AbstractExtensionTestCase
      */
     public function hasBlockCallback($blockName)
     {
-        $existingBlocks = array(
+        $existingBlocks = [
             self::TEST_FIRST_EXISTING_TYPE . RenderLayoutExtension::SUFFIX,
             self::TEST_SECOND_EXISTING_TYPE . RenderLayoutExtension::SUFFIX
-        );
+        ];
 
         return in_array($blockName, $existingBlocks);
     }
 
     public function testGetChoices()
     {
-        $actualData = array(
+        $actualData = [
             new ChoiceView('data_1', 'value_1', 'label_1'),
             new ChoiceView('data_2', 'value_2', 'label_2'),
             'additional' => 'choices',
-        );
+        ];
         $expectedData = [
             ['value'  => 'value_1', 'label' => 'label_1'],
             ['value'  => 'value_2', 'label' => 'label_2'],

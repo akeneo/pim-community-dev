@@ -26,12 +26,12 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $expectedFunctions = array();
+    protected $expectedFunctions = [];
 
     /**
      * @var array
      */
-    protected $expectedFilters = array();
+    protected $expectedFilters = [];
 
     protected function setUp()
     {
@@ -62,7 +62,7 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
             $this->assertArrayHasKey($functionName, $this->expectedFunctions);
 
             $expectedParameters = $this->expectedFunctions[$functionName];
-            $this->assertEquals(array($this->extension, $expectedParameters['callback']), $function->getCallable());
+            $this->assertEquals([$this->extension, $expectedParameters['callback']], $function->getCallable());
             $this->assertEquals($expectedParameters['safe'], $function->getSafe($twigNode));
             $this->assertEquals($expectedParameters['needs_environment'], $function->needsEnvironment());
         }
@@ -78,7 +78,7 @@ class AbstractExtensionTestCase extends \PHPUnit_Framework_TestCase
             $this->assertArrayHasKey($filterName, $this->expectedFilters);
 
             $expectedParameters = $this->expectedFilters[$filterName];
-            $this->assertEquals(array($this->extension, $expectedParameters['callback']), $filter->getCallable());
+            $this->assertEquals([$this->extension, $expectedParameters['callback']], $filter->getCallable());
         }
     }
 }

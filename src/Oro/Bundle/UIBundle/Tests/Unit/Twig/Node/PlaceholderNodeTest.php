@@ -24,24 +24,24 @@ class PlaceholderNodeTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->blocks = array(
-            'items' => array(
-                'some_action' => array(
-                    array(
+        $this->blocks = [
+            'items' => [
+                'some_action' => [
+                    [
                         'action' => 'some_action'
-                    ),
-                ),
-                'some_template' => array(
-                    array(
+                    ],
+                ],
+                'some_template' => [
+                    [
                         'template' => 'some_template'
-                    )
-                )
-            )
+                    ]
+                ]
+            ]
 
-        );
+        ];
 
-        $this->line = array(12);
-        $this->variables = new \Twig_Node_Expression_Constant(array(), $this->line);
+        $this->line = [12];
+        $this->variables = new \Twig_Node_Expression_Constant([], $this->line);
         $this->wrapClassName = 'test_class';
 
         $this->tag = 'test_tag';
@@ -84,7 +84,7 @@ class PlaceholderNodeTest extends \PHPUnit_Framework_TestCase
         $this->node->compile($this->compiler);
 
         $nodeWoVariables = new PlaceholderNode(
-            array('items' => array('some_action' => array('action' => 'some_action'))),
+            ['items' => ['some_action' => ['action' => 'some_action']]],
             null,
             $this->wrapClassName,
             $this->line,

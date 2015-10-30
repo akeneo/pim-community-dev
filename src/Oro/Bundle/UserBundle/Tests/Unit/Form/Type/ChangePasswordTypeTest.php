@@ -30,7 +30,7 @@ class ChangePasswordTypeTest extends FormIntegrationTestCase
     public function testBuildForm()
     {
         $builder = $this->getMock('Symfony\Component\Form\Test\FormBuilderInterface');
-        $options = array();
+        $options = [];
 
         $builder->expects($this->once())
             ->method('addEventSubscriber')

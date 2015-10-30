@@ -25,10 +25,10 @@ class Md5Extension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
+        return [
             'md5'       => new \Twig_Filter_Method($this, 'md5'),
             'objectMd5' => new \Twig_Filter_Method($this, 'objectMd5'),
-        );
+        ];
     }
 
     /**

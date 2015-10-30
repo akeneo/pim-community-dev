@@ -12,7 +12,7 @@ class TitleRepository extends EntityRepository
      * @param array $routes route names to get titles for
      * @return array
      */
-    public function getTitles($routes = array())
+    public function getTitles($routes = [])
     {
         $routes = $routes ?: null;
         $qb = $this

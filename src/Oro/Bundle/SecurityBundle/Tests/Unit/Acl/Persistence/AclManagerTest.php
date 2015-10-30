@@ -910,12 +910,12 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
         $deleteItemAcl = $this->getMock('Symfony\Component\Security\Acl\Model\MutableAclInterface');
 
         $this->setItems(
-            array(
+            [
                 new BatchItem($oid1, BatchItem::STATE_NONE),
                 $newItem,
                 new BatchItem($oid3, BatchItem::STATE_UPDATE, $updateItemAcl),
                 new BatchItem($oid4, BatchItem::STATE_DELETE, $deleteItemAcl),
-            )
+            ]
         );
 
         $this->aclProvider->expects($this->once())
@@ -976,7 +976,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
         $getKeyMtd->setAccessible(true);
         $key = $getKeyMtd->invoke($this->manager, $oid);
 
-        $prop->setValue($this->manager, array($key => new BatchItem($oid, $state, $acl)));
+        $prop->setValue($this->manager, [$key => new BatchItem($oid, $state, $acl)]);
     }
 
     /**
@@ -991,7 +991,7 @@ class AclManagerTest extends \PHPUnit_Framework_TestCase
         $getKeyMtd = $class->getMethod('getKey');
         $getKeyMtd->setAccessible(true);
 
-        $val = array();
+        $val = [];
         foreach ($items as $item) {
             $val[$getKeyMtd->invoke($this->manager, $item->getOid())] = $item;
         }

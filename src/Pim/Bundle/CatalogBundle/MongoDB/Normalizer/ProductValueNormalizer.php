@@ -25,7 +25,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $valueKey = $this->getFieldValue($object);
         $normalized = null;

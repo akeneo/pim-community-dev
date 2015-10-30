@@ -27,7 +27,7 @@ class SubBlockConfig implements FormConfigInterface
     /**
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     public function __construct($code)
     {
@@ -145,11 +145,11 @@ class SubBlockConfig implements FormConfigInterface
      */
     public function toArray()
     {
-        return array(
+        return [
             'code'        => $this->code,
             'title'       => $this->title,
             'description' => $this->description,
             'data'        => $this->data
-        );
+        ];
     }
 }

@@ -79,10 +79,10 @@ class FamilyTransformerTest extends EntityTransformerTestCase
 
     public function getTransformData()
     {
-        return array(
-            'no_errors'     => array(false),
-            'nested_errors' => array(true)
-        );
+        return [
+            'no_errors'     => [false],
+            'nested_errors' => [true]
+        ];
     }
 
     /**
@@ -97,13 +97,13 @@ class FamilyTransformerTest extends EntityTransformerTestCase
         $this->addColumn('attribute');
 
         if ($nestedErrors) {
-            $errors = array(
-                'co1' => array(
-                    array('error')
-                )
-            );
+            $errors = [
+                'co1' => [
+                    ['error']
+                ]
+            ];
         } else {
-            $errors = array();
+            $errors = [];
         }
         $this->transformerRegistry->expects($this->any())
             ->method('getErrors')
@@ -112,37 +112,37 @@ class FamilyTransformerTest extends EntityTransformerTestCase
 
         $object = $this->transformer->transform(
             'Pim\Bundle\CatalogBundle\Entity\AttributeRequirement',
-            array(
+            [
                 'code'         => 'code',
                 'type'         => 'type',
                 'col1'         => 'val1',
                 'col2'         => 'val2',
-                'requirements' => array(
-                    array(
+                'requirements' => [
+                    [
                         'code' => 'o1code',
                         'col1' => 'o1val1',
                         'col2' => 'o1val2',
-                    ),
-                    array(
+                    ],
+                    [
                         'col1' => 'o2val1',
                         'col2' => 'o2val2',
-                    ),
-                )
-            )
+                    ],
+                ]
+            ]
         );
 
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Family', $object);
         if ($nestedErrors) {
             $this->assertEquals(
-                array(
-                    'requirements' => array(
-                        array('error'),
-                        array('error'),
-                        array('error'),
-                        array('error'),
-                        array('error'),
-                    )
-                ),
+                [
+                    'requirements' => [
+                        ['error'],
+                        ['error'],
+                        ['error'],
+                        ['error'],
+                        ['error'],
+                    ]
+                ],
                 $this->transformer->getErrors('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement')
             );
         } else {

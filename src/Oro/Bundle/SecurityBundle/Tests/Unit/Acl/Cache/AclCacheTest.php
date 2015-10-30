@@ -14,9 +14,10 @@ class AclCacheTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->cacheProvider = $this->getMock('Doctrine\Common\Cache\CacheProvider', array(
+        $this->cacheProvider = $this->getMock('Doctrine\Common\Cache\CacheProvider', [
             'deleteAll', 'doFetch', 'doContains', 'doSave', 'doDelete', 'doFlush', 'doGetStats'
-        ));
+        ]
+        );
         $this->permissionGrantingStrategy =
             $this->getMockForAbstractClass('Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface');
         $this->prefix = 'test_prefix';

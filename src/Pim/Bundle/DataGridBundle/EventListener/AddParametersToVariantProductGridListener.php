@@ -53,7 +53,7 @@ class AddParametersToVariantProductGridListener extends AddParametersToProductGr
                 ->getProductRepository()
                 ->getEligibleProductIdsForVariantGroup($variantGroupId);
             if (count($productIds) === 0) {
-                $productIds = array(0);
+                $productIds = [0];
             }
         } else {
             $productIds = [0];

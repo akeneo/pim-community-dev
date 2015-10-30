@@ -42,12 +42,12 @@ class AsseticTokenParser extends \Twig_TokenParser
     {
         $inputs = $this->assets;
 
-        $filters = array();
-        $attributes = array(
+        $filters = [];
+        $attributes = [
             'output'   => $this->output,
             'var_name' => 'asset_url',
-            'vars'     => array(),
-        );
+            'vars'     => [],
+        ];
 
         $stream = $this->parser->getStream();
 
@@ -77,29 +77,29 @@ class AsseticTokenParser extends \Twig_TokenParser
         }
 
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
-        $body = $this->parser->subparse(array($this, 'testEndTag'), true);
+        $body = $this->parser->subparse([$this, 'testEndTag'], true);
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
         $nameUnCompress = $this->factory->generateAssetName($inputs['compress'][0], $filters, $attributes);
         $nameCompress = substr(sha1(serialize($inputs['uncompress'][0]) . 'oro_assets'), 0, 7);
 
         return new OroAsseticNode(
-            array(
+            [
                 'compress' => $this->factory->createAsset(
                     $inputs['compress'][0],
                     $filters,
-                    $attributes + array('name' => $nameCompress, 'debug' => false)
+                    $attributes + ['name' => $nameCompress, 'debug' => false]
                 ),
                 'un_compress' => $this->factory->createAsset(
                     $inputs['uncompress'][0],
-                    array(),
-                    $attributes + array('name' => $nameUnCompress, 'debug' => true)
+                    [],
+                    $attributes + ['name' => $nameUnCompress, 'debug' => true]
                 )
-            ),
-            array(
+            ],
+            [
                 'un_compress' => $nameUnCompress,
                 'compress'    => $nameCompress
-            ),
+            ],
             $filters,
             $inputs,
             $body,
@@ -126,7 +126,7 @@ class AsseticTokenParser extends \Twig_TokenParser
      */
     public function testEndTag(\Twig_Token $token)
     {
-        return $token->test(array('end' . $this->tag));
+        return $token->test(['end' . $this->tag]);
     }
 
     /**
@@ -143,7 +143,7 @@ class AsseticTokenParser extends \Twig_TokenParser
         $stream->expect(\Twig_Token::OPERATOR_TYPE, '=');
 
         if ($isBool) {
-            return 'true' == $stream->expect(\Twig_Token::NAME_TYPE, array('true', 'false'))->getValue();
+            return 'true' == $stream->expect(\Twig_Token::NAME_TYPE, ['true', 'false'])->getValue();
         }
 
         return $stream->expect(\Twig_Token::STRING_TYPE)->getValue();

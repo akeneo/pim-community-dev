@@ -33,7 +33,7 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
     {
         $this->response = new Response();
         $this->request  = Request::create(self::TEST_URL);
-        $this->request->headers->add(array(ResponseHashnavListener::HASH_NAVIGATION_HEADER => true));
+        $this->request->headers->add([ResponseHashnavListener::HASH_NAVIGATION_HEADER => true]);
         $this->event = $this->getMockBuilder('Symfony\Component\HttpKernel\Event\FilterResponseEvent')
             ->disableOriginalConstructor()
             ->getMock();
@@ -64,7 +64,7 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
     public function testHashRequestWOUser()
     {
         $this->response->setStatusCode(302);
-        $this->response->headers->add(array('location' => self::TEST_URL));
+        $this->response->headers->add(['location' => self::TEST_URL]);
 
         $this->tokenStorage->expects($this->once())
             ->method('getToken')
@@ -77,10 +77,10 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
             ->method('renderResponse')
             ->with(
                 self::TEMPLATE,
-                array(
+                [
                     'full_redirect' => true,
                     'location'      => self::TEST_URL
-                )
+                ]
             )
             ->will($this->returnValue(new Response()));
 
@@ -102,10 +102,10 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
             ->method('renderResponse')
             ->with(
                 self::TEMPLATE,
-                array(
+                [
                     'full_redirect' => true,
                     'location'      => self::TEST_URL
-                )
+                ]
             )
             ->will($this->returnValue(new Response()));
 

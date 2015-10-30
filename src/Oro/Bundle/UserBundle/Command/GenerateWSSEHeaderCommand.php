@@ -17,9 +17,9 @@ class GenerateWSSEHeaderCommand extends ContainerAwareCommand
         $this->setName('oro:wsse:generate-header');
         $this->setDescription('Generate X-WSSE HTTP header for a given user');
         $this->setDefinition(
-            array(
+            [
                 new InputArgument('username', InputArgument::REQUIRED, 'The username'),
-            )
+            ]
         );
     }
 

@@ -144,14 +144,14 @@ class Acl implements \Serializable
     public function serialize()
     {
         return serialize(
-            array(
+            [
                 $this->id,
                 $this->type,
                 $this->class,
                 $this->permission,
                 $this->group,
                 $this->label
-            )
+            ]
         );
     }
 

@@ -840,7 +840,7 @@ abstract class AbstractAttribute implements AttributeInterface
      */
     public function getAllowedExtensions()
     {
-        return $this->allowedExtensions ? array_map('trim', explode(',', $this->allowedExtensions)) : array();
+        return $this->allowedExtensions ? array_map('trim', explode(',', $this->allowedExtensions)) : [];
     }
 
     /**

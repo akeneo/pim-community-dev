@@ -127,7 +127,7 @@ class JsValidationExtension extends AbstractTypeExtension
     {
         $constraints = $this->constraintsProvider->getFormConstraints($form);
 
-        $value = array();
+        $value = [];
         foreach ($constraints as $constraint) {
             $name = $this->getConstraintName($constraint);
             $value[$name] = $this->getConstraintProperties($constraint);

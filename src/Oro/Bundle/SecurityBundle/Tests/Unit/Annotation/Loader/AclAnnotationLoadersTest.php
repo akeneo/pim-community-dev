@@ -20,13 +20,13 @@ class AclAnnotationLoadersTest extends \PHPUnit_Framework_TestCase
     {
         $storage = new AclAnnotationStorage();
         $annotationLoader = new AclAnnotationLoader(
-            array('TestBundle' => 'Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\TestBundle'),
-            array(),
+            ['TestBundle' => 'Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\TestBundle'],
+            [],
             new AnnotationReader()
         );
         $annotationLoader->load($storage);
         $yamlConfigLoader = new AclYamlConfigLoader(
-            array('TestBundle' => 'Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\TestBundle')
+            ['TestBundle' => 'Oro\Bundle\SecurityBundle\Tests\Unit\Annotation\Fixtures\TestBundle']
         );
         $yamlConfigLoader->load($storage);
 

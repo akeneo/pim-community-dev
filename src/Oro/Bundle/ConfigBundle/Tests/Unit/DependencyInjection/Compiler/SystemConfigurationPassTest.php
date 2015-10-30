@@ -34,7 +34,7 @@ class SystemConfigurationPassTest extends \PHPUnit_Framework_TestCase
         $this->container->expects($this->once())->method('getParameter')->with('kernel.bundles')
             ->will($this->returnValue($bundles));
         if ($expectedSet) {
-            $taggedServices = array('some.service.id' => 'some arguments');
+            $taggedServices = ['some.service.id' => 'some arguments'];
 
             $this->container->expects($this->once())->method('findTaggedServiceIds')->with(FormProvider::TAG_NAME)
                 ->will($this->returnValue($taggedServices));
@@ -56,15 +56,15 @@ class SystemConfigurationPassTest extends \PHPUnit_Framework_TestCase
      */
     public function bundlesProvider()
     {
-        return array(
-            'no one bundle specified config' => array(
-                'bundles'         => array(),
+        return [
+            'no one bundle specified config' => [
+                'bundles'         => [],
                 'should set data' => false
-            ),
-            'one bundle specified config'    => array(
-                'bundles'         => array('Oro\Bundle\ConfigBundle\Tests\Unit\Fixtures\TestBundle'),
+            ],
+            'one bundle specified config'    => [
+                'bundles'         => ['Oro\Bundle\ConfigBundle\Tests\Unit\Fixtures\TestBundle'],
                 'should set data' => true
-            )
-        );
+            ]
+        ];
     }
 }

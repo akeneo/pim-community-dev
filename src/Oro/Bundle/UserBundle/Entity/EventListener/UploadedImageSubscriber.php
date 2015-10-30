@@ -32,13 +32,13 @@ class UploadedImageSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'preUpdate',
             'prePersist',
             'postPersist',
             'postUpdate',
             'postRemove'
-        );
+        ];
     }
 
     /**

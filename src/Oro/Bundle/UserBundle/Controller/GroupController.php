@@ -43,7 +43,7 @@ class GroupController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -80,19 +80,19 @@ class GroupController extends Controller
             );
 
             return $this->get('oro_ui.router')->actionRedirect(
-                array(
+                [
                     'route'      => 'oro_user_group_update',
-                    'parameters' => array('id' => $entity->getId()),
-                ),
-                array(
+                    'parameters' => ['id' => $entity->getId()],
+                ],
+                [
                     'route' => 'oro_user_group_index',
-                )
+                ]
             );
         }
 
-        return array(
+        return [
             'form'     => $this->get('oro_user.form.group')->createView(),
-        );
+        ];
     }
 
     /**

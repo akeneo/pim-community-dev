@@ -32,11 +32,11 @@ class ConfigurationController extends Controller
             }
         }
 
-        return array(
+        return [
             'data'           => $tree,
             'form'           => $form ? $form->createView() : null,
             'activeGroup'    => $activeGroup,
             'activeSubGroup' => $activeSubGroup,
-        );
+        ];
     }
 }

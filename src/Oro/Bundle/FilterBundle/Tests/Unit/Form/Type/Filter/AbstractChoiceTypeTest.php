@@ -25,12 +25,12 @@ class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
             ->disableOriginalConstructor()
-            ->setMethods(array('trans'))
+            ->setMethods(['trans'])
             ->getMockForAbstractClass();
 
         $this->instance = $this->getMockForAbstractClass(
             '\Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType',
-            array($this->translator)
+            [$this->translator]
         );
     }
 
@@ -53,15 +53,15 @@ class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
         $expectedTranslationDomain,
         $options,
         $parentTranslationDomain = null,
-        $expectedChoices = array(),
-        $inputChoices = array()
+        $expectedChoices = [],
+        $inputChoices = []
     ) {
         // expectations for translator
         if ($expectedChoices) {
             $prefix = self::TRANSLATION_PREFIX;
             $this->translator->expects($this->exactly(count($expectedChoices)))
                 ->method('trans')
-                ->with($this->isType('string'), array(), $expectedTranslationDomain)
+                ->with($this->isType('string'), [], $expectedTranslationDomain)
                 ->will(
                     $this->returnCallback(
                         function ($id) use ($prefix) {
@@ -86,7 +86,7 @@ class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
         /** @var FormView $valueFormView */
         $valueFormView = $filterFormView->children['value'];
         $choiceViews = $valueFormView->vars['choices'];
-        $actualChoices = array();
+        $actualChoices = [];
         /** @var ChoiceView $choiceView */
         foreach ($choiceViews as $choiceView) {
             $actualChoices[$choiceView->value] = $choiceView->label;
@@ -100,39 +100,39 @@ class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function finishViewDataProvider()
     {
-        return array(
-            'domain from options' => array(
+        return [
+            'domain from options' => [
                 'expectedTranslationDomain' => 'optionsDomain',
-                'options'                   => array('translation_domain' => 'optionsDomain'),
+                'options'                   => ['translation_domain' => 'optionsDomain'],
                 'parentTranslationDomain'   => 'parentDomain',
-                'expectedChoices'           => array(
+                'expectedChoices'           => [
                     'key1' => self::TRANSLATION_PREFIX . 'value1',
                     'key2' => self::TRANSLATION_PREFIX . 'value2',
-                ),
-                'inputChoices'              => array(
+                ],
+                'inputChoices'              => [
                     'key1' => 'value1',
                     'key2' => 'value2',
-                ),
-            ),
-            'domain from parent' => array(
+                ],
+            ],
+            'domain from parent' => [
                 'expectedTranslationDomain' => 'parentDomain',
-                'options'                   => array(),
+                'options'                   => [],
                 'parentTranslationDomain'   => 'parentDomain',
-                'expectedChoices'           => array('key' => self::TRANSLATION_PREFIX . 'value'),
-                'inputChoices'              => array('key' => 'value'),
-            ),
-            'default domain' => array(
+                'expectedChoices'           => ['key' => self::TRANSLATION_PREFIX . 'value'],
+                'inputChoices'              => ['key' => 'value'],
+            ],
+            'default domain' => [
                 'expectedTranslationDomain' => 'messages',
-                'options'                   => array(),
+                'options'                   => [],
                 'parentTranslationDomain'   => null,
-                'expectedChoices'           => array('key' => self::TRANSLATION_PREFIX . 'value'),
-                'inputChoices'              => array('key' => 'value'),
-            ),
-            'empty choices' => array(
+                'expectedChoices'           => ['key' => self::TRANSLATION_PREFIX . 'value'],
+                'inputChoices'              => ['key' => 'value'],
+            ],
+            'empty choices' => [
                 'expectedTranslationDomain' => 'messages',
-                'options'                   => array(),
-            )
-        );
+                'options'                   => [],
+            ]
+        ];
     }
 
     /**
@@ -142,10 +142,10 @@ class AbstractChoiceTypeTest extends \PHPUnit_Framework_TestCase
      * @param array $choices
      * @return FormView
      */
-    protected function getFilterFormView($parentTranslationDomain = null, $choices = array())
+    protected function getFilterFormView($parentTranslationDomain = null, $choices = [])
     {
         $choicesFormView = new FormView();
-        $choicesFormView->vars['choices'] = array();
+        $choicesFormView->vars['choices'] = [];
         foreach ($choices as $value => $label) {
             $choicesFormView->vars['choices'][] = new ChoiceView('someData', $value, $label);
         }

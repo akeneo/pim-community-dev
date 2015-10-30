@@ -34,7 +34,7 @@ class NavigationItemController extends FOSRestController
     public function getAction($type)
     {
         /** @var $entity \Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface */
-        $entity = $this->getFactory()->createItem($type, array());
+        $entity = $this->getFactory()->createItem($type, []);
 
         /** @var $repo NavigationRepositoryInterface */
         $repo = $this->getDoctrine()->getRepository(get_class($entity));
@@ -63,7 +63,7 @@ class NavigationItemController extends FOSRestController
         if (empty($params) || empty($params['type'])) {
             return $this->handleView(
                 $this->view(
-                    array('message' => 'Wrong JSON inside POST body'),
+                    ['message' => 'Wrong JSON inside POST body'],
                     Codes::HTTP_BAD_REQUEST
                 )
             );
@@ -76,7 +76,7 @@ class NavigationItemController extends FOSRestController
         $entity = $this->getFactory()->createItem($type, $params);
 
         if (!$entity) {
-            return $this->handleView($this->view(array(), Codes::HTTP_NOT_FOUND));
+            return $this->handleView($this->view([], Codes::HTTP_NOT_FOUND));
         }
 
         $em = $this->getManager();
@@ -85,7 +85,7 @@ class NavigationItemController extends FOSRestController
         $em->flush();
 
         return $this->handleView(
-            $this->view(array('id' => $entity->getId(), 'url' => $params['url']), Codes::HTTP_CREATED)
+            $this->view(['id' => $entity->getId(), 'url' => $params['url']], Codes::HTTP_CREATED)
         );
     }
 
@@ -108,7 +108,7 @@ class NavigationItemController extends FOSRestController
         if (empty($params)) {
             return $this->handleView(
                 $this->view(
-                    array('message' => 'Wrong JSON inside POST body'),
+                    ['message' => 'Wrong JSON inside POST body'],
                     Codes::HTTP_BAD_REQUEST
                 )
             );
@@ -118,11 +118,11 @@ class NavigationItemController extends FOSRestController
         $entity = $this->getFactory()->findItem($type, (int) $itemId);
 
         if (!$entity) {
-            return $this->handleView($this->view(array(), Codes::HTTP_NOT_FOUND));
+            return $this->handleView($this->view([], Codes::HTTP_NOT_FOUND));
         }
 
         if (!$this->validatePermissions($entity->getUser())) {
-            return $this->handleView($this->view(array(), Codes::HTTP_FORBIDDEN));
+            return $this->handleView($this->view([], Codes::HTTP_FORBIDDEN));
         }
 
         if (isset($params['url']) && !empty($params['url'])) {
@@ -136,7 +136,7 @@ class NavigationItemController extends FOSRestController
         $em->persist($entity);
         $em->flush();
 
-        return $this->handleView($this->view(array(), Codes::HTTP_OK));
+        return $this->handleView($this->view([], Codes::HTTP_OK));
     }
 
     /**
@@ -156,17 +156,17 @@ class NavigationItemController extends FOSRestController
         /** @var $entity \Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface */
         $entity = $this->getFactory()->findItem($type, (int) $itemId);
         if (!$entity) {
-            return $this->handleView($this->view(array(), Codes::HTTP_NOT_FOUND));
+            return $this->handleView($this->view([], Codes::HTTP_NOT_FOUND));
         }
         if (!$this->validatePermissions($entity->getUser())) {
-            return $this->handleView($this->view(array(), Codes::HTTP_FORBIDDEN));
+            return $this->handleView($this->view([], Codes::HTTP_FORBIDDEN));
         }
 
         $em = $this->getManager();
         $em->remove($entity);
         $em->flush();
 
-        return $this->handleView($this->view(array(), Codes::HTTP_NO_CONTENT));
+        return $this->handleView($this->view([], Codes::HTTP_NO_CONTENT));
     }
 
     /**

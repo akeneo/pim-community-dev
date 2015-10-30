@@ -41,7 +41,7 @@ class VersionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($version, $format = null, array $context = array())
+    public function normalize($version, $format = null, array $context = [])
     {
         return [
             'id'           => $version->getId(),
