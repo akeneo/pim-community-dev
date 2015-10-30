@@ -12,20 +12,15 @@ class LocalizerRegistry implements LocalizerRegistryInterface
     /** @var LocalizerInterface[] */
     protected $localizers = [];
 
+    /** @var LocalizerInterface[] */
+    protected $valueLocalizers = [];
+
     /**
      * {@inheritdoc}
      */
     public function getLocalizer($attributeType)
     {
-        if (!empty($this->localizers)) {
-            foreach ($this->localizers as $localizer) {
-                if ($localizer->supports($attributeType)) {
-                    return $localizer;
-                }
-            }
-        }
-
-        return null;
+        return $this->getSupporterLocalizer($this->localizers, $attributeType);
     }
 
     /**
@@ -36,5 +31,44 @@ class LocalizerRegistry implements LocalizerRegistryInterface
         $this->localizers[] = $localizer;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductValueLocalizer($attributeType)
+    {
+        return $this->getSupporterLocalizer($this->valueLocalizers, $attributeType);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addProductValueLocalizer(LocalizerInterface $localizer)
+    {
+        $this->valueLocalizers[] = $localizer;
+
+        return $this;
+    }
+
+    /**
+     * Returns a LocalizerInterface supporting an attributeType.
+     *
+     * @param LocalizerInterface[] $localizers
+     * @param string               $attributeType
+     *
+     * @return LocalizerInterface|null
+     */
+    protected function getSupporterLocalizer(array $localizers, $attributeType)
+    {
+        if (!empty($localizers)) {
+            foreach ($localizers as $localizer) {
+                if ($localizer->supports($attributeType)) {
+                    return $localizer;
+                }
+            }
+        }
+
+        return null;
     }
 }

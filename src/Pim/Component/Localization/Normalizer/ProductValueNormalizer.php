@@ -2,9 +2,8 @@
 
 namespace Pim\Component\Localization\Normalizer;
 
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -22,17 +21,19 @@ class ProductValueNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $valuesNormalizer;
 
-    /** @var LocalizerInterface */
-    protected $localizer;
+    /** @var LocalizerRegistryInterface */
+    protected $localizerRegistry;
 
     /**
-     * @param NormalizerInterface $valuesNormalizer
-     * @param LocalizerInterface  $localizer
+     * @param NormalizerInterface        $valuesNormalizer
+     * @param LocalizerRegistryInterface $localizerRegistry
      */
-    public function __construct(NormalizerInterface $valuesNormalizer, LocalizerInterface $localizer)
-    {
-        $this->valuesNormalizer = $valuesNormalizer;
-        $this->localizer        = $localizer;
+    public function __construct(
+        NormalizerInterface $valuesNormalizer,
+        LocalizerRegistryInterface $localizerRegistry
+    ) {
+        $this->valuesNormalizer  = $valuesNormalizer;
+        $this->localizerRegistry = $localizerRegistry;
     }
 
     /**
@@ -42,9 +43,12 @@ class ProductValueNormalizer implements NormalizerInterface
     {
         $result = $this->valuesNormalizer->normalize($entity, $format, $context);
 
-        if (AttributeTypes::NUMBER === $entity->getAttribute()->getAttributeType()) {
+        $type = $entity->getAttribute()->getAttributeType();
+
+        $localizer = $this->localizerRegistry->getProductValueLocalizer($type);
+        if (null !== $localizer) {
             foreach ($result as $field => $data) {
-                $result[$field] = $this->localizer->convertDefaultToLocalized($data, $context);
+                $result[$field] = $localizer->convertDefaultToLocalized($data, $context);
             }
         }
 

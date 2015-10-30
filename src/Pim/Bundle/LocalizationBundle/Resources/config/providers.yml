@@ -1,6 +1,10 @@
 parameters:
     pim_localization.provider.ui_locale.class:          Pim\Bundle\LocalizationBundle\Provider\UiLocaleProvider
+    pim_localization.provider.date_format.class:        Pim\Component\Localization\Provider\DateFormatProvider
     pim_localization.provider.ui_locale.min_percentage: 0.8
+    pim_localization.provider.date_format.formats:
+          en_US: 'n/j/y'
+          fr_FR: 'd/m/Y'
 
 services:
     pim_localization.provider.ui_locale:
@@ -8,3 +12,9 @@ services:
         arguments:
             - '@translator'
             - %pim_localization.provider.ui_locale.min_percentage%
+
+    pim_localization.provider.date_format:
+        class: %pim_localization.provider.date_format.class%
+        arguments:
+            - '@pim_localization.date_format_converter'
+            - %pim_localization.provider.date_format.formats%

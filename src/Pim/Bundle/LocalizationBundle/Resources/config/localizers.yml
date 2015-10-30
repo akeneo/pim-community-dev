@@ -22,6 +22,7 @@ services:
             - ['pim_catalog_number']
         tags:
             - { name: pim_localization.localizer }
+            - { name: pim_localization.localizer.product_value }
 
     pim_localization.localizer.price:
         class: %pim_localization.localizer.price.class%
@@ -43,3 +44,4 @@ services:
             - ['pim_catalog_date']
         tags:
             - { name: pim_localization.localizer }
+            - { name: pim_localization.localizer.product_value }

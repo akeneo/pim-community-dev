@@ -2416,12 +2416,12 @@ class WebUser extends RawMinkContext
         unset($expectedLines[0]);
 
         foreach ($expectedLines as $expectedLine) {
+            sort($expectedLine);
             $found = false;
             foreach ($actualLines as $index => $actualLine) {
                 // Order of columns is not ensured
                 // Sorting the line values allows to have two identical lines
                 // with values in different orders
-                sort($expectedLine);
                 sort($actualLine);
 
                 // Same thing for the rows

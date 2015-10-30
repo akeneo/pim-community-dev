@@ -11,8 +11,8 @@ use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Localization\Exception\FormatLocalizerException;
 use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
-use Pim\Component\Localization\Localizer\DateLocalizer;
 use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -67,7 +67,7 @@ class ProductProcessor extends AbstractProcessor
     protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
 
     /** @var string */
-    protected $dateFormat = DateLocalizer::DEFAULT_DATE_FORMAT;
+    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
 
     /** @var ProductFilterInterface */
     protected $productFilter;
