@@ -1566,14 +1566,12 @@ class WebUser extends RawMinkContext
      */
     public function iPressTheButtonInThePopin($buttonLabel)
     {
-        $buttonElement = $this
-            ->getCurrentPage()
-            ->find('css', sprintf('.ui-dialog button:contains("%s")', $buttonLabel));
-        if (!$buttonElement) {
-            $buttonElement = $this
-            ->getCurrentPage()
-            ->find('css', sprintf('.modal a:contains("%s")', $buttonLabel));
-        }
+        $buttonElement = $this->spin(function () use ($buttonLabel) {
+            return $this
+                ->getCurrentPage()
+                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s")', $buttonLabel));
+        });
+
         $buttonElement->press();
         $this->wait();
     }
