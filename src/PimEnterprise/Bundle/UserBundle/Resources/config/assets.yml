@@ -1,0 +1,3 @@
+css:
+    assets:
+        - bundles/pimenterpriseuser/css/user.less

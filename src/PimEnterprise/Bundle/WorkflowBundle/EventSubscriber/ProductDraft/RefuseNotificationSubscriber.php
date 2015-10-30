@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -23,24 +21,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @author Clement Gautier <clement.gautier@akeneo.com>
  */
-class RefuseNotificationSubscriber implements EventSubscriberInterface
+class RefuseNotificationSubscriber extends AbstractProposalStateNotificationSubscriber
+    implements EventSubscriberInterface
 {
-    /** @var NotificationManager */
-    protected $notifier;
-
-    /** @var UserContext */
-    protected $userContext;
-
-    /**
-     * @param NotificationManager $notifier
-     * @param UserContext         $userContext
-     */
-    public function __construct(NotificationManager $notifier, UserContext $userContext)
-    {
-        $this->notifier    = $notifier;
-        $this->userContext = $userContext;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -51,14 +34,17 @@ class RefuseNotificationSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param GenericEvent $event
-     */
+   /**
+    * {@inheritdoc}
+    */
     public function send(GenericEvent $event)
     {
         $productDraft = $event->getSubject();
 
-        if (!is_object($productDraft) || !$productDraft instanceof ProductDraftInterface) {
+        if (!is_object($productDraft) ||
+            !$productDraft instanceof ProductDraftInterface ||
+            !$this->authorWantToBeNotified($productDraft)
+        ) {
             return;
         }
 

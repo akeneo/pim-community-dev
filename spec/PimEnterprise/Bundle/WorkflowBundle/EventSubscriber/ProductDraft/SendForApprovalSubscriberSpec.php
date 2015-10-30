@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
+use PimEnterprise\Bundle\UserBundle\Entity\UserInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
@@ -18,9 +18,9 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
     function let(
         NotificationManager $notificationManager,
         CategoryAccessRepository $categoryAccessRepo,
-        UserRepositoryInterface $userRepo
+        UserRepositoryInterface $userRepository
     ) {
-        $this->beConstructedWith($notificationManager, $categoryAccessRepo, $userRepo);
+        $this->beConstructedWith($notificationManager, $categoryAccessRepo, $userRepository);
     }
 
     function it_subscribes_to_approve_event()
@@ -30,26 +30,34 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_sends_notification_to_owners(
+    function it_sends_notification_to_owners_which_want_to_receive_them(
         $notificationManager,
         $categoryAccessRepo,
-        $userRepo,
+        $userRepository,
         GenericEvent $event,
         ProductDraftInterface $productDraft,
         ProductInterface $product,
         UserInterface $owner1,
         UserInterface $owner2,
+        UserInterface $owner3,
         UserInterface $author
     ) {
         $event->getSubject()->willReturn($productDraft);
+
         $product->getId()->willReturn(666);
         $product->getLabel()->willReturn('Light Saber');
+
         $productDraft->getProduct()->willReturn($product);
         $productDraft->getAuthor()->willReturn('mary');
+
         $author->getFirstName()->willReturn('Mary');
         $author->getLastName()->willReturn('Chobu');
 
-        $owners = [$owner1, $owner2];
+        $owner1->hasProposalsToReviewNotification()->willReturn(true);
+        $owner2->hasProposalsToReviewNotification()->willReturn(false);
+        $owner3->hasProposalsToReviewNotification()->willReturn(true);
+
+        $owners   = [$owner1, $owner2, $owner3];
         $groupIds = [
             [
                 'id' => 2,
@@ -62,11 +70,12 @@ class SendForApprovalSubscriberSpec extends ObjectBehavior
         ];
 
         $categoryAccessRepo->getGrantedUserGroupsForProduct($product, Attributes::OWN_PRODUCTS)->willReturn($groupIds);
-        $userRepo->findByGroups([2, 4])->willReturn($owners);
-        $userRepo->findOneBy(['username' => 'mary'])->willReturn($author);
+
+        $userRepository->findByGroups([2, 4])->willReturn($owners);
+        $userRepository->findOneBy(['username' => 'mary'])->willReturn($author);
 
         $notificationManager->notify(
-            $owners,
+            [$owner1, $owner3],
             'pimee_workflow.proposal.to_review',
             'success',
             [

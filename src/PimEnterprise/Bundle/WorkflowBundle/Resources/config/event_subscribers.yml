@@ -50,24 +50,27 @@ services:
     pimee_workflow.event_subscriber.product_draft.approve_notification:
         class: %pimee_workflow.event_subscriber.product_draft.approve_notification.class%
         arguments:
-            - @pim_notification.manager.notification
-            - @pim_user.context.user
+            - '@pim_notification.manager.notification'
+            - '@pim_user.context.user'
+            - '@pim_user.repository.user'
         tags:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.refuse_notification:
         class: %pimee_workflow.event_subscriber.product_draft.refuse_notification.class%
         arguments:
-            - @pim_notification.manager.notification
-            - @pim_user.context.user
+            - '@pim_notification.manager.notification'
+            - '@pim_user.context.user'
+            - '@pim_user.repository.user'
         tags:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.event_subscriber.product_draft.remove_notification:
         class: %pimee_workflow.event_subscriber.product_draft.remove_notification.class%
         arguments:
-            - @pim_notification.manager.notification
-            - @pim_user.context.user
+            - '@pim_notification.manager.notification'
+            - '@pim_user.context.user'
+            - '@pim_user.repository.user'
         tags:
             - { name: kernel.event_subscriber }
             

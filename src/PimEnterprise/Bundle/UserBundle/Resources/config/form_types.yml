@@ -14,6 +14,7 @@ services:
             - '@pim_user.form.subscriber.user_preferences'
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'
+            - '@pimee_user.form.subscriber.user_preferences'
             - %pimee_product_asset.model.category.class%
         tags:
             - { name: form.type, alias: pim_user_user }

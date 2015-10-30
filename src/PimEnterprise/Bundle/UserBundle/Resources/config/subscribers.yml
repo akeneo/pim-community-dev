@@ -1,0 +1,8 @@
+parameters:
+    pimee_user.form.subscriber.user_preferences.class: PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber
+
+services:
+    pimee_user.form.subscriber.user_preferences:
+        class: %pimee_user.form.subscriber.user_preferences.class%
+        arguments:
+            - '@pimee_security.repository.category_access'
