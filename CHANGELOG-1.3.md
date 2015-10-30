@@ -1,6 +1,11 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-5054: Merge variant group imported template values
+
+# 1.3.29 (2015-10-27)
+
+## Bug fixes
 - PIM-5062: Do not convert NULL metric value
 
 # 1.3.28 (2015-10-22)
