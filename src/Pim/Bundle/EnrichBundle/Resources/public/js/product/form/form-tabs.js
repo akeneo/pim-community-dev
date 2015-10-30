@@ -63,7 +63,7 @@ define(
             },
 
             /**
-             * {ainheritdoc}
+             * {@inheritdoc}
              */
             render: function () {
                 if (!this.configured || _.isEmpty(this.tabs)) {

@@ -13,12 +13,12 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
         entityPromises: {},
 
         /**
-         * @param {Array} options
+         * @param {Object} options
          */
         initialize: function (options) {
             this.entityListPromise = null;
-            this.entityPromises = {};
-            this.options = options || {};
+            this.entityPromises    = {};
+            this.options           = options || {};
         },
 
         /**
@@ -40,6 +40,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
          * Fetch an element based on its identifier
          *
          * @param {string} identifier
+         * @param {Object} options
          *
          * @return {Promise}
          */
@@ -118,7 +119,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
         /**
          * Clear cache of the fetcher
          *
-         * @param {string}|{null} identifier
+         * @param {string|null} identifier
          */
         clear: function (identifier) {
             if (identifier) {

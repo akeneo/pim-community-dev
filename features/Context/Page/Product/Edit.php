@@ -214,18 +214,35 @@ class Edit extends Form
      * @param string $attribute
      * @param string $group
      *
-     * @return NodeElement
+     * @return NodeElement|null
      */
     public function findAvailableAttributeInGroup($attribute, $group)
     {
-        return $this->find(
-            'css',
-            sprintf(
-                'optgroup[label="%s"] option:contains("%s")',
-                $group,
-                $attribute
-            )
-        );
+        $list = $this->getElement('Available attributes list');
+        if (!$list->isVisible()) {
+            $this->openAvailableAttributesMenu();
+        }
+
+        $options = $this->spin(function () use ($list) {
+            return $list->findAll('css', 'li');
+        }, 20, 'No attributes found in available attributes list');
+
+        $groupedAttributes = [];
+        $currentOptgroup   = '';
+        foreach ($options as $option) {
+            if ($option->hasClass('ui-multiselect-optgroup-label')) {
+                $currentOptgroup = strtolower($option->getText());
+            } else {
+                $groupedAttributes[$currentOptgroup][$option->getText()] = $option;
+            }
+        }
+
+        $group = strtolower($group);
+        if (isset($groupedAttributes[$group]) && isset($groupedAttributes[$group][$attribute])) {
+            return $groupedAttributes[$group][$attribute];
+        }
+
+        return null;
     }
 
     /**
