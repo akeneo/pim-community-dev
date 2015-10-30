@@ -50,8 +50,8 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
         CacheClearer $cacheClearer,
         ProductTemplateApplierInterface $productTplApplier
     ) {
-        $this->groupSaver   = $groupSaver;
-        $this->cacheClearer = $cacheClearer;
+        $this->groupSaver        = $groupSaver;
+        $this->cacheClearer      = $cacheClearer;
         $this->productTplApplier = $productTplApplier;
     }
 
@@ -75,15 +75,15 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'copyValues' => array(
+        return [
+            'copyValues' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_base_connector.import.copyValuesToProducts.label',
                     'help'  => 'pim_base_connector.import.copyValuesToProducts.help'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -136,8 +136,8 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
         $products = $variantGroup->getProducts();
         if ($template && count($template->getValuesData()) > 0 && count($products) > 0) {
             $skippedMessages = $this->productTplApplier->apply($template, $products->toArray());
-            $nbSkipped = count($skippedMessages);
-            $nbUpdated = count($products) - $nbSkipped;
+            $nbSkipped       = count($skippedMessages);
+            $nbUpdated       = count($products) - $nbSkipped;
             $this->incrementUpdatedProductsCount($nbUpdated);
             if ($nbSkipped > 0) {
                 $this->incrementSkippedProductsCount($nbSkipped, $skippedMessages);
