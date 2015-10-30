@@ -11,6 +11,7 @@ services:
     pimee_enrich.twig.attribute_extension:
         class: %pimee_enrich.twig.attribute_extension.class%
         arguments:
+            - @pim_catalog.repository.attribute
             - %pim_enrich.attribute_icons%
             - %pimee_enrich.attribute_icons%
         tags:

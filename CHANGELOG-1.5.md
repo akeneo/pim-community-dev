@@ -18,6 +18,7 @@
 - Change constructor of `PimEnterprise\Component\ProductAsset\Upload\UploadChecker`. Removed argument `Pim\Bundle\CatalogBundle\Manager\LocaleManager` and add `Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface`.
 - Change constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\GridHelper`. Added argument `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`
 - Changed constructor of `PimEnterprise\Bundle\WorkflowBundle\Rendering\PhpDiffRenderer`, we now inject two renderer instead of one.
+- Changed constructor of `PimEnterprise\Bundle\EnrichBundle\Twig\AttributeExtension`, added AttributeRepositoryInterface as argument.
 - Interface `PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface` have changed in order to add `hasChanges`, `getChangeForAttribute` and `removeChangeForAttribute` functions.
 - Added an argument to the `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController` constructor.
 - Updated `PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface`, removed present method, added presentOriginal and presentNew.
