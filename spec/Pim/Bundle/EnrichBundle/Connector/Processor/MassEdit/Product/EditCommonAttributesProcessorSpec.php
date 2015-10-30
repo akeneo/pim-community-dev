@@ -13,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Pim\Component\Localization\Localizer\LocalizerRegistryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -26,14 +28,16 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
-        JobConfigurationRepositoryInterface $jobConfigurationRepo
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
+        LocalizerRegistryInterface $localizerRegistry
     ) {
         $this->beConstructedWith(
             $propertySetter,
             $validator,
             $massActionRepository,
             $attributeRepository,
-            $jobConfigurationRepo
+            $jobConfigurationRepo,
+            $localizerRegistry
         );
     }
 
@@ -91,13 +95,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
     function it_sets_values_to_attributes(
         $validator,
         $propertySetter,
+        $localizerRegistry,
         AttributeInterface $attribute,
         AttributeRepository $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
-        JobConfigurationInterface $jobConfiguration
+        JobConfigurationInterface $jobConfiguration,
+        LocalizerInterface $localizer
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -106,8 +112,17 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
-                    'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
+                    'filters'           => [],
+                    'actions'           => [
+                        [
+                            'field' => 'categories',
+                            'value' => [
+                                '2,5'
+                            ],
+                            'options' => []
+                        ]
+                    ],
+                    'decimal_separator' => ','
                 ]
             )
         );
@@ -115,9 +130,14 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
 
+        $attribute->getAttributeType()->willReturn('multi_select');
         $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
         $product->isAttributeEditable($attribute)->willReturn(true);
-        $propertySetter->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
+
+        $localizerRegistry->getLocalizer('multi_select')->willReturn($localizer);
+        $localizer->convertLocalizedToDefault(['2,5'], ['decimal_separator' => ','])->willReturn('2.5');
+
+        $propertySetter->setData($product, 'categories', '2.5', [])->shouldBeCalled();
 
         $this->process($product);
     }

@@ -38,7 +38,7 @@ Feature: Validate localized number attributes of a product
 
   Scenario: Validate the decimals allowed constraint of scopable number attribute
     Given I switch the scope to "ecommerce"
-    And I change the Popularité to "9,5"
+    And I change the "Popularité" to "9,5"
     And I save the product
     Then I should see validation tooltip "Cette valeur ne doit pas être un nombre décimal."
     And there should be 1 error in the "[other]" tab
@@ -50,15 +50,15 @@ Feature: Validate localized number attributes of a product
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the type constraint of decimal attribute
-    Given I change the Qualité to "qux"
+    Given I change the "Qualité" to "qux"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être un nombre valide."
+    Then I should see validation tooltip "Cette valeur doit être un nombre."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the type constraint of number attribute
     Given I change the Classement to "qux"
     And I save the product
-    Then I should see validation tooltip "Cette valeur doit être un nombre valide."
+    Then I should see validation tooltip "Cette valeur doit être un nombre."
     And there should be 1 error in the "[other]" tab
 
   Scenario: Validate the decimals separator constraint of number attribute

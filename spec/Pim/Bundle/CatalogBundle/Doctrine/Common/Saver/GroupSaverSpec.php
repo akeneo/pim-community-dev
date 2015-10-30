@@ -14,7 +14,9 @@ use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\CatalogBundle\Resolver\UserLocaleResolver;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Component\Localization\Localizer\LocalizedAttributeConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -27,7 +29,9 @@ class GroupSaverSpec extends ObjectBehavior
         ProductTemplateApplierInterface $templateApplier,
         SavingOptionsResolverInterface $optionsResolver,
         VersionContext $versionContext,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        LocalizedAttributeConverterInterface $localizedConverter,
+        UserLocaleResolver $userLocaleResolver
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -37,6 +41,8 @@ class GroupSaverSpec extends ObjectBehavior
             $versionContext,
             $optionsResolver,
             $eventDispatcher,
+            $localizedConverter,
+            $userLocaleResolver,
             'Pim\Bundle\CatalogBundle\Model'
         );
     }

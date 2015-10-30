@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Resolver\UserLocaleResolver;
+use Pim\Component\Localization\LocaleResolver;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -18,13 +18,13 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
         ProductBuilder $productBuilder,
-        UserLocaleResolver $userLocaleResolver
+        LocaleResolver $localeResolver
     ) {
         $this->beConstructedWith(
             $normalizer,
             $denormalizer,
             $productBuilder,
-            $userLocaleResolver,
+            $localeResolver,
             'Pim\Bundle\CatalogBundle\Entity\ProductTemplate',
             'Pim\Bundle\CatalogBundle\Model\Product'
         );
@@ -44,7 +44,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $denormalizer,
         $normalizer,
         $productBuilder,
-        $userLocaleResolver,
+        $localeResolver,
         ProductTemplateInterface $template,
         ProductValueInterface $colorValue,
         AttributeInterface $name,
@@ -56,8 +56,8 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $colorValue->getAttribute()->willReturn($color);
         $colorValue->setEntity(Argument::type('Pim\Bundle\CatalogBundle\Model\Product'))->willReturn($colorValue);
 
-        $options = ['decimal_separator' => '.'];
-        $userLocaleResolver->getOptions()->willReturn($options);
+        $options = ['locale' => 'en_US'];
+        $localeResolver->getCurrentLocale()->willReturn('en_US');
         $template->getValuesData()->willReturn(['color' => 'bar']);
         $denormalizer
             ->denormalize(['color' => 'bar'], 'ProductValue[]', 'json', $options)
@@ -72,8 +72,8 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
 
         $normalizer
             ->normalize(Argument::type('Doctrine\Common\Collections\ArrayCollection'), 'json', [
-                'entity'            => 'product',
-                'decimal_separator' => '.'
+                'entity' => 'product',
+                'locale' => 'en_US',
             ])
             ->shouldBeCalled()
             ->willReturn(['name' => 'foo', 'color' => 'bar']);
