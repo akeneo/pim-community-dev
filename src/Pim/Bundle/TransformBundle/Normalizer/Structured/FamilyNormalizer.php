@@ -43,7 +43,7 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $normalizedRequirements = $this->normalizeRequirements($object);
+        $normalizedReq = $this->normalizeRequirements($object);
         $transNormalized = $this->transNormalizer->normalize($object, $format, $context);
 
         $defaults = ['code' => $object->getCode()];
@@ -53,7 +53,7 @@ class FamilyNormalizer implements NormalizerInterface
             'attribute_as_label' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
         ];
 
-        return array_merge($defaults, $transNormalized, $normalizedData, $normalizedRequirements);
+        return array_merge($defaults, $transNormalized, $normalizedData, $normalizedReq);
     }
 
     /**

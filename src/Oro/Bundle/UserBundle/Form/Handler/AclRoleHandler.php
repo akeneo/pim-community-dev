@@ -168,7 +168,7 @@ class AclRoleHandler
     protected function processPrivileges(Role $role)
     {
         $formPrivileges = [];
-        foreach ($this->privilegeConfig as $fieldName => $config) {
+        foreach ($this->privilegeConfig as $fieldName) {
             $privileges = $this->form->get($fieldName)->getData();
             $formPrivileges = array_merge($formPrivileges, $privileges);
         }

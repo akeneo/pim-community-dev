@@ -54,7 +54,14 @@ class PlaceholderNode extends \Twig_Node
                 //);
                 if (array_key_exists('template', $item)) {
                     $expression = new Twig_Node_Expression_Constant($item['template'], $this->lineno);
-                    $block = new Twig_Node_Include($expression, $this->variables, false, false, $this->lineno, $this->tag);
+                    $block = new Twig_Node_Include(
+                        $expression,
+                        $this->variables,
+                        false,
+                        false,
+                        $this->lineno,
+                        $this->tag
+                    );
                     $block->compile($compiler);
                 } elseif (array_key_exists('action', $item)) {
                     $expression = new Twig_Node_Expression_Constant($item['action'], $this->lineno);
@@ -66,18 +73,18 @@ class PlaceholderNode extends \Twig_Node
                     }
 
                     // {{ render(controller('Bundle:Directory:controllerAction', { action: attributes })) }}
-                    $controllerFunctionExpression = new Twig_Node_Expression_Function(
+                    $controllerExpression = new Twig_Node_Expression_Function(
                         'controller',
                         new \Twig_Node([$expression, $attributes]),
                         $this->lineno
                     );
-                    $renderFunctionExpression = new Twig_Node_Expression_Function(
+                    $renderExpression = new Twig_Node_Expression_Function(
                         'render',
-                        new \Twig_Node(['uri' => $controllerFunctionExpression]),
+                        new \Twig_Node(['uri' => $controllerExpression]),
                         $this->lineno
                     );
 
-                    $block = new Twig_Node_Print($renderFunctionExpression, $this->lineno, $this->tag);
+                    $block = new Twig_Node_Print($renderExpression, $this->lineno, $this->tag);
                     $block->compile($compiler);
                 }
                 //$compiler->raw('echo \'</div>\';');
