@@ -103,7 +103,7 @@ abstract class CategoryView extends Form
         $category1 = $this->findCategoryInTree($category1);
         $category2 = $this->findCategoryInTree($category2);
 
-        $category1->dragTo($category2);
+        $this->dragElementTo($category1, $category2);
 
         return $this;
     }

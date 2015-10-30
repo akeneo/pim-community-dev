@@ -377,4 +377,24 @@ class Base extends Page
 
         return true;
     }
+
+    /**
+     * Drags an element on another one.
+     * Works better than the standard dragTo.
+     *
+     * @param NodeElement $element
+     * @param NodeElement $dropZone
+     */
+    public function dragElementTo(NodeElement $element, NodeElement $dropZone)
+    {
+        $session = $this->getSession()->getDriver()->getWebDriverSession();
+
+        $from = $session->element('xpath', $element->getXpath());
+        $to = $session->element('xpath', $dropZone->getXpath());
+
+        $session->moveto(['element' => $from->getID()]);
+        $session->buttondown('');
+        $session->moveto(['element' => $to->getID()]);
+        $session->buttonup('');
+    }
 }
