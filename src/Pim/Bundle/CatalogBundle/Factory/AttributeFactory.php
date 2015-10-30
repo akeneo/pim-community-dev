@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
+use Pim\Bundle\CatalogBundle\AttributeType\IdentifierType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
@@ -48,10 +49,14 @@ class AttributeFactory
 
         $attribute->setEntityType($this->productClass);
 
-        if ($type) {
+        if (null !== $type && '' !== $type) {
             $attributeType = $this->registry->get($type);
             $attribute->setBackendType($attributeType->getBackendType());
             $attribute->setAttributeType($attributeType->getName());
+
+            if ($attributeType instanceof IdentifierType) {
+                $attribute->setUnique(true);
+            }
         }
 
         return $attribute;

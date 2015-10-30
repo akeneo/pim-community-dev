@@ -728,16 +728,14 @@ class ProductProcessorSpec extends ObjectBehavior
     function it_skips_a_product_when_there_is_nothing_to_update(
         $arrayConverter,
         $productRepository,
-        $productBuilder,
         $productUpdater,
         $productFilter,
         $localizedConverter,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
-
-        $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
+        $product->getId()->willReturn(1);
 
         $originalData = [
             'sku' => 'tshirt',
@@ -1124,6 +1122,63 @@ class ProductProcessorSpec extends ObjectBehavior
             'date_format'       => 'Y-m-d'
         ])->willReturn($convertedData);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $productValidator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $this
+            ->process($originalData)
+            ->shouldReturn($product);
+    }
+
+    function it_creates_a_product_with_sku_and_family_columns(
+        $arrayConverter,
+        $productRepository,
+        $productBuilder,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+
+        $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
+
+        $originalData = [
+            'sku'    => 'tshirt',
+            'family' => 'TShirt',
+        ];
+        $convertedData = [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope'  =>  null,
+                    'data'   => 'tshirt'
+                ],
+            ],
+            'family' => 'Tshirt',
+        ];
+        $converterOptions = [
+            "mapping"           => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values"    => ["enabled" => true],
+            "with_associations" => false
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'family' => 'Tshirt',
+        ];
+
+        $productFilter->filter($product, $filteredData)->shouldNotBeCalled();
 
         $productUpdater
             ->update($product, $filteredData)

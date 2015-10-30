@@ -1722,13 +1722,13 @@ class WebUser extends RawMinkContext
      */
     public function thereShouldBeUpdate($count)
     {
-        $this->spin(function () use ($count) {
-            if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
-                throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
-            }
-
-            return true;
+        $historyRows = $this->spin(function () use ($count) {
+            return $this->getCurrentPage()->getHistoryRows();
         });
+
+        if ((int) $count !== $actualCount = count($historyRows)) {
+            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
+        }
     }
 
     /**
@@ -2964,6 +2964,26 @@ class WebUser extends RawMinkContext
         } else {
             if (!$statusSwitcher || !$statusSwitcher->isVisible()) {
                 throw $this->createExpectationException('Status switcher should be visible');
+            }
+        }
+    }
+
+    /**
+     * Check the user API key
+     *
+     * @Then /^The API key should (not )?be (.+)$/
+     */
+    public function theApiKeyShouldBe($not, $value)
+    {
+        $apiKey = $this->getCurrentPage()->getApiKey();
+
+        if ($not) {
+            if ($apiKey === $value) {
+                throw $this->createExpectationException('API key should not be ' . $apiKey);
+            }
+        } else {
+            if ($apiKey !== $value) {
+                throw $this->createExpectationException('API key should be ' . $apiKey);
             }
         }
     }

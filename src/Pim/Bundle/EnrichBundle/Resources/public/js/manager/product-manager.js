@@ -69,41 +69,42 @@ define([
                 });
             },
             doGenerateMissing: function (product) {
-                return $.when(
-                    FetcherRegistry.getFetcher('attribute').fetchAll(),
-                    FetcherRegistry.getFetcher('locale').fetchAll(),
-                    FetcherRegistry.getFetcher('channel').fetchAll(),
-                    FetcherRegistry.getFetcher('currency').fetchAll(),
-                    FetcherRegistry.getFetcher('association-type').fetchAll(),
-                    AttributeManager.getAttributesForProduct(product)
-                ).then(function (attributes, locales, channels, currencies, associationTypes, productAttributes) {
-                    var values = {};
-                    product.values = Array.isArray(product.values) && 0 === product.values.length ? {} : product.values;
-
-                    _.each(productAttributes, function (attributeCode) {
-                        var attribute = _.findWhere(attributes, {code: attributeCode});
-
-                        values[attribute.code] = AttributeManager.generateMissingValues(
-                            _.has(product.values, attribute.code) ? product.values[attribute.code] : [],
-                            attribute,
-                            locales,
-                            channels,
-                            currencies
+                return AttributeManager.getAttributesForProduct(product)
+                    .then(function (productAttributeCodes) {
+                        return $.when(
+                            FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(productAttributeCodes),
+                            FetcherRegistry.getFetcher('locale').fetchAll(),
+                            FetcherRegistry.getFetcher('channel').fetchAll(),
+                            FetcherRegistry.getFetcher('currency').fetchAll(),
+                            FetcherRegistry.getFetcher('association-type').fetchAll()
                         );
+                    })
+                    .then(function (attributes, locales, channels, currencies, associationTypes) {
+                        var oldValues = _.isArray(product.values) && 0 === product.values.length ? {} : product.values;
+                        var newValues = {};
+
+                        _.each(attributes, function (attribute) {
+                            newValues[attribute.code] = AttributeManager.generateMissingValues(
+                                _.has(oldValues, attribute.code) ? oldValues[attribute.code] : [],
+                                attribute,
+                                locales,
+                                channels,
+                                currencies
+                            );
+                        });
+
+                        var associations = {};
+                        _.each(associationTypes, function (assocType) {
+                            associations[assocType.code] = AttributeManager.generateMissingAssociations(
+                                _.has(product.associations, assocType.code) ? product.associations[assocType.code] : {}
+                            );
+                        });
+
+                        product.values       = newValues;
+                        product.associations = associations;
+
+                        return product;
                     });
-
-                    var associations = {};
-                    _.each(associationTypes, function (assocType) {
-                        associations[assocType.code] = AttributeManager.generateMissingAssociations(
-                            _.has(product.associations, assocType.code) ? product.associations[assocType.code] : {}
-                        );
-                    });
-
-                    product.values       = values;
-                    product.associations = associations;
-
-                    return product;
-                });
             },
             generateMissing: function (product) {
                 return this.doGenerateMissing(product);

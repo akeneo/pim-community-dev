@@ -134,7 +134,7 @@ class ProductProcessor extends AbstractProcessor
             unset($filteredItem['enabled']);
         }
 
-        if ($this->enabledComparison) {
+        if ($this->enabledComparison && null !== $product->getId()) {
             $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
             if (empty($filteredItem)) {

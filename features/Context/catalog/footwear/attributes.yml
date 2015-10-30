@@ -352,3 +352,10 @@ attributes:
         defaultMetricUnit: GRAM
         negativeAllowed:   false
         decimalsAllowed:   true
+    123:
+        labels:
+            en_US: Attribute 123
+        type:  pim_catalog_text
+        useableAsGridFilter: true
+        group: other
+        maxCharacters: 255

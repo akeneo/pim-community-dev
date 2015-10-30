@@ -69,7 +69,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         foreach ($object->getValues() as $value) {
             $normalizedData = $this->serializer->normalize($value, $format, $context);
             if (null !== $normalizedData) {
-                $data = array_merge($data, $normalizedData);
+                $data = array_replace($data, $normalizedData);
             }
         }
 

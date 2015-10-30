@@ -257,25 +257,22 @@ class Form extends Base
      * Add available attributes
      *
      * @param array $attributes
-     *
-     * @throws \Exception
      */
     public function addAvailableAttributes(array $attributes = [])
     {
         $this->openAvailableAttributesMenu();
 
         $search = $this->getElement('Available attributes search');
-        foreach ($attributes as $attribute) {
-            $search->setValue($attribute);
-            if (!$search->isVisible()) {
-                $this->openAvailableAttributesMenu();
-            }
-            $label = $this->getElement('Available attributes list')
-                    ->find('css', sprintf('li:contains("%s") label', $attribute));
-
-            if (!$label) {
-                throw new \Exception(sprintf('Could not find available attribute "%s".', $attribute));
-            }
+        foreach ($attributes as $attributeLabel) {
+            $search->setValue($attributeLabel);
+            $list  = $this->getElement('Available attributes list');
+            $label = $this->spin(
+                function () use ($list, $attributeLabel) {
+                    return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
+                },
+                20,
+                sprintf('Could not find available attribute "%s".', $attributeLabel)
+            );
 
             $label->click();
         }

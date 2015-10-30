@@ -114,8 +114,8 @@ define(
 
                     $.when(
                         this.getProductList(group.code),
-                        FetcherRegistry.getFetcher('attribute').getIdentifierField()
-                    ).done(function (productList, identifier) {
+                        FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
+                    ).done(function (productList, identifierAttribute) {
                         var groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,
                             okText: _.__('pim_enrich.entity.product.meta.groups.modal.view_group'),
@@ -127,7 +127,7 @@ define(
                             content: this.modalTemplate({
                                 products:     productList.products,
                                 productCount: productList.productCount,
-                                identifier:   identifier,
+                                identifier:   identifierAttribute,
                                 locale:       UserContext.get('catalogLocale')
                             })
                         });

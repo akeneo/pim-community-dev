@@ -22,7 +22,7 @@ Feature: Create an attribute
     Given I change the Code to an invalid value
     And I change the "Attribute group" to "Other"
     And I save the attribute
-    Then I should see validation error "Attribute code may contain only letters (at least one), numbers and underscores"
+    Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
     And the following attribute codes should not be available:
       | code             |
       | id               |
@@ -55,9 +55,3 @@ Feature: Create an attribute
       | Code | short_description |
     And I save the attribute
     Then I should see validation error "This value should not be blank."
-
-  Scenario: Fail to create a text attribute with a full numeric code
-    Given I fill in the following information:
-      | Code | 1234 |
-    And I save the attribute
-    Then I should see validation error "Attribute code may contain only letters (at least one), numbers and underscores"

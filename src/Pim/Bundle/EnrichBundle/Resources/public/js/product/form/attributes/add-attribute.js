@@ -16,43 +16,37 @@ define(
         'pim/attribute-manager',
         'text!pim/template/product/tab/attribute/add-attribute',
         'pim/user-context',
-         'pim/fetcher-registry',
+        'pim/fetcher-registry',
+        'oro/loading-mask',
         'jquery.multiselect',
         'jquery.multiselect.filter'
     ],
-    function ($, Backbone, _, BaseForm, AttributeManager, template, UserContext, FetcherRegistry) {
+    function ($, Backbone, _, BaseForm, AttributeManager, template, UserContext, FetcherRegistry, LoadingMask) {
         return BaseForm.extend({
             tagName: 'div',
             className: 'add-attribute',
             template: _.template(template),
-            state: null,
-            initialize: function () {
-                this.state = new Backbone.Model({});
-                this.on('add-attribute:update:available-attributes', this.render);
 
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-            configure: function () {
-                return $.when(
-                    this.loadAttributeGroups(),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
-            },
+            /**
+             * Render this extension
+             *
+             * @return {Object}
+             */
             render: function () {
-                this.getAvailableAttributes().then(function (attributes) {
-                    this.$el.empty();
-                    this.$el.html(this.template({
-                        groupedAttributes: this.getGroupedAttributes(attributes),
-                        locale: UserContext.get('catalogLocale')
-                    }));
+                this.$el.html($('<select>').attr('multiple', true));
 
-                    this.initializeSelectWidget();
-                    this.delegateEvents();
-                }.bind(this));
+                this.initializeSelectWidget();
+                this.delegateEvents();
 
                 return this;
             },
+
+            /**
+             * Initialize jQuery multiselect and its filter plugin
+             */
             initializeSelectWidget: function () {
+                var $select = this.$('select');
+
                 var opts = {
                     title: _.__('pim_enrich.form.product.tab.attributes.btn.add_attributes'),
                     placeholder: _.__('pim_enrich.form.product.tab.attributes.info.search_attributes'),
@@ -60,22 +54,29 @@ define(
                     header: '',
                     height: 175,
                     minWidth: 225,
-                    classes: 'pimmultiselect',
+                    classes: 'pimmultiselect pim-add-attributes-multiselect',
                     position: {
                         my: 'right top',
                         at: 'right bottom',
                         collision: 'none'
-                    }
+                    },
+                    open: function () {
+                        var loadingMask = this.showLoadingMask();
+                        this.loadAttributesChoices()
+                            .always(function () {
+                                loadingMask.hide().$el.remove();
+                            });
+                    }.bind(this)
                 };
                 opts.selectedText     = opts.title;
                 opts.noneSelectedText = opts.title;
 
-                var $select = this.$('select');
-
-                $select.multiselect(opts).multiselectfilter({
-                    label: false,
-                    placeholder: opts.placeholder
-                });
+                $select
+                    .multiselect(opts)
+                    .multiselectfilter({
+                        label: false,
+                        placeholder: opts.placeholder
+                    });
                 var $menu = $('.ui-multiselect-menu.pimmultiselect');
 
                 var $footerContainer = $('<div>', { 'class': 'ui-multiselect-footer' });
@@ -83,60 +84,105 @@ define(
                     'class': 'btn btn-small',
                     text: _.__('pim_enrich.form.product.tab.attributes.btn.add')
                 }).on('click', function () {
-                        $select.multiselect('close');
-                        var values = $select.val();
-                        if (values !== null) {
-                            this.addAttributes(values);
-                        }
-                    }.bind(this));
+                    $select.multiselect('close');
+                    var values = $select.val();
+                    if (null !== values) {
+                        this.addAttributes(values);
+                    }
+                }.bind(this));
 
                 $footerContainer.append($saveButton);
                 $menu.append($footerContainer);
 
-                var $openButton = $select.next().addClass('btn btn-group');
-                $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
+                $select.next()
+                    .addClass('btn btn-group')
+                    .append($('<span>', { 'class': 'caret' }))
+                    .removeAttr('style');
 
                 $menu.find('input[type="search"]').width(200);
 
                 var $content = $menu.find('.ui-multiselect-checkboxes');
                 if (!$content.html()) {
                     $content.html(
-                        $('<span>', { text: opts.emptyText, css: {
-                            'position': 'absolute',
-                            'color': '#999',
-                            'padding': '15px',
-                            'font-size': '13px'
-                        }})
+                        $('<span>', {
+                            text: opts.emptyText,
+                            css: {
+                                'position': 'absolute',
+                                'color': '#999',
+                                'padding': '15px',
+                                'font-size': '13px'
+                            }
+                        })
                     );
-                    $saveButton.addClass('disabled');
                 }
             },
+
+            /**
+             * Add the specified attributes to the product
+             *
+             * @param {Array} attributeCodes
+             */
             addAttributes: function (attributeCodes) {
-                this.trigger('add-attribute:add', {codes: attributeCodes});
+                this.trigger('add-attribute:add', { codes: attributeCodes });
             },
-            getAvailableAttributes: function () {
-                return AttributeManager.getAvailableOptionalAttributes(this.getFormData());
+
+            /**
+             * Fetch attributes and refresh the multiselect with the new choices
+             *
+             * @return {Promise}
+             */
+            loadAttributesChoices: function () {
+                return $.when(
+                    AttributeManager.getAvailableOptionalAttributes(this.getFormData()),
+                    FetcherRegistry.getFetcher('attribute-group').fetchAll()
+                ).then(
+                    function (attributes, attributeGroups) {
+                        this.$('select')
+                            .html(this.template({
+                                groupedAttributes: this.buildGroupedAttributes(attributes, attributeGroups),
+                                locale: UserContext.get('catalogLocale')
+                            }))
+                            .multiselect('refresh')
+                            .next('button').removeAttr('style');
+                    }.bind(this)
+                );
             },
-            loadAttributeGroups: function () {
-                return FetcherRegistry.getFetcher('attribute-group').fetchAll().done(function (attributeGroups) {
-                    this.attributeGroups = attributeGroups;
-                }.bind(this));
-            },
-            getGroupedAttributes: function (attributes) {
+
+            /**
+             * Organize attributes by attribute groups
+             *
+             * @param {Array} attributes
+             * @param {Object} attributeGroups
+             *
+             * @return {Object}
+             */
+            buildGroupedAttributes: function (attributes, attributeGroups) {
                 var attributeCodes = _.pluck(attributes, 'code');
-                var groups = _.sortBy($.extend(true, {}, this.attributeGroups), 'sortOrder');
+                var groups         = _.sortBy($.extend(true, {}, attributeGroups), 'sortOrder');
 
                 _.each(groups, function (group) {
-                    group.attributes = _.filter(group.attributes, function (attributeCode) {
-                        return attributeCodes.indexOf(attributeCode) !== -1;
-                    });
-
+                    group.attributes = _.intersection(group.attributes, attributeCodes);
                     group.attributes = _.map(group.attributes, function (attributeCode) {
                         return _.findWhere(attributes, { code: attributeCode });
                     });
                 });
 
                 return groups;
+            },
+
+            /**
+             * Create, insert, show and return the loading mask for multiselect choices list
+             *
+             * @return {Object}
+             */
+            showLoadingMask: function () {
+                var loadingMask = new LoadingMask();
+                $('.ui-widget-content.pim-add-attributes-multiselect .ui-multiselect-checkboxes')
+                    .empty()
+                    .append(loadingMask.render().$el);
+                loadingMask.show();
+
+                return loadingMask;
             }
         });
     }

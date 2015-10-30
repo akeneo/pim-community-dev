@@ -38,6 +38,7 @@ config:
                 attribute:
                     module: pim/attribute-fetcher
                     options:
+                        identifier_type: pim_catalog_identifier
                         urls:
                             list: pim_enrich_attribute_rest_index
                 family:

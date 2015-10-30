@@ -25,14 +25,7 @@ Feature: Group type creation
     And I fill in the following information in the popin:
       | Code | =( |
     And I press the "Save" button
-    Then I should see validation error "Group type code may contain only letters (at least one), numbers and underscores."
-
-  Scenario: Fail to create a group type with a full numeric code
-    Then I should see the Code field
-    And I fill in the following information in the popin:
-      | Code | 1234 |
-    And I press the "Save" button
-    Then I should see validation error "Group type code may contain only letters (at least one), numbers and underscores."
+    Then I should see validation error "Group type code may contain only letters, numbers and underscores."
 
   Scenario: Fail to create a group type with an already used code
     Given the following group type:
