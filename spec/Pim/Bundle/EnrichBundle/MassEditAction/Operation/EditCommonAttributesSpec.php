@@ -26,7 +26,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
         AttributeRepositoryInterface $attributeRepository,
         NormalizerInterface $normalizer,
         FileStorerInterface $fileStorer,
-        ProductMassActionManager $massActionManager
+        ProductMassActionManager $massActionManager,
+        UserLocaleResolver $userLocaleResolver
     ) {
         $this->beConstructedWith(
             $productBuilder,
@@ -35,7 +36,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $attributeRepository,
             $normalizer,
             $fileStorer,
-            $massActionManager
+            $massActionManager,
+            $userLocaleResolver
         );
     }
 
@@ -177,5 +179,11 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $attrGroup->setLocale('en_US')->shouldBeCalledTimes(2);
 
         $this->getAllAttributes()->shouldReturn([$attr1, $attr2]);
+    }
+
+    function it_gets_configuration($userLocaleResolver)
+    {
+        $userLocaleResolver->getOptions()->willReturn(['decimal_separator' => ',']);
+        $this->getBatchConfig()->shouldReturn('{\"filters\":null,\"actions\":[],\"decimal_separator\":\",\"}');
     }
 }
