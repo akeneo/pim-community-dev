@@ -24,11 +24,11 @@ default:
 ci:
     context:
         parameters:
-            base_url: http://behat.ci/
+            base_url: http://localhost/
             timeout: 120000
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: http://behat.ci/
+            base_url: http://localhost/
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat
