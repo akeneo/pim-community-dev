@@ -127,3 +127,9 @@ services:
     # Deprecated: This service is deprecated and will be removed in 1.5
     pim_base_connector.reader.cached_association:
         class: %pim_base_connector.reader.cached.class%
+
+    pim_base_connector.reader.orm.family:
+        class: %pim_base_connector.reader.orm.entity.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - %pim_catalog.entity.family.class%

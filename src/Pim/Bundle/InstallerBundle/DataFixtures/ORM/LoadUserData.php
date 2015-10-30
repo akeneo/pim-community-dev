@@ -15,9 +15,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class LoadUserData extends AbstractInstallerFixture
 {
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     protected $om;
 
     /**
@@ -102,6 +100,9 @@ class LoadUserData extends AbstractInstallerFixture
         $locale = $this->getLocale($data['catalog_locale']);
         $user->setCatalogLocale($locale);
 
+        $uiLocale = $this->getLocale($data['ui_locale']);
+        $user->setUiLocale($uiLocale);
+
         $channel = $this->getChannel($data['catalog_scope']);
         $user->setCatalogScope($channel);
 
@@ -122,7 +123,7 @@ class LoadUserData extends AbstractInstallerFixture
     {
         return $this->om
             ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('role' => $role));
+            ->findOneBy(['role' => $role]);
     }
 
     /**
@@ -136,7 +137,7 @@ class LoadUserData extends AbstractInstallerFixture
     {
         return $this->om
             ->getRepository('OroUserBundle:Group')
-            ->findOneBy(array('name' => $group));
+            ->findOneBy(['name' => $group]);
     }
 
     /**
@@ -148,10 +149,10 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function getLocale($localeCode)
     {
-        $localeManager = $this->container->get('pim_catalog.manager.locale');
-        $locale        = $localeManager->getLocaleByCode($localeCode);
+        $localeRepository = $this->container->get('pim_catalog.repository.locale');
+        $locale           = $localeRepository->findOneByIdentifier($localeCode);
 
-        return $locale ? $locale : current($localeManager->getActiveLocales());
+        return $locale ? $locale : current($localeRepository->getActivatedLocaleCodes());
     }
 
     /**

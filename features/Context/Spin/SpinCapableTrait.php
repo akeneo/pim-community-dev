@@ -2,28 +2,29 @@
 
 namespace Context\Spin;
 
+use Context\FeatureContext;
+
 trait SpinCapableTrait
 {
     /**
      * This method executes $callable every second. If its return value is evaluated to true, the spinning stops and the
      * value is returned. If the return value is falsy or if $callable throw an exception, the spinning continues until
-     * the $wait limit (in seconds) is reached, in that case a TimeoutException is thrown.
+     * the loop limit is reached, in that case a TimeoutException is thrown.
      * If another spinning method is used inside $callable and throws a TimeoutException the current spinning stops
      * immediately to avoid waiting uselessly.
      *
      * @param callable $callable
-     * @param int      $wait
      * @param string   $message
      *
      * @throws TimeoutException
      *
      * @return mixed
      */
-    public function spin($callable, $wait = 20, $message = 'no message')
+    public function spin($callable, $message = 'no message')
     {
         $lastException = null;
 
-        for ($i = 0; $i < $wait; ++$i) {
+        for ($i = 0; $i < FeatureContext::DEFAULT_TIMEOUT / 1000; ++$i) {
             try {
                 if ($result = $callable($this)) {
                     return $result;

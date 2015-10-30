@@ -23,6 +23,8 @@ use Symfony\Component\Yaml\Parser;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    const DEFAULT_TIMEOUT = 10000;
+
     use SpinCapableTrait;
 
     /** @var KernelInterface */
@@ -30,6 +32,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
     /** @var string[] */
     protected static $errorMessages = [];
+
+    /** @var int */
+    protected $timeout;
 
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
@@ -45,6 +50,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function __construct(array $parameters)
     {
+        if (isset($parameters['timeout']) && '' !== $parameters['timeout']) {
+            $this->timeout = $parameters['timeout'];
+        } else {
+            $this->timeout = self::DEFAULT_TIMEOUT;
+        }
+
         $this->useContext('fixtures', new FixturesContext());
         $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
         $this->useContext('webUser', new WebUser($parameters['window_width'], $parameters['window_height']));
@@ -55,6 +66,14 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
         $this->useContext('technical', new TechnicalContext());
+    }
+
+    /**
+     * @return int the timeout in milliseconds
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
     }
 
     /**
@@ -295,19 +314,20 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Wait
      *
-     * @param int    $time
      * @param string $condition
      *
-     * @throws BehaviorException If timeout is reached
+     * @throws BehaviorException
      */
-    public function wait($time = 30000, $condition = null)
+    public function wait($condition = null)
     {
         if (!($this->getSession()->getDriver() instanceof Selenium2Driver)) {
             return;
         }
 
+        $timeout = $this->getTimeout();
+
         $start = microtime(true);
-        $end   = $start + $time / 1000.0;
+        $end   = $start + $timeout / 1000.0;
 
         if ($condition === null) {
             $defaultCondition = true;
@@ -329,7 +349,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         // Make sure the AJAX calls are fired up before checking the condition
         $this->getSession()->wait(100, false);
 
-        $this->getSession()->wait($time, $condition);
+        $this->getSession()->wait($timeout, $condition);
 
         // Check if we reached the timeout unless the condition is false to explicitly wait the specified time
         if ($condition !== false && microtime(true) > $end) {
@@ -340,14 +360,14 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                         throw new BehaviorException(
                             sprintf(
                                 'Timeout of %d reached when checking on "%s"',
-                                $time,
+                                $timeout,
                                 $condition
                             )
                         );
                     }
                 }
             } else {
-                throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $time, $condition));
+                throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $timeout, $condition));
             }
         }
     }

@@ -1,0 +1,32 @@
+parameters:
+    pim_localization.normalizer.metric.class:        Pim\Component\Localization\Normalizer\MetricNormalizer
+    pim_localization.normalizer.price.class:         Pim\Component\Localization\Normalizer\PriceNormalizer
+    pim_localization.normalizer.product_value.class: Pim\Component\Localization\Normalizer\ProductValueNormalizer
+
+services:
+    pim_localization.normalizer.metric:
+        public: false
+        class: %pim_localization.normalizer.metric.class%
+        arguments:
+            - '@pim_serializer.normalizer.flat.metric'
+            - '@pim_localization.localizer.metric'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 95 }
+
+    pim_localization.normalizer.price:
+        public: false
+        class: %pim_localization.normalizer.price.class%
+        arguments:
+            - '@pim_serializer.normalizer.flat.price'
+            - '@pim_localization.localizer.price'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 95 }
+
+    pim_localization.normalizer.product_value:
+        public: false
+        class: %pim_localization.normalizer.product_value.class%
+        arguments:
+            - '@pim_serializer.normalizer.flat.product_value'
+            - '@pim_localization.localizer.registry'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 95 }

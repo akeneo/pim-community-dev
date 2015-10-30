@@ -36,7 +36,7 @@ class ProductPropertySetterSpec extends ObjectBehavior
         AttributeSetterInterface $setter
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
-        $setterRegistry->getAttributeSetter($attribute)->willReturn($setter);
+        $setterRegistry->getSetter('name')->willReturn($setter);
         $setter
             ->setAttributeData($product, $attribute, 'my name', [])
             ->shouldBeCalled();
@@ -51,7 +51,7 @@ class ProductPropertySetterSpec extends ObjectBehavior
         FieldSetterInterface $setter
     ) {
         $attributeRepository->findOneByIdentifier('category')->willReturn(null);
-        $setterRegistry->getFieldSetter('category')->willReturn($setter);
+        $setterRegistry->getSetter('category')->willReturn($setter);
         $setter
             ->setFieldData($product, 'category', ['tshirt'], [])
             ->shouldBeCalled();

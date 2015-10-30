@@ -4,7 +4,7 @@ define(['module', 'underscore', 'translator', 'json'],
 function (module, _, Translator) {
     'use strict';
 
-    var messages = module.config().messages;
+    var messages = module.config().messages || '{}';
     var dict = {};
     var debug = false;
     var add = Translator.add;

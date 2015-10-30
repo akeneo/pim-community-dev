@@ -1,0 +1,8 @@
+parameters:
+    pim_localization.twig.locale_extension.class: Pim\Bundle\LocalizationBundle\Twig\LocaleExtension
+
+services:
+    pim_localization.twig.locale_extension:
+        class: %pim_localization.twig.locale_extension.class%
+        tags:
+            - { name: twig.extension }

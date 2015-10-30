@@ -1,0 +1,8 @@
+parameters:
+    pim_localization.formatter.number.class:  Pim\Component\Localization\Formatter\NumberFormatter
+
+services:
+    pim_localization.formatter.number:
+        class: %pim_localization.formatter.number.class%
+        arguments:
+            - '@security.token_storage'

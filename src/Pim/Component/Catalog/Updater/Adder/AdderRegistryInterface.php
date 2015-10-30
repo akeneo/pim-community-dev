@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Updater\Adder;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\Catalog\Updater\Adder\AdderInterface;
 
 /**
  * Registry of adders
@@ -21,6 +22,15 @@ interface AdderRegistryInterface
      * @return AdderRegistryInterface
      */
     public function register(AdderInterface $adder);
+
+    /**
+     * Get a adder compatible with the given property
+     *
+     * @param string $property
+     *
+     * @return AdderInterface
+     */
+    public function getAdder($property);
 
     /**
      * @param string $field

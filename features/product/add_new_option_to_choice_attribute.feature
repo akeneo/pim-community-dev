@@ -28,7 +28,7 @@ Feature: Add a new option to a choice attribute directly from the product edit f
       | Code | very_wet      |
       | en   | Extremely wet |
     And I save the product
-    Then the product Weather conditions should be "Wet, Extremely wet"
+    Then the product Weather conditions should be "wet, very_wet"
 
   @unstable @jira https://akeneo.atlassian.net/browse/PIM-4737
   Scenario: Successfully find a created option in a multiselect attribute through several products

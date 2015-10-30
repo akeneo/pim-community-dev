@@ -226,7 +226,7 @@ class WebUser extends RawMinkContext
     public function iVisitTheTab($tab)
     {
         $tabLocator = sprintf('$("a:contains(\'%s\')").length > 0;', $tab);
-        $this->wait(30000, $tabLocator);
+        $this->wait($tabLocator);
         $this->getCurrentPage()->visitTab($tab);
         $this->wait();
     }
@@ -445,7 +445,7 @@ class WebUser extends RawMinkContext
             $expectedLinkCount = count($table->getHash());
 
             return $linkCount === $expectedLinkCount;
-        }, 20, sprintf('Expected to see %d items in the locale switcher, saw %d', $expectedLinkCount, $linkCount));
+        }, sprintf('Expected to see %d items in the locale switcher, saw %d', $expectedLinkCount, $linkCount));
 
         foreach ($table->getHash() as $data) {
             $this->spin(
@@ -457,7 +457,6 @@ class WebUser extends RawMinkContext
                         $copy
                     );
                 },
-                5,
                 sprintf(
                     'Could not find locale "%s %s" in the locale switcher',
                     $data['locale'],
@@ -1154,7 +1153,7 @@ class WebUser extends RawMinkContext
 
         $addButton->click();
 
-        $this->getMainContext()->wait(10000);
+        $this->wait();
     }
 
     /**
@@ -1233,6 +1232,7 @@ class WebUser extends RawMinkContext
         if ($popin && !$element) {
             $element = $this->getCurrentPage()->find('css', '.modal');
         }
+
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value, $element);
         }
@@ -1416,7 +1416,7 @@ class WebUser extends RawMinkContext
         }
 
         $this->getCurrentPage()->attachFileToField($field, $file);
-        $this->getMainContext()->wait();
+        $this->wait();
     }
 
     /**
@@ -1426,14 +1426,14 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheFile($field)
     {
-        $this->getMainContext()->wait();
+        $this->wait();
         $script = sprintf("$('label:contains(\"%s\")').parents('.form-field').find('.clear-field').click();", $field);
         if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
 
         $this->getSession()->executeScript('$(\'.edit .field-input input[type="file"]\').trigger(\'change\');');
-        $this->getMainContext()->wait();
+        $this->wait();
     }
 
     /**
@@ -1490,7 +1490,7 @@ class WebUser extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $this->getCurrentPage()->addOption($data['Code']);
-            $this->wait(3000);
+            $this->wait();
         }
     }
 
@@ -1503,7 +1503,7 @@ class WebUser extends RawMinkContext
     public function iEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
         $this->getCurrentPage()->editOption($oldOptionName, $newOptionName);
-        $this->wait(3000);
+        $this->wait();
     }
 
     /**
@@ -1515,7 +1515,7 @@ class WebUser extends RawMinkContext
     public function iEditAndCancelToEditTheFollowingAttributeOptions($oldOptionName, $newOptionName)
     {
         $this->getCurrentPage()->editOptionAndCancel($oldOptionName, $newOptionName);
-        $this->wait(3000);
+        $this->wait();
     }
 
     /**
@@ -1567,10 +1567,18 @@ class WebUser extends RawMinkContext
     public function iPressTheButtonInThePopin($buttonLabel)
     {
         $buttonElement = $this->spin(function () use ($buttonLabel) {
-            return $this
+            $node = $this
                 ->getCurrentPage()
-                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s")', $buttonLabel));
-        });
+                ->find('css', sprintf('.ui-dialog button:contains("%s")', $buttonLabel));
+
+            if (null === $node) {
+                $node = $this
+                    ->getCurrentPage()
+                    ->find('css', sprintf('.modal a:contains("%s")', $buttonLabel));
+            }
+
+            return $node;
+        }, 20, sprintf('Button or link containing "%s" not found in the modal.', $buttonLabel));
 
         $buttonElement->press();
         $this->wait();
@@ -1646,7 +1654,7 @@ class WebUser extends RawMinkContext
     {
         $switch = $this->spin(function () {
             return $this->getCurrentPage()->findById('nested_switch_input');
-        }, 5);
+        });
 
         $on = 'en' === $status;
         if ($switch->isChecked() !== $on) {
@@ -1837,10 +1845,10 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish($code)
     {
-        $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED)$/.test($("#status").text().trim())';
+        $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED|TERMINÉ|ARRÊTÉ|EN ÉCHEC)$/.test($("#status").text().trim())';
 
         try {
-            $this->wait(120000, $condition);
+            $this->wait($condition);
         } catch (BehaviorException $e) {
             $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
             $jobExecution = $jobInstance->getJobExecutions()->first();
@@ -1879,12 +1887,12 @@ class WebUser extends RawMinkContext
                     $jobExecution->getId()
                 )
             );
-            $this->wait(2000);
+            $this->wait();
             $executionLog = $this->getSession()->evaluateScript("return window.executionLog;");
             $this->getMainContext()->addErrorMessage(sprintf('Job execution: %s', print_r($executionLog, true)));
 
             // Call the wait method again to trigger timeout failure
-            $this->wait(100, $condition);
+            $this->wait($condition);
         }
     }
 
@@ -1933,7 +1941,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheWidgetsToLoad()
     {
-        $this->wait(2000, false);
+        $this->wait(false);
         $this->wait();
     }
 
@@ -1942,7 +1950,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheOptionsToLoad()
     {
-        $this->wait(2000, false);
+        $this->wait(false);
         $this->wait();
     }
 
@@ -2031,7 +2039,7 @@ class WebUser extends RawMinkContext
         $maxTime = 10000;
 
         while ($maxTime > 0) {
-            $this->wait(2000, false);
+            $this->wait(false);
             $maxTime -= 1000;
             if ($this->getPage('Product edit')->getImagePreview()) {
                 return;
@@ -2196,7 +2204,7 @@ class WebUser extends RawMinkContext
 
         $link = $this->spin(function () use ($attribute, $cell) {
             return $cell->find('css', sprintf(".missing-attributes [data-attribute='%s']", $attribute));
-        }, 20, sprintf("Can't find missing '%s' value link for %s/%s", $attribute, $locale, $channel));
+        }, sprintf("Can't find missing '%s' value link for %s/%s", $attribute, $locale, $channel));
 
         $link->click();
     }
@@ -2241,7 +2249,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitSeconds($seconds)
     {
-        $this->wait($seconds * 1000, false);
+        $this->wait(false);
     }
 
     /**
@@ -2276,7 +2284,7 @@ class WebUser extends RawMinkContext
     public function iMoveOnToTheNextStep()
     {
         $this->scrollContainerTo(900);
-        $this->wait(10000, '$(".btn:contains(\'Next\')").length > 0');
+        $this->wait('$(".btn:contains(\'Next\')").length > 0');
         $this->getCurrentPage()->next();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
@@ -2408,12 +2416,12 @@ class WebUser extends RawMinkContext
         unset($expectedLines[0]);
 
         foreach ($expectedLines as $expectedLine) {
+            sort($expectedLine);
             $found = false;
             foreach ($actualLines as $index => $actualLine) {
                 // Order of columns is not ensured
                 // Sorting the line values allows to have two identical lines
                 // with values in different orders
-                sort($expectedLine);
                 sort($actualLine);
 
                 // Same thing for the rows
@@ -2518,6 +2526,53 @@ class WebUser extends RawMinkContext
     public function iCopySelectedTranslations()
     {
         $this->getCurrentPage()->copySelectedTranslations();
+    }
+
+    /**
+     * @param string $language
+     *
+     * @Given /^I select (.+) (?:language|locale)$/
+     */
+    public function iSelectLanguage($language)
+    {
+        $this->getCurrentPage()->selectFieldOption('localization[oro_locale___language][value]', $language);
+    }
+
+    /**
+     * @param string|null $not
+     * @param string      $locale
+     *
+     * @Then /^I should (not )?see (.+) locale option$/
+     *
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function iShouldSeeLocaleOption($not, $locale)
+    {
+        $selectNames = ['localization[oro_locale___language][value]', 'pim_user_user_form[uiLocale]'];
+        $field = null;
+        foreach ($selectNames as $selectName) {
+            $field = (null !== $field) ? $field : $this->getCurrentPage()->findField($selectName);
+        }
+        if (null === $field) {
+            throw new \Exception(sprintf('Could not find field with name %s', json_encode($selectNames)));
+        }
+
+        $options = $field->findAll('css', 'option');
+
+        foreach ($options as $option) {
+            $text = $option->getHtml();
+            if ($text === $locale) {
+                if ($not) {
+                    throw new \Exception(sprintf('Should not see %s locale', $locale));
+                } else {
+                    return true;
+                }
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -2807,12 +2862,11 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param int    $time
      * @param string $condition
      */
-    protected function wait($time = 20000, $condition = null)
+    protected function wait($condition = null)
     {
-        $this->getMainContext()->wait($time, $condition);
+        $this->getMainContext()->wait($condition);
     }
 
     /**

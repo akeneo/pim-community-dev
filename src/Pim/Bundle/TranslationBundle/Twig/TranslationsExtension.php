@@ -4,6 +4,7 @@ namespace Pim\Bundle\TranslationBundle\Twig;
 
 use Akeneo\Component\Console\CommandLauncher;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Translations twig extension.
@@ -20,24 +21,24 @@ class TranslationsExtension extends \Twig_Extension
     /** @var CommandLauncher */
     protected $commandLauncher;
 
-    /** @var LocaleSettings */
-    protected $localeSettings;
+    /** @var RequestStack */
+    protected $requestStack;
 
     /** @var string */
     protected $asseticRoot;
 
     /**
      * @param CommandLauncher $commandLauncher
-     * @param LocaleSettings  $localeSettings
+     * @param RequestStack    $requestStack
      * @param string          $asseticRoot
      */
     public function __construct(
         CommandLauncher $commandLauncher,
-        LocaleSettings $localeSettings,
+        RequestStack $requestStack,
         $asseticRoot
     ) {
         $this->commandLauncher = $commandLauncher;
-        $this->localeSettings  = $localeSettings;
+        $this->requestStack    = $requestStack;
         $this->asseticRoot     = $asseticRoot;
     }
 
@@ -59,7 +60,7 @@ class TranslationsExtension extends \Twig_Extension
      */
     public function getTranslationsFile()
     {
-        $localeCode = $this->localeSettings->getLanguage();
+        $localeCode = $this->getLocale();
         $translationFilePath = sprintf('%s/js/translation/%s.js', $this->asseticRoot, $localeCode);
         $translationFilePath = realpath($translationFilePath);
 
@@ -82,5 +83,20 @@ class TranslationsExtension extends \Twig_Extension
     public function getName()
     {
         return 'pim_translations_extension';
+    }
+
+    /**
+     * Get user's locale
+     *
+     * @return string
+     */
+    protected function getLocale()
+    {
+        $request = $this->requestStack->getMasterRequest();
+        if (null === $request) {
+            return 'en';
+        }
+
+        return $request->getLocale();
     }
 }

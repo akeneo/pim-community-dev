@@ -63,7 +63,7 @@ parameters:
         sorter:          ~
     pim_datagrid.product.attribute_type.pim_catalog_number:
         column:
-            type:        product_value_field
+            type:        product_value_number
             selector:    product_value_base
         filter:
             type:        product_value_number

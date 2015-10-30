@@ -36,7 +36,7 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
         AttributeRemoverInterface $remover
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
-        $removerRegistry->getAttributeRemover($attribute)->willReturn($remover);
+        $removerRegistry->getRemover('name')->willReturn($remover);
         $remover
             ->removeAttributeData($product, $attribute, 'my name', [])
             ->shouldBeCalled();
@@ -51,7 +51,7 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
         FieldRemoverInterface $remover
     ) {
         $attributeRepository->findOneByIdentifier('category')->willReturn(null);
-        $removerRegistry->getFieldRemover('category')->willReturn($remover);
+        $removerRegistry->getRemover('category')->willReturn($remover);
         $remover
             ->removeFieldData($product, 'category', ['tshirt'], [])
             ->shouldBeCalled();
@@ -66,7 +66,7 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
     ) {
         $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
 
-        $removerRegistry->getFieldRemover(Argument::any())->willReturn(null);
+        $removerRegistry->getRemover(Argument::any())->willReturn(null);
 
         $this->shouldThrow(new \LogicException('No remover found for field "unknown_field"'))->during(
             'removeData', [$product, 'unknown_field', 'code']

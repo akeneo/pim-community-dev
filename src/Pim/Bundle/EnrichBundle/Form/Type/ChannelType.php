@@ -25,8 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ChannelType extends AbstractType
 {
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
     /** @var LocaleHelper */
     protected $localeHelper;
@@ -43,24 +43,24 @@ class ChannelType extends AbstractType
     /**
      * Inject locale manager, locale helper and colors provider in the constructor
      *
-     * @param LocaleManager  $localeManager
+     * @param LocaleRepositoryInterface  $localeRepository
      * @param LocaleHelper   $localeHelper
      * @param ColorsProvider $provider
      * @param string         $categoryClass
      * @param string         $dataClass
      */
     public function __construct(
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         LocaleHelper $localeHelper,
         ColorsProvider $provider,
         $categoryClass,
         $dataClass
     ) {
-        $this->localeManager = $localeManager;
-        $this->localeHelper  = $localeHelper;
-        $this->provider      = $provider;
-        $this->categoryClass = $categoryClass;
-        $this->dataClass     = $dataClass;
+        $this->localeRepository = $localeRepository;
+        $this->localeHelper     = $localeHelper;
+        $this->provider         = $provider;
+        $this->categoryClass    = $categoryClass;
+        $this->dataClass        = $dataClass;
     }
 
     /**
@@ -192,7 +192,7 @@ class ChannelType extends AbstractType
                 'query_builder'     => function (LocaleRepositoryInterface $repository) {
                     return $repository->getLocalesQB();
                 },
-                'preferred_choices' => $this->localeManager->getActiveLocales()
+                'preferred_choices' => $this->localeRepository->getActivatedLocaleCodes()
             ]
         );
 

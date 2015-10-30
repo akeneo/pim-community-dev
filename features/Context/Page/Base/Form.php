@@ -54,7 +54,7 @@ class Form extends Base
     {
         $this->pressButton('Save');
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
-            $this->getSession()->wait(10000, '!$.active');
+            $this->getSession()->wait($this->getTimeout(), '!$.active');
         }
     }
 
@@ -143,7 +143,7 @@ class Form extends Base
         try {
             $node = $this->spin(function () use ($tab) {
                 return $this->getElement('Form tabs')->find('css', sprintf('a:contains("%s")', $tab));
-            }, 5);
+            });
         } catch (\Exception $e) {
             $node = null;
         }
@@ -504,7 +504,7 @@ class Form extends Base
 
                 return $choices;
             }
-        }, 10);
+        });
 
         if ($isExpected) {
             foreach ($choices as $choice) {
@@ -714,7 +714,7 @@ class Form extends Base
 
         // Removing tags in MultiSelect2 drops an "animation" with opacity, we must
         // wait for it to completly vanish in order to reopen select list
-        $this->getSession()->wait(2000);
+        $this->getSession()->wait($this->getTimeout());
 
         $allValues = array_filter($allValues);
 
@@ -729,7 +729,7 @@ class Form extends Base
         foreach ($remainingValues as $value) {
             if (trim($value)) {
                 $label->getParent()->find('css', 'input[type="text"]')->click();
-                $this->getSession()->wait(100000, "$('div:contains(\"Searching\")').length == 0");
+                $this->getSession()->wait($this->getTimeout(), "$('div:contains(\"Searching\")').length == 0");
                 $option = $this->find(
                     'css',
                     sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', trim($value))
@@ -760,7 +760,7 @@ class Form extends Base
             if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
                 $link->click();
 
-                $this->getSession()->wait(5000, '!$.active');
+                $this->getSession()->wait($this->getTimeout(), '!$.active');
 
                 $field = $this->spin(function () use ($value) {
                     return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));

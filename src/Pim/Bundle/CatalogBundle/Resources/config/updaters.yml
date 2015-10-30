@@ -120,6 +120,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
+            - '@pim_catalog.repository.attribute_requirement'
 
     pim_catalog.updater.association_type:
         class: %pim_catalog.updater.association_type.class%
@@ -143,6 +144,8 @@ services:
     # Setters
     pim_catalog.updater.setter.registry:
         class: %pim_catalog.updater.setter.registry.class%
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.setter.abstract:
         class: %pim_catalog.updater.setter.abstract.class%
@@ -288,6 +291,8 @@ services:
 
     pim_catalog.updater.copier.registry:
         class: %pim_catalog.updater.copier.registry.class%
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.copier.text_value:
         class: %pim_catalog.updater.copier.text_value.class%
@@ -398,6 +403,8 @@ services:
     # Adders
     pim_catalog.updater.adder.registry:
         class: %pim_catalog.updater.adder.registry.class%
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.adder.category_field:
         class: %pim_catalog.updater.adder.category_field.class%
@@ -448,6 +455,8 @@ services:
     # Removers
     pim_catalog.updater.remover.registry:
         class: %pim_catalog.updater.remover.registry.class%
+        arguments:
+            - '@pim_catalog.repository.cached_attribute'
 
     pim_catalog.updater.remover.category_field:
         class: %pim_catalog.updater.remover.category_field.class%

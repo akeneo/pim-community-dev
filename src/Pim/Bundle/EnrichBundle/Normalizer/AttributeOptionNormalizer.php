@@ -4,8 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -28,26 +28,26 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
     /** @var AttributeOptionManager */
     protected $optionManager;
 
     /**
-     * @param LocaleManager          $localeManager
-     * @param AttributeOptionManager $optionManager
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param AttributeOptionManager    $optionManager
      */
-    public function __construct(LocaleManager $localeManager, AttributeOptionManager $optionManager)
+    public function __construct(LocaleRepositoryInterface $localeRepository, AttributeOptionManager $optionManager)
     {
-        $this->localeManager = $localeManager;
-        $this->optionManager = $optionManager;
+        $this->localeRepository = $localeRepository;
+        $this->optionManager    = $optionManager;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $optionsValues = $context['onlyActivatedLocales'] ?
             $this->ensureEmptyOptionValues($object->getOptionValues()) :
@@ -115,7 +115,7 @@ class AttributeOptionNormalizer implements NormalizerInterface, SerializerAwareI
     protected function getActiveLocales()
     {
         if (!$this->activeLocales) {
-            $this->activeLocales = $this->localeManager->getActiveLocales();
+            $this->activeLocales = $this->localeRepository->getActivatedLocales();
         }
 
         return $this->activeLocales;

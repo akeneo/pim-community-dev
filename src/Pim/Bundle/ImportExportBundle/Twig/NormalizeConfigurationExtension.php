@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Twig;
 
+use Symfony\Component\Form\ChoiceList\View\ChoiceView;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -53,9 +54,10 @@ class NormalizeConfigurationExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('normalizeValue', array($this, 'normalizeValueFilter')),
-        );
+        return [
+            new \Twig_SimpleFilter('normalizeValue', [$this, 'normalizeValueFilter']),
+            new \Twig_SimpleFilter('normalizeFieldValue', [$this, 'normalizeFieldValueFilter']),
+        ];
     }
 
     /**
@@ -76,6 +78,29 @@ class NormalizeConfigurationExtension extends \Twig_Extension
         }
 
         return (string) $value;
+    }
+
+    /**
+     * Normalize a complete field to print intelligible data to user.
+     * This method takes account of 'choice' type to display label instead of value.
+     *
+     * @param array $field
+     *
+     * @return string
+     */
+    public function normalizeFieldValueFilter(array $field)
+    {
+        $value = $field['data'];
+
+        if (isset($field['choices'])) {
+            foreach ($field['choices'] as $choiceView) {
+                if ($choiceView instanceof ChoiceView && $choiceView->value === $value) {
+                    return $choiceView->label;
+                }
+            }
+        }
+
+        return $this->normalizeValueFilter($value);
     }
 
     /**
