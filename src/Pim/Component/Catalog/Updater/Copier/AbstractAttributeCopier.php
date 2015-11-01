@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Catalog\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -24,7 +23,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /** @var array */
     protected $supportedToTypes = [];
 
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var AttributeValidatorHelper */
