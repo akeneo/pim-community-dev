@@ -31,7 +31,7 @@ class PricesPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    public function presentOriginal($data, array $change)
     {
         $data = $this->normalizeData($data->getData());
         $change = $this->normalizeChange($change);
@@ -43,7 +43,25 @@ class PricesPresenter extends AbstractProductValuePresenter
             }
         }
 
-        return $this->renderer->renderDiff(array_values($data), array_values($change));
+        return $this->renderer->renderOriginalDiff(array_values($data), array_values($change));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function presentNew($data, array $change)
+    {
+        $data = $this->normalizeData($data->getData());
+        $change = $this->normalizeChange($change);
+
+        foreach ($data as $currency => $price) {
+            if (!isset($change[$currency]) || isset($change[$currency]) && $price === $change[$currency]) {
+                unset($data[$currency]);
+                unset($change[$currency]);
+            }
+        }
+
+        return $this->renderer->renderNewDiff(array_values($data), array_values($change));
     }
 
     /**

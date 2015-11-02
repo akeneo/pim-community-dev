@@ -30,7 +30,7 @@ product_category_accesses:
     tops:
         viewItems: [IT support, Manager, Redactor]
         editItems: [IT support, Manager, Redactor]
-        ownItems: [IT support, Manager, Redactor]
+        ownItems: [IT support, Manager]
     tshirts:
         viewItems: [IT support, Manager]
         editItems: [IT support]
@@ -40,8 +40,8 @@ product_category_accesses:
         editItems: [IT support]
         ownItems: [IT support]
     sandals:
-        viewItems: [IT support]
-        editItems: [IT support]
+        viewItems: [IT support, Manager]
+        editItems: [IT support, Manager]
         ownItems: [IT support]
     old_sandals:
         viewItems: []

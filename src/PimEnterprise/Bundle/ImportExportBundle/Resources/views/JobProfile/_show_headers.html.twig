@@ -24,7 +24,7 @@
         {% endif %}
 
         {% if violations|length == 0 %}
-            {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
+            {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: action ~ '-btn btn-primary'}) }}
         {% endif %}
     {% endif %}
 {% endset %}

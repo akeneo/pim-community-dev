@@ -146,10 +146,10 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     Then the product Name should be "My jacket"
 
-  Scenario: Successfully execute a rule with setter actions to update non empty values on all kind of attributes
+  Scenario: Successfully execute a rule with setter actions to update non empty values on all kind of fields
     Given the following products:
-      | sku       | family  | name-fr_FR | weather_conditions |
-      | my-jacket | jackets | boot       | dry                |
+      | sku       | family  | name-fr_FR | weather_conditions | enabled | categories |
+      | my-jacket | jackets | boot       | dry                | true    | jackets    |
     And the following product values:
       | product   | attribute          | value          | locale | scope  |
       | my-jacket | name               | White jacket   | en_US  |        |
@@ -180,6 +180,10 @@ Feature: Read a single product by applying rules
       | rule_sku_jacket | size               |        |        | L                                  |
       | rule_sku_jacket | price              |        |        | 180,EUR                            |
       | rule_sku_jacket | description        | fr_FR  | tablet | En cuir                            |
+      | rule_sku_jacket | enabled            |        |        | 0                                  |
+      | rule_sku_jacket | categories         |        |        | winter_top, tshirts                |
+    Then product "my-jacket" should be enabled
+    And the category of "my-jacket" should be "jackets"
     Given the product rule "rule_sku_jacket" is executed
     Then the product "my-jacket" should have the following values:
       | name-fr_FR               | Veste blanche      |
@@ -193,6 +197,9 @@ Feature: Read a single product by applying rules
       | size                     | [L]                |
       | price-EUR                | 180.00             |
       | description-fr_FR-tablet | En cuir            |
+    Then product "my-jacket" should be disabled
+    And the category of "my-jacket" should be "winter_top, tshirts"
+
 
   Scenario: Successfully execute a rule with copier actions to update non empty values on all kind of attributes
     Given the following attributes:
@@ -341,3 +348,26 @@ Feature: Read a single product by applying rules
       | name-fr_FR               |           |
       | description-en_US-mobile |           |
       | description-fr_FR-tablet |           |
+
+  Scenario: Successfully execute a rule with adder actions to update non empty values on all kind of fields
+    Given the following products:
+      | sku       | family  | categories |
+      | my-jacket | jackets | jackets    |
+    And the following product values:
+      | product   | attribute          | value          | locale | scope  |
+      | my-jacket | weather_conditions | wet,cold       |        |        |
+    And the following product rules:
+      | code            | priority |
+      | rule_sku_jacket | 10       |
+    And the following product rule conditions:
+      | rule            | field | operator | value     |
+      | rule_sku_jacket | sku   | =        | my-jacket |
+    And the following product rule adder actions:
+      | rule            | field              | items    | options                         |
+      | rule_sku_jacket | weather_conditions | dry, hot | {"locale": null, "scope": null} |
+      | rule_sku_jacket | categories         | tshirts  |                                 |
+    And the category of "my-jacket" should be "jackets"
+    Given the product rule "rule_sku_jacket" is executed
+    Then the product "my-jacket" should have the following values:
+      | weather_conditions       | [dry], [wet], [hot], [cold] |
+    And the category of "my-jacket" should be "jackets, tshirts"

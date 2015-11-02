@@ -18,6 +18,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * Validates that a field exists or not.
  *
+ * @deprecated will be removed in 1.6 please use ExistingFilterFieldValidator, ExistingAddFieldValidator,
+ *             ExistingSetFieldValidator or ExistingCopierFieldValidator
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
  */
 class ExistingFieldValidator extends ConstraintValidator

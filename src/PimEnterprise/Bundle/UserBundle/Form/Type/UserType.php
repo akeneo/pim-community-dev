@@ -13,8 +13,9 @@ namespace PimEnterprise\Bundle\UserBundle\Form\Type;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
-use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
+use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as CEUserPreferencesSubscriber;
 use Pim\Bundle\UserBundle\Form\Type\UserType as BaseUserType;
+use PimEnterprise\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber as EEUserPreferencesSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -29,25 +30,41 @@ class UserType extends BaseUserType
     /** @var string */
     protected $class;
 
+    /** @var EEUserPreferencesSubscriber */
+    protected $eeSubscriber;
+
     /**
-     * @param TokenStorageInterface     $tokenStorage
-     * @param Request                   $request
-     * @param UserPreferencesSubscriber $subscriber
-     * @param RoleRepository            $roleRepository
-     * @param GroupRepository           $groupRepository
-     * @param string                    $class
+     * @param TokenStorageInterface       $tokenStorage
+     * @param Request                     $request
+     * @param CEUserPreferencesSubscriber $ceSubscriber
+     * @param RoleRepository              $roleRepository
+     * @param GroupRepository             $groupRepository
+     * @param EEUserPreferencesSubscriber $eeSubscriber
+     * @param string                      $class
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         Request $request,
-        UserPreferencesSubscriber $subscriber,
+        CEUserPreferencesSubscriber $ceSubscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
+        EEUserPreferencesSubscriber $eeSubscriber,
         $class
     ) {
-        parent::__construct($tokenStorage, $request, $subscriber, $roleRepository, $groupRepository);
+        parent::__construct($tokenStorage, $request, $ceSubscriber, $roleRepository, $groupRepository);
 
-        $this->class = $class;
+        $this->class        = $class;
+        $this->eeSubscriber = $eeSubscriber;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        parent::buildForm($builder, $options);
+
+        $builder->addEventSubscriber($this->eeSubscriber);
     }
 
     /**

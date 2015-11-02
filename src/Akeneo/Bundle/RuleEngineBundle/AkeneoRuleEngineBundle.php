@@ -11,9 +11,10 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle;
 
+use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterActionApplierPass;
 use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterRunnerPass;
 use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -29,20 +30,21 @@ class AkeneoRuleEngineBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $mappings = array(
+        $mappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Bundle\RuleEngineBundle\Model'
-        );
+        ];
 
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(
                 DoctrineOrmMappingsPass::createYamlMappingDriver(
                     $mappings,
-                    array('doctrine.orm.entity_manager'),
+                    ['doctrine.orm.entity_manager'],
                     false
                 )
             )
             ->addCompilerPass(new RegisterRunnerPass())
+            ->addCompilerPass(new RegisterActionApplierPass())
         ;
     }
 }

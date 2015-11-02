@@ -1,0 +1,57 @@
+@import '../../pimui/css/less/mixins';
+@import '../../pimui/css/less/variables';
+
+.action-icon {
+  &.pimee-workflow_product_draft_notification_partial_approve {
+    background-image: url("/bundles/pimenterpriseworkflow/images/icon-proposal.svg");
+  }
+
+  &.pimee-workflow_product_draft_notification_approve {
+    background-image: url("/bundles/pimenterpriseworkflow/images/icon-proposal.svg");
+  }
+
+  &.pimee-workflow_product_draft_notification_refuse {
+    background-image: url("/bundles/pimenterpriseworkflow/images/icon-proposal.svg");
+  }
+
+  &.pimee-workflow_product_draft_notification_remove {
+    background-image: url("/bundles/pimenterpriseworkflow/images/icon-proposal.svg");
+  }
+
+  &.pimee-workflow_product_draft_notification_new_proposal {
+    background-image: url("/bundles/pimenterpriseworkflow/images/icon-proposal.svg");
+  }
+
+  .icon-plus {
+    background-color: @fern-green;
+  }
+}
+
+.modal-body {
+  .notification-comment {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .title {
+      color: @akeneo-dark;
+    }
+
+    textarea {
+      margin: 10px 0;
+      width: 100%;
+    }
+
+    .chars-counter {
+      align-self: flex-end;
+    }
+
+    .chars-counter.above {
+      color: @warningText;
+    }
+
+    .chars-counter.under {
+      color: @errorText;
+    }
+  }
+}

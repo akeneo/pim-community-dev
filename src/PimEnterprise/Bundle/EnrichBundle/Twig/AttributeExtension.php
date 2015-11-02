@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Twig\AttributeExtension as BaseAttributeExtension;
 
 /**
@@ -21,11 +22,43 @@ use Pim\Bundle\EnrichBundle\Twig\AttributeExtension as BaseAttributeExtension;
 class AttributeExtension extends BaseAttributeExtension
 {
     /**
+     * @param AttributeRepositoryInterface $repository
+     * @param array                        $communityIcons
+     * @param array                        $eeIcons
+     */
+    public function __construct(AttributeRepositoryInterface $repository, array $communityIcons, array $eeIcons)
+    {
+        $this->repository = $repository;
+
+        parent::__construct(array_merge($communityIcons, $eeIcons));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFunctions()
+    {
+        return array_merge(parent::getFunctions(), [
+            'is_attribute_localizable' => new \Twig_Function_Method($this, 'isAttributeLocalizable'),
+        ]);
+    }
+
+    /**
      * @param array $communityIcons
      * @param array $eeIcons
+     *
+     * @throws \LogicException
+     *
+     * @return bool
      */
-    public function __construct(array $communityIcons, array $eeIcons)
+    public function isAttributeLocalizable($code)
     {
-        $this->icons = array_merge($communityIcons, $eeIcons);
+        $attribute = $this->repository->findOneByIdentifier($code);
+
+        if (null === $attribute) {
+            throw new \LogicException(sprintf('Unable to find attribute "%s"', $code));
+        }
+
+        return $attribute->isLocalizable();
     }
 }

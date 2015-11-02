@@ -13,9 +13,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
@@ -42,11 +42,11 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
 
-    /** @var AttributeManager */
-    protected $attributeManager;
+    /** @var AttributeFactory */
+    protected $attributeFactory;
 
     /** @var PresenterInterface[] */
     protected $presenters = [];
@@ -59,23 +59,23 @@ class ProductDraftChangesExtension extends \Twig_Extension
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param RendererInterface                     $renderer
      * @param TranslatorInterface                   $translator
-     * @param ProductManager                        $productManager
-     * @param AttributeManager                      $attributeManager
+     * @param ProductBuilderInterface               $productBuilder
+     * @param AttributeFactory                      $attributeFactory
      */
     public function __construct(
         ObjectRepository $valueRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
-        ProductManager $productManager,
-        AttributeManager $attributeManager
+        ProductBuilderInterface $productBuilder,
+        AttributeFactory $attributeFactory
     ) {
-        $this->valueRepository = $valueRepository;
+        $this->valueRepository     = $valueRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->renderer = $renderer;
-        $this->translator = $translator;
-        $this->productManager = $productManager;
-        $this->attributeManager = $attributeManager;
+        $this->renderer            = $renderer;
+        $this->translator          = $translator;
+        $this->productBuilder      = $productBuilder;
+        $this->attributeFactory    = $attributeFactory;
     }
 
     /**
@@ -84,6 +84,39 @@ class ProductDraftChangesExtension extends \Twig_Extension
     public function initRuntime(\Twig_Environment $twig)
     {
         $this->twig = $twig;
+
+        foreach ($this->presenters as $presenters) {
+            foreach ($presenters as $presenter) {
+                if ($presenter instanceof TwigAwareInterface) {
+                    $presenter->setTwig($this->twig);
+                }
+            }
+        }
+    }
+
+    /**
+     * Add a presenter
+     *
+     * @param PresenterInterface $presenter
+     * @param int                $priority
+     */
+    public function addPresenter(PresenterInterface $presenter, $priority)
+    {
+        if ($presenter instanceof TranslatorAwareInterface) {
+            $presenter->setTranslator($this->translator);
+        }
+
+        if ($presenter instanceof RendererAwareInterface) {
+            $presenter->setRenderer($this->renderer);
+        }
+
+        if ($presenter instanceof TwigAwareInterface && null !== $this->twig) {
+            $presenter->setTwig($this->twig);
+        }
+
+        $this->presenters[$priority][] = $presenter;
+
+        ksort($this->presenters);
     }
 
     /**
@@ -97,124 +130,92 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFilters()
     {
         return [
-            new \Twig_SimpleFunction(
-                'present_product_draft_attribute',
-                [$this, 'presentAttribute'],
+            new \Twig_SimpleFilter(
+                'present_new_change',
+                [$this, 'presentNewChange'],
                 ['is_safe' => ['html']]
             ),
-            new \Twig_SimpleFunction(
-                'present_product_draft_change',
-                [$this, 'presentChange'],
+            new \Twig_SimpleFilter(
+                'present_original_change',
+                [$this, 'presentOriginalChange'],
                 ['is_safe' => ['html']]
             ),
         ];
     }
 
     /**
-     * Present an attribute (showing its label, scope and localizability)
-     *
-     * @param array  $change
+     * {@inheritdoc}
+     */
+    public function getFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction(
+                'get_attribute_label_from_code',
+                [$this, 'getAttributeLabelFromCode'],
+                ['is_safe' => ['html']]
+            ),
+        ];
+    }
+
+    /**
      * @param string $code
      *
      * @return string
      */
-    public function presentAttribute(array $change, $code)
+    public function getAttributeLabelFromCode($code)
     {
         if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($code)) {
-            return $this->present($attribute, $change);
+            return (string) $attribute;
         }
 
         return $code;
     }
 
     /**
-     * Present an attribute change
-     *
-     * @param ProductDraftInterface $productDraft
-     * @param array                 $change
-     * @param string                $code
-     *
-     * @throws \InvalidArgumentException
-     * @throws \LogicException
+     * @param array  $change
+     * @param string $code
      *
      * @return string
      */
-    public function presentChange(ProductDraftInterface $productDraft, array $change, $code)
+    public function presentNewChange(array $change, $code)
     {
-        if (null === $value = $productDraft->getProduct()->getValue($code, $change['locale'], $change['scope'])) {
-            $value = $this->createFakeValue($code);
-        }
+        $value = $this->createFakeValue($code);
 
-        if (null !== $result = $this->present($value, $change)) {
-            return $result;
-        }
-
-        throw new \LogicException(
-            sprintf(
-                'No presenter supports the provided change with key(s) "%s"',
-                implode(', ', array_keys($change))
-            )
-        );
-    }
-
-    /**
-     * Add a presenter
-     *
-     * @param PresenterInterface $presenter
-     * @param int                $priority
-     */
-    public function addPresenter(PresenterInterface $presenter, $priority)
-    {
-        $this->presenters[$priority][] = $presenter;
-    }
-
-    /**
-     * Get the registered presenters
-     *
-     * @return PresenterInterface[]
-     */
-    public function getPresenters()
-    {
-        krsort($this->presenters);
-
-        $presenters = [];
-        foreach ($this->presenters as $groupedPresenters) {
-            $presenters = array_merge($presenters, $groupedPresenters);
-        }
-
-        return $presenters;
-    }
-
-    /**
-     * Present an object
-     *
-     * @param object $object
-     * @param array  $change
-     *
-     * @return null|string
-     */
-    protected function present($object, array $change = [])
-    {
-        foreach ($this->getPresenters() as $presenter) {
-            if ($presenter->supports($object)) {
-                if ($presenter instanceof TranslatorAwareInterface) {
-                    $presenter->setTranslator($this->translator);
+        foreach ($this->presenters as $presenters) {
+            foreach ($presenters as $presenter) {
+                if ($presenter->supports($value)) {
+                    return $presenter->presentNew($value, $change);
                 }
-
-                if ($presenter instanceof RendererAwareInterface) {
-                    $presenter->setRenderer($this->renderer);
-                }
-
-                if ($presenter instanceof TwigAwareInterface) {
-                    $presenter->setTwig($this->twig);
-                }
-
-                return $presenter->present($object, $change);
             }
         }
+
+        return '';
+    }
+
+    /**
+     * @param array  $change
+     * @param string $code
+     *
+     * @return string
+     */
+    public function presentOriginalChange(ProductValueInterface $value = null, array $change = null)
+    {
+        if (null === $value) {
+            return '';
+        }
+
+        foreach ($this->presenters as $presenters) {
+            foreach ($presenters as $presenter) {
+                if ($presenter->supports($value)) {
+                    return $presenter->presentOriginal($value, $change);
+                }
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -222,13 +223,13 @@ class ProductDraftChangesExtension extends \Twig_Extension
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     * @return ProductValueInterface
      */
     protected function createFakeValue($code)
     {
-        $attribute = $this->attributeRepository->findOneByIdentifier($code);
-        $newAttribute = $this->attributeManager->createAttribute($attribute->getAttributeType());
-        $value = $this->productManager->createProductValue($newAttribute);
+        $attribute    = $this->attributeRepository->findOneByIdentifier($code);
+        $newAttribute = $this->attributeFactory->createAttribute($attribute->getAttributeType());
+        $value        = $this->productBuilder->createProductValue($newAttribute);
 
         if (null !== $attribute->getReferenceDataName()) {
             $newAttribute->setReferenceDataName($attribute->getReferenceDataName());

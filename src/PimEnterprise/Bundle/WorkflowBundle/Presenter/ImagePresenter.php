@@ -11,13 +11,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * Present images side by side
+ * Present images
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
@@ -46,30 +45,27 @@ class ImagePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    public function presentOriginal($data, array $change)
     {
         $media = $data->getMedia();
-        if (!$this->isDiff($change, $media)) {
+
+        if (null === $media || null === $media->getKey() || null === $media->getOriginalFilename()) {
             return '';
         }
 
-        $before = '';
-        if (null !== $media && null !== $media->getKey() && null !== $media->getOriginalFilename()) {
-            $before = sprintf(
-                '<li class="base file">%s</li>',
-                $this->createImageElement($media->getKey(), $media->getOriginalFilename())
-            );
+        return $this->createImageElement($media->getKey(), $media->getOriginalFilename());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function presentNew($data, array $change)
+    {
+        if (!isset($change['data']['originalFilename']) || !isset($change['data']['filePath'])) {
+            return '';
         }
 
-        $after = '';
-        if (isset($change['data']['filePath']) && isset($change['data']['originalFilename'])) {
-            $after = sprintf(
-                '<li class="changed file">%s</li>',
-                $this->createImageElement($change['data']['filePath'], $change['data']['originalFilename'])
-            );
-        }
-
-        return sprintf('<ul class="diff">%s%s</ul>', $before, $after);
+        return $this->createImageElement($change['data']['filePath'], $change['data']['originalFilename']);
     }
 
     /**
@@ -93,21 +89,5 @@ class ImagePresenter implements PresenterInterface
             ),
             $title
         );
-    }
-
-    /**
-     * Check diff between old and new file
-     *
-     * @param array             $change
-     * @param FileInfoInterface $fileInfo
-     *
-     * @return bool
-     */
-    protected function isDiff(array $change, FileInfoInterface $fileInfo = null)
-    {
-        $dataHash   = null !== $fileInfo ? $fileInfo->getHash() : null;
-        $changeHash = isset($change['data']['hash']) ? $change['data']['hash'] : null;
-
-        return $dataHash !== $changeHash;
     }
 }

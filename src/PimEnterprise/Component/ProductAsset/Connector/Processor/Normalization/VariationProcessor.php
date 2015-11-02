@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -27,16 +27,16 @@ class VariationProcessor extends Processor
     protected $variationNormalizer;
 
     /**
-     * @param SerializerInterface $serializer
-     * @param LocaleManager       $localeManager
-     * @param NormalizerInterface $variationNormalizer
+     * @param SerializerInterface       $serializer
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param NormalizerInterface       $variationNormalizer
      */
     public function __construct(
         SerializerInterface $serializer,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         NormalizerInterface $variationNormalizer
     ) {
-        parent::__construct($serializer, $localeManager);
+        parent::__construct($serializer, $localeRepository);
 
         $this->variationNormalizer = $variationNormalizer;
     }
@@ -56,16 +56,8 @@ class VariationProcessor extends Processor
                 'enclosure'     => $this->enclosure,
                 'withHeader'    => $this->withHeader,
                 'heterogeneous' => false,
-                'locales'       => $this->localeManager->getActiveCodes(),
+                'locales'       => $this->localeRepository->getActivatedLocaleCodes(),
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
     }
 }

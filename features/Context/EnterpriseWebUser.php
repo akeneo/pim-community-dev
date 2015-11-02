@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Behat\Context\Step;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
@@ -158,7 +159,7 @@ class EnterpriseWebUser extends BaseWebUser
                     'css',
                     sprintf('.select2-result:not(.select2-selected) .select2-result-label:contains("%s")', $tag)
                 );
-            }, 5);
+            });
             $item->click();
         }
     }
@@ -265,5 +266,178 @@ class EnterpriseWebUser extends BaseWebUser
     public function iWaitForThePublishedProductQuickExportToFinish()
     {
         $this->waitForMassEditJobToFinish('csv_published_product_quick_export');
+    }
+
+    /**
+     * @param string $button
+     *
+     * @Given /^I press the Send for approval button$/
+     */
+    public function iPressTheSendForApprovalButton()
+    {
+        $this->iPressTheButton("Send for approval");
+        $this->iPressTheButton("Send");
+    }
+
+    /**
+     * @Given /^I fill in this comment in the popin: "([^"]+)"$/
+     * @Given /^I fill in this comment in the popin:$/
+     */
+    public function iFillInThisCommentInThePopin($comment)
+    {
+        if ($comment instanceof PyStringNode) {
+            $comment = $comment->getRaw();
+        }
+
+        $this->getCurrentPage()->simpleFillField('modal-comment', $comment);
+        $this->getSession()->executeScript("$('#modal-comment').trigger('change');");
+    }
+
+    /**
+     * @param TableNode $table
+     * @Given /^I partially approve:$/
+     *
+     * @throws Spin\TimeoutException
+     * @throws \Exception
+     */
+    public function iPartiallyApprove(TableNode $table)
+    {
+        $hash = $table->getHash();
+
+        foreach ($hash as $row) {
+            $approveButton = $this->getElementByDataAttribute($row, '.partial-approve-link');
+            $approveButton->click();
+
+            $comment = isset($row['comment']) ? $row['comment'] : '';
+
+            $this->iFillInThisCommentInThePopin($comment);
+            $this->iPressTheButtonInThePopin("Send");
+        }
+    }
+
+    /**
+     * @Then /^I should not see the following partial approve buttons?:$/
+     *
+     * @param TableNode $table
+     */
+    public function iShouldNotSeeTheFollowingPartialApproveButtons(TableNode $table)
+    {
+        $this->iShouldSeeTheFollowingPartialApproveButtons($table, true);
+    }
+
+    /**
+     * @Then /^I should see the following partial approve buttons?:$/
+     *
+     * @param bool      $not
+     * @param TableNode $table
+     *
+     * @throws \Exception
+     */
+    public function iShouldSeeTheFollowingPartialApproveButtons(TableNode $table, $not = false)
+    {
+        $hash = $table->getHash();
+
+        foreach ($hash as $row) {
+            try {
+                $approveButton = $this->getElementByDataAttribute($row, '.partial-approve-link');
+            } catch (\Exception $e) {
+                $approveButton = null;
+            }
+
+            if ($not && $approveButton !== null && $approveButton->isVisible()) {
+                throw new \Exception(
+                    sprintf(
+                        'Partial approve button is visible, but it should not (%s)',
+                        json_encode($row)
+                    )
+                );
+            }
+
+            if (!$not && ($approveButton === null || !$approveButton->isVisible())) {
+                throw new \Exception(
+                    sprintf(
+                        'Partial approve button is not visible, but it should (%s)',
+                        json_encode($row)
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * @Then /^I should not see the following changes on the proposals?:$/
+     *
+     * @param TableNode $table
+     */
+    public function iShouldNotSeeTheFollowingChanges(TableNode $table)
+    {
+        $this->iShouldSeeTheFollowingChanges($table, true);
+    }
+
+    /**
+     * @Then /^I should see the following changes on the proposals?:$/
+     *
+     * @param TableNode $table
+     * @param bool      $not
+     *
+     * @throws \Exception
+     */
+    public function iShouldSeeTheFollowingChanges(TableNode $table, $not = false)
+    {
+        $hash = $table->getHash();
+
+        foreach ($hash as $data) {
+            try {
+                $row = $this->getElementByDataAttribute($data, '.proposal-changes');
+            } catch (\Exception $e) {
+                $row = null;
+            }
+
+            if ($not && $row !== null && $row->isVisible()) {
+                throw new \Exception(
+                    sprintf(
+                        'Partial change is visible, but it should not (%s)',
+                        json_encode($data)
+                    )
+                );
+            }
+
+            if (!$not && ($row === null || !$row->isVisible())) {
+                throw new \Exception(
+                    sprintf(
+                        'Partial change is not visible, but it should (%s)',
+                        json_encode($data)
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * Get the NodeElement to partially approve a proposal, identified by the given $data
+     *
+     * @param array  $data    ['product' => '', 'attribute' => '', 'author' => '', 'scope' => '', 'locale' => '']
+     * @param string $context ".proposal-changes" for example
+     *
+     * @return NodeElement
+     *
+     * @throws Spin\TimeoutException
+     * @throws \Exception
+     */
+    protected function getElementByDataAttribute($data, $context)
+    {
+        $locator = sprintf('%s[data-product="%s"][data-attribute="%s"][data-author="%s"]',
+            $context,
+            $data['product'],
+            $data['attribute'],
+            $data['author']
+        );
+
+        $locator .= (isset($data['scope']) && '' !== $data['scope']) ? sprintf('[data-scope="%s"]', $data['scope']) : '';
+        $locator .= (isset($data['locale']) && '' !== $data['locale']) ? sprintf('[data-locale="%s"]', $data['locale']) : '';
+
+        return $this->spin(function () use ($locator) {
+            return $this->getCurrentPage()->find('css', $locator);
+        });
     }
 }

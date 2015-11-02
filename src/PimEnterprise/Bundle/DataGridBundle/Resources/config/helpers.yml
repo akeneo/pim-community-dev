@@ -15,6 +15,7 @@ services:
         arguments:
             - '@pimee_workflow.repository.product_draft'
             - '@security.authorization_checker'
+            - '@security.token_storage'
 
     pimee_datagrid.datagrid.configuration.published_product.grid_helper:
         class: %pimee_datagrid.datagrid.configuration.published_product.grid_helper.class%

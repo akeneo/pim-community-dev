@@ -23,7 +23,7 @@ Feature: Send a product draft for approval
   Scenario: Successfully send my product draft for approval
     When I change the "Name" to "Baggy"
     And I save the product
-    And I press the "Send for approval" button
+    And I press the Send for approval button
     Then its status should be "Waiting for approval"
     And I should see "Sent for approval"
 
@@ -34,7 +34,7 @@ Feature: Send a product draft for approval
   Scenario: Successfully restore the product draft status when I modify it after sending it for approval
     When I change the "Name" to "Baggy"
     And I save the product
-    And I press the "Send for approval" button
+    And I press the Send for approval button
     And I change the "Name" to "Extra large baggy"
     And I save the product
     Then its status should be "In progress"
@@ -44,10 +44,41 @@ Feature: Send a product draft for approval
     And I save the product
     And I change the "Name" to "Extra large baggy"
     Then I should see the text "There are unsaved changes."
-    When I press the "Send for approval" button
+    When I press the Send for approval button
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to send this draft?                                                                    |
       | content | Unsaved changes will be lost. Are you sure you want to send your draft for approval without unsaved changes? |
     When I confirm the dialog
     Then I should see the text "Sent for approval"
     And the product Name should be "Baggy"
+
+  Scenario: Successfully send a product draft for approval with a comment
+    When I change the "Name" to "Baggy"
+    And I save the product
+    And I press the "Send for approval" button
+    And I fill in this comment in the popin: "This product had the wrong name, I changed it."
+    Then I should see that "209" characters are remaining
+    And I press the "Send" button in the popin
+    Then its status should be "Waiting for approval"
+    When I logout
+    And I am logged in as "Julia"
+    And I am on the dashboard page
+    Then I should have 1 new notification
+    And I should see notification:
+      | type | message                                                          |
+      | add  | Mary Smith has sent a proposal to review for the product my-pant |
+    When I click on the notification "Mary Smith has sent a proposal to review for the product my-pant"
+    Then I should be on the product "my-pant" edit page
+
+  Scenario: Fail to send a product draft for approval with a comment longer than 255 characters
+    When I change the "Name" to "Baggy"
+    And I save the product
+    And I press the "Send for approval" button
+    And I fill in this comment in the popin:
+      """
+      This product had the wrong name, I changed it. For a moment I hesitated between baggy and potato bag but as I read
+      a lot of fashion magazines I can make a difference! You really should read this kind of magazine, it would help
+      you better dressed. I should withdraw that comment, I might get fired ...
+      """
+    Then I should see that "-45" characters are remaining
+    And I should not be able to send the comment

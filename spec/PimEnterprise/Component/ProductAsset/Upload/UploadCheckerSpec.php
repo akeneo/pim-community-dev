@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Upload;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
@@ -20,16 +19,16 @@ class UploadCheckerSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository,
         LocaleInterface $localeEn,
         LocaleInterface $localeFr,
-        LocaleManager $localeManager
+        LocaleRepositoryInterface $localeRepository
     ) {
         $localeEn->getCode()->willReturn('en_US');
         $localeFr->getCode()->willReturn('fr_FR');
         $localeRepository->findAll()->willReturn([$localeEn, $localeFr]);
 
         $localeEn->isActivated()->willReturn(true);
-        $localeManager->isLocaleActivated([$localeEn, $localeFr], 'en_US')->willReturn(true);
+        $localeFr->isActivated()->willReturn(true);
 
-        $this->beConstructedWith($assetRepo, $localeRepository, $localeManager);
+        $this->beConstructedWith($assetRepo, $localeRepository, $localeRepository);
     }
 
     function letGo()
@@ -84,14 +83,12 @@ class UploadCheckerSpec extends ObjectBehavior
         AssetInterface $asset,
         $assetRepo,
         $localeEn,
-        $localeFr,
-        $localeManager
+        $localeFr
     ) {
         $parsedFilename->getAssetCode()->willReturn('foobar');
         $parsedFilename->getLocaleCode()->willReturn('fr_FR');
 
         $localeFr->isActivated()->willReturn(true);
-        $localeManager->isLocaleActivated([$localeEn, $localeFr], 'fr_FR')->willReturn(true);
 
         $assetRepo->findOneByCode('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn(['en_US' => $localeEn]);
@@ -100,34 +97,23 @@ class UploadCheckerSpec extends ObjectBehavior
             ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyScheduledDir']);
     }
 
-    function it_checks_an_invalid_filename_for_non_activated_locale(
-        ParsedFilenameInterface $parsedFilename,
-        $localeEn,
-        $localeFr,
-        $localeManager
-    ) {
+    function it_checks_an_invalid_filename_for_non_activated_locale(ParsedFilenameInterface $parsedFilename, $localeFr)
+    {
         $parsedFilename->getAssetCode()->willReturn('foobar');
         $parsedFilename->getLocaleCode()->willReturn('fr_FR');
 
         $localeFr->isActivated()->willReturn(false);
-        $localeManager->isLocaleActivated([$localeEn, $localeFr], 'fr_FR')->willReturn(false);
 
         $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidLocaleException')
             ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyScheduledDir']);
     }
 
-    function it_checks_an_invalid_filename_for_unknown_locale(
-        ParsedFilenameInterface $parsedFilename,
-        $localeEn,
-        $localeFr,
-        $localeManager
-    ) {
+    function it_checks_an_invalid_filename_for_unknown_locale(ParsedFilenameInterface $parsedFilename)
+    {
         $parsedFilename->getAssetCode()->willReturn('foobar');
         $parsedFilename->getLocaleCode()->willReturn('fo_FO');
 
-        $localeManager->isLocaleActivated([$localeEn, $localeFr], 'fo_FO')->shouldBeCalled();
-
-        $this->shouldThrow('PimEnterprise\Component\ProductAsset\Upload\Exception\InvalidLocaleException')
+        $this->shouldThrow(new \RuntimeException(sprintf('Locale code %s is unknown', 'fo_FO')))
             ->during('validateFilenameFormat', [$parsedFilename, 'dummySourceDir', 'dummyScheduledDir']);
     }
 
@@ -136,32 +122,26 @@ class UploadCheckerSpec extends ObjectBehavior
         AssetInterface $asset,
         $assetRepo,
         $localeEn,
-        $localeFr,
-        $localeManager
+        $localeFr
     ) {
         $parsedFilename->getAssetCode()->willReturn('foobar');
         $parsedFilename->getLocaleCode()->willReturn('fr_FR');
 
-        $localeManager->isLocaleActivated([$localeEn, $localeFr], 'fr_FR')->willReturn(true);
-
         $assetRepo->findOneByCode('foobar')->willReturn($asset);
         $asset->getLocales()->willReturn(['en_US' => $localeEn, 'fr_FR' => $localeFr]);
+        $localeEn->isActivated()->willReturn(true);
+        $localeFr->isActivated()->willReturn(true);
 
         $this->validateFilenameFormat($parsedFilename, 'dummySourceDir', 'dummyScheduledDir');
     }
 
     function it_checks_an_invalid_filename_for_existing_uploaded_file(
         ParsedFilenameInterface $parsedFilename,
-        $assetRepo,
-        $localeEn,
-        $localeFr,
-        $localeManager
+        $assetRepo
     ) {
         $parsedFilename->getAssetCode()->willReturn('foobar');
         $parsedFilename->getLocaleCode()->willReturn('fr_FR');
         $parsedFilename->getCleanFilename()->willReturn('foobar-fr_FR.jpg');
-
-        $localeManager->isLocaleActivated([$localeEn, $localeFr], 'fr_FR')->willReturn(true);
 
         $this->createUploadBaseDirectory();
         $sourceDirectory = $this->createSourceDirectory();
@@ -176,16 +156,11 @@ class UploadCheckerSpec extends ObjectBehavior
 
     function it_checks_an_invalid_filename_for_existing_scheduled_file(
         ParsedFilenameInterface $parsedFilename,
-        $assetRepo,
-        $localeEn,
-        $localeFr,
-        $localeManager
+        $assetRepo
     ) {
         $parsedFilename->getAssetCode()->willReturn('foobar');
         $parsedFilename->getLocaleCode()->willReturn('fr_FR');
         $parsedFilename->getCleanFilename()->willReturn('foobar-fr_FR.png');
-
-        $localeManager->isLocaleActivated([$localeEn, $localeFr], 'fr_FR')->willReturn(true);
 
         $this->createUploadBaseDirectory();
         $sourceDirectory    = $this->createSourceDirectory();
@@ -244,7 +219,7 @@ class UploadCheckerSpec extends ObjectBehavior
         if (!is_dir($directory)) {
             $created = mkdir($directory, 0700, true);
             if (!$created) {
-                throw new \RuntimeException('unable to create soruce directory ' . $directory);
+                throw new \RuntimeException('unable to create source directory ' . $directory);
             }
         }
 

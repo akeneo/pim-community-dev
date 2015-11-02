@@ -3,7 +3,7 @@
 namespace spec\PimEnterprise\Component\ProductAsset\Connector\Processor\Normalization;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -13,10 +13,10 @@ class AssetProcessorSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         NormalizerInterface $assetNormalizer
     ) {
-        $this->beConstructedWith($serializer, $localeManager, $assetNormalizer);
+        $this->beConstructedWith($serializer, $localeRepository, $assetNormalizer);
     }
 
     function it_is_a_configurable_step_execution_aware_processor()
@@ -24,7 +24,7 @@ class AssetProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\Processor');
     }
 
-    function it_processes($assetNormalizer, $serializer, $localeManager, AssetInterface $asset)
+    function it_processes($assetNormalizer, $serializer, $localeRepository, AssetInterface $asset)
     {
         $values = [
             'code'        => 'mycode',
@@ -49,7 +49,7 @@ class AssetProcessorSpec extends ObjectBehavior
                 'locales'       => 'en_US',
             ])->willReturn($result);
 
-        $localeManager->getActiveCodes()->willReturn('en_US');
+        $localeRepository->getActivatedLocaleCodes()->willReturn('en_US');
 
         $this
             ->process($asset)

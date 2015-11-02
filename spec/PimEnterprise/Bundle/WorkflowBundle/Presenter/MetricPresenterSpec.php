@@ -38,12 +38,12 @@ class MetricPresenterSpec extends ObjectBehavior
         $metric->getData()->willReturn(50);
         $metric->getUnit()->willReturn('KILOGRAM');
 
-        $renderer->renderDiff('50 trans_kilogram', '123 trans_millimeter')->willReturn('diff between two metrics');
+        $renderer->renderOriginalDiff('50 trans_kilogram', '123 trans_millimeter')->willReturn('diff between two metrics');
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
         $this
-            ->present($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123']])
+            ->presentOriginal($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123']])
             ->shouldReturn('diff between two metrics');
     }
 
@@ -54,10 +54,10 @@ class MetricPresenterSpec extends ObjectBehavior
     ) {
         $value->getData()->willReturn(null);
 
-        $renderer->renderDiff('', '123 trans_millimeter')->willReturn('a new metric');
+        $renderer->renderOriginalDiff('', '123 trans_millimeter')->willReturn('a new metric');
 
         $this->setRenderer($renderer);
         $this->setTranslator($translator);
-        $this->present($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123']])->shouldReturn('a new metric');
+        $this->presentOriginal($value, ['data' => ['unit' => 'MILLIMETER', 'data' => '123']])->shouldReturn('a new metric');
     }
 }

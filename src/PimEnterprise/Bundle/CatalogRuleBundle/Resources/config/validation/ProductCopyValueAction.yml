@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction:
     constraints:
-        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueAction: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction: ~
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingCopyFields: ~
     properties:
         fromField:
            - Type:
@@ -9,7 +10,6 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction:
                 message: The key "from_field" is missing or empty.
            - Length:
                max: 255
-           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
         toField:
            - Type:
                 type: string
@@ -17,7 +17,6 @@ PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction:
                 message: The key "to_field" is missing or empty.
            - Length:
                max: 255
-           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingField: ~
         fromScope:
             - Type:
                 type: string

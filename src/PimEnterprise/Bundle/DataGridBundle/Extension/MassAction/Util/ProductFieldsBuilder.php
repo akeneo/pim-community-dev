@@ -14,8 +14,8 @@ namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManagerInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -38,7 +38,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
      * Constructor
      *
      * @param ProductManagerInterface        $productManager
-     * @param LocaleManager                  $localeManager
+     * @param LocaleRepositoryInterface      $localeRepository
      * @param CurrencyManager                $currencyManager
      * @param AssociationTypeManager         $assocTypeManager
      * @param CatalogContext                 $catalogContext
@@ -47,14 +47,14 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
      */
     public function __construct(
         ProductManagerInterface $productManager,
-        LocaleManager $localeManager,
+        LocaleRepositoryInterface $localeRepository,
         CurrencyManager $currencyManager,
         AssociationTypeManager $assocTypeManager,
         CatalogContext $catalogContext,
         AttributeGroupAccessRepository $accessRepository,
         TokenStorageInterface $tokenStorage
     ) {
-        parent::__construct($productManager, $localeManager, $currencyManager, $assocTypeManager, $catalogContext);
+        parent::__construct($productManager, $localeRepository, $currencyManager, $assocTypeManager, $catalogContext);
 
         $this->accessRepository = $accessRepository;
         $this->tokenStorage     = $tokenStorage;

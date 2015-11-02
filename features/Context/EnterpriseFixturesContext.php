@@ -172,6 +172,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param TableNode $table
      * @param bool      $scopable
      * @param bool      $ready
+     * @param string    $comment
      *
      * @return Step\Given[]
      * @Given /^(\w+) proposed the following change to "([^"]*)":$/
@@ -181,7 +182,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $product,
         TableNode $table,
         $scopable = false,
-        $ready = true
+        $ready = true,
+        $comment = null
     ) {
         $steps = [
             new Step\Given(sprintf('I am logged in as "%s"', $username)),
@@ -219,10 +221,30 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $steps[] = new Step\Given('I save the product');
         if ($ready) {
             $steps[] = new Step\Given('I press the "Send for approval" button');
+
+            if (null !== $comment) {
+                $steps[] = new Step\Given(sprintf('I fill in this comment in the popin: "%s"', $comment));
+            }
+
+            $steps[] = new Step\Given('I press the "Send" button');
         }
         $steps[] = new Step\Given('I logout');
 
         return $steps;
+    }
+
+    /**
+     * @param string    $username
+     * @param string    $product
+     * @param string    $comment
+     * @param TableNode $table
+     *
+     * @return Step\Given[]
+     * @Given /^(\w+) proposed the following change to "([^"]*)" with the comment "([^"]+)":$/
+     */
+    public function someoneProposedTheFollowingChangeToWithComment($username, $product, $comment, TableNode $table)
+    {
+        return $this->someoneProposedTheFollowingChangeTo($username, $product, $table, false, true, $comment);
     }
 
     /**
@@ -941,7 +963,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 ],
                 $data
             );
-
             $data['value'] = $this->replacePlaceholders($data['value']);
 
             $rule = $this->getRule($data['rule']);
@@ -951,9 +972,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
 
             $code = FieldFilterHelper::getCode($data['field']);
-            $attribute = $this->getProductManager()->getAttributeRepository()->findOneBy(['code' => $code]);
-            $value = $this->formatActionData($attribute, $data['value']);
-
+            $value = $this->formatActionData($code, $data['value']);
             $action = [
                 'type'  => 'set_value',
                 'field' => $code,
@@ -968,6 +987,47 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $content['actions'][] = $action;
 
             $rule->setContent($content);
+            $manager = $this->getRuleSaver();
+            $manager->save($rule);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following product rule adder actions:$/
+     */
+    public function theFollowingProductRuleAdderActions(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                [
+                    'options' => []
+                ],
+                $data
+            );
+
+            $data['items'] = $this->replacePlaceholders($data['items']);
+
+            $rule = $this->getRule($data['rule']);
+            $content = $rule->getContent();
+            if (!isset($content['actions'])) {
+                $content['actions'] = [];
+            }
+
+            $code = FieldFilterHelper::getCode($data['field']);
+            $value = $this->formatActionData($code, $data['items']);
+            $options = isset($data['options']) && '' !== $data['options'] ? json_decode($data['options'], true) : [];
+
+            $action = [
+                'type'    => 'add',
+                'field'   => $code,
+                'items'   => $value,
+                'options' => $options
+            ];
+            $content['actions'][] = $action;
+            $rule->setContent($content);
+
             $manager = $this->getRuleSaver();
             $manager->save($rule);
         }
@@ -1200,48 +1260,58 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param AttributeInterface $attribute
-     * @param string             $data
+     * @param string $attribute
+     * @param string $data
      *
      * @return array|bool|int|string
      */
-    protected function formatActionData(AttributeInterface $attribute, $data)
+    protected function formatActionData($field, $data)
     {
-        // TODO: replace this dirty fix to use the same class than SetValueActionNormalizer
-        switch ($attribute->getAttributeType()) {
-            case 'pim_catalog_text':
-            case 'pim_catalog_textarea':
-            case 'pim_catalog_date':
-            case 'pim_catalog_identifier':
-            case 'pim_catalog_simpleselect':
-            case 'pim_reference_data_simpleselect':
-                $value = (string) $data;
-                break;
-            case 'pim_catalog_number':
-                $value = (int) $data;
-                break;
-            case 'pim_catalog_metric':
-                $values = explode(',', $data);
-                $value = ['unit' => $values[1], 'data' => $values[0]];
-                break;
-            case 'pim_catalog_multiselect':
-            case 'pim_reference_data_multiselect':
-                $value = explode(',', str_replace(' ', '', $data));
-                break;
-            case 'pim_catalog_price_collection':
-                $values = explode(',', $data);
-                $value = [['data' => $values[0], 'currency' => $values[1]]];
-                break;
-            case 'pim_catalog_boolean':
-                $value = (bool) $data;
-                break;
-            case 'pim_catalog_image':
-            case 'pim_catalog_file':
-                $values = explode(',', $data);
-                $value = ['filePath' => $values[1], 'originalFilename' => $values[0]];
-                break;
-            default:
-                throw new \LogicException(sprintf('Unknown attribute type "%s".', $attribute->getAttributeType()));
+        $attribute = $this->getProductManager()->getAttributeRepository()->findOneByIdentifier($field);
+
+        if (null !== $attribute) {
+            // TODO: replace this dirty fix to use the same class than SetValueActionNormalizer
+            switch ($attribute->getAttributeType()) {
+                case 'pim_catalog_text':
+                case 'pim_catalog_textarea':
+                case 'pim_catalog_date':
+                case 'pim_catalog_identifier':
+                case 'pim_catalog_simpleselect':
+                case 'pim_reference_data_simpleselect':
+                    $value = (string) $data;
+                    break;
+                case 'pim_catalog_number':
+                    $value = (int) $data;
+                    break;
+                case 'pim_catalog_metric':
+                    $values = explode(',', $data);
+                    $value = ['unit' => $values[1], 'data' => $values[0]];
+                    break;
+                case 'pim_catalog_multiselect':
+                case 'pim_reference_data_multiselect':
+                    $value = explode(',', str_replace(' ', '', $data));
+                    break;
+                case 'pim_catalog_price_collection':
+                    $values = explode(',', $data);
+                    $value = [['data' => $values[0], 'currency' => $values[1]]];
+                    break;
+                case 'pim_catalog_boolean':
+                    $value = (bool) $data;
+                    break;
+                case 'pim_catalog_image':
+                case 'pim_catalog_file':
+                    $values = explode(',', $data);
+                    $value = ['filePath' => $values[1], 'originalFilename' => $values[0]];
+                    break;
+                default:
+                    throw new \LogicException(sprintf('Unknown attribute type "%s".', $attribute->getAttributeType()));
+            }
+        } elseif ('categories' === $field) {
+            $value = explode(',', str_replace(' ', '', $data));
+        } elseif ('enabled' === $field) {
+            $value = (bool) $data;
+        } else {
+            $value = $data;
         }
 
         return $value;

@@ -103,8 +103,11 @@ class UserLoader extends LoadUserData
 
         $user->setCatalogLocale($this->getLocale($data['catalogLocale']));
         $user->setCatalogScope($this->getChannel($data['catalogScope']));
+        $user->setUiLocale($this->getLocale($data['uiLocale']));
         $user->setDefaultTree($this->getTree($data['defaultTree']));
         $user->setDefaultAssetTree($this->getAssetTree($data['defaultAssetTree']));
+        $user->setProposalsToReviewNotification($data['proposals_to_review_notification']);
+        $user->setProposalsStateNotification($data['proposals_state_notifications']);
 
         $this->getUserManager()->updateUser($user);
         // Following to fix a cascade persist issue on UserApi occuring only during Behat Execution

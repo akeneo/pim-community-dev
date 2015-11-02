@@ -270,7 +270,11 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
      */
     protected function getRootFieldName(QueryBuilder $qb, $field)
     {
-        return sprintf("%s.%s", current($qb->getRootAliases()), $field);
+        if (false === strpos($field, '.')) {
+            $field = sprintf("%s.%s", current($qb->getRootAliases()), $field);
+        }
+
+        return $field;
     }
 
     /**

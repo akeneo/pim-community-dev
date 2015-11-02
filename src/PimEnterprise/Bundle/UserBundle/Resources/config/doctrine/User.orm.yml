@@ -7,6 +7,14 @@ PimEnterprise\Bundle\UserBundle\Entity\User:
             type: integer
             options:
                 default: 5
+        proposalsToReviewNotification:
+            type: boolean
+            options:
+                default: true
+        proposalsStateNotification:
+            type: boolean
+            options:
+                default: true
     manyToOne:
         defaultAssetTree:
             targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface

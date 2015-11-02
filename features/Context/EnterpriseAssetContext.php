@@ -295,7 +295,7 @@ class EnterpriseAssetContext extends RawMinkContext
             }
 
             return $found;
-        }, 10, sprintf('Unable to find %s for asset %s', $text, $asset));
+        }, sprintf('Unable to find %s for asset %s', $text, $asset));
     }
 
     /**
@@ -309,17 +309,17 @@ class EnterpriseAssetContext extends RawMinkContext
         if ('start' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
                 return $currentPage->find('css', '.btn.start');
-            }, 5, sprintf('Unable to find the %s buton for mass upload', $action));
+            }, sprintf('Unable to find the %s buton for mass upload', $action));
         }
         if ('schedule' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
                 return $currentPage->find('css', '.btn.schedule');
-            }, 5, sprintf('Unable to find the %s buton for mass upload', $action));
+            }, sprintf('Unable to find the %s buton for mass upload', $action));
         }
         if ('cancel' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
                 return $currentPage->find('css', '.btn.cancel');
-            }, 5, sprintf('Unable to find the %s buton for mass upload', $action));
+            }, sprintf('Unable to find the %s buton for mass upload', $action));
         }
         $actionButton->click();
         $this->getMainContext()->wait();
@@ -336,7 +336,7 @@ class EnterpriseAssetContext extends RawMinkContext
         if ('delete' === $action) {
             $actionButton = $this->spin(function () use ($currentPage) {
                 return $currentPage->find('css', '.btn.delete');
-            }, 5, sprintf('Unable to find the %s buton for upload', $action));
+            }, sprintf('Unable to find the %s buton for upload', $action));
         }
         $actionButton->click();
         $this->getMainContext()->wait();

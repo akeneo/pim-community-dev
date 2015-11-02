@@ -11,6 +11,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -130,6 +133,110 @@ class ProductDraft implements ProductDraftInterface
     public function getChanges()
     {
         return $this->changes;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LogicException
+     */
+    public function getChangeForAttribute(
+        AttributeInterface $attribute,
+        ChannelInterface $channel = null,
+        LocaleInterface $locale = null
+    ) {
+        $code = $attribute->getCode();
+
+        if ($attribute->isScopable() && null === $channel) {
+            throw new \LogicException(sprintf(
+                'Trying to get changes for the scopable attribute "%s" without scope.',
+                $code
+            ));
+        }
+
+        if ($attribute->isLocalizable() && null === $locale) {
+            throw new \LogicException(sprintf(
+                'Trying to get changes for the localizable attribute "%s" without locale.',
+                $code
+            ));
+        }
+
+        if (!isset($this->changes['values'])) {
+            return null;
+        }
+
+        if (!isset($this->changes['values'][$code])) {
+            return null;
+        }
+
+        foreach ($this->changes['values'][$code] as $change) {
+            if (
+                (!$attribute->isLocalizable() || $change['locale'] === $locale->getCode())
+                && (!$attribute->isScopable() || $change['scope'] === $channel->getCode())
+            ) {
+                return $change['data'];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws \LogicException
+     */
+    public function removeChangeForAttribute(
+        AttributeInterface $attribute,
+        ChannelInterface $channel = null,
+        LocaleInterface $locale = null
+    ) {
+        $code = $attribute->getCode();
+
+        if ($attribute->isScopable() && null === $channel) {
+            throw new \LogicException(sprintf(
+                'Trying to get changes for the scopable attribute "%s" without scope.',
+                $code
+            ));
+        }
+
+        if ($attribute->isLocalizable() && null === $locale) {
+            throw new \LogicException(sprintf(
+                'Trying to get changes for the localizable attribute "%s" without locale.',
+                $code
+            ));
+        }
+
+        if (!isset($this->changes['values'])) {
+            return;
+        }
+
+        if (!isset($this->changes['values'][$code])) {
+            return;
+        }
+
+        foreach ($this->changes['values'][$code] as $index => $change) {
+            if (
+                (!$attribute->isLocalizable() || $change['locale'] === $locale->getCode())
+                && (!$attribute->isScopable() || $change['scope'] === $channel->getCode())
+            ) {
+                unset($this->changes['values'][$code][$index]);
+            }
+        }
+
+        $this->changes['values'][$code] = array_values($this->changes['values'][$code]);
+
+        if (empty($this->changes['values'][$code])) {
+            unset($this->changes['values'][$code]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasChanges()
+    {
+        return !empty($this->changes) && !empty($this->changes['values']);
     }
 
     /**

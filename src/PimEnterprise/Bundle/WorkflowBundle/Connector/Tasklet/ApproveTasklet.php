@@ -36,7 +36,7 @@ class ApproveTasklet extends AbstractReviewTasklet
         $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
             try {
-                $this->approveDraft($productDraft);
+                $this->approveDraft($productDraft, $configuration['comment']);
                 $this->stepExecution->incrementSummaryInfo('approved');
             } catch (DraftNotReviewableException $e) {
                 $this->skipWithWarning(
@@ -54,10 +54,11 @@ class ApproveTasklet extends AbstractReviewTasklet
      * Approve a draft
      *
      * @param ProductDraftInterface $productDraft
+     * @param string|null           $comment
      *
      * @throws DraftNotReviewableException If draft cannot be approved
      */
-    protected function approveDraft(ProductDraftInterface $productDraft)
+    protected function approveDraft(ProductDraftInterface $productDraft, $comment)
     {
         if (ProductDraftInterface::READY !== $productDraft->getStatus()) {
             throw new DraftNotReviewableException(self::ERROR_DRAFT_NOT_READY);
@@ -72,7 +73,7 @@ class ApproveTasklet extends AbstractReviewTasklet
         }
 
         try {
-            $this->productDraftManager->approve($productDraft);
+            $this->productDraftManager->approve($productDraft, ['comment' => $comment]);
         } catch (ValidatorException $e) {
             throw new DraftNotReviewableException(self::ERROR_INVALID_DRAFT, 0, $e);
         }

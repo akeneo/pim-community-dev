@@ -3,8 +3,12 @@ parameters:
     pimee_workflow.event_subscriber.published_product.consistency_exception.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\PublishedProductConsistencyExceptionSubscriber
     pimee_workflow.event_subscriber.published_product.detach_product.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber
     pimee_workflow.event_subscriber.product_draft.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ReplaceProductUpdatedFlashMessageSubscriber
+    pimee_workflow.event_subscriber.product_draft.send_for_approval.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\SendForApprovalSubscriber
     pimee_workflow.event_subscriber.enrich.inject_current_user_product_draft.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserProductDraftSubscriber
     pimee_workflow.event_subscriber.enrich.add_product_draft_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddProductDraftFormViewParameterSubscriber
+    pimee_workflow.event_subscriber.product_draft.approve_notification.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\ApproveNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.refuse_notification.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RefuseNotificationSubscriber
+    pimee_workflow.event_subscriber.product_draft.remove_notification.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\RemoveNotificationSubscriber
 
 services:
     ##
@@ -40,6 +44,42 @@ services:
         arguments:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.product'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.approve_notification:
+        class: %pimee_workflow.event_subscriber.product_draft.approve_notification.class%
+        arguments:
+            - '@pim_notification.manager.notification'
+            - '@pim_user.context.user'
+            - '@pim_user.repository.user'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.refuse_notification:
+        class: %pimee_workflow.event_subscriber.product_draft.refuse_notification.class%
+        arguments:
+            - '@pim_notification.manager.notification'
+            - '@pim_user.context.user'
+            - '@pim_user.repository.user'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.product_draft.remove_notification:
+        class: %pimee_workflow.event_subscriber.product_draft.remove_notification.class%
+        arguments:
+            - '@pim_notification.manager.notification'
+            - '@pim_user.context.user'
+            - '@pim_user.repository.user'
+        tags:
+            - { name: kernel.event_subscriber }
+            
+    pimee_workflow.event_subscriber.product_draft.send_for_approval:
+        class: %pimee_workflow.event_subscriber.product_draft.send_for_approval.class%
+        arguments:
+            - '@pim_notification.manager.notification'
+            - '@pimee_security.repository.category_access'
+            - '@pim_user.repository.user'
         tags:
             - { name: kernel.event_subscriber }
 

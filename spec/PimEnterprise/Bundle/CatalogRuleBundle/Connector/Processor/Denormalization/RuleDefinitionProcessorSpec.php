@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization;
 
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -9,6 +10,8 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -34,7 +37,9 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization\RuleDefinitionProcessor');
+        $this->shouldHaveType(
+            'PimEnterprise\Bundle\CatalogRuleBundle\Connector\Processor\Denormalization\RuleDefinitionProcessor'
+        );
     }
 
     function it_is_an_import_processor()
@@ -50,15 +55,30 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         ConstraintViolationListInterface $violations
     ) {
         $item = [
-            'code' => 'discharge_fr_description',
-            'priority' => 100,
+            'code'       => 'discharge_fr_description',
+            'priority'   => 100,
             'conditions' => [
                 ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ['field'    => 'clothing_size',
+                 'operator' => 'NOT LIKE',
+                 'value'    => 'XL',
+                 'locale'   => 'fr_FR',
+                 'scope'    => 'ecommerce',
+                ],
             ],
-            'actions' => [
-                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+            'actions'    => [
+                ['type'   => 'set_value',
+                 'field'  => 'name',
+                 'value'  => 'awesome-jacket',
+                 'locale' => 'en_US',
+                 'scope'  => 'tablet',
+                ],
+                ['type'        => 'copy_value',
+                 'from_field'  => 'description',
+                 'to_field'    => 'description',
+                 'from_locale' => 'fr_FR',
+                 'to_locale'   => 'fr_CH',
+                ],
             ],
         ];
 
@@ -78,11 +98,26 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             [
                 'conditions' => [
                     ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                    ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['field'    => 'clothing_size',
+                     'operator' => 'NOT LIKE',
+                     'value'    => 'XL',
+                     'locale'   => 'fr_FR',
+                     'scope'    => 'ecommerce',
+                    ],
                 ],
-                'actions' => [
-                    ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+                'actions'    => [
+                    ['type'   => 'set_value',
+                     'field'  => 'name',
+                     'value'  => 'awesome-jacket',
+                     'locale' => 'en_US',
+                     'scope'  => 'tablet',
+                    ],
+                    ['type'        => 'copy_value',
+                     'from_field'  => 'description',
+                     'to_field'    => 'description',
+                     'from_locale' => 'fr_FR',
+                     'to_locale'   => 'fr_CH',
+                    ],
                 ],
             ]
         );
@@ -95,11 +130,26 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             [
                 'conditions' => [
                     ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                    ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['field'    => 'clothing_size',
+                     'operator' => 'NOT LIKE',
+                     'value'    => 'XL',
+                     'locale'   => 'fr_FR',
+                     'scope'    => 'ecommerce',
+                    ],
                 ],
-                'actions' => [
-                    ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+                'actions'    => [
+                    ['type'   => 'set_value',
+                     'field'  => 'name',
+                     'value'  => 'awesome-jacket',
+                     'locale' => 'en_US',
+                     'scope'  => 'tablet',
+                    ],
+                    ['type'        => 'copy_value',
+                     'from_field'  => 'description',
+                     'to_field'    => 'description',
+                     'from_locale' => 'fr_FR',
+                     'to_locale'   => 'fr_CH',
+                    ],
                 ],
             ]
         );
@@ -115,15 +165,30 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         ConstraintViolationListInterface $violations
     ) {
         $item = [
-            'code' => 'discharge_fr_description',
-            'priority' => 100,
+            'code'       => 'discharge_fr_description',
+            'priority'   => 100,
             'conditions' => [
                 ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ['field'    => 'clothing_size',
+                 'operator' => 'NOT LIKE',
+                 'value'    => 'XL',
+                 'locale'   => 'fr_FR',
+                 'scope'    => 'ecommerce',
+                ],
             ],
-            'actions' => [
-                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+            'actions'    => [
+                ['type'   => 'set_value',
+                 'field'  => 'name',
+                 'value'  => 'awesome-jacket',
+                 'locale' => 'en_US',
+                 'scope'  => 'tablet',
+                ],
+                ['type'        => 'copy_value',
+                 'from_field'  => 'description',
+                 'to_field'    => 'description',
+                 'from_locale' => 'fr_FR',
+                 'to_locale'   => 'fr_CH',
+                ],
             ],
         ];
 
@@ -134,11 +199,26 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             [
                 'conditions' => [
                     ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                    ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['field'    => 'clothing_size',
+                     'operator' => 'NOT LIKE',
+                     'value'    => 'XL',
+                     'locale'   => 'fr_FR',
+                     'scope'    => 'ecommerce',
+                    ],
                 ],
-                'actions' => [
-                    ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+                'actions'    => [
+                    ['type'   => 'set_value',
+                     'field'  => 'name',
+                     'value'  => 'awesome-jacket',
+                     'locale' => 'en_US',
+                     'scope'  => 'tablet',
+                    ],
+                    ['type'        => 'copy_value',
+                     'from_field'  => 'description',
+                     'to_field'    => 'description',
+                     'from_locale' => 'fr_FR',
+                     'to_locale'   => 'fr_CH',
+                    ],
                 ],
             ]
         );
@@ -151,11 +231,26 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
             [
                 'conditions' => [
                     ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                    ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['field'    => 'clothing_size',
+                     'operator' => 'NOT LIKE',
+                     'value'    => 'XL',
+                     'locale'   => 'fr_FR',
+                     'scope'    => 'ecommerce',
+                    ],
                 ],
-                'actions' => [
-                    ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                    ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+                'actions'    => [
+                    ['type'   => 'set_value',
+                     'field'  => 'name',
+                     'value'  => 'awesome-jacket',
+                     'locale' => 'en_US',
+                     'scope'  => 'tablet',
+                    ],
+                    ['type'        => 'copy_value',
+                     'from_field'  => 'description',
+                     'to_field'    => 'description',
+                     'from_locale' => 'fr_FR',
+                     'to_locale'   => 'fr_CH',
+                    ],
                 ],
             ]
         );
@@ -176,24 +271,37 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         $repository,
         $denormalizer,
         $validator,
-        RuleInterface $rule,
-        ConstraintViolationListInterface $violations
+        RuleInterface $rule
     ) {
         $item = [
-            'code' => 'discharge_fr_description',
-            'priority' => 100,
+            'code'       => 'discharge_fr_description',
+            'priority'   => 100,
             'conditions' => [
                 ['field' => 'sku', 'operator' => 'LIKE', 'value' => 'foo'],
-                ['field' => 'clothing_size', 'operator' => 'NOT LIKE', 'value' => 'XL', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                ['field'    => 'clothing_size',
+                 'operator' => 'NOT LIKE',
+                 'value'    => 'XL',
+                 'locale'   => 'fr_FR',
+                 'scope'    => 'ecommerce',
+                ],
             ],
-            'actions' => [
-                ['type' => 'set_value', 'field' => 'name', 'value' => 'awesome-jacket', 'locale' => 'en_US', 'scope' => 'tablet'],
-                ['type' => 'copy_value', 'from_field' => 'description', 'to_field' => 'description', 'from_locale' => 'fr_FR', 'to_locale' => 'fr_CH'],
+            'actions'    => [
+                ['type'   => 'set_value',
+                 'field'  => 'name',
+                 'value'  => 'awesome-jacket',
+                 'locale' => 'en_US',
+                 'scope'  => 'tablet',
+                ],
+                ['type'        => 'copy_value',
+                 'from_field'  => 'description',
+                 'to_field'    => 'description',
+                 'from_locale' => 'fr_FR',
+                 'to_locale'   => 'fr_CH',
+                ],
             ],
         ];
-        $violations->count()->willReturn(2);
-        $violations->rewind()->willReturn(null);
-        $violations->valid()->shouldBeCalled();
+        $violation  = new ConstraintViolation('error', 'error', [], '', '', ['invalid value 1', 'invalid value 2']);
+        $violations = new ConstraintViolationList([$violation]);
 
         $repository->findOneByIdentifier(Argument::any())->shouldBeCalled()->willReturn(null);
         $denormalizer->denormalize(
@@ -204,7 +312,9 @@ class RuleDefinitionProcessorSpec extends ObjectBehavior
         )->shouldBeCalled()->willReturn($rule);
         $validator->validate($rule)->shouldBeCalled()->willReturn($violations);
 
-        $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('process', [$item]);
+        $this->shouldThrow(
+            new InvalidItemException(": error: invalid value 1, invalid value 2\n", $item, [], 0, null)
+        )->during('process', [$item]);
     }
 
     function getMatchers()

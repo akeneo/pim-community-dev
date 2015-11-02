@@ -106,3 +106,14 @@ akeneo_storage_utils:
         -
             original: Pim\Bundle\UserBundle\Entity\User
             override: PimEnterprise\Bundle\UserBundle\Entity\User
+
+pim_localization:
+    decimal_separators:
+        - { value: '.', label: 'dot (.)' }
+        - { value: ',', label: 'comma (,)' }
+    date_formats:
+        - { value: 'Y-m-d', label: 'yyyy-mm-dd' }
+        - { value: 'Y/m/d', label: 'yyyy/mm/dd' }
+        - { value: 'm/d/Y', label: 'mm/dd/yyyy' }
+        - { value: 'd/m/Y', label: 'dd/mm/yyyy' }
+        - { value: 'd.m.Y', label: 'dd.mm.yyyy' }

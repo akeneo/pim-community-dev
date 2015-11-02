@@ -1,0 +1,16 @@
+PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductAddAction:
+    constraints:
+        - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\PropertyAction: ~
+    properties:
+        field:
+           - Type:
+                type: string
+           - NotBlank: ~
+           - Length:
+               max: 255
+           - \PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ExistingAddField: ~
+        items:
+            - Type:
+                type: array
+            - NotBlank:
+                message: The key "items" is missing or empty.

@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\ProductAsset\Upload;
 
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -32,22 +31,16 @@ class UploadChecker implements UploadCheckerInterface
     /** @var LocaleInterface[] */
     protected $locales;
 
-    /** @var LocaleManager */
-    protected $localeManager;
-
     /**
      * @param AssetRepositoryInterface  $assetRepository
      * @param LocaleRepositoryInterface $localeRepository
-     * @param LocaleManager             $localeManager
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
-        LocaleRepositoryInterface $localeRepository,
-        LocaleManager $localeManager
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->assetRepository = $assetRepository;
         $this->locales         = $localeRepository->findAll();
-        $this->localeManager   = $localeManager;
     }
 
     /**
@@ -70,7 +63,7 @@ class UploadChecker implements UploadCheckerInterface
         }
 
         if (null !== $parsedFilename->getLocaleCode() &&
-            !$this->localeManager->isLocaleActivated($this->locales, $parsedFilename->getLocaleCode())
+            !$this->isLocaleActivated($this->locales, $parsedFilename->getLocaleCode())
         ) {
             throw new InvalidLocaleException();
         }
@@ -124,5 +117,26 @@ class UploadChecker implements UploadCheckerInterface
         }
 
         return false;
+    }
+
+    /**
+     * Check if a locale is activated
+     *
+     * @param LocaleInterface[] $locales
+     * @param string            $localeCode
+     *
+     * @throws \RuntimeException
+     *
+     * @return bool
+     */
+    protected function isLocaleActivated(array $locales, $localeCode)
+    {
+        foreach ($locales as $locale) {
+            if ($localeCode === $locale->getCode()) {
+                return $locale->isActivated();
+            }
+        }
+
+        throw new \RuntimeException(sprintf('Locale code %s is unknown', $localeCode));
     }
 }

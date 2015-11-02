@@ -181,7 +181,10 @@ class ProductDraftController extends AbstractController
         }
 
         try {
-            $this->manager->approve($productDraft);
+            $this->manager->approve($productDraft, [
+                'comment' => $request->request->get('comment')
+            ]);
+
             $status = 'success';
             $messageParams = [];
         } catch (ValidatorException $e) {
@@ -237,7 +240,9 @@ class ProductDraftController extends AbstractController
             throw new AccessDeniedHttpException();
         }
 
-        $this->manager->refuse($productDraft);
+        $this->manager->refuse($productDraft, [
+            'comment' => $request->request->get('comment')
+        ]);
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(
@@ -269,10 +274,14 @@ class ProductDraftController extends AbstractController
     public function massApproveAction(Request $request)
     {
         $request->request->add(['actionName' => 'massApprove' ]);
-        $jobExecution = $this->launchMassReviewJob(
-            self::MASS_APPROVE_JOB_CODE,
-            $this->gridFilterAdapter->adapt($request)
-        );
+        $params           = $this->gridFilterAdapter->adapt($request);
+        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_APPROVE_JOB_CODE);
+        $rawConfiguration = addslashes(json_encode([
+            'draftIds' => $params['values'],
+            'comment'  => $request->get('comment'),
+        ]));
+
+        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
 
         return $this->redirect(
             $this->generateUrl(
@@ -292,10 +301,14 @@ class ProductDraftController extends AbstractController
     public function massRefuseAction(Request $request)
     {
         $request->request->add(['actionName' => 'massApprove' ]);
-        $jobExecution = $this->launchMassReviewJob(
-            self::MASS_REFUSE_JOB_CODE,
-            $this->gridFilterAdapter->adapt($request)
-        );
+        $params           = $this->gridFilterAdapter->adapt($request);
+        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
+        $rawConfiguration = addslashes(json_encode([
+            'draftIds' => $params['values'],
+            'comment'  => $request->get('comment'),
+        ]));
+
+        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
 
         return $this->redirect(
             $this->generateUrl(
@@ -303,24 +316,6 @@ class ProductDraftController extends AbstractController
                 ['id' => $jobExecution->getId()]
             )
         );
-    }
-
-    /**
-     * Launch the specified mass review job
-     *
-     * @param string $jobCode
-     * @param array  $params
-     *
-     * @return JobExecution
-     */
-    protected function launchMassReviewJob($jobCode, array $params)
-    {
-        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier($jobCode);
-        $rawConfiguration = addslashes(json_encode(['draftIds' => $params['values']]));
-
-        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
-
-        return $jobExecution;
     }
 
     /**
