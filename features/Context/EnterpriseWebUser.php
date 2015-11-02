@@ -419,10 +419,10 @@ class EnterpriseWebUser extends BaseWebUser
      * @param array  $data    ['product' => '', 'attribute' => '', 'author' => '', 'scope' => '', 'locale' => '']
      * @param string $context ".proposal-changes" for example
      *
-     * @return NodeElement
-     *
      * @throws Spin\TimeoutException
      * @throws \Exception
+     *
+     * @return NodeElement
      */
     protected function getElementByDataAttribute($data, $context)
     {

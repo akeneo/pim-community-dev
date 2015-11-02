@@ -86,7 +86,6 @@ class EnterpriseFeatureContext extends FeatureContext
     public function iShouldSeeTheFollowingProposals(TableNode $table)
     {
         foreach ($table->getHash() as $hash) {
-
             $page = $this->getSubcontext('navigation')->getCurrentPage();
 
             // Assert the change is good

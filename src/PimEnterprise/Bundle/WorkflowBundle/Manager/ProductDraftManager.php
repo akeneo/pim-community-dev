@@ -124,8 +124,8 @@ class ProductDraftManager
 
         $temporaryDraft->setChanges(['values' => [$attribute->getCode() => [[
             'locale' => null !== $locale ? $locale->getCode() : null,
-            'scope' => null !== $channel ? $channel->getCode() : null,
-            'data' => $change
+            'scope'  => null !== $channel ? $channel->getCode() : null,
+            'data'   => $change
         ]]]]);
 
         $context['message'] = 'pimee_workflow.product_draft.notification.partial_approve';
