@@ -1,3 +1,8 @@
 config:
+    config:
+        pim/controller-registry:
+            controllers:
+                oro_config_configuration_system: oro/controller/system/config
     paths:
-        oro/system/config: oroconfig/system/config
+        # Controllers
+        oro/controller/system/config: oroconfig/js/controller/system/config
