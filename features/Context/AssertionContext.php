@@ -333,7 +333,7 @@ class AssertionContext extends RawMinkContext
             ];
         }
 
-        $valuePattern = '/(.)*<b>%s:<\/b>\s*%s\s*(.)*/';
+        $valuePattern = '/(.)*<strong>%s:<\/strong>\s*%s\s*(.)*/';
 
         $expectedUpdates = $table->getHash();
         foreach ($expectedUpdates as $data) {

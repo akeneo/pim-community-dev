@@ -4,13 +4,18 @@
         {% if fieldValue.old|length %}
         {% for collKey, collValue in fieldValue.old %}
     <li>
-        <b>{{ collKey }}:</b> {{ collValue }}
+        <strong>{{ collKey }}:</strong> {{ collValue|localize_attribute_option(collKey) }}
     </li>
         {% endfor %}
         {% endif %}
     {% else %}
     <li>
-        <b>{{ fieldKey }}:</b> {{ fieldValue.old.timestamp is defined ? fieldValue.old|oro_format_datetime : fieldValue.old }}
+        <strong>{{ fieldKey }}:</strong>
+        {% if fieldValue.old.timestamp is defined %}
+            {{ fieldValue.old|oro_format_datetime }}
+        {% else %}
+            {{ fieldValue.old|localize_attribute_option(fieldKey) }}
+        {% endif %}
     </li>
     {% endif %}
 {% endfor %}
