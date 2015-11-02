@@ -76,7 +76,7 @@ class Group
 
     public function getRoleLabelsAsString()
     {
-        $labels = array();
+        $labels = [];
         /** @var $role Role */
         foreach ($this->getRoles() as $role) {
             $labels[] = $role->getLabel();

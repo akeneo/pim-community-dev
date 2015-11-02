@@ -20,7 +20,7 @@ class TitleService extends OroTitleService
     protected function createTile($route, $title)
     {
         if (!($title instanceof Route)) {
-            $titleData = array();
+            $titleData = [];
 
             if ($title) {
                 $titleData[] = $title;

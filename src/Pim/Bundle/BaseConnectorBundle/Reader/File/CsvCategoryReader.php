@@ -38,7 +38,7 @@ class CsvCategoryReader extends CsvReader
         }
         $this->executed = true;
 
-        $data = array();
+        $data = [];
 
         while ($row = parent::read()) {
             $data[] = $row;

@@ -41,11 +41,11 @@ class TitleIndexUpdateCommandTest extends \PHPUnit_Framework_TestCase
         $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
 
-        $route = $this->getMock('Symfony\Component\Routing\Route', array(), array('/user/show/{id}'));
+        $route = $this->getMock('Symfony\Component\Routing\Route', [], ['/user/show/{id}']);
 
         $route->expects($this->once())
             ->method('getRequirements')
-            ->will($this->returnValue(array('_method' => $data)));
+            ->will($this->returnValue(['_method' => $data]));
 
         $route->expects($this->once())
             ->method('getDefault')
@@ -56,7 +56,7 @@ class TitleIndexUpdateCommandTest extends \PHPUnit_Framework_TestCase
 
         $routerCollection->expects($this->once())
             ->method('all')
-            ->will($this->returnValue(array($route)));
+            ->will($this->returnValue([$route]));
 
         $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
 
@@ -88,12 +88,12 @@ class TitleIndexUpdateCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function provideMethod()
     {
-        return array(
-            array('GET'),
-            array('ANY'),
-            array(
-                array('POST', 'GET')
-            ),
-        );
+        return [
+            ['GET'],
+            ['ANY'],
+            [
+                ['POST', 'GET']
+            ],
+        ];
     }
 }

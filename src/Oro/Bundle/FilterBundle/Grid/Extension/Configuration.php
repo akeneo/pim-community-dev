@@ -45,7 +45,7 @@ class Configuration implements ConfigurationInterface
                             ->end()
                             ->scalarNode(FilterUtility::DATA_NAME_KEY)->isRequired()->end()
                             ->enumNode(FilterUtility::CONDITION_KEY)
-                                ->values(array(FilterUtility::CONDITION_AND, FilterUtility::CONDITION_OR))
+                                ->values([FilterUtility::CONDITION_AND, FilterUtility::CONDITION_OR])
                             ->end()
                             ->booleanNode(FilterUtility::BY_HAVING_KEY)->end()
                             ->booleanNode(FilterUtility::ENABLED_KEY)->end()

@@ -72,13 +72,13 @@ class RelationGuesser implements GuesserInterface
             return;
         }
 
-        return array(
+        return [
             $this->transformer,
-            array(
+            [
                 'class'    => $mapping['targetEntity'],
                 'multiple' => (ORMClassMetadataInfo::MANY_TO_MANY === $mapping['type'])
-            )
-        );
+            ]
+        ];
     }
 
     /**
@@ -99,13 +99,13 @@ class RelationGuesser implements GuesserInterface
                 return;
             }
 
-            return array(
+            return [
                 $this->transformer,
-                array(
+                [
                     'class'    => $target,
                     'multiple' => 'entities' === $metadata->getTypeOfField($fieldName)
-                )
-            );
+                ]
+            ];
         }
 
         if (in_array($metadata->getTypeOfField($fieldName), ['one', 'many'])) {
@@ -123,13 +123,13 @@ class RelationGuesser implements GuesserInterface
                 return;
             }
 
-            return array(
+            return [
                 $this->transformer,
-                array(
+                [
                     'class'    => $mapping['targetDocument'],
                     'multiple' => 'many' === $metadata->getTypeOfField($fieldName)
-                )
-            );
+                ]
+            ];
         }
     }
 

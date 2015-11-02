@@ -37,7 +37,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
     /**
      * @var FormExtensionInterface[]
      */
-    protected $formExtensions = array();
+    protected $formExtensions = [];
 
     protected function setUp()
     {
@@ -71,7 +71,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
         $translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
         $translator->expects($this->any())
             ->method('trans')
-            ->with($this->anything(), array())
+            ->with($this->anything(), [])
             ->will($this->returnArgument(0));
 
         return $translator;
@@ -90,7 +90,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
      * @param array $defaultOptions
      * @param array $requiredOptions
      */
-    public function testSetDefaultOptions(array $defaultOptions, array $requiredOptions = array())
+    public function testSetDefaultOptions(array $defaultOptions, array $requiredOptions = [])
     {
         $resolver = $this->createMockOptionsResolver();
 
@@ -123,7 +123,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
         array $bindData,
         array $formData,
         array $viewData,
-        array $customOptions = array()
+        array $customOptions = []
     ) {
         $form = $this->factory->create($this->getTestFormType(), null, $customOptions);
 

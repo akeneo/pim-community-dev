@@ -46,7 +46,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
                 ->disableOriginalConstructor()
                 ->getMock();
         $this->request = new Request();
-        $this->request->attributes->add(array('_route' => 'test'));
+        $this->request->attributes->add(['_route' => 'test']);
         $this->listener = new ControllerListener(
             new SecurityFacade(
                 $this->tokenStorage,
@@ -62,7 +62,7 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new FilterControllerEvent(
             $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
-            array(new TestDomainObject(), $this->methodName),
+            [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
         );
@@ -91,14 +91,14 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new FilterControllerEvent(
             $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
-            array(new TestDomainObject(), $this->methodName),
+            [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
         );
 
-        $classAnnotation = new AclAnnotation(array('id' => 'test_class', 'type' => 'test', 'permission' => 'TEST'));
+        $classAnnotation = new AclAnnotation(['id' => 'test_class', 'type' => 'test', 'permission' => 'TEST']);
         $classIdentity = new ObjectIdentity('123', 'test_class');
-        $methodAnnotation = new AclAnnotation(array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST'));
+        $methodAnnotation = new AclAnnotation(['id' => 'test_method', 'type' => 'test', 'permission' => 'TEST']);
         $methodIdentity = new ObjectIdentity('123', 'test_method');
 
         $this->annotationProvider->expects($this->at(0))
@@ -139,13 +139,13 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new FilterControllerEvent(
             $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
-            array(new TestDomainObject(), $this->methodName),
+            [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
         );
 
         $methodAnnotation = new AclAnnotation(
-            array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST', 'ignore_class_acl' => true)
+            ['id' => 'test_method', 'type' => 'test', 'permission' => 'TEST', 'ignore_class_acl' => true]
         );
         $methodIdentity = new ObjectIdentity('123', 'test_method');
 
@@ -172,13 +172,13 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new FilterControllerEvent(
             $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
-            array(new TestDomainObject(), $this->methodName),
+            [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
         );
 
         $methodAnnotation = new AclAnnotation(
-            array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST')
+            ['id' => 'test_method', 'type' => 'test', 'permission' => 'TEST']
         );
         $methodIdentity = new ObjectIdentity('123', 'test_method');
 
@@ -212,12 +212,12 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new FilterControllerEvent(
             $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
-            array(new TestDomainObject(), $this->methodName),
+            [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
         );
 
-        $classAnnotation = new AclAnnotation(array('id' => 'test_class', 'type' => 'test', 'permission' => 'TEST'));
+        $classAnnotation = new AclAnnotation(['id' => 'test_class', 'type' => 'test', 'permission' => 'TEST']);
         $classIdentity = new ObjectIdentity('123', 'test_class');
 
         $this->annotationProvider->expects($this->at(0))
@@ -253,14 +253,14 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new FilterControllerEvent(
             $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
-            array(new TestDomainObject(), $this->methodName),
+            [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
         );
 
-        $classAnnotation = new AclAnnotation(array('id' => 'test_class', 'type' => 'test', 'permission' => 'TEST'));
+        $classAnnotation = new AclAnnotation(['id' => 'test_class', 'type' => 'test', 'permission' => 'TEST']);
         $classIdentity = new ObjectIdentity('123', 'test_class');
-        $methodAnnotation = new AclAnnotation(array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST'));
+        $methodAnnotation = new AclAnnotation(['id' => 'test_method', 'type' => 'test', 'permission' => 'TEST']);
         $methodIdentity = new ObjectIdentity('123', 'test_method');
 
         $this->annotationProvider->expects($this->at(0))
@@ -304,13 +304,13 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new FilterControllerEvent(
             $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
-            array(new TestDomainObject(), $this->methodName),
+            [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
         );
 
         $methodAnnotation = new AclAnnotation(
-            array('id' => 'test_method', 'type' => 'test', 'permission' => 'TEST', 'ignore_class_acl' => true)
+            ['id' => 'test_method', 'type' => 'test', 'permission' => 'TEST', 'ignore_class_acl' => true]
         );
         $methodIdentity = new ObjectIdentity('123', 'test_method');
 
@@ -340,12 +340,12 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new FilterControllerEvent(
             $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
-            array(new TestDomainObject(), $this->methodName),
+            [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::MASTER_REQUEST
         );
 
-        $annotation = new AclAnnotation(array('id' => 'test', 'type' => 'test', 'permission' => 'TEST'));
+        $annotation = new AclAnnotation(['id' => 'test', 'type' => 'test', 'permission' => 'TEST']);
         $identity = new ObjectIdentity('123', 'test');
 
         $this->annotationProvider->expects($this->once())
@@ -372,14 +372,14 @@ class ControllerListenerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new FilterControllerEvent(
             $this->getMock('Symfony\Component\HttpKernel\HttpKernelInterface'),
-            array(new TestDomainObject(), $this->methodName),
+            [new TestDomainObject(), $this->methodName],
             $this->request,
             HttpKernelInterface::SUB_REQUEST
         );
 
         $this->request->attributes->remove('_route');
 
-        $annotation = new AclAnnotation(array('id' => 'test', 'type' => 'test', 'permission' => 'TEST'));
+        $annotation = new AclAnnotation(['id' => 'test', 'type' => 'test', 'permission' => 'TEST']);
         $identity = new ObjectIdentity('123', 'test');
 
         $this->annotationProvider->expects($this->once())

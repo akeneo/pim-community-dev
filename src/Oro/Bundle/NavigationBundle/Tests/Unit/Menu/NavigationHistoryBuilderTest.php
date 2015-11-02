@@ -40,8 +40,8 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
         $this->factory = $this->getMock('Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory');
 
         $this->builder = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Menu\NavigationHistoryBuilder')
-            ->setConstructorArgs(array($this->tokenStorage, $this->em, $this->factory))
-            ->setMethods(array('getMenuManipulator'))
+            ->setConstructorArgs([$this->tokenStorage, $this->em, $this->factory])
+            ->setMethods(['getMenuManipulator'])
             ->getMock();
 
         $this->manipulator = $this->getMock('Knp\Menu\Util\MenuManipulator');
@@ -55,7 +55,7 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
         $userId = 1;
 
         $user = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getId'))
+            ->setMethods(['getId'])
             ->getMock();
         $user->expects($this->once())
             ->method('getId')
@@ -73,16 +73,16 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
         $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface');
         $this->factory->expects($this->once())
             ->method('createItem')
-            ->with($type, array())
+            ->with($type, [])
             ->will($this->returnValue($item));
 
         $repository = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Entity\Repository\HistoryItemRepository')
             ->disableOriginalConstructor()
             ->getMock();
-        $items = array(
-            array('id' => 1, 'title' => 'test1', 'url' => '/'),
-            array('id' => 2, 'title' => 'test2', 'url' => '/home'),
-        );
+        $items = [
+            ['id' => 1, 'title' => 'test1', 'url' => '/'],
+            ['id' => 2, 'title' => 'test2', 'url' => '/home'],
+        ];
 
         $repository->expects($this->once())
             ->method('getNavigationItems')
@@ -98,7 +98,7 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
 
         $childMock = $this->getMock('Knp\Menu\ItemInterface');
         $childMock2 = clone $childMock;
-        $children = array($childMock, $childMock2);
+        $children = [$childMock, $childMock2];
 
         $matcher = $this->getMock('\Knp\Menu\Matcher\Matcher');
         $matcher->expects($this->once())
@@ -134,6 +134,6 @@ class NavigationHistoryBuilderTest extends \PHPUnit_Framework_TestCase
             ->with($menu, 0, $n);
 
         $this->builder->setOptions($configMock);
-        $this->builder->build($menu, array(), $type);
+        $this->builder->build($menu, [], $type);
     }
 }

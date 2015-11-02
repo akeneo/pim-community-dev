@@ -14,7 +14,7 @@ class AttributeOptionTransformer extends EntityTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform($class, array $data, array $defaults = array())
+    public function transform($class, array $data, array $defaults = [])
     {
         $entity = parent::transform($class, $data, $defaults);
 

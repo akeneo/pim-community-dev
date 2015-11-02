@@ -23,10 +23,10 @@ class NotDecimalGuesser implements ConstraintGuesserInterface
     {
         return in_array(
             $attribute->getAttributeType(),
-            array(
+            [
                 AttributeTypes::METRIC,
                 AttributeTypes::NUMBER,
-            )
+            ]
         );
     }
 
@@ -35,7 +35,7 @@ class NotDecimalGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AttributeInterface $attribute)
     {
-        $constraints = array();
+        $constraints = [];
 
         if (!$attribute->isDecimalsAllowed()) {
             $constraints[] = new NotDecimal();

@@ -54,11 +54,11 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->helper = $this->getMockBuilder('Knp\Menu\Twig\Helper')
             ->disableOriginalConstructor()
-            ->setMethods(array('render'))
+            ->setMethods(['render'])
             ->getMock();
 
         $this->factory = $this->getMockBuilder('Knp\Menu\MenuFactory')
-            ->setMethods(array('getRouteInfo', 'processRoute'))
+            ->setMethods(['getRouteInfo', 'processRoute'])
             ->getMock();
 
         $this->factory->expects($this->any())
@@ -114,7 +114,7 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('render')
             ->with(
                 $this->containsOnlyInstancesOf('Knp\Menu\MenuItem'),
-                $this->equalTo(array('template' => $menuConfig['templates']['navbar']['template'])),
+                $this->equalTo(['template' => $menuConfig['templates']['navbar']['template']]),
                 $this->equalTo(null)
             )
             ->will($this->returnValue('menu'));
@@ -127,63 +127,63 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMenuConfigYamlArray()
     {
-        return array(
-                'templates' => array(
-                    'navbar' => array(
+        return [
+                'templates' => [
+                    'navbar' => [
                         'template' => 'OroNavigationBundle:Menu:navbar.html.twig'
-                        ),
-                    'dropdown' => array(
+                    ],
+                    'dropdown' => [
                         'template' => 'OroNavigationBundle:Menu:dropdown.html.twig'
-                    )
-                ),
-                'items' => array(
-                    'homepage' => array(
+                    ]
+                ],
+                'items' => [
+                    'homepage' => [
                         'name'                => 'Home page 2',
                         'label'               => 'Home page title',
                         'route'               => 'oro_menu_index',
                         'translateDomain'     => 'SomeBundle',
-                        'translateParameters' => array(),
-                        'routeParameters'     => array(),
-                        'extras'              => array()
-                    ),
-                    'user_registration_register' => array(
+                        'translateParameters' => [],
+                        'routeParameters'     => [],
+                        'extras'              => []
+                    ],
+                    'user_registration_register' => [
                         'route'               => 'oro_menu_submenu',
                         'translateDomain'     => 'SomeBundle',
-                        'translateParameters' => array(),
-                        'routeParameters'     => array(),
-                        'extras'              => array()
-                    ),
-                    'user_user_show' => array(
+                        'translateParameters' => [],
+                        'routeParameters'     => [],
+                        'extras'              => []
+                    ],
+                    'user_user_show' => [
                         'translateDomain'     => 'SomeBundle',
-                        'translateParameters' => array(),
-                        'routeParameters'     => array(),
-                        'extras'              => array()
-                    ),
-                ),
-                'tree' => array(
-                    'navbar' => array(
+                        'translateParameters' => [],
+                        'routeParameters'     => [],
+                        'extras'              => []
+                    ],
+                ],
+                'tree' => [
+                    'navbar' => [
                         'type'   => 'navbar',
-                        'extras' => array(
+                        'extras' => [
                             'brand'     => 'Oro',
                             'brandLink' => '/'
-                        ),
-                        'children' => array(
-                            'user_user_show' => array(
+                        ],
+                        'children' => [
+                            'user_user_show' => [
                                 'position' => '10',
-                                'children' => array(
-                                    'user_registration_register' => array(
-                                        'children' => array()
-                                    )
-                                )
-                            ),
-                            'homepage' => array(
+                                'children' => [
+                                    'user_registration_register' => [
+                                        'children' => []
+                                    ]
+                                ]
+                            ],
+                            'homepage' => [
                                 'position' => 7,
-                                'children' => array()
-                            )
-                        )
-                    )
-                )
-            );
+                                'children' => []
+                            ]
+                        ]
+                    ]
+                ]
+        ];
     }
 
     /**
@@ -191,9 +191,9 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function menuStructureProvider()
     {
-        return array(
-            'full_menu' => array($this->getMenuConfigYamlArray(), 'navbar', array(), null)
-        );
+        return [
+            'full_menu' => [$this->getMenuConfigYamlArray(), 'navbar', [], null]
+        ];
     }
 
     /**
@@ -204,7 +204,7 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $menuConfig = $this->getMenuConfigYamlArray();
         $this->container->setParameter('oro_menu_config', $menuConfig);
-        $this->menuExtension->render(array('navbar', 'some_element'));
+        $this->menuExtension->render(['navbar', 'some_element']);
     }
 
     /**
@@ -216,13 +216,13 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('render')
             ->with(
                 $this->containsOnlyInstancesOf('Knp\Menu\MenuItem'),
-                $this->equalTo(array()),
+                $this->equalTo([]),
                 $this->equalTo(null)
             )
             ->will($this->returnValue('menu'));
 
         $this->container->setParameter('oro_menu_config', $menuConfig);
-        $this->menuExtension->render(array('navbar', 'user_user_show'));
+        $this->menuExtension->render(['navbar', 'user_user_show']);
     }
 
     /**
@@ -233,7 +233,7 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $menuConfig = $this->getMenuConfigYamlArray();
         $this->container->setParameter('oro_menu_config', $menuConfig);
-        $this->menuExtension->render(array());
+        $this->menuExtension->render([]);
     }
 
     /**
@@ -245,14 +245,14 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('render')
             ->with(
                 $this->containsOnlyInstancesOf('Knp\Menu\MenuItem'),
-                $this->equalTo(array('type' => 'some_menu')),
+                $this->equalTo(['type' => 'some_menu']),
                 $this->equalTo('some_renderer')
             )
             ->will($this->returnValue('menu'));
 
         $this->container->setParameter('oro_menu_config', $menuConfig);
         $this->menuExtension
-            ->render(array('navbar', 'user_user_show'), array('type' => 'some_menu'), 'some_renderer');
+            ->render(['navbar', 'user_user_show'], ['type' => 'some_menu'], 'some_renderer');
     }
 
     public function testRenderBreadCrumbs()
@@ -267,7 +267,7 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->breadcrumbManager->expects($this->once())
             ->method('getBreadcrumbs')
-            ->will($this->returnValue(array('test-breadcrumb')));
+            ->will($this->returnValue(['test-breadcrumb']));
 
         $environment->expects($this->once())
             ->method('loadTemplate')
@@ -276,12 +276,12 @@ class MenuExtensionTest extends \PHPUnit_Framework_TestCase
         $template->expects($this->once())
             ->method('render')
             ->with(
-                array(
-                    'breadcrumbs' => array(
+                [
+                    'breadcrumbs' => [
                         'test-breadcrumb'
-                    ),
+                    ],
                     'useDecorators' => true
-                )
+                ]
             );
         ;
         $this->menuExtension->renderBreadCrumbs($environment, 'test_menu');

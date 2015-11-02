@@ -48,10 +48,10 @@ class CommandExecutor
     /**
      * {@inheritdoc}
      */
-    public function runCommand($command, $params = array())
+    public function runCommand($command, $params = [])
     {
         $params = array_merge(
-            array('command' => $command),
+            ['command' => $command],
             $params,
             $this->getDefaultParams()
         );
@@ -77,7 +77,7 @@ class CommandExecutor
      */
     protected function getDefaultParams()
     {
-        $defaultParams = array('--no-debug' => true);
+        $defaultParams = ['--no-debug' => true];
 
         if ($this->input->hasOption('env')) {
             $defaultParams['--env'] = $this->input->getOption('env');

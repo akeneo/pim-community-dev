@@ -36,7 +36,7 @@ class EntityAclExtension extends AbstractAclExtension
      *
      * @var int[]
      */
-    protected $permissionToMaskBuilderIdentity = array();
+    protected $permissionToMaskBuilderIdentity = [];
 
     /**
      * key = The identity of a permission mask builder
@@ -44,7 +44,7 @@ class EntityAclExtension extends AbstractAclExtension
      *
      * @var string[]
      */
-    protected $maskBuilderClassNames = array();
+    protected $maskBuilderClassNames = [];
 
     /**
      * Constructor
@@ -69,50 +69,50 @@ class EntityAclExtension extends AbstractAclExtension
         $this->permissionToMaskBuilderIdentity['ASSIGN'] = EntityMaskBuilder::IDENTITY;
         $this->permissionToMaskBuilderIdentity['SHARE'] = EntityMaskBuilder::IDENTITY;
 
-        $this->map = array(
-            'VIEW' => array(
+        $this->map = [
+            'VIEW' => [
                 EntityMaskBuilder::MASK_VIEW_BASIC,
                 EntityMaskBuilder::MASK_VIEW_LOCAL,
                 EntityMaskBuilder::MASK_VIEW_DEEP,
                 EntityMaskBuilder::MASK_VIEW_GLOBAL,
                 EntityMaskBuilder::MASK_VIEW_SYSTEM,
-            ),
-            'CREATE' => array(
+            ],
+            'CREATE' => [
                 EntityMaskBuilder::MASK_CREATE_BASIC,
                 EntityMaskBuilder::MASK_CREATE_LOCAL,
                 EntityMaskBuilder::MASK_CREATE_DEEP,
                 EntityMaskBuilder::MASK_CREATE_GLOBAL,
                 EntityMaskBuilder::MASK_CREATE_SYSTEM,
-            ),
-            'EDIT' => array(
+            ],
+            'EDIT' => [
                 EntityMaskBuilder::MASK_EDIT_BASIC,
                 EntityMaskBuilder::MASK_EDIT_LOCAL,
                 EntityMaskBuilder::MASK_EDIT_DEEP,
                 EntityMaskBuilder::MASK_EDIT_GLOBAL,
                 EntityMaskBuilder::MASK_EDIT_SYSTEM,
-            ),
-            'DELETE' => array(
+            ],
+            'DELETE' => [
                 EntityMaskBuilder::MASK_DELETE_BASIC,
                 EntityMaskBuilder::MASK_DELETE_LOCAL,
                 EntityMaskBuilder::MASK_DELETE_DEEP,
                 EntityMaskBuilder::MASK_DELETE_GLOBAL,
                 EntityMaskBuilder::MASK_DELETE_SYSTEM,
-            ),
-            'ASSIGN' => array(
+            ],
+            'ASSIGN' => [
                 EntityMaskBuilder::MASK_ASSIGN_BASIC,
                 EntityMaskBuilder::MASK_ASSIGN_LOCAL,
                 EntityMaskBuilder::MASK_ASSIGN_DEEP,
                 EntityMaskBuilder::MASK_ASSIGN_GLOBAL,
                 EntityMaskBuilder::MASK_ASSIGN_SYSTEM,
-            ),
-            'SHARE' => array(
+            ],
+            'SHARE' => [
                 EntityMaskBuilder::MASK_SHARE_BASIC,
                 EntityMaskBuilder::MASK_SHARE_LOCAL,
                 EntityMaskBuilder::MASK_SHARE_DEEP,
                 EntityMaskBuilder::MASK_SHARE_GLOBAL,
                 EntityMaskBuilder::MASK_SHARE_SYSTEM,
-            ),
-        );
+            ],
+        ];
     }
 
     /**
@@ -153,7 +153,7 @@ class EntityAclExtension extends AbstractAclExtension
 
         $permissions = $permission === null
             ? $this->getPermissions($mask, true)
-            : array($permission);
+            : [$permission];
 
         foreach ($permissions as $permission) {
             $validMasks = $this->getValidMasks($permission, $object);
@@ -209,7 +209,7 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function getAllMaskBuilders()
     {
-        $result = array();
+        $result = [];
         foreach ($this->maskBuilderClassNames as $maskBuilderClassName) {
             $result[] = new $maskBuilderClassName();
         }
@@ -304,7 +304,7 @@ class EntityAclExtension extends AbstractAclExtension
             return array_keys($this->permissionToMaskBuilderIdentity);
         }
 
-        $result = array();
+        $result = [];
         if (!$setOnly) {
             $identity = $this->getServiceBits($mask);
             foreach ($this->permissionToMaskBuilderIdentity as $permission => $id) {
@@ -429,7 +429,7 @@ class EntityAclExtension extends AbstractAclExtension
     {
         $identity = $this->permissionToMaskBuilderIdentity[$permission];
         if (0 !== ($mask & $this->getMaskBuilderConst($identity, 'GROUP_' . $permission))) {
-            $maskAccessLevels = array();
+            $maskAccessLevels = [];
             foreach (AccessLevel::$allAccessLevelNames as $accessLevel) {
                 if (0 !== ($mask & $this->getMaskBuilderConst($identity, 'MASK_' . $permission . '_' . $accessLevel))) {
                     $maskAccessLevels[] = $accessLevel;

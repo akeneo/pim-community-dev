@@ -35,7 +35,7 @@ class RoleController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -81,19 +81,19 @@ class RoleController extends Controller
             );
 
             return $this->get('oro_ui.router')->actionRedirect(
-                array(
+                [
                     'route'      => 'oro_user_role_update',
-                    'parameters' => array('id' => $entity->getId()),
-                ),
-                array(
+                    'parameters' => ['id' => $entity->getId()],
+                ],
+                [
                     'route' => 'oro_user_role_index',
-                )
+                ]
             );
         }
 
-        return array(
+        return [
             'form'             => $aclRoleHandler->createView(),
             'privilegesConfig' => $this->container->getParameter('oro_user.privileges'),
-        );
+        ];
     }
 }

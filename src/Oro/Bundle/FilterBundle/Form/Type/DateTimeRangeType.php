@@ -45,13 +45,13 @@ class DateTimeRangeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'    => 'datetime',
-                'field_options' => array(
+                'field_options' => [
                     'format'        => 'yyyy-MM-dd HH:mm',
                     'view_timezone' => $this->localeSettings->getTimeZone(),
-                ),
-            )
+                ],
+            ]
         );
     }
 }

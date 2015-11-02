@@ -23,7 +23,7 @@ class UnknownColumnException extends ParametrizedException
 
         parent::__construct(
             'Properties [%labels%] do not exist in %class%.',
-            array('%labels%' => implode(', ', $labels), '%class%' => end($class))
+            ['%labels%' => implode(', ', $labels), '%class%' => end($class)]
         );
     }
 }

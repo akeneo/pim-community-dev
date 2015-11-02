@@ -6,16 +6,16 @@ use Oro\Bundle\TranslationBundle\Controller\Controller;
 
 class ControllerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $translations = array(
-        'jsmessages' => array(
+    protected $translations = [
+        'jsmessages' => [
             'foo' => 'Foo',
             'bar' => 'Bar',
-        ),
-        'validators' => array(
+        ],
+        'validators' => [
             'int'    => 'Integer',
             'string' => 'string',
-        ),
-    );
+        ],
+    ];
 
     /**
      * @expectedException \InvalidArgumentException
@@ -28,7 +28,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $translator = $this->getMockBuilder('Oro\Bundle\TranslationBundle\Translation\Translator')
             ->disableOriginalConstructor()
             ->getMock();
-        new Controller($translator, $templating, '', array());
+        new Controller($translator, $templating, '', []);
     }
 
     public function testIndexAction()
@@ -44,12 +44,12 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $translator->expects($this->once())
             ->method('getTranslations')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $controller = new Controller(
             $translator,
             $templating,
             'OroTranslationBundle:Translation:translation.js.twig',
-            array()
+            []
         );
 
         $request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
@@ -104,49 +104,49 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             $translator,
             $templating,
             'OroTranslationBundle:Translation:translation.js.twig',
-            array()
+            []
         );
-        $result = call_user_func_array(array($controller, 'renderJsTranslationContent'), $params);
+        $result = call_user_func_array([$controller, 'renderJsTranslationContent'], $params);
 
         $this->assertEquals($expected, $result);
     }
 
     public function dataProviderRenderJsTranslationContent()
     {
-        return array(
-            array(
-                array(array('jsmessages', 'validators'), 'fr'),
-                array(
+        return [
+            [
+                [['jsmessages', 'validators'], 'fr'],
+                [
                     'locale'         => 'fr',
-                    'defaultDomains' => array('jsmessages', 'validators'),
-                    'messages'       => array(
+                    'defaultDomains' => ['jsmessages', 'validators'],
+                    'messages'       => [
                         'jsmessages:foo'    => 'Foo',
                         'jsmessages:bar'    => 'Bar',
                         'validators:int'    => 'Integer',
                         'validators:string' => 'string',
-                    ),
-                ),
-            ),
-            array(
-                array(array('validators'), 'en', true),
-                array(
+                    ],
+                ],
+            ],
+            [
+                [['validators'], 'en', true],
+                [
                     'locale'         => 'en',
-                    'defaultDomains' => array('validators'),
-                    'messages'       => array(
+                    'defaultDomains' => ['validators'],
+                    'messages'       => [
                         'validators:int'    => 'Integer',
                         'validators:string' => 'string',
-                    ),
+                    ],
                     'debug' => true,
-                ),
-            ),
-            array(
-                array(array(), 'ch', false),
-                array(
+                ],
+            ],
+            [
+                [[], 'ch', false],
+                [
                     'locale'         => 'ch',
-                    'defaultDomains' => array(),
-                    'messages'       => array(),
-                ),
-            ),
-        );
+                    'defaultDomains' => [],
+                    'messages'       => [],
+                ],
+            ],
+        ];
     }
 }

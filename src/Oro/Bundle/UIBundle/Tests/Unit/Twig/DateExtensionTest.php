@@ -51,8 +51,8 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetAgeAsStringInvertDiff()
     {
         $date = new \DateTime('+1 year');
-        $this->assertEquals('', $this->extension->getAgeAsString($date, array()));
-        $this->assertEquals('N/A', $this->extension->getAgeAsString($date, array('default' => 'N/A')));
+        $this->assertEquals('', $this->extension->getAgeAsString($date, []));
+        $this->assertEquals('N/A', $this->extension->getAgeAsString($date, ['default' => 'N/A']));
     }
 
     public function testGetAgeAsString()
@@ -60,9 +60,9 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
         $date = new \DateTime('-1 year -1 month');
         $this->translator->expects($this->once())
             ->method('transChoice')
-            ->with('oro.age', 1, array('%count%' => 1))
+            ->with('oro.age', 1, ['%count%' => 1])
             ->will($this->returnValue('age 1'));
-        $this->assertEquals('age 1', $this->extension->getAgeAsString($date, array()));
+        $this->assertEquals('age 1', $this->extension->getAgeAsString($date, []));
     }
 
     public function testGetName()
@@ -77,37 +77,37 @@ class DateExtensionTest extends \PHPUnit_Framework_TestCase
         $oneYearTwoMonthAgo = new \DateTime('-1 year -2 months');
         $tenYearsAgo = new \DateTime('-10 years');
         $inFuture = new \DateTime('+1 year');
-        return array(
-            array(
-                $oneYearAgo->format('Y-m-d'), array(), 1
-            ),
-            array(
-                $oneYearAgo->format('m/d/Y'), array('format' => 'm/d/Y'), 1
-            ),
-            array(
-                $tenYearsAgo->format('m/d/Y'), array('format' => 'm/d/Y', 'timezone' => 'UTC'), 10
-            ),
-            array(
-                $oneMonthAgo, array(), 0
-            ),
-            array(
-                $oneYearAgo, array(), 1
-            ),
-            array(
-                $oneMonthAgo, array(), 0
-            ),
-            array(
-                $oneYearTwoMonthAgo, array(), 1
-            ),
-            array(
-                $tenYearsAgo, array(), 10
-            ),
-            array(
-                $inFuture, array(), null
-            ),
-            array(
-                $inFuture, array('default' => 'N/A'), null
-            ),
-        );
+        return [
+            [
+                $oneYearAgo->format('Y-m-d'), [], 1
+            ],
+            [
+                $oneYearAgo->format('m/d/Y'), ['format' => 'm/d/Y'], 1
+            ],
+            [
+                $tenYearsAgo->format('m/d/Y'), ['format' => 'm/d/Y', 'timezone' => 'UTC'], 10
+            ],
+            [
+                $oneMonthAgo, [], 0
+            ],
+            [
+                $oneYearAgo, [], 1
+            ],
+            [
+                $oneMonthAgo, [], 0
+            ],
+            [
+                $oneYearTwoMonthAgo, [], 1
+            ],
+            [
+                $tenYearsAgo, [], 10
+            ],
+            [
+                $inFuture, [], null
+            ],
+            [
+                $inFuture, ['default' => 'N/A'], null
+            ],
+        ];
     }
 }

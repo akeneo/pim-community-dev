@@ -24,24 +24,24 @@ class Configuration implements ConfigurationInterface
 
         SettingsBuilder::append(
             $rootNode,
-            array(
-                'maxItems' => array(
+            [
+                'maxItems' => [
                     'value' => 20, // default value, can be overridden in config.yml
                     'type'  => 'scalar',
-                ),
-                'title_suffix' => array(
+                ],
+                'title_suffix' => [
                     'value' => '', // default value, can be overridden in config.yml
                     'type'  => 'scalar',
-                ),
-                'title_delimiter' => array(
+                ],
+                'title_delimiter' => [
                     'value' => '-', // default value, can be overridden in config.yml
                     'type'  => 'scalar',
-                ),
-                'breadcrumb_menu' => array(
+                ],
+                'breadcrumb_menu' => [
                     'value' => 'application_menu', // default value, can be overridden in config.yml
                     'type'  => 'scalar',
-                ),
-            )
+                ],
+            ]
         );
 
         return $treeBuilder;

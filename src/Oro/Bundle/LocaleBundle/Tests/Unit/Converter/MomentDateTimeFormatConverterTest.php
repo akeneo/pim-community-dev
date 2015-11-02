@@ -19,12 +19,12 @@ class MomentDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
      */
     public function getDateFormatDataProvider()
     {
-        return array(
-            'en default' => array("MMM D, YYYY", null, self::LOCALE_EN),
-            'en custom'  => array("MMMM D, YYYY", \IntlDateFormatter::LONG, self::LOCALE_EN),
-            'ru default' => array("DD.MM.YYYY", null, self::LOCALE_RU),
-            'ru custom'  => array("D MMMM YYYY [г.]", \IntlDateFormatter::LONG, self::LOCALE_RU),
-        );
+        return [
+            'en default' => ["MMM D, YYYY", null, self::LOCALE_EN],
+            'en custom'  => ["MMMM D, YYYY", \IntlDateFormatter::LONG, self::LOCALE_EN],
+            'ru default' => ["DD.MM.YYYY", null, self::LOCALE_RU],
+            'ru custom'  => ["D MMMM YYYY [г.]", \IntlDateFormatter::LONG, self::LOCALE_RU],
+        ];
     }
 
     /**
@@ -32,12 +32,12 @@ class MomentDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
      */
     public function getTimeFormatDataProvider()
     {
-        return array(
-            'en default'      => array("h:mm A", null, self::LOCALE_EN),
-            'en custom'       => array("h:mm:ss A", \IntlDateFormatter::MEDIUM, self::LOCALE_EN),
-            'ru default'      => array("H:mm", null, self::LOCALE_RU),
-            'ru custom'       => array("H:mm:ss", \IntlDateFormatter::MEDIUM, self::LOCALE_RU),
-        );
+        return [
+            'en default'      => ["h:mm A", null, self::LOCALE_EN],
+            'en custom'       => ["h:mm:ss A", \IntlDateFormatter::MEDIUM, self::LOCALE_EN],
+            'ru default'      => ["H:mm", null, self::LOCALE_RU],
+            'ru custom'       => ["H:mm:ss", \IntlDateFormatter::MEDIUM, self::LOCALE_RU],
+        ];
     }
 
     /**
@@ -45,21 +45,21 @@ class MomentDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
      */
     public function getDateTimeFormatDataProvider()
     {
-        return array(
-            'en default' => array("MMM D, YYYY h:mm A", null, null, self::LOCALE_EN),
-            'en custom'  => array(
+        return [
+            'en default' => ["MMM D, YYYY h:mm A", null, null, self::LOCALE_EN],
+            'en custom'  => [
                 "MMMM D, YYYY h:mm:ss A",
                 \IntlDateFormatter::LONG,
                 \IntlDateFormatter::MEDIUM,
                 self::LOCALE_EN
-            ),
-            'ru default' => array("DD.MM.YYYY H:mm", null, null, self::LOCALE_RU),
-            'ru custom'  => array(
+            ],
+            'ru default' => ["DD.MM.YYYY H:mm", null, null, self::LOCALE_RU],
+            'ru custom'  => [
                 "D MMMM YYYY [г.] H:mm:ss",
                 \IntlDateFormatter::LONG,
                 \IntlDateFormatter::MEDIUM,
                 self::LOCALE_RU
-            ),
-        );
+            ],
+        ];
     }
 }

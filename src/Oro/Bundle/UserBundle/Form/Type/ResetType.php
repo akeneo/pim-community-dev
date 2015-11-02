@@ -26,12 +26,13 @@ class ResetType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('plainPassword', 'repeated', array(
+        $builder->add('plainPassword', 'repeated', [
             'type'            => 'password',
             'required'        => true,
-            'first_options'   => array('label' => 'Password'),
-            'second_options'  => array('label' => 'Again'),
-        ));
+            'first_options'   => ['label' => 'Password'],
+            'second_options'  => ['label' => 'Again'],
+        ]
+        );
     }
 
     /**
@@ -39,10 +40,12 @@ class ResetType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            [
             'data_class' => $this->class,
             'intention'  => 'reset',
-        ));
+            ]
+        );
     }
 
     /**

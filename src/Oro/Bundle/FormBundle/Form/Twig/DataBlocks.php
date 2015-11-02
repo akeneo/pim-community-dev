@@ -56,7 +56,7 @@ class DataBlocks
         $this->env              = $env;
 
         $tmpLoader = $env->getLoader();
-        $env->setLoader(new \Twig_Loader_Chain(array($tmpLoader, new \Twig_Loader_String())));
+        $env->setLoader(new \Twig_Loader_Chain([$tmpLoader, new \Twig_Loader_String()]));
 
         $this->renderBlock($form);
 
@@ -129,7 +129,7 @@ class DataBlocks
                 $subBlockCode = $name . '__subblock';
             }
 
-            $subBlock = $this->createSubBlock($subBlockCode, array('title' => null));
+            $subBlock = $this->createSubBlock($subBlockCode, ['title' => null]);
             $block->addSubBlock($subBlock);
         }
 
@@ -141,7 +141,7 @@ class DataBlocks
      * @param  array $blockConfig
      * @return BlockConfig
      */
-    protected function createBlock($code, $blockConfig = array())
+    protected function createBlock($code, $blockConfig = [])
     {
         if ($this->formConfig->hasBlock($code)) {
             $block = $this->formConfig->getBlock($code);

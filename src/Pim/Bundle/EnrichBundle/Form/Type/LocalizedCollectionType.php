@@ -41,10 +41,10 @@ class LocalizedCollectionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'currentLocale'    => null,
                 'comparisonLocale' => null,
-            )
+            ]
         );
     }
 

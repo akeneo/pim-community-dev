@@ -27,14 +27,14 @@ class OroLocalizationDumpCommand extends ContainerAwareCommand
         /** @var LocaleSettings $localeSettings */
         $localeSettings = $this->getContainer()->get('oro_locale.settings');
         $addressFormats = $this->getAddressFormats($localeSettings);
-        $localeSettingsData = array(
+        $localeSettingsData = [
             'locale_data'   => $localeSettings->getLocaleData(),
             'currency_data' => $localeSettings->getCurrencyData(),
-            'format'        => array(
+            'format'        => [
                 'address' => $addressFormats,
                 'name'    => $localeSettings->getNameFormats()
-            )
-        );
+            ]
+        ];
 
         $file = $targetDir . '/oro.locale_data.js';
         $output->writeln(
@@ -60,7 +60,7 @@ class OroLocalizationDumpCommand extends ContainerAwareCommand
      */
     protected function getAddressFormats(LocaleSettings $localeSettings)
     {
-        $result = array();
+        $result = [];
         $formats = $localeSettings->getAddressFormats();
         foreach ($formats as $country => $formatData) {
             $result[$country] = $formatData[LocaleSettings::ADDRESS_FORMAT_KEY];

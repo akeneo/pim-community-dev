@@ -115,11 +115,11 @@ class OroAssetManager
      */
     protected function loadAssets()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->am->getResources() as $resources) {
             if (!$resources instanceof IteratorResourceInterface) {
-                $resources = array($resources);
+                $resources = [$resources];
             }
 
             /**@var $resource FileResource */
@@ -142,7 +142,7 @@ class OroAssetManager
      */
     private function loadNode(\Twig_Node $node)
     {
-        $assets = array();
+        $assets = [];
         if ($node instanceof OroAsseticNode) {
             $assets[$node->getNameUnCompress()] = $node;
         }

@@ -39,14 +39,14 @@ class TitleService implements TitleServiceInterface
      *
      * @var array
      */
-    private $readers = array();
+    private $readers = [];
 
     /**
      * Current title template params
      *
      * @var array
      */
-    private $params = array();
+    private $params = [];
 
     /**
      * Current title suffix
@@ -99,7 +99,7 @@ class TitleService implements TitleServiceInterface
         UserConfigManager $userConfigManager,
         BreadcrumbManager $breadcrumbManager
     ) {
-        $this->readers = array($reader, $configReader);
+        $this->readers = [$reader, $configReader];
         $this->translator = $translator;
         $this->em = $em;
         $this->serializer = $serializer;
@@ -119,7 +119,7 @@ class TitleService implements TitleServiceInterface
      * @return $this
      */
     public function render(
-        $params = array(),
+        $params = [],
         $title = null,
         $prefix = null,
         $suffix = null,
@@ -145,7 +145,7 @@ class TitleService implements TitleServiceInterface
                 }
             } catch (RuntimeException $e) {
                 // wrong json string - ignore title
-                $params = array();
+                $params = [];
                 $title  = 'Untitled';
                 $prefix = '';
                 $suffix = '';
@@ -311,7 +311,7 @@ class TitleService implements TitleServiceInterface
     {
         /** @var $bdData Title */
         $bdData = $this->getStoredTitlesRepository()->findOneBy(
-            array('route' => $route)
+            ['route' => $route]
         );
 
         if ($bdData) {
@@ -399,7 +399,7 @@ class TitleService implements TitleServiceInterface
     protected function createTile($route, $title)
     {
         if (!($title instanceof Route)) {
-            $titleData = array();
+            $titleData = [];
 
             if ($title) {
                 $titleData[] = $title;

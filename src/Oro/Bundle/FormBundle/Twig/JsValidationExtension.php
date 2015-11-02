@@ -23,7 +23,7 @@ class JsValidationExtension extends \Twig_Extension
      * @param string $templateName
      * @param array $defaultOptions
      */
-    public function __construct($templateName = self::DEFAULT_TEMPLATE, $defaultOptions = array())
+    public function __construct($templateName = self::DEFAULT_TEMPLATE, $defaultOptions = [])
     {
         $this->templateName = $templateName;
         $this->defaultOptions = $defaultOptions;
@@ -34,13 +34,13 @@ class JsValidationExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction(
                 'oro_form_js_validation',
-                array($this, 'renderFormJsValidationBlock'),
-                array('needs_environment' => true, 'is_safe' => array('html'))
+                [$this, 'renderFormJsValidationBlock'],
+                ['needs_environment' => true, 'is_safe' => ['html']]
             )
-        );
+        ];
     }
 
     /**
@@ -60,7 +60,7 @@ class JsValidationExtension extends \Twig_Extension
      * @throws \RuntimeException
      * @return string
      */
-    public function renderFormJsValidationBlock(\Twig_Environment $environment, FormView $view, $options = array())
+    public function renderFormJsValidationBlock(\Twig_Environment $environment, FormView $view, $options = [])
     {
         $options = array_merge($this->defaultOptions, $options);
 
@@ -74,11 +74,11 @@ class JsValidationExtension extends \Twig_Extension
 
         return $template->renderBlock(
             self::BLOCK_NAME,
-            array(
+            [
                 'form'       => $view,
                 'options'    => $options,
                 'js_options' => $this->filterJsOptions($options)
-            )
+            ]
         );
     }
 

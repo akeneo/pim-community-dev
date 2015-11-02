@@ -43,11 +43,11 @@ class HistoryItemBuilderTest extends \PHPUnit_Framework_TestCase
 
         //$user = $this->tokenStorage->getToken()->getUser();
         $user = $this->getMock('\Pim\Bundle\UserBundle\Entity\UserInterface');
-        $params = array(
+        $params = [
             'title' => 'kldfjs;jasf',
             'url'   => 'some url',
             'user'  => $user,
-        );
+        ];
 
         $item = $itemBuilder->buildItem($params);
 

@@ -9,47 +9,47 @@ use Symfony\Component\Translation\MessageSelector;
 
 class TranslatorTest extends \PHPUnit_Framework_TestCase
 {
-    protected $messages = array(
-        'fr' => array(
-            'jsmessages' => array(
+    protected $messages = [
+        'fr' => [
+            'jsmessages' => [
                 'foo' => 'foo (FR)',
-            ),
-            'messages' => array(
+            ],
+            'messages' => [
                 'foo' => 'foo messages (FR)',
-            ),
-        ),
-        'en' => array(
-            'jsmessages' => array(
+            ],
+        ],
+        'en' => [
+            'jsmessages' => [
                 'foo' => 'foo (EN)',
                 'bar' => 'bar (EN)',
-            ),
-            'messages' => array(
+            ],
+            'messages' => [
                 'foo' => 'foo messages (EN)',
-            ),
-            'validators' => array(
+            ],
+            'validators' => [
                 'choice' => '{0} choice 0 (EN)|{1} choice 1 (EN)|]1,Inf] choice inf (EN)',
-            ),
-        ),
-        'es' => array(
-            'jsmessages' => array(
+            ],
+        ],
+        'es' => [
+            'jsmessages' => [
                 'foobar' => 'foobar (ES)',
-            ),
-            'messages' => array(
+            ],
+            'messages' => [
                 'foo' => 'foo messages (ES)',
-            ),
-        ),
-        'pt-PT' => array(
-            'jsmessages' => array(
+            ],
+        ],
+        'pt-PT' => [
+            'jsmessages' => [
                 'foobarfoo' => 'foobarfoo (PT-PT)',
-            ),
-        ),
-        'pt_BR' => array(
-            'validators' => array(
+            ],
+        ],
+        'pt_BR' => [
+            'validators' => [
                 'other choice' =>
                     '{0} other choice 0 (PT-BR)|{1} other choice 1 (PT-BR)|]1,Inf] other choice inf (PT-BR)',
-            ),
-        ),
-    );
+            ],
+        ],
+    ];
 
     /**
      * @dataProvider dataProviderGetTranslations
@@ -61,97 +61,97 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         $_locale = !is_null($locale) ? $locale : reset($locales);
         $translator->setLocale($_locale);
         $translator->setFallbackLocales(array_slice($locales, array_search($_locale, $locales) + 1));
-        $result = $translator->getTranslations(array('jsmessages', 'validators'), $locale);
+        $result = $translator->getTranslations(['jsmessages', 'validators'], $locale);
 
         $this->assertEquals($expected, $result);
     }
 
     public function dataProviderGetTranslations()
     {
-        return array(
-            array(
+        return [
+            [
                 null,
-                array(
-                    'validators' => array(
+                [
+                    'validators' => [
                         'other choice' =>
                         '{0} other choice 0 (PT-BR)|{1} other choice 1 (PT-BR)|]1,Inf] other choice inf (PT-BR)',
                         'choice' => '{0} choice 0 (EN)|{1} choice 1 (EN)|]1,Inf] choice inf (EN)',
-                    ),
-                    'jsmessages' => array(
+                    ],
+                    'jsmessages' => [
                         'foobarfoo' => 'foobarfoo (PT-PT)',
                         'foobar'    => 'foobar (ES)',
                         'foo'       => 'foo (FR)',
                         'bar'       => 'bar (EN)',
-                    ),
-                )
-            ),
-            array(
+                    ],
+                ]
+            ],
+            [
                 'fr',
-                array(
-                    'validators' => array(
+                [
+                    'validators' => [
                         'other choice' =>
                             '{0} other choice 0 (PT-BR)|{1} other choice 1 (PT-BR)|]1,Inf] other choice inf (PT-BR)',
                         'choice' => '{0} choice 0 (EN)|{1} choice 1 (EN)|]1,Inf] choice inf (EN)',
-                    ),
-                    'jsmessages' => array(
+                    ],
+                    'jsmessages' => [
                         'foobarfoo' => 'foobarfoo (PT-PT)',
                         'foobar'    => 'foobar (ES)',
                         'foo'       => 'foo (FR)',
                         'bar'       => 'bar (EN)',
-                    ),
-                )
-            ),
-            array(
+                    ],
+                ]
+            ],
+            [
                 'en',
-                array(
-                    'validators' => array(
+                [
+                    'validators' => [
                         'other choice' =>
                             '{0} other choice 0 (PT-BR)|{1} other choice 1 (PT-BR)|]1,Inf] other choice inf (PT-BR)',
                         'choice' => '{0} choice 0 (EN)|{1} choice 1 (EN)|]1,Inf] choice inf (EN)',
-                    ),
-                    'jsmessages' => array(
+                    ],
+                    'jsmessages' => [
                         'foobarfoo' => 'foobarfoo (PT-PT)',
                         'foobar'    => 'foobar (ES)',
                         'foo'       => 'foo (EN)',
                         'bar'       => 'bar (EN)',
-                    ),
-                )
-            ),
-            array(
+                    ],
+                ]
+            ],
+            [
                 'es',
-                array(
-                    'validators' => array(
+                [
+                    'validators' => [
                         'other choice' =>
                             '{0} other choice 0 (PT-BR)|{1} other choice 1 (PT-BR)|]1,Inf] other choice inf (PT-BR)',
-                    ),
-                    'jsmessages' => array(
+                    ],
+                    'jsmessages' => [
                         'foobarfoo' => 'foobarfoo (PT-PT)',
                         'foobar'    => 'foobar (ES)',
-                    ),
-                )
-            ),
-            array(
+                    ],
+                ]
+            ],
+            [
                 'pt-PT',
-                array(
-                    'validators' => array(
+                [
+                    'validators' => [
                         'other choice' =>
                             '{0} other choice 0 (PT-BR)|{1} other choice 1 (PT-BR)|]1,Inf] other choice inf (PT-BR)',
-                    ),
-                    'jsmessages' => array(
+                    ],
+                    'jsmessages' => [
                         'foobarfoo' => 'foobarfoo (PT-PT)',
-                    ),
-                )
-            ),
-            array(
+                    ],
+                ]
+            ],
+            [
                 'pt_BR',
-                array(
-                    'validators' => array(
+                [
+                    'validators' => [
                         'other choice' =>
                             '{0} other choice 0 (PT-BR)|{1} other choice 1 (PT-BR)|]1,Inf] other choice inf (PT-BR)',
-                    ),
-                )
-            ),
-        );
+                    ],
+                ]
+            ],
+        ];
     }
 
     /**
@@ -219,12 +219,12 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      * @param array $options
      * @return Translator
      */
-    public function getTranslator($loader, $options = array())
+    public function getTranslator($loader, $options = [])
     {
         $translator = new Translator(
             $this->getContainer($loader),
             new MessageSelector(),
-            array('loader' => array('loader')),
+            ['loader' => ['loader']],
             $options
         );
 

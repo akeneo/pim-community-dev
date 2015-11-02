@@ -26,7 +26,7 @@ class EntityTransformerRegistry implements EntityTransformerInterface
     /**
      * @var array
      */
-    protected $transformerIds = array();
+    protected $transformerIds = [];
 
     /**
      * Constructor
@@ -54,7 +54,7 @@ class EntityTransformerRegistry implements EntityTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($class, array $data, array $defaults = array())
+    public function transform($class, array $data, array $defaults = [])
     {
         return $this->getEntityTransformer($class)->transform($class, $data, $defaults);
     }

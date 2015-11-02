@@ -65,7 +65,7 @@ class StringFilter extends AbstractFilter
      */
     protected function getOperator($type)
     {
-        $operatorTypes = array(
+        $operatorTypes = [
             TextFilterType::TYPE_CONTAINS     => 'LIKE',
             TextFilterType::TYPE_NOT_CONTAINS => 'NOT LIKE',
             TextFilterType::TYPE_EQUAL        => '=',
@@ -73,7 +73,7 @@ class StringFilter extends AbstractFilter
             TextFilterType::TYPE_ENDS_WITH    => 'LIKE',
             FilterType::TYPE_EMPTY            => 'EMPTY',
             FilterType::TYPE_IN_LIST          => 'IN',
-        );
+        ];
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';
     }

@@ -31,49 +31,49 @@ class AclRoleType extends AbstractType
         $builder->add(
             'label',
             'text',
-            array(
+            [
                 'required' => true,
                 'label'    => 'Role'
-            )
+            ]
         );
 
         foreach ($this->privilegeConfig as $fieldName => $config) {
             $builder->add(
                 $fieldName,
                 new PrivilegeCollectionType(),
-                array(
+                [
                     'type'         => new AclPrivilegeType(),
                     'allow_add'    => true,
                     'prototype'    => false,
                     'allow_delete' => false,
                     'mapped'       => false,
-                    'options'      => array(
+                    'options'      => [
                         'privileges_config' => $config,
-                    )
-                )
+                    ]
+                ]
             );
         }
 
         $builder->add(
             'appendUsers',
             'oro_entity_identifier',
-            array(
+            [
                 'class'    => 'PimUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,
-            )
+            ]
         );
 
         $builder->add(
             'removeUsers',
             'oro_entity_identifier',
-            array(
+            [
                 'class'    => 'PimUserBundle:User',
                 'required' => false,
                 'mapped'   => false,
                 'multiple' => true,
-            )
+            ]
         );
     }
 
@@ -83,10 +83,10 @@ class AclRoleType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Oro\Bundle\UserBundle\Entity\Role',
                 'intention'  => 'role',
-            )
+            ]
         );
     }
 

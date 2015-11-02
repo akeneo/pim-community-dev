@@ -47,12 +47,12 @@ class DateTimeExtensionTest extends \PHPUnit_Framework_TestCase
         $timeType = 'short';
         $locale = 'en_US';
         $timeZone = 'America/Los_Angeles';
-        $options = array(
+        $options = [
             'dateType' => $dateType,
             'timeType' => $timeType,
             'locale'   => $locale,
             'timeZone' => $timeZone
-        );
+        ];
         $expectedResult = '12/31/13 12:00 AM';
 
         $this->formatter->expects($this->once())->method('format')
@@ -68,11 +68,11 @@ class DateTimeExtensionTest extends \PHPUnit_Framework_TestCase
         $dateType = 'short';
         $locale = 'en_US';
         $timeZone = 'America/Los_Angeles';
-        $options = array(
+        $options = [
             'dateType' => $dateType,
             'locale'   => $locale,
             'timeZone' => $timeZone
-        );
+        ];
         $expectedResult = '12/31/13';
 
         $this->formatter->expects($this->once())->method('formatDate')
@@ -88,11 +88,11 @@ class DateTimeExtensionTest extends \PHPUnit_Framework_TestCase
         $timeType = 'short';
         $locale = 'en_US';
         $timeZone = 'America/Los_Angeles';
-        $options = array(
+        $options = [
             'timeType' => $timeType,
             'locale'   => $locale,
             'timeZone' => $timeZone
-        );
+        ];
         $expectedResult = '12 AM';
 
         $this->formatter->expects($this->once())->method('formatTime')

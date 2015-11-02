@@ -36,63 +36,63 @@ class ProcessorDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function mergeDataProvider()
     {
-        return array(
-            'merge tree test'   => array(
-                array(
-                    ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::TREE_ROOT => array('group1' => array('group2' => array('field'))),
-                    )
-                ),
-                array(
-                    ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::TREE_ROOT => array('group1' => array('group2' => array('field2'))),
-                    )
-                ),
-                array(
-                    ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::TREE_ROOT => array('group1' => array('group2' => array('field', 'field2'))),
-                    )
-                ),
-            ),
-            'merge fields test' => array(
-                array(
-                    ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::FIELDS_ROOT => array(
-                            'someFieldName' => array(
+        return [
+            'merge tree test'   => [
+                [
+                    ProcessorDecorator::ROOT => [
+                        ProcessorDecorator::TREE_ROOT => ['group1' => ['group2' => ['field']]],
+                    ]
+                ],
+                [
+                    ProcessorDecorator::ROOT => [
+                        ProcessorDecorator::TREE_ROOT => ['group1' => ['group2' => ['field2']]],
+                    ]
+                ],
+                [
+                    ProcessorDecorator::ROOT => [
+                        ProcessorDecorator::TREE_ROOT => ['group1' => ['group2' => ['field', 'field2']]],
+                    ]
+                ],
+            ],
+            'merge fields test' => [
+                [
+                    ProcessorDecorator::ROOT => [
+                        ProcessorDecorator::FIELDS_ROOT => [
+                            'someFieldName' => [
                                 'label'   => 'testLabel1',
-                                'options' => array()
-                            )
-                        ),
-                    )
-                ),
-                array(
-                    ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::FIELDS_ROOT => array(
-                            'someFieldName' => array(
+                                'options' => []
+                            ]
+                        ],
+                    ]
+                ],
+                [
+                    ProcessorDecorator::ROOT => [
+                        ProcessorDecorator::FIELDS_ROOT => [
+                            'someFieldName' => [
                                 'label' => 'overrideLabel',
-                            ),
-                            'newField'      => array(
+                            ],
+                            'newField'      => [
                                 'label'   => 'testLabel2',
-                                'options' => array()
-                            )
-                        ),
-                    )
-                ),
-                array(
-                    ProcessorDecorator::ROOT => array(
-                        ProcessorDecorator::FIELDS_ROOT => array(
-                            'someFieldName' => array(
+                                'options' => []
+                            ]
+                        ],
+                    ]
+                ],
+                [
+                    ProcessorDecorator::ROOT => [
+                        ProcessorDecorator::FIELDS_ROOT => [
+                            'someFieldName' => [
                                 'label'   => 'overrideLabel',
-                                'options' => array()
-                            ),
-                            'newField'      => array(
+                                'options' => []
+                            ],
+                            'newField'      => [
                                 'label'   => 'testLabel2',
-                                'options' => array()
-                            )
-                        ),
-                    )
-                ),
-            ),
-        );
+                                'options' => []
+                            ]
+                        ],
+                    ]
+                ],
+            ],
+        ];
     }
 }

@@ -44,7 +44,7 @@ class ConstraintsProvider
 
         $validationGroups = $this->getValidationGroups($form);
 
-        $result = array();
+        $result = [];
         foreach ($constraints as $constraint) {
             if (array_intersect($validationGroups, $constraint->groups)) {
                 $result[] = $constraint;
@@ -65,7 +65,7 @@ class ConstraintsProvider
         $isMapped = $form->getConfig()->getOption('mapped', true);
 
         if (!$form->getParent() || !$isMapped) {
-            return array();
+            return [];
         }
 
         $name = $form->getName();
@@ -76,7 +76,7 @@ class ConstraintsProvider
             $this->metadataConstraintsCache[$parentKey] = $this->extractMetadataPropertiesConstraints($parent);
         }
 
-        $result = array();
+        $result = [];
 
         if (isset($this->metadataConstraintsCache[$parentKey][$name])) {
             $result = $this->metadataConstraintsCache[$parentKey][$name]->constraints;
@@ -93,7 +93,7 @@ class ConstraintsProvider
      */
     protected function extractMetadataPropertiesConstraints(FormInterface $form)
     {
-        $constraints = array();
+        $constraints = [];
         if ($form->getConfig()->getDataClass()) {
             /** @var ClassMetadata $metadata */
             $metadata = $this->metadataFactory->getMetadataFor($form->getConfig()->getDataClass());
@@ -129,7 +129,7 @@ class ConstraintsProvider
             $form = $form->getParent();
         } while (null !== $form);
 
-        return array(Constraint::DEFAULT_GROUP);
+        return [Constraint::DEFAULT_GROUP];
     }
 
     /**

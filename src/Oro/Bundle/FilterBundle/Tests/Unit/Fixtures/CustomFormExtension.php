@@ -10,7 +10,7 @@ class CustomFormExtension extends AbstractExtension
     /**
      * @var FormTypeInterface[] An array of FormTypeInterface instances
      */
-    protected $initialTypes = array();
+    protected $initialTypes = [];
 
     public function __construct(array $initialTypes)
     {

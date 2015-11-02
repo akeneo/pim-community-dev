@@ -7,7 +7,7 @@ use Oro\Bundle\NavigationBundle\Menu\BuilderInterface;
 
 class UserMenuBuilder implements BuilderInterface
 {
-    public function build(ItemInterface $menu, array $options = array(), $alias = null)
+    public function build(ItemInterface $menu, array $options = [], $alias = null)
     {
         $menu->setExtra('type', 'dropdown');
 
@@ -16,13 +16,13 @@ class UserMenuBuilder implements BuilderInterface
             ->setAttribute('class', 'divider');
         $menu->addChild(
             'Logout',
-            array(
+            [
                 'route'          => 'oro_user_security_logout',
                 'check_access'   => false,
-                'linkAttributes' => array(
+                'linkAttributes' => [
                     'class' => 'no-hash'
-                )
-            )
+                ]
+            ]
         );
     }
 }

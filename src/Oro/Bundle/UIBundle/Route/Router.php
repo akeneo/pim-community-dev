@@ -58,7 +58,7 @@ class Router
             $routeName = $routeData['route'];
         }
 
-        $params = isset($routeData['parameters']) ? $routeData['parameters'] : array();
+        $params = isset($routeData['parameters']) ? $routeData['parameters'] : [];
 
         return new RedirectResponse(
             $this->router->generate(

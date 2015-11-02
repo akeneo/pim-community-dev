@@ -16,7 +16,7 @@ abstract class AbstractLoader
      */
     public function __construct($bundles)
     {
-        $this->bundleDirectories = array();
+        $this->bundleDirectories = [];
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             $this->bundleDirectories[] = dirname($reflection->getFilename());

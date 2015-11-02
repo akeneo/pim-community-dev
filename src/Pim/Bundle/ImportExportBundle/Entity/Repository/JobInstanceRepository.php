@@ -40,7 +40,7 @@ class JobInstanceRepository extends EntityRepository implements IdentifiableObje
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -48,7 +48,7 @@ class JobInstanceRepository extends EntityRepository implements IdentifiableObje
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 
     /**

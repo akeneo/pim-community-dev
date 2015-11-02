@@ -40,7 +40,7 @@ class AttributeRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findWithGroups(array $attributeIds = array(), array $criterias = array())
+    public function findWithGroups(array $attributeIds = [], array $criterias = [])
     {
         $qb = $this->findWithGroupsQB($attributeIds, $criterias);
 
@@ -55,7 +55,7 @@ class AttributeRepository extends EntityRepository implements
      *
      * @return QueryBuilder
      */
-    protected function findWithGroupsQB(array $attributeIds = array(), array $criterias = array())
+    protected function findWithGroupsQB(array $attributeIds = [], array $criterias = [])
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -180,10 +180,10 @@ class AttributeRepository extends EntityRepository implements
             ->select('a.code')
             ->andWhere('a.attributeType IN (:file_type, :image_type)')
             ->setParameters(
-                array(
+                [
                     ':file_type'  => AttributeTypes::FILE,
                     ':image_type' => AttributeTypes::IMAGE,
-                )
+                ]
             )
             ->getQuery()
             ->getArrayResult();
@@ -235,7 +235,7 @@ class AttributeRepository extends EntityRepository implements
         $qb = $this->createQueryBuilder('a');
         $qb
             ->andWhere(
-                $qb->expr()->in('a.attributeType', array(AttributeTypes::TEXT, AttributeTypes::IDENTIFIER))
+                $qb->expr()->in('a.attributeType', [AttributeTypes::TEXT, AttributeTypes::IDENTIFIER])
             );
 
         return $qb->getQuery()->getResult();
@@ -248,7 +248,7 @@ class AttributeRepository extends EntityRepository implements
     {
         $attributes = $this->getAvailableAttributesAsLabel();
 
-        $choices = array();
+        $choices = [];
         foreach ($attributes as $attribute) {
             $choices[$attribute->getId()] = $attribute->getLabel();
         }
@@ -261,7 +261,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(array('code' => $code));
+        return $this->findOneBy(['code' => $code]);
     }
 
     /**
@@ -269,7 +269,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array('code');
+        return ['code'];
     }
 
     /**
@@ -283,7 +283,7 @@ class AttributeRepository extends EntityRepository implements
         if (!empty($ids)) {
             $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
         }
-        $results = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $results = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         if ($withLabel) {
             $labelExpr = 'COALESCE(trans.label, CONCAT(CONCAT(\'[\', att.code), \']\'))';
@@ -301,7 +301,7 @@ class AttributeRepository extends EntityRepository implements
             if (!empty($ids)) {
                 $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
             }
-            $attributes = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+            $attributes = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
             foreach ($attributes as $data) {
                 $results[$data['code']]['label']      = $data['label'];
                 $results[$data['code']]['group']      = $data['groupLabel'];
@@ -388,7 +388,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getIdentifier()
     {
-        return $this->findOneBy(array('attributeType' => AttributeTypes::IDENTIFIER));
+        return $this->findOneBy(['attributeType' => AttributeTypes::IDENTIFIER]);
     }
 
     /**

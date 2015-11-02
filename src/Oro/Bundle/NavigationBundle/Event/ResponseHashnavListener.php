@@ -52,10 +52,10 @@ class ResponseHashnavListener
                 $event->setResponse(
                     $this->templating->renderResponse(
                         'OroNavigationBundle:HashNav:redirect.html.twig',
-                        array(
+                        [
                             'full_redirect' => $isFullRedirect,
                             'location'      => $location,
-                        )
+                        ]
                     )
                 );
             }

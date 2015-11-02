@@ -11,8 +11,8 @@ class TestJSON extends Template
         return 'data.json.twig';
     }
 
-    protected function doDisplay(array $context, array $blocks = array())
+    protected function doDisplay(array $context, array $blocks = [])
     {
-        echo json_encode(array('content' => "<p>test</p>\n"));
+        echo json_encode(['content' => "<p>test</p>\n"]);
     }
 }

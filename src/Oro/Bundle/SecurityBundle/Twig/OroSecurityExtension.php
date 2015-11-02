@@ -26,9 +26,9 @@ class OroSecurityExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'resource_granted' => new \Twig_Function_Method($this, 'checkResourceIsGranted'),
-        );
+        ];
     }
 
     /**

@@ -36,7 +36,7 @@ class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->factory = $this->getMockBuilder('Knp\Menu\MenuFactory')
-            ->setMethods(array('getRouteInfo', 'processRoute'))
+            ->setMethods(['getRouteInfo', 'processRoute'])
             ->getMock();
 
         $this->manager = new BreadcrumbManager($this->provider, $this->matcher, $this->router);
@@ -53,7 +53,7 @@ class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->with(
                 'test',
-                array('check_access' => false)
+                ['check_access' => false]
             )
             ->will($this->returnValue($item));
 
@@ -80,16 +80,17 @@ class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetBreadcrumbLabels()
     {
         $item = new MenuItem('test', $this->factory);
-        $item->setExtra('routes', array(
+        $item->setExtra('routes', [
             'another_route',
             '/another_route/',
             'another*route',
             'test_route',
-        ));
+        ]
+        );
         $item1 = new MenuItem('test1', $this->factory);
         $item2 = new MenuItem('sub_item', $this->factory);
         $item1->addChild($item2);
-        $item1->setExtra('routes', array());
+        $item1->setExtra('routes', []);
         $item2->addChild($item);
 
 
@@ -98,7 +99,7 @@ class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($item1));
 
         $this->assertEquals(
-            array('test', 'sub_item', 'test1'),
+            ['test', 'sub_item', 'test1'],
             $this->manager->getBreadcrumbLabels('test_menu', 'test_route')
         );
     }
@@ -112,11 +113,11 @@ class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
             ->method('get')
             ->will($this->returnValue($item));
 
-        $resultMenu = $this->manager->getMenu('test', array('subItem'));
+        $resultMenu = $this->manager->getMenu('test', ['subItem']);
         $this->assertEquals($subItem, $resultMenu);
 
         $this->setExpectedException('InvalidArgumentException');
-        $this->manager->getMenu('test', array('bad_item'));
+        $this->manager->getMenu('test', ['bad_item']);
     }
 
     public function testGetCurrentMenuItem()
@@ -126,11 +127,11 @@ class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
         $subItem = new MenuItem('subItem', $this->factory);
         $goodItem->addChild($subItem);
 
-        $params = array(
+        $params = [
             'testItem' => false,
             'goodItem' => false,
             'subItem'  => true,
-        );
+        ];
 
         $this->matcher->expects($this->any())
             ->method('isCurrent')
@@ -149,6 +150,6 @@ class BreadcrumbManagerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $this->assertEquals($subItem, $this->manager->getCurrentMenuItem(array($item, $goodItem)));
+        $this->assertEquals($subItem, $this->manager->getCurrentMenuItem([$item, $goodItem]));
     }
 }

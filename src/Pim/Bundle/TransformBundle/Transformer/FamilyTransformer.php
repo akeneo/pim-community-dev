@@ -104,11 +104,11 @@ class FamilyTransformer extends NestedEntityTransformer
     protected function setChannelRequirements($class, FamilyInterface $family, $channelCode, $attributeCodes)
     {
         foreach ($attributeCodes as $attributeCode) {
-            $data = array(
+            $data = [
                 'attribute' => $attributeCode,
                 'channel'   => $channelCode,
                 'required'  => true
-            );
+            ];
             $requirement = $this->transformNestedEntity($class, 'requirements', $this->requirementClass, $data);
 
             if ($requirement->getAttribute() === null) {

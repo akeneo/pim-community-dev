@@ -29,7 +29,7 @@ class MenuBuilderChainPass implements CompilerPassInterface
 
         foreach ($taggedServices as $id => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {
-                $addBuilderArgs = array(new Reference($id));
+                $addBuilderArgs = [new Reference($id)];
 
                 if (!empty($attributes['alias'])) {
                     $addBuilderArgs[] = $attributes['alias'];
@@ -58,7 +58,7 @@ class MenuBuilderChainPass implements CompilerPassInterface
                 $builderDefinition = $container->getDefinition($id);
                 $builderDefinition->addArgument($attributes['alias']);
 
-                $addBuilderArgs = array(new Reference($id));
+                $addBuilderArgs = [new Reference($id)];
                 $definition->addMethodCall('addBuilder', $addBuilderArgs);
             }
         }

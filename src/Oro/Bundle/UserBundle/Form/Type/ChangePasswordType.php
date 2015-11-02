@@ -33,32 +33,32 @@ class ChangePasswordType extends AbstractType
         $builder->add(
             'currentPassword',
             'password',
-            array(
+            [
                 'required'    => false,
                 'label'       => 'Current password',
-                'constraints' => array(
+                'constraints' => [
                     new UserPassword()
-                ),
+                ],
                 'mapped' => false,
-            )
+            ]
         )
         ->add(
             'plainPassword',
             'repeated',
-            array(
+            [
                 'required'        => true,
                 'type'            => 'password',
                 'invalid_message' => 'The password fields must match.',
-                'options'         => array(
-                    'attr' => array(
+                'options'         => [
+                    'attr' => [
                         'class' => 'password-field'
-                    )
-                ),
-                'first_options'      => array('label' => 'New password'),
-                'second_options'     => array('label' => 'Repeat new password'),
+                    ]
+                ],
+                'first_options'      => ['label' => 'New password'],
+                'second_options'     => ['label' => 'Repeat new password'],
                 'mapped'             => false,
                 'cascade_validation' => true,
-            )
+            ]
         );
     }
 
@@ -76,10 +76,10 @@ class ChangePasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'inherit_data'       => true,
                 'cascade_validation' => true,
-            )
+            ]
         );
     }
 }

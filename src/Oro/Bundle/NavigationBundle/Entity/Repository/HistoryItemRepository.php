@@ -28,17 +28,17 @@ class HistoryItemRepository extends EntityRepository implements NavigationReposi
      *
      * @return array
      */
-    public function getNavigationItems($user, $type = null, $options = array())
+    public function getNavigationItems($user, $type = null, $options = [])
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->add(
             'select',
             new Expr\Select(
-                array(
+                [
                     'ni.id',
                     'ni.url',
                     'ni.title',
-                )
+                ]
             )
         )
             ->add('from', new Expr\From('Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem', 'ni'))
@@ -46,9 +46,9 @@ class HistoryItemRepository extends EntityRepository implements NavigationReposi
                 'where',
                 $qb->expr()->eq('ni.user', ':user')
             )
-            ->setParameters(array('user' => $user));
+            ->setParameters(['user' => $user]);
 
-        $orderBy = array(array('field' => NavigationHistoryItem::NAVIGATION_HISTORY_COLUMN_VISITED_AT));
+        $orderBy = [['field' => NavigationHistoryItem::NAVIGATION_HISTORY_COLUMN_VISITED_AT]];
         if (isset($options['orderBy'])) {
             $orderBy = (array) $options['orderBy'];
         }

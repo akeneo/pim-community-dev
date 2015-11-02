@@ -70,7 +70,7 @@ class PriceFilterType extends AbstractType
      */
     protected function createCurrencyOptions(array $options)
     {
-        $result = array('required' => false);
+        $result = ['required' => false];
         if ($options['currency_choices']) {
             $result['choices'] = $options['currency_choices'];
         }

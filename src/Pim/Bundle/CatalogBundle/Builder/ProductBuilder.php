@@ -367,15 +367,15 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function getExistingValues(ProductInterface $product)
     {
-        $existingValues = array();
+        $existingValues = [];
         $values = $product->getValues();
         foreach ($values as $value) {
-            $existingValues[] = array(
+            $existingValues[] = [
                 'attribute' => $value->getAttribute()->getCode(),
                 'type'      => $value->getAttribute()->getAttributeType(),
                 'locale'    => $value->getLocale(),
                 'scope'     => $value->getScope()
-            );
+            ];
         }
 
         return $existingValues;

@@ -8,7 +8,7 @@ class AclAncestorTest extends \PHPUnit_Framework_TestCase
 {
     public function testAncestor()
     {
-        $aclAncestor = new AclAncestor(array('value' => 'test_acl'));
+        $aclAncestor = new AclAncestor(['value' => 'test_acl']);
         $this->assertEquals('test_acl', $aclAncestor->getId());
     }
 
@@ -17,7 +17,7 @@ class AclAncestorTest extends \PHPUnit_Framework_TestCase
      */
     public function testAncestorWithEmptyId()
     {
-        $aclAncestor = new AclAncestor(array('value' => ''));
+        $aclAncestor = new AclAncestor(['value' => '']);
     }
 
     /**
@@ -25,7 +25,7 @@ class AclAncestorTest extends \PHPUnit_Framework_TestCase
      */
     public function testAncestorWithInvalidId()
     {
-        $aclAncestor = new AclAncestor(array('value' => 'test acl'));
+        $aclAncestor = new AclAncestor(['value' => 'test acl']);
     }
 
     /**
@@ -33,6 +33,6 @@ class AclAncestorTest extends \PHPUnit_Framework_TestCase
      */
     public function testAncestorWithMissingId()
     {
-        $aclAncestor = new AclAncestor(array());
+        $aclAncestor = new AclAncestor([]);
     }
 }

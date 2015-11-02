@@ -44,7 +44,7 @@ class UserController extends Controller
         return $this->update(
             $this->getUser(),
             'oro_user_profile_update',
-            array('route' => 'oro_user_profile_view')
+            ['route' => 'oro_user_profile_view']
         );
     }
 
@@ -67,7 +67,7 @@ class UserController extends Controller
 
         return $this->getRequest()->isXmlHttpRequest()
             ? new JsonResponse($api->getApiKey())
-            : $this->forward('OroUserBundle:User:view', array('user' => $user));
+            : $this->forward('OroUserBundle:User:view', ['user' => $user]);
     }
 
     /**
@@ -100,7 +100,7 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -158,25 +158,25 @@ class UserController extends Controller
             if (count($viewRoute)) {
                 $closeButtonRoute = $viewRoute;
             } else {
-                $closeButtonRoute = array(
+                $closeButtonRoute = [
                     'route'      => 'oro_user_view',
-                    'parameters' => array('id' => $user->getId())
-                );
+                    'parameters' => ['id' => $user->getId()]
+                ];
             }
 
             return $this->get('oro_ui.router')->actionRedirect(
-                array(
+                [
                     'route'      => 'oro_user_update',
-                    'parameters' => array('id' => $user->getId()),
-                ),
+                    'parameters' => ['id' => $user->getId()],
+                ],
                 $closeButtonRoute
             );
         }
 
-        return array(
+        return [
             'form'      => $this->get('oro_user.form.user')->createView(),
             'editRoute' => $updateRoute
-        );
+        ];
     }
 
     /**
@@ -187,13 +187,13 @@ class UserController extends Controller
      */
     protected function view(User $user, $editRoute = '')
     {
-        $output = array(
+        $output = [
             'entity'   => $user,
             'dynamic'  => []
-        );
+        ];
 
         if ($editRoute) {
-            $output = array_merge($output, array('editRoute' => $editRoute));
+            $output = array_merge($output, ['editRoute' => $editRoute]);
         }
 
         return $output;

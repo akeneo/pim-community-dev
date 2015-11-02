@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
     /** @var array $supportedFormats */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /** @var TranslationNormalizer $transNormalizer */
     protected $transNormalizer;
@@ -40,7 +40,7 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $results = [
             'code' => $object->getCode(),
@@ -85,7 +85,7 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
      */
     protected function normalizeAxisAttributes(GroupInterface $group)
     {
-        $attributes = array();
+        $attributes = [];
         foreach ($group->getAxisAttributes() as $attribute) {
             $attributes[] = $attribute->getCode();
         }

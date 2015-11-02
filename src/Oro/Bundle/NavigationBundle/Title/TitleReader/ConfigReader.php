@@ -8,7 +8,7 @@ class ConfigReader extends Reader
     /**
      * @var array
      */
-    private $configData = array();
+    private $configData = [];
 
     public function __construct(array $configData)
     {
@@ -24,7 +24,7 @@ class ConfigReader extends Reader
      */
     public function getData(array $routes)
     {
-        $data = array();
+        $data = [];
 
         foreach ($this->configData as $route => $title) {
             if (array_key_exists($route, $routes)) {

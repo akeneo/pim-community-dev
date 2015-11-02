@@ -11,11 +11,11 @@ class ConfigPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $processor = new Processor();
-        $settings  = array();
+        $settings  = [];
 
         foreach ($container->getExtensions() as $name => $extension) {
             if (strpos($name, 'oro_') !== false || strpos($name, 'pim_') !== false) {
-                if (!$config = $extension->getConfiguration(array(), $container)) {
+                if (!$config = $extension->getConfiguration([], $container)) {
                     continue;
                 }
 

@@ -60,7 +60,7 @@ class FixtureJobLoader
      */
     public function load()
     {
-        $rawJobs = array();
+        $rawJobs = [];
         $fileLocator = $this->container->get('file_locator');
 
         foreach ($this->jobsFilePaths as $jobsFilePath) {
@@ -105,7 +105,7 @@ class FixtureJobLoader
     public function deleteJobs()
     {
         $jobs = $this->em->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
-                ->findBy(array('type' => static::JOB_TYPE));
+                ->findBy(['type' => static::JOB_TYPE]);
 
         foreach ($jobs as $job) {
             $this->em->remove($job);

@@ -18,9 +18,9 @@ class AcmeAppBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
-        $productMappings = array(
+        $productMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Acme\Bundle\AppBundle\Model'
-        );
+        ];
 
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(

@@ -35,39 +35,39 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     public function testAddChildrenWithBasicValue()
     {
         $group = $this->getGroupMock(
-            array(
+            [
                 'id'    => 1,
                 'label' => 'General',
-            )
+            ]
         );
 
         $attribute = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 42,
                 'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
                 'scopable'     => false,
-            )
+            ]
         );
 
         $value = $this->getValueMock(
-            array(
+            [
                 'attribute' => $attribute,
                 'removable' => true,
-            )
+            ]
         );
 
         $view = $this->getMock('Symfony\Component\Form\FormView');
 
         $this->formView->addChildren($value, $view);
 
-        $formView = array(
-            1 => array(
+        $formView = [
+            1 => [
                 'label'      => 'General',
-                'attributes' => array(
-                    'name' => array(
+                'attributes' => [
+                    'name' => [
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -76,10 +76,10 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                         'value'              => $view,
                         'id'                 => 42,
                         'locale'             => null,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         $this->assertEquals($formView, $this->formView->getView());
     }
@@ -90,56 +90,56 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     public function testAddMultiChildrenInTheSameGroup()
     {
         $group = $this->getGroupMock(
-            array(
+            [
                 'id'    => 1,
                 'label' => 'General',
-            )
+            ]
         );
 
         $nameAttr = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 42,
                 'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
                 'scopable'     => false,
-            )
+            ]
         );
         $nameValue = $this->getValueMock(
-            array(
+            [
                 'attribute' => $nameAttr,
                 'removable' => true,
-            )
+            ]
         );
         $nameView = $this->getMock('Symfony\Component\Form\FormView');
 
         $colorAttr = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 1337,
                 'group'        => $group,
                 'code'         => 'color',
                 'label'        => 'Color',
                 'sortOrder'    => 0,
                 'scopable'     => false,
-            )
+            ]
         );
         $colorValue = $this->getValueMock(
-            array(
+            [
                 'attribute' => $colorAttr,
                 'removable' => false,
-            )
+            ]
         );
         $colorView = $this->getMock('Symfony\Component\Form\FormView');
 
         $this->formView->addChildren($nameValue, $nameView);
         $this->formView->addChildren($colorValue, $colorView);
 
-        $formView = array(
-            1 => array(
+        $formView = [
+            1 => [
                 'label'      => 'General',
-                'attributes' => array(
-                    'name' => array(
+                'attributes' => [
+                    'name' => [
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -148,8 +148,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                         'value'              => $nameView,
                         'id'                 => 42,
                         'locale'             => null,
-                    ),
-                    'color' => array(
+                    ],
+                    'color' => [
                         'isRemovable'        => false,
                         'allowValueCreation' => false,
                         'code'               => 'color',
@@ -158,10 +158,10 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                         'value'              => $colorView,
                         'id'                 => 1337,
                         'locale'             => null,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         $this->assertEquals($formView, $this->formView->getView());
     }
@@ -172,37 +172,37 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     public function testAddChildrenWithScopableValue()
     {
         $group = $this->getGroupMock(
-            array(
+            [
                 'id'    => 1,
                 'label' => 'General',
-            )
+            ]
         );
 
         $attribute = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 42,
                 'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
                 'scopable'     => true,
-            )
+            ]
         );
 
         $valueWeb = $this->getValueMock(
-            array(
+            [
                 'scope'     => 'Web',
                 'attribute' => $attribute,
                 'removable' => true,
-            )
+            ]
         );
 
         $valueMobile = $this->getValueMock(
-            array(
+            [
                 'scope'     => 'Mobile',
                 'attribute' => $attribute,
                 'removable' => true,
-            )
+            ]
         );
 
         $viewWeb = $this->getMock('Symfony\Component\Form\FormView');
@@ -211,11 +211,11 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->formView->addChildren($valueWeb, $viewWeb);
         $this->formView->addChildren($valueMobile, $viewMobile);
 
-        $formView = array(
-            1 => array(
+        $formView = [
+            1 => [
                 'label'      => 'General',
-                'attributes' => array(
-                    'name' => array(
+                'attributes' => [
+                    'name' => [
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -223,17 +223,17 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                         'sortOrder'          => 0,
                         'id'                 => 42,
                         'locale'             => null,
-                        'classes'            => array(
+                        'classes'            => [
                             'scopable' => true
-                        ),
-                        'values'             => array(
+                        ],
+                        'values'             => [
                             'Web'    => $viewWeb,
                             'Mobile' => $viewMobile,
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         $this->assertEquals($formView, $this->formView->getView());
     }
@@ -244,14 +244,14 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     public function testAddChildrenWithPriceValue()
     {
         $group = $this->getGroupMock(
-            array(
+            [
                 'id'    => 1,
                 'label' => 'General',
-            )
+            ]
         );
 
         $attribute = $this->getAttributeMock(
-            array(
+            [
                 'id'            => 42,
                 'group'         => $group,
                 'code'          => 'price',
@@ -259,25 +259,25 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                 'sortOrder'     => 0,
                 'scopable'      => false,
                 'attributeType' => AttributeTypes::PRICE_COLLECTION
-            )
+            ]
         );
 
         $value = $this->getValueMock(
-            array(
+            [
                 'attribute' => $attribute,
                 'removable' => false,
-            )
+            ]
         );
 
         $view = $this->getMock('Symfony\Component\Form\FormView');
 
         $this->formView->addChildren($value, $view);
 
-        $formView = array(
-            1 => array(
+        $formView = [
+            1 => [
                 'label'      => 'General',
-                'attributes' => array(
-                    'price' => array(
+                'attributes' => [
+                    'price' => [
                         'isRemovable'        => false,
                         'allowValueCreation' => false,
                         'code'               => 'price',
@@ -285,14 +285,14 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                         'id'                 => 42,
                         'locale'             => null,
                         'sortOrder'          => 0,
-                        'classes'            => array(
+                        'classes'            => [
                             'currency' => true
-                        ),
+                        ],
                         'value'              => $view,
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         $this->assertEquals($formView, $this->formView->getView());
     }
@@ -303,101 +303,101 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     public function testAttributeSortingInsideGroups()
     {
         $generalGroup = $this->getGroupMock(
-            array(
+            [
                 'id'    => 1,
                 'label' => 'General',
-            )
+            ]
         );
         $otherGroup = $this->getGroupMock(
-            array(
+            [
                 'id'    => 2,
                 'label' => 'Other',
-            )
+            ]
         );
 
         $nameAttr = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 42,
                 'group'        => $generalGroup,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 10,
                 'scopable'     => false,
-            )
+            ]
         );
         $nameValue = $this->getValueMock(
-            array(
+            [
                 'attribute' => $nameAttr,
                 'removable' => true,
-            )
+            ]
         );
 
         $colorAttr = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 1337,
                 'group'        => $generalGroup,
                 'code'         => 'color',
                 'label'        => 'Color',
                 'sortOrder'    => 0,
                 'scopable'     => false,
-            )
+            ]
         );
         $colorValue = $this->getValueMock(
-            array(
+            [
                 'attribute' => $colorAttr,
                 'removable' => false,
-            )
+            ]
         );
 
         $priceAttr = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 14,
                 'group'        => $generalGroup,
                 'code'         => 'price',
                 'label'        => 'Price',
                 'sortOrder'    => 20,
                 'scopable'     => false,
-            )
+            ]
         );
         $priceValue = $this->getValueMock(
-            array(
+            [
                 'attribute' => $priceAttr,
                 'removable' => true,
-            )
+            ]
         );
 
         $releaseAttr = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 1987,
                 'group'        => $otherGroup,
                 'code'         => 'release_date',
                 'label'        => 'Release date',
                 'sortOrder'    => 20,
                 'scopable'     => false,
-            )
+            ]
         );
         $releaseValue = $this->getValueMock(
-            array(
+            [
                 'attribute' => $releaseAttr,
                 'removable' => true,
-            )
+            ]
         );
 
         $weightAttr = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 73,
                 'group'        => $otherGroup,
                 'code'         => 'weight',
                 'label'        => 'Weight',
                 'sortOrder'    => 10,
                 'scopable'     => false,
-            )
+            ]
         );
         $weightValue = $this->getValueMock(
-            array(
+            [
                 'attribute' => $weightAttr,
                 'removable' => true,
-            )
+            ]
         );
 
         $nameView    = $this->getMock('Symfony\Component\Form\FormView');
@@ -413,44 +413,44 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->formView->addChildren($weightValue, $weightView);
 
         $result = $this->formView->getView();
-        $this->assertEquals(array('color', 'name', 'price'), array_keys($result[1]['attributes']));
-        $this->assertEquals(array('weight', 'release_date'), array_keys($result[2]['attributes']));
+        $this->assertEquals(['color', 'name', 'price'], array_keys($result[1]['attributes']));
+        $this->assertEquals(['weight', 'release_date'], array_keys($result[2]['attributes']));
     }
 
     public function testAddLocalizableChildren()
     {
         $group = $this->getGroupMock(
-            array(
+            [
                 'id'    => 1,
                 'label' => 'General',
-            )
+            ]
         );
 
         $attribute = $this->getAttributeMock(
-            array(
+            [
                 'id'           => 42,
                 'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
                 'scopable'     => false,
-            )
+            ]
         );
 
         $valueFr = $this->getValueMock(
-            array(
+            [
                 'attribute' => $attribute,
                 'removable' => true,
                 'locale'    => 'fr_FR'
-            )
+            ]
         );
 
         $valueEn = $this->getValueMock(
-            array(
+            [
                 'attribute' => $attribute,
                 'removable' => true,
                 'locale'    => 'en_US'
-            )
+            ]
         );
 
         $viewFr = $this->getMock('Symfony\Component\Form\FormView');
@@ -459,11 +459,11 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->formView->addChildren($valueFr, $viewFr);
         $this->formView->addChildren($valueEn, $viewEn);
 
-        $formView = array(
-            1 => array(
+        $formView = [
+            1 => [
                 'label'      => 'General',
-                'attributes' => array(
-                    'name_fr_FR' => array(
+                'attributes' => [
+                    'name_fr_FR' => [
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -472,8 +472,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                         'value'              => $viewFr,
                         'id'                 => 42,
                         'locale'             => 'fr_FR',
-                    ),
-                    'name_en_US' => array(
+                    ],
+                    'name_en_US' => [
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -482,10 +482,10 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                         'value'              => $viewEn,
                         'id'                 => 42,
                         'locale'             => 'en_US',
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
 
         $this->assertEquals($formView, $this->formView->getView());
     }
@@ -498,12 +498,12 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     private function getValueMock(array $options)
     {
         $options = array_merge(
-            array(
+            [
                 'attribute' => null,
                 'removable' => null,
                 'scope'     => null,
                 'locale'    => null,
-            ),
+            ],
             $options
         );
 
@@ -536,7 +536,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     private function getAttributeMock(array $options)
     {
         $options = array_merge(
-            array(
+            [
                 'id'            => null,
                 'group'         => null,
                 'code'          => null,
@@ -544,7 +544,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                 'sortOrder'     => null,
                 'scopable'      => null,
                 'attributeType' => null,
-            ),
+            ],
             $options
         );
 
@@ -589,10 +589,10 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     private function getGroupMock(array $options)
     {
         $options = array_merge(
-            array(
+            [
                 'id'    => null,
                 'label' => null,
-            ),
+            ],
             $options
         );
 

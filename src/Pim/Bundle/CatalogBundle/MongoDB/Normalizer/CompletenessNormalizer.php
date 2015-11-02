@@ -17,9 +17,9 @@ class CompletenessNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        $normalizedComp = array();
+        $normalizedComp = [];
         $code = $object->getChannel()->getCode().'-'.$object->getLocale()->getCode();
         $normalizedComp[$code] = $object->getRatio();
 

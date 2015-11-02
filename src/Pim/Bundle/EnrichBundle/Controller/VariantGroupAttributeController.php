@@ -207,7 +207,7 @@ class VariantGroupAttributeController
      *
      * @return RedirectResponse
      */
-    protected function redirectToRoute($route, $parameters = array(), $status = 302)
+    protected function redirectToRoute($route, $parameters = [], $status = 302)
     {
         return $this->redirect($this->generateUrl($route, $parameters), $status);
     }
@@ -236,7 +236,7 @@ class VariantGroupAttributeController
      *
      * @see UrlGeneratorInterface
      */
-    protected function generateUrl($route, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function generateUrl($route, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
         return $this->router->generate($route, $parameters, $referenceType);
     }
@@ -249,7 +249,7 @@ class VariantGroupAttributeController
      * @param string  $message    the flash message
      * @param array   $parameters the flash message parameters
      */
-    protected function addFlash(Request $request, $type, $message, array $parameters = array())
+    protected function addFlash(Request $request, $type, $message, array $parameters = [])
     {
         $request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
     }

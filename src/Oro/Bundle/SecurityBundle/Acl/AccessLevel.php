@@ -12,7 +12,7 @@ final class AccessLevel
      *
      * @var string[]
      */
-    public static $allAccessLevelNames = array('BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM');
+    public static $allAccessLevelNames = ['BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM'];
 
     const NONE_LEVEL_NAME = 'NONE';
 

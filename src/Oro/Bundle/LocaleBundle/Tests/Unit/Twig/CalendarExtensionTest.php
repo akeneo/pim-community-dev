@@ -51,7 +51,7 @@ class CalendarExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $width = Calendar::WIDTH_NARROW;
         $locale = 'en_US';
-        $expectedResult = array('expected_result');
+        $expectedResult = ['expected_result'];
 
         $this->calendar->expects($this->once())->method('getMonthNames')
             ->with($width)
@@ -68,7 +68,7 @@ class CalendarExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $width = Calendar::WIDTH_ABBREVIATED;
         $locale = 'en_US';
-        $expectedResult = array('expected_result');
+        $expectedResult = ['expected_result'];
 
         $this->calendar->expects($this->once())->method('getDayOfWeekNames')
             ->with($width)

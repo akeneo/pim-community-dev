@@ -39,9 +39,9 @@ class UserSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData',
-        );
+        ];
     }
 
     public function preSetData(FormEvent $event)
@@ -64,15 +64,15 @@ class UserSubscriber implements EventSubscriberInterface
                 'enabled',
                 'choice',
                 $entity->getId() ? $entity->isEnabled() : '',
-                array(
+                [
                     'label'           => 'Status',
                     'required'        => true,
                     'disabled'        => $this->isCurrentUser($entity),
-                    'choices'         => array('Inactive', 'Active'),
+                    'choices'         => ['Inactive', 'Active'],
                     'empty_value'     => 'Please select',
                     'empty_data'      => '',
                     'auto_initialize' => false
-                )
+                ]
             )
         );
 

@@ -13,7 +13,7 @@ class UiExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->extension = new UiExtension(array(), 'test_class');
+        $this->extension = new UiExtension([], 'test_class');
     }
 
     public function testGetName()

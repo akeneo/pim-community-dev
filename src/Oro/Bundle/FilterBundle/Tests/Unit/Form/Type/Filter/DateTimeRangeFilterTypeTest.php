@@ -23,18 +23,18 @@ class DateTimeRangeFilterTypeTest extends AbstractTypeTestCase
 
         $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
-            ->setMethods(array('getTimezone'))
+            ->setMethods(['getTimezone'])
             ->getMock();
         $localeSettings->expects($this->any())
             ->method('getTimezone')
             ->will($this->returnValue(date_default_timezone_get()));
 
-        $types = array(
+        $types = [
             new FilterType($translator),
             new DateRangeType($localeSettings),
             new DateTimeRangeType($localeSettings),
             new DateRangeFilterType($translator)
-        );
+        ];
 
         $this->formExtensions[] = new CustomFormExtension($types);
 
@@ -60,13 +60,13 @@ class DateTimeRangeFilterTypeTest extends AbstractTypeTestCase
      */
     public function configureOptionsDataProvider()
     {
-        return array(
-            array(
-                'defaultOptions' => array(
+        return [
+            [
+                'defaultOptions' => [
                     'field_type' => DateTimeRangeType::NAME,
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -74,18 +74,18 @@ class DateTimeRangeFilterTypeTest extends AbstractTypeTestCase
      */
     public function bindDataProvider()
     {
-        return array(
-            'empty' => array(
-                'bindData' => array(),
-                'formData' => array('type' => null, 'value' => array('start' => '', 'end' => '')),
-                'viewData' => array(
-                    'value'          => array('type'     => null, 'value' => array('start' => '', 'end' => '')),
-                    'widget_options' => array('firstDay' => 1)
-                ),
-                'customOptions' => array(
-                    'widget_options' => array('firstDay' => 1)
-                )
-            ),
-        );
+        return [
+            'empty' => [
+                'bindData' => [],
+                'formData' => ['type' => null, 'value' => ['start' => '', 'end' => '']],
+                'viewData' => [
+                    'value'          => ['type'     => null, 'value' => ['start' => '', 'end' => '']],
+                    'widget_options' => ['firstDay' => 1]
+                ],
+                'customOptions' => [
+                    'widget_options' => ['firstDay' => 1]
+                ]
+            ],
+        ];
     }
 }

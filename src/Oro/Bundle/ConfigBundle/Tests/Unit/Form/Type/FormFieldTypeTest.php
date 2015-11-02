@@ -34,7 +34,7 @@ class FormFieldTypeTest extends TypeTestCase
      */
     public function testBuildForm($options, $expectedType, array $expectedOptions)
     {
-        $form = $this->factory->create($this->formType, array(), $options);
+        $form = $this->factory->create($this->formType, [], $options);
 
         $this->assertTrue($form->has('value'));
         $this->assertTrue($form->has('use_parent_scope_value'));
@@ -51,38 +51,38 @@ class FormFieldTypeTest extends TypeTestCase
      */
     public function buildFormOptionsProvider()
     {
-        return array(
-            'target field options empty'                => array(
-                'options'         => array(),
+        return [
+            'target field options empty'                => [
+                'options'         => [],
                 'expectedType'    => 'text',
-                'expectedOptions' => array()
-            ),
-            'target field options from array'           => array(
-                'options'         => array(
-                    'target_field' => array(
+                'expectedOptions' => []
+            ],
+            'target field options from array'           => [
+                'options'         => [
+                    'target_field' => [
                         'type'    => 'choice',
-                        'options' => array('label' => self::TEST_LABEL)
-                    )
-                ),
+                        'options' => ['label' => self::TEST_LABEL]
+                    ]
+                ],
                 'expectedType'    => 'choice',
-                'expectedOptions' => array('label' => self::TEST_LABEL)
-            ),
-            'target field options from FieldDefinition' => array(
-                'options'         => array(
+                'expectedOptions' => ['label' => self::TEST_LABEL]
+            ],
+            'target field options from FieldDefinition' => [
+                'options'         => [
                     'target_field' => new FieldNodeDefinition(
                         'test_field_name',
-                        array(
+                        [
                             'type'    => 'choice',
-                            'options' => array(
+                            'options' => [
                                 'label' => self::TEST_LABEL
-                            )
-                        )
+                            ]
+                        ]
                     )
-                ),
+                ],
                 'expectedType'    => 'choice',
-                'expectedOptions' => array('label' => self::TEST_LABEL)
-            ),
-        );
+                'expectedOptions' => ['label' => self::TEST_LABEL]
+            ],
+        ];
     }
 
     public function testGetName()

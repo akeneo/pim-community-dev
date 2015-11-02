@@ -32,12 +32,12 @@ class DateFormatExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('oro_datetime_formatter_list', array($this, 'getDateTimeFormatterList')),
-            new \Twig_SimpleFunction('oro_date_format', array($this, 'getDateFormat')),
-            new \Twig_SimpleFunction('oro_time_format', array($this, 'getTimeFormat')),
-            new \Twig_SimpleFunction('oro_datetime_format', array($this, 'getDateTimeFormat')),
-        );
+        return [
+            new \Twig_SimpleFunction('oro_datetime_formatter_list', [$this, 'getDateTimeFormatterList']),
+            new \Twig_SimpleFunction('oro_date_format', [$this, 'getDateFormat']),
+            new \Twig_SimpleFunction('oro_time_format', [$this, 'getTimeFormat']),
+            new \Twig_SimpleFunction('oro_datetime_format', [$this, 'getDateTimeFormat']),
+        ];
     }
 
     /**

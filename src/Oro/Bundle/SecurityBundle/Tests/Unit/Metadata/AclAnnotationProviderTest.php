@@ -21,12 +21,12 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->cache = $this->getMockForAbstractClass(
             'Doctrine\Common\Cache\CacheProvider',
-            array(),
+            [],
             '',
             false,
             true,
             true,
-            array('fetch', 'save', 'delete', 'deleteAll')
+            ['fetch', 'save', 'delete', 'deleteAll']
         );
         $this->loader = $this->getMock('Oro\Bundle\SecurityBundle\Annotation\Loader\AclAnnotationLoaderInterface');
         $this->provider = new AclAnnotationProvider($this->cache);
@@ -42,7 +42,7 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
                     function ($storage) {
                         /** @var AclAnnotationStorage $storage */
                         $storage->add(
-                            new AclAnnotation(array('id' => 'test', 'type' => 'entity')),
+                            new AclAnnotation(['id' => 'test', 'type' => 'entity']),
                             'SomeClass',
                             'SomeMethod'
                         );
@@ -71,7 +71,7 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
                     function ($storage) {
                         /** @var AclAnnotationStorage $storage */
                         $storage->add(
-                            new AclAnnotation(array('id' => 'test', 'type' => 'entity')),
+                            new AclAnnotation(['id' => 'test', 'type' => 'entity']),
                             'SomeClass',
                             'SomeMethod'
                         );

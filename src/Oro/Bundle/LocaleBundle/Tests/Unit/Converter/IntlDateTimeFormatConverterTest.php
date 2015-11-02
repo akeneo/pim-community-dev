@@ -19,12 +19,12 @@ class IntlDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
      */
     public function getDateFormatDataProvider()
     {
-        return array(
-            'en default'      => array("MMM d, y", null, self::LOCALE_EN),
-            'en custom'       => array("MMMM d, y", \IntlDateFormatter::LONG, self::LOCALE_EN),
-            'ru default'      => array("dd.MM.yyyy", null, self::LOCALE_RU),
-            'ru custom'       => array("d MMMM y 'г.'", \IntlDateFormatter::LONG, self::LOCALE_RU),
-        );
+        return [
+            'en default'      => ["MMM d, y", null, self::LOCALE_EN],
+            'en custom'       => ["MMMM d, y", \IntlDateFormatter::LONG, self::LOCALE_EN],
+            'ru default'      => ["dd.MM.yyyy", null, self::LOCALE_RU],
+            'ru custom'       => ["d MMMM y 'г.'", \IntlDateFormatter::LONG, self::LOCALE_RU],
+        ];
     }
 
     /**
@@ -32,12 +32,12 @@ class IntlDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
      */
     public function getTimeFormatDataProvider()
     {
-        return array(
-            'en default'      => array("h:mm a", null, self::LOCALE_EN),
-            'en custom'       => array("h:mm:ss a", \IntlDateFormatter::MEDIUM, self::LOCALE_EN),
-            'ru default'      => array("H:mm", null, self::LOCALE_RU),
-            'ru custom'       => array("H:mm:ss", \IntlDateFormatter::MEDIUM, self::LOCALE_RU),
-        );
+        return [
+            'en default'      => ["h:mm a", null, self::LOCALE_EN],
+            'en custom'       => ["h:mm:ss a", \IntlDateFormatter::MEDIUM, self::LOCALE_EN],
+            'ru default'      => ["H:mm", null, self::LOCALE_RU],
+            'ru custom'       => ["H:mm:ss", \IntlDateFormatter::MEDIUM, self::LOCALE_RU],
+        ];
     }
 
     /**
@@ -45,21 +45,21 @@ class IntlDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
      */
     public function getDateTimeFormatDataProvider()
     {
-        return array(
-            'en default' => array("MMM d, y h:mm a", null, null, self::LOCALE_EN),
-            'en custom'  => array(
+        return [
+            'en default' => ["MMM d, y h:mm a", null, null, self::LOCALE_EN],
+            'en custom'  => [
                 "MMMM d, y h:mm:ss a",
                 \IntlDateFormatter::LONG,
                 \IntlDateFormatter::MEDIUM,
                 self::LOCALE_EN
-            ),
-            'ru default' => array("dd.MM.yyyy H:mm", null, null, self::LOCALE_RU),
-            'ru custom'  => array(
+            ],
+            'ru default' => ["dd.MM.yyyy H:mm", null, null, self::LOCALE_RU],
+            'ru custom'  => [
                 "d MMMM y 'г.' H:mm:ss",
                 \IntlDateFormatter::LONG,
                 \IntlDateFormatter::MEDIUM,
                 self::LOCALE_RU
-            ),
-        );
+            ],
+        ];
     }
 }

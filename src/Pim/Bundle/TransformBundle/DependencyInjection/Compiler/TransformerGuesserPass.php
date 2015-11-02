@@ -39,7 +39,7 @@ class TransformerGuesserPass implements CompilerPassInterface
         $definition = $container->getDefinition(self::CHAINED_TRANSFORMER_SERVICE);
         foreach ($priorities as $serviceIds) {
             foreach ($serviceIds as $serviceId) {
-                $definition->addMethodCall('addGuesser', array(new Reference($serviceId)));
+                $definition->addMethodCall('addGuesser', [new Reference($serviceId)]);
             }
         }
     }
@@ -53,11 +53,11 @@ class TransformerGuesserPass implements CompilerPassInterface
      */
     protected function getServicesByPriority(ContainerBuilder $container)
     {
-        $priorities = array();
+        $priorities = [];
         foreach ($container->findTaggedServiceIds(self::TRANSFORMER_TAG) as $serviceId => $tags) {
             $priority = isset($tags[0]['priority']) ? $tags[0]['priority'] : self::DEFAULT_PRIORITY;
             if (!isset($priorities[$priority])) {
-                $priorities[$priority] = array();
+                $priorities[$priority] = [];
             }
             $priorities[$priority][] = $serviceId;
         }

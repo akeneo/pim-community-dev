@@ -37,7 +37,7 @@ class TranslationExtractorTest extends \PHPUnit_Framework_TestCase
         $routeCollection
             ->expects($this->once())
             ->method('all')
-            ->will($this->returnValue(array($route)));
+            ->will($this->returnValue([$route]));
 
         $this->router
             ->expects($this->once())
@@ -61,7 +61,7 @@ class TranslationExtractorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $repo->expects($this->once())
             ->method('getTitles')
-            ->will($this->returnValue(array(array('title' => 'Test title'))));
+            ->will($this->returnValue([['title' => 'Test title']]));
 
         $this->titleService->expects($this->once())
             ->method('getStoredTitlesRepository')

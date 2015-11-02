@@ -53,7 +53,7 @@ class RootBasedAclProvider implements AclProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function findAcl(ObjectIdentityInterface $oid, array $sids = array())
+    public function findAcl(ObjectIdentityInterface $oid, array $sids = [])
     {
         $rootOid = $this->objectIdentityFactory->root($oid);
         try {
@@ -85,7 +85,7 @@ class RootBasedAclProvider implements AclProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function findAcls(array $oids, array $sids = array())
+    public function findAcls(array $oids, array $sids = [])
     {
         return $this->baseAclProvider->findAcls($oids, $sids);
     }

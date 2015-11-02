@@ -70,7 +70,7 @@ class FilterType extends AbstractType
      */
     protected function createOperatorOptions(array $options)
     {
-        $result = array('required' => false);
+        $result = ['required' => false];
         if ($options['operator_choices']) {
             $result['choices'] = $options['operator_choices'];
         }
@@ -86,7 +86,7 @@ class FilterType extends AbstractType
      */
     protected function createFieldOptions(array $options)
     {
-        return array_merge(array('required' => false), $options['field_options']);
+        return array_merge(['required' => false], $options['field_options']);
     }
 
     /**
@@ -106,23 +106,23 @@ class FilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'       => 'text',
-                'field_options'    => array(),
-                'operator_choices' => array(),
+                'field_options'    => [],
+                'operator_choices' => [],
                 'operator_type'    => 'choice',
-                'operator_options' => array(),
+                'operator_options' => [],
                 'show_filter'      => false,
-            )
+            ]
         )->setRequired(
-            array(
+            [
                 'field_type',
                 'field_options',
                 'operator_choices',
                 'operator_type',
                 'operator_options',
                 'show_filter'
-            )
+            ]
         );
     }
 }

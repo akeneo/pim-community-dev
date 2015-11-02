@@ -29,13 +29,13 @@ class DateRangeType extends AbstractType
             'start',
             $options['field_type'],
             array_merge(
-                array(
+                [
                     'required'       => false,
                     'widget'         => 'single_text',
                     'format'         => 'yyyy-MM-dd',
                     'model_timezone' => 'UTC',
                     'view_timezone'  => 'UTC',
-                ),
+                ],
                 $options['field_options'],
                 $options['start_field_options']
             )
@@ -45,13 +45,13 @@ class DateRangeType extends AbstractType
             'end',
             $options['field_type'],
             array_merge(
-                array(
+                [
                     'required'       => false,
                     'widget'         => 'single_text',
                     'format'         => 'yyyy-MM-dd',
                     'model_timezone' => 'UTC',
                     'view_timezone'  => 'UTC',
-                ),
+                ],
                 $options['field_options'],
                 $options['end_field_options']
             )
@@ -74,12 +74,12 @@ class DateRangeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'          => 'date',
-                'field_options'       => array(),
-                'start_field_options' => array(),
-                'end_field_options'   => array(),
-            )
+                'field_options'       => [],
+                'start_field_options' => [],
+                'end_field_options'   => [],
+            ]
         );
     }
 }

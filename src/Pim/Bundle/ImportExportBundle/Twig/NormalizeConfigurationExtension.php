@@ -40,13 +40,13 @@ class NormalizeConfigurationExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction(
                 'getViolations',
-                array($this, 'getViolationsFunction'),
-                array('is_safe' => array('html'))
+                [$this, 'getViolationsFunction'],
+                ['is_safe' => ['html']]
             )
-        );
+        ];
     }
 
     /**
@@ -114,7 +114,7 @@ class NormalizeConfigurationExtension extends \Twig_Extension
      */
     public function getViolationsFunction($violations, $element)
     {
-        $messages = array();
+        $messages = [];
 
         foreach ($violations as $violation) {
             if (preg_match(sprintf('/[.]%s$/', $element), $violation->getPropertyPath())) {

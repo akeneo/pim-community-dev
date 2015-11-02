@@ -10,14 +10,14 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testHtmlRender()
     {
         $object = new TestHTML(new \Twig_Environment());
-        $output = $object->render(array());
+        $output = $object->render([]);
         $this->assertContains('<!-- Start Template: block.html.twig -->', $output);
     }
 
     public function testJsonRender()
     {
         $object = new TestJSON(new \Twig_Environment());
-        $output = $object->render(array());
+        $output = $object->render([]);
         $output = json_decode($output);
         $this->assertEquals('data.json.twig', $output->template_name);
         $this->assertContains('<!-- Start Template: data.json.twig -->', $output->content);
@@ -27,7 +27,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testJsRender()
     {
         $object = new TestJS(new \Twig_Environment());
-        $output = $object->render(array());
+        $output = $object->render([]);
         $this->assertNotContains('<!-- Start Template:', $output);
         $this->assertContains('"test"', $output);
     }

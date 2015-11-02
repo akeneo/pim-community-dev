@@ -51,27 +51,27 @@ class DateRangeFilterType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $operatorChoices = array(
+        $operatorChoices = [
             self::TYPE_BETWEEN     => $this->translator->trans('oro.filter.form.label_date_type_between'),
             self::TYPE_NOT_BETWEEN => $this->translator->trans('oro.filter.form.label_date_type_not_between'),
             self::TYPE_MORE_THAN   => $this->translator->trans('oro.filter.form.label_date_type_more_than'),
             self::TYPE_LESS_THAN   => $this->translator->trans('oro.filter.form.label_date_type_less_than'),
-        );
+        ];
 
-        $typeValues = array(
+        $typeValues = [
             'between'    => self::TYPE_BETWEEN,
             'notBetween' => self::TYPE_NOT_BETWEEN,
             'moreThan'   => self::TYPE_MORE_THAN,
             'lessThan'   => self::TYPE_LESS_THAN
-        );
+        ];
 
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'       => DateRangeType::NAME,
                 'operator_choices' => $operatorChoices,
-                'widget_options'   => array(),
+                'widget_options'   => [],
                 'type_values'      => $typeValues
-            )
+            ]
         );
     }
 
@@ -84,7 +84,7 @@ class DateRangeFilterType extends AbstractType
     {
         $view->vars['type_values'] = $options['type_values'];
 
-        $widgetOptions                = array('firstDay' => 0);
+        $widgetOptions                = ['firstDay' => 0];
         $view->vars['widget_options'] = array_merge($widgetOptions, $options['widget_options']);
     }
 }

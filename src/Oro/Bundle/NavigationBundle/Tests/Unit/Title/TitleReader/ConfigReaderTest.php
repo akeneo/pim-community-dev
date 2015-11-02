@@ -15,13 +15,13 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->reader = new ConfigReader(array(self::TEST_ROUTE => 'Test title template'));
+        $this->reader = new ConfigReader([self::TEST_ROUTE => 'Test title template']);
     }
 
     public function testGetDataSuccess()
     {
         try {
-            $data = $this->reader->getData(array(self::TEST_ROUTE => 'Test route data'));
+            $data = $this->reader->getData([self::TEST_ROUTE => 'Test route data']);
 
             $this->assertInternalType('array', $data);
             $this->assertCount(1, $data);
@@ -35,6 +35,6 @@ class ConfigReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDataFailed()
     {
-        $this->reader->getData(array());
+        $this->reader->getData([]);
     }
 }

@@ -27,8 +27,8 @@ class PlaceholderNode extends \Twig_Node
      */
     public function __construct(array $placeholder, $variables, $wrapClassName, $line, $tag)
     {
-        $items = isset($placeholder['items']) ?: array();
-        parent::__construct(array(), array('value' => $items), $line, $tag);
+        $items = isset($placeholder['items']) ?: [];
+        parent::__construct([], ['value' => $items], $line, $tag);
         $this->placeholder = $placeholder;
         $this->wrapClassName = $wrapClassName;
         $this->variables = $variables;
@@ -58,7 +58,7 @@ class PlaceholderNode extends \Twig_Node
                     $block->compile($compiler);
                 } elseif (array_key_exists('action', $item)) {
                     $expression = new Twig_Node_Expression_Constant($item['action'], $this->lineno);
-                    $attr = new Twig_Node_Expression_Constant(array(), $this->lineno);
+                    $attr = new Twig_Node_Expression_Constant([], $this->lineno);
                     if ($this->variables === null) {
                         $attributes = $attr;
                     } else {
@@ -68,12 +68,12 @@ class PlaceholderNode extends \Twig_Node
                     // {{ render(controller('Bundle:Directory:controllerAction', { action: attributes })) }}
                     $controllerFunctionExpression = new Twig_Node_Expression_Function(
                         'controller',
-                        new \Twig_Node(array($expression, $attributes)),
+                        new \Twig_Node([$expression, $attributes]),
                         $this->lineno
                     );
                     $renderFunctionExpression = new Twig_Node_Expression_Function(
                         'render',
-                        new \Twig_Node(array('uri' => $controllerFunctionExpression)),
+                        new \Twig_Node(['uri' => $controllerFunctionExpression]),
                         $this->lineno
                     );
 

@@ -112,10 +112,10 @@ class OroLocaleExtension extends Extension
      */
     protected function parseExternalConfigFiles(ContainerBuilder $container)
     {
-        $externalNameFormat = array();
-        $externalAddressFormat = array();
-        $externalLocaleData = array();
-        $externalCurrencyData = array();
+        $externalNameFormat = [];
+        $externalAddressFormat = [];
+        $externalLocaleData = [];
+        $externalCurrencyData = [];
 
         // read configuration from external files
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
@@ -142,12 +142,12 @@ class OroLocaleExtension extends Extension
             }
         }
 
-        return array(
+        return [
             'name_format'    => $externalNameFormat,
             'address_format' => $externalAddressFormat,
             'locale_data'    => $externalLocaleData,
             'currency_data'  => $externalCurrencyData,
-        );
+        ];
     }
 
     /**
@@ -162,11 +162,11 @@ class OroLocaleExtension extends Extension
         if (!empty($configs)) {
             $configData = array_shift($configs);
         } else {
-            $configData = array();
+            $configData = [];
         }
 
         // merge formats
-        foreach (array('name_format', 'address_format', 'locale_data', 'currency_data') as $configKey) {
+        foreach (['name_format', 'address_format', 'locale_data', 'currency_data'] as $configKey) {
             if (!empty($configData[$configKey])) {
                 $configData[$configKey] = array_merge($externalData[$configKey], $configData[$configKey]);
             } else {
