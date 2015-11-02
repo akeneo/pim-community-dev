@@ -25,14 +25,14 @@ class AsseticExtensionTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->assets = array(
-            'css' => array(
+        $this->assets = [
+            'css' => [
                 'first.css',
                 'second.css'
-            )
-        );
+            ]
+        ];
 
-        $this->enabledBundles = array('testBundle');
+        $this->enabledBundles = ['testBundle'];
 
         $this->extension = new AsseticExtension(
             $this->assetsFactory,

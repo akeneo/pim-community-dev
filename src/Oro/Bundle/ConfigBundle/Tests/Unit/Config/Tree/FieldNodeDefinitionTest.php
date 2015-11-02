@@ -12,13 +12,13 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
     const TEST_TYPE = 'text';
     const TEST_ACL  = 'acl';
 
-    protected $testDefinition = array(
-        'options'      => array(
+    protected $testDefinition = [
+        'options'      => [
             'some_opt' => 'some_value'
-        ),
+        ],
         'type'         => self::TEST_TYPE,
         'acl_resource' => self::TEST_ACL
-    );
+    ];
 
     public function testGetType()
     {
@@ -34,7 +34,7 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::TEST_ACL, $node->getAclResource());
 
         // acl resource not specified, should return false
-        $node = new FieldNodeDefinition(self::TEST_NAME, array());
+        $node = new FieldNodeDefinition(self::TEST_NAME, []);
         $this->assertFalse($node->getAclResource());
     }
 
@@ -45,9 +45,9 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(self::TEST_ACL, $node->getAclResource());
 
         // options come from setter
-        $options = array('another_opt' => 'another_value');
+        $options = ['another_opt' => 'another_value'];
 
-        $node = new FieldNodeDefinition(self::TEST_NAME, array());
+        $node = new FieldNodeDefinition(self::TEST_NAME, []);
         $node->setOptions($options);
         $this->assertEquals($options, $node->getOptions());
 
@@ -68,12 +68,12 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($node, $result['target_field']);
         $this->assertArrayNotHasKey('some_opt', $result);
 
-        $options = array(
+        $options = [
             'label'    => 'someLabel',
             'required' => true,
             'block'    => 'some_block',
             'subblock' => 'some_subblock'
-        );
+        ];
         $node->setOptions($options);
 
         $result = $node->toFormFieldOptions();
@@ -85,7 +85,7 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
 
     public function testPrepareDefinition()
     {
-        $node = new FieldNodeDefinition(self::TEST_NAME, array());
+        $node = new FieldNodeDefinition(self::TEST_NAME, []);
 
         // should set default definition values
         $this->assertEquals(0, $node->getPriority());
@@ -113,44 +113,44 @@ class FieldNodeDefinitionTest extends \PHPUnit_Framework_TestCase
     public function constraintsProvider()
     {
         $notBlank = new NotBlank();
-        $length = new Length(array('min' => 1, 'max' => 2));
+        $length = new Length(['min' => 1, 'max' => 2]);
 
-        return array(
-            'constraints empty' => array(
-                'definition' => array(
-                    'options' => array(
-                        'constraints' => array()
-                    )
-                ),
-                'expected' => array()
-            ),
-            'constraints comes as strings' => array(
-                'definition' => array(
-                    'options' => array(
-                        'constraints' => array(
-                            array(
+        return [
+            'constraints empty' => [
+                'definition' => [
+                    'options' => [
+                        'constraints' => []
+                    ]
+                ],
+                'expected' => []
+            ],
+            'constraints comes as strings' => [
+                'definition' => [
+                    'options' => [
+                        'constraints' => [
+                            [
                                 'NotBlank' => null
-                            )
-                        )
-                    )
-                ),
-                'expected' => array($notBlank)
-            ),
-            'constraints comes as full class names' => array(
-                'definition' => array(
-                    'options' => array(
-                        'constraints' => array(
-                            array(
-                                'Symfony\Component\Validator\Constraints\Length' => array(
+                            ]
+                        ]
+                    ]
+                ],
+                'expected' => [$notBlank]
+            ],
+            'constraints comes as full class names' => [
+                'definition' => [
+                    'options' => [
+                        'constraints' => [
+                            [
+                                'Symfony\Component\Validator\Constraints\Length' => [
                                     'min' => 1,
                                     'max' => 2,
-                                )
-                            )
-                        )
-                    )
-                ),
-                'expected' => array($length)
-            )
-        );
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                'expected' => [$length]
+            ]
+        ];
     }
 }

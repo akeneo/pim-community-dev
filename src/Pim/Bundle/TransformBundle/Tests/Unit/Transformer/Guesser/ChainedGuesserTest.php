@@ -27,14 +27,14 @@ class ChainedGuesserTest extends GuesserTestCase
         $this->addGuessers(
             $this->getGuesserMock(),
             $this->getGuesserMock(),
-            $this->getGuesserMock(true, $matchedTransformer, array('options')),
+            $this->getGuesserMock(true, $matchedTransformer, ['options']),
             $this->getGuesserMock(false),
             $this->getGuesserMock(false, $this->getTransformerMock()),
             $this->getGuesserMock(false)
         );
 
         $this->assertEquals(
-            array($matchedTransformer, array('options')),
+            [$matchedTransformer, ['options']],
             $this->guesser->getTransformerInfo($this->columnInfo, $this->metadata)
         );
     }
@@ -48,14 +48,14 @@ class ChainedGuesserTest extends GuesserTestCase
     protected function addGuessers()
     {
         $args = func_get_args();
-        array_walk($args, array($this->guesser, 'addGuesser'));
+        array_walk($args, [$this->guesser, 'addGuesser']);
     }
 
-    protected function getGuesserMock($called = true, $transformer = null, $options = array())
+    protected function getGuesserMock($called = true, $transformer = null, $options = [])
     {
         $guesser = $this->getMock('Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface');
         $value = (null !== $transformer)
-            ? array($transformer, $options)
+            ? [$transformer, $options]
             : null;
         if ($called) {
             $guesser->expects($this->once())

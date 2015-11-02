@@ -26,7 +26,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
         }
 
-        $ef         = new EncoderFactory(array(static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')));
+        $ef         = new EncoderFactory([static::USER_CLASS => new MessageDigestPasswordEncoder('sha512')]);
         $class      = $this->getMock('Doctrine\Common\Persistence\Mapping\ClassMetadata');
         $om         = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
@@ -43,8 +43,8 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->userManager = $this->getMock(
             'Oro\Bundle\UserBundle\Entity\UserManager',
-            array('findUserBy', 'findUserByUsernameOrEmail', 'getClass'),
-            array(static::USER_CLASS, $om, $ef)
+            ['findUserBy', 'findUserByUsernameOrEmail', 'getClass'],
+            [static::USER_CLASS, $om, $ef]
         );
 
         $this->userManager
@@ -72,7 +72,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
     public function testRefreshUserBy()
     {
         $user = $this->getMockBuilder('Pim\Bundle\UserBundle\Entity\UserInterface')
-            ->setMethods(array('getId'))
+            ->setMethods(['getId'])
             ->getMock();
 
         $user->expects($this->any())
@@ -84,7 +84,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
         $this->userManager
             ->expects($this->once())
             ->method('findUserBy')
-            ->with(array('id' => 123))
+            ->with(['id' => 123])
             ->will($this->returnValue($refreshedUser));
 
         $this->assertSame($refreshedUser, $this->userProvider->refreshUser($user));

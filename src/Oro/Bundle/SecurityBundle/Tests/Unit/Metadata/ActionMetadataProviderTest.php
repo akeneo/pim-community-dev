@@ -21,12 +21,12 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->cache = $this->getMockForAbstractClass(
             'Doctrine\Common\Cache\CacheProvider',
-            array(),
+            [],
             '',
             false,
             true,
             true,
-            array('fetch', 'save', 'delete', 'deleteAll')
+            ['fetch', 'save', 'delete', 'deleteAll']
         );
 
         $this->annotationProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\AclAnnotationProvider')
@@ -41,7 +41,7 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
         $this->cache->expects($this->any())
             ->method('fetch')
             ->with(ActionMetadataProvider::CACHE_KEY)
-            ->will($this->returnValue(array('SomeAction' => new ActionMetadata())));
+            ->will($this->returnValue(['SomeAction' => new ActionMetadata()]));
 
         $this->assertTrue($this->provider->isKnownAction('SomeAction'));
         $this->assertFalse($this->provider->isKnownAction('UnknownAction'));
@@ -54,16 +54,16 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('action'))
             ->will(
                 $this->returnValue(
-                    array(
+                    [
                         new AclAnnotation(
-                            array(
+                            [
                                 'id'         => 'test',
                                 'type'       => 'action',
                                 'group_name' => 'TestGroup',
                                 'label'      => 'TestLabel'
-                            )
+                            ]
                         )
-                    )
+                    ]
                 )
             );
 
@@ -76,10 +76,10 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
         $this->cache->expects($this->at(2))
             ->method('fetch')
             ->with(ActionMetadataProvider::CACHE_KEY)
-            ->will($this->returnValue(array('test' => $action)));
+            ->will($this->returnValue(['test' => $action]));
         $this->cache->expects($this->once())
             ->method('save')
-            ->with(ActionMetadataProvider::CACHE_KEY, array('test' => $action));
+            ->with(ActionMetadataProvider::CACHE_KEY, ['test' => $action]);
 
         // call without cache
         $actions = $this->provider->getActions();
@@ -103,7 +103,7 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
         $this->annotationProvider->expects($this->exactly(2))
             ->method('getAnnotations')
             ->with($this->equalTo('action'))
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $this->cache->expects($this->at(0))
             ->method('fetch')
             ->with(ActionMetadataProvider::CACHE_KEY);

@@ -24,10 +24,10 @@ class DateExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
+        return [
             'age'        => new \Twig_Filter_Method($this, 'getAge'),
             'age_string' => new \Twig_Filter_Method($this, 'getAgeAsString'),
-        );
+        ];
     }
 
     /**
@@ -59,7 +59,7 @@ class DateExtension extends \Twig_Extension
         $dateDiff = $this->getDateDiff($date, $options);
         if (!$dateDiff->invert) {
             $age = $dateDiff->y;
-            return $this->translator->transChoice('oro.age', $age, array('%count%' => $age), 'messages');
+            return $this->translator->transChoice('oro.age', $age, ['%count%' => $age], 'messages');
         } else {
             return isset($options['default']) ? $options['default'] : '';
         }

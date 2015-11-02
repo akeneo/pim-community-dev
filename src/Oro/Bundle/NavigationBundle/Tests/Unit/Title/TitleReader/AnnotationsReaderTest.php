@@ -33,7 +33,7 @@ class AnnotationsReaderTest extends \PHPUnit_Framework_TestCase
 
         $this->kernelMock = $this->getMock(
             'Symfony\Component\HttpKernel\KernelInterface',
-            array()
+            []
         );
 
         $this->annotationReader = $this->getMock(
@@ -45,19 +45,19 @@ class AnnotationsReaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->kernelMock->expects($this->once())
             ->method('getBundles')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $reader = new AnnotationsReader($this->kernelMock, $this->annotationReader);
-        $this->assertCount(0, $reader->getData(array()));
+        $this->assertCount(0, $reader->getData([]));
     }
 
     public function testGetData()
     {
         $this->kernelMock->expects($this->once())
             ->method('getBundles')
-            ->will($this->returnValue(array($this->testBundle)));
+            ->will($this->returnValue([$this->testBundle]));
 
-        $routeMock = $this->getMock('Symfony\Component\Routing\Route', array(), array('/user/show/{id}'));
+        $routeMock = $this->getMock('Symfony\Component\Routing\Route', [], ['/user/show/{id}']);
 
         $routeMock->expects($this->once())
             ->method('getDefault')
@@ -69,6 +69,6 @@ class AnnotationsReaderTest extends \PHPUnit_Framework_TestCase
 
         $reader = new AnnotationsReader($this->kernelMock, $this->annotationReader);
 
-        $this->assertInternalType('array', $reader->getData(array($routeMock)));
+        $this->assertInternalType('array', $reader->getData([$routeMock]));
     }
 }

@@ -47,9 +47,9 @@ class PageStateTest extends \PHPUnit_Framework_TestCase
     public function testData()
     {
         $item = new PageState();
-        $data = array(
-            array('key' => 'val', 'key2' => 'val2'),
-        );
+        $data = [
+            ['key' => 'val', 'key2' => 'val2'],
+        ];
 
         $item->setData($data);
 

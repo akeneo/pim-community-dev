@@ -30,7 +30,7 @@ class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $referenceDataClass, $format = null, array $context = array())
+    public function denormalize($data, $referenceDataClass, $format = null, array $context = [])
     {
         $collection = new ArrayCollection();
         if (null === $this->repositoryResolver || empty($data)) {

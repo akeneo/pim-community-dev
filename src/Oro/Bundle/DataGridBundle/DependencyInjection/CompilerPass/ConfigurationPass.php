@@ -65,7 +65,7 @@ class ConfigurationPass implements CompilerPassInterface
     protected function registerConfigProviders(ContainerBuilder $container)
     {
         if ($container->hasDefinition(self::CHAIN_PROVIDER_SERVICE_ID)) {
-            $providers = array();
+            $providers = [];
             foreach ($container->findTaggedServiceIds(self::PROVIDER_TAG_NAME) as $id => $attributes) {
                 $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : 0;
                 $providers[$priority][] = new Reference($id);

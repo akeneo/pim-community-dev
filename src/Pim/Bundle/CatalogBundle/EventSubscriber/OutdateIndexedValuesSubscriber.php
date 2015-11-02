@@ -23,9 +23,9 @@ class OutdateIndexedValuesSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'postLoad'
-        );
+        ];
     }
 
     /**

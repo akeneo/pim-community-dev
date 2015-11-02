@@ -151,7 +151,7 @@ interface GroupInterface extends
      *
      * @return GroupInterface
      */
-    public function setAttributes(array $attributes = array());
+    public function setAttributes(array $attributes = []);
 
     /**
      * Get attribute ids
@@ -196,7 +196,7 @@ interface GroupInterface extends
      *
      * @return GroupInterface
      */
-    public function setAxisAttributes(array $attributes = array());
+    public function setAxisAttributes(array $attributes = []);
 
     /**
      * @return ProductTemplateInterface

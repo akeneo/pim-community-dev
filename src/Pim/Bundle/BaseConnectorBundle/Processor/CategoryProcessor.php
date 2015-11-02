@@ -78,15 +78,15 @@ class CategoryProcessor extends TransformerProcessor
      */
     public function getConfigurationFields()
     {
-        return array(
-            'circularRefsChecked' => array(
+        return [
+            'circularRefsChecked' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_base_connector.import.circularRefsChecked.label',
                     'help'  => 'pim_base_connector.import.circularRefsChecked.help'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -96,9 +96,9 @@ class CategoryProcessor extends TransformerProcessor
      */
     public function process($data)
     {
-        $categories = array();
-        $parents = array();
-        $items = array();
+        $categories = [];
+        $parents = [];
+        $items = [];
 
         foreach ($data as $item) {
             $parents[$item['code']] = isset($item['parent']) ? $item['parent'] : null;
@@ -127,7 +127,7 @@ class CategoryProcessor extends TransformerProcessor
      */
     protected function setParents(array &$categories, array $parents, array $items)
     {
-        $invalidCodes = array();
+        $invalidCodes = [];
         foreach ($categories as $code => $category) {
             $parentCode = $parents[$code];
             if (!$parentCode) {
@@ -151,11 +151,11 @@ class CategoryProcessor extends TransformerProcessor
             foreach ($invalidCodes as $code) {
                 $this->setItemErrors(
                     $items[$code],
-                    array(
-                        'parent' => array(
-                            array('No category with code %code%', array('%code%' => $parents[$code]))
-                        )
-                    )
+                    [
+                        'parent' => [
+                            ['No category with code %code%', ['%code%' => $parents[$code]]]
+                        ]
+                    ]
                 );
                 unset($categories[$code]);
             }
@@ -173,7 +173,7 @@ class CategoryProcessor extends TransformerProcessor
             $this->stepExecution->addWarning(
                 $this->getName(),
                 implode("\n", $this->getErrorMessages($errors)),
-                array(),
+                [],
                 $item
             );
         } else {
@@ -189,8 +189,8 @@ class CategoryProcessor extends TransformerProcessor
      */
     private function checkCircularReferences(array &$categories, array $items)
     {
-        $invalidCodes = array();
-        $checkParent = function ($category, $visited = array()) use (&$invalidCodes, &$checkParent) {
+        $invalidCodes = [];
+        $checkParent = function ($category, $visited = []) use (&$invalidCodes, &$checkParent) {
             if ($category === null) {
                 return;
             }
@@ -213,11 +213,11 @@ class CategoryProcessor extends TransformerProcessor
             unset($categories[$code]);
             $this->setItemErrors(
                 $items[$code],
-                array(
-                    'parent' => array(
-                        array('Circular reference')
-                    )
-                )
+                [
+                    'parent' => [
+                        ['Circular reference']
+                    ]
+                ]
             );
         }
     }

@@ -10,10 +10,10 @@ class GroupNodeDefinitionTest extends \PHPUnit_Framework_TestCase
 
     protected static function getTestGroup()
     {
-        $node1 = new GroupNodeDefinition('node1', array('priority' => 255), array());
-        $node3 = new GroupNodeDefinition('node3', array('priority' => 250), array());
+        $node1 = new GroupNodeDefinition('node1', ['priority' => 255], []);
+        $node3 = new GroupNodeDefinition('node3', ['priority' => 250], []);
 
-        return new GroupNodeDefinition('node4', array(), array($node1, $node3));
+        return new GroupNodeDefinition('node4', [], [$node1, $node3]);
     }
 
     public function testGetSetLevel()
@@ -101,17 +101,17 @@ class GroupNodeDefinitionTest extends \PHPUnit_Framework_TestCase
     {
         $node = new GroupNodeDefinition(
             self::TEST_NAME,
-            array(
+            [
                 'title'        => 'some title',
                 'priority'     => 123,
                 'description'  => 'some desc',
                 'icon'         => 'real icon',
                 'some_another' => ''
-            )
+            ]
         );
 
-        return array(
-            array($node)
-        );
+        return [
+            [$node]
+        ];
     }
 }

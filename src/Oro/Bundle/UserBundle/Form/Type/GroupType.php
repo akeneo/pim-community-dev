@@ -21,9 +21,9 @@ class GroupType extends AbstractType
             ->add(
                 'name',
                 'text',
-                array(
+                [
                     'required' => true,
-                )
+                ]
             )
             /*->add(
                 'roles',
@@ -44,22 +44,22 @@ class GroupType extends AbstractType
             ->add(
                 'appendUsers',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'PimUserBundle:User',
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,
-                )
+                ]
             )
             ->add(
                 'removeUsers',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => 'PimUserBundle:User',
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,
-                )
+                ]
             );
     }
 
@@ -69,10 +69,10 @@ class GroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Oro\Bundle\UserBundle\Entity\Group',
                 'intention'  => 'group',
-            )
+            ]
         );
     }
 

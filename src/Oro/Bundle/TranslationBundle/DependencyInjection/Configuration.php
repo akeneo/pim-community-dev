@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->arrayNode('domains')
                             ->requiresAtLeastOneElement()
-                            ->defaultValue(array('jsmessages', 'validators'))
+                            ->defaultValue(['jsmessages', 'validators'])
                             ->prototype('scalar')
                             ->end()
                         ->end()

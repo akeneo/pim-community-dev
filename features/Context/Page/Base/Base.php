@@ -5,6 +5,7 @@ namespace Context\Page\Base;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Context\FeatureContext;
 use Context\Spin\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -34,11 +35,11 @@ class Base extends Page
     /**
      * {@inheritdoc}
      */
-    public function getElement($name, $timeout = 20, $message = 'no message')
+    public function getElement($name, $message = 'no message')
     {
         return $this->spin(function () use ($name) {
             return parent::getElement($name);
-        }, $timeout, $message);
+        }, $message);
     }
 
     /**
@@ -87,13 +88,9 @@ class Base extends Page
      */
     public function simpleFillField($locator, $value)
     {
-        $field = parent::findField($locator);
-
-        if (null === $field) {
-            throw $this->elementNotFound('form field', 'id|name|label|value', $locator);
-        }
-
-        $field->setValue($value);
+        $this->spin(function () use ($locator) {
+            return parent::findField($locator);
+        })->setValue($value);
     }
 
     /**
@@ -391,5 +388,14 @@ class Base extends Page
         }
 
         return true;
+    }
+
+    /**
+     * @return int timeout in millisecond
+     */
+    protected function getTimeout()
+    {
+        // no way to retrieve the timeout from behat.yml at the moment
+        return FeatureContext::DEFAULT_TIMEOUT;
     }
 }

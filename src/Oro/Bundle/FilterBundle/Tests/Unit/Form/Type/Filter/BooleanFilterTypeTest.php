@@ -18,19 +18,19 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
     /**
      * @var array
      */
-    protected $booleanChoices = array(
+    protected $booleanChoices = [
         BooleanFilterType::TYPE_YES => 'oro.filter.form.label_type_yes',
         BooleanFilterType::TYPE_NO  => 'oro.filter.form.label_type_no',
-    );
+    ];
 
     protected function setUp()
     {
         $translator = $this->createMockTranslator();
 
-        $types = array(
+        $types = [
             new FilterType($translator),
             new ChoiceFilterType($translator)
-        );
+        ];
 
         $this->formExtensions[] = new CustomFormExtension($types);
 
@@ -56,13 +56,13 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
      */
     public function configureOptionsDataProvider()
     {
-        return array(
-            array(
-                'defaultOptions' => array(
-                    'field_options' => array('choices' => $this->booleanChoices)
-                )
-            )
-        );
+        return [
+            [
+                'defaultOptions' => [
+                    'field_options' => ['choices' => $this->booleanChoices]
+                ]
+            ]
+        ];
     }
 
     /**
@@ -70,38 +70,38 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
      */
     public function bindDataProvider()
     {
-        return array(
-            'empty' => array(
-                'bindData' => array(),
-                'formData' => array('type' => null, 'value' => null),
-                'viewData' => array(
-                    'value' => array('type' => null, 'value' => null),
-                )
-            ),
-            'predefined value choice' => array(
-                'bindData' => array('value' => BooleanFilterType::TYPE_YES),
-                'formData' => array('type'  => null, 'value' => BooleanFilterType::TYPE_YES),
-                'viewData' => array(
-                    'value' => array('type' => null, 'value' => BooleanFilterType::TYPE_YES),
-                ),
-                'customOptions' => array(
-                    'field_options' => array(
+        return [
+            'empty' => [
+                'bindData' => [],
+                'formData' => ['type' => null, 'value' => null],
+                'viewData' => [
+                    'value' => ['type' => null, 'value' => null],
+                ]
+            ],
+            'predefined value choice' => [
+                'bindData' => ['value' => BooleanFilterType::TYPE_YES],
+                'formData' => ['type'  => null, 'value' => BooleanFilterType::TYPE_YES],
+                'viewData' => [
+                    'value' => ['type' => null, 'value' => BooleanFilterType::TYPE_YES],
+                ],
+                'customOptions' => [
+                    'field_options' => [
                         'choices' => $this->booleanChoices
-                    ),
-                )
-            ),
-            'invalid value choice' => array(
-                'bindData' => array('value' => 'incorrect_value'),
-                'formData' => array('type'  => null),
-                'viewData' => array(
-                    'value' => array('type' => null, 'value' => 'incorrect_value'),
-                ),
-                'customOptions' => array(
-                    'field_options' => array(
+                    ],
+                ]
+            ],
+            'invalid value choice' => [
+                'bindData' => ['value' => 'incorrect_value'],
+                'formData' => ['type'  => null],
+                'viewData' => [
+                    'value' => ['type' => null, 'value' => 'incorrect_value'],
+                ],
+                'customOptions' => [
+                    'field_options' => [
                         'choices' => $this->booleanChoices
-                    ),
-                )
-            ),
-        );
+                    ],
+                ]
+            ],
+        ];
     }
 }

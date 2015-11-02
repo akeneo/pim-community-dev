@@ -42,6 +42,10 @@ pim_connector:
       title: "Import des types d'association en CSV"
       validation.title: Validation du fichier
       import.title: "Import des types d'association"
+    csv_family_import:
+      title: Import des familles en CSV
+      validation.title: Validation du fichier
+      import.title: Import des familles
     csv_group_import:
       title: Import des groupes en CSV
       validation.title: Validation du fichier
@@ -119,7 +123,7 @@ pim_connector:
       help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
     delimiter:
       label: Délimiteur
-      help: Caractère unique utilisé pour délimiter les valeurs
+      help: Caractère unique utilisé comme délimiteur de champ pour les fichiers CSV
     enclosure:
       label: "Caractère d'encadrement"
       help: Caractère unique utilisé pour encadrer les champs
@@ -138,6 +142,12 @@ pim_connector:
     enabledComparison:
       label: Comparer les valeurs
       help: "Permettre la comparaison entre les valeurs d'origine et des valeurs importées. Permet d'accélérer les importations si les valeurs importées sont très similaires aux valeurs d'origine"
+    decimalSeparator:
+      label: Séparateur de décimales
+      help: Caractère unique utilisé comme séparateur de décimales
+    dateFormat:
+      label: Format de date
+      help: Spécifie le format de chaque colonne de type date dans le fichier, par exemple DD/MM/YYYY pour une date au format 31/04/2014.
 job_execution.summary:
   read: lu
   read_lines: lignes lues

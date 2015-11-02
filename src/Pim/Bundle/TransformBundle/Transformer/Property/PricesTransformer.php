@@ -28,14 +28,14 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
     /**
      * {@inheritdoc}
      */
-    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = [])
     {
         $suffixes = $columnInfo->getSuffixes();
         $currency = array_pop($suffixes);
 
         if (null === $currency) {
             if (null === $data) {
-                $data = array();
+                $data = [];
             } elseif (is_string($data)) {
                 $data = $this->parseFlatPrices($data);
             }
@@ -58,13 +58,13 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
      */
     protected function parseFlatPrices($data)
     {
-        $prices = array();
+        $prices = [];
         foreach (explode(',', $data) as $price) {
             $parts = explode(' ', trim($price));
             if (count($parts) > 1) {
                 $prices[$parts[1]] = (float) $parts[0];
             } else {
-                throw new PropertyTransformerException('Malformed price: "%price%"', array('%price%' => $price));
+                throw new PropertyTransformerException('Malformed price: "%price%"', ['%price%' => $price]);
             }
         }
 

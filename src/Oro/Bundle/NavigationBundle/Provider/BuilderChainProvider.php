@@ -19,14 +19,14 @@ class BuilderChainProvider implements MenuProviderInterface
      *
      * @var array
      */
-    protected $builders = array();
+    protected $builders = [];
 
     /**
      * Collection of menus.
      *
      * @var array
      */
-    protected $menus = array();
+    protected $menus = [];
 
     /**
      * @var FactoryInterface
@@ -71,7 +71,7 @@ class BuilderChainProvider implements MenuProviderInterface
         $this->assertAlias($alias);
 
         if (!array_key_exists($alias, $this->builders)) {
-            $this->builders[$alias] = array();
+            $this->builders[$alias] = [];
         }
         $this->builders[$alias][] = $builder;
     }
@@ -83,7 +83,7 @@ class BuilderChainProvider implements MenuProviderInterface
      * @param  array         $options
      * @return ItemInterface
      */
-    public function get($alias, array $options = array())
+    public function get($alias, array $options = [])
     {
         $this->assertAlias($alias);
 
@@ -134,8 +134,8 @@ class BuilderChainProvider implements MenuProviderInterface
     protected function sort(ItemInterface $menu)
     {
         if ($menu->hasChildren() && $menu->getDisplayChildren()) {
-            $orderedChildren = array();
-            $unorderedChildren = array();
+            $orderedChildren = [];
+            $unorderedChildren = [];
             $hasOrdering = false;
             $children = $menu->getChildren();
             foreach ($children as &$child) {
@@ -164,7 +164,7 @@ class BuilderChainProvider implements MenuProviderInterface
      * @param  array   $options
      * @return boolean
      */
-    public function has($alias, array $options = array())
+    public function has($alias, array $options = [])
     {
         $this->assertAlias($alias);
 

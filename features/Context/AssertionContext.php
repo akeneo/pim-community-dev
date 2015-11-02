@@ -51,7 +51,7 @@ class AssertionContext extends RawMinkContext
             $this->assertSession()->pageTextNotContains($text);
 
             return true;
-        }, 5);
+        });
     }
 
     /**
@@ -242,7 +242,7 @@ class AssertionContext extends RawMinkContext
     {
         // TODO Flash messages tests temporarily disabled because unstable on CI
         return true;
-//        $this->getMainContext()->wait(10000, '$(".flash-messages-holder").length > 0');
+//        $this->getMainContext()->wait('$(".flash-messages-holder").length > 0');
 //        if (!$this->getCurrentPage()->findFlashMessage($text)) {
 //            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
 //        }
@@ -595,7 +595,8 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldHaveNewNotification($count)
     {
-        $actualCount = $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+        $actualCount = (int) $this->getCurrentPage()->find('css', '#header-notification-widget .indicator .badge')->getText();
+
         assertEquals(
             $actualCount,
             $count,

@@ -22,13 +22,13 @@ class RenderLayoutExtension extends AbstractExtension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction(
                 'oro_filter_render_filter_javascript',
-                array($this, 'renderFilterJavascript'),
+                [$this, 'renderFilterJavascript'],
                 $this->defaultFunctionOptions
             ),
-        );
+        ];
     }
 
     /**
@@ -55,7 +55,7 @@ class RenderLayoutExtension extends AbstractExtension
             if ($template->hasBlock($blockName)) {
                 return $template->renderBlock(
                     $blockName,
-                    array('formView' => $formView)
+                    ['formView' => $formView]
                 );
             }
         }
@@ -68,12 +68,12 @@ class RenderLayoutExtension extends AbstractExtension
      */
     public function getFilters()
     {
-        return array(
+        return [
             new \Twig_SimpleFilter(
                 'oro_filter_choices',
-                array($this, 'getChoices')
+                [$this, 'getChoices']
             )
-        );
+        ];
     }
 
     /**
@@ -85,7 +85,7 @@ class RenderLayoutExtension extends AbstractExtension
      */
     public function getChoices(array $choices)
     {
-        $result = array();
+        $result = [];
         foreach ($choices as $choice) {
             if ($choice instanceof ChoiceView) {
                 $result[] = [

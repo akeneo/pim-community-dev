@@ -25,13 +25,13 @@ class TranslationGuesserTest extends GuesserTestCase
     {
         $this->columnInfo->expects($this->once())
             ->method('getSuffixes')
-            ->will($this->returnValue(array('locale')));
+            ->will($this->returnValue(['locale']));
         $this->metadata->expects($this->once())
             ->method('hasAssociation')
             ->with($this->equalTo('translations'))
             ->will($this->returnValue(true));
         $this->assertEquals(
-            array($this->transformer, array()),
+            [$this->transformer, []],
             $this->guesser->getTransformerInfo($this->columnInfo, $this->metadata)
         );
     }
@@ -40,7 +40,7 @@ class TranslationGuesserTest extends GuesserTestCase
     {
         $this->columnInfo->expects($this->once())
             ->method('getSuffixes')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
         $this->metadata->expects($this->any())
             ->method('hasAssociation')
             ->with($this->equalTo('translations'))
@@ -52,7 +52,7 @@ class TranslationGuesserTest extends GuesserTestCase
     {
         $this->columnInfo->expects($this->any())
             ->method('getSuffixes')
-            ->will($this->returnValue(array('locale')));
+            ->will($this->returnValue(['locale']));
         $this->metadata->expects($this->once())
             ->method('hasAssociation')
             ->with($this->equalTo('translations'))

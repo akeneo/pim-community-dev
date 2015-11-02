@@ -40,12 +40,12 @@ class TitleExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->service->expects($this->at(0))
             ->method('setData')
-            ->with(array())
+            ->with([])
             ->will($this->returnSelf());
 
         $this->service->expects($this->at(1))
             ->method('render')
-            ->with(array(), $title, null, null, true)
+            ->with([], $title, null, null, true)
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->render($title));
@@ -73,7 +73,7 @@ class TitleExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->service->expects($this->at(1))
             ->method('render')
-            ->with(array(), $title, null, null, true)
+            ->with([], $title, null, null, true)
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->render($title));
@@ -81,38 +81,38 @@ class TitleExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function renderAfterSetDataProvider()
     {
-        return array(
-            'override options in same template' => array(
-                array(
-                    array(array('k1' => 'v1')),
-                    array(array('k1' => 'v2')),
-                    array(array('k2' => 'v3')),
-                ),
-                array('k1' => 'v2', 'k2' => 'v3'),
-            ),
-            'override options in different template' => array(
-                array(
-                    array(array('k1' => 'v1'), 'child_template'),
-                    array(array('k1' => 'v2'), 'child_template'),
-                    array(array('k3' => 'v3'), 'child_template'),
-                    array(array('k1' => 'v4'), 'parent_template'),
-                    array(array('k2' => 'v5'), 'parent_template'),
-                    array(array('k3' => 'v6'), 'parent_template'),
-                    array(array('k4' => 'v7'), 'parent_template'),
-                ),
-                array('k1' => 'v2', 'k2' => 'v5', 'k3' => 'v3', 'k4' => 'v7'),
-            ),
-            'empty data' => array(
-                array(),
-                array(),
-            ),
-        );
+        return [
+            'override options in same template' => [
+                [
+                    [['k1' => 'v1']],
+                    [['k1' => 'v2']],
+                    [['k2' => 'v3']],
+                ],
+                ['k1' => 'v2', 'k2' => 'v3'],
+            ],
+            'override options in different template' => [
+                [
+                    [['k1' => 'v1'], 'child_template'],
+                    [['k1' => 'v2'], 'child_template'],
+                    [['k3' => 'v3'], 'child_template'],
+                    [['k1' => 'v4'], 'parent_template'],
+                    [['k2' => 'v5'], 'parent_template'],
+                    [['k3' => 'v6'], 'parent_template'],
+                    [['k4' => 'v7'], 'parent_template'],
+                ],
+                ['k1' => 'v2', 'k2' => 'v5', 'k3' => 'v3', 'k4' => 'v7'],
+            ],
+            'empty data' => [
+                [],
+                [],
+            ],
+        ];
     }
 
     public function testSet()
     {
-        $fooData = array('k' => 'foo');
-        $barData = array('k' => 'bar');
+        $fooData = ['k' => 'foo'];
+        $barData = ['k' => 'bar'];
 
         $this->service->expects($this->never())->method('setData');
 
@@ -120,9 +120,9 @@ class TitleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension->set($barData);
 
         $this->assertAttributeEquals(
-            array(
-                md5(__FILE__) => array($fooData, $barData)
-            ),
+            [
+                md5(__FILE__) => [$fooData, $barData]
+            ],
             'templateFileTitleDataStack',
             $this->extension
         );

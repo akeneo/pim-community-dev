@@ -33,18 +33,18 @@ class ChoiceFilterType extends AbstractChoiceType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $choices = array(
+        $choices = [
             self::TYPE_CONTAINS     => $this->translator->trans('oro.filter.form.label_type_contains'),
             self::TYPE_NOT_CONTAINS => $this->translator->trans('oro.filter.form.label_type_not_contains'),
-        );
+        ];
 
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'       => 'choice',
-                'field_options'    => array('choices' => array()),
+                'field_options'    => ['choices' => []],
                 'operator_choices' => $choices,
                 'populate_default' => true
-            )
+            ]
         );
     }
 

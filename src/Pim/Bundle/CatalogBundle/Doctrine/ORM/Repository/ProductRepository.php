@@ -160,7 +160,7 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = array())
+    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
         $qb = $this->createQueryBuilder('Product');
 
@@ -296,7 +296,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getIdentifierProperties()
     {
-        return array($this->attributeRepository->getIdentifierCode());
+        return [$this->attributeRepository->getIdentifierCode()];
     }
 
     /**
@@ -402,10 +402,10 @@ class ProductRepository extends EntityRepository implements
      */
     public function valueExists(ProductValueInterface $value)
     {
-        $criteria = array(
+        $criteria = [
             'attribute'                              => $value->getAttribute(),
             $value->getAttribute()->getBackendType() => $value->getData()
-        );
+        ];
         $result = $this->getEntityManager()->getRepository(get_class($value))->findBy($criteria);
 
         return (
@@ -552,7 +552,7 @@ class ProductRepository extends EntityRepository implements
             ->groupBy('a.id');
 
         $attributes = $qb->getQuery()->getArrayResult();
-        $attributeIds = array();
+        $attributeIds = [];
         foreach ($attributes as $attribute) {
             $attributeIds[] = $attribute['id'];
         }

@@ -25,20 +25,20 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->assets = array(
-            'compress' => array(
-                array(
+        $this->assets = [
+            'compress' => [
+                [
                     'first.css',
                     'second.css'
-                )
-            ),
-            'uncompress' => array(
-                array(
+                ]
+            ],
+            'uncompress' => [
+                [
                     'third.css',
                     'fourth.css'
-                )
-            )
-        );
+                ]
+            ]
+        ];
 
         $this->tagName = 'oro_css';
 
@@ -65,7 +65,7 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
         $startToken = new Twig_Token(Twig_Token::NAME_TYPE, 'oro_css', 31);
 
         $stream = new Twig_TokenStream(
-            array(
+            [
                 new Twig_Token(Twig_Token::NAME_TYPE, 'filter', 31),
                 new Twig_Token(Twig_Token::OPERATOR_TYPE, '=', 31),
                 new Twig_Token(Twig_Token::STRING_TYPE, 'cssrewrite, lessphp, ?yui_css', 31),
@@ -84,7 +84,7 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
                 new Twig_Token(Twig_Token::NAME_TYPE, 'endoro_css', 33),
                 new Twig_Token(Twig_Token::BLOCK_END_TYPE, '', 33),
                 new Twig_Token(Twig_Token::EOF_TYPE, '', 31),
-            )
+            ]
         );
 
         $bodyNode = $this->getMockBuilder('\Twig_Node')
@@ -124,11 +124,11 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $brokenStream = new Twig_TokenStream(
-            array(
+            [
                 new Twig_Token(Twig_Token::NAME_TYPE, 'bad', 31),
                 new Twig_Token(Twig_Token::OPERATOR_TYPE, '=', 31),
                 new Twig_Token(Twig_Token::STRING_TYPE, 'bad value', 31),
-            )
+            ]
         );
 
         $parser->expects($this->once())

@@ -31,7 +31,7 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->manager = new OroAssetManager($this->am, $this->twig, array('assetGroups'), array('compiledGroup'));
+        $this->manager = new OroAssetManager($this->am, $this->twig, ['assetGroups'], ['compiledGroup']);
     }
 
     public function testGetGroups()
@@ -52,11 +52,11 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
         $token = $this->getMockBuilder('Twig_TokenStream')->disableOriginalConstructor()->getMock();
 
         $barAsset = $this->createMockOroAsseticNode('uncompress_bar_asset');
-        $fooAsset = $this->createMockOroAsseticNode('uncompress_foo_asset', array($barAsset));
+        $fooAsset = $this->createMockOroAsseticNode('uncompress_foo_asset', [$barAsset]);
 
         $this->am->expects($this->once())
             ->method('getResources')
-            ->will($this->returnValue(array($resource)));
+            ->will($this->returnValue([$resource]));
 
         $this->twig->expects($this->once())
             ->method('tokenize')
@@ -69,10 +69,10 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($fooAsset));
 
         $this->assertEquals(
-            array(
+            [
                 'uncompress_foo_asset' => $fooAsset,
                 'uncompress_bar_asset' => $barAsset,
-            ),
+            ],
             $this->manager->getAssets()
         );
     }
@@ -88,7 +88,7 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->am->expects($this->once())
             ->method('getResources')
-            ->will($this->returnValue(array($resource)));
+            ->will($this->returnValue([$resource]));
 
         $this->twig->expects($this->once())
             ->method('tokenize')
@@ -114,7 +114,7 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->am->expects($this->once())
             ->method('getResources')
-            ->will($this->returnValue(array($resource)));
+            ->will($this->returnValue([$resource]));
 
         $this->twig->expects($this->once())
             ->method('tokenize')
@@ -144,11 +144,11 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
         return $result;
     }
 
-    protected function createMockOroAsseticNode($nameUnCompress, array $children = array())
+    protected function createMockOroAsseticNode($nameUnCompress, array $children = [])
     {
         $result = $this->getMockBuilder('Oro\Bundle\AsseticBundle\Node\OroAsseticNode')
             ->disableOriginalConstructor()
-            ->setMethods(array('getNameUnCompress', 'getUnCompressAsset', 'getAttribute', 'getIterator'))
+            ->setMethods(['getNameUnCompress', 'getUnCompressAsset', 'getAttribute', 'getIterator'])
             ->getMock();
 
         $result->expects($this->any())

@@ -54,7 +54,7 @@ class ServiceLinkPass implements CompilerPassInterface
             }
 
             $serviceLinkDef->setClass('Oro\Bundle\SecurityBundle\DependencyInjection\Utils\ServiceLink');
-            $serviceLinkDef->setArguments(array(new Reference('service_container'), $serviceId, $isOptional));
+            $serviceLinkDef->setArguments([new Reference('service_container'), $serviceId, $isOptional]);
         }
     }
 }

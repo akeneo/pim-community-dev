@@ -69,7 +69,7 @@ class UserManager implements UserProviderInterface
         // we need to make sure to have at least one role
         if ($user->getRolesCollection()->isEmpty()) {
             $role = $this->getStorageManager()
-                ->getRepository('OroUserBundle:Role')->findOneBy(array('role' => User::ROLE_DEFAULT));
+                ->getRepository('OroUserBundle:Role')->findOneBy(['role' => User::ROLE_DEFAULT]);
 
             if (!$role) {
                 throw new \RuntimeException('Default user role not found');
@@ -140,7 +140,7 @@ class UserManager implements UserProviderInterface
      */
     public function findUserByEmail($email)
     {
-        return $this->findUserBy(array('email' => $email));
+        return $this->findUserBy(['email' => $email]);
     }
 
     /**
@@ -151,7 +151,7 @@ class UserManager implements UserProviderInterface
      */
     public function findUserByUsername($username)
     {
-        return $this->findUserBy(array('username' => $username));
+        return $this->findUserBy(['username' => $username]);
     }
 
     /**
@@ -177,7 +177,7 @@ class UserManager implements UserProviderInterface
      */
     public function findUserByConfirmationToken($token)
     {
-        return $this->findUserBy(array('confirmationToken' => $token));
+        return $this->findUserBy(['confirmationToken' => $token]);
     }
 
     /**
@@ -216,7 +216,7 @@ class UserManager implements UserProviderInterface
             );
         }
 
-        $refreshedUser = $this->findUserBy(array('id' => $user->getId()));
+        $refreshedUser = $this->findUserBy(['id' => $user->getId()]);
 
         if (null === $refreshedUser) {
             throw new UsernameNotFoundException(sprintf('User with ID "%d" could not be reloaded', $user->getId()));

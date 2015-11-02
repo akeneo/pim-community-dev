@@ -7,7 +7,7 @@ class FormConfig implements FormConfigInterface
     /**
      * @var BlockConfig[]
      */
-    protected $blocks = array();
+    protected $blocks = [];
 
     /**
      * @param BlockConfig $block
@@ -83,7 +83,7 @@ class FormConfig implements FormConfigInterface
 
     protected function sortBlocks()
     {
-        $priority = array();
+        $priority = [];
         foreach ($this->blocks as $key => $block) {
             $priority[$key] = $block->getPriority();
         }

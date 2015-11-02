@@ -19,62 +19,62 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
      */
     protected $configurationRegistry;
 
-    protected $configuration = array(
-        'default' => array(
+    protected $configuration = [
+        'default' => [
             'order'   => 100,
             'class'   => 'default_class',
-            'format1' => array(
+            'format1' => [
                 'reader'            => 'default_format1_reader',
-                'reader_options'    => array('key' => 'default_format1_reader_option'),
+                'reader_options'    => ['key' => 'default_format1_reader_option'],
                 'processor'         => 'default_format1_processor',
-                'processor_options' => array('key' => 'default_format1_processor_option'),
-            ),
-            'format2' => array(
+                'processor_options' => ['key' => 'default_format1_processor_option'],
+            ],
+            'format2' => [
                 'reader'            => 'default_format2_reader',
-                'reader_options'    => array('key' => 'default_format2_reader_option'),
+                'reader_options'    => ['key' => 'default_format2_reader_option'],
                 'processor'         => 'default_format2_processor',
-                'processor_options' => array('key' => 'default_format2_processor_option'),
-            ),
-        ),
-        'entity1' => array(
+                'processor_options' => ['key' => 'default_format2_processor_option'],
+            ],
+        ],
+        'entity1' => [
             'order'   => 150,
             'class'   => 'entity1_class',
-            'format1' => array(
+            'format1' => [
                 'reader'            => 'entity1_format1_reader',
-                'reader_options'    => array('key' => 'entity1_format1_reader_option'),
+                'reader_options'    => ['key' => 'entity1_format1_reader_option'],
                 'processor'         => 'entity1_format1_processor',
-                'processor_options' => array('key' => 'entity1_format1_processor_option'),
-            ),
-            'format2' => array(
+                'processor_options' => ['key' => 'entity1_format1_processor_option'],
+            ],
+            'format2' => [
                 'reader'            => 'entity1_format2_reader',
-                'reader_options'    => array('key' => 'entity1_format2_reader_option'),
+                'reader_options'    => ['key' => 'entity1_format2_reader_option'],
                 'processor'         => 'entity1_format2_processor',
-                'processor_options' => array('key' => 'entity1_format2_processor_option'),
-            ),
-        ),
-        'entity1.step2' => array(
+                'processor_options' => ['key' => 'entity1_format2_processor_option'],
+            ],
+        ],
+        'entity1.step2' => [
             'order'     => 90,
             'file_name' => 'entity1',
             'class'     => 'entity1_class',
-            'format1'   => array(
+            'format1'   => [
                 'reader'            => 'entity1_format1_reader2',
-                'reader_options'    => array('key' => 'entity1_format1_reader_option2'),
+                'reader_options'    => ['key' => 'entity1_format1_reader_option2'],
                 'processor'         => 'entity1_format1_processor2',
-                'processor_options' => array('key' => 'entity1_format1_processor_option2'),
-            ),
-            'format2' => array(
+                'processor_options' => ['key' => 'entity1_format1_processor_option2'],
+            ],
+            'format2' => [
                 'reader'            => 'entity1_format2_reader2',
-                'reader_options'    => array('key' => 'entity1_format2_reader_option2'),
+                'reader_options'    => ['key' => 'entity1_format2_reader_option2'],
                 'processor'         => 'entity1_format2_processor2',
-                'processor_options' => array('key' => 'entity1_format2_processor_option2'),
-            ),
-        ),
-        'entity2' => array(
-            'format2' => array(
-                'processor_options' => array('key' => 'entity2_format2_processor_option')
-            )
-        )
-    );
+                'processor_options' => ['key' => 'entity1_format2_processor_option2'],
+            ],
+        ],
+        'entity2' => [
+            'format2' => [
+                'processor_options' => ['key' => 'entity2_format2_processor_option']
+            ]
+        ]
+    ];
 
     protected function setUp()
     {
@@ -105,8 +105,8 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
 
         $this->configurationRegistry = $this
             ->getMockBuilder('Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistry')
-            ->setMethods(array('getConfiguration'))
-            ->setConstructorArgs(array($this->container, $this->propertyAccessor, array(), '', false))
+            ->setMethods(['getConfiguration'])
+            ->setConstructorArgs([$this->container, $this->propertyAccessor, [], '', false])
             ->getMock();
 
         $this->configurationRegistry->expects($this->any())
@@ -168,39 +168,39 @@ class ConfigurationRegistryTest extends \PHPUnit_Framework_TestCase
     public function testGetFixtures()
     {
         $this->assertEquals(
-            array(
-                array(
+            [
+                [
                     'name'      => 'entity1.step2',
                     'extension' => 'format1',
                     'path'      => '/tmp/entity1.format1'
-                ),
-                array(
+                ],
+                [
                     'name'      => 'entity1.step2',
                     'extension' => 'format2',
                     'path'      => '/tmp/entity1.format2'
-                ),
-                array(
+                ],
+                [
                     'name'      => 'entity2',
                     'extension' => 'format2',
                     'path'      => '/tmp/entity2.format2'
-                ),
-                array(
+                ],
+                [
                     'name'      => 'entity1',
                     'extension' => 'format1',
                     'path'      => '/tmp/entity1.format1'
-                ),
-                array(
+                ],
+                [
                     'name'      => 'entity1',
                     'extension' => 'format2',
                     'path'      => '/tmp/entity1.format2'
-                ),
-            ),
+                ],
+            ],
             $this->configurationRegistry->getFixtures(
-                array(
+                [
                     '/tmp/entity1.format1',
                     '/tmp/entity1.format2',
                     '/tmp/entity2.format2'
-                )
+                ]
             )
         );
     }

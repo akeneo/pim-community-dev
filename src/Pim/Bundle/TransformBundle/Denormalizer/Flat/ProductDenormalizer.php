@@ -157,7 +157,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             $product->removeCategory($category);
         }
 
-        $categoryCodes = strlen($data) > 0 ? explode(",", $data) : array();
+        $categoryCodes = strlen($data) > 0 ? explode(",", $data) : [];
         foreach ($categoryCodes as $categoryCode) {
             $product->addCategory(
                 $this->serializer->denormalize($categoryCode, $this->categoryClass, $format, $context)
@@ -179,7 +179,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             $product->removeGroup($group);
         }
 
-        $groupCodes = strlen($data) > 0 ? explode(",", $data) : array();
+        $groupCodes = strlen($data) > 0 ? explode(",", $data) : [];
         foreach ($groupCodes as $groupCode) {
             $product->addGroup(
                 $this->serializer->denormalize($groupCode, $this->groupClass, $format, $context)

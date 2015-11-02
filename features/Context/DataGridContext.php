@@ -318,7 +318,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iShowTheFilter($filterName)
     {
         if (false === strpos(strtolower($filterName), 'category')) {
-            $this->wait(30000, '$("div.filter-box").length > 0;');
+            $this->wait('$("div.filter-box").length > 0;');
             $this->datagrid->showFilter($filterName);
             $this->wait();
             $this->datagrid->assertFilterVisible($filterName);
@@ -370,7 +370,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $expectedColumns = count($columns);
 
-        $this->wait(30000, '$("table.grid").length > 0');
+        $this->wait('$("table.grid").length > 0');
 
         $countColumns = $this->datagrid->countColumns();
         if ($expectedColumns !== $countColumns) {
@@ -529,7 +529,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSortByValue($columnName, $order = 'ascending')
     {
-        $this->wait(10000, sprintf('$("a:contains(\'%s\')").length > 0', ucfirst($columnName)));
+        $this->wait(sprintf('$("a:contains(\'%s\')").length > 0', ucfirst($columnName)));
         $this->datagrid->sortBy($columnName, $order);
         $this->wait();
     }
@@ -910,7 +910,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iPressSequentialEditButton()
     {
         $this->getCurrentPage()->sequentialEdit();
-        $this->wait(20000);
+        $this->wait();
         $this->getNavigationContext()->currentPage = 'Product edit';
     }
 
@@ -997,12 +997,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * Wait
      *
-     * @param int    $time
      * @param string $condition
      */
-    protected function wait($time = 10000, $condition = null)
+    protected function wait($condition = null)
     {
-        $this->getMainContext()->wait($time, $condition);
+        $this->getMainContext()->wait($condition);
     }
 
     /**

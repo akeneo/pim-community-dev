@@ -39,7 +39,7 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
         $this->provider->addBuilder($builder, 'builder1');
         $this->provider->addBuilder($builder, 'builder2');
         $this->assertAttributeCount(2, 'builders', $this->provider);
-        $expectedBuilders = array('builder1' => array($builder, $builder), 'builder2' => array($builder));
+        $expectedBuilders = ['builder1' => [$builder, $builder], 'builder2' => [$builder]];
         $this->assertAttributeEquals($expectedBuilders, 'builders', $this->provider);
     }
 
@@ -84,7 +84,7 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet($alias, $menuName)
     {
-        $options = array();
+        $options = [];
 
         $menu = $this->getMockBuilder('Knp\Menu\ItemInterface')
             ->getMock();
@@ -115,10 +115,10 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCached()
     {
-        $options = array();
+        $options = [];
 
         $alias = 'test_menu';
-        $items = array('name' => $alias);
+        $items = ['name' => $alias];
         $menu = $this->getMockBuilder('Knp\Menu\ItemInterface')
             ->getMock();
 
@@ -161,10 +161,10 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function aliasDataProvider()
     {
-        return array(
-            'custom alias' => array('test', 'test'),
-            'global'       => array(BuilderChainProvider::COMMON_BUILDER_ALIAS, 'test')
-        );
+        return [
+            'custom alias' => ['test', 'test'],
+            'global'       => [BuilderChainProvider::COMMON_BUILDER_ALIAS, 'test']
+        ];
     }
 
     /**
@@ -179,7 +179,7 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
     public function testSorting()
     {
         $menuName = 'test_menu';
-        $options = array();
+        $options = [];
 
         $topMenu = $this->getMockBuilder('Knp\Menu\ItemInterface')
             ->getMock();
@@ -210,11 +210,11 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
 
         $menu->expects($this->any())
             ->method('getChildren')
-            ->will($this->returnValue(array($childThree, $childFour, $childTwo, $childOne)));
+            ->will($this->returnValue([$childThree, $childFour, $childTwo, $childOne]));
 
         $topMenu->expects($this->any())
             ->method('getChildren')
-            ->will($this->returnValue(array($menu)));
+            ->will($this->returnValue([$menu]));
 
         $this->factory->expects($this->once())
             ->method('createItem')
@@ -223,7 +223,7 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
 
         $menu->expects($this->once())
             ->method('reorderChildren')
-            ->with(array('child1', 'child2', 'child3', 'child4'));
+            ->with(['child1', 'child2', 'child3', 'child4']);
 
         $newMenu = $this->provider->get($menuName, $options);
         $this->assertInstanceOf('Knp\Menu\ItemInterface', $newMenu);

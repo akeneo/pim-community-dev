@@ -32,7 +32,7 @@ class NameFormatter
      */
     public function format($person, $locale = null)
     {
-        $nameParts = array();
+        $nameParts = [];
         if ($person instanceof NamePrefixInterface) {
             $nameParts['prefix'] = $person->getNamePrefix();
         }

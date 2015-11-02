@@ -24,18 +24,18 @@ class RenderHeaderExtension extends AbstractExtension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             new \Twig_SimpleFunction(
                 'oro_filter_render_header_javascript',
-                array($this, 'renderHeaderJavascript'),
+                [$this, 'renderHeaderJavascript'],
                 $this->defaultFunctionOptions
             ),
             new \Twig_SimpleFunction(
                 'oro_filter_render_header_stylesheet',
-                array($this, 'renderHeaderStylesheet'),
+                [$this, 'renderHeaderStylesheet'],
                 $this->defaultFunctionOptions
             ),
-        );
+        ];
     }
 
     /**
@@ -46,7 +46,7 @@ class RenderHeaderExtension extends AbstractExtension
      * @param array $context
      * @return string
      */
-    protected function renderTemplateBlock(\Twig_Environment $environment, $blockName, $context = array())
+    protected function renderTemplateBlock(\Twig_Environment $environment, $blockName, $context = [])
     {
         /** @var $template \Twig_Template */
         $template = $environment->loadTemplate($this->templateName);

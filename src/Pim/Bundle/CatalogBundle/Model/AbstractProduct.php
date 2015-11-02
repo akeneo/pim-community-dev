@@ -270,7 +270,7 @@ abstract class AbstractProduct implements ProductInterface
     protected function indexValuesIfNeeded()
     {
         if ($this->indexedValuesOutdated) {
-            $this->indexedValues = array();
+            $this->indexedValues = [];
             foreach ($this->values as $value) {
                 $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
             }
@@ -758,7 +758,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(array $associations = array())
+    public function setAssociations(array $associations = [])
     {
         $this->associations = new ArrayCollection($associations);
 

@@ -17,7 +17,7 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
     /**
      * @staticvar array
      */
-    protected static $resolveTargetRepo = array();
+    protected static $resolveTargetRepo = [];
 
     /**
      * {@inheritdoc}

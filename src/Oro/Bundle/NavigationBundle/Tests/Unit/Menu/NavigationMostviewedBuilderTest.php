@@ -45,7 +45,7 @@ class NavigationMostviewedBuilderTest extends \PHPUnit_Framework_TestCase
         $userId = 1;
 
         $user = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getId'))
+            ->setMethods(['getId'])
             ->getMock();
         $user->expects($this->once())
             ->method('getId')
@@ -63,7 +63,7 @@ class NavigationMostviewedBuilderTest extends \PHPUnit_Framework_TestCase
         $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface');
         $this->factory->expects($this->once())
             ->method('createItem')
-            ->with($type, array())
+            ->with($type, [])
             ->will($this->returnValue($item));
 
         $repository = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Entity\Repository\HistoryItemRepository')
@@ -75,12 +75,12 @@ class NavigationMostviewedBuilderTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $userId,
                 $type,
-                array(
+                [
                     'maxItems' => $maxItems,
-                    'orderBy'  => array(array('field' => NavigationHistoryItem::NAVIGATION_HISTORY_COLUMN_VISIT_COUNT))
-                )
+                    'orderBy'  => [['field' => NavigationHistoryItem::NAVIGATION_HISTORY_COLUMN_VISIT_COUNT]]
+                ]
             )
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->em->expects($this->once())
             ->method('getRepository')
@@ -99,6 +99,6 @@ class NavigationMostviewedBuilderTest extends \PHPUnit_Framework_TestCase
         $menu = $this->getMockBuilder('Knp\Menu\ItemInterface')->getMock();
 
         $this->builder->setOptions($configMock);
-        $this->builder->build($menu, array(), $type);
+        $this->builder->build($menu, [], $type);
     }
 }

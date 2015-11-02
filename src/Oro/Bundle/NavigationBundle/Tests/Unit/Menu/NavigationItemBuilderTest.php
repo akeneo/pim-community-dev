@@ -55,7 +55,7 @@ class NavigationItemBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('setExtra')
             ->with('type', 'pinbar');
 
-        $this->builder->build($menu, array(), 'pinbar');
+        $this->builder->build($menu, [], 'pinbar');
     }
 
     public function testBuild()
@@ -63,7 +63,7 @@ class NavigationItemBuilderTest extends \PHPUnit_Framework_TestCase
         $type = 'favorite';
         $userId = 1;
         $user = $this->getMockBuilder('stdClass')
-            ->setMethods(array('getId'))
+            ->setMethods(['getId'])
             ->getMock();
         $user->expects($this->once($userId))
             ->method('getId')
@@ -81,16 +81,16 @@ class NavigationItemBuilderTest extends \PHPUnit_Framework_TestCase
         $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItemInterface');
         $this->factory->expects($this->once())
             ->method('createItem')
-            ->with($type, array())
+            ->with($type, [])
             ->will($this->returnValue($item));
 
         $repository = $this->getMockBuilder('Oro\Bundle\NavigationBundle\Entity\Repository\NavigationItemRepository')
             ->disableOriginalConstructor()
             ->getMock();
-        $items = array(
-            array('id' => 1, 'title' => 'test1', 'url' => '/', 'type' => $type),
-            array('id' => 2, 'title' => 'test2', 'url' => '/home', 'type' => $type)
-        );
+        $items = [
+            ['id' => 1, 'title' => 'test1', 'url' => '/', 'type' => $type],
+            ['id' => 2, 'title' => 'test2', 'url' => '/home', 'type' => $type]
+        ];
         $repository->expects($this->once())
             ->method('getNavigationItems')
             ->with($userId, $type)
@@ -109,6 +109,6 @@ class NavigationItemBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('setExtra')
             ->with('type', $type);
 
-        $this->builder->build($menu, array(), $type);
+        $this->builder->build($menu, [], $type);
     }
 }

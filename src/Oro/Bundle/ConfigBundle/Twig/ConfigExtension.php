@@ -23,9 +23,9 @@ class ConfigExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'oro_config_value' => new \Twig_Function_Method($this, 'getUserValue'),
-        );
+        ];
     }
 
     /**

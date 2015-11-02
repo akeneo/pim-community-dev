@@ -29,7 +29,7 @@ class CalendarFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $calendar = $this->getMock(
             'Oro\Bundle\LocaleBundle\Model\Calendar',
-            array('setLocale', 'setLanguage')
+            ['setLocale', 'setLanguage']
         );
         $calendar->expects($this->once())->method('setLocale')->with($locale);
         $calendar->expects($this->once())->method('setLanguage')->with($language);
@@ -43,9 +43,9 @@ class CalendarFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function getCalendarDataProvider()
     {
-        return array(
-            array('en_US', 'ru_RU'),
-            array(null, null),
-        );
+        return [
+            ['en_US', 'ru_RU'],
+            [null, null],
+        ];
     }
 }

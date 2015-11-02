@@ -26,6 +26,7 @@ Feature: Edit an export
       | Enclosure         | '        |
       | File path         | file.csv |
       | Decimal separator | ,        |
+      | Date format       | Y-m-d    |
     And I uncheck the "With header" switch
     And I press the "Save" button
     Then I should see "Channel tablet"
@@ -34,6 +35,7 @@ Feature: Edit an export
     And I should see "Enclosure '"
     And I should see "With header No"
     And I should see "Decimal Separator ,"
+    And I should see "Date format Y-m-d"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "footwear_product_export" export job edit page

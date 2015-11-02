@@ -24,7 +24,7 @@ class AttributeNormalizer extends Structured\AttributeNormalizer
     /**
      * @var array
      */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = ['csv'];
 
     /**
      * {@inheritdoc}
@@ -50,9 +50,9 @@ class AttributeNormalizer extends Structured\AttributeNormalizer
         if ($options->isEmpty()) {
             $options = '';
         } else {
-            $data = array();
+            $data = [];
             foreach ($options as $option) {
-                $item = array();
+                $item = [];
                 foreach ($option->getOptionValues() as $value) {
                     $label = str_replace('{locale}', $value->getLocale(), self::LOCALIZABLE_PATTERN);
                     $label = str_replace('{value}', $value->getValue(), $label);

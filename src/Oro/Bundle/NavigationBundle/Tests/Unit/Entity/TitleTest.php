@@ -15,8 +15,8 @@ class TitleTest extends \PHPUnit_Framework_TestCase
         $obj = new Title();
         $value = 'testValue';
 
-        call_user_func_array(array($obj, 'set' . ucfirst($property)), array($value));
-        $this->assertEquals($value, call_user_func_array(array($obj, 'get' . ucfirst($property)), array()));
+        call_user_func_array([$obj, 'set' . ucfirst($property)], [$value]);
+        $this->assertEquals($value, call_user_func_array([$obj, 'get' . ucfirst($property)], []));
     }
 
     /**
@@ -26,11 +26,11 @@ class TitleTest extends \PHPUnit_Framework_TestCase
      */
     public function provider()
     {
-        return array(
-            array('route'),
-            array('title'),
-            array('shortTitle'),
-            array('isSystem')
-        );
+        return [
+            ['route'],
+            ['title'],
+            ['shortTitle'],
+            ['isSystem']
+        ];
     }
 }

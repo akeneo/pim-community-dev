@@ -21,7 +21,17 @@ class VariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $normalizer, DenormalizerInterface $denormalizer)
     {
-        $this->beConstructedWith($normalizer, $denormalizer, ['.', ','], 'upload/path/', 'csv');
+        $this->beConstructedWith(
+            $normalizer,
+            $denormalizer,
+            ['.', ','],
+            [
+                ['value' => 'Y-m-d', 'label' => 'yyyy-mm-dd'],
+                ['value' => 'd.m.Y', 'label' => 'dd.mm.yyyy'],
+            ],
+            'upload/path/',
+            'csv'
+        );
     }
 
     function it_is_initializable()
@@ -47,7 +57,20 @@ class VariantGroupProcessorSpec extends ObjectBehavior
                         'label'    => 'pim_base_connector.export.decimalSeparator.label',
                         'help'     => 'pim_base_connector.export.decimalSeparator.help'
                     ]
-                ]
+                ],
+                'dateFormat' => [
+                    'type'    => 'choice',
+                    'options' => [
+                        'choices'  => [
+                            ['value' => 'Y-m-d', 'label' => 'yyyy-mm-dd'],
+                            ['value' => 'd.m.Y', 'label' => 'dd.mm.yyyy'],
+                        ],
+                        'required' => true,
+                        'select2'  => true,
+                        'label'    => 'pim_base_connector.export.dateFormat.label',
+                        'help'     => 'pim_base_connector.export.dateFormat.help'
+                    ]
+                ],
             ]
         );
     }
@@ -65,7 +88,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             [
                 'with_variant_group_values' => true,
                 'identifier'                => 'my_variant_group',
-                'decimal_separator'         => '.'
+                'decimal_separator'         => '.',
+                'date_format'                => 'Y-m-d',
             ]
         )->willReturn('my;variant;group;to;csv;');
 
@@ -100,7 +124,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             [
                 'with_variant_group_values' => true,
                 'identifier'                => 'my_variant_group',
-                'decimal_separator'         => '.'
+                'decimal_separator'         => '.',
+                'date_format'                => 'Y-m-d',
             ]
         )->willReturn('my;variant;group;to;csv;');
 
@@ -150,7 +175,8 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             [
                 'with_variant_group_values' => true,
                 'identifier'                => 'my_variant_group',
-                'decimal_separator'         => '.'
+                'decimal_separator'         => '.',
+                'date_format'                => 'Y-m-d',
             ]
         )->willReturn('my;variant;group;to;csv;');
 

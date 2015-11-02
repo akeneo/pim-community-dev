@@ -24,9 +24,9 @@ class JobConfigurationType extends AbstractType
             ->add(
                 'steps',
                 'collection',
-                array(
+                [
                     'type' => 'pim_import_export_step_configuration'
-                )
+                ]
             );
     }
 
@@ -36,9 +36,9 @@ class JobConfigurationType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Akeneo\\Bundle\\BatchBundle\\Job\\Job',
-            )
+            ]
         );
     }
 

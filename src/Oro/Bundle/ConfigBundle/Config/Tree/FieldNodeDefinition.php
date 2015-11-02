@@ -75,12 +75,12 @@ class FieldNodeDefinition extends AbstractNodeDefinition
     public function toFormFieldOptions()
     {
         return array_merge(
-            array(
+            [
                 'target_field' => $this
-            ),
+            ],
             array_intersect_key(
                 $this->getOptions(),
-                array_flip(array('label', 'required', 'block', 'subblock', 'tooltip'))
+                array_flip(['label', 'required', 'block', 'subblock', 'tooltip'])
             )
         );
     }
@@ -95,7 +95,7 @@ class FieldNodeDefinition extends AbstractNodeDefinition
     protected function prepareDefinition(array $definition)
     {
         if (!isset($definition['options'])) {
-            $definition['options'] = array();
+            $definition['options'] = [];
         }
 
         if (isset($definition['options']['constraints'])) {
@@ -130,7 +130,7 @@ class FieldNodeDefinition extends AbstractNodeDefinition
      */
     protected function parseValidator(array $nodes)
     {
-        $values = array();
+        $values = [];
 
 
         foreach ($nodes as $name => $childNodes) {

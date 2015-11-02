@@ -27,10 +27,10 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->attributes = array();
+        $this->attributes = [];
         $this->expectedQueryCodes = null;
-        $this->families = array();
-        $this->groups = array();
+        $this->families = [];
+        $this->groups = [];
         $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
@@ -49,7 +49,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     {
         $this->repository->expects($this->once())
             ->method('findBy')
-            ->will($this->returnCallback(array($this, 'getAttributes')));
+            ->will($this->returnCallback([$this, 'getAttributes']));
     }
 
     /**
@@ -97,10 +97,10 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->addAttribute('col2');
 
         $attributes = $this->attributeCache->getAttributes(
-            array(
+            [
                 $this->getColumnInfoMock('col1'),
                 $this->getColumnInfoMock('col2'),
-            )
+            ]
         );
 
         $this->assertEquals($this->attributes, $attributes);
@@ -109,8 +109,8 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
 
     public function testGetEmptyAttributes()
     {
-        $attributes = $this->attributeCache->getAttributes(array());
-        $this->assertEquals(array(), $attributes);
+        $attributes = $this->attributeCache->getAttributes([]);
+        $this->assertEquals([], $attributes);
     }
 
     /**
@@ -120,41 +120,41 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     {
         $product1 = $this->getProductMock(
             null,
-            array(),
+            [],
             'family1',
-            array('key1', 'key2'),
-            array('group1' => array('key3', 'key4', 'key5'), 'group2' => array('key7'))
+            ['key1', 'key2'],
+            ['group1' => ['key3', 'key4', 'key5'], 'group2' => ['key7']]
         );
         $this->assertEqualArrays(
-            array('key1', 'key2', 'key3', 'key4', 'key5', 'key7'),
+            ['key1', 'key2', 'key3', 'key4', 'key5', 'key7'],
             $this->attributeCache->getRequiredAttributeCodes($product1)
         );
 
         $product2 = $this->getProductMock(
             1,
-            array('key0'),
+            ['key0'],
             'family2',
-            array('key8'),
-            array('group1' => array(), 'group3' => array('key3', 'key9'))
+            ['key8'],
+            ['group1' => [], 'group3' => ['key3', 'key9']]
         );
         $this->assertEqualArrays(
-            array('key0', 'key3', 'key4', 'key5', 'key8', 'key9'),
+            ['key0', 'key3', 'key4', 'key5', 'key8', 'key9'],
             $this->attributeCache->getRequiredAttributeCodes($product2)
         );
 
         $product3 = $this->getProductMock(
             null,
-            array(),
+            [],
             'family1'
         );
         $this->assertEqualArrays(
-            array('key1', 'key2'),
+            ['key1', 'key2'],
             $this->attributeCache->getRequiredAttributeCodes($product3)
         );
 
         $product4 = $this->getProductMock();
         $this->assertEqualArrays(
-            array(),
+            [],
             $this->attributeCache->getRequiredAttributeCodes($product4)
         );
     }
@@ -184,21 +184,21 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductMock(
         $productId = null,
-        $attributeCodes = array(),
+        $attributeCodes = [],
         $familyCode = null,
-        array $familyAttributeCodes = array(),
-        array $categories = array()
+        array $familyAttributeCodes = [],
+        array $categories = []
     ) {
         $product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
-            ->setMethods(array('getId', 'getValues', 'getFamily', 'getGroups'))
+            ->setMethods(['getId', 'getValues', 'getFamily', 'getGroups'])
             ->getMock();
         $product->expects($this->any())
             ->method('getId')
             ->will($this->returnValue($productId));
-        $values = array();
+        $values = [];
         foreach ($attributeCodes as $attributeCode) {
             $value = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValue')
-                ->setMethods(array('getAttribute', '__toString'))
+                ->setMethods(['getAttribute', '__toString'])
                 ->getMock();
             $value->expects($this->any())
                 ->method('getAttribute')
@@ -220,7 +220,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($this->families[$familyCode]));
         }
 
-        $groups = array();
+        $groups = [];
         foreach ($categories as $groupCode => $groupAttributeCodes) {
             if (!isset($this->groups[$groupCode])) {
                 $this->groups[$groupCode] = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Group');

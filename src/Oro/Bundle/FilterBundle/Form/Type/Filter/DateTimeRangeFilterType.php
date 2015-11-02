@@ -50,9 +50,9 @@ class DateTimeRangeFilterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'field_type' => DateTimeRangeType::NAME
-            )
+            ]
         );
     }
 
@@ -63,7 +63,7 @@ class DateTimeRangeFilterType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $widgetOptions                = array('firstDay' => 0);
+        $widgetOptions                = ['firstDay' => 0];
         $view->vars['widget_options'] = array_merge($widgetOptions, $options['widget_options']);
     }
 }

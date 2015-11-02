@@ -44,7 +44,7 @@ class UserController extends Controller
         return $this->update(
             $this->getUser(),
             'oro_user_profile_update',
-            array('route' => 'oro_user_profile_view')
+            ['route' => 'oro_user_profile_view']
         );
     }
 
@@ -67,7 +67,7 @@ class UserController extends Controller
 
         return $this->getRequest()->isXmlHttpRequest()
             ? new JsonResponse($api->getApiKey())
-            : $this->forward('OroUserBundle:User:view', array('user' => $user));
+            : $this->forward('OroUserBundle:User:view', ['user' => $user]);
     }
 
     /**
@@ -100,7 +100,7 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -165,7 +165,7 @@ class UserController extends Controller
             }
 
             return new JsonResponse([
-                'route'      => 'oro_user_update',
+                'route'  => 'oro_user_update',
                 'params' => ['id' => $user->getId()],
             ]);
         }
@@ -184,13 +184,13 @@ class UserController extends Controller
      */
     protected function view(User $user, $editRoute = '')
     {
-        $output = array(
+        $output = [
             'entity'   => $user,
             'dynamic'  => []
-        );
+        ];
 
         if ($editRoute) {
-            $output = array_merge($output, array('editRoute' => $editRoute));
+            $output = array_merge($output, ['editRoute' => $editRoute]);
         }
 
         return $output;

@@ -39,7 +39,7 @@ class Channel implements ChannelInterface
     protected $locales;
 
     /** @var array $conversionUnits */
-    protected $conversionUnits = array();
+    protected $conversionUnits = [];
 
     /** @var string $color */
     protected $color;

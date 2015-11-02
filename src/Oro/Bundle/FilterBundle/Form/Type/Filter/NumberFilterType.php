@@ -54,21 +54,21 @@ class NumberFilterType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $operatorChoices = array(
+        $operatorChoices = [
             self::TYPE_EQUAL         => $this->translator->trans('oro.filter.form.label_type_equal'),
             self::TYPE_GREATER_EQUAL => $this->translator->trans('oro.filter.form.label_type_greater_equal'),
             self::TYPE_GREATER_THAN  => $this->translator->trans('oro.filter.form.label_type_greater_than'),
             self::TYPE_LESS_EQUAL    => $this->translator->trans('oro.filter.form.label_type_less_equal'),
             self::TYPE_LESS_THAN     => $this->translator->trans('oro.filter.form.label_type_less_than'),
-        );
+        ];
 
         $resolver->setDefaults(
-            array(
+            [
                 'field_type'        => 'number',
                 'operator_choices'  => $operatorChoices,
                 'data_type'         => self::DATA_INTEGER,
-                'formatter_options' => array()
-            )
+                'formatter_options' => []
+            ]
         );
     }
 
@@ -84,7 +84,7 @@ class NumberFilterType extends AbstractType
             $dataType = $options['data_type'];
         }
 
-        $formatterOptions = array();
+        $formatterOptions = [];
 
         switch ($dataType) {
             case self::DATA_DECIMAL:

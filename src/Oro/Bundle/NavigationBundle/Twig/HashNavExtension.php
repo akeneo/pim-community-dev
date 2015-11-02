@@ -32,18 +32,18 @@ class HashNavExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
+        return [
             'oro_is_hash_navigation' => new \Twig_Function_Method(
                 $this,
                 'checkIsHashNavigation',
-                array('is_safe' => array('html'))
+                ['is_safe' => ['html']]
             ),
             'oro_hash_navigation_header' => new \Twig_Function_Method(
                 $this,
                 'getHashNavigationHeaderConst',
-                array('is_safe' => array('html'))
+                ['is_safe' => ['html']]
             ),
-        );
+        ];
     }
 
     /**

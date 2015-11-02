@@ -65,7 +65,7 @@ class AclManager extends AbstractAclManager
      *
      * @var BatchItem[]
      */
-    protected $items = array();
+    protected $items = [];
 
     /**
      * Constructor
@@ -224,7 +224,7 @@ class AclManager extends AbstractAclManager
             }
             if ($transactionStarted) {
                 $this->aclProvider->commit();
-                $this->items = array();
+                $this->items = [];
             }
         } catch (\Exception $ex) {
             try {
@@ -283,7 +283,7 @@ class AclManager extends AbstractAclManager
         $this->validateAclEnabled();
 
         try {
-            return $this->doFindAcls($oids, array($sid));
+            return $this->doFindAcls($oids, [$sid]);
         } catch (AclNotFoundException $ex) {
             if ($ex instanceof NotAllAclsFoundException) {
                 $partialResultException = $ex;
@@ -860,7 +860,7 @@ class AclManager extends AbstractAclManager
     {
         $acl = $this->getAcl($oid);
         if (!$acl) {
-            return array();
+            return [];
         }
 
         return array_filter(
@@ -891,9 +891,9 @@ class AclManager extends AbstractAclManager
     protected function doFindAcls(array $oids, array $sids)
     {
         // split object identities to batches (batch size must be less than or equal AclProvider::MAX_BATCH_SIZE)
-        $oidsBatches = array();
+        $oidsBatches = [];
         $batchIndex = 0;
-        $oidsBatches[$batchIndex] = array();
+        $oidsBatches[$batchIndex] = [];
         $index = 0;
         foreach ($oids as $oid) {
             /**

@@ -827,7 +827,7 @@ class Grid extends Index
      */
     protected function getRowCell($row, $position)
     {
-        $cells = $row->findAll('css', 'td');
+        $cells = $row->findAll('xpath', '/td');
 
         $visibleCells = [];
         foreach ($cells as $cell) {
@@ -915,7 +915,7 @@ class Grid extends Index
      */
     protected function getRows()
     {
-        return $this->getGridContent()->findAll('css', 'tr');
+        return $this->getGridContent()->findAll('xpath', '/tr');
     }
 
     /**

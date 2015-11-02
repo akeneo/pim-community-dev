@@ -73,16 +73,16 @@ class EntityIdentifierType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'em'               => null,
                 'property'         => null,
                 'queryBuilder'     => null,
                 'multiple'         => true,
                 'values_delimiter' => ','
-            )
+            ]
         )
         ->setAllowedValues('multiple', [true, false])
-        ->setRequired(array('class'));
+        ->setRequired(['class']);
 
         $registry = $this->registry;
 

@@ -146,10 +146,10 @@ class DateTimeFormatter
             }
         }
 
-        $allowedTypes = array(
+        $allowedTypes = [
             \IntlDateFormatter::FULL, \IntlDateFormatter::LONG,
             \IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE
-        );
+        ];
 
         if (!in_array((int)$dateType, $allowedTypes)) {
             throw new \InvalidArgumentException("IntlDateFormatter type '$dateType' is not supported");

@@ -19,6 +19,8 @@ class RegisterLocalizersPass implements CompilerPassInterface
 
     const LOCALIZATION_LOCALIZER = 'pim_localization.localizer';
 
+    const LOCALIZATION_LOCALIZER_PRODUCT_VALUE = 'pim_localization.localizer.product_value';
+
     /**
      * {@inheritdoc}
      */
@@ -29,9 +31,19 @@ class RegisterLocalizersPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition(self::LOCALIZATION_LOCALIZER_REGISTRY);
+
         foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER) as $id => $localizer) {
             $definition->addMethodCall(
                 'addLocalizer',
+                [
+                    new Reference($id)
+                ]
+            );
+        }
+
+        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER_PRODUCT_VALUE) as $id => $localizer) {
+            $definition->addMethodCall(
+                'addProductValueLocalizer',
                 [
                     new Reference($id)
                 ]

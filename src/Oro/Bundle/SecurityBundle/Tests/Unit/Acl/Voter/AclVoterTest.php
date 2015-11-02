@@ -56,7 +56,7 @@ class AclVoterTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($voter->getObject());
         $this->assertNull($voter->getAclExtension());
 
-        $voter->vote($token, $object, array('test'));
+        $voter->vote($token, $object, ['test']);
 
         $this->assertNull($voter->getSecurityToken());
         $this->assertNull($voter->getObject());

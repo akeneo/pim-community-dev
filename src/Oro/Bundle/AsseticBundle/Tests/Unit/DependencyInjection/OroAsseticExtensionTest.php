@@ -12,16 +12,16 @@ class OroAsseticExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function getAssetsDataProvider()
     {
-        return array(
-            array(
-                array('css_debug' => array(), 'css_debug_all' => true),
-                array('compress'  => array(array()), 'uncompress' => array(array('first.css', 'second.css'))),
-            ),
-            array(
-                array('css_debug' => array(), 'css_debug_all' => false),
-                array('compress'  => array(array('first.css', 'second.css')), 'uncompress' => array(array())),
-            ),
-        );
+        return [
+            [
+                ['css_debug' => [], 'css_debug_all' => true],
+                ['compress'  => [[]], 'uncompress' => [['first.css', 'second.css']]],
+            ],
+            [
+                ['css_debug' => [], 'css_debug_all' => false],
+                ['compress'  => [['first.css', 'second.css']], 'uncompress' => [[]]],
+            ],
+        ];
     }
 
     /**
@@ -37,9 +37,9 @@ class OroAsseticExtensionTest extends \PHPUnit_Framework_TestCase
             ->method('getParameter')
             ->will(
                 $this->returnValue(
-                    array(
+                    [
                         'Oro\Bundle\AsseticBundle\Tests\Unit\Fixtures\TestBundle'
-                    )
+                    ]
                 )
             );
 

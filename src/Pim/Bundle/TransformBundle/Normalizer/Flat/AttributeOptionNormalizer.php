@@ -17,7 +17,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class AttributeOptionNormalizer extends Structured\AttributeOptionNormalizer
 {
     /** @var array */
-    protected $supportedFormats = array('csv', 'flat');
+    protected $supportedFormats = ['csv', 'flat'];
 
     /**
      * {@inheritdoc}
@@ -46,7 +46,7 @@ class AttributeOptionNormalizer extends Structured\AttributeOptionNormalizer
      */
     protected function normalizeLabel(AttributeOptionInterface $entity, $context)
     {
-        $labels = array();
+        $labels = [];
         foreach ($context['locales'] as $locale) {
             $labels[sprintf('label-%s', $locale)] = '';
         }

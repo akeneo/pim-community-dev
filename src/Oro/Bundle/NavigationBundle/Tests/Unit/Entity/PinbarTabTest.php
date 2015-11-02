@@ -51,7 +51,7 @@ class PinbarTabTest extends \PHPUnit_Framework_TestCase
 
     public function testSetValues()
     {
-        $values = array('maximized' => '2022-02-02 22:22:22', 'url' => '/');
+        $values = ['maximized' => '2022-02-02 22:22:22', 'url' => '/'];
         $item = $this->getMock('Oro\Bundle\NavigationBundle\Entity\NavigationItem');
         $item->expects($this->once())
             ->method('setValues')

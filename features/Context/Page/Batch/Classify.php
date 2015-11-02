@@ -16,16 +16,16 @@ class Classify extends Wizard
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Trees list'    => array('css' => '#trees-list'),
-                'Category tree' => array('css' => '#trees'),
-            )
+            [
+                'Trees list'    => ['css' => '#trees-list'],
+                'Category tree' => ['css' => '#trees'],
+            ]
         );
     }
 

@@ -142,7 +142,7 @@ class CategoryFilter extends NumberFilter
             if ($data['includeSub']) {
                 $categoryIds = $this->getAllChildrenIds($category);
             } else {
-                $categoryIds = array();
+                $categoryIds = [];
             }
             $categoryIds[] = $category->getId();
             $this->util->applyFilter($ds, 'categories.id', 'IN', $categoryIds);

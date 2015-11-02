@@ -24,23 +24,23 @@ class DateTimeExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
+        return [
             new \Twig_SimpleFilter(
                 'oro_format_datetime',
-                array($this, 'formatDateTime'),
-                array('is_safe' => array('html'))
+                [$this, 'formatDateTime'],
+                ['is_safe' => ['html']]
             ),
             new \Twig_SimpleFilter(
                 'oro_format_date',
-                array($this, 'formatDate'),
-                array('is_safe' => array('html'))
+                [$this, 'formatDate'],
+                ['is_safe' => ['html']]
             ),
             new \Twig_SimpleFilter(
                 'oro_format_time',
-                array($this, 'formatTime'),
-                array('is_safe' => array('html'))
+                [$this, 'formatTime'],
+                ['is_safe' => ['html']]
             ),
-        );
+        ];
     }
 
     /**
@@ -58,7 +58,7 @@ class DateTimeExtension extends \Twig_Extension
      * @param array $options
      * @return string
      */
-    public function formatDateTime($date, array $options = array())
+    public function formatDateTime($date, array $options = [])
     {
         $dateType = $this->getOption($options, 'dateType');
         $timeType = $this->getOption($options, 'timeType');
@@ -82,7 +82,7 @@ class DateTimeExtension extends \Twig_Extension
      * @param array $options
      * @return string
      */
-    public function formatDate($date, array $options = array())
+    public function formatDate($date, array $options = [])
     {
         $dateType = $this->getOption($options, 'dateType');
         $locale = $this->getOption($options, 'locale');
@@ -105,7 +105,7 @@ class DateTimeExtension extends \Twig_Extension
      * @param array $options
      * @return string
      */
-    public function formatTime($date, array $options = array())
+    public function formatTime($date, array $options = [])
     {
         $timeType = $this->getOption($options, 'timeType');
         $locale = $this->getOption($options, 'locale');

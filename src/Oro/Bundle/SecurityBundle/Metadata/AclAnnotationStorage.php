@@ -12,7 +12,7 @@ class AclAnnotationStorage implements \Serializable
      *   key = annotation id
      *   value = annotation object
      */
-    private $annotations = array();
+    private $annotations = [];
 
     /**
      * @var string[]
@@ -21,7 +21,7 @@ class AclAnnotationStorage implements \Serializable
      *              key = method name ('!' for class if it have an annotation)
      *              value = annotation id bound to the method
      */
-    private $classes = array();
+    private $classes = [];
 
     /**
      * Gets an annotation by its id
@@ -108,7 +108,7 @@ class AclAnnotationStorage implements \Serializable
             return array_values($this->annotations);
         }
 
-        $result = array();
+        $result = [];
         foreach ($this->annotations as $annotation) {
             if ($annotation->getType() === $type) {
                 $result[] = $annotation;
@@ -220,9 +220,9 @@ class AclAnnotationStorage implements \Serializable
             }
         } else {
             if (empty($method)) {
-                $this->classes[$class] = array('!' => $id);
+                $this->classes[$class] = ['!' => $id];
             } else {
-                $this->classes[$class] = array($method => $id);
+                $this->classes[$class] = [$method => $id];
             }
         }
     }
@@ -232,16 +232,16 @@ class AclAnnotationStorage implements \Serializable
      */
     public function serialize()
     {
-        $data = array();
+        $data = [];
         foreach ($this->annotations as $annotation) {
             $data[] = $annotation->serialize();
         }
 
         return serialize(
-            array(
+            [
                 $data,
                 $this->classes
-            )
+            ]
         );
     }
 
@@ -255,7 +255,7 @@ class AclAnnotationStorage implements \Serializable
             $this->classes
             ) = unserialize($serialized);
 
-        $this->annotations = array();
+        $this->annotations = [];
         foreach ($data as $d) {
             $annotation = new AclAnnotation();
             $annotation->unserialize($d);

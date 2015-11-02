@@ -4,7 +4,7 @@ namespace Pim\Component\Connector\Reader\File;
 
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
-use Pim\Component\Localization\Localizer\DateLocalizer;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
 
 /**
  * Product csv reader
@@ -28,7 +28,7 @@ class CsvProductReader extends CsvReader
     protected $decimalSeparators;
 
     /** @var string */
-    protected $dateFormat = DateLocalizer::DEFAULT_DATE_FORMAT;
+    protected $dateFormat = LocalizerInterface::DEFAULT_DATE_FORMAT;
 
     /** @var array */
     protected $dateFormats;

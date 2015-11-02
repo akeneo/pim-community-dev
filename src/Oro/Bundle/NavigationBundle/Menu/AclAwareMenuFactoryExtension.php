@@ -35,7 +35,7 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
     /**
      * @var array
      */
-    protected $aclCache = array();
+    protected $aclCache = [];
 
     /**
      * @param RouterInterface $router
@@ -73,7 +73,7 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
      * @param  array $options
      * @return array
      */
-    public function buildOptions(array $options = array())
+    public function buildOptions(array $options = [])
     {
         $this->processAcl($options);
 
@@ -92,7 +92,7 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
      *
      * @param array $options
      */
-    protected function processAcl(array &$options = array())
+    protected function processAcl(array &$options = [])
     {
         if (isset($options['check_access']) && $options['check_access'] == false) {
             $needCheck = false;
@@ -121,10 +121,10 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
      *
      * @param array $options
      */
-    protected function processRoute(array &$options = array())
+    protected function processRoute(array &$options = [])
     {
         if (!empty($options['route'])) {
-            $params = array();
+            $params = [];
             if (isset($options['routeParameters'])) {
                 $params = $options['routeParameters'];
             }
@@ -152,12 +152,12 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
             $options['uri'] = $uri;
 
             $options = array_merge_recursive(
-                array(
-                    'extras' => array(
-                        'routes'           => array($options['route']),
-                        'routesParameters' => array($options['route']=> $params),
-                    )
-                ),
+                [
+                    'extras' => [
+                        'routes'           => [$options['route']],
+                        'routesParameters' => [$options['route']=> $params],
+                    ]
+                ],
                 $options
             );
         }

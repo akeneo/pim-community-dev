@@ -55,10 +55,10 @@ class RequestTitleListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function provider()
     {
-        return array(
-            array(HttpKernelInterface::MASTER_REQUEST),
-            array(HttpKernelInterface::SUB_REQUEST)
-        );
+        return [
+            [HttpKernelInterface::MASTER_REQUEST],
+            [HttpKernelInterface::SUB_REQUEST]
+        ];
     }
 
     /**

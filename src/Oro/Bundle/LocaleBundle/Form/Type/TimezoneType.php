@@ -41,9 +41,9 @@ class TimezoneType extends AbstractType
         }
 
         $resolver->setDefaults(
-            array(
+            [
                 'choices' => self::$timezones,
-            )
+            ]
         );
     }
 
@@ -76,7 +76,7 @@ class TimezoneType extends AbstractType
     public static function getTimezones()
     {
         if (null === static::$timezones) {
-            static::$timezones = array();
+            static::$timezones = [];
 
             $timezones = self::getTimezonesData();
             foreach ($timezones as $timezoneData) {
@@ -122,13 +122,13 @@ class TimezoneType extends AbstractType
         $listIdentifiers = \DateTimeZone::listIdentifiers();
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
-        $timezones = array();
+        $timezones = [];
         foreach ($listIdentifiers as $identifier) {
             $timezone = new \DateTimeZone($identifier);
-            $timezones[$identifier] = array(
+            $timezones[$identifier] = [
                 'offset'      => $timezone->getOffset($now),
                 'timezone_id' => $identifier
-            );
+            ];
         }
 
         usort(

@@ -10,40 +10,40 @@ class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var array
      */
-    protected $expectedDefinitions = array(
+    protected $expectedDefinitions = [
         'oro_translation.form.type.translatable_entity',
         'oro_translation.controller',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $expectedParameters = array(
+    protected $expectedParameters = [
         'oro_translation.form.type.translatable_entity.class',
         'translator.class',
         'oro_translation.controller.class',
         'oro_translation.js_translation.domains',
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $config = array(
-        'oro_translation' => array(
-            'js_translation' => array(
-                'domains' => array('validators'),
+    protected $config = [
+        'oro_translation' => [
+            'js_translation' => [
+                'domains' => ['validators'],
                 'debug'   => false,
-            )
-        )
-    );
+            ]
+        ]
+    ];
 
     public function testLoad()
     {
-        $actualDefinitions = array();
-        $actualParameters  = array();
+        $actualDefinitions = [];
+        $actualParameters  = [];
 
         $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
-            ->setMethods(array('setDefinition', 'setParameter', 'getDefinition'))
+            ->setMethods(['setDefinition', 'setParameter', 'getDefinition'])
             ->getMock();
         $container->expects($this->any())
             ->method('setDefinition')

@@ -20,8 +20,8 @@ class OroNavigationExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $entitiesConfig = array();
-        $titlesConfig = array();
+        $entitiesConfig = [];
+        $titlesConfig = [];
 
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);

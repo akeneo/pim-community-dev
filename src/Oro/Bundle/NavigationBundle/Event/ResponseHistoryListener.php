@@ -69,10 +69,10 @@ class ResponseHistoryListener
             return false;
         }
 
-        $postArray = array(
+        $postArray = [
             'url'      => $request->getRequestUri(),
             'user'     => $this->user,
-        );
+        ];
 
         /** @var $historyItem  NavigationHistoryItem */
         $historyItem = $this->em->getRepository('Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem')

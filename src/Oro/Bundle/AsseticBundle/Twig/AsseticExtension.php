@@ -39,7 +39,7 @@ class AsseticExtension extends \Twig_Extension
         AssetFactory $assetsFactory,
         array $assets,
         TemplateNameParserInterface $templateNameParser,
-        $enabledBundles = array()
+        $enabledBundles = []
     ) {
         $this->enabledBundles = $enabledBundles;
         $this->templateNameParser = $templateNameParser;
@@ -52,9 +52,9 @@ class AsseticExtension extends \Twig_Extension
      */
     public function getTokenParsers()
     {
-        return array(
+        return [
             new AsseticTokenParser($this->assets['css'], $this->assetsFactory, 'oro_css', 'css/*.css'),
-        );
+        ];
     }
 
     /**
@@ -62,9 +62,9 @@ class AsseticExtension extends \Twig_Extension
      */
     public function getNodeVisitors()
     {
-        return array(
+        return [
             new AsseticNodeVisitor($this->templateNameParser, $this->enabledBundles),
-        );
+        ];
     }
 
     /**

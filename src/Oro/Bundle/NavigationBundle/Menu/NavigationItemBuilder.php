@@ -46,13 +46,13 @@ class NavigationItemBuilder implements BuilderInterface
      * @param array                   $options
      * @param string|null             $alias
      */
-    public function build(ItemInterface $menu, array $options = array(), $alias = null)
+    public function build(ItemInterface $menu, array $options = [], $alias = null)
     {
         $user = $this->tokenStorage->getToken()->getUser();
         $menu->setExtra('type', $alias);
         if (is_object($user)) {
             /** @var $entity NavigationItemInterface */
-            $entity = $this->factory->createItem($alias, array());
+            $entity = $this->factory->createItem($alias, []);
 
             /** @var $repo NavigationRepositoryInterface */
             $repo = $this->em->getRepository(get_class($entity));
@@ -60,11 +60,11 @@ class NavigationItemBuilder implements BuilderInterface
             foreach ($items as $item) {
                 $menu->addChild(
                     $alias . '_item_' . $item['id'],
-                    array(
+                    [
                         'extras' => $item,
                         'uri'    => $item['url'],
                         'label'  => $item['title']
-                    )
+                    ]
                 );
             }
         }

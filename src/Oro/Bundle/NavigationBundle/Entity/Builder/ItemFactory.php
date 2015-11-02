@@ -11,7 +11,7 @@ class ItemFactory
      *
      * @var array
      */
-    protected $builders = array();
+    protected $builders = [];
 
     /**
      * Add builder

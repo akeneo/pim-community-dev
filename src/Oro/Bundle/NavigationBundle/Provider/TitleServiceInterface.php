@@ -21,7 +21,7 @@ interface TitleServiceInterface
      * @param null  $suffix
      * @return $this
      */
-    public function render($params = array(), $title = null, $prefix = null, $suffix = null);
+    public function render($params = [], $title = null, $prefix = null, $suffix = null);
 
     /**
      * Load title template from database

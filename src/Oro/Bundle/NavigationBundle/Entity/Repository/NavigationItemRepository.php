@@ -19,19 +19,19 @@ class NavigationItemRepository extends EntityRepository implements NavigationRep
      *
      * @return array
      */
-    public function getNavigationItems($user, $type, $options = array())
+    public function getNavigationItems($user, $type, $options = [])
     {
         $qb = $this->_em->createQueryBuilder();
 
         $qb->add(
             'select',
             new Expr\Select(
-                array(
+                [
                     'ni.id',
                     'ni.url',
                     'ni.title',
                     'ni.type'
-                )
+                ]
             )
         )
         ->add('from', new Expr\From('Oro\Bundle\NavigationBundle\Entity\NavigationItem', 'ni'))
@@ -43,7 +43,7 @@ class NavigationItemRepository extends EntityRepository implements NavigationRep
             )
         )
         ->add('orderBy', new Expr\OrderBy('ni.position', 'ASC'))
-        ->setParameters(array('user' => $user, 'type' => $type));
+        ->setParameters(['user' => $user, 'type' => $type]);
 
         return $qb->getQuery()->getArrayResult();
     }

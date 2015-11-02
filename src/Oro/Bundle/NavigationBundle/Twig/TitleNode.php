@@ -10,7 +10,7 @@ class TitleNode extends \Twig_Node
 {
     public function __construct(\Twig_Node $expr = null, $lineno = 0, $tag = null)
     {
-        parent::__construct(array('expr' => $expr), array(), $lineno, $tag);
+        parent::__construct(['expr' => $expr], [], $lineno, $tag);
     }
 
     /**

@@ -39,11 +39,11 @@ class ConfigSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreSubmit()
     {
-        $data = array(
-            'oro_user___level' => array(
+        $data = [
+            'oro_user___level' => [
                 'use_parent_scope_value' => true,
-            ),
-        );
+            ],
+        ];
 
         $this->configManager->expects($this->once())
             ->method('get')

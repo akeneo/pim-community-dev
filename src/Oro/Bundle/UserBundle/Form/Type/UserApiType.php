@@ -29,10 +29,10 @@ class UserApiType extends UserType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults(
-            array(
+            [
                 'csrf_protection'      => false,
-                'validation_groups'    => array('ProfileAPI', 'Default'),
-            )
+                'validation_groups'    => ['ProfileAPI', 'Default'],
+            ]
         );
     }
 

@@ -51,9 +51,7 @@ class FamilyStandardConverter implements StandardArrayConverterInterface
 
         $convertedItem = ['labels' => [], 'requirements' => []];
         foreach ($item as $field => $data) {
-            if ('' !== $data) {
-                $convertedItem = $this->convertField($convertedItem, $field, $data);
-            }
+            $convertedItem = $this->convertField($convertedItem, $field, $data);
         }
 
         return $convertedItem;
@@ -72,11 +70,11 @@ class FamilyStandardConverter implements StandardArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } elseif (false !== strpos($field, 'requirements-', 0)) {
+        } elseif ('' !== $data && false !== strpos($field, 'requirements-', 0)) {
             $requirementsTokens = explode('-', $field);
             $requirementsLocale = $requirementsTokens[1];
             $convertedItem['requirements'][$requirementsLocale] = explode(',', $data);
-        } else {
+        } elseif ('' !== $data) {
             switch ($field) {
                 case 'code':
                 case 'attribute_as_label':

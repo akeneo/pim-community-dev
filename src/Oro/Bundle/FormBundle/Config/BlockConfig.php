@@ -37,7 +37,7 @@ class BlockConfig implements FormConfigInterface
     /**
      * @var SubBlockConfig[]
      */
-    protected $subBlocks = array();
+    protected $subBlocks = [];
 
     /**
      * @param $code
@@ -218,7 +218,7 @@ class BlockConfig implements FormConfigInterface
      */
     public function toArray()
     {
-        return array(
+        return [
             'title'       => $this->title,
             'description' => $this->description,
             'class'       => $this->class,
@@ -228,12 +228,12 @@ class BlockConfig implements FormConfigInterface
                 },
                 $this->subBlocks
             )
-        );
+        ];
     }
 
     protected function sortSubBlocks()
     {
-        $priority = array();
+        $priority = [];
         foreach ($this->subBlocks as $key => $subBlock) {
             $priority[$key] = $subBlock->getPriority();
         }

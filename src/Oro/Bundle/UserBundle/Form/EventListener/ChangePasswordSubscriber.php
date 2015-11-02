@@ -15,10 +15,10 @@ class ChangePasswordSubscriber extends UserSubscriber
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::POST_SUBMIT  => 'onSubmit',
             FormEvents::PRE_SUBMIT   => 'preSubmit'
-        );
+        ];
     }
 
     /**
@@ -42,10 +42,10 @@ class ChangePasswordSubscriber extends UserSubscriber
                     'currentPassword',
                     'password',
                     null,
-                    array(
+                    [
                         'auto_initialize' => false,
                         'mapped'          => false,
-                    )
+                    ]
                 )
             );
         }

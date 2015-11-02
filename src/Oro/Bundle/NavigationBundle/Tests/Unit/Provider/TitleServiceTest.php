@@ -101,7 +101,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
         $this->translator->expects($this->exactly(3))
             ->method('trans');
 
-        $result = $this->titleService->render(array(), null, 'Prefix', 'Suffix');
+        $result = $this->titleService->render([], null, 'Prefix', 'Suffix');
 
         $this->assertTrue(is_string($result));
     }
@@ -130,7 +130,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
         $storedTitleMock->expects($this->once())
             ->method('getSuffix');
 
-        $result = $this->titleService->render(array(), $data, null, null, true);
+        $result = $this->titleService->render([], $data, null, null, true);
 
         $this->assertTrue(is_string($result));
     }
@@ -138,7 +138,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
     public function testSettersAndGetters()
     {
         $testString = 'Test string';
-        $testArray = array('test');
+        $testArray = ['test'];
 
         $this->assertInstanceOf(
             '\Oro\Bundle\NavigationBundle\Provider\TitleService',
@@ -152,13 +152,13 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
         $this->titleService->setParams($testArray);
         $this->assertEquals($testArray, $this->titleService->getParams());
 
-        $dataArray = array(
+        $dataArray = [
             'titleTemplate'      => 'titleTemplate',
             'titleShortTemplate' => 'titleShortTemplate',
             'prefix'             => 'prefix',
             'suffix'             => 'suffix',
-            'params'             => array('test_params')
-        );
+            'params'             => ['test_params']
+        ];
         $this->titleService->setData($dataArray);
 
         $this->assertEquals($dataArray['titleTemplate'], $this->titleService->getTemplate());
@@ -181,7 +181,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->repository->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo(array('route' => $route)))
+            ->with($this->equalTo(['route' => $route]))
             ->will($this->returnValue($entityMock));
 
         $testTitle = 'Test title';
@@ -207,7 +207,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->repository->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo(array('route' => $route)))
+            ->with($this->equalTo(['route' => $route]))
             ->will($this->returnValue(false));
 
         $this->titleService->loadByRoute($route);
@@ -226,10 +226,10 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->repository->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo(array('route' => $route)))
+            ->with($this->equalTo(['route' => $route]))
             ->will($this->returnValue(false));
 
-        $titles = array($route => 'Test title template %placeholder%');
+        $titles = [$route => 'Test title template %placeholder%'];
         $this->titleService->setTitles($titles);
         $this->titleService->loadByRoute($route);
 
@@ -243,11 +243,11 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->annotationsReader->expects($this->once())
             ->method('getData')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->configReader->expects($this->once())
             ->method('getData')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
     }
 
     public function testRemoveItemsDuringUpdate()
@@ -266,7 +266,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->repository->expects($this->once())
             ->method('findAll')
-            ->will($this->returnValue(array($entityMock)));
+            ->will($this->returnValue([$entityMock]));
 
         $this->em->expects($this->once())
             ->method('remove');
@@ -274,14 +274,14 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
         $this->em->expects($this->once())
             ->method('flush');
 
-        $this->titleService->update(array());
+        $this->titleService->update([]);
     }
 
     public function testUpdateItemsDuringUpdate()
     {
         $this->prepareReaders();
 
-        $testData = array('route_name' => 'Title');
+        $testData = ['route_name' => 'Title'];
 
         $this->em->expects($this->once())
             ->method('getRepository')
@@ -314,7 +314,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->repository->expects($this->once())
             ->method('findAll')
-            ->will($this->returnValue(array($entityMock)));
+            ->will($this->returnValue([$entityMock]));
 
         $this->em->expects($this->once())
             ->method('persist');
@@ -324,7 +324,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->breadcrumbManager->expects($this->once())
             ->method('getBreadcrumbLabels')
-            ->will($this->returnValue(array('test-breadcrumb')));
+            ->will($this->returnValue(['test-breadcrumb']));
 
         $this->titleService->update($testData);
     }
@@ -333,7 +333,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->prepareReaders();
 
-        $testData = array('route_name' => 'Title');
+        $testData = ['route_name' => 'Title'];
 
         $this->em->expects($this->once())
             ->method('getRepository')
@@ -341,7 +341,7 @@ class TitleServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->repository->expects($this->once())
             ->method('findAll')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->em->expects($this->once())
             ->method('persist')

@@ -63,7 +63,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
         // dispatch pre handler event
-        $massActionEvent = new MassActionEvent($datagrid, $massAction, array());
+        $massActionEvent = new MassActionEvent($datagrid, $massAction, []);
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_DELETE_PRE_HANDLER, $massActionEvent);
 
         $datasource = $datagrid->getDatasource();

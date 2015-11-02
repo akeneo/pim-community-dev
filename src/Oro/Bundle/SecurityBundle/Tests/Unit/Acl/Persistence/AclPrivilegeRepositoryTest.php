@@ -56,7 +56,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new EntityMaskBuilder()));
         $this->extension->expects($this->any())
             ->method('getAllMaskBuilders')
-            ->will($this->returnValue(array(new EntityMaskBuilder())));
+            ->will($this->returnValue([new EntityMaskBuilder()]));
 
         $this->extensionSelector = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector')
             ->disableOriginalConstructor()
@@ -77,7 +77,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->extensionSelector));
         $this->manager->expects($this->any())
             ->method('getAllExtensions')
-            ->will($this->returnValue(array($this->extension)));
+            ->will($this->returnValue([$this->extension]));
         $this->manager->expects($this->any())
             ->method('getAceProvider')
             ->will($this->returnValue($this->aceProvider));
@@ -88,7 +88,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testGetPermissionNames()
     {
         $extensionKey = 'test';
-        $permissions = array('VIEW', 'EDIT');
+        $permissions = ['VIEW', 'EDIT'];
 
         $this->manager->expects($this->once())
             ->method('getRootOid')
@@ -107,25 +107,25 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
     public function testGetPermissionNamesForSeveralAclExtensions()
     {
         $extensionKey1 = 'test1';
-        $permissions1 = array('VIEW', 'EDIT');
+        $permissions1 = ['VIEW', 'EDIT'];
 
         $extensionKey2 = 'test2';
-        $permissions2 = array('VIEW', 'CREATE');
+        $permissions2 = ['VIEW', 'CREATE'];
 
         $this->manager->expects($this->exactly(2))
             ->method('getRootOid')
             ->will(
                 $this->returnValueMap(
-                    array(
-                        array(
+                    [
+                        [
                             $extensionKey1,
                             new ObjectIdentity($extensionKey1, ObjectIdentityFactory::ROOT_IDENTITY_TYPE)
-                        ),
-                        array(
+                        ],
+                        [
                             $extensionKey2,
                             new ObjectIdentity($extensionKey2, ObjectIdentityFactory::ROOT_IDENTITY_TYPE)
-                        ),
-                    )
+                        ],
+                    ]
                 )
             );
         $this->extension->expects($this->at(0))
@@ -136,8 +136,8 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($permissions2));
 
         $this->assertEquals(
-            array('VIEW', 'EDIT', 'CREATE'),
-            $this->repository->getPermissionNames(array($extensionKey1, $extensionKey2))
+            ['VIEW', 'EDIT', 'CREATE'],
+            $this->repository->getPermissionNames([$extensionKey1, $extensionKey2])
         );
     }
 
@@ -152,10 +152,10 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $sid->expects($this->any())->method('equals')->will($this->returnValue(true));
 
         $extensionKey = 'test';
-        $classes = array(
+        $classes = [
             'Acme\Class1',
             'Acme\Class2',
-        );
+        ];
         $class1 = $this->getMock('Oro\Bundle\SecurityBundle\Acl\Extension\AclClassInfo');
         $class1->expects($this->once())->method('getClassName')->will($this->returnValue($classes[0]));
         $class1->expects($this->once())->method('getGroup')->will($this->returnValue('SomeGroup'));
@@ -172,40 +172,40 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $oid1Acl = $this->getMock('Symfony\Component\Security\Acl\Model\AclInterface');
         $oid2 = new ObjectIdentity($extensionKey, $classes[1]);
 
-        $oidsWithRoot = array($rootOid, $oid2, $oid1);
+        $oidsWithRoot = [$rootOid, $oid2, $oid1];
 
-        $aclsSrc = array(
-            array('oid' => $rootOid, 'acl' => $rootAcl),
-            array('oid' => $oid1, 'acl' => $oid1Acl),
-            array('oid' => $oid2, 'acl' => null),
-        );
+        $aclsSrc = [
+            ['oid' => $rootOid, 'acl' => $rootAcl],
+            ['oid' => $oid1, 'acl' => $oid1Acl],
+            ['oid' => $oid2, 'acl' => null],
+        ];
 
-        $allowedPermissions = array();
-        $allowedPermissions[(string) $rootOid] = array('VIEW', 'CREATE', 'EDIT');
-        $allowedPermissions[(string) $oid1] = array('VIEW', 'CREATE', 'EDIT');
-        $allowedPermissions[(string) $oid2] = array('VIEW', 'CREATE');
+        $allowedPermissions = [];
+        $allowedPermissions[(string) $rootOid] = ['VIEW', 'CREATE', 'EDIT'];
+        $allowedPermissions[(string) $oid1] = ['VIEW', 'CREATE', 'EDIT'];
+        $allowedPermissions[(string) $oid2] = ['VIEW', 'CREATE'];
 
         $rootAce = $this->getAce('root', $sid);
         $rootAcl->expects($this->any())
             ->method('getObjectAces')
-            ->will($this->returnValue(array($rootAce)));
+            ->will($this->returnValue([$rootAce]));
         $rootAcl->expects($this->never())
             ->method('getClassAces');
 
         $oid1Ace = $this->getAce('oid1', $sid);
         $oid1Acl->expects($this->any())
             ->method('getClassAces')
-            ->will($this->returnValue(array($oid1Ace)));
+            ->will($this->returnValue([$oid1Ace]));
         $oid1Acl->expects($this->once())
             ->method('getObjectAces')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->extension->expects($this->once())
             ->method('getExtensionKey')
             ->will($this->returnValue($extensionKey));
         $this->extension->expects($this->once())
             ->method('getClasses')
-            ->will($this->returnValue(array($class2, $class1)));
+            ->will($this->returnValue([$class2, $class1]));
         $this->extension->expects($this->any())
             ->method('getAllowedPermissions')
             ->will(
@@ -230,7 +230,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             );
         $this->extension->expects($this->any())
             ->method('getPermissions')
-            ->will($this->returnValue(array('VIEW', 'CREATE', 'EDIT')));
+            ->will($this->returnValue(['VIEW', 'CREATE', 'EDIT']));
         $this->extension->expects($this->any())
             ->method('getAccessLevel')
             ->will(
@@ -343,7 +343,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($extensionKey));
         $this->extension->expects($this->any())
             ->method('getPermissions')
-            ->will($this->returnValue(array('VIEW', 'CREATE', 'EDIT')));
+            ->will($this->returnValue(['VIEW', 'CREATE', 'EDIT']));
         $this->extension->expects($this->any())
             ->method('adaptRootMask')
             ->will(
@@ -380,7 +380,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $thisLink = $this;
 
         $this->expectationsForSetPermission = $expectations;
-        $this->triggeredExpectationsForSetPermission = array();
+        $this->triggeredExpectationsForSetPermission = [];
         $triggeredExpectationsForSetPermission = & $this->triggeredExpectationsForSetPermission;
         $this->manager->expects($this->any())
             ->method('setPermission')
@@ -446,7 +446,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $thisLink = $this;
 
         $this->expectationsForDeletePermission = $expectations;
-        $this->triggeredExpectationsForDeletePermission = array();
+        $this->triggeredExpectationsForDeletePermission = [];
         $triggeredExpectationsForDeletePermission = & $this->triggeredExpectationsForDeletePermission;
         $this->manager->expects($this->any())
             ->method('deletePermission')
@@ -510,7 +510,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
     private function setExpectationsForGetAces(array $expectations)
     {
         $this->expectationsForGetAces = $expectations;
-        $this->triggeredExpectationsForGetAces = array();
+        $this->triggeredExpectationsForGetAces = [];
         $triggeredExpectationsForGetAces = & $this->triggeredExpectationsForGetAces;
         $this->manager->expects($this->any())
             ->method('getAces')
@@ -529,7 +529,7 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
                             }
                         }
 
-                        return array();
+                        return [];
                     }
                 )
             );
@@ -543,24 +543,24 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $privileges = new ArrayCollection();
         $privileges[] = self::getPrivilege(
             'test:Acme\Class1',
-            array(
+            [
                 'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
                 'EDIT'   => AccessLevel::NONE_LEVEL,
-            )
+            ]
         );
 
         $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $this->initSavePrivileges($extensionKey, $rootOid);
 
-        $this->setExpectationsForGetAces(array());
+        $this->setExpectationsForGetAces([]);
 
         $this->setExpectationsForSetPermission(
             $sid,
-            array(
-                'test:(root)'      => array(),
-                'test:Acme\Class1' => array('VIEW_SYSTEM', 'CREATE_BASIC'),
-            )
+            [
+                'test:(root)'      => [],
+                'test:Acme\Class1' => ['VIEW_SYSTEM', 'CREATE_BASIC'],
+            ]
         );
 
         $this->repository->savePrivileges($sid, $privileges);
@@ -577,40 +577,40 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $privileges = new ArrayCollection();
         $privileges[] = self::getPrivilege(
             'test:(root)',
-            array(
+            [
                 'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
                 'EDIT'   => AccessLevel::NONE_LEVEL,
-            )
+            ]
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class1',
-            array(
+            [
                 'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
                 'EDIT'   => AccessLevel::NONE_LEVEL,
-            )
+            ]
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class2',
-            array(
+            [
                 'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::SYSTEM_LEVEL,
                 'EDIT'   => AccessLevel::NONE_LEVEL,
-            )
+            ]
         );
 
         $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $this->initSavePrivileges($extensionKey, $rootOid);
 
-        $this->setExpectationsForGetAces(array());
+        $this->setExpectationsForGetAces([]);
 
         $this->setExpectationsForSetPermission(
             $sid,
-            array(
-                'test:(root)'      => array('VIEW_SYSTEM', 'CREATE_BASIC'),
-                'test:Acme\Class2' => array('VIEW_SYSTEM', 'CREATE_SYSTEM'),
-            )
+            [
+                'test:(root)'      => ['VIEW_SYSTEM', 'CREATE_BASIC'],
+                'test:Acme\Class2' => ['VIEW_SYSTEM', 'CREATE_SYSTEM'],
+            ]
         );
 
         $this->repository->savePrivileges($sid, $privileges);
@@ -624,63 +624,63 @@ class AclPrivilegeRepositoryTest extends \PHPUnit_Framework_TestCase
         $extensionKey = 'test';
         $rootOid = new ObjectIdentity($extensionKey, ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
 
-        $class3Ace = $this->getAce(self::getMask(array('VIEW_BASIC', 'CREATE_BASIC')));
+        $class3Ace = $this->getAce(self::getMask(['VIEW_BASIC', 'CREATE_BASIC']));
 
         $privileges = new ArrayCollection();
         $privileges[] = self::getPrivilege(
             'test:(root)',
-            array(
+            [
                 'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
                 'EDIT'   => AccessLevel::NONE_LEVEL,
-            )
+            ]
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class1', // no changes because permissions = root
-            array(
+            [
                 'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
                 'EDIT'   => AccessLevel::NONE_LEVEL,
-            )
+            ]
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class2', // new
-            array(
+            [
                 'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::SYSTEM_LEVEL,
                 'EDIT'   => AccessLevel::NONE_LEVEL,
-            )
+            ]
         );
         $privileges[] = self::getPrivilege(
             'test:Acme\Class3', // existing and should be deleted because permissions = root
-            array(
+            [
                 'VIEW'   => AccessLevel::SYSTEM_LEVEL,
                 'CREATE' => AccessLevel::BASIC_LEVEL,
                 'EDIT'   => AccessLevel::NONE_LEVEL,
-            )
+            ]
         );
 
         $sid = $this->getMock('Symfony\Component\Security\Acl\Model\SecurityIdentityInterface');
         $this->initSavePrivileges($extensionKey, $rootOid);
 
         $this->setExpectationsForGetAces(
-            array(
-                'test:Acme\Class3' => array($class3Ace)
-            )
+            [
+                'test:Acme\Class3' => [$class3Ace]
+            ]
         );
 
         $this->setExpectationsForSetPermission(
             $sid,
-            array(
-                'test:(root)'      => array('VIEW_SYSTEM', 'CREATE_BASIC'),
-                'test:Acme\Class2' => array('VIEW_SYSTEM', 'CREATE_SYSTEM'),
-            )
+            [
+                'test:(root)'      => ['VIEW_SYSTEM', 'CREATE_BASIC'],
+                'test:Acme\Class2' => ['VIEW_SYSTEM', 'CREATE_SYSTEM'],
+            ]
         );
         $this->setExpectationsForDeletePermission(
             $sid,
-            array(
-                'test:Acme\Class3' => array('VIEW_BASIC', 'CREATE_BASIC'),
-            )
+            [
+                'test:Acme\Class3' => ['VIEW_BASIC', 'CREATE_BASIC'],
+            ]
         );
 
         $this->repository->savePrivileges($sid, $privileges);

@@ -23,7 +23,7 @@ class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
     {
         return in_array(
             $action,
-            array(UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE)
+            [UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE]
         );
     }
 

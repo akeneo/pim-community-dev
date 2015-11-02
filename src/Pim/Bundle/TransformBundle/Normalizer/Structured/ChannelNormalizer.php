@@ -17,21 +17,21 @@ class ChannelNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
-        return array(
+        return [
             'code'             => $object->getCode(),
             'label'            => $this->normalizeLabel($object),
             'currencies'       => $this->normalizeCurrencies($object),
             'locales'          => $this->normalizeLocales($object),
             'category'         => $this->normalizeCategoryTree($object),
             'conversion_units' => $this->normalizeConversionUnits($object),
-        );
+        ];
     }
 
     /**
@@ -63,7 +63,7 @@ class ChannelNormalizer implements NormalizerInterface
      */
     protected function normalizeCurrencies(ChannelInterface $channel)
     {
-        $currencies = array();
+        $currencies = [];
         foreach ($channel->getCurrencies() as $currency) {
             $currencies[] = $currency->getCode();
         }
@@ -80,7 +80,7 @@ class ChannelNormalizer implements NormalizerInterface
      */
     protected function normalizeLocales(ChannelInterface $channel)
     {
-        $locales = array();
+        $locales = [];
         foreach ($channel->getLocales() as $locale) {
             $locales[] = $locale->getCode();
         }
@@ -109,7 +109,7 @@ class ChannelNormalizer implements NormalizerInterface
      */
     protected function normalizeConversionUnits(ChannelInterface $channel)
     {
-        $result = array();
+        $result = [];
         foreach ($channel->getConversionUnits() as $family => $unit) {
             $result[] = sprintf('%s: %s', $family, $unit);
         }

@@ -16,6 +16,8 @@ use Pim\Component\Localization\Exception\FormatLocalizerException;
  */
 interface LocalizerInterface
 {
+    const DEFAULT_DATE_FORMAT = 'Y-m-d';
+
     /**
      * Data provided respects the expected format ?
      *

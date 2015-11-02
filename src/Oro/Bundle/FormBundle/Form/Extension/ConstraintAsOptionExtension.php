@@ -28,9 +28,9 @@ class ConstraintAsOptionExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setNormalizer('constraints', function (Options $options, $constraints) {
-            $constraints = is_object($constraints) ? array($constraints) : (array) $constraints;
+            $constraints = is_object($constraints) ? [$constraints] : (array) $constraints;
 
-            $constraintObjects = array();
+            $constraintObjects = [];
             foreach ($constraints as $constraint) {
                 if (is_array($constraint)) {
                     foreach ($constraint as $name => $options) {

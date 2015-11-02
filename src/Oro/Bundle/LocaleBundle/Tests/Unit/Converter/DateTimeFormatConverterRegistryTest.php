@@ -29,7 +29,7 @@ class DateTimeFormatConverterRegistryTest extends \PHPUnit_Framework_TestCase
         $name = 'test';
         $converter = $this->createFormatConverter();
         $this->registry->addFormatConverter($name, $converter);
-        $this->assertAttributeEquals(array($name => $converter), 'converters', $this->registry);
+        $this->assertAttributeEquals([$name => $converter], 'converters', $this->registry);
     }
 
     /**
@@ -69,7 +69,7 @@ class DateTimeFormatConverterRegistryTest extends \PHPUnit_Framework_TestCase
         $name = 'test';
         $converter = $this->createFormatConverter();
         $this->registry->addFormatConverter($name, $converter);
-        $this->assertEquals(array($name => $converter), $this->registry->getFormatConverters());
+        $this->assertEquals([$name => $converter], $this->registry->getFormatConverters());
     }
 
     /**

@@ -28,7 +28,7 @@ class CacheClearer
      *
      * @var array
      */
-    protected $nonClearableEntities = array();
+    protected $nonClearableEntities = [];
 
     /**
      * Constructor

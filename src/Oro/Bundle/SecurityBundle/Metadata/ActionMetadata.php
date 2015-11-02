@@ -71,11 +71,11 @@ class ActionMetadata implements AclClassInfo, \Serializable
     public function serialize()
     {
         return serialize(
-            array(
+            [
                 $this->name,
                 $this->group,
                 $this->label
-            )
+            ]
         );
     }
 

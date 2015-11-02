@@ -33,7 +33,7 @@ class RegexpGuesser implements GuesserInterface
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * Constructor
@@ -47,7 +47,7 @@ class RegexpGuesser implements GuesserInterface
         PropertyTransformerInterface $transformer,
         $class,
         array $regexps,
-        array $options = array()
+        array $options = []
     ) {
         $this->transformer = $transformer;
         $this->class = $class;
@@ -66,7 +66,7 @@ class RegexpGuesser implements GuesserInterface
 
         foreach ($this->regexps as $regexp) {
             if (preg_match($regexp, $columnInfo->getLabel())) {
-                return array($this->transformer, $this->options);
+                return [$this->transformer, $this->options];
             }
         }
 
