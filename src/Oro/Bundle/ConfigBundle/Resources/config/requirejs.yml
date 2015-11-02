@@ -1,0 +1,3 @@
+config:
+    paths:
+        oro/system/config: oroconfig/system/config

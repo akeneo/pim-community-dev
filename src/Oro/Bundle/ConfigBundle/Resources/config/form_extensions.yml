@@ -1,0 +1,3 @@
+extensions:
+    oro-system-config:
+        module: oro/system/config

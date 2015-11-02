@@ -55,6 +55,7 @@ config:
                 oro_user_role_update:                        pim/controller/form
                 oro_user_group_create:                       pim/controller/form
                 oro_user_group_update:                       pim/controller/form
+                oro_config_configuration_system:             pim/controller/form
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
