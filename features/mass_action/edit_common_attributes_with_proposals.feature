@@ -9,9 +9,15 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And the following family:
       | code       | attributes |
       | high_heels | sku, name  |
+    And the following category:
+      | code | label-en_US | parent          |
+      | hat  | Hat         | 2014_collection |
+    And the following product category accesses:
+      | product category | user group | access |
+      | hat              | Redactor   | own    |
     And the following products:
       | sku          | categories | family     |
-      | owned        | tops       | high_heels |
+      | owned        | hat        | high_heels |
       | editable     | tees       | high_heels |
       | viewable     | pants      | high_heels |
       | notviewable  | jeans      | high_heels |
