@@ -59,7 +59,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[0]
             ->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Type');
         $constraintsAll->constraints[1]
-            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric');
+            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\IsNumeric');
         $constraintsAll->constraints[2]
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal');
         $constraintsAll->constraints[3]
@@ -83,7 +83,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[0]
             ->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Type');
         $constraintsAll->constraints[1]
-            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric');
+            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\IsNumeric');
         $constraintsAll->constraints[2]
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Currency');
     }
@@ -107,7 +107,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[0]
             ->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Type');
         $constraintsAll->constraints[1]
-            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric');
+            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\IsNumeric');
         $constraintsAll->constraints[2]
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal');
         $constraintsAll->constraints[3]
@@ -140,7 +140,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[0]->type
             ->shouldBe('Pim\Component\Catalog\Model\ProductPriceInterface');
         $constraintsAll->constraints[1]
-            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric');
+            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\IsNumeric');
         $constraintsAll->constraints[2]
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Range');
         $constraintsAll->constraints[3]

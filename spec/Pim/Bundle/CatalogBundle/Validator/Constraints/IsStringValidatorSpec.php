@@ -5,12 +5,12 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\String;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\IsString;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class StringValidatorSpec extends ObjectBehavior
+class IsStringValidatorSpec extends ObjectBehavior
 {
     function let(ExecutionContextInterface $context)
     {
@@ -19,7 +19,7 @@ class StringValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\StringValidator');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\IsStringValidator');
     }
 
     function it_is_a_validator_constraint()
@@ -27,7 +27,7 @@ class StringValidatorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Validator\ConstraintValidator');
     }
 
-    function it_does_not_add_violation_null_value($context, String $stringConstraint)
+    function it_does_not_add_violation_null_value($context, IsString $stringConstraint)
     {
         $context
             ->buildViolation(Argument::cetera())
@@ -39,7 +39,7 @@ class StringValidatorSpec extends ObjectBehavior
         $this->validate(null, $stringConstraint);
     }
 
-    function it_does_not_add_violation_when_validates_string_value($context, String $stringConstraint)
+    function it_does_not_add_violation_when_validates_string_value($context, IsString $stringConstraint)
     {
         $context
             ->buildViolation(Argument::cetera())
@@ -50,7 +50,7 @@ class StringValidatorSpec extends ObjectBehavior
 
     function it_adds_violation_when_validating_non_string_value(
         $context,
-        String $stringConstraint,
+        IsString $stringConstraint,
         ConstraintViolationBuilderInterface $violation
     ) {
         $context
@@ -66,7 +66,7 @@ class StringValidatorSpec extends ObjectBehavior
 
     function it_does_not_add_violation_when_validates_string_product_value(
         $context,
-        String $stringConstraint,
+        IsString $stringConstraint,
         ProductValueInterface $productValue,
         AttributeInterface $attribute
     ) {
@@ -84,7 +84,7 @@ class StringValidatorSpec extends ObjectBehavior
 
     function it_adds_violation_when_validates_non_string_product_value(
         $context,
-        String $stringConstraint,
+        IsString $stringConstraint,
         ProductValueInterface $productValue,
         AttributeInterface $attribute,
         ConstraintViolationBuilderInterface $violation

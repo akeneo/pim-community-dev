@@ -4,11 +4,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 
-class StringSpec extends ObjectBehavior
+class IsStringSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\String');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\IsString');
     }
 
     function it_has_message()

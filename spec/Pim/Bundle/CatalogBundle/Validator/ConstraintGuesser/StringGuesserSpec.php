@@ -47,6 +47,6 @@ class StringGuesserSpec extends ObjectBehavior
         $constraints->shouldHaveCount(1);
 
         $constraint = $constraints[0];
-        $constraint->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\String');
+        $constraint->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\IsString');
     }
 }

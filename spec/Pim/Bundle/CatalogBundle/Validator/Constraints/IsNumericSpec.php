@@ -4,11 +4,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 
-class NumericSpec extends ObjectBehavior
+class IsNumericSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\IsNumeric');
     }
 
     function it_has_message()
