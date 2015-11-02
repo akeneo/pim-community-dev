@@ -49,12 +49,18 @@ class RefuseNotificationSubscriberSpec extends ObjectBehavior
         $this->send($event);
     }
 
-    function it_does_not_send_on_unknown_user($notifier, ProductDraftInterface $draft, GenericEvent $event)
-    {
+    function it_does_not_send_on_unknown_user(
+        $notifier,
+        $userRepository,
+        ProductDraftInterface $draft,
+        GenericEvent $event
+    ) {
         $event->getSubject()->willReturn($draft);
+        $draft->getAuthor()->willReturn('author');
+        $userRepository->findOneByIdentifier('author')->willReturn(null);
         $notifier->notify(Argument::any())->shouldNotBeCalled();
 
-        $this->shouldThrow('\LogicException')->duringSend($event);
+        $this->send($event);
     }
 
     function it_does_not_send_if_author_does_not_want_to_receive_notification(
