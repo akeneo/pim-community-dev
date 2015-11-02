@@ -22,8 +22,7 @@ class ProductFieldsBuilderSpec extends ObjectBehavior
         CurrencyManager $currencyManager,
         AssociationTypeRepositoryInterface $assocTypeRepo,
         CatalogContext $catalogContext,
-        ProductRepositoryInterface $productRepository,
-        ObjectRepository $attributeRepository
+        ProductRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith(
             $productRepository,
