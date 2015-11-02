@@ -29,6 +29,34 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /** @var Grid */
     public $datagrid;
 
+    /** @var array $gridNames */
+    protected $gridNames;
+
+    public function __construct()
+    {
+        $this->gridNames = [
+            'products' => 'product-grid'
+        ];
+    }
+
+    /**
+     * Returns the internal grid name from a human readable label
+     *
+     * @param string $gridLabel
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    public function getGridName($gridLabel)
+    {
+        if (array_key_exists($gridLabel, $this->gridNames)) {
+            return $this->gridNames[$gridLabel];
+        }
+
+        throw new \InvalidArgumentException(sprintf('No grid found for label %s.', $gridLabel));
+    }
+
     /**
      * @param PageFactory $pageFactory
      */
@@ -290,7 +318,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iShowTheFilter($filterName)
     {
         if (false === strpos(strtolower($filterName), 'category')) {
-            $this->wait(30000, '$("div.filter-box").length > 0;');
+            $this->wait('$("div.filter-box").length > 0;');
             $this->datagrid->showFilter($filterName);
             $this->wait();
             $this->datagrid->assertFilterVisible($filterName);
@@ -311,15 +339,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $columns
+     * @param string $gridLabel
      *
-     * @Given /^I display the columns (.*)$/
+     * @Given /^I display(?: in the (.*) grid)? the columns (.*)$/
      */
-    public function iDisplayTheColumns($columns)
+    public function iDisplayTheColumns($gridLabel, $columns)
     {
+        $gridLabel = (null === $gridLabel || '' === $gridLabel) ? 'products' : $gridLabel;
+        $gridName = $this->getGridName($gridLabel);
+
         $columns = $this->getMainContext()->listToArray($columns);
 
         $this->getMainContext()->executeScript(
-            sprintf('sessionStorage.setItem("product-grid.columns", "%s");', implode(',', $columns))
+            sprintf('sessionStorage.setItem("%s.columns", "%s");', $gridName, implode(',', $columns))
         );
 
         $this->getMainContext()->reload();
@@ -338,7 +370,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $expectedColumns = count($columns);
 
-        $this->wait(30000, '$("table.grid").length > 0');
+        $this->wait('$("table.grid").length > 0');
 
         $countColumns = $this->datagrid->countColumns();
         if ($expectedColumns !== $countColumns) {
@@ -497,7 +529,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSortByValue($columnName, $order = 'ascending')
     {
-        $this->wait(10000, sprintf('$("a:contains(\'%s\')").length > 0', ucfirst($columnName)));
+        $this->wait(sprintf('$("a:contains(\'%s\')").length > 0', ucfirst($columnName)));
         $this->datagrid->sortBy($columnName, $order);
         $this->wait();
     }
@@ -876,7 +908,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iPressSequentialEditButton()
     {
         $this->getCurrentPage()->sequentialEdit();
-        $this->wait(20000);
+        $this->wait();
         $this->getNavigationContext()->currentPage = 'Product edit';
     }
 
@@ -963,12 +995,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * Wait
      *
-     * @param int    $time
      * @param string $condition
      */
-    protected function wait($time = 10000, $condition = null)
+    protected function wait($condition = null)
     {
-        $this->getMainContext()->wait($time, $condition);
+        $this->getMainContext()->wait($condition);
     }
 
     /**

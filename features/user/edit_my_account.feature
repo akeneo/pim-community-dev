@@ -12,7 +12,7 @@ Feature: Change my profile
     Given I edit the "admin" user
     When I attach file "akeneo.jpg" to "Avatar"
     And I save the user
-    Then I should see "User saved"
+    Then I should see a flash message "User saved"
     And I should not see the default avatar
 
   Scenario: Successfully generate API key

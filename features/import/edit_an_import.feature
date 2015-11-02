@@ -19,15 +19,17 @@ Feature: Edit an import
   @javascript
   Scenario: Successfully update import job configuration
     Given I am on the "footwear_product_import" import job edit page
-    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column and Real time history update fields
+    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator and Date format fields
     When I fill in the following information:
-      | File              | file.csv |
-      | Delimiter         | \|       |
-      | Enclosure         | '        |
-      | Escape            | \\       |
-      | Categories column | cat      |
-      | Family column     | fam      |
-      | Groups column     | grp      |
+      | File               | file.csv |
+      | Delimiter          | \|       |
+      | Enclosure          | '        |
+      | Escape             | \\       |
+      | Categories column  | cat      |
+      | Family column      | fam      |
+      | Groups column      | grp      |
+      | Decimal separator  | .        |
+      | Date format        | Y-m-d    |
     And I uncheck the "Allow file upload" switch
     And I uncheck the "Enable the product" switch
     And I uncheck the "Real time history update" switch
@@ -42,6 +44,8 @@ Feature: Edit an import
     And I should see "Categories column cat"
     And I should see "Family column fam"
     And I should see "Groups column grp"
+    And I should see "Decimal separator dot (.)"
+    And I should see "Date format yyyy-mm-dd"
 
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "footwear_product_import" import job edit page

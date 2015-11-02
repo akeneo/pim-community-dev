@@ -27,15 +27,16 @@ class PriceConverterSpec extends ObjectBehavior
     function it_does_not_convert_when_only_data_is_provided($fieldSplitter, AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
-        $fieldNameInfo = ['attribute'      => $attribute,
-                          'locale_code'    => 'en_US',
-                          'scope_code'     => 'mobile',
-                          'price_currency' => 'EUR'
+        $fieldNameInfo = [
+            'attribute'      => $attribute,
+            'locale_code'    => 'en_US',
+            'scope_code'     => 'mobile',
+            'price_currency' => 'EUR'
         ];
 
         $value = '10.00';
 
-        $fieldSplitter->splitCollection($value)->willReturn(['10']);
+        $fieldSplitter->splitPrices($value)->willReturn(['10']);
         $fieldSplitter->splitUnitValue('10')->willReturn(['data' => null, 'currency' => null]);
 
         $expectedResult = ['attribute_code' => [[

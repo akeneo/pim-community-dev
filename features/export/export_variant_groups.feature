@@ -1,9 +1,9 @@
+@javascript
 Feature: Export variant groups
   In order to be able to access and modify groups data outside PIM
   As a product manager
   I need to be able to export variant groups
 
-  @javascript
   Scenario: Successfully export variant groups
     Given a "footwear" catalog configuration
     And the following job "footwear_variant_group_export" configuration:
@@ -20,7 +20,6 @@ Feature: Export variant groups
     caterpillar_boots;color,size;"Caterpillar boots";VARIANT
     """
 
-  @javascript
   Scenario: Successfully export variant groups with attributes
     Given a "footwear" catalog configuration
     And the following attribute:

@@ -25,11 +25,16 @@
           min-height: 80px;
           display: flex;
           flex-direction: row;
+          flex-wrap: wrap;
           align-items: flex-start;
           opacity: 0.4;
           
           &:hover {
             background-color: darken(@color-purple_hover, 2%);
+
+            .comment {
+              background-color: darken(@color-purple_hover, 5%);
+            }
           }
 
           &.new {
@@ -105,6 +110,12 @@
             flex-grow: 1;
             flex-shrink: 1;
             margin-left: 15px;
+            margin-top: 5px;
+
+            time {
+              font-size: 11px;
+              color: @akeneo-grey;
+            }
 
             > span {
               display: block;
@@ -113,27 +124,28 @@
                 font-size: 14px;
                 font-weight: bold;
               }
-
-              &.message {
-                color: @akeneo-dark;
-                line-height: 20px;
-                width: 220px;
-
-                > strong {
-                  color: @akeneo-purple;
-                  font-weight: normal;
-                }
-              }
             }
           }
 
-          time {
-            position: absolute;
-            top: 18px;
-            right: 55px;
-            text-align: right;
-            font-size: 11px;
-            color: @akeneo-grey;
+          .message {
+            color: @akeneo-dark;
+            line-height: 20px;
+            width: 100%;
+            margin-top: 5px;
+
+            > strong {
+              color: @akeneo-purple;
+              font-weight: normal;
+            }
+          }
+
+          .comment {
+            background-color: @akeneo-light;
+            color: @akeneo-dark;
+            line-height: 20px;
+            padding: 15px;
+            margin-top: 10px;
+            width: 100%;
           }
 
           i {

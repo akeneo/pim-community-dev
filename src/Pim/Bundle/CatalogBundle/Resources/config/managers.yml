@@ -10,7 +10,6 @@ parameters:
     pim_catalog.manager.currency.class:            Pim\Bundle\CatalogBundle\Manager\CurrencyManager
     pim_catalog.manager.family.class:              Pim\Bundle\CatalogBundle\Manager\FamilyManager
     pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
-    pim_catalog.manager.locale.class:              Pim\Bundle\CatalogBundle\Manager\LocaleManager
     pim_catalog.manager.product.class:             Pim\Bundle\CatalogBundle\Manager\ProductManager
     pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
     pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
@@ -80,11 +79,6 @@ services:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_catalog.saver.attribute_group'
             - '@pim_catalog.saver.attribute'
-
-    pim_catalog.manager.locale:
-        class: %pim_catalog.manager.locale.class%
-        arguments:
-            - '@pim_catalog.repository.locale'
 
     pim_catalog.manager.currency:
         class: %pim_catalog.manager.currency.class%

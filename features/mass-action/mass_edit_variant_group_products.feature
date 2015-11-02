@@ -1,3 +1,4 @@
+@javascript
 Feature: Apply restrictions when mass editing products with variant groups
   In order to keep integrity logic on variant goup products in mass edit
   As a product manager
@@ -14,7 +15,6 @@ Feature: Apply restrictions when mass editing products with variant groups
       | gold_sandals | sandals  |                   | 42   | white |
       | gold_boots   | sandals  |                   | 42   | white |
 
-  @javascript
   Scenario: Add products to a variant group
     Given I am logged in as "Julia"
     And I am on the products page
@@ -30,7 +30,6 @@ Feature: Apply restrictions when mass editing products with variant groups
       | type    | message                                               |
       | success | Mass edit Mass add products to variant group finished |
 
-  @javascript
   Scenario: Add products to a variant group with invalid axis
     Given the following families:
       | code      |
@@ -57,7 +56,6 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I should see "EXCLUDED PRODUCT"
     And I should see "You cannot group the following product because it is already in a variant group or doesn't have the group axis."
 
-  @javascript
   Scenario: Add products to a variant group with duplicated variant axis values in selection (and not yet in variant group)
     And I am logged in as "Julia"
     And I am on the products page

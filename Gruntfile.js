@@ -12,7 +12,8 @@ module.exports = function (grunt) {
                 'src/**/*.js',
                 '!src/**/lib/**/*.js',
                 '!src/**/DataGridBundle/**/*.js',
-                '!src/**/NavigationBundle/**/*.js'
+                '!src/**/NavigationBundle/**/*.js',
+                '!src/Oro/**/**/*.js'
             ],
             options: {
                 jshintrc: '.jshintrc',
@@ -25,7 +26,8 @@ module.exports = function (grunt) {
                 'src/**/*.js',
                 '!src/**/lib/**/*.js',
                 '!src/**/DataGridBundle/**/*.js',
-                '!src/**/NavigationBundle/**/*.js'
+                '!src/**/NavigationBundle/**/*.js',
+                '!src/Oro/**/**/*.js'
             ],
             options: {
                 config: '.jscsrc',

@@ -51,7 +51,7 @@ class CategoryRepository extends NestedTreeRepository implements
      */
     public function getCategoriesByIds(array $categoriesIds = [])
     {
-        if (count($categoriesIds) === 0) {
+        if (empty($categoriesIds)) {
             return new ArrayCollection();
         }
 
@@ -64,6 +64,31 @@ class CategoryRepository extends NestedTreeRepository implements
             ->where('node.id IN (:categoriesIds)');
 
         $qb->setParameter('categoriesIds', $categoriesIds);
+
+        $result = $qb->getQuery()->getResult();
+        $result = new ArrayCollection($result);
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategoriesByCodes(array $categoriesCodes = [])
+    {
+        if (empty($categoriesCodes)) {
+            return new ArrayCollection();
+        }
+
+        $meta   = $this->getClassMetadata();
+        $config = $this->listener->getConfiguration($this->_em, $meta->name);
+
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('node')
+            ->from($config['useObjectClass'], 'node')
+            ->where('node.code IN (:categoriesCodes)');
+
+        $qb->setParameter('categoriesCodes', $categoriesCodes);
 
         $result = $qb->getQuery()->getResult();
         $result = new ArrayCollection($result);

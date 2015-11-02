@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle;
 
 use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass;
 use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

@@ -1,0 +1,3 @@
+oro_config_configuration_system:
+    path: /system/{activeGroup}/{activeSubGroup}
+    defaults: { _controller: OroConfigBundle:Configuration:system, activeGroup: null, activeSubGroup: null }

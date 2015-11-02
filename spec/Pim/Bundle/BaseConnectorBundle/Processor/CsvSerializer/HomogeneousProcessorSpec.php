@@ -4,15 +4,18 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class HomogeneousProcessorSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, LocaleManager $localeManager, StepExecution $stepExecution)
-    {
-        $this->beConstructedWith($serializer, $localeManager);
+    function let(
+        SerializerInterface $serializer,
+        LocaleRepositoryInterface $localeRepository,
+        StepExecution $stepExecution
+    ) {
+        $this->beConstructedWith($serializer, $localeRepository);
         $this->setStepExecution($stepExecution);
     }
 
@@ -71,11 +74,11 @@ class HomogeneousProcessorSpec extends ObjectBehavior
         $this->isWithHeader()->shouldReturn(false);
     }
 
-    function it_processes_homogeneous_items($serializer, $localeManager)
+    function it_processes_homogeneous_items($serializer, $localeRepository)
     {
         $items = [['item1' => ['attr10']], ['item2' => 'attr20'], ['item3' => ['attr30']]];
 
-        $localeManager->getActiveCodes()->willReturn(['code1', 'code2']);
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['code1', 'code2']);
         $serializer->serialize(Argument::cetera())->willReturn('those;items;in;csv;format;');
 
         $this->process($items)->shouldReturn('those;items;in;csv;format;');

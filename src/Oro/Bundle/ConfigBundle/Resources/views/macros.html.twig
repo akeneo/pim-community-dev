@@ -1,0 +1,197 @@
+{#
+    Displays title
+#}
+{% macro renderTitle(pageTitle, buttons) %}
+    <div class="container-fluid clearfix">
+        <h1>
+            {{ pageTitle|trans }}
+            <div class="pull-right">
+                {% if buttons is defined %}
+                    {% for button in buttons %}
+                        {{ button }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </h1>
+    </div>
+{% endmacro %}
+
+{#
+    Render page scrollable data
+    params:
+        data        - tree of current configuration
+        form        - form view of active group
+        activeTab   - active tab name
+        activeVTab  - active vertical tab name
+#}
+{% macro renderScrollData(data, form, activeTab = false, activeVTab = false) %}
+    {% import _self as __ %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    <div class="system-configuration-container">
+        {% if activeVTab and form != false %}
+            {# @TODO move back to renderTab macro, when styles will be ready #}
+            <div class="pull-right buffer-right">
+                {{ UI.saveAndStayButton() }}
+            </div>
+        {% endif %}
+        <div class="container-fluid">
+            <ul class="nav nav-tabs">
+                {% if data is iterable %}
+                    {% for tab in data %}
+                        {% set tabData = {
+                            isActive: activeTab and activeTab == tab.name,
+                            url: path('oro_config_configuration_system', {activeGroup: tab.name})
+                            }|merge(tab.toViewData)
+                        %}
+
+                        {% if tabData.isActive %}
+                            {% set activeTab = tab %}
+                        {% endif %}
+                        {{ __.renderTabNavItem(tabData) }}
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+        <div class="scrollable-container">
+            <div class="container-fluid">
+                <div class="row-fluid row-fluid-divider">
+                    {% if activeVTab and form != false %}
+                        {{ __.renderVerticalSubmenu(activeTab, activeVTab) }}
+                        {{ __.renderTab(form, path('oro_config_configuration_system', {activeGroup: activeTab.name, activeSubGroup: activeVTab})) }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+    Renders tab navigation item
+    params:
+        data.isActive    - Tab is active
+        data.name        - Tab name
+        data.title       - Tab title
+        data.icon        - Tab icon
+        data.url         - Tab view url
+#}
+{% macro renderTabNavItem(data) %}
+    <li {% if data.isActive %}class="active"{% endif %}>
+        <a href="{% if data.isActive %}javascript:void(0);{% else %}{{ data.url }}{% endif %}">
+            {% if data.icon is defined and data.icon != '' %}<i class="icon {{ data.icon }}"></i>{% endif %}
+            {{ data.title|trans }}
+        </a>
+    </li>
+{% endmacro %}
+
+{#
+    Renders submenu
+    params:
+        data.children             - Submenu groups
+        data.children[].title     - Group title
+        data.children[].children  - Vertical menu items
+        activeVTab                - Active vertical tab name
+#}
+{% macro renderVerticalSubmenu(data, activeVTab = false) %}
+    {% import _self as __ %}
+    <div class="span2 system-configuration-sidebar">
+        {% for group in data %}
+            {% set groupData = group.toViewData %}
+            <dl>
+                <dt>
+                    <h4>{{ groupData.title|trans }}</h4>
+                </dt>
+                <dd>
+                    {% if group.count %}
+                        <ul class="nav nav-pills nav-stacked">
+                            {% for tab in group %}
+                                {% set tabData = {
+                                    isActive: activeVTab and activeVTab == tab.name,
+                                    url: path('oro_config_configuration_system', {activeGroup: data.name, activeSubGroup: tab.name })
+                                    }|merge(tab.toViewData)
+                                %}
+                                {{ __.renderTabNavItem(tabData) }}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </dd>
+            </dl>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{#
+    Renders tab form
+    params:
+        form        - form view for active tab tree configuration
+        formAction  - current url for submitting form
+#}
+{% macro renderTab(form, formAction) %}
+    {% import _self as __ %}
+
+    {% set data = {
+        'formErrors': form_errors(form),
+        'dataBlocks': form_data_blocks(form),
+        'hiddenData': form_rest(form)
+    } %}
+
+    <div class="span10 form-container">
+        <form id="{{ form.vars.name }}" {{ form_enctype(form) }} action="{{ formAction }}" method="post" class="unspaced">
+            <div class="pull-right">
+                <input type="hidden" name="input_action" value="" data-form-id="{{ form.vars.name }}"/>
+            </div>
+            {% if data.formErrors is defined and data.formErrors | length %}
+                <div class="customer-info-actions container-fluid alert-wrap">
+                    <div class="alert alert-error">
+                        <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>
+                        {{ data.formErrors|raw }}
+                    </div>
+                </div>
+            {% endif %}
+
+            {% for scrollBlock in data.dataBlocks %}
+                <div class="clearfix">
+                    <h4 class="scrollspy-title">{{ scrollBlock.title|trans }}</h4>
+
+                    {% if scrollBlock.description is defined and scrollBlock.description != '' %}
+                        <p>{{ scrollBlock.description }}</p>
+                    {% endif %}
+
+                    {% for subblock in scrollBlock.subblocks %}
+                        {{ __.renderFiedset(subblock) }}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="hide">
+                {{ data.hiddenData|raw }}
+            </div>
+        </form>
+        {{ oro_form_js_validation(form) }}
+    </div>
+{% endmacro %}
+
+{#
+    Renders fieldset
+    params:
+        block.title       - fieldset label
+        block.description - fieldset description (optional)
+        block.data        - fields data
+#}
+{% macro renderFiedset(block) %}
+    {% import _self as __ %}
+    <fieldset class="form-horizontal">
+        <h5 class="user-fiedset">
+            <span>{{ block.title|trans }}</span>
+        </h5>
+
+        {% if block.description is defined and block.description != '' %}
+            <div class="container-fluid">
+                <p>{{ block.description }}</p>
+            </div>
+        {% endif %}
+
+        {% for dataBlock in block.data %}
+            {{ dataBlock|raw }}
+        {% endfor %}
+    </fieldset>
+{% endmacro %}

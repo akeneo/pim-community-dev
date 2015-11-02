@@ -48,10 +48,12 @@ Pim\Bundle\CatalogBundle\Entity\Family:
         requirements:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
             mappedBy: family
+            orphanRemoval: true
             cascade:
                 - persist
                 - detach
                 - remove
+                - refresh
     manyToOne:
         attributeAsLabel:
             targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
