@@ -33,14 +33,14 @@ class PimEnterpriseWorkflowBundle extends Bundle
     {
         $container->addCompilerPass(new Compiler\ResolveDoctrineTargetModelsPass());
 
-        $mappings = array(
+        $mappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\WorkflowBundle\Model'
-        );
+        ];
 
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $mappings,
-                array('doctrine.orm.entity_manager'),
+                ['doctrine.orm.entity_manager'],
                 'akeneo_storage_utils.storage_driver.doctrine/orm'
             )
         );
@@ -50,7 +50,7 @@ class PimEnterpriseWorkflowBundle extends Bundle
             $container->addCompilerPass(
                 $mongoDBClass::createYamlMappingDriver(
                     $mappings,
-                    array('doctrine.odm.mongodb.document_manager'),
+                    ['doctrine.odm.mongodb.document_manager'],
                     'akeneo_storage_utils.storage_driver.doctrine/mongodb-odm'
                 )
             );

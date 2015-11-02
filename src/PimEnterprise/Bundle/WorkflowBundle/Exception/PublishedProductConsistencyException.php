@@ -36,7 +36,7 @@ class PublishedProductConsistencyException extends \Exception
         $code = 409,
         \Exception $previous = null,
         $route = null,
-        $routeParams = array()
+        $routeParams = []
     ) {
         parent::__construct($message, $code, $previous);
 

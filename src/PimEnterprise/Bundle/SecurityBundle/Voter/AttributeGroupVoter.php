@@ -43,7 +43,7 @@ class AttributeGroupVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES));
+        return in_array($attribute, [Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES]);
     }
 
     /**

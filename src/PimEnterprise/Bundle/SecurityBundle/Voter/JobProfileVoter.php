@@ -43,7 +43,7 @@ class JobProfileVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(Attributes::EXECUTE, Attributes::EDIT));
+        return in_array($attribute, [Attributes::EXECUTE, Attributes::EDIT]);
     }
 
     /**

@@ -39,9 +39,9 @@ class PimEnterpriseCatalogBundle extends Bundle
     {
         $container->addCompilerPass(new ResolveDoctrineTargetModelPass());
 
-        $productMappings = array(
+        $productMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Bundle\CatalogBundle\Model'
-        );
+        ];
 
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
