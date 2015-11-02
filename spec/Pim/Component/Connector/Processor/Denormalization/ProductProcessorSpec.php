@@ -975,6 +975,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
         $this->setDecimalSeparator(',');
+        $product->getId()->willReturn(42);
 
         $productBuilder->createProduct('tshirt', null)->willReturn($product);
 
@@ -1143,6 +1144,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productFilter,
+        $localizedConverter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList
     ) {
@@ -1178,6 +1180,10 @@ class ProductProcessorSpec extends ObjectBehavior
             'family' => 'Tshirt',
         ];
 
+        $localizedConverter->convert($convertedData, [
+            'decimal_separator' => '.',
+            'date_format'       => 'Y-m-d'
+        ])->willReturn($convertedData);
         $productFilter->filter($product, $filteredData)->shouldNotBeCalled();
 
         $productUpdater
