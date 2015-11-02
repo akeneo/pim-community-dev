@@ -140,3 +140,9 @@ Pim\Bundle\UserBundle\Entity\User:
             cascade:
                 - persist
                 - remove
+        defaultProdGridView:
+            targetEntity: Pim\Bundle\DataGridBundle\Entity\DatagridView
+            joinColumn:
+                name: default_product_grid_view_id
+                referencedColumnName: id
+                onDelete: CASCADE

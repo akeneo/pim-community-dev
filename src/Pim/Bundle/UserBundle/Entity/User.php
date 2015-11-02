@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -132,6 +133,9 @@ class User implements UserInterface
 
     /** @var CategoryInterface */
     protected $defaultTree;
+
+    /** @var DatagridView */
+    protected $defaultProdGridView;
 
     /** @var bool */
     protected $emailNotifications = false;
@@ -979,6 +983,24 @@ class User implements UserInterface
     public function setProductGridFilters(array $productGridFilters = [])
     {
         $this->productGridFilters = $productGridFilters;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultProdGridView()
+    {
+        return $this->defaultProdGridView;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultProdGridView($defaultProdGridView)
+    {
+        $this->defaultProdGridView = $defaultProdGridView;
 
         return $this;
     }
