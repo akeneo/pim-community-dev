@@ -18,7 +18,12 @@ class FamilyFactorySpec extends ObjectBehavior
         AttributeRequirementFactory $factory,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($channelManager, $factory, $attributeRepository);
+        $this->beConstructedWith(
+            $channelManager,
+            $factory,
+            $attributeRepository,
+            'Pim\Bundle\CatalogBundle\Entity\Family'
+        );
     }
 
     function it_creates_a_family(
