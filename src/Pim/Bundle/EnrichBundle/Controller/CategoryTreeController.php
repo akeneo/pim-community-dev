@@ -161,6 +161,8 @@ class CategoryTreeController extends Controller
             $this->categoryRepository->persistAsFirstChildOf($category, $parent);
         }
 
+        $this->categorySaver->save($category, ['flush' => true]);
+
         return new JsonResponse(['status' => 1]);
     }
 
