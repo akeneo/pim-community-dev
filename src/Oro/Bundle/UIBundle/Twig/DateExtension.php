@@ -69,8 +69,9 @@ class DateExtension extends \Twig_Extension
     {
         if (!$date instanceof \DateTime) {
             $format = isset($options['format']) ? $options['format'] : 'Y-m-d';
-            $tz = (isset($options['timezone'])) ? new \DateTimeZone($options['timezone']) : new \DateTimeZone('UTC');
-            $date = \DateTime::createFromFormat($format, $date, $tz);
+            $timeZone =
+                (isset($options['timezone'])) ? new \DateTimeZone($options['timezone']) : new \DateTimeZone('UTC');
+            $date = \DateTime::createFromFormat($format, $date, $timeZone);
         }
         return $date->diff(new \DateTime('now'));
     }

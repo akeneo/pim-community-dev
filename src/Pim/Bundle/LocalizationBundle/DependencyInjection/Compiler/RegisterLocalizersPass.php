@@ -31,8 +31,7 @@ class RegisterLocalizersPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition(self::LOCALIZATION_LOCALIZER_REGISTRY);
-
-        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER) as $id => $localizer) {
+        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER) as $id) {
             $definition->addMethodCall(
                 'addLocalizer',
                 [
@@ -41,7 +40,7 @@ class RegisterLocalizersPass implements CompilerPassInterface
             );
         }
 
-        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER_PRODUCT_VALUE) as $id => $localizer) {
+        foreach ($container->findTaggedServiceIds(self::LOCALIZATION_LOCALIZER_PRODUCT_VALUE) as $id) {
             $definition->addMethodCall(
                 'addProductValueLocalizer',
                 [
