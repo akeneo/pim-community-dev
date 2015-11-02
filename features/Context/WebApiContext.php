@@ -58,6 +58,19 @@ class WebApiContext extends BehatWebApiContext
     }
 
     /**
+     * @param string $sku
+     *
+     * @return array:Step
+     * @Given /^I request information for all products$/
+     */
+    public function iRequestInformationForAllProducts()
+    {
+        $this->setPlaceHolder('{baseUrl}', $this->url);
+
+        return array(new Step\Given("I send a GET request to \"api/rest/products\""));
+    }
+
+    /**
      * @Given /^(?:the )?response should be valid json$/
      */
     public function theResponseShouldBeValidJson()

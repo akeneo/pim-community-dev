@@ -1,4 +1,9 @@
-api:
+product_api:
     resource: '@PimWebServiceBundle/Controller/Rest/ProductController.php'
+    type:   rest
+    prefix: api/rest/
+
+products_api:
+    resource: '@PimWebServiceBundle/Controller/Rest/ProductsController.php'
     type:   rest
     prefix: api/rest/
