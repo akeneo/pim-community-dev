@@ -1,0 +1,21 @@
+extensions:
+    oro-system-config-form:
+        module: oro/form/system/config
+
+    oro-system-config-tabs:
+        module: pim/product-edit-form/form-tabs
+        parent: oro-system-config-form
+        targetZone: content
+        position: 100
+
+    oro-system-config-system:
+        module: oro/form/system/tabs/system.js
+        parent: oro-system-config-tabs
+        targetZone: container
+        position: 100
+
+    oro-system-config-system:
+        module: oro/form/system/tabs/system.js
+        parent: oro-system-config-tabs
+        targetZone: container
+        position: 100

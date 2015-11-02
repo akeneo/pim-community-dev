@@ -34,7 +34,7 @@ class Form extends Base
                 'Panel selector'                  => ['css' => '.panel-selector'],
                 'Panel container'                 => ['css' => '.panel-container'],
                 'Groups'                          => ['css' => '.tab-groups'],
-                'Form Groups'                     => ['css' => '.attribute-group-selector'],
+                'Form Groups'                     => ['css' => '.group-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],

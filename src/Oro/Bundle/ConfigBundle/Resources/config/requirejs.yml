@@ -1,0 +1,4 @@
+config:
+    paths:
+        # Forms
+        oro/form/system/config: oroconfig/js/form/system/config
