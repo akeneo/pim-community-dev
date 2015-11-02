@@ -70,7 +70,7 @@ class FamilyStandardConverter implements StandardArrayConverterInterface
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } elseif (false !== strpos($field, 'requirements-', 0)) {
+        } elseif ('' !== $data && false !== strpos($field, 'requirements-', 0)) {
             $requirementsTokens = explode('-', $field);
             $requirementsLocale = $requirementsTokens[1];
             $convertedItem['requirements'][$requirementsLocale] = explode(',', $data);
