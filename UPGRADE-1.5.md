@@ -36,6 +36,7 @@ The idea is to provide a cleaner and more understandable stack by removing overr
 
 There is the v1.4 version with Oro bundles moved in src,
 
+```
 src/
 ├── Acme
 │   └── Bundle
@@ -96,9 +97,11 @@ src/
         ├── Catalog
         ├── Connector
         └── ReferenceData
+```
 
 Ideally, the 1.5 version could be the following, (depending on the amount of tech cleaning we manage to do),
 
+```
 src/
 ├── Acme
 │   └── Bundle
@@ -146,6 +149,7 @@ src/
         ├── Localization            New (introduced v1.5) business interfaces and classes to handle data localization
         ├── User                    ?Don't know yet if we'll directly extract from UserBundle(s)?
         └── ReferenceData           New (introduced v1.4) Interfaces and classes related to collection of reference models and the product integration
+```
 
 ## Partially fix BC breaks
 
