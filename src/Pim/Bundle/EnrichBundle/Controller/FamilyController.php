@@ -177,16 +177,16 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Edit a family
      *
-     * @param int $familyId
+     * @param int $id
      *
      * @Template
      * @AclAncestor("pim_enrich_family_index")
      *
      * @return array
      */
-    public function editAction($familyId)
+    public function editAction($id)
     {
-        $family = $this->findOr404($this->familyClass, $familyId);
+        $family = $this->findOr404($this->familyClass, $id);
 
         if ($this->familyHandler->process($family)) {
             $this->addFlash('success', 'flash.family.updated');
@@ -204,15 +204,15 @@ class FamilyController extends AbstractDoctrineController
     /**
      * History of a family
      *
-     * @param int $familyId
+     * @param int $id
      *
      * @AclAncestor("pim_enrich_family_history")
      *
      * @return Response
      */
-    public function historyAction($familyId)
+    public function historyAction($id)
     {
-        $family = $this->findOr404($this->familyClass, $familyId);
+        $family = $this->findOr404($this->familyClass, $id);
 
         return $this->render(
             'PimEnrichBundle:Family:_history.html.twig',
@@ -225,15 +225,15 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Remove a family
      *
-     * @param int $familyId
+     * @param int $id
      *
      * @AclAncestor("pim_enrich_family_remove")
      *
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function removeAction($familyId)
+    public function removeAction($id)
     {
-        $family = $this->findOr404($this->familyClass, $familyId);
+        $family = $this->findOr404($this->familyClass, $id);
         $this->familyRemover->remove($family);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -246,15 +246,15 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Add attributes to a family
      *
-     * @param int $familyId
+     * @param int $id
      *
      * @AclAncestor("pim_enrich_family_edit_attributes")
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addAttributesAction($familyId)
+    public function addAttributesAction($id)
     {
-        $family = $this->findOr404($this->familyClass, $familyId);
+        $family = $this->findOr404($this->familyClass, $id);
 
         $availableAttributes = new AvailableAttributes();
         $attributesForm      = $this->getAvailableAttributesForm(
