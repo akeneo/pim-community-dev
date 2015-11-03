@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;

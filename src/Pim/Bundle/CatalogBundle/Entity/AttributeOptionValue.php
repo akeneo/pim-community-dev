@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 /**
@@ -23,7 +23,7 @@ class AttributeOptionValue implements AttributeOptionValueInterface
     protected $id;
 
     /**
-     * @var AttributeOptionInterface
+     * @var \Pim\Component\Catalog\Model\AttributeOptionInterface
      */
     protected $option;
 

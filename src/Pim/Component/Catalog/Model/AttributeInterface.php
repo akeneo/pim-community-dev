@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;

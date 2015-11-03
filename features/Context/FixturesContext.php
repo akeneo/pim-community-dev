@@ -2094,7 +2094,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface
+     * @return \Pim\Component\Catalog\Model\AttributeOptionInterface
      */
     protected function createOption($code)
     {

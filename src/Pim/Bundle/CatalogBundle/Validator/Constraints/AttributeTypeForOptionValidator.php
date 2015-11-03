@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -22,7 +22,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
      */
     public function validate($attributeOption, Constraint $constraint)
     {
-        /** @var AttributeOptionInterface */
+        /** @var \Pim\Component\Catalog\Model\AttributeOptionInterface */
         if ($attributeOption instanceof AttributeOptionInterface) {
             $attribute       = $attributeOption->getAttribute();
             $authorizedTypes = [AttributeTypes::OPTION_SIMPLE_SELECT, AttributeTypes::OPTION_MULTI_SELECT];
@@ -34,7 +34,7 @@ class AttributeTypeForOptionValidator extends ConstraintValidator
 
     /**
      * @param AttributeTypeForOption   $constraint
-     * @param AttributeOptionInterface $option
+     * @param \Pim\Component\Catalog\Model\AttributeOptionInterface $option
      */
     protected function addInvalidAttributeViolation(
         AttributeTypeForOption $constraint,

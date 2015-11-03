@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class AttributeOptionsDenormalizerSpec extends ObjectBehavior

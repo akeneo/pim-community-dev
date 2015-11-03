@@ -4,7 +4,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
 
 /**

@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\AttributeTypeForOption;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;

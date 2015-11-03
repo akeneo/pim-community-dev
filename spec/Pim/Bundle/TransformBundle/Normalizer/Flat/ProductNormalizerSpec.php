@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

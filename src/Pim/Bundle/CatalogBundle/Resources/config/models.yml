@@ -9,7 +9,7 @@ parameters:
     pim_catalog.model.group_type.interface:             Pim\Bundle\CatalogBundle\Model\GroupTypeInterface
     pim_catalog.model.attribute.interface:              Pim\Component\Catalog\Model\AttributeInterface
     pim_catalog.model.attribute_group.interface:        Pim\Component\Catalog\Model\AttributeGroupInterface
-    pim_catalog.model.attribute_option.interface:       Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface
+    pim_catalog.model.attribute_option.interface:       Pim\Component\Catalog\Model\AttributeOptionInterface
     pim_catalog.model.attribute_option_value.interface: Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface
     pim_catalog.model.attribute_requirement.interface:  Pim\Component\Catalog\Model\AttributeRequirementInterface
     pim_catalog.model.family.interface:                 Pim\Component\Catalog\Model\FamilyInterface

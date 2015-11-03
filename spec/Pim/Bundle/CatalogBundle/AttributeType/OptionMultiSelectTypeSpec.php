@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
 use Prophecy\Argument;

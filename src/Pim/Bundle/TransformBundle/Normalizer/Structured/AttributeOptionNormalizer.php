@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -46,7 +46,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
     /**
      * Returns an array containing the label values
      *
-     * @param AttributeOptionInterface $entity
+     * @param \Pim\Component\Catalog\Model\AttributeOptionInterface $entity
      * @param array                    $context
      *
      * @return array

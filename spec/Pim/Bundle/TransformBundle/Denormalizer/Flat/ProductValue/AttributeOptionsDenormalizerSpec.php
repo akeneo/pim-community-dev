@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
 use Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer;
 use Prophecy\Argument;

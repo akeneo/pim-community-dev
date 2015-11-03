@@ -1,7 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Model;
+namespace Pim\Component\Catalog\Model;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
