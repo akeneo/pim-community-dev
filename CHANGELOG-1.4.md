@@ -1,3 +1,8 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-5044: Fix rule priority not taken into account in rule command
+
 # 1.4.7 (2015-11-03)
 
 # 1.4.6 (2015-10-27)
