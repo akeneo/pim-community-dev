@@ -249,18 +249,16 @@ class EnterpriseFeatureContext extends FeatureContext
 
             $actualAction = $actualActions[$key];
 
-            $action['type'] = 'is set into';
-
             $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-field'),
                 $action['field'],
                 true,
                 true
             );
-            $this->checkRuleElementValue(
-                $actualAction->find('css', '.action-type'),
-                $action['type']
-            );
+            $type = $actualAction->find('css', '.action-type.set-value');
+            if (null === $type) {
+                throw $this->createExpectationException('Expecting to see set-value field');
+            }
             $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-value'),
                 $action['value'],
@@ -313,8 +311,6 @@ class EnterpriseFeatureContext extends FeatureContext
 
             $actualAction = $actualActions[$key];
 
-            $action['type'] = 'is copied into';
-
             $this->checkRuleElementValue(
                 $actualAction->find('css', '.action-field.from-field'),
                 $action['from_field'],
@@ -327,10 +323,10 @@ class EnterpriseFeatureContext extends FeatureContext
                 true,
                 true
             );
-            $this->checkRuleElementValue(
-                $actualAction->find('css', '.action-type'),
-                $action['type']
-            );
+            $type = $actualAction->find('css', '.action-type.copy-value');
+            if (null === $type) {
+                throw $this->createExpectationException('Expecting to see copy-value field');
+            }
             $this->checkRuleElementValue(
                 $actualAction->find('css', '.from-field .rule-item-context .locale'),
                 $action['from_locale'],

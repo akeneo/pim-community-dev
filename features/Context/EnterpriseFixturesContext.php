@@ -1289,7 +1289,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                     $value = (string) $data;
                     break;
                 case 'pim_catalog_number':
-                    $value = (int) $data;
+                    $value = (float) $data;
                     break;
                 case 'pim_catalog_metric':
                     $values = explode(',', $data);
