@@ -110,6 +110,8 @@
       {% set filters = filters|merge([filter_label(filter)]) %}
     {% endfor %}
 
+    {% set defaultProdView = entity.defaultProdGridView.label|default('user.default_product_grid_view.none'|trans) %}
+
     {% set additional = [
         {
             'title': 'Additional Information'|trans,
@@ -121,6 +123,7 @@
                         UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
                         UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
                         UI.attibuteRow('Default tree'|trans, entity.defaultTree),
+                        UI.attibuteRow('user.default_product_grid_view.label'|trans, defaultProdView),
                         UI.attibuteRow('user.product_grid_filters'|trans, filters|join(', ')),
                     ]
                 },

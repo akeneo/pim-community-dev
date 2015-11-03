@@ -5,12 +5,12 @@ namespace Pim\Bundle\UserBundle\Form\Subscriber;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Subscriber to override additional user fields with regular entity fields and use custom query builders
@@ -54,7 +54,8 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        if (null === $event->getData()) {
+        $user = $event->getData();
+        if (!$user instanceof UserInterface) {
             return;
         }
 
@@ -64,12 +65,13 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $this->updateCatalogScope($form);
         $this->updateDefaultTree($form);
         $this->updateUiLocale($form);
+        $this->addDatagridDefaultView($form, $user);
     }
 
     /**
-     * @param Form $form
+     * @param FormInterface $form
      */
-    protected function updateCatalogLocale(Form $form)
+    protected function updateCatalogLocale(FormInterface $form)
     {
         $form->add(
             'catalogLocale',
@@ -86,9 +88,9 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param Form $form
+     * @param FormInterface $form
      */
-    protected function updateCatalogScope(Form $form)
+    protected function updateCatalogScope(FormInterface $form)
     {
         $form->add(
             'catalogScope',
@@ -102,9 +104,9 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param Form $form
+     * @param FormInterface $form
      */
-    protected function updateDefaultTree(Form $form)
+    protected function updateDefaultTree(FormInterface $form)
     {
         $form->add(
             'defaultTree',
@@ -121,9 +123,9 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param Form $form
+     * @param FormInterface $form
      */
-    protected function updateUiLocale(Form $form)
+    protected function updateUiLocale(FormInterface $form)
     {
         $localeProvider = $this->localeProvider;
         $form->add(
@@ -140,6 +142,36 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                         ->where('l.code IN (:locales)')
                         ->setParameter('locales', array_keys($locales));
                 }
+            ]
+        );
+    }
+
+    /**
+     * Add the product datagrid default view for the user
+     *
+     * @param FormInterface $form
+     * @param UserInterface $user
+     */
+    protected function addDatagridDefaultView(FormInterface $form, UserInterface $user)
+    {
+        $form->add(
+            'defaultProdGridView',
+            'entity',
+            [
+                'class'         => 'PimDataGridBundle:DatagridView',
+                'choice_label'  => 'label',
+                'label'         => 'user.default_product_grid_view.label',
+                'query_builder' => function (EntityRepository $gridViewRepository) use ($user) {
+                    return $gridViewRepository
+                        ->createQueryBuilder('v')
+                        ->where('v.owner = :user_id')
+                        ->andWhere('v.datagridAlias = :published')
+                        ->setParameters([
+                            'user_id'   => $user->getId(),
+                            'published' => 'product-grid'
+                        ]);
+                },
+                'required'      => false,
             ]
         );
     }
