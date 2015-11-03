@@ -45,8 +45,7 @@ define(
                 this.$el.html(this.template({
                     current: this.getCurrent(),
                     elements: this.getElements(),
-                    badges: this.badges,
-                    locale: UserContext.get('catalogLocale')
+                    badges: this.badges
                 }));
 
                 this.delegateEvents();

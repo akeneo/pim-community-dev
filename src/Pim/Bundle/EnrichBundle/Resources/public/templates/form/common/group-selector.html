@@ -1,8 +1,7 @@
-<li class="header"></li>
 <% _.each(elements, function (element) { %>
     <li data-element="<%- element.code %>" class="<%- current === element.code ? 'active' : '' %>">
         <a>
-            <span class="group-label"><% element.label %></span>
+            <span class="group-label"><%- element.label %></span>
             <span class="badge-elements-container">
                 <% _.each(badges[element.code], function(badge, type) { %>
                     <span class="<%- type %>-badge label"><%- badge %></span>

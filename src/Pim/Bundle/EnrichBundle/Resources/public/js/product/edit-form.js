@@ -56,9 +56,7 @@ define(
                 this.getRoot().trigger('pim_enrich:form:render:before');
 
                 this.$el.html(
-                    this.template({
-                        product: this.getFormData()
-                    })
+                    this.template({})
                 );
 
                 this.renderExtensions();

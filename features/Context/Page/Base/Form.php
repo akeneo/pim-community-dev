@@ -176,7 +176,7 @@ class Form extends Base
             $groups = $this->getElement('Form Groups');
 
             $groupsContainer = $groups
-                ->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
+                ->find('css', sprintf('.group-label:contains("%s")', $group));
 
             $button = null;
 

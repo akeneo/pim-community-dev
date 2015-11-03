@@ -2,7 +2,7 @@
 <% _.each(elements, function (element) { %>
     <li data-element="<%- element.code %>" class="<%- current === element.code ? 'active' : '' %>">
         <a>
-            <span class="attribute-group-label"><%- i18n.getLabel(element.label, locale, element.code) %></span>
+            <span class="group-label"><%- i18n.getLabel(element.label, locale, element.code) %></span>
             <span class="badge-elements-container">
                 <% _.each(badges[element.code], function(badge, type) { %>
                     <span class="<%- type %>-badge label"><%- badge %></span>

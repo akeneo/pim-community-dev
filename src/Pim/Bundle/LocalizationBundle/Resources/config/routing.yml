@@ -1,0 +1,4 @@
+pim_localization_locale_index:
+    path: /system/locale/ui
+    defaults: { _controller: pim_localization.controller.locale:indexAction, _format: json }
+    methods: [GET]
