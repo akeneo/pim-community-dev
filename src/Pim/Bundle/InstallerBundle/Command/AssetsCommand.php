@@ -48,7 +48,6 @@ class AssetsCommand extends Command
         $this->commandExecutor
             ->runCommand('oro:navigation:init')
             ->runCommand('fos:js-routing:dump', ['--target' => 'web/js/routes.js'])
-            ->runCommand('oro:localization:dump')
             ->runCommand('assets:install')
             ->runCommand('assetic:dump')
             ->runCommand('oro:assetic:dump');
