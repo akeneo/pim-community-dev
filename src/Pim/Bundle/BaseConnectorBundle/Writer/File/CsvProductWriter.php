@@ -18,6 +18,9 @@ class CsvProductWriter extends ContextableCsvWriter
     /** @var FileExporterInterface */
     protected $fileExporter;
 
+    /** @const int */
+    const NB_ENTRY_PER_FILE = 1000;
+
     /**
      * @param FileExporterInterface $fileExporter
      */
@@ -50,6 +53,10 @@ class CsvProductWriter extends ContextableCsvWriter
         }
 
         $this->items = array_merge($this->items, $products);
+
+        if (count($this->items) > self::NB_ENTRY_PER_FILE) {
+            $this->flush();
+        }
     }
 
     /**
