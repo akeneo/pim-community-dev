@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Localization\Provider;
+namespace Pim\Component\Localization\Provider\Format;
 
 /**
  * The FormatProviderInterface provides localized formats.

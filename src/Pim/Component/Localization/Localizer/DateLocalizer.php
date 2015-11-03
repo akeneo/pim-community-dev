@@ -3,7 +3,7 @@
 namespace Pim\Component\Localization\Localizer;
 
 use Pim\Component\Localization\Exception\FormatLocalizerException;
-use Pim\Component\Localization\Provider\FormatProviderInterface;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**

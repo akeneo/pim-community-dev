@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Provider\FormatProviderInterface;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;

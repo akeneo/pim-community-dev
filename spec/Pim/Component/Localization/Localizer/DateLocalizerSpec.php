@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Localization\Exception\FormatLocalizerException;
-use Pim\Component\Localization\Provider\FormatProviderInterface;
+use Pim\Component\Localization\Provider\Format\FormatProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 

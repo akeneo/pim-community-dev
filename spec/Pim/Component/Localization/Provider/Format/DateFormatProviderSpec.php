@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Localization\Provider;
+namespace spec\Pim\Component\Localization\Provider\Format;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Localization\DateFormatConverter;
