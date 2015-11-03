@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\CompletenessInterface;
+use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Prophecy\Argument;
 

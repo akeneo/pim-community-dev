@@ -66,7 +66,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                 - refresh
                 - detach
         completenesses:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\CompletenessInterface
+            targetEntity: Pim\Component\Catalog\Model\CompletenessInterface
             mappedBy: product
             cascade:
                 - remove

@@ -2,7 +2,7 @@ parameters:
     pim_catalog.model.product.interface:                Pim\Component\Catalog\Model\ProductInterface
     pim_catalog.model.product_value.interface:          Pim\Component\Catalog\Model\ProductValueInterface
     pim_catalog.model.association.interface:            Pim\Component\Catalog\Model\AssociationInterface
-    pim_catalog.model.completeness.interface:           Pim\Bundle\CatalogBundle\Model\CompletenessInterface
+    pim_catalog.model.completeness.interface:           Pim\Component\Catalog\Model\CompletenessInterface
     pim_catalog.model.association_type.interface:       Pim\Component\Catalog\Model\AssociationTypeInterface
     pim_catalog.model.category.interface:               Pim\Component\Catalog\Model\CategoryInterface
     pim_catalog.model.group.interface:                  Pim\Bundle\CatalogBundle\Model\GroupInterface

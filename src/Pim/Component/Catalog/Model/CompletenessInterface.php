@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Model;
+namespace Pim\Component\Catalog\Model;
 
+use Pim\Bundle\CatalogBundle\Model\Locale;
 use Pim\Component\Catalog\ChannelInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;

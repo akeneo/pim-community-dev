@@ -69,7 +69,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
         completenesses:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\CompletenessInterface
+            targetDocument: Pim\Component\Catalog\Model\CompletenessInterface
         values:
             embedded: true
             type: many
