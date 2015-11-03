@@ -1,4 +1,19 @@
-# 1.3.x
+# 1.3.29 (2015-10-27)
+
+## Technical improvements
+- PIM-5028: Fix log levels in prod environment
+
+# 1.3.28 (2015-10-22)
+
+# 1.3.27 (2015-10-02)
+
+## Bug fixes
+PIM-4920: add translation keys
+
+# 1.3.26 (2015-09-16)
+
+## Bug fixes
+PIM-4877: Fix export CSV for products
 
 # 1.3.25 (2015-09-14)
 
