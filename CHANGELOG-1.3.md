@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.30 (2015-11-03)
 
 ## Bug fixes
 - PIM-5054: Merge variant group imported template values
