@@ -18,6 +18,8 @@ interface LocalizerInterface
 {
     const DEFAULT_DATE_FORMAT = 'Y-m-d';
 
+    const DEFAULT_DECIMAL_SEPARATOR = '.';
+
     /**
      * Data provided respects the expected format ?
      *

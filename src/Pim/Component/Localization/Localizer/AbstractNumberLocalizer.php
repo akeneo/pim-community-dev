@@ -12,8 +12,6 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
  */
 abstract class AbstractNumberLocalizer implements LocalizerInterface
 {
-    const DEFAULT_DECIMAL_SEPARATOR = '.';
-
     /** @var array */
     protected $attributeTypes;
 
