@@ -11,7 +11,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
 class ProductSpec extends ObjectBehavior
@@ -95,7 +95,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInVariantGroup($attribute)->shouldReturn(false);
     }
 
-    function it_has_not_attribute_in_a_non_variant_group(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType)
+    function it_has_not_attribute_in_a_non_variant_group(AttributeInterface $attribute, GroupInterface $group, \Pim\Component\Catalog\Model\GroupTypeInterface $groupType)
     {
         $groupType->isVariant()->willReturn(false);
         $group->addProduct($this)->willReturn($this);
@@ -117,7 +117,7 @@ class ProductSpec extends ObjectBehavior
         $this->hasAttributeInVariantGroup($attribute)->shouldReturn(true);
     }
 
-    function it_has_attribute_in_a_variant_group_template(AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes, ProductTemplateInterface $template)
+    function it_has_attribute_in_a_variant_group_template(AttributeInterface $attribute, \Pim\Component\Catalog\Model\GroupInterface $group, \Pim\Component\Catalog\Model\GroupTypeInterface $groupType, ArrayCollection $groupAttributes, ProductTemplateInterface $template)
     {
         $groupType->isVariant()->willReturn(true);
         $groupAttributes->contains($attribute)->willReturn(false);

@@ -6,7 +6,7 @@ parameters:
     pim_catalog.model.association_type.interface:       Pim\Component\Catalog\Model\AssociationTypeInterface
     pim_catalog.model.category.interface:               Pim\Component\Catalog\Model\CategoryInterface
     pim_catalog.model.group.interface:                  Pim\Component\Catalog\Model\GroupInterface
-    pim_catalog.model.group_type.interface:             Pim\Bundle\CatalogBundle\Model\GroupTypeInterface
+    pim_catalog.model.group_type.interface:             Pim\Component\Catalog\Model\GroupTypeInterface
     pim_catalog.model.attribute.interface:              Pim\Component\Catalog\Model\AttributeInterface
     pim_catalog.model.attribute_group.interface:        Pim\Component\Catalog\Model\AttributeGroupInterface
     pim_catalog.model.attribute_option.interface:       Pim\Component\Catalog\Model\AttributeOptionInterface

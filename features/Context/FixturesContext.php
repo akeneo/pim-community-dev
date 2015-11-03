@@ -1821,7 +1821,7 @@ class FixturesContext extends RawMinkContext
      * @param string $label
      * @param bool   $isVariant
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\GroupTypeInterface
+     * @return \Pim\Component\Catalog\Model\GroupTypeInterface
      */
     protected function createGroupType($code, $label, $isVariant)
     {

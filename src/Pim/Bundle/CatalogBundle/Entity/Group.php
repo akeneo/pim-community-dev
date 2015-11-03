@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -31,7 +31,7 @@ class Group implements GroupInterface
     /** @var string $code */
     protected $code;
 
-    /** @var GroupTypeInterface */
+    /** @var \Pim\Component\Catalog\Model\GroupTypeInterface */
     protected $type;
 
     /**  @var ArrayCollection $products */

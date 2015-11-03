@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -280,7 +280,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * Get ordered groups query builder
      *
-     * @param GroupTypeInterface $type
+     * @param \Pim\Component\Catalog\Model\GroupTypeInterface $type
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -311,7 +311,7 @@ class GroupRepository extends EntityRepository implements GroupRepositoryInterfa
     /**
      * Get ordered groups by type
      *
-     * @param GroupTypeInterface $type
+     * @param \Pim\Component\Catalog\Model\GroupTypeInterface $type
      *
      * @return array
      */
