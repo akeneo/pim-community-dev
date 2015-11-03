@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+use Symfony\Component\Form\ChoiceList\View\ChoiceGroupView;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
 class ChoiceFilter extends AbstractFilter
@@ -52,15 +53,28 @@ class ChoiceFilter extends AbstractFilter
         $fieldView = $formView->children['value'];
 
         $choices = array_map(
-            function (ChoiceView $choice) {
-                return [
-                    'label' => $choice->label,
-                    'value' => $choice->value
-                ];
+            function ($choice) {
+                if ($choice instanceof ChoiceView) {
+                    return [
+                        'label' => $choice->label,
+                        'value' => $choice->value
+                    ];
+                }
+
+                if ($choice instanceof ChoiceGroupView) {
+                    return [
+                        'label' => $choice->label,
+                        'value' => $choice->choices
+                    ];
+                }
+
+                throw new \RuntimeException(sprintf(
+                    'Invalid type of option for Choicefilter, expected ChoiceView or ChoiceGroupView, got "%s"',
+                    get_class($choice)
+                ));
             },
             $fieldView->vars['choices']
         );
-
 
         $metadata                    = parent::getMetadata();
         $metadata['choices']         = $choices;
