@@ -223,7 +223,7 @@ class Edit extends Form
 
         $options = $this->spin(function () use ($list) {
             return $list->findAll('css', 'li');
-        }, 20, 'No attributes found in available attributes list');
+        }, 'No attributes found in available attributes list');
 
         $groupedAttributes = [];
         $currentOptgroup   = '';

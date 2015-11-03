@@ -270,7 +270,6 @@ class Form extends Base
                 function () use ($list, $attributeLabel) {
                     return $list->find('css', sprintf('li label:contains("%s")', $attributeLabel));
                 },
-                20,
                 sprintf('Could not find available attribute "%s".', $attributeLabel)
             );
 
