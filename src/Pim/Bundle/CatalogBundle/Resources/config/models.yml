@@ -16,7 +16,7 @@ parameters:
     pim_catalog.model.channel.interface:                Pim\Component\Catalog\ChannelInterface
     pim_catalog.model.currency.interface:               Pim\Bundle\CatalogBundle\Model\CurrencyInterface
     pim_catalog.model.locale.interface:                 Pim\Component\Catalog\LocaleInterface
-    pim_catalog.model.metric.interface:                 Pim\Bundle\CatalogBundle\Model\MetricInterface
+    pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
     pim_catalog.model.product_media.interface:          Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
     pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
     pim_catalog.model.product_template.interface:       Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface

@@ -8,7 +8,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
+use Pim\Component\Catalog\Model\MetricInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -108,7 +108,7 @@ class MetricBaseValuesSubscriber implements EventSubscriber
     /**
      * Allow to create convert data in standard unit for metrics
      *
-     * @param MetricInterface $metric
+     * @param \Pim\Component\Catalog\Model\MetricInterface $metric
      */
     protected function createMetricBaseValues(MetricInterface $metric)
     {

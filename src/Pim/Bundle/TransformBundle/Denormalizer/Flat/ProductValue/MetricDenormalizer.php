@@ -59,7 +59,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
      * @param string                $data
      * @param string                $unit
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
+     * @return \Pim\Component\Catalog\Model\MetricInterface
      */
     protected function addFromSingleField(ProductValueInterface $value, $data, $unit)
     {
@@ -78,7 +78,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
      * @param ProductValueInterface $value
      * @param string                $dataOrUnit
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\MetricInterface
+     * @return \Pim\Component\Catalog\Model\MetricInterface
      */
     protected function addFromManyFields(ProductValueInterface $value, $dataOrUnit)
     {
