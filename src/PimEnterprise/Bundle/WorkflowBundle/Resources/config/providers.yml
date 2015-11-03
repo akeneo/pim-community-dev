@@ -1,8 +1,16 @@
 parameters:
-    pimee_workflow.provider.form.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Provider\Form\PublishedProductFormProvider
+    pimee_workflow.provider.form.published_product.class:          PimEnterprise\Bundle\WorkflowBundle\Provider\Form\PublishedProductFormProvider
+    pimee_workflow.provider.product_draft_granted_attribute.class: PimEnterprise\Component\Workflow\Provider\ProductDraftGrantedAttributeProvider
 
 services:
     pimee_workflow.provider.form.published_product:
         class: %pimee_workflow.provider.form.published_product.class%
         tags:
             - { name: pim_enrich.provider.form, priority: 80 }
+
+    pimee_workflow.provider.product_draft_granted_attribute:
+        class: %pimee_workflow.provider.product_draft_granted_attribute.class%
+        arguments:
+            - @pim_catalog.repository.cached_attribute
+            - @pim_catalog.repository.cached_locale
+            - @security.authorization_checker

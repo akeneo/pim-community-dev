@@ -6,6 +6,8 @@ pimee_workflow:
         locale:  Locale context
         product:
             label: Product label
+        attribute:
+            label: Attribute
         status:
             label: Status
             working_copy: Working copy

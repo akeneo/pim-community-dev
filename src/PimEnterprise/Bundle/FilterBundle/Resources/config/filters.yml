@@ -1,8 +1,9 @@
 parameters:
-    pimee_filter.product_draft_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter
-    pimee_filter.product_draft_date_filter.class:   Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
-    pim_filter.product_category_filter.class:       PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter
-    pimee_filter.product_permission_filter.class:   PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter
+    pimee_filter.product_draft_attribute_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\AttributeChoiceFilter
+    pimee_filter.product_draft_choice_filter.class:           PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter
+    pimee_filter.product_draft_date_filter.class:             Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
+    pim_filter.product_category_filter.class:                 PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter
+    pimee_filter.product_permission_filter.class:             PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter
 
 services:
     pimee_filter.product_draft_choice_filter:
@@ -12,6 +13,12 @@ services:
             - '@pimee_filter.product_draft_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_draft_choice }
+
+    pimee_filter.product_draft_attribute_choice_filter:
+        class: %pimee_filter.product_draft_attribute_choice_filter.class%
+        parent: pimee_filter.product_draft_choice_filter
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_draft_attribute_choice }
 
     pimee_filter.product_draft_date_filter:
         class: %pimee_filter.product_draft_date_filter.class%

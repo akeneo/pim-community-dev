@@ -16,6 +16,8 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@security.authorization_checker'
             - '@security.token_storage'
+            - @request_stack
+            - @pimee_workflow.provider.product_draft_granted_attribute
 
     pimee_datagrid.datagrid.configuration.published_product.grid_helper:
         class: %pimee_datagrid.datagrid.configuration.published_product.grid_helper.class%
