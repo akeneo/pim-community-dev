@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
@@ -24,7 +24,7 @@ class ProductSpec extends ObjectBehavior
         $this->getFamilyId()->shouldReturn(42);
     }
 
-    function it_belongs_to_categories(CategoryInterface $category1, CategoryInterface $category2)
+    function it_belongs_to_categories(\Pim\Component\Catalog\Model\CategoryInterface $category1, \Pim\Component\Catalog\Model\CategoryInterface $category2)
     {
         $this->addCategory($category1);
         $this->getCategories()->shouldHaveCount(1);

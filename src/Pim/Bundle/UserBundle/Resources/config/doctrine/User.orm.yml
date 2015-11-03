@@ -130,7 +130,7 @@ Pim\Bundle\UserBundle\Entity\User:
         catalogScope:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
         defaultTree:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
+            targetEntity: Pim\Component\Catalog\Model\CategoryInterface
     oneToOne:
         api:
             targetEntity: Oro\Bundle\UserBundle\Entity\UserApi

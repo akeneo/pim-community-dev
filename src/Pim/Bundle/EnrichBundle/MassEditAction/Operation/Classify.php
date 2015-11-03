@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 
 /**
  * Batch operation to classify products
@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  */
 class Classify extends AbstractMassEditOperation
 {
-    /** @var CategoryInterface[] */
+    /** @var \Pim\Component\Catalog\Model\CategoryInterface[] */
     protected $categories;
 
     /**
@@ -25,7 +25,7 @@ class Classify extends AbstractMassEditOperation
     }
 
     /**
-     * @return CategoryInterface[]
+     * @return \Pim\Component\Catalog\Model\CategoryInterface[]
      */
     public function getCategories()
     {
@@ -33,7 +33,7 @@ class Classify extends AbstractMassEditOperation
     }
 
     /**
-     * @param CategoryInterface[] $categories
+     * @param \Pim\Component\Catalog\Model\CategoryInterface[] $categories
      *
      * @return Classify
      */

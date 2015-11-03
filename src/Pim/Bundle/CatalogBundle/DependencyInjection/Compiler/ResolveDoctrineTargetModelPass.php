@@ -29,7 +29,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Pim\Bundle\CatalogBundle\Model\ProductMediaInterface'    => 'pim_catalog.entity.product_media.class',
             'Pim\Bundle\CatalogBundle\Model\ProductPriceInterface'    => 'pim_catalog.entity.product_price.class',
             'Pim\Component\Catalog\Model\ProductValueInterface'       => 'pim_catalog.entity.product_value.class',
-            'Pim\Bundle\CatalogBundle\Model\CategoryInterface'        => 'pim_catalog.entity.category.class',
+            'Pim\Component\Catalog\Model\CategoryInterface'        => 'pim_catalog.entity.category.class',
             'Pim\Bundle\CatalogBundle\Model\CurrencyInterface'        => 'pim_catalog.entity.currency.class',
             'Pim\Component\Catalog\Model\FamilyInterface'             => 'pim_catalog.entity.family.class',
             'Pim\Component\Catalog\ChannelInterface'         => 'pim_catalog.entity.channel.class',

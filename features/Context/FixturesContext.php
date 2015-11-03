@@ -1942,7 +1942,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\CategoryInterface
+     * @return \Pim\Component\Catalog\Model\CategoryInterface
      */
     protected function createTree($code)
     {
@@ -1952,7 +1952,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param array|string $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\CategoryInterface
+     * @return \Pim\Component\Catalog\Model\CategoryInterface
      */
     protected function createCategory($data)
     {

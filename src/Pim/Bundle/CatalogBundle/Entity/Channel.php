@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Component\Catalog\LocaleInterface;
@@ -29,7 +29,7 @@ class Channel implements ChannelInterface
     /** @var string $label */
     protected $label;
 
-    /** @var CategoryInterface $category */
+    /** @var \Pim\Component\Catalog\Model\CategoryInterface $category */
     protected $category;
 
     /** @var ArrayCollection $currencies */

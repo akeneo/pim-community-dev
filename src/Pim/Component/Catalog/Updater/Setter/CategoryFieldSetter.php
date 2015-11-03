@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -100,7 +100,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
     /**
      * @param string $categoryCode
      *
-     * @return CategoryInterface
+     * @return \Pim\Component\Catalog\Model\CategoryInterface
      */
     protected function getCategory($categoryCode)
     {

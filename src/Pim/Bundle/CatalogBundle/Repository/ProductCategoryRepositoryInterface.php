@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -34,7 +34,7 @@ interface ProductCategoryRepositoryInterface
      * You can define if you just want to get the property of the actual node or with its children with the direct
      * parameter
      *
-     * @param CategoryInterface $category   the requested node
+     * @param \Pim\Component\Catalog\Model\CategoryInterface $category   the requested node
      * @param QueryBuilder      $categoryQb category query buider
      *
      * @return array

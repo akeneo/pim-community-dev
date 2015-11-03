@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\LocaleInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
@@ -363,7 +363,7 @@ class ProductController extends AbstractDoctrineController
     /**
      * Fetch the filled tree
      *
-     * @param CategoryInterface $parent
+     * @param \Pim\Component\Catalog\Model\CategoryInterface $parent
      * @param Collection        $categories
      *
      * @return CategoryInterface[]

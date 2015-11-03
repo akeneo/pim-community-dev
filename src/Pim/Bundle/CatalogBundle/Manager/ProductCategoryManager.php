@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -62,7 +62,7 @@ class ProductCategoryManager
      * or with its children with the direct parameter
      * The third parameter allow to include the actual node or not
      *
-     * @param CategoryInterface $category   the requested category node
+     * @param \Pim\Component\Catalog\Model\CategoryInterface $category   the requested category node
      * @param bool              $inChildren true to include children in count
      * @param bool              $inProvided true to include the provided none to count product
      *
@@ -83,7 +83,7 @@ class ProductCategoryManager
      * You can define if you just want to get the property of the actual node or with its children with the direct
      * parameter
      *
-     * @param CategoryInterface $category   the requested node
+     * @param \Pim\Component\Catalog\Model\CategoryInterface $category   the requested node
      * @param bool              $inChildren true to take children not into account
      *
      * @return array
