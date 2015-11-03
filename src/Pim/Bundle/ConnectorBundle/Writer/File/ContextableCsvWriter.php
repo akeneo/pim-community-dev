@@ -16,6 +16,12 @@ class ContextableCsvWriter extends CsvWriter
     /** @var array */
     protected $context = [];
 
+    /** @var  int */
+    protected $csvFileNumber;
+
+    /** @var string */
+    protected $baseFilePath;
+
     /**
      * @return array
      */
@@ -45,14 +51,50 @@ class ContextableCsvWriter extends CsvWriter
      */
     public function getPath()
     {
-        if (null === $this->resolvedFilePath) {
+        if (null === $this->baseFilePath) {
             $this->resolvedFilePath = parent::getPath();
 
             foreach ($this->context as $key => $value) {
-                $this->resolvedFilePath = strtr($this->resolvedFilePath, ['%' . $key . '%' => $value]);
+                $this->resolvedFilePath = strtr($this->baseFilePath, ['%' . $key . '%' => $value]);
             }
+            $this->baseFilePath = $this->resolvedFilePath;
         }
 
         return $this->resolvedFilePath;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        $this->csvFileNumber = 0;
+        $this->resolvedFilePath = $this->getPath();
+    }
+
+    /**
+     * Increments file number in file name
+     */
+    public function incrementFileNumber()
+    {
+        if ($this->csvFileNumber == 0 && false === strpos($this->baseFilePath, '%filenumber%')) {
+            $this->baseFilePath = str_replace('.csv', '-%filenumber%.csv', $this->baseFilePath);
+        }
+        $this->resolvedFilePath = strtr($this->baseFilePath, [
+            '%filenumber%' => ($this->csvFileNumber++ + 2)
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush()
+    {
+        if (0 === count($this->items)) {
+            return;
+        }
+
+        parent::flush();
+        $this->items = [];
     }
 }
