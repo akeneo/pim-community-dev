@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 
 /**
  * Attribute group repository interface
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * @return AttributeGroupInterface
+     * @return \Pim\Component\Catalog\Model\AttributeGroupInterface
      */
     public function findAllWithTranslations();
 
@@ -37,7 +37,7 @@ interface AttributeGroupRepositoryInterface extends IdentifiableObjectRepository
     /**
      * Get the default attribute group
      *
-     * @return null|AttributeGroupInterface
+     * @return null|\Pim\Component\Catalog\Model\AttributeGroupInterface
      */
     public function findDefaultAttributeGroup();
 

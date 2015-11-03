@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Form\View;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
@@ -75,7 +75,7 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param AttributeGroupInterface $group
+     * @param \Pim\Component\Catalog\Model\AttributeGroupInterface $group
      */
     protected function orderGroupAttributes(AttributeGroupInterface $group)
     {
@@ -83,7 +83,7 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param AttributeGroupInterface $group
+     * @param \Pim\Component\Catalog\Model\AttributeGroupInterface $group
      *
      * @return bool
      */

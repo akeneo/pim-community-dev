@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
@@ -65,7 +65,7 @@ class AttributeGroupManager
     /**
      * Add attributes to a group
      *
-     * @param AttributeGroupInterface $group
+     * @param \Pim\Component\Catalog\Model\AttributeGroupInterface $group
      * @param \Pim\Component\Catalog\Model\AttributeInterface[]    $attributes
      */
     public function addAttributes(AttributeGroupInterface $group, $attributes)

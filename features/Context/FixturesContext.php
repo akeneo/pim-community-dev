@@ -2211,7 +2211,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param array|string $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface
+     * @return \Pim\Component\Catalog\Model\AttributeGroupInterface
      */
     protected function createAttributeGroup($data)
     {
