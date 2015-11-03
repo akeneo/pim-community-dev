@@ -8,7 +8,6 @@ use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -43,7 +42,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     protected $mediaAttributeTypes;
 
     /** @var string */
-    protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
+    protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
 
     /** @var array */
     protected $decimalSeparators;

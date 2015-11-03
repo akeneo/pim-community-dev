@@ -41,6 +41,7 @@ services:
     pim_localization.localizer.date:
         class: %pim_localization.localizer.date.class%
         arguments:
+            - '@pim_localization.provider.date_format'
             - ['pim_catalog_date']
         tags:
             - { name: pim_localization.localizer }

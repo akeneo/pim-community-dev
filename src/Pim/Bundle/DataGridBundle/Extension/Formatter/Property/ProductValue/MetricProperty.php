@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
-use Pim\Component\Localization\Formatter\FormatterInterface;
+use Pim\Component\Localization\Localizer\LocalizerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Metric field property, able to render metric attribute type
@@ -13,18 +14,23 @@ use Pim\Component\Localization\Formatter\FormatterInterface;
  */
 class MetricProperty extends TwigProperty
 {
-    /** @var FormatterInterface */
-    protected $formatter;
+    /** @var LocalizerInterface */
+    protected $localizer;
 
     /**
-     * @param \Twig_Environment  $environment
-     * @param FormatterInterface $formatter
+     * @param \Twig_Environment   $environment
+     * @param TranslatorInterface $translator
+     * @param LocalizerInterface  $localizer
      */
-    public function __construct(\Twig_Environment $environment, FormatterInterface $formatter)
-    {
+    public function __construct(
+        \Twig_Environment $environment,
+        TranslatorInterface $translator,
+        LocalizerInterface $localizer
+    ) {
         parent::__construct($environment);
 
-        $this->formatter = $formatter;
+        $this->translator = $translator;
+        $this->localizer  = $localizer;
     }
 
     /**
@@ -37,7 +43,8 @@ class MetricProperty extends TwigProperty
         $unit   = $result['unit'];
 
         if ($data && $unit) {
-            $formattedData = $this->formatter->format($data);
+            $formattedData = $this->localizer
+                ->convertDefaultToLocalizedFromLocale($data, $this->translator->getLocale());
             return $this->getTemplate()->render(
                 [
                     'data' => $formattedData,

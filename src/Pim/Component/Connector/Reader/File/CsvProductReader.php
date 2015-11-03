@@ -3,7 +3,6 @@
 namespace Pim\Component\Connector\Reader\File;
 
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Component\Localization\Localizer\AbstractNumberLocalizer;
 use Pim\Component\Localization\Localizer\LocalizerInterface;
 
 /**
@@ -22,7 +21,7 @@ class CsvProductReader extends CsvReader
     protected $mediaAttributes;
 
     /** @var string */
-    protected $decimalSeparator = AbstractNumberLocalizer::DEFAULT_DECIMAL_SEPARATOR;
+    protected $decimalSeparator = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
 
     /** @var array */
     protected $decimalSeparators;

@@ -1,22 +1,22 @@
 <?php
 
-namespace Pim\Component\Localization\Provider;
+namespace Pim\Component\Localization\Provider\Format;
 
 /**
- * The DateFormatProviderInterface provides localized date formats.
+ * The FormatProviderInterface provides localized formats.
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface DateFormatProviderInterface
+interface FormatProviderInterface
 {
     /**
-     * Get a date format from a locale.
+     * Get a format from a locale.
      *
      * @param string $locale
      *
-     * @return string
+     * @return mixed
      */
-    public function getDateFormat($locale);
+    public function getFormat($locale);
 }
