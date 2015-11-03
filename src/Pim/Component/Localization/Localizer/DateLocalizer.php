@@ -3,6 +3,7 @@
 namespace Pim\Component\Localization\Localizer;
 
 use Pim\Component\Localization\Exception\FormatLocalizerException;
+use Pim\Component\Localization\Provider\FormatProviderInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
@@ -17,11 +18,16 @@ class DateLocalizer implements LocalizerInterface
     /** @var array */
     protected $attributeTypes;
 
+    /** @var FormatProviderInterface */
+    protected $formatProvider;
+
     /**
-     * @param array $attributeTypes
+     * @param FormatProviderInterface $formatProvider
+     * @param array                   $attributeTypes
      */
-    public function __construct(array $attributeTypes)
+    public function __construct(FormatProviderInterface $formatProvider, array $attributeTypes)
     {
+        $this->formatProvider = $formatProvider;
         $this->attributeTypes = $attributeTypes;
     }
 
@@ -60,7 +66,6 @@ class DateLocalizer implements LocalizerInterface
         return $datetime->format(static::DEFAULT_DATE_FORMAT);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -76,6 +81,23 @@ class DateLocalizer implements LocalizerInterface
         $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
 
         return $datetime->format($options['date_format']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function convertDefaultToLocalizedFromLocale($date, $locale)
+    {
+        if (null === $date || '' === $date) {
+            return $date;
+        }
+
+        $format = $this->formatProvider->getFormat($locale);
+
+        $datetime = new \DateTime();
+        $datetime = $datetime->createFromFormat(static::DEFAULT_DATE_FORMAT, $date);
+
+        return $datetime->format($format);
     }
 
     /**

@@ -4,16 +4,15 @@ namespace spec\Pim\Component\Localization\Localizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Localization\Exception\FormatLocalizerException;
+use Pim\Component\Localization\Provider\FormatProviderInterface;
 use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 class DateLocalizerSpec extends ObjectBehavior
 {
-    function let()
+    function let(FormatProviderInterface $formatProvider)
     {
-        $this->beConstructedWith(
-            ['pim_catalog_date']
-        );
+        $this->beConstructedWith($formatProvider, ['pim_catalog_date']);
     }
 
     function it_is_a_localizer()

@@ -44,6 +44,25 @@ abstract class AbstractNumberLocalizer implements LocalizerInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function convertDefaultToLocalizedFromLocale($number, $locale)
+    {
+        if (null === $number || ''  === $number) {
+            return $number;
+        }
+
+        $numberFormatter = new \NumberFormatter($locale, \NumberFormatter::DECIMAL);
+
+        if (is_numeric($number) && floor($number) != $number) {
+            $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 2);
+            $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 4);
+        }
+
+        return $numberFormatter->format($number);
+    }
+
+    /**
      * @param mixed  $number
      * @param array  $options
      * @param string $attributeCode

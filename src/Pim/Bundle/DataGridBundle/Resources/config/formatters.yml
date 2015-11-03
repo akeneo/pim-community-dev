@@ -40,7 +40,7 @@ services:
         class: %pim_datagrid.extension.formatter.property.product_value.price_property.class%
         arguments:
             - '@translator'
-            - '@pim_localization.formatter.number'
+            - '@pim_localization.localizer.price'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_price }
 
@@ -48,7 +48,7 @@ services:
         class: %pim_datagrid.extension.formatter.property.product_value.number_property.class%
         arguments:
             - '@translator'
-            - '@pim_localization.formatter.number'
+            - '@pim_localization.localizer.number'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_number }
 
@@ -70,7 +70,8 @@ services:
         class: %pim_datagrid.extension.formatter.property.product_value.metric_property.class%
         arguments:
             - '@twig'
-            - '@pim_localization.formatter.number'
+            - '@translator'
+            - '@pim_localization.localizer.metric'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_metric }
 
