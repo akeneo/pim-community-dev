@@ -20,7 +20,7 @@ class AssociationTypeSpec extends ObjectBehavior
             'Pim\Bundle\CatalogBundle\Model\Product',
             'Pim\Bundle\CatalogBundle\Entity\AssociationType',
             'Pim\Bundle\CatalogBundle\Entity\Group',
-            'Pim\Bundle\CatalogBundle\Model\AssociationInterface'
+            'Pim\Component\Catalog\Model\AssociationInterface'
         );
     }
 
@@ -109,7 +109,7 @@ class AssociationTypeSpec extends ObjectBehavior
 
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\AssociationInterface',
+                'data_class' => 'Pim\Component\Catalog\Model\AssociationInterface',
             ]
         )->shouldHaveBeenCalled();
     }

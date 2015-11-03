@@ -20,7 +20,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     {
         return [
             'Symfony\Component\Security\Core\User\UserInterface'      => 'oro_user.entity.class',
-            'Pim\Bundle\CatalogBundle\Model\AssociationInterface'     => 'pim_catalog.entity.association.class',
+            'Pim\Component\Catalog\Model\AssociationInterface'     => 'pim_catalog.entity.association.class',
             'Pim\Component\Catalog\Model\AttributeInterface'          => 'pim_catalog.entity.attribute.class',
             'Pim\Bundle\CatalogBundle\Model\CompletenessInterface'    => 'pim_catalog.entity.completeness.class',
             'Pim\Bundle\CatalogBundle\Model\LocaleInterface'          => 'pim_catalog.entity.locale.class',
