@@ -6,107 +6,132 @@
  */
 define(
     [
-        'jquery',
         'underscore',
-        'pim/product-edit-form/attributes/copy'
+        'oro/translator',
+        'backbone',
+        'pim/product-edit-form/attributes/copy',
+        'pim/fetcher-registry'
     ],
     function (
-        $,
         _,
-        Copy
+        __,
+        Backbone,
+        Copy,
+        FetcherRegistry
     ) {
+        /**
+         * Internal function that returns an union of current sources without drafts and the given drafts
+         *
+         * @param {Array} sources
+         * @param {Array} drafts
+         *
+         * @return {Array}
+         */
+        var mergeSourcesAndDrafts = function (sources, drafts) {
+            return _.union(
+                _.reject(sources, function (source) {
+                    return 'draft' === source.type;
+                }),
+                _.map(_.pluck(drafts, 'author'), function (author) {
+                    return {
+                        code: 'draft_of_' + author,
+                        label: __(
+                            'pimee_enrich.entity.product.copy.source.draft_of',
+                            {'author': author}
+                        ),
+                        type: 'draft',
+                        author: author
+                    };
+                })
+            );
+        };
+
         return Copy.extend({
-            sources: ['working_copy', 'draft'],
-            currentSource: '',
+            sources: [],
+            currentSource: null,
+            otherDrafts: [],
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function () {
+                this.sources = [
+                    {
+                        code: 'working_copy',
+                        label: __('pimee_enrich.entity.product.copy.source.working_copy'),
+                        type: 'working_copy',
+                        author: null
+                    },
+                    {
+                        code: 'draft',
+                        label: __('pimee_enrich.entity.product.copy.source.draft'),
+                        type: 'my_draft',
+                        author: null
+                    }
+                ];
+
+                this.currentSource = _.first(this.sources);
+
+                Copy.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * @inheritdoc
              */
             configure: function () {
-                this.currentSource = _.first(this.sources);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:draft:show_working_copy', this.showWorkingCopy);
+                FetcherRegistry.getFetcher('product_draft').clear();
 
-                this.onExtensions('pim_enrich:form:source_switcher:render:before', this.onSourceSwitcherRender);
-                this.onExtensions('pim_enrich:form:source_switcher:source_change', this.onSourceChange);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:draft:show_working_copy', this.startCopyingWorkingCopy);
+
+                this.onExtensions('pim_enrich:form:source_switcher:render:before', this.ensureSwitcherContext);
+                this.onExtensions('pim_enrich:form:source_switcher:source_change', this.changeCurrentSource);
 
                 return Copy.prototype.configure.apply(this, arguments);
             },
 
             /**
-             * Keep any source switcher uo-to-date for its rendering
-             *
-             * @param {Object} context
+             * @inheritdoc
              */
-            onSourceSwitcherRender: function (context) {
-                context.sources       = this.getSources();
-                context.currentSource = this.currentSource;
-            },
+            render: function () {
+                if (this.copying) {
+                    FetcherRegistry.getFetcher('product_draft')
+                        .fetchAllByProduct(this.getFormData().meta.id)
+                        .then(function (drafts) {
+                            this.otherDrafts = drafts;
+                            this.sources = mergeSourcesAndDrafts(this.sources, drafts);
+                        }.bind(this))
+                        .then(function () {
+                            return Copy.prototype.render.apply(this, arguments);
+                        }.bind(this));
 
-            /**
-             * Update the current source and re-render the extension
-             *
-             * @param {string} newSource
-             *
-             * @throws {Error} If specified source code is invalid
-             */
-            onSourceChange: function (newSource) {
-                if (!_.contains(this.getSources(), newSource)) {
-                    throw new Error('Invalid source code "' + newSource + '"');
+                    return this;
                 }
 
-                this.currentSource = newSource;
-                this.triggerContextChange();
+                return Copy.prototype.render.apply(this, arguments);
             },
 
             /**
-             * Return the current working copy
-             *
-             * @returns {Object|null}
+             * @inheritdoc
              */
-            getWorkingCopy: function () {
-                var workingCopy = this.getFormData().meta.working_copy;
-
-                return _.isEmpty(workingCopy) ? null : workingCopy;
-            },
-
-            /**
-             * Return the sources list optionally filtered
-             * If there is no working copy it means that the user owns the product, so draft is not a valid source
-             *
-             * @returns {Array}
-             */
-            getSources: function () {
-                if (null === this.getFormData().meta.draft_status) {
-                    return _.without(this.sources, 'draft');
-                } else {
-                    return this.sources;
-                }
-            },
-
-            /**
-            * @inheritdoc
-             *
-             * @throws {Error} If current source is not set or not valid
-            */
             getSourceData: function () {
-                var data = {};
-                switch (this.currentSource) {
+                switch (this.currentSource.type) {
                     case 'working_copy':
-                        data = _.result(this.getWorkingCopy(), 'values', null);
-                        break;
-                    case 'draft':
-                        data = this.getFormData().values;
-                        break;
-                    default:
-                        throw new Error('No valid source is currently selected to copy from');
-                }
+                        return _.result(this.getFormData().meta.working_copy, 'values', {});
 
-                return data;
+                    case 'draft':
+                        return _.defaults(
+                            _.findWhere(this.otherDrafts, {author: this.currentSource.author}).changes.values,
+                            _.result(this.getFormData().meta.working_copy, 'values', {})
+                        );
+
+                    default:
+                        return Copy.prototype.getSourceData.apply(this, arguments);
+                }
             },
 
             /**
-            * @inheritdoc
-            */
+             * @inheritdoc
+             */
             canBeCopied: function (field) {
                 var params = {
                     field: field,
@@ -121,10 +146,38 @@ define(
             },
 
             /**
+             * Keep any source switcher up-to-date for its rendering
+             *
+             * @param {Object} context
+             */
+            ensureSwitcherContext: function (context) {
+                // If the user owns the product, my_draft is not a valid source
+                if (null === this.getFormData().meta.draft_status) {
+                    context.sources = _.reject(this.sources, function (source) {
+                        return 'my_draft' === source.type;
+                    });
+                } else {
+                    context.sources = this.sources;
+                }
+
+                context.currentSource = this.currentSource;
+            },
+
+            /**
+             * Update the current source and re-render the extension
+             *
+             * @param {string} code
+             */
+            changeCurrentSource: function (code) {
+                this.currentSource = _.findWhere(this.sources, {code: code});
+                this.triggerContextChange();
+            },
+
+            /**
              * Set the current source to "working copy" and enter in copy mode
              */
-            showWorkingCopy: function () {
-                this.currentSource = 'working_copy';
+            startCopyingWorkingCopy: function () {
+                this.currentSource = _.findWhere(this.sources, {code: 'working_copy'});
                 this.startCopying();
             }
         });

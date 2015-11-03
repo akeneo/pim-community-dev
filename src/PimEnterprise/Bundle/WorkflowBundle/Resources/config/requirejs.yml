@@ -6,6 +6,13 @@ config:
         pimee/product-edit-form/original-product:
             urls:
                 product_edit: pim_enrich_product_edit
+        pim/fetcher-registry:
+            fetchers:
+                product_draft:
+                    module: pimee/product-draft-fetcher
+                    options:
+                        urls:
+                            product_index: pimee_workflow_rest_product_index
 
     paths:
         pimee/published-product-manager:         pimenterpriseworkflow/js/manager/published-product-manager
