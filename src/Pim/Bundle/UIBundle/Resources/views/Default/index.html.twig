@@ -134,6 +134,22 @@
         </div>
     </div>
     {% placeholder before_body_end %}
+
+    {% if 'prod' == app.environment %}
+        <script type="text/javascript">
+            require(
+                ['pim/fetcher-registry'],
+                function (FetcherRegistry) {
+                    'use strict';
+
+                    FetcherRegistry.initialize().then(function () {
+                        FetcherRegistry.warmUp();
+                    });
+                }
+            );
+        </script>
+    {% endif %}
+
     </body>
     </html>
 {% else %}
