@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUploadedImageInterface, FullNameInterface
+interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUploadedImageInterface
 {
     /**
      * Get entity class name.
@@ -138,11 +138,21 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setFirstName($firstName = null);
 
     /**
+     * @return string
+     */
+    public function getFirstName();
+
+    /**
      * @param  string $lastName [optional] New last name value. Null by default.
      *
      * @return UserInterface
      */
     public function setLastName($lastName = null);
+
+    /**
+     * @return string
+     */
+    public function getLastName();
 
     /**
      * Set middle name
@@ -152,11 +162,26 @@ interface UserInterface extends AdvancedUserInterface, \Serializable, EntityUplo
     public function setMiddleName($middleName);
 
     /**
+     * @return string
+     */
+    public function getMiddleName();
+
+    /**
      * Set name prefix
      *
      * @param string $namePrefix
      */
     public function setNamePrefix($namePrefix);
+
+    /**
+     * @return string
+     */
+    public function getNameSuffix();
+
+    /**
+     * @return string
+     */
+    public function getNamePrefix();
 
     /**
      * Set name suffix
