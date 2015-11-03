@@ -29,9 +29,17 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Serializer $serializer,
         ChannelManager $channelManager,
         StepExecution $stepExecution,
-        FormatProviderInterface $formatProvider
+        FormatProviderInterface $dateformatProvider,
+        FormatProviderInterface $numberFormatProvider
     ) {
-        $this->beConstructedWith($jobConfigurationRepo, $serializer, $channelManager, $formatProvider, 'upload/path/');
+        $this->beConstructedWith(
+            $jobConfigurationRepo,
+            $serializer,
+            $channelManager,
+            $dateformatProvider,
+            $numberFormatProvider,
+            'upload/path/'
+        );
         $this->setStepExecution($stepExecution);
     }
 
@@ -103,7 +111,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_media(
         $serializer,
         $channelManager,
-        $formatProvider,
+        $dateformatProvider,
+        $numberFormatProvider,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductMediaInterface $media1,
@@ -112,7 +121,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductValueInterface $value2,
         AttributeInterface $attribute
     ) {
-        $formatProvider->getFormat('en_US')->willReturn('n/j/y');
+        $dateformatProvider->getFormat('en_US')->willReturn('n/j/y');
+        $numberFormatProvider->getFormat('en_US')->willReturn(['decimal_separator' => '.']);
         $this->configureOptions('en_US');
 
         $media1->getFilename()->willReturn('media_name');
@@ -155,13 +165,15 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     }
 
     function it_returns_flat_data_without_media(
-        $formatProvider,
+        $dateformatProvider,
+        $numberFormatProvider,
         ChannelInterface $channel,
         ChannelManager $channelManager,
         ProductInterface $product,
         Serializer $serializer
     ) {
-        $formatProvider->getFormat('en_US')->willReturn('n/j/y');
+        $dateformatProvider->getFormat('en_US')->willReturn('n/j/y');
+        $numberFormatProvider->getFormat('en_US')->willReturn(['decimal_separator' => '.']);
         $this->configureOptions('en_US');
         $product->getValues()->willReturn([]);
 
@@ -214,7 +226,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_english_attributes(
         $channelManager,
         $serializer,
-        $formatProvider,
+        $dateformatProvider,
+        $numberFormatProvider,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
@@ -226,7 +239,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         AttributeInterface $date,
         ProductValueInterface $dateValue
     ) {
-        $formatProvider->getFormat('en_US')->willReturn('n/j/y');
+        $dateformatProvider->getFormat('en_US')->willReturn('n/j/y');
+        $numberFormatProvider->getFormat('en_US')->willReturn(['decimal_separator' => '.']);
         $this->configureOptions('en_US');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');
@@ -275,7 +289,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
     function it_returns_flat_data_with_french_attribute(
         $channelManager,
         $serializer,
-        $formatProvider,
+        $dateformatProvider,
+        $numberFormatProvider,
         ChannelInterface $channel,
         ProductInterface $product,
         ProductValueInterface $number,
@@ -285,7 +300,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         ProductPriceInterface $price,
         ProductValueInterface $priceValue
     ) {
-        $formatProvider->getFormat('fr_FR')->willReturn('d/m/Y');
+        $dateformatProvider->getFormat('fr_FR')->willReturn('d/m/Y');
+        $numberFormatProvider->getFormat('fr_FR')->willReturn(['decimal_separator' => ',']);
         $this->configureOptions('fr_FR');
 
         $attribute->getAttributeType()->willReturn('pim_catalog_number');

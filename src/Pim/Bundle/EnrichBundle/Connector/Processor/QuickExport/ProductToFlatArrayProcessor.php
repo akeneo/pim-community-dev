@@ -34,6 +34,9 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var FormatProviderInterface */
     protected $dateFormatProvider;
 
+    /** @var FormatProviderInterface */
+    protected $numberFormatProvider;
+
     /** @var string */
     protected $uploadDirectory;
 
@@ -54,6 +57,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
      * @param FormatProviderInterface             $dateFormatProvider
+     * @param FormatProviderInterface             $numberFormatProvider
      * @param string                              $uploadDirectory
      */
     public function __construct(
@@ -61,14 +65,16 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         SerializerInterface $serializer,
         ChannelManager $channelManager,
         FormatProviderInterface $dateFormatProvider,
+        FormatProviderInterface $numberFormatProvider,
         $uploadDirectory
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->serializer         = $serializer;
-        $this->channelManager     = $channelManager;
-        $this->dateFormatProvider = $dateFormatProvider;
-        $this->uploadDirectory    = $uploadDirectory;
+        $this->serializer           = $serializer;
+        $this->channelManager       = $channelManager;
+        $this->dateFormatProvider   = $dateFormatProvider;
+        $this->numberFormatProvider = $numberFormatProvider;
+        $this->uploadDirectory      = $uploadDirectory;
     }
 
     /**
@@ -131,10 +137,8 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      */
     public function configureOptions($uiLocale)
     {
-        $number = new \NumberFormatter($uiLocale, \NumberFormatter::DECIMAL);
-        $this->decimalSeparator = $number->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
-
-        $this->dateFormat = $this->dateFormatProvider->getFormat($uiLocale);
+        $this->decimalSeparator = $this->numberFormatProvider->getFormat($uiLocale)['decimal_separator'];
+        $this->dateFormat       = $this->dateFormatProvider->getFormat($uiLocale);
     }
 
     /**
