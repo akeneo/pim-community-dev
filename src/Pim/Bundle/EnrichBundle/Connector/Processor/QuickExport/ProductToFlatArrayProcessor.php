@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
-use Pim\Component\Localization\Provider\DateFormatProviderInterface;
+use Pim\Component\Localization\Provider\FormatProviderInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -31,7 +31,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var DateFormatProviderInterface */
+    /** @var FormatProviderInterface */
     protected $dateFormatProvider;
 
     /** @var string */
@@ -53,14 +53,14 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param SerializerInterface                 $serializer
      * @param ChannelManager                      $channelManager
-     * @param DateFormatProviderInterface         $dateFormatProvider
+     * @param FormatProviderInterface             $dateFormatProvider
      * @param string                              $uploadDirectory
      */
     public function __construct(
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
-        DateFormatProviderInterface $dateFormatProvider,
+        FormatProviderInterface $dateFormatProvider,
         $uploadDirectory
     ) {
         parent::__construct($jobConfigurationRepo);
@@ -134,7 +134,7 @@ class ProductToFlatArrayProcessor extends AbstractProcessor
         $number = new \NumberFormatter($uiLocale, \NumberFormatter::DECIMAL);
         $this->decimalSeparator = $number->getSymbol(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL);
 
-        $this->dateFormat = $this->dateFormatProvider->getDateFormat($uiLocale);
+        $this->dateFormat = $this->dateFormatProvider->getFormat($uiLocale);
     }
 
     /**
