@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;

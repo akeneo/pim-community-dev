@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypes;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
@@ -311,7 +311,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param ProductValueInterface $value
      * @param string                $currency
      *
-     * @return null|ProductPriceInterface
+     * @return null|\Pim\Component\Catalog\Model\ProductPriceInterface
      */
     protected function getPriceForCurrency(ProductValueInterface $value, $currency)
     {

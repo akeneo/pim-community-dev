@@ -46,7 +46,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         prices:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductPriceInterface
+            targetDocument: Pim\Component\Catalog\Model\ProductPriceInterface
         media:
             type: entity
             targetEntity: Akeneo\Component\FileStorage\Model\FileInfo
