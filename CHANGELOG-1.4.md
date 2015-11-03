@@ -1,4 +1,4 @@
-# 1.4.x
+# 1.4.7 (2015-11-03)
 
 ## Bug fixes
 - PIM-5078: Fix category move action
